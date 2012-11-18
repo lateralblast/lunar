@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.0.5
+# Version:      1.0.6
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -36,9 +36,11 @@
 #               1.0.3 Thu 15 Nov 2012 02:37:31 EST
 #               Initial Solaris 11 support
 #               1.0.4 Fri 16 Nov 2012 10:57:17 EST
-#               Updated Solaris 11 support
+#               Updated Solaris 11 support, Initial re-commit to new repository
 #               1.0.5 Sat 17 Nov 2012 09:55:07 EST
 #               Added echo services
+#								1.0.6	Monday, 19 November 2012  8:13:20 AM EST
+#								Finished Solaris 10 and 11 support
 
 # Solaris Release Information
 #  1/06 U1
@@ -66,6 +68,7 @@ work_dir="$base_dir/$date_suffix"
 temp_dir="$base_dir/tmp"
 temp_file="$temp_dir/temp_file"
 reboot=0
+total=0
 
 print_usage () {
   echo ""
@@ -156,6 +159,8 @@ audit_command_value () {
   command_name=$1
   parameter_name=$2
   correct_value=$3
+	service_name=$4
+	total=`expr $total + 1`
   if [ "$audit_mode" = 2 ]; then
     restore_file="$restore_dir/$command_name.log"
     if [ -f "$restore_file" ]; then
@@ -177,12 +182,18 @@ audit_command_value () {
           fi
         fi
       fi
-    fi
+		else
+			echo "Result:    Nothing to restore for service $service_name"
+		fi
   else
-    echo "Checking:  Output of $command_name \"$parameter_name\" is \"$correct_value\""
-  fi
+		if [ "$parameter_name" = "tcp_wrappers" ]; then
+			echo "Checking:  Service $service_name has \"$parameter_name\" set to \"$correct_value\""
+		else
+    	echo "Checking:  Output of $command_name \"$parameter_name\" is \"$correct_value\""
+		fi
+	fi
   if [ "$command_name" = "inetadm" ]; then
-    check_command="inetadm -l tcp"
+    check_command="inetadm -l $service_name"
     set_command="inetadm -M"
     current_value=`$check_command |grep "$parameter_name" |awk '{print $2}' |cut -f2 -d'='`
   fi
@@ -215,8 +226,12 @@ audit_command_value () {
     if [ "$audit_mode" != 2 ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score + 1`
-        echo "Secure:    Output for command $command_name \"$parameter_name\" already set to \"$correct_value\" [$score]"
-      fi
+				if [ "$parameter_name" = "tcp_wrappers" ]; then
+					echo "Secure:    Service $service_name already has \"$parameter_name\" set to \"$correct_value\""
+				else
+        	echo "Secure:    Output for command $command_name \"$parameter_name\" already set to \"$correct_value\" [$score]"
+				fi
+			fi
     fi
   fi
 }
@@ -240,110 +255,118 @@ audit_file_value () {
   separator=$3
   correct_value=$4
   comment_value=$5
-  if [ "$comment_value" = "star" ]; then
-    comment_value="*"
-  else 
-    comment_value="#"
-  fi
-  if [ `expr "$separator" : "eq"` = 2 ]; then
-    separator="="
-  else
-    if [ `expr "$separator" : "space"` = 5 ]; then
-     separator=" "
-    else
-      if [ `expr "$separator" : "colon"` = 5 ]; then
-        separator=":"
-      fi
-    fi
-  fi
-  if [ "$audit_mode" = 2 ]; then
-    restore_file="$restore_dir$check_file"
-    if [ -f "$restore_file" ]; then
-      diff_check=`diff $check_file $restore_file |wc -l`
-      if [ "$diff_check" != 0 ]; then
-        echo "Restoring: File $restore_file to $check_file"
-        if [ "$check_file" = "/etc/system" ]; then
-          reboot=1
-          echo "Notice:    Reboot required"
-        fi
-        if [ "$check_file" = "/etc/ssh/sshd_config" ]; then
-          echo "Notice:    Service restart required"
-        fi
-        cp -p $restore_file $check_file
-        if [ "$solaris_version" = "10" ]; then
-          pkgchk -f -n -p $check_file 2> /dev/null
-        else
-          pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-        fi
-      fi
-    fi
-  else
-    echo "Checking:  File $check_file"
-  fi
-  if [ ! -f "$check_file" ]; then
-    if [ "$audit_mode" = 1 ]; then
-      score=`expr $score - 1`
-      echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
-    else
-      if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
-        if [ "$check_file" = "/etc/system" ]; then
-          reboot=1
-          echo "Notice:    Reboot required"
-        fi
-        if [ "$check_file" = "/etc/ssh/sshd_config" ]; then
-          echo "Notice:    Service restart required"
-        fi
-        if [ ! -f "$work_dir$check_file" ]; then
-          touch $check_file
-          find $check_file | cpio -pdm $work_dir 2> /dev/null
-        fi
-        echo "$parameter_name$separator$correct_value" >> $check_file
-      fi
-    fi
-  else
-    check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name$separator" |cut -f2 -d"$separator" |uniq`
-    if [ "$check_value" != "$correct_value" ]; then
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
-      else
-        if [ "$audit_mode" = 0 ]; then
-          check_parameter=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name$separator" |cut -f1 -d"$separator"`
-          echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
-          if [ "$check_file" = "/etc/system" ]; then
-            reboot=1
-            echo "Notice:    Reboot required"
-          fi
-          if [ "$check_file" = "/etc/ssh/sshd_config" ]; then
-            echo "Notice:    Service restart required"
-          fi
-          if [ ! -f "$work_dir$check_file" ]; then
-            echo "Saving:    File $check_file to $work_dir$check_file"
-            find $check_file | cpio -pdm $work_dir 2> /dev/null
-          fi
-          if [ "$check_parameter" != "$parameter_name" ]; then
-            echo "$parameter_name$separator$correct_value" >> $check_file
-          else
-            sed "s/^$parameter_name.*/$parameter_name$separator$correct_value/" $check_file > $temp_file
-            cp $temp_file $check_file
-            if [ "$solaris_version" = "10" ]; then
-              pkgchk -f -n -p $check_file 2> /dev/null
-            else
-              pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-            fi
-            rm $temp_file
-          fi
-        fi
-      fi
-    else
-      if [ "$audit_mode" != 2 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file [$score]"
-        fi
-      fi
-    fi
+	total=`expr $total + 1`
+	if [ -f "$check_file" ]; then
+  	if [ "$comment_value" = "star" ]; then
+    	comment_value="*"
+  	else 
+    	comment_value="#"
+  	fi
+  	if [ `expr "$separator" : "eq"` = 2 ]; then
+    	separator="="
+			spacer="\="
+  	else
+    	if [ `expr "$separator" : "space"` = 5 ]; then
+     	 	separator=" "
+				spacer=" "
+    	else
+      	if [ `expr "$separator" : "colon"` = 5 ]; then
+        	separator=":"
+					space=":"
+      	fi
+    	fi
+  	fi
+  	if [ "$audit_mode" = 2 ]; then
+    	restore_file="$restore_dir$check_file"
+    	if [ -f "$restore_file" ]; then
+      	diff_check=`diff $check_file $restore_file |wc -l`
+      	if [ "$diff_check" != 0 ]; then
+        	echo "Restoring: File $restore_file to $check_file"
+        	if [ "$check_file" = "/etc/system" ]; then
+          	reboot=1
+          	echo "Notice:    Reboot required"
+        	fi
+        	if [ "$check_file" = "/etc/ssh/sshd_config" ]; then
+          	echo "Notice:    Service restart required"
+        	fi
+        	cp -p $restore_file $check_file
+        	if [ "$solaris_version" = "10" ]; then
+          	pkgchk -f -n -p $check_file 2> /dev/null
+        	else
+          	pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+        	fi
+      	fi
+			else
+				echo "Result:    Nothing to restore for service $check_file"
+			fi
+  	else
+    	echo "Checking:  Value of \"$parameter_name\" in $check_file is \"$correct_value\""
+  	fi
+  	if [ ! -f "$check_file" ]; then
+    	if [ "$audit_mode" = 1 ]; then
+      	score=`expr $score - 1`
+      	echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+    	else
+      	if [ "$audit_mode" = 0 ]; then
+        	echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
+        	if [ "$check_file" = "/etc/system" ]; then
+          	reboot=1
+          	echo "Notice:    Reboot required"
+        	fi
+        	if [ "$check_file" = "/etc/ssh/sshd_config" ]; then
+          	echo "Notice:    Service restart required"
+        	fi
+        	if [ ! -f "$work_dir$check_file" ]; then
+          	touch $check_file
+          	find $check_file | cpio -pdm $work_dir 2> /dev/null
+        	fi
+        	echo "$parameter_name$separator$correct_value" >> $check_file
+      	fi
+    	fi
+  	else
+    	check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name$separator" |cut -f2 -d"$separator" |uniq`
+    	if [ "$check_value" != "$correct_value" ]; then
+      	if [ "$audit_mode" = 1 ]; then
+        	score=`expr $score - 1`
+        	echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+      	else
+        	if [ "$audit_mode" = 0 ]; then
+          	check_parameter=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name$separator" |cut -f1 -d"$separator"`
+          	echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
+          	if [ "$check_file" = "/etc/system" ]; then
+            	reboot=1
+            	echo "Notice:    Reboot required"
+          	fi
+          	if [ "$check_file" = "/etc/ssh/sshd_config" ]; then
+            	echo "Notice:    Service restart required"
+          	fi
+          	if [ ! -f "$work_dir$check_file" ]; then
+            	echo "Saving:    File $check_file to $work_dir$check_file"
+            	find $check_file | cpio -pdm $work_dir 2> /dev/null
+          	fi
+          	if [ "$check_parameter" != "$parameter_name" ]; then
+            	echo "$parameter_name$separator$correct_value" >> $check_file
+          	else
+            	sed "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
+            	cp $temp_file $check_file
+            	if [ "$solaris_version" = "10" ]; then
+              	pkgchk -f -n -p $check_file 2> /dev/null
+            	else
+              	pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+            	fi
+            	rm $temp_file
+          	fi
+        	fi
+      	fi
+    	else
+      	if [ "$audit_mode" != 2 ]; then
+        	if [ "$audit_mode" = 1 ]; then
+          	score=`expr $score + 1`
+          	echo "Secure:    Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file [$score]"
+        	fi
+      	fi
+    	fi
+		fi
   fi
 }
 
@@ -353,6 +376,7 @@ audit_append_file () {
   check_file=$1
   parameter=$2
   comment_value=$3
+	total=`expr $total + 1`
   if [ "$comment_value" = "star" ]; then
     comment_value="*"
   else 
@@ -378,9 +402,11 @@ audit_append_file () {
           pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
         fi
       fi
-    fi
+		else
+			echo "Result:    Nothing to restore for service $check_file"
+		fi
   else
-    echo "Checking:  File $check_file"
+    echo "Checking:  Parameter \"$parameter\" is set in $check_file"
   fi
   if [ ! -f "$check_file" ]; then
     if [ "$audit_mode" = 1 ]; then
@@ -400,11 +426,11 @@ audit_append_file () {
           touch $check_file
           find $check_file | cpio -pdm $work_dir 2> /dev/null
         fi
-        echo "$parameter_name" >> $check_file
+        echo "$parameter" >> $check_file
       fi
     fi
   else
-    check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name"`
+    check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter"`
     if [ "$check_value" != "$parameter" ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -423,7 +449,7 @@ audit_append_file () {
             echo "Saving:    File $check_file to $work_dir$check_file"
             find $check_file | cpio -pdm $work_dir 2> /dev/null
           fi
-          echo "$parameter_name$separator$correct_value" >> $check_file
+          echo "$parameter" >> $check_file
         fi
       fi
     else
@@ -443,6 +469,7 @@ audit_file_exists () {
   check_file=$1
   check_exists=$2
   log_file="$work_dir/file.log"
+	total=`expr $total + 1`
   if [ "$check_exists" = "no" ]; then
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
@@ -466,7 +493,9 @@ audit_file_exists () {
           else
             pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
           fi
-        fi
+				else
+					echo "Result:    Nothing to restore for service $check_file"
+				fi
       fi
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score + 1`
@@ -494,7 +523,9 @@ audit_file_exists () {
           else
             pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
           fi
-        fi
+				else
+					echo "Result:    Nothing to restore for service $check_file"
+				fi
       fi
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -575,7 +606,9 @@ audit_replace_value () {
           else
             pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
           fi
-        fi
+				else
+					echo "Result:    Nothing to restore for $check_file"
+				fi
       fi
     fi
   else
@@ -601,6 +634,7 @@ audit_check_pkg () {
   pkg_name=$1
   pkg_check=`pkginfo $1`
   log_file="$work_dir/pkg.log"
+	total=`expr $total + 1`
   echo "Checking:  Package $pkg_name is installed"
   if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then
     if [ "$audit_mode" = 1 ]; then
@@ -640,7 +674,9 @@ audit_check_pkg () {
           pkgrm $pkg_name
         fi
       fi
-    fi
+		else
+			echo "Result:    Nothing to restore for $pkg_name"
+		fi
   fi
 }
 
@@ -657,94 +693,224 @@ audit_encryption_kit () {
   fi
 }
 
-# Function to audit a service and enable or disable
+# Function to audit a svcadm service and enable or disable
 
 audit_svcadm_service () {
   service_name=$1
   correct_status=$2
-	service_exist=`svcs -a |grep "$service_name" | awk '{print $3}'`
-	if [ "$service_exist" != "$service_name" ]; then
-		return
-	fi
-  service_status=`svcs -Ho state $service_name`
-  file_header="svcadm"
-  log_file="$work_dir/$file_header.log"
-  if [ "$audit_mode" = 2 ]; then
-    echo "Checking:  Service $service_name"
-  else
-    echo "Checking:  Service $service_name is $correct_status"
+	service_exists=`svcs -a |grep "$service_name" | awk '{print $3}'`
+	if [ "$service_exists" = "$service_name" ]; then
+		total=`expr $total + 1`
+  	service_status=`svcs -Ho state $service_name`
+  	file_header="svcadm"
+  	log_file="$work_dir/$file_header.log"
+  	if [ "$audit_mode" = 2 ]; then
+    	echo "Checking:  Service $service_name"
+  	else
+    	echo "Checking:  Service $service_name is $correct_status"
+  	fi
+  	if [ "$service_status" != "$correct_status" ]; then
+    	if [ "$audit_mode" = 1 ]; then
+      	score=`expr $score - 1`
+      	echo "Warning:   Service $service_name is enabled [$score]"
+    	else
+      	if [ "$audit_mode" = 0 ]; then
+        	echo "Setting:   Service $service_name to $correct_status"
+        	echo "Notice:    Previous state stored in $log_file"
+        	echo "$service_name,$service_status" >> $log_file
+        	inetadm -d $service_name
+        	svcadm refresh $service_name
+      	fi
+    	fi
+  	else
+    	if [ "$audit_mode" = 2 ]; then
+      	restore_file="$restore_dir/$file_header.log"
+      	if [ -f "$restore_file" ]; then
+        	restore_status=`cat $restore_file |grep "^$service_name" |cut -f2 -d','`
+        	if [ `expr "$restore_status" : "[A-z]"` = 1 ]; then
+          	if [ "$restore_status" != "$service_status" ]; then
+            	restore_status=`echo $restore_status |sed 's/online/enable/g' |sed 's/offline/disable/g'`
+            	echo "Restoring: Service $service_name to $restore_status""d"
+            	svcadm $restore_status $service_name
+            	svcadm refresh $service_name
+          	fi
+        	fi
+				else
+					echo "Result:    Nothing to restore for service $service_name"
+				fi
+    	else
+      	if [ "$audit_mode" != 2 ]; then
+        	if [ "$audit_mode" = 1 ]; then
+          	score=`expr $score + 1`
+          	echo "Secure:    Service $service_name is already disabled [$score]"
+        	fi
+      	fi
+    	fi
+		fi
   fi
-  if [ "$service_status" != "$correct_status" ]; then
-    if [ "$audit_mode" = 1 ]; then
-      score=`expr $score - 1`
-      echo "Warning:   Service $service_name is enabled [$score]"
-    else
-      if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   Service $service_name to $correct_status"
-        echo "Notice:    Previous state stored in $log_file"
-        echo "$service_name,$service_status" >> $log_file
-        svcadm disable $service_name
-        svcadm refresh $service_name
-      fi
-    fi
-  else
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/$file_header.log"
-      if [ -f "$restore_file" ]; then
-        restore_status=`cat $restore_file |grep "^$service_name" |cut -f2 -d','`
-        if [ `expr "$restore_status" : "[A-z]"` = 1 ]; then
-          if [ "$restore_status" != "$service_status" ]; then
-            restore_status=`echo $restore_status |sed 's/online/enable/g' |sed 's/offline/disable/g'`
-            echo "Restoring: Service $service_name to $restore_status""d"
-            svcadm $restore_status $service_name
-            svcadm refresh $service_name
-          fi
-        fi
-      fi
-    else
-      if [ "$audit_mode" != 2 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Service $service_name is already disabled [$score]"
-        fi
+}
+
+# Code to audit a init.d service and enable of disable
+
+audit_legacy_service () {
+  service_name=$1
+	correct_status=$2
+  log_file="initd.log"
+	service_check=`ls /etc/init.d |grep "$service_name" |wc -l |sed 's/ //g'`
+	if [ "$service_check" != 0 ]; then
+		if [ "$correct_status" = "disabled" ]; then
+			check_file="/etc/init.d/_$service_name"
+			if [ -f "$check_file" ]; then
+				actual_status="disabled"
+			else
+				actual_status="enabled"
+			fi
+		else
+			check_file="/etc/init.d/$service_name"
+			if [ -f "$check_file" ]; then
+				actual_status="enabled"
+			else
+				actual_status="disabled"
+			fi
+		fi
+		if [ "$audit_mode" = 2 ]; then
+			echo "Checking:  Status of init.d service $service_name"
+		else
+			echo "Checking:  If init.d service $service_name is $correct_status"
+		fi
+		total=`expr $total + 1`
+  	if [ "$actual_status" != "$correct_status" ]; then
+    	if [ "$audit_mode" = 1 ]; then
+      	score=`expr $score - 1`
+      	echo "Warning:   Service $service_name is not $correct_status [$score]"
+    	else
+      	if [ "$audit_mode" = 0 ]; then
+					log_file="$work_dir/$log_file"
+        	echo "$service_name,$actual_status" >> $log_file
+					echo "Setting:   Service $service_name to $correct_status"
+					if [ "$correct_status" = "disabled" ]; then
+        		/etc/init.d/$service_name stop
+        		mv /etc/init.d/$service_name /etc/init.d/_$service_name
+					else
+        		mv /etc/init.d/_$service_name /etc/init.d/$service_name
+						/etc/init.d/$service_name start
+					fi
+      	fi
+    	fi
+  	else
+    	if [ "$audit_mode" = 2 ]; then
+      	restore_file="$restore_dir/$log_file"
+				if [ -f "$restore_file" ]; then
+      		check_name=`cat $restore_file |grep $service_name |cut -f1 -d","`
+      		if [ "$check_name" = "$service_name" ]; then
+						check_status=`cat $restore_file |grep "$service_name" |cut -f2 -d","`
+						echo "Restoring: Service $service_name to $check_status"
+						if [ "$check_status" = "disabled" ]; then
+        			/etc/init.d/$service_name stop
+        			mv /etc/init.d/$service_name /etc/init.d/_$service_name
+						else
+        			mv /etc/init.d/_$service_name /etc/init.d/$service_name
+							/etc/init.d/$service_name start
+						fi
+					fi
+				else
+					echo "Result:    Nothing to restore for service $service_name"
+				fi
+    	else
+      	if [ "$audit_mode" != 2 ]; then
+        	if [ "$audit_mode" = 1 ]; then
+          	score=`expr $score + 1`
+          	echo "Secure:    Service $service_name is $correct_status [$score]"
+        	fi
+				fi
       fi
     fi
   fi
 }
 
-audit_legacy_service () {
+# Code to audit and inetd service or enable or disbale
+
+audit_inetd_service () {
   service_name=$1
-  file_header="legacy"
-  log_file="$work_dir/$file_header.log"
-  if [ -f "/etc/init.d/$service_name" ]; then
-    if [ "$audit_mode" = 1 ]; then
-      score=`expr $score - 1`
-      echo "Warning:   Service $service_name is enabled [$score]"
-    else
-      if [ "$audit_mode" = 0 ]; then
-        echo "$service_name" >> $log_file
-        /etc/init.d/$service_name stop
-        mv /etc/init.d/$service_name /etc/init.d/_$servive_name
-      fi
-    fi
-  else
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/$file_header.log"
-      check_name=`cat $restore_file |grep $service_name`
-      if [ "$check_name" = "$service_name" ]; then
-        mv /etc/init.d/_$service_name /etc/init.d/$servive_name
-        /etc/init.d/$service_name start
-      fi
-    else
-      if [ "$audit_mode" != 2 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Service $service_name is disabled [$score]"
-        fi
-      fi
-    fi
+	correct_status=$2
+	check_file="/etc/inet/inetd.conf"
+	log_file="inetd.log"
+	service_check=`cat $check_file |grep "$service_name" |wc -l |sed 's/ //g'`
+	if [ "$service_check" != 0 ]; then
+		if [ "$audit_mode" != 2 ]; then
+			echo "Checking:  If inetd service $service_name is $correct_status"
+		else
+			echo "Checking:  Status of inetd $service_name"
+		fi
+		total=`expr $total + 1`
+		if [ "$correct_status" = "disabled" ]; then
+			service_check=`cat $check_file |grep -v '^#' |grep "$service_name" |egrep 'udp|tcp|wait' |wc -l |sed 's/ //g'`
+			if [ "$service_check" = 1 ]; then
+				actual_status="enabled"
+			else
+				actual_status="disabled"
+			fi
+		else
+			service_check=`cat $check_file |grep '^#' |grep "$service_name" |egrep 'udp|tcp' |wc -l |sed 's/ //g'`
+			if [ "$service_check" = 1 ]; then
+				actual_status="disabled"
+			else
+				actual_status="enabled"
+			fi
+		fi
+		if [ "$audit_mode" != 2 ]; then
+			if [ "$actual_status" != "$correct_status" ]; then
+				if [ "$audit_mode" = 1 ]; then	
+      		score=`expr $score - 1`
+      		echo "Warning:   Service $service_name is not $correct_status [$score]"
+    		else
+      		if [ "$audit_mode" = 0 ]; then
+						log_file="$work_dir/$log_file"
+        		echo "$service_name,$actual_status" >> $log_file
+        		backup_file="$work_dir$check_file"
+						echo "Setting:   Service $service_name to $correct_status"
+        		if [ ! -f "$backup_file" ]; then
+          		echo "Saving:    File $check_file to $backup_file"
+          		find $check_file | cpio -pdm $work_dir 2> /dev/null
+        		fi
+						if [ "$correct_status" = "disabled" ]; then
+        			cat $check_file |sed -e "s/\(.*\)\($service_name\)\(.*\)/\#\1\2\3/g" > $temp_file
+						else
+							cat $check_file |sed -e "s/\(^#\)\(.*\)\(as.sh\)\(.#\)/\2\3\4/g" > $temp_file
+						fi
+						cp $temp_file $check_file
+					fi
+				fi
+			else
+	      if [ "$audit_mode" != 2 ]; then
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score + 1`
+	          echo "Secure:    Service $service_name is $correct_status [$score]"
+	        fi
+	      fi
+			fi
+		else
+    	if [ "$audit_mode" = 2 ]; then
+      	restore_file="$restore_dir/$log_file"
+				if [ -f "$restore_file" ]; then
+      		check_name=`cat $restore_file |grep $service_name |cut -f1 -d","`
+      		if [ "$check_name" = "$service_name" ]; then
+						check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
+        		if [ "$actual_status" != "$check_status" ]; then
+							echo "Restoring: Service $service_name to $check_status"
+							restore_file="$restore_dir$check_file"
+							cp $restore_file $check_file
+						fi
+					fi
+				else
+					echo "Result:    Nothing to restore for service $service_name"
+				fi
+			fi
+		fi
   fi
 }
+
+# Service audit routine wrapper, sends to appropriate function based on service type
 
 audit_service () {
   service_name=$1
@@ -753,6 +919,7 @@ audit_service () {
     audit_svcadm_service $service_name $correct_status
   else
     audit_legacy_service $service_name $correct_status
+		audit_inetd_service $service_name $correct_status
   fi
 }
 
@@ -774,6 +941,42 @@ audit_cde_cal () {
   fi
 }
 
+# Disable Subprocess control
+
+audit_cde_spc () {
+  if [ "$solaris_version" = "10" ]; then
+    service_name="svc:/network/cde-spc:default"
+    audit_service $service_name disabled
+  fi
+}
+
+# Disable OpenGL
+
+audit_opengl () {
+  if [ "$solaris_version" = "10" ]; then
+    service_name="svc:/application/opengl/ogl-select:default"
+    audit_service $service_name disabled
+  fi
+}
+
+# Disable CDE Print
+
+audit_cde_print () {
+  if [ "$solaris_version" = "10" ]; then
+    service_name="svc:/application/cde-printinfo:default"
+    audit_service $service_name disabled
+  fi
+}
+
+# Disable PPD cache
+
+audit_ppd_cache () {
+  if [ "$solaris_version" = "10" ]; then
+    service_name="svc:/application/print/ppd-cache-update:default"
+    audit_service $service_name disabled
+  fi
+}
+
 # Disable Local Graphical Login Environment
 
 audit_xlogin () {
@@ -787,6 +990,10 @@ audit_xlogin () {
     service_name="svc:/application/graphical_login/gdm:default"
     audit_service $service_name disabled
   fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="dtlogin"
+		audit_service $service_name disabled
+	fi
 }
 
 # Disable Local sendmail Service
@@ -797,6 +1004,10 @@ audit_sendmail () {
     service_name="svc:/network/smtp:sendmail"
     audit_service $service_name disabled
   fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="sendmail"
+		audit_service $service_name disabled
+	fi
 }
 
 # Disable Local Web Console
@@ -821,7 +1032,11 @@ audit_wbem () {
 
 audit_print () {
   if [ "$solaris_version" = "10" ]; then
+    service_name="svc:/application/print/ipp-listener:default"
+    audit_service $service_name disabled
     service_name="svc:/application/print/rfc1179"
+    audit_service $service_name disabled
+    service_name="svc:/application/print/server:default"
     audit_service $service_name disabled
   fi
 }
@@ -919,6 +1134,10 @@ audit_volfs () {
     service_name="svc:/network/rpc/smserver"
     audit_service $service_name disabled
   fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="volmgt"
+		audit_service $service_name disabled
+	fi
 }
 
 # Disable Samba Support
@@ -957,7 +1176,11 @@ audit_apache () {
   if [ "$solaris_version" = "11" ]; then
     service_name="svc:/network/http:apache22"
     audit_service $service_name disabled
-  fi
+	fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="apache"
+		audit_service $service_name disabled
+	fi 
 }
 
 # Disable Solaris Volume Manager Services
@@ -1001,6 +1224,7 @@ audit_svccfg_value () {
   current_value=`svccfg -s $service_name listprop $service_property |awk '{print $3}'`
   file_header="svccfg"
   log_file="$work_dir/$file_header.log"
+	total=`expr $total + 1`
   if [ "$audit_mode" = 2 ]; then
     restore_file="$restore_dir/$file_header.log"
     if [ -f "$restore_file" ]; then
@@ -1037,8 +1261,11 @@ audit_svccfg_value () {
   fi
 }
 
+# Disable rpc bind on Solaris 11
+# Check that rpc bind has tcp wrappers enable in case it's turned on
+
 audit_rpc_bind () {
-  if [ "$solaris_version" = "10" ]; then
+  if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
     service_name="svc:/network/rpc/bind"
     service_property="config/enable_tcpwrappers"
     correct_value="true"
@@ -1063,13 +1290,15 @@ secure_baseline () {
 audit_tcp_wrappers () {
   if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
     audit_rpc_bind
-    # service_name="rpc/bind"
-    # service_property="config/enable_tcpwrappers"
-    # correct_value="true"
-    # audit_svccfg_value $service_name $service_property $correct_value
     check_file="/etc/hosts.deny"
     audit_file_value $check_file ALL colon " ALL" hash
-    audit_command_value inetadm tcp_wrappers TRUE
+		check_file="/etc/hosts.allow"
+		if [ ! -f "$check_file" ]; then
+			audit_file_value $check_file sshd colon " ALL" hash
+		fi
+		for service_name in `inetadm |awk '{print $3}' |grep "^svc"`; do
+    	audit_command_value inetadm tcp_wrappers TRUE $service_name
+		done
   fi
 }
 
@@ -1081,6 +1310,7 @@ audit_ndd_value () {
     ndd_name=$1
     ndd_property=$2
     correct_value=$3
+		total=`expr $total + 1`
     if [ "$ndd_property" = "tcp_extra_priv_ports_add" ]; then
       current_value=`ndd -get $ndd_name tcp_extra_priv_ports |grep "$correct_value"`
     else
@@ -1133,9 +1363,49 @@ audit_ndd_value () {
   fi
 }
 
+# Code to audit ndd values and create init script so change survive reboot
+
 audit_kernel_params () {
   if [ "$solaris_version" = "10" ]; then
-    audit_ndd_value /dev/ip ip_forward_src_routed 0
+		check_file="/etc/init.d/ndd-netconfig"
+		rcd_file="/etc/rc2.d/S99ndd-netconfig"
+		if [ "$audit_mode" = 0 ]; then
+			if [ ! -f "$check_file" ]; then
+				echo "Creating:  Init script $check_file"
+				echo "#!/sbin/sh" > $check_file
+				echo "case \"\$1\" in" >> $check_file
+				echo "start)" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_forward_directed_broadcasts 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q0 4096" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q 1024" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp_broadcast 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_address_mask_broadcast 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_multicast 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0" >> $check_file
+				echo "esac" >> $check_file
+				echo "exit 0" >> $check_file
+				chmod 750 $check_file
+				if [ ! -f "$rcd_file" ]; then
+					ln -s $check_file $rcd_file
+				fi
+			fi
+		fi
+		audit_ndd_value /dev/ip ip_forward_src_routed 0
     audit_ndd_value /dev/ip ip6_forward_src_routed 0
     audit_ndd_value /dev/tcp tcp_rev_src_routes 0
     audit_ndd_value /dev/ip ip_forward_directed_broadcasts 0
@@ -1157,6 +1427,11 @@ audit_kernel_params () {
     audit_ndd_value /dev/ip ip_send_redirects 0
     audit_ndd_value /dev/ip ip6_send_redirects 0
   fi
+	if [ "$audit_mode" = 2 ]; then
+		if [ -f "$check_file" ]; then
+			audit_file_exists $check_file no
+		fi
+	fi
 }
 
 # Restrict Core Dumps to Protected Directory
@@ -1165,16 +1440,78 @@ audit_core_dumps () {
   if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
     cores_dir="/var/cores"
     check_file="/etc/coreadm.conf"
-    cores_check=`cat $check_file |grep "core_"`
-    if [ `expr "$cores_check" : "[A-z]"` != 1 ]; then
-      if [ "$audit_mode" = 1 ]; then
+		cores_check=`coreadm |head -1 |awk '{print $5}'`
+		total=`expr $total + 1`
+    if [ `expr "$cores_check" : "/var/cores"` != 10 ]; then
+			if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Cores are not restricted to a private directory [$score]"
       else
         if [ "$audit_mode" = 0 ]; then
-          echo "Making sure restricted to a private directory"
-          echo "Saving:    File $check_file to $work_dir$check_file"
-          find $check_file | cpio -pdm $work_dir 2> /dev/null
+          echo "Setting:   Making sure restricted to a private directory"
+					if [ -f "$check_file" ]; then
+          	echo "Saving:    File $check_file to $work_dir$check_file"
+          	find $check_file | cpio -pdm $work_dir 2> /dev/null
+					else
+						touch $check_file
+						find $check_file | cpio -pdm $work_dir 2> /dev/null
+						rm $check_file
+						log_file="$work_dir/$check_file"
+						coreadm | sed -e 's/^ *//g' |sed 's/ /_/g' |sed 's/:_/:/g' |awk -F: '{ print $1" "$2 }' | while read option value; do
+							if [ "$option" = "global_core_file_pattern" ]; then
+								echo "COREADM_GLOB_PATTERN=$value" > $log_file
+							fi
+							if [ "$option" = "global_core_file_content" ]; then
+								echo "COREADM_GLOB_CONTENT=$value" >> $log_file
+							fi
+							if [ "$option" = "init_core_file_pattern" ]; then
+								echo "COREADM_INIT_PATTERN=$value" >> $log_file
+							fi
+							if [ "$option" = "init_core_file_content" ]; then
+								echo "COREADM_INIT_CONTENT=$value" >> $log_file
+							fi
+							if [ "$option" = "global_core_dumps" ]; then
+								if [ "$value" = "enabled" ]; then
+									value="yes"
+								else
+									value="no"
+								fi
+								echo "COREADM_GLOB_ENABLED=$value" >> $log_file
+							fi
+							if [ "$option" = "per-process_core_dumps" ]; then
+								if [ "$value" = "enabled" ]; then
+									value="yes"
+								else
+									value="no"
+								fi
+								echo "COREADM_PROC_ENABLED=$value" >> $log_file
+							fi
+							if [ "$option" = "global_setid_core_dumps" ]; then
+								if [ "$value" = "enabled" ]; then
+									value="yes"
+								else
+									value="no"
+								fi
+								echo "COREADM_GLOB_SETID_ENABLED=$value" >> $log_file
+							fi
+							if [ "$option" = "per-process_setid_core_dumps" ]; then
+								if [ "$value" = "enabled" ]; then
+									value="yes"
+								else
+									value="no"
+								fi
+								echo "COREADM_PROC_SETID_ENABLED=$value" >> $log_file
+							fi
+							if [ "$option" = "global_core_dump_logging" ]; then
+								if [ "$value" = "enabled" ]; then
+									value="yes"
+								else
+									value="no"
+								fi
+								echo "COREADM_GLOB_LOG_ENABLED=$value" >> $log_file
+							fi
+						done
+					fi
           coreadm -g /var/cores/core_%n_%f_%u_%g_%t_%p -e log -e global -e global-setid -d process -d proc-setid
         fi
         if [ ! -d "$cores_dir" ]; then
@@ -1183,23 +1520,21 @@ audit_core_dumps () {
           chown root:root $cores_dir
         fi
       fi
-    else
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    Cores are restricted to a private directory [$score]"
-      else
-        if [ "$audit_mode" = 2 ]; then
-          restore_file="$restore_dir$check_file"
-          if [ -f "$restore_file" ]; then
-            cp -p $restore_file $check_file
-            if [ "$solaris_version" = "10" ]; then
-              pkgchk -f -n -p $check_file 2> /dev/null
-            else
-              pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-            fi
-            coreadm -u
-          fi
+		else
+    	if [ "$audit_mode" = 1 ]; then
+      	score=`expr $score + 1`
+      	echo "Secure:    Cores are restricted to a private directory [$score]"
+    	fi
+		fi
+    if [ "$audit_mode" = 2 ]; then
+      restore_file="$restore_dir$check_file"
+      if [ -f "$restore_file" ]; then
+				echo "Restoring:  $restore_file to $check_file"
+        cp -p $restore_file $check_file
+        if [ "$solaris_version" = "10" ]; then
+          pkgchk -f -n -p $check_file 2> /dev/null
         fi
+        coreadm -u
       fi
     fi
   fi
@@ -1229,29 +1564,16 @@ audit_tcp_strong_iss () {
   fi
 }
 
-# Disable Network Routing
-# Disable Source Packet Forwarding
-# Disable Directed Broadcast Packet Forwarding
-# Disable Response to ICMP Timestamp Requests
-# Disable Response to ICMP Broadcast Timestamp Requests
-# Disable Response to ICMP Broadcast Netmask Requests
-# Disable Response to Broadcast ICMPv4 Echo Request
-# Disable Response to Multicast Echo Request
-# Ignore ICMP Redirect Messages
-# Set Strict Multihoming
-# Disable ICMP Redirect Messages
-# Disable TCP Reverse IP Source Routing
-# Set Maximum Number of Half-open TCP Connections
-# Set Maximum Number of Incoming Connections
-# Disable Network Routing
+# Code to drive ipadm on Solaris 11
 
 audit_ipadm_value () {
   if [ "$solaris_version" = "11" ]; then
     ipadm_name=$1
     ipadm_property=$2
     correct_value=$3
-    current_value=`ipadm show-prop -p $ipadm_name -co $ipadm_property`
+    current_value=`ipadm show-prop -p $ipadm_name -co current $ipadm_property`
     file_header="ipadm"
+		total=`expr $total + 1`
     log_file="$work_dir/$file_header.log"
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$file_header.log"
@@ -1266,7 +1588,7 @@ audit_ipadm_value () {
         fi
       fi
     else
-      echo "Checking:  Value of $ipadm_name $ipadm_property"
+      echo "Checking:  Value of \"$ipadm_name\" for \"$ipadm_property\" is \"$correct_value\""
     fi
     if [ "$current_value" -ne "$correct_value" ]; then
       if [ "$audit_mode" = 1 ]; then
@@ -1290,13 +1612,28 @@ audit_ipadm_value () {
   fi
 }
 
+# Disable Network Routing
+# Disable Source Packet Forwarding
+# Disable Directed Broadcast Packet Forwarding
+# Disable Response to ICMP Timestamp Requests
+# Disable Response to ICMP Broadcast Timestamp Requests
+# Disable Response to ICMP Broadcast Netmask Requests
+# Disable Response to Broadcast ICMPv4 Echo Request
+# Disable Response to Multicast Echo Request
+# Ignore ICMP Redirect Messages
+# Set Strict Multihoming
+# Disable ICMP Redirect Messages
+# Disable TCP Reverse IP Source Routing
+# Set Maximum Number of Half-open TCP Connections
+# Set Maximum Number of Incoming Connections
+# Disable Network Routing
+
 audit_routing () {
   if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
     audit_command_value routeadm ipv4-routing disabled
     audit_command_value routeadm ipv6-routing disabled
     audit_command_value routeadm ipv4-forwarding disabled
     audit_command_value routeadm ipv6-forwarding disabled
-    # Added the following to CIS check
     audit_file_exists /etc/notrouter yes
   fi
   if [ "$solaris_version" = "11" ]; then
@@ -1326,6 +1663,7 @@ audit_routing () {
 audit_create_class () {
   check_file="/etc/security/audit_class"
   class_check=`cat $check_file |grep "Security Lockdown"`
+	total=`expr $total + 1`
   if [ `expr "$class_check" : "[A-z]"` != 1 ]; then
     if [ "$audit_mode" = 1 ]; then
      score=`expr $score - 1`
@@ -1399,6 +1737,9 @@ audit_privilege_events () {
   audit_append_file $check_file "lck:AUE_SETPGID" hash
 }
 
+# Create audit class on Solaris 11
+# Need to investigate more auditing capabilities on Solaris 10
+
 audit_audit_class () {
   if [ "$solaris_version" = "11" ]; then
     audit_create_class
@@ -1412,6 +1753,7 @@ audit_audit_class () {
 
 audit_command_output () {
 	command_name=$1
+	total=`expr $total + 1`
 	if [ "$command_name" = "getcond" ]; then
 		get_command="auditconfig -getcond |cut -f2 -d'=' |sed 's/ //g'"
 		
@@ -1483,6 +1825,9 @@ audit_command_output () {
   fi
 }
 
+# Check auditing setup on Solaris 11
+# Need to investigate more auditing capabilities on Solaris 10
+
 audit_solaris_auditing () {
   if [ "$solaris_version" = "11" ]; then
     audit_command_output getcond
@@ -1529,6 +1874,7 @@ audit_ftpd_logging () {
     file_header="ftpd_logging"
     echo "Checking:  File $file_header"
     log_file="$work_dir/$file_header.log"
+		total=`expr $total + 1`
     if [ "$audit_mode" = 1 ]; then
       if [ "$check_value" -eq 0 ]; then
        score=`expr $score - 1`
@@ -1567,6 +1913,7 @@ audit_logadm_value () {
     check_file="/etc/logadm.conf"
     check_log=`logadm -V |grep -v '^#' |grep "$log_name"`
     log_file="/var/log/$log_name"
+		total=`expr $total + 1`
     if [ `expr "$check_log" : "[A-z]"` != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
        score=`expr $score - 1`
@@ -1627,6 +1974,8 @@ audit_logadm_value () {
   fi
 }
 
+# Enable connection logging
+
 audit_debug_logging () {
   if [ "$solaris_version" = "10" ]; then
     audit_logadm_value connlog daemon.debug
@@ -1677,6 +2026,7 @@ audit_system_accounting () {
   if [ "$solaris_version" = "10" ]; then
     cron_file="/var/spool/cron/crontabs/sys"
     sar_check=`cat $check_file |grep -v "^#" |grep "sa2"`
+		total=`expr $total + 1`
     if [ `expr "$sar_check" : "[A-z]"` != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -1756,6 +2106,7 @@ audit_daemon_umask () {
     umask_check=`svcprop -p umask/umask svc:/system/environment:init`
     umask_value="022"
     log_file="umask.log"
+		total=`expr $total + 1`
     if [ "$umask_check" != "$umask_value" ]; then
       log_file="$work_dir/$log_file"
       if [ "$audit_mode" = 1 ]; then
@@ -1798,6 +2149,7 @@ audit_mount_setuid () {
     check_file="/etc/rmmount.conf"
     nosuid_check=`cat $check_file |grep -v "^#" |grep "\-o nosuid"`
     log_file="$work_dir/$check_file"
+		total=`expr $total + 1`
     if [ `expr "$nosuid_check" : "[A-z]"` != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -1832,9 +2184,10 @@ audit_mount_setuid () {
   fi
 }
 
-# CIS Solaris 10 5.1.0 5.3 Set Sticky Bit on World Writable Directories
+# Set Sticky Bit on World Writable Directories
 
 audit_sticky_bit () {
+	total=`expr $total + 1`
   if [ "$solaris_version" = "10" ]; then
     echo "Checking:  Sticky bits set on world writable directories [This may take a while]"
     log_file="$work_dir/sticky_bits"
@@ -1875,14 +2228,14 @@ audit_sticky_bit () {
 # Set SSH IgnoreRhosts to yes
 # Set SSH RhostsAuthentication to no
 # Set SSH RhostsRSAAuthentication to no
-# 6.1.9 Disable SSH root login
+# Disable SSH root login
 # Set SSH PermitEmptyPasswords to no
 # Set SSH Banner
 # Enable a Warning Banner for the SSH Service
 
 audit_ssh_config () {
   check_file="/etc/ssh/sshd_config"
-  audit_file_value $check_file Host space "*" hash
+  #audit_file_value $check_file Host space "*" hash
   audit_file_value $check_file Protocol space 2 hash
   audit_file_value $check_file X11Forwarding space no hash
   audit_file_value $check_file MaxAuthTries space 3 hash
@@ -1898,6 +2251,7 @@ audit_ssh_config () {
 # Disable login: Prompts on Serial Ports
 
 audit_serial_login () {
+	total=`expr $total + 1`
   if [ "$solaris_version" = "10" ]; then
     serial_test=`pmadm -L |egrep "ttya|ttyb" |cut -f4 -d ":" |grep "ux" |wc -l`
     log_file="$work_dir/pmadm.log"
@@ -1942,6 +2296,7 @@ audit_nobody_rpc () {
 
 audit_pam_rhosts () {
   check_file="/etc/pam.conf"
+	total=`expr $total + 1`
   if [ "$audit_mode" = 2 ]; then
     restore_file="$restore_dir$check_file"
     if [ -f "$restore_file" ]; then
@@ -1986,6 +2341,7 @@ audit_pam_rhosts () {
 
 audit_ftp_users () {
   check_file="/etc/ftpd/ftpusers"
+	total=`expr $total + 1`
   for user_name in adm bin daemon gdm listen lp noaccess \
       nobody nobody4 nuucp postgres root smmsp svctag \
       sys uucp webserverd; do
@@ -2002,7 +2358,8 @@ audit_ftp_users () {
             echo "Saving:    File $check_file to $work_dir$check_file"
             find $check_file | cpio -pdm $work_dir 2> /dev/null
          fi
-          echo "Setting:   User $user_name to not be allowed ftp access"
+         echo "Setting:   User $user_name to not be allowed ftp access"
+				 audit_append_file $check_file $user_name hash
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -2035,7 +2392,7 @@ audit_login_delay () {
 # Set Default Screen Lock for CDE Users
 
 audit_cde_screen_lock () {
-  for check_file in /usr/dt/config/*/sys.resources; do
+  for check_file in `ls /usr/dt/config/*/sys.resources 2> /dev/null`; do
     dir_name=`dirname $check_file |sed 's/usr/etc/'`
 		if [ ! -d "$dir_name" ]; then
 			mkdir -p $dir_name
@@ -2200,6 +2557,7 @@ audit_root_group () {
   echo "Checking:  Root default group"
   group_check=`grep root /etc/passwd | cut -f4 -d":"`
   log_file="$work_dir/rootgroup.log"
+	total=`expr $total + 1`
   if [ "$group_check" != 0 ]; then
     if [ "$audit_mode" = 1 ]; then
       score=`expr $score - 1`
@@ -2229,6 +2587,7 @@ audit_root_group () {
 # Change Home Directory for root Account
 
 audit_root_home () {
+	total=`expr $total + 1`
   if [ "$solaris_version" = "10" ]; then
     echo "Checking:  Root home directory"
     home_check=`grep root /etc/passwd | cut -f6 -d:`
@@ -2303,6 +2662,7 @@ audit_inactive_users () {
   audit_file_value $check_file definact eq 35 hash
   check_file="/etc/shadow"
   echo "Checking:   Inactive lockout"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     for user_check in `cat $check_file |grep -v 'nobody4'`; do
       inactive_check=`echo $user_check |cut -f 7 -d":"`
@@ -2362,6 +2722,7 @@ audit_cde_banner () {
 # Create Warning Banner for GNOME Users
 
 audit_gnome_banner () {
+	total=`expr $total + 1`
   if [ "$solaris_version" = "10" ]; then
     check_file="/etc/X11/gdm.conf"
     audit_file_value $check_file Welcome eq "Authorised users only" hash
@@ -2370,42 +2731,44 @@ audit_gnome_banner () {
     check_file="/etc/gdm/Init/Default"
     if [ "$audit_mode" != 2 ]; then
       backup_file="$work_dir$check_file"
-      gdm_check=`cat $check_file |grep 'Security Message' |cut -f3 -d"="`
-      if [ "$gdm_check" != "/etc/issue" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Warning banner not found in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          if [ ! -f "$backup_file" ]; then
-            echo "Saving:    File $check_file to $backup_file"
-            find $check_file | cpio -pdm $work_dir 2> /dev/null
-          fi
-          echo "Setting:   Warning banner in $check_file"
-          echo "   --title=\"Security Message\" --filename=/etc/issue" >> $check_file
-          if [ "$solaris_version" = "10" ]; then
-            pkgchk -f -n -p $check_file 2> /dev/null
-          else
-            pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-          fi
-        fi
-      fi
-      if [ "$file_entry" = "" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Warning banner in $check_file [$score]"
-        fi
-      fi
-    else
-      restore_file="$restore_dir$check_file"
-      if [ -f "$restore_file" ]; then
-        echo "Restoring: File $restore_file to $check_file"
-        cp -p $restore_file $check_file
-        if [ "$solaris_version" = "10" ]; then
-          pkgchk -f -n -p $check_file 2> /dev/null
-        else
-          pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-        fi
+			if [ -f "$check_file" ]; then
+				gdm_check=`cat $check_file |grep 'Security Message' |cut -f3 -d"="`
+				if [ "$gdm_check" != "/etc/issue" ]; then
+					if [ "$audit_mode" = 1 ]; then
+      			score=`expr $score - 1`
+ 					  echo "Warning:   Warning banner not found in $check_file [$score]"
+ 				 	fi
+					if [ "$audit_mode" = 0 ]; then
+						if [ ! -f "$backup_file" ]; then
+            	echo "Saving:    File $check_file to $backup_file"
+            	find $check_file | cpio -pdm $work_dir 2> /dev/null
+          	fi
+          	echo "Setting:   Warning banner in $check_file"
+          	echo "   --title=\"Security Message\" --filename=/etc/issue" >> $check_file
+          	if [ "$solaris_version" = "10" ]; then
+            	pkgchk -f -n -p $check_file 2> /dev/null
+          	else
+            	pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+          	fi
+        	fi
+      	fi
+      	if [ "$file_entry" = "" ]; then
+        	if [ "$audit_mode" = 1 ]; then
+          	score=`expr $score + 1`
+          	echo "Secure:    Warning banner in $check_file [$score]"
+        	fi
+      	fi
+    	else
+      	restore_file="$restore_dir$check_file"
+      	if [ -f "$restore_file" ]; then
+        	echo "Restoring: File $restore_file to $check_file"
+        	cp -p $restore_file $check_file
+        	if [ "$solaris_version" = "10" ]; then
+          	pkgchk -f -n -p $check_file 2> /dev/null
+        	else
+          	pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+        	fi
+				fi
       fi
     fi
   fi
@@ -2443,6 +2806,7 @@ audit_telnet_banner () {
 audit_remote_consoles () {
   echo "Checking:  Remote consoles"
   log_file="remoteconsoles.log"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     log_file="$work_dir/$log_file"
     for console_device in `/usr/sbin/consadm -p`; do
@@ -2533,6 +2897,7 @@ audit_file_perms () {
 audit_password_fields () {
   echo "Checking:  Password fields"
   check_file="/etc/shadow"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     backup_file="$work_dir$check_file"
     for user_name in `logins -p |awk '{print $1}'`; do
@@ -2568,6 +2933,7 @@ audit_password_fields () {
 
 audit_nis_entries () {
   echo "Checking:  Legacy NIS '+' entries"
+	total=`expr $total + 1`
   for check_file in /etc/passwd /etc/shadow /etc/group; do
     if [ "$audit_mode" != 2 ]; then
       backup_file="$work_dir$check_file"
@@ -2617,6 +2983,7 @@ audit_nis_entries () {
 
 audit_super_users () {
   echo "Checking:  Super users other than root"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     for user_name in `logins -o | awk -F: '($2 == 0) { print $1 }' |grep -v root`; do
       if [ "$audit_mode" = 1 ]; then
@@ -2680,6 +3047,7 @@ audit_check_perms () {
   check_owner=$3
   check_group=$4
   echo "Checking:  File permissions on $check_file"
+	total=`expr $total + 1`
   if [ ! -f "$check_file" ]; then
     echo "Notice:    File $check_file does not exist"
     return
@@ -2707,7 +3075,7 @@ audit_check_perms () {
       fi
     fi
   else
-    if [ "$audit_mode" != 2 ]; then
+    if [ "$audit_mode" = 1 ]; then
       score=`expr $score + 1`
       echo "Secure:    File $check_file has correct permissions [$score]"
     fi
@@ -2736,6 +3104,7 @@ audit_check_perms () {
 audit_dot_files () {
   check_file=$1
   echo "Checking:  For $check_file files"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     for dir_name in `logins -ox |cut -f6 -d":"`; do
       check_file="$dir_name/$check_file"
@@ -2769,6 +3138,7 @@ audit_dot_files () {
 
 audit_root_path () {
   echo "Checking:  Root PATH"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     if [ "$audit_mode" = 1 ]; then
       if [ "`echo $PATH | grep :: `" != "" ]; then
@@ -2852,6 +3222,7 @@ audit_user_netrc () {
   done
   if [ "$check_fail" != 1 ]; then
     if [ "$audit_mode" = 1 ]; then
+			total=`expr $total + 1`
       score=`expr $score + 1`
       echo "Secure:    No user netrc files exist [$score]"
     fi
@@ -2872,6 +3243,7 @@ audit_user_rhosts () {
   done
   if [ "$check_fail" != 1 ]; then
     if [ "$audit_mode" = 1 ]; then
+			total=`expr $total + 1`
       score=`expr $score + 1`
       echo "Secure:    No user rhosts files exist [$score]"
     fi
@@ -2884,6 +3256,7 @@ audit_groups_exist () {
   echo "Checking:  Groups in passwd file exist in group file"
   check_file="/etc/group"
   group_fail=0
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     for group_id in `getent passwd |cut -f4 -d ":"`; do
       group_exists=`cat $check_file |grep -v "^#" |cut -f3 -d":" |grep "^$group_id$" |wc -l |sed "s/ //g"`
@@ -2911,6 +3284,7 @@ audit_groups_exist () {
 audit_home_ownership () {
   echo "Checking:  Ownership of home directories"
   home_check=0
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     getent passwd | awk -F: '{ print $1" "$6 }' | while read check_user home_dir; do
       found=0
@@ -2958,8 +3332,9 @@ audit_home_ownership () {
 audit_reserved_ids () {
   echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
   uuid_check=0
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
-    getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user chek_uid; do
+    getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
       found=0
       for test_user in root daemon bin sys adm lp uucp nuucp smmsp listen gdm webservd postgres svctag nobody noaccess nobody4 unknown; do
         if [ "$check_user" = "$test_user" ]; then
@@ -2992,6 +3367,7 @@ audit_duplicate_ids () {
   duplicate=0
   check_file=$4
   echo "Checking:  For $function with duplicate $term"
+	total=`expr $total + 1`
   if [ "$audit_mode" != 2 ]; then
     for file_info in `cat $check_file | cut -f$field -d":" | sort -n | uniq -c |awk '{ print $1":"$2 }'`; do
       file_check=`expr "$file_info" : "^2"`
@@ -3046,6 +3422,7 @@ audit_forward_files () {
 audit_writable_files () {
   echo "Checking:  For world writable files [This might take a while]"
   log_file="worldwritable.log"
+	total=`expr $total + 1`
   if [ "$audit_mode" = 0 ]; then
     log_file="$work_dir/$log_file"
   fi
@@ -3110,6 +3487,7 @@ audit_unowned_files () {
       -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
       -o -fstype objfs -o -fstype proc \) -prune \
       -o \( -nouser -o -nogroup \) -print`; do
+			total=`expr $total + 1`
       score=`expr $score - 1`
       echo "Warning:   File $check_file is unowned [$score]"
     done
@@ -3125,6 +3503,7 @@ audit_extended_attributes () {
       -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
       -o -fstype objfs -o -fstype proc \) -prune \
       -o -xattr -print`; do
+			total=`expr $total + 1`
       score=`expr $score - 1`
       echo "Warning:   File $check_file has extended attributes [$score]"
     done
@@ -3137,6 +3516,7 @@ audit_process_accounting () {
   check_file="/etc/rc3.d/S99acct"
   init_file="/etc/init.d/acct"
   log_file="$work_dir/acct.log"
+	total=`expr $total + 1`
   if [ ! -f "$check_file" ]; then
     if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -3175,6 +3555,7 @@ audit_dfstab () {
 # Restrict access to power management functions
 
 audit_power_management () {
+	total=`expr $total + 1`
   if [ "$solaris_version" = "10" ]; then
     audit_file_value /etc/default/power PMCHANGEPERM eq "-" hash
     audit_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
@@ -3270,61 +3651,75 @@ audit_syslog_perms () {
 # rarp is required for jumpstart servers
 
 audit_rarp () {
-	service_name="svc:/network/rarp:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/rarp:default"
+		audit_service $service_name disabled
+	fi
 }
 
-# Turn of wins if not required
+# Turn off wins if not required
 
 audit_wins () {
-	service_name="svc:/network/wins:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/wins:default"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn off winbind if not required
 
 audit_winbind () {
-	service_name="svc:/network/winbind:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/winbind:default"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn off bootparams if not required
 # Required for jumpstart servers
 
 audit_bootparams () {
-	service_name="svc:/network/rpc/bootparams:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/rpc/bootparams:default"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn off postgresql if not required
 # Recommend removing this from base install as it slows down patching significantly
 
 audit_postgresql () {
-	service_name="svc:/application/database/postgresql_83:default_32bit"
-	audit_service $service_name disabled
-	service_name="svc:/application/database/postgresql_83:default_64bit"
-	audit_service $service_name disabled
-	service_name="svc:/application/database/postgresql:version_81"
-	audit_service $service_name disabled
-	service_name="svc:/application/database/postgresql:version_82"
-	audit_service $service_name disabled
-	service_name="svc:/application/database/postgresql:version_82_64bit"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/application/database/postgresql_83:default_32bit"
+		audit_service $service_name disabled
+		service_name="svc:/application/database/postgresql_83:default_64bit"
+		audit_service $service_name disabled
+		service_name="svc:/application/database/postgresql:version_81"
+		audit_service $service_name disabled
+		service_name="svc:/application/database/postgresql:version_82"
+		audit_service $service_name disabled
+		service_name="svc:/application/database/postgresql:version_82_64bit"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn off webmin if not required
 
 audit_webmin () {
-	service_name="svc:/application/management/webmin:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/application/management/webmin:default"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn off DNS Server if not required
 # May be required for jumpstart servers
 
 audit_dns_server () {
-	service_name="svc:/network/dns/server:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/dns/server:default"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn on NTP
@@ -3332,116 +3727,476 @@ audit_dns_server () {
 audit_ntp () {
   check_file="/etc/inet/ntp.conf"
   audit_file_value $check_file server space pool.ntp.org hash
-	service_name="svc:/network/ntp4:default"
-	audit_service $service_name enabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/ntp4:default"
+		audit_service $service_name enabled
+	fi
 }
 
 # Turn off kerberos if not required
 
 audit_krb5 () {
-	service_name="svc:/network/security/krb5kdc:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/security/kadmin:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/security/krb5_prop:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/security/krb5kdc:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/security/kadmin:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/security/krb5_prop:default"
+		audit_service $service_name disabled
+	fi
 }
 
 # Turn off routing services if not required
 
 audit_routing_services () {
-	service_name="svc:/network/routing/zebra:quagga"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/ospf:quagga"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/rip:quagga"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/ripng:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/ripng:quagga"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/ospf6:quagga"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/bgp:quagga"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/legacy-routing:ipv4"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/legacy-routing:ipv6"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/rdisc:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/routing/route:default"
-	audit_service $service_name disabled
-	
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/routing/zebra:quagga"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/ospf:quagga"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/rip:quagga"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/ripng:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/ripng:quagga"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/ospf6:quagga"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/bgp:quagga"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/legacy-routing:ipv4"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/legacy-routing:ipv6"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/rdisc:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/route:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/routing/ndp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off ipmi environment daemon
+
 audit_ipmi () {
-	service_name="svc:/network/ipmievd:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/ipmievd:default"
+		audit_service $service_name disabled
+	fi
 }
 
 audit_apocd () {
-	service_name="svc:/network/apocd/udp:default"
-	audit_service $service_name disabled
-
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/apocd/udp:default"
+		audit_service $service_name disabled
+	fi
 }
+
+# Turn off VNC
 
 audit_xvnc () {
-	service_name="svc:/application/x11/xvnc-inetd:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/application/x11/xvnc-inetd:default"
+		audit_service $service_name disabled
+	fi
 }
+
+# Turn off IPSEC
+
+audit_ipsec () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/ipsec/manual-key:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/ipsec/ike:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/ipsec/ipsecalgs:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/ipsec/policy:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# TUrn off ticotsord
+
+audit_ticotsord () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/rpc-100235_1/rpc_ticotsord:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# TUrn off ftp server
+
+audit_ftp_server () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/ftp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off IP filter
+
+audit_ipfilter () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/ipfilter:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/pfil:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off echo and chargen services
 
 audit_echo () {
-	service_name="svc:/network/echo:dgram"
-	audit_service $service_name disabled
-	service_name="svc:/network/echo:stream"
-	audit_service $service_name disabled
-
-	service_name="svc:/network/time:dgram"
-	audit_service $service_name disabled
-	service_name="svc:/network/time:stream"
-	audit_service $service_name disabled
-	service_name="svc:/network/tname:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/comsat:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/discard:dgram"
-	audit_service $service_name disabled
-	service_name="svc:/network/discard:stream"
-	audit_service $service_name disabled
-	service_name="svc:/network/chargen:dgram"
-	audit_service $service_name disabled
-	service_name="svc:/network/chargen:stream"
-	audit_service $service_name disabled
-	service_name="svc:/network/rpc/spray:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/daytime:dgram"
-	audit_service $service_name disabled
-	service_name="svc:/network/daytime:stream"
-	audit_service $service_name disabled
-	service_name="svc:/network/talk:default"
-	audit_service $service_name disabled
-	
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/echo:dgram"
+		audit_service $service_name disabled
+		service_name="svc:/network/echo:stream"
+		audit_service $service_name disabled
+		service_name="svc:/network/time:dgram"
+		audit_service $service_name disabled
+		service_name="svc:/network/time:stream"
+		audit_service $service_name disabled
+		service_name="svc:/network/tname:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/comsat:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/discard:dgram"
+		audit_service $service_name disabled
+		service_name="svc:/network/discard:stream"
+		audit_service $service_name disabled
+		service_name="svc:/network/chargen:dgram"
+		audit_service $service_name disabled
+		service_name="svc:/network/chargen:stream"
+		audit_service $service_name disabled
+		service_name="svc:/network/rpc/spray:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/daytime:dgram"
+		audit_service $service_name disabled
+		service_name="svc:/network/daytime:stream"
+		audit_service $service_name disabled
+		service_name="svc:/network/talk:default"
+		audit_service $service_name disabled
+	fi
 }
+
+# Turn off remote shell services
 
 audit_remote_shell () {
-	service_name="svc:/network/shell:kshell"
-	audit_service $service_name disabled
-	service_name="svc:/network/login:eklogin"
-	audit_service $service_name disabled
-	service_name="svc:/network/login:klogin"
-	audit_service $service_name disabled
-	service_name="svc:/network/rpc/rex:default"
-	audit_service $service_name disabled
-	service_name="svc:/network/rexec:default"
-	audit_service $service_name disabled
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/shell:kshell"
+		audit_service $service_name disabled
+		service_name="svc:/network/login:eklogin"
+		audit_service $service_name disabled
+		service_name="svc:/network/login:klogin"
+		audit_service $service_name disabled
+		service_name="svc:/network/rpc/rex:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/rexec:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/shell:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/login:rlogin"
+		audit_service $service_name disabled
+		service_name="svc:/network/telnet:default"
+		audit_service $service_name disabled
+	fi
 }
 
+# Turn off cont server
+
+audit_font_server () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/application/x11/xfs:default"
+		audit_service $service_name disabled
+		service_name="svc:/application/font/stfsloader:default"
+		audit_service $service_name disabled
+		service_name="svc:/application/font/fc-cache:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off remote info services like rstat and finger
+
+audit_remote_info () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/rpc/rstat:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/nfs/rquota:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/rpc/rusers:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/finger:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/rpc/wall:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off NFS services
+
+audit_nfs () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/nfs/mapid:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/nfs/status:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/nfs/cbd:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/nfs/nlockmgr:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/nfs/client:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/nfs/server:default"
+		audit_service $service_name disabled
+	fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="nfs.server"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off tftp
+
+audit_tftp_server () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/tftp/udp6:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/tftp/udp4:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off dhcp server
+
+audit_dhcp_server () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/dhcp-server:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off iscsi target
+
+audit_iscsi () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/system/iscsitgt:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off boot services
+
+audit_boot_server () {
+	audit_rarp
+	audit_bootparams
+	audit_tftp_server
+	audit_dhcp_server
+}
+
+# Turn off uucp
+
+audit_uucp () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/swat:default"
+		audit_service $service_name disabled
+	fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="uucp"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off ocfserv
+
+audit_ocfserv () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/rpc/ocfserv:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off hotplug
+
+audit_hotplug () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/system/hotplug:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off tname
+
+audit_tname () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/tname:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off slp
+
+audit_slp () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/slp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off tnd
+
+audit_tnd () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/tnd:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off labeld
+
+audit_labeld () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/system/labeld:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off ldap
+
+audit_ldap () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/ldap/client:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off kdm config
+
+audit_kdm_config () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/platform/i86pc/kdmconfig:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off bpcd
+
+audit_bpcd () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/bpcd/tcp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off vnetd
+
+audit_vnetd () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/vnetd/tcp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off vopied
+
+audit_vopied () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/vopied/tcp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off bpjava-msvc
+
+audit_bpjava_msvc () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/bpjava-msvc/tcp:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off Service Tags
+
+audit_service_tags () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/network/stdiscover:default"
+		audit_service $service_name disabled
+		service_name="svc:/network/stlisten:default"
+		audit_service $service_name disabled
+		service_name="svc:/application/stosreg:default"
+		audit_service $service_name disabled
+	fi
+}
+
+# Turn off Zone services
+
+audit_zones () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		zone_check=`zoneadm list -civ |awk '{print $1}' |grep 1`
+		if [ "$zone_check" != "1" ]; then
+			service_name="svc:/system/rcap:default"
+			audit_service $service_name disabled
+			service_name="svc:/system/pools:default"
+			audit_service $service_name disabled
+			service_name="svc:/system/tsol-zones:default"
+			audit_service $service_name disabled
+			service_name="svc:/system/zones:default"
+			audit_service $service_name disabled
+		fi
+	fi
+}
+
+# Turn off SNMP
+
+audit_snmp () {
+	if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		service_name="svc:/application/management/seaport:default"
+		audit_service $service_name disabled
+		service_name="svc:/application/management/snmpdx:default"
+		audit_service $service_name disabled
+		service_name="svc:/application/management/dmi:default"
+		audit_service $service_name disabled
+		service_name="svc:/application/management/sma:default"
+		audit_service $service_name disabled
+	fi
+	if [ "$solaris_version" = "10" ]; then
+		service_name="init.dmi"
+		audit_service $service_name disabled
+		service_name="init.sma"
+		audit_service $service_name disabled
+		service_name="init.snmpdx"
+		audit_service $service_name disabled
+	fi
+}
+
+audit_legacy () {
+	if [ "$solaris_version" = "10" ]; then
+		service_name="llc2"
+		audit_service $service_name disabled
+		service_name="slpd"
+		audit_service $service_name disabled
+		service_name="pcmcia"
+		audit_service $service_name disabled
+		service_name="pppd"
+		audit_service $service_name disabled
+		service_name="cachefsd"
+		audit_service $service_name disabled
+		service_name="tftp"
+		audit_service $service_name disabled
+	fi
+}
 
 audit_system_all () {
   audit_root_path
-#  apply_latest_patches
+  apply_latest_patches
   audit_encryption_kit
   audit_cde_ttdb
   audit_cde_cal
+	audit_cde_spc
+	audit_cde_print
+	audit_ppd_cache
+	audit_ticotsord
   audit_xlogin
   audit_sendmail
   audit_webconsole
@@ -3460,10 +4215,9 @@ audit_system_all () {
   audit_apache
   audit_svm
   audit_svm_gui
-	audit_rarp
 	audit_wins
-	audit_windbind
-	audit_bootparams
+	audit_winbind
+	audit_boot_server
 	audit_postgresql
 	audit_webmin
 	audit_dns_server
@@ -3473,83 +4227,115 @@ audit_system_all () {
 	audit_ipmi
 	audit_xvnc
 	audit_echo
+	audit_remote_shell
+	audit_ipsec
+	audit_ipfilter
+	audit_font_server
+	audit_ftp_server
+	audit_uucp
+	audit_ocfserv
+	audit_hotplug
+	audit_tname
+	audit_iscsi
+	audit_opengl
+	audit_service_tags
+	audit_snmp
+	audit_nfs
+	audit_zones
+	audit_slp
+	audit_tnd
+	nb_check=`pkginfo -l |grep SYMCnbclt |grep PKG |awk '{print $2}'`
+	if [ "$nb_check" != "SYMCnbclt" ]; then
+		audit_bpcd
+		audit_vnetd
+		audit_vopied
+		audit_bpjava_msvc
+	else
+    check_file="/etc/hosts.allow"
+    audit_file_value $check_file bpcd colon " ALL" hash
+		audit_file_value $check_file vnetd colon " ALL" hash
+		audit_file_value $check_file bpcd vopied " ALL" hash
+		audit_file_value $check_file bpcd bpjava-msvc " ALL" hash
+	fi
 ##  secure_baseline
-#  audit_tcp_wrappers
-#  audit_kernel_params
-#  audit_core_dumps
-#  audit_stack_protection
-#  audit_tcp_strong_iss
-#  audit_routing
-#  audit_inetd_logging
-#  audit_ftpd_logging
-#  audit_debug_logging
-#  audit_syslog_auth
-#  audit_login_records
-#  audit_failed_logins
-#  audit_cron_logging
-#  audit_system_accounting
-#  audit_kernel_accounting
-#  audit_daemon_umask
-#  audit_mount_setuid
-#  audit_ssh_config
-#  audit_serial_login
-#  audit_nobody_rpc
-#  audit_pam_rhosts
-#  audit_ftp_users
-#  audit_login_delay
-#  audit_cde_screen_lock
-#  audit_gnome_screen_lock
+  audit_tcp_wrappers
+  audit_kernel_params
+  audit_core_dumps
+  audit_stack_protection
+  audit_tcp_strong_iss
+  audit_routing
+  audit_inetd_logging
+  audit_ftpd_logging
+  audit_debug_logging
+  audit_syslog_auth
+  audit_login_records
+  audit_failed_logins
+  audit_cron_logging
+  audit_system_accounting
+  audit_kernel_accounting
+  audit_daemon_umask
+  audit_mount_setuid
+  audit_ssh_config
+  audit_serial_login
+  audit_nobody_rpc
+  audit_pam_rhosts
+  audit_ftp_users
+  audit_login_delay
+  audit_cde_screen_lock
+  audit_gnome_screen_lock
 ##  audit_cron_allow
-#  audit_console_login
-#  audit_retry_limit
+  audit_console_login
+  audit_retry_limit
 ##  audit_system_accounts
-#  audit_password_expiry
-#  audit_strong_password
-#  audit_root_group
-#  audit_root_home
-#  audit_default_umask
-#  audit_ftp_umask
-#  audit_mesgn
-#  audit_groups_exist
-#  audit_home_perms
-#  audit_home_ownership
-#  audit_reserved_ids
-#  audit_security_banner
-#  audit_cde_banner
-#  audit_gnome_banner
-#  audit_ftp_banner
-#  audit_telnet_banner
-#  audit_duplicate_users
-#  audit_duplicate_groups
-#  audit_user_netrc
-#  audit_user_dotfiles
-#  audit_netrc_files
-#  audit_forward_files
-#  audit_remote_consoles
-#  audit_password_fields
-#  audit_nis_entries
-#  audit_super_users
-#  audit_writable_files
-#  audit_suid_files
-#  audit_process_accounting
-#  audit_dfstab
-#  audit_power_management
-#  audit_sys_suspend
-#  audit_user_rhosts
-#  audit_rhosts_files
-#  audit_inetd
-#  audit_ssh_forwarding
-#  audit_smbpasswd_perms
-#  audit_smbconf_perms
-#  audit_syslog_perms
-#  audit_file_perms
-#  audit_sticky_bit
-#  audit_extended_attributes
-#  audit_audit_class
+  audit_password_expiry
+  audit_strong_password
+  audit_root_group
+  audit_root_home
+  audit_default_umask
+  audit_ftp_umask
+  audit_mesgn
+  audit_groups_exist
+  audit_home_perms
+  audit_home_ownership
+  audit_reserved_ids
+  audit_security_banner
+  audit_cde_banner
+  audit_gnome_banner
+  audit_ftp_banner
+  audit_telnet_banner
+  audit_duplicate_users
+  audit_duplicate_groups
+  audit_user_netrc
+  audit_user_dotfiles
+  audit_netrc_files
+  audit_forward_files
+  audit_remote_consoles
+  audit_password_fields
+  audit_nis_entries
+  audit_super_users
+  audit_writable_files
+  audit_suid_files
+  audit_process_accounting
+  audit_dfstab
+  audit_power_management
+  audit_sys_suspend
+  audit_user_rhosts
+  audit_rhosts_files
+  audit_inetd
+  audit_ssh_forwarding
+  audit_smbpasswd_perms
+  audit_smbconf_perms
+  audit_syslog_perms
+  audit_file_perms
+  audit_sticky_bit
+  audit_extended_attributes
+  audit_audit_class
+	audit_legacy
 }
 
 audit_system_x86 () {
   audit_grub_security
+	audit_kdm_config
 }
 
 audit_system_sparc () {
@@ -3567,6 +4353,7 @@ print_results () {
     echo "Reboot:    $reboot"
   fi
   if [ "$audit_mode" = 1 ]; then
+		echo "Tests:     $total"
     echo "Score:     $score"
   fi
   if [ "$audit_mode" = 0 ]; then
@@ -3580,7 +4367,7 @@ audit_system () {
   if [ "$audit_mode" = 0 ]; then
     if [ ! -d "$work_dir" ]; then
       mkdir -p $work_dir
-			echo "Creating Alternate Boot Environment $date_suffix"
+			echo "Creating:  Alternate Boot Environment $date_suffix"
 			if [ "$solaris_version" = "11" ]; then
 				:
 				# beadm create audit_$date_suffix
