@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.0.6
+# Version:      1.0.7
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -40,7 +40,9 @@
 #               1.0.5 Sat 17 Nov 2012 09:55:07 EST
 #               Added echo services
 #								1.0.6	Monday, 19 November 2012  8:13:20 AM EST
-#								Finished Solaris 10 and 11 support
+#								Solaris 10 and 11 support mostly done - some minor additions could be made
+#								1.0.7 Monday, 19 November 2012 11:02:05 AM EST
+#								Added initial support for Solaris versions less than 10
 
 # Solaris Release Information
 #  1/06 U1
@@ -320,7 +322,11 @@ audit_file_value () {
           	touch $check_file
           	find $check_file | cpio -pdm $work_dir 2> /dev/null
         	fi
-        	echo "$parameter_name$separator$correct_value" >> $check_file
+					if [ "$check_file" ="/etc/default/sendmail" ]; then
+        		echo "$parameter_name$separator\"$correct_value\"" >> $check_file
+					else
+						echo "$parameter_name$separator$correct_value" >> $check_file
+					fi
       	fi
     	fi
   	else
@@ -347,8 +353,12 @@ audit_file_value () {
           	if [ "$check_parameter" != "$parameter_name" ]; then
             	echo "$parameter_name$separator$correct_value" >> $check_file
           	else
-            	sed "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
-            	cp $temp_file $check_file
+							if [ "$check_file" ="/etc/default/sendmail" ]; then
+            		sed "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > $temp_file
+							else
+								sed "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
+							fi
+							cp $temp_file $check_file
             	if [ "$solaris_version" = "10" ]; then
               	pkgchk -f -n -p $check_file 2> /dev/null
             	else
@@ -752,11 +762,11 @@ audit_svcadm_service () {
 
 # Code to audit a init.d service and enable of disable
 
-audit_legacy_service () {
+audit_initd_service () {
   service_name=$1
 	correct_status=$2
   log_file="initd.log"
-	service_check=`ls /etc/init.d |grep "$service_name" |wc -l |sed 's/ //g'`
+	service_check=`ls /etc/init.d |grep "^$service_name$" |wc -l |sed 's/ //g'`
 	if [ "$service_check" != 0 ]; then
 		if [ "$correct_status" = "disabled" ]; then
 			check_file="/etc/init.d/_$service_name"
@@ -918,7 +928,7 @@ audit_service () {
   if [ `expr "$service_name" : "svc:"` = 4 ]; then
     audit_svcadm_service $service_name $correct_status
   else
-    audit_legacy_service $service_name $correct_status
+    audit_initd_service $service_name $correct_status
 		audit_inetd_service $service_name $correct_status
   fi
 }
@@ -1007,6 +1017,16 @@ audit_sendmail () {
 	if [ "$solaris_version" = "10" ]; then
 		service_name="sendmail"
 		audit_service $service_name disabled
+	fi
+	if [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+		check_file="/etc/default/sendmail"
+		audit_file_value $check_file QUEUEINTERVAL eq 15m hash
+		audit_append_file $check_file "MODE="
+	else
+		audit_initd_service sendmail disable
+		check_file="/var/spool/cron/crontabs/root"
+		check_string="0 * * * * /usr/lib/sendmail -q"
+		audit_append_file $check_file $check_string
 	fi
 }
 
@@ -1366,7 +1386,7 @@ audit_ndd_value () {
 # Code to audit ndd values and create init script so change survive reboot
 
 audit_kernel_params () {
-  if [ "$solaris_version" = "10" ]; then
+  if [ "$solaris_version" != "11" ]; then
 		check_file="/etc/init.d/ndd-netconfig"
 		rcd_file="/etc/rc2.d/S99ndd-netconfig"
 		if [ "$audit_mode" = 0 ]; then
@@ -1376,9 +1396,12 @@ audit_kernel_params () {
 				echo "case \"\$1\" in" >> $check_file
 				echo "start)" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0" >> $check_file
+				echo "\t/usr/sbin/ndd -set /dev/ip ip_forwarding 0" >> $check_file
+				if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+					echo "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0" >> $check_file
+					echo "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0" >> $check_file
+					echo "\t/usr/sbin/ndd -set /dev/ip ip6_forwarding 0" >> $check_file
+				fi
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_forward_directed_broadcasts 0" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q0 4096" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q 1024" >> $check_file
@@ -1386,17 +1409,25 @@ audit_kernel_params () {
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp_broadcast 0" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_address_mask_broadcast 0" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_multicast 0" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0" >> $check_file
+				if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+					echo "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0" >> $check_file
+				fi
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1" >> $check_file
+				if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+					echo "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1" >> $check_file
+				fi
 				echo "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112" >> $check_file
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1" >> $check_file
+				if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+					echo "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1" >> $check_file
+				fi
 				echo "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0" >> $check_file
-				echo "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0" >> $check_file
+				if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+					echo "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0" >> $check_file
+				fi
 				echo "esac" >> $check_file
 				echo "exit 0" >> $check_file
 				chmod 750 $check_file
@@ -1406,8 +1437,12 @@ audit_kernel_params () {
 			fi
 		fi
 		audit_ndd_value /dev/ip ip_forward_src_routed 0
-    audit_ndd_value /dev/ip ip6_forward_src_routed 0
-    audit_ndd_value /dev/tcp tcp_rev_src_routes 0
+		audit_ndd_value /dev/ip ip_forwarding 0
+		if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+    	audit_ndd_value /dev/ip ip6_forward_src_routed 0
+    	audit_ndd_value /dev/tcp tcp_rev_src_routes 0
+			audit_ndd_value /dev/ip ip6_forwarding 0
+		fi
     audit_ndd_value /dev/ip ip_forward_directed_broadcasts 0
     audit_ndd_value /dev/tcp tcp_conn_req_max_q0 4096
     audit_ndd_value /dev/tcp tcp_conn_req_max_q 1024
@@ -1415,17 +1450,25 @@ audit_kernel_params () {
     audit_ndd_value /dev/ip ip_respond_to_timestamp_broadcast 0
     audit_ndd_value /dev/ip ip_respond_to_address_mask_broadcast 0
     audit_ndd_value /dev/ip ip_respond_to_echo_multicast 0
-    audit_ndd_value /dev/ip ip6_respond_to_echo_multicast 0
+		if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+    	audit_ndd_value /dev/ip ip6_respond_to_echo_multicast 0
+		fi
     audit_ndd_value /dev/ip ip_respond_to_echo_broadcast 0
     audit_ndd_value /dev/arp arp_cleanup_interval 60000
     audit_ndd_value /dev/ip ip_ire_arp_interval 60000
     audit_ndd_value /dev/ip ip_ignore_redirect 1
-    audit_ndd_value /dev/ip ip6_ignore_redirect 1
+		if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+    	audit_ndd_value /dev/ip ip6_ignore_redirect 1
+		fi
     audit_ndd_value /dev/tcp tcp_extra_priv_ports_add 6112
     audit_ndd_value /dev/ip ip_strict_dst_multihoming 1
-    audit_ndd_value /dev/ip ip6_strict_dst_multihoming 1
+		if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+    	audit_ndd_value /dev/ip ip6_strict_dst_multihoming 1
+		fi
     audit_ndd_value /dev/ip ip_send_redirects 0
-    audit_ndd_value /dev/ip ip6_send_redirects 0
+		if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+    	audit_ndd_value /dev/ip ip6_send_redirects 0
+		fi
   fi
 	if [ "$audit_mode" = 2 ]; then
 		if [ -f "$check_file" ]; then
@@ -1437,7 +1480,7 @@ audit_kernel_params () {
 # Restrict Core Dumps to Protected Directory
 
 audit_core_dumps () {
-  if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
+  if [ "$solaris_version" != "6" ]; then
     cores_dir="/var/cores"
     check_file="/etc/coreadm.conf"
 		cores_check=`coreadm |head -1 |awk '{print $5}'`
@@ -1543,20 +1586,16 @@ audit_core_dumps () {
 # Enable Stack Protection
 
 audit_stack_protection () {
-  if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
-    check_file="/etc/system"
-    audit_file_value $check_file "set noexec_user_stack" eq 1 star
-    audit_file_value $check_file "set noexec_user_stack_log" eq 1 star
-  fi
+  check_file="/etc/system"
+  audit_file_value $check_file "set noexec_user_stack" eq 1 star
+  audit_file_value $check_file "set noexec_user_stack_log" eq 1 star
 }
 
 # Enable Strong TCP Sequence Number Generation
 
 audit_tcp_strong_iss () {
-  if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
-    audit_file_value /etc/default/inetinit TCP_STRONG_ISS eq 2 hash
-  fi
-  if [ "$solaris_version" = "10" ]; then
+  audit_file_value /etc/default/inetinit TCP_STRONG_ISS eq 2 hash
+  if [ "$solaris_version" != "11" ]; then
     audit_ndd_value /dev/tcp tcp_strong_iss 2
   fi
   if [ "$solaris_version" = "11" ]; then
@@ -1863,6 +1902,10 @@ audit_inetd_logging () {
   if [ "$solaris_version" = "10" ]; then
     audit_command_value inetadm tcp_trace TRUE
   fi
+  if [ "$solaris_version" = "9" ]; then
+		check_file="/etc/default/inetd"
+    audit_file_value $check_file ENABLE_CONNECTION_LOGGING eq YES star
+  fi
 }
 
 # Enable FTP daemon Logging
@@ -2137,9 +2180,25 @@ audit_daemon_umask () {
       fi
     fi
   else
-    check_file="/etc/default/init"
-    audit_file_value $check_file CMASK eq 022 hash
-  fi
+		if [ "$solaris_version" = "7" ] || [ "$solaris_version" = "6" ]; then
+			check_file="/etc/init.d/umask.sh"
+			audit_file_value $check_file umask space 022 hash
+			if [ "$audit_mode" = "0" ]; then
+				if [ -f "$check_file" ]; then
+					audit_check_perms $check_file 744 root sys
+					for dir_name in /etc/rc?.d; do
+						link_file="$dir_name/S00umask"
+						if [ ! -f "$link_file" ]; then
+							ln -s $check_file $link_file
+						fi
+					done
+				fi
+			fi
+		else
+    	check_file="/etc/default/init"
+    	audit_file_value $check_file CMASK eq 022 hash
+		fi
+	fi
 }
 
 # Restrict Set-UID on User Mounted Devices
@@ -3951,10 +4010,11 @@ audit_nfs () {
 		service_name="svc:/network/nfs/server:default"
 		audit_service $service_name disabled
 	fi
-	if [ "$solaris_version" = "10" ]; then
+	if [ "$solaris_version" != "11" ]; then
 		service_name="nfs.server"
 		audit_service $service_name disabled
 	fi
+	audit_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
 }
 
 # Turn off tftp
@@ -4171,19 +4231,22 @@ audit_snmp () {
 }
 
 audit_legacy () {
-	if [ "$solaris_version" = "10" ]; then
-		service_name="llc2"
-		audit_service $service_name disabled
-		service_name="slpd"
-		audit_service $service_name disabled
-		service_name="pcmcia"
-		audit_service $service_name disabled
-		service_name="pppd"
-		audit_service $service_name disabled
-		service_name="cachefsd"
-		audit_service $service_name disabled
-		service_name="tftp"
-		audit_service $service_name disabled
+	if [ "$solaris_version" != "11" ]; then
+		for service_name in time echo discard daytime chargen fs dtspc \
+			exec comsat talk finger uucp name xaudio netstat ufsd rexd \
+			systat sun-dr uuidgen krb5_prop 100068 100146 100147 100150 \
+			100221 100232 100235 kerbd rstatd rusersd sprayd walld \
+			printer shell login telnet ftp tftp 100083 100229 100230 \
+			100242 100234 100134 100155 rquotad; do
+			audit_inetd_service $service_name disabled
+		done
+		for service_name in llc2 pcmcia ppd slpd boot.server autoinstall \
+			power bdconfig cachefs.daemon cacheos.finish asppp uucp flashprom \
+			PRESERVE ncalogd ncad ab2mgr dmi mipagent nfs.client autofs rpc \
+			directory ldap.client lp spc volmgt dtlogin ncakmod samba dhcp \
+			nfs.server kdc.master kdc apache snmpdx; do
+			audit_initd_service $service_name disabled
+		done
 	fi
 }
 
@@ -4342,6 +4405,10 @@ audit_system_sparc () {
   audit_eeprom_security
 }
 
+audit_test_subset () {
+	audit_legacy
+}
+
 print_results () {
   echo ""
   if [ "$audit_mode" != 1 ]; then
@@ -4369,12 +4436,10 @@ audit_system () {
       mkdir -p $work_dir
 			echo "Creating:  Alternate Boot Environment $date_suffix"
 			if [ "$solaris_version" = "11" ]; then
-				:
-				# beadm create audit_$date_suffix
+				beadm create audit_$date_suffix
 			fi
-			if [ "$solaris_version" = "10" ]; then
-				:
-				# lucreate -n audit_$date_suffix
+			if [ "$solaris_version" = "8" ] || [ "$solaris_version" = "9" ] || [ "$solaris_version" = "10" ]; then
+				lucreate -n audit_$date_suffix
 			fi
     fi
   fi
@@ -4388,6 +4453,7 @@ audit_system () {
     fi
   fi
   audit_system_all
+	#audit_test_subset
   if [ `expr "$solaris_platform" : "sparc"` != 1 ]; then
     audit_system_x86
   else
