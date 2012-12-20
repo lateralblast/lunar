@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.0.7
+# Version:      1.0.9
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -43,6 +43,10 @@
 #								Solaris 10 and 11 support mostly done - some minor additions could be made
 #								1.0.7 Monday, 19 November 2012 11:02:05 AM EST
 #								Added initial support for Solaris versions less than 10
+#								1.0.8	Thursday, 20 December 2012  2:46:32 PM EST
+#								Fixed problem with inetadm command	
+#								1.0.9	Thursday, 20 December 2012  3:47:52 PM EST
+#								Added -A and -L switches and moved filesystem searches to it
 
 # Solaris Release Information
 #  1/06 U1
@@ -76,7 +80,11 @@ print_usage () {
   echo ""
   echo "Usage: $0 [-a|c|l|h|V] [-u]"
   echo "-a: Run in audit mode (no changes made to system)"
+  echo "-A: Run in audit mode (no changes made to system)"
+	echo "    [includes filesystem checks which take some time]"
   echo "-l: Run in lockdown mode (changes made to system)"
+  echo "-L: Run in lockdown mode (changes made to system)"
+	echo "    [includes filesystem checks which take some time]"
   echo "-d: Show changes previously made to system"
 	echo "-p: Show previously versions of file"
   echo "-u: Undo lockdown (changes made to system)"
@@ -142,8 +150,6 @@ print_changes () {
     fi
   done
 }
-
-check_environment
 
 # Audit command output values
 #
@@ -1900,7 +1906,7 @@ audit_solaris_auditing () {
 
 audit_inetd_logging () {
   if [ "$solaris_version" = "10" ]; then
-    audit_command_value inetadm tcp_trace TRUE
+    audit_command_value inetadm tcp_trace TRUE tcp
   fi
   if [ "$solaris_version" = "9" ]; then
 		check_file="/etc/default/inetd"
@@ -4307,19 +4313,6 @@ audit_system_all () {
 	audit_zones
 	audit_slp
 	audit_tnd
-	nb_check=`pkginfo -l |grep SYMCnbclt |grep PKG |awk '{print $2}'`
-	if [ "$nb_check" != "SYMCnbclt" ]; then
-		audit_bpcd
-		audit_vnetd
-		audit_vopied
-		audit_bpjava_msvc
-	else
-    check_file="/etc/hosts.allow"
-    audit_file_value $check_file bpcd colon " ALL" hash
-		audit_file_value $check_file vnetd colon " ALL" hash
-		audit_file_value $check_file bpcd vopied " ALL" hash
-		audit_file_value $check_file bpcd bpjava-msvc " ALL" hash
-	fi
 ##  secure_baseline
   audit_tcp_wrappers
   audit_kernel_params
@@ -4376,8 +4369,6 @@ audit_system_all () {
   audit_password_fields
   audit_nis_entries
   audit_super_users
-  audit_writable_files
-  audit_suid_files
   audit_process_accounting
   audit_dfstab
   audit_power_management
@@ -4389,11 +4380,29 @@ audit_system_all () {
   audit_smbpasswd_perms
   audit_smbconf_perms
   audit_syslog_perms
+  audit_audit_class
+	audit_legacy
+}
+
+audit_search_fs () {
+	nb_check=`pkginfo -l |grep SYMCnbclt |grep PKG |awk '{print $2}'`
+	if [ "$nb_check" != "SYMCnbclt" ]; then
+		audit_bpcd
+		audit_vnetd
+		audit_vopied
+		audit_bpjava_msvc
+	else
+    check_file="/etc/hosts.allow"
+    audit_file_value $check_file bpcd colon " ALL" hash
+		audit_file_value $check_file vnetd colon " ALL" hash
+		audit_file_value $check_file bpcd vopied " ALL" hash
+		audit_file_value $check_file bpcd bpjava-msvc " ALL" hash
+	fi
+  audit_writable_files
+  audit_suid_files
   audit_file_perms
   audit_sticky_bit
   audit_extended_attributes
-  audit_audit_class
-	audit_legacy
 }
 
 audit_system_x86 () {
@@ -4431,6 +4440,7 @@ print_results () {
 }
 
 audit_system () {
+	check_environment
   if [ "$audit_mode" = 0 ]; then
     if [ ! -d "$work_dir" ]; then
       mkdir -p $work_dir
@@ -4453,6 +4463,9 @@ audit_system () {
     fi
   fi
   audit_system_all
+	if [ "$do_fs" = 1 ]; then
+		audit_search_fs
+	fi
 	#audit_test_subset
   if [ `expr "$solaris_platform" : "sparc"` != 1 ]; then
     audit_system_x86
@@ -4462,17 +4475,37 @@ audit_system () {
   print_results
 }
 
-while getopts adlpu:hVL args; do
+while getopts adlpu:hAVL args; do
   case $args in
     a)
       echo "Running:   In audit mode (no changes will be made to system)"
+			echo "           Filesystem checks will not be done"
       audit_mode=1
+			do_fs=0
+      audit_system $audit_mode
+      exit
+      ;;
+    A)
+      echo "Running:   In audit mode (no changes will be made to system)"
+			echo "           Filesystem checks will be done"
+      audit_mode=1
+			do_fs=1
       audit_system $audit_mode
       exit
       ;;
     l)
       echo "Running:   In lockdown mode (changes will be made to system)"
+			echo "           Filesystem checks will not be done"
       audit_mode=0
+			do_fs=0
+      audit_system $audit_mode
+      exit
+      ;;
+    L)
+      echo "Running:   In lockdown mode (no changes will be made to system)"
+			echo "           Filesystem checks will be done"
+      audit_mode=0
+			do_fs=1
       audit_system $audit_mode
       exit
       ;;
