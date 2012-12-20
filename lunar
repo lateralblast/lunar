@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.0.9
+# Version:      1.1.0
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -47,6 +47,8 @@
 #								Fixed problem with inetadm command	
 #								1.0.9	Thursday, 20 December 2012  3:47:52 PM EST
 #								Added -A and -L switches and moved filesystem searches to it
+#               1.1.0 Thu 20 Dec 2012 17:01:52 EST
+#               Cleaned up formating
 
 # Solaris Release Information
 #  1/06 U1
@@ -189,7 +191,7 @@ audit_command_value () {
             svcadm refresh svc:/network/inetd
           fi
         fi
-      fi
+			fi
 		else
 			echo "Result:    Nothing to restore for service $service_name"
 		fi
@@ -197,7 +199,7 @@ audit_command_value () {
 		if [ "$parameter_name" = "tcp_wrappers" ]; then
 			echo "Checking:  Service $service_name has \"$parameter_name\" set to \"$correct_value\""
 		else
-    	echo "Checking:  Output of $command_name \"$parameter_name\" is \"$correct_value\""
+			echo "Checking:  Output of $command_name \"$parameter_name\" is \"$correct_value\""
 		fi
 	fi
   if [ "$command_name" = "inetadm" ]; then
@@ -237,7 +239,7 @@ audit_command_value () {
 				if [ "$parameter_name" = "tcp_wrappers" ]; then
 					echo "Secure:    Service $service_name already has \"$parameter_name\" set to \"$correct_value\""
 				else
-        	echo "Secure:    Output for command $command_name \"$parameter_name\" already set to \"$correct_value\" [$score]"
+					echo "Secure:    Output for command $command_name \"$parameter_name\" already set to \"$correct_value\" [$score]"
 				fi
 			fi
     fi
@@ -265,13 +267,13 @@ audit_file_value () {
   comment_value=$5
 	total=`expr $total + 1`
 	if [ -f "$check_file" ]; then
-  	if [ "$comment_value" = "star" ]; then
-    	comment_value="*"
-  	else 
-    	comment_value="#"
-  	fi
-  	if [ `expr "$separator" : "eq"` = 2 ]; then
-    	separator="="
+		if [ "$comment_value" = "star" ]; then
+			comment_value="*"
+		else 
+			comment_value="#"
+		fi
+		if [ `expr "$separator" : "eq"` = 2 ]; then
+			separator="="
 			spacer="\="
   	else
     	if [ `expr "$separator" : "space"` = 5 ]; then
