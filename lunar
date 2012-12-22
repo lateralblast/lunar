@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.1.5
+# Version:      1.1.6
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -59,6 +59,8 @@
 #               Fixed bug with inetd code
 #               1.1.5 Sat Dec 22 08:54:05 EST 2012
 #               Fixed Solaris 9 update version detection
+#               1.1.6 Sat Dec 22 16:45:16 EST 2012
+#               Updated documentation
 
 # Solaris Release Information
 #  1/06 U1
@@ -88,6 +90,8 @@ temp_file="$temp_dir/temp_file"
 reboot=0
 total=0
 
+# If given a -h or no valid switch print usage information
+
 print_usage () {
   echo ""
   echo "Usage: $0 [-a|c|l|h|V] [-u]"
@@ -102,6 +106,18 @@ print_usage () {
   echo "-u: Undo lockdown (changes made to system)"
   echo "-h: Display usage"
   echo "-V: Display version"
+  echo ""
+  echo "Examples:"
+  echo ""
+  echo "Display previous backups:"
+  echo ""
+  echo "$0 -b"
+  echo "Previous backups:"
+  echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25  22_12_2012_07_37_44"
+  echo ""
+  echo "Restore from previous backup:"
+  echo ""
+  echo "$0 -u 21_12_2012_19_45_05"
   echo ""
   exit
 }
@@ -124,6 +140,7 @@ check_os_release () {
 }
 
 # Do some environment checks
+# Create base and temporary directory
 
 check_environment () {
   check_os_release
@@ -253,6 +270,14 @@ audit_command_value () {
     fi
   fi
 }
+
+# Restore file
+#
+# This routine restores a file from the backup directory to its original
+# As par of the restore it also restores the original permissions
+#
+# check_file      = The name of the original file
+# restore_dir     = The directory to restore from
 
 audit_restore_file () {
   check_file=$1
@@ -406,6 +431,10 @@ audit_file_value () {
 }
 
 # Code to append a file with a line
+#
+# check_file      = The name of the original file
+# parameter       = The parameter/line to add to a file
+# comment_value   = The character used in the file to distinguish a line as a comment
 
 audit_append_file () {
   check_file=$1
@@ -490,7 +519,11 @@ audit_append_file () {
   fi
 }
 
-# check to see a file exists and create it or delete it
+# Check to see a file exists and create it or delete it
+# 
+# check_file    = File to check fo
+# check_exists  = If equal to no and file exists, delete it
+#                 If equal to yes and file doesn't exist, create it
 
 audit_file_exists () {
   check_file=$1
@@ -542,15 +575,30 @@ audit_file_exists () {
   fi
 }
 
+# Get the path the script starts from
+
 start_path=`pwd`
 
+# Get the version of the script from the script itself
+
 script_version=`cd $start_path ; cat $0 | grep '^# Version' |awk '{print $3}'`
+
+# If given no command line arguments print usage information
 
 if [ `expr "$args" : "\-"` != 1 ]; then
   print_usage
 fi
 
 # Replace a value in a file with the correct value
+#
+# As there is no interactive sed on Solaris, ie sed -i
+# pipe through sed to a temporary file, then replace original file
+# Some handling is added to replace / when searching so sed works
+#
+# check_file    = File to replace value in
+# check_value   = Value to check for
+# correct_value = What the value should be
+# position      = Position of value in the line
 
 audit_replace_value () {
 
@@ -621,8 +669,11 @@ apply_latest_patches () {
 }
 
 # Check is a packae is installed
+#
 # Install package if it's not installed and in the pkg dir under the base dir
 # Needs some more work
+#
+# pkg_name  = Name of package to search for
 
 audit_check_pkg () {
   pkg_name=$1
@@ -674,7 +725,7 @@ audit_check_pkg () {
   fi
 }
 
-# Install Solaris Encryption Kit on Solaris 10 if it isn't install
+# Install Solaris Encryption Kit on Solaris 10 if it isn't installed
 # Needs package installation code done
 
 audit_encryption_kit () {
@@ -688,6 +739,9 @@ audit_encryption_kit () {
 }
 
 # Function to audit a svcadm service and enable or disable
+#
+# service_name    = Name of service
+# correct_status  = What the status of the service should be, ie enabled/disabled
 
 audit_svcadm_service () {
   service_name=$1
@@ -740,7 +794,10 @@ audit_svcadm_service () {
   fi
 }
 
-# Code to audit a init.d service and enable of disable
+# Code to audit a init.d service and enable or disable service
+#
+# service_name    = Name of service
+# correct_status  = What the status of the service should be, ie enabled/disabled
 
 audit_initd_service () {
   service_name=$1
@@ -815,6 +872,9 @@ audit_initd_service () {
 }
 
 # Code to audit and inetd service or enable or disbale
+#
+# service_name    = Name of service
+# correct_status  = What the status of the service should be, ie enabled/disabled
 
 audit_inetd_service () {
   service_name=$1
@@ -893,6 +953,9 @@ audit_inetd_service () {
 }
 
 # Service audit routine wrapper, sends to appropriate function based on service type
+#
+# service_name    = Name of service
+# correct_status  = What the status of the service should be, ie enable/disabled
 
 audit_service () {
   service_name=$1
@@ -1355,7 +1418,7 @@ audit_ndd_value () {
   fi
 }
 
-# Code to audit ndd values and create init script so change survive reboot
+# Code to audit ndd values and create init script so change survives a reboot
 
 audit_kernel_params () {
   if [ "$solaris_version" != "11" ]; then
@@ -1450,6 +1513,20 @@ audit_kernel_params () {
 }
 
 # Restrict Core Dumps to Protected Directory
+#
+# Although /etc/coreadm.conf isn't strictly needed,
+# creating it and importing it makes it easier to
+# enable or disable changes
+#
+# Example /etc/coreadm.conf
+#
+# COREADM_GLOB_PATTERN=/var/cores/core_%n_%f_%u_%g_%t_%p
+# COREADM_INIT_PATTERN=core
+# COREADM_GLOB_ENABLED=yes
+# COREADM_PROC_ENABLED=no
+# COREADM_GLOB_SETID_ENABLED=yes
+# COREADM_PROC_SETID_ENABLED=no
+# COREADM_GLOB_LOG_ENABLED=yes
 
 audit_core_dumps () {
   if [ "$solaris_version" != "6" ]; then
@@ -1552,6 +1629,11 @@ audit_core_dumps () {
 }
 
 # Enable Stack Protection
+#
+# Checks for the following values in /etc/system:
+#
+# set noexec_user_stack=1
+# set noexec_user_stack_log=1
 
 audit_stack_protection () {
   check_file="/etc/system"
@@ -1560,6 +1642,10 @@ audit_stack_protection () {
 }
 
 # Enable Strong TCP Sequence Number Generation
+#
+# Checks for the following values in /etc/default/inetinit:
+#
+# TCP_STRONG_ISS=2
 
 audit_tcp_strong_iss () {
   check_file="/etc/default/inetinit"
@@ -1634,7 +1720,6 @@ audit_ipadm_value () {
 # Disable TCP Reverse IP Source Routing
 # Set Maximum Number of Half-open TCP Connections
 # Set Maximum Number of Incoming Connections
-# Disable Network Routing
 
 audit_routing () {
   if [ "$solaris_version" = "10" ] || [ "$solaris_version" = "11" ]; then
@@ -4389,7 +4474,7 @@ audit_system () {
   print_results
 }
 
-while getopts adlpu:hAVL args; do
+while getopts abdlpu:hAVL args; do
   case $args in
     a)
       echo "Running:   In audit mode (no changes will be made to system)"
@@ -4447,6 +4532,11 @@ while getopts adlpu:hAVL args; do
     d)
       echo "Printing changes:"
       print_changes
+      exit
+      ;;
+    b)
+      echo "Previous backups:"
+      ls $base_dir
       exit
       ;;
     *)
