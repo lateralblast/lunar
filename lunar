@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.4.6
+# Version:      1.5.5
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -119,22 +119,42 @@
 #               Added yum config check
 #               1.4.6 Tue Feb 19 22:59:12 EST 2013
 #               Added lockout for failed password attempts
+#               1.4.7 Wed Feb 20 10:13:46 EST 2013
+#               Simplified RPM verify routine
+#               1.4.8 Wed Feb 20 10:59:28 EST 2013
+#               Added root primary group audit
+#               1.4.9 Wed Feb 20 11:16:28 EST 2013
+#               Added system account shell check
+#               1.5.0 Wed Feb 20 15:00:07 EST 2013
+#               Added handling for [at,cron].[deny,allow]
+#               1.5.1 Wed Feb 20 16:03:18 EST 2013
+#               Fixed file append function
+#               1.5.2 Thu Feb 21 14:00:42 EST 2013
+#               Fixed code to update files
+#               1.5.3 Thursday, 21 February 2013  3:29:49 PM EST
+#               Improved code to fix cron
+#               1.5.4 Thu Feb 21 16:49:46 EST 2013
+#               Added rpm check code
+#               1.5.5 Fri 22 Feb 2013 07:23:16 EST
+#               Cleaned up code for selective audit
 
 # No warrantry is implied or given with this script
 # It is based on numerous security guidelines
 # As with any system changes, the script should be vetted and
 # changed to suit the environment in which it is being used
 
+# Even if a service is set to off the script will audit the configuration
+# file so that if a service is re-enabled the configuration is secure
+# Where possible checks are made to make sure the package is installed
+# if the package is not installed the checks will not be run
+
 # To do:
 #
 # - nosuid,noexec for Linux
 # - Disable user mounted removable filesystems for Linux
 # - Disable USB devices for Linux
-# - Fix at/cron allow/deny
 # - Grub password
 # - Restrict NFS client requests to privileged ports Linux
-# - Block login of system accounts
-# - Limit access to root
 
 # Solaris Release Information
 #  1/06 U1
@@ -239,6 +259,14 @@ check_os_release () {
   echo "Platform:  $os_vendor $os_name $os_version Update $os_update on $os_platform"
 }
 
+# Check if an rpm is installed, if so rpm_check will be be set with name of rpm,
+# otherwise it will be empty
+
+funct_rpm_check () {
+  package_name=$1
+  rpm_check=`rpm -qi $package_name |grep $package_name |grep Name |awk '{print $3}'`
+}
+
 # Do some environment checks
 # Create base and temporary directory
 
@@ -251,6 +279,11 @@ check_environment () {
   fi
   if [ ! -d "$temp_dir" ]; then
     mkdir -p $temp_dir
+  fi
+  if [ "$audit_mode" = 0 ]; then
+    if [ ! -d "$work_dir" ]; then
+      mkdir -p $work_dir
+    fi
   fi
 }
 
@@ -292,7 +325,7 @@ print_changes () {
 # If the current_value is not the correct_value then it is fixed if run in lockdown mode
 # A copy of the value is stored in a log file, which can be restored
 
-audit_command_value () {
+funct_command_value () {
   command_name=$1
   parameter_name=$2
   correct_value=$3
@@ -432,42 +465,42 @@ funct_restore_file () {
 # If the current_value is not the correct_value then it is fixed if run in lockdown mode
 # A copy of the value is stored in a log file, which can be restored
 
-audit_file_value () {
+funct_file_value () {
   check_file=$1
   parameter_name=$2
   separator=$3
   correct_value=$4
   comment_value=$5
+  position=$6
+  search_value=$7
   total=`expr $total + 1`
-  if [ -f "$check_file" ]; then
-    if [ "$comment_value" = "star" ]; then
-      comment_value="*"
+  if [ "$comment_value" = "star" ]; then
+    comment_value="*"
+  else
+    if [ "$comment_value" = "bang" ]; then
+      comment_value="!"
     else
-      if [ "$comment_value" = "bang" ]; then
-        comment_value="!"
-      else
-        comment_value="#"
+      comment_value="#"
+    fi
+  fi
+  if [ `expr "$separator" : "eq"` = 2 ]; then
+    separator="="
+    spacer="\="
+  else
+    if [ `expr "$separator" : "space"` = 5 ]; then
+      separator=" "
+      spacer=" "
+    else
+      if [ `expr "$separator" : "colon"` = 5 ]; then
+        separator=":"
+        space=":"
       fi
     fi
-    if [ `expr "$separator" : "eq"` = 2 ]; then
-      separator="="
-      spacer="\="
-    else
-      if [ `expr "$separator" : "space"` = 5 ]; then
-        separator=" "
-        spacer=" "
-      else
-        if [ `expr "$separator" : "colon"` = 5 ]; then
-          separator=":"
-          space=":"
-        fi
-      fi
-    fi
-    if [ "$audit_mode" = 2 ]; then
-      funct_restore_file $check_file $restore_dir
-    else
-      echo "Checking:  Value of \"$parameter_name\" in $check_file is \"$correct_value\""
-    fi
+  fi
+  if [ "$audit_mode" = 2 ]; then
+    funct_restore_file $check_file $restore_dir
+  else
+    echo "Checking:  Value of \"$parameter_name\" in $check_file is \"$correct_value\""
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -520,7 +553,12 @@ audit_file_value () {
               if [ "$separator_value" = "tab" ]; then
                 echo -e "$parameter_name\t$correct_value" >> $check_file
               else
-                echo "$parameter_name$separator$correct_value" >> $check_file
+                if [ "$position" = "after" ]; then
+                  cat $check_file |sed "s,$search_value,&\n$parameter_name$separator$correct_value," > $temp_file
+                  cat $temp_file > $check_file
+                else
+                  echo "$parameter_name$separator$correct_value" >> $check_file
+                fi
               fi
             else
               if [ "$check_file" = "/etc/default/sendmail" ]; then
@@ -553,6 +591,11 @@ audit_file_value () {
 }
 
 # Code to comment out a line
+#
+# This routine takes 3 values
+# check_file      = Name of file to check
+# parameter_name  = Line to comment out
+# comment_value   = The character to use as a comment, eg # (passed as hash) 
 
 funct_disable_value () {
   check_file=$1
@@ -687,7 +730,7 @@ funct_append_file () {
             echo "Notice:    Service restart required"
           fi
           funct_backup_file $check_file
-          echo '$parameter' >> $check_file
+          echo "$parameter" >> $check_file
         fi
       fi
     else
@@ -713,28 +756,30 @@ funct_file_exists () {
   log_file="$work_dir/file.log"
   total=`expr $total + 1`
   if [ "$check_exists" = "no" ]; then
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  File $check_file does not exist"
+    fi
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   File $check_file exists [$score]"
       fi
       if [ "$audit_mode" = 0 ]; then
-        echo "Deleting:  $check_file"
-        echo "Saving:    File $check_file to $work_dir$check_file"
-        find $check_file | cpio -pdm $work_dir 2> /dev/null
+        funct_backup_file $check_file
+        echo "Removing:  File $check_file"
         echo "$check_file,rm" >> $log_file
         rm $check_file
       fi
     else
-      if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
-      fi
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score + 1`
         echo "Secure:    File $check_file does not exist [$score]"
       fi
     fi
   else
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  File $check_file does exists [$score]"
+    fi
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
@@ -746,14 +791,14 @@ funct_file_exists () {
         echo "$check_file,touch" >> $log_file
       fi
     else
-      if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
-      fi
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
-        echo "Secure:    File $check_file does not exist [$score]"
+        echo "Secure:    File $check_file exists [$score]"
       fi
     fi
+  fi
+  if [ "$audit_mode" = 2 ]; then
+    funct_restore_file $check_file $restore_dir
   fi
 }
 
@@ -852,7 +897,7 @@ apply_latest_patches () {
 #
 # pkg_name  = Name of package to search for
 
-audit_check_pkg () {
+funct_check_pkg () {
   if [ "$os_name" = "SunOS" ]; then
     pkg_name=$1
     pkg_check=`pkginfo $1`
@@ -910,10 +955,10 @@ audit_check_pkg () {
 audit_encryption_kit () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      audit_check_pkg SUNWcry
-      audit_check_pkg SUNWcryr
+      funct_check_pkg SUNWcry
+      funct_check_pkg SUNWcryr
       if [ $os_update -le 4 ]; then
-        audit_check_pkg SUNWcryman
+        funct_check_pkg SUNWcryman
       fi
     fi
   fi
@@ -1107,8 +1152,6 @@ audit_xinetd_service () {
               funct_restore_file $check_file $restore_dir
             fi
           fi
-        else
-          echo "Result:    Nothing to restore for service $service_name"
         fi
       fi
     fi
@@ -1120,7 +1163,7 @@ audit_xinetd_service () {
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enabled/disabled
 
-audit_chkconfig_service () {
+funct_chkconfig_service () {
   if [ "$os_name" = "Linux" ]; then
     service_name=$1
     service_level=$2
@@ -1133,21 +1176,21 @@ audit_chkconfig_service () {
       actual_status=`chkconfig --list $service_name 2> /dev/null |awk '{print $7}' |cut -f2 -d':' |awk '{print $1}'`
     fi
     if [ "$actual_status" = "on" ] || [ "$actual_status" = "off" ]; then
+      total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  Service $service_name at run level $service_level is $correct_status"
       fi
       if [ "$actual_status" != "$correct_status" ]; then
-        total=`expr $total + 1`
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then	
             score=`expr $score - 1`
-            echo "Warning:   Service $service_name is not $correct_status [$score]"
+            echo "Warning:   Service $service_name at run level $service_level is not $correct_status [$score]"
           else
             if [ "$audit_mode" = 0 ]; then
               log_file="$work_dir/$log_file"
               echo "$service_name,$service_level,$actual_status" >> $log_file
               echo "Setting:   Service $service_name at run level $service_level to $correct_status"
-              chkconfig --level $service_level $correct_status
+              chkconfig --level $service_level $service_name $correct_status
             fi
           fi
         fi
@@ -1163,13 +1206,18 @@ audit_chkconfig_service () {
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
           check_status=`cat $restore_file |grep $service_name |grep ",$service_level," |cut -f3 -d","`
-          if [ "$check_status" = "$actual_status" ]; then
-            echo "Restoring: Service $service_name at run level $service_level to $check_status"
-            chkconfig --level $service_level $check_status
+          if [ "$check_status" = "on" ] || [ "$check_status" = "off" ]; then
+            if [ "$check_status" != "$actual_status" ]; then
+              echo "Restoring: Service $service_name at run level $service_level to $check_status"
+              chkconfig --level $service_level $service_name $check_status
+            fi
           fi
-        else
-          echo "Result:    Nothing to restore for service $service_name"
         fi
+      fi
+    else
+      if [ "$audit_mode" = 1 ]; then
+        echo "Checking:  Service $service_name at run level $service_level"
+        echo "Notice:    Service $service_name is not installed"
       fi
     fi
   fi
@@ -1265,9 +1313,9 @@ audit_gdm_conf () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/X11/gdm/gdm.conf"
     if [ -e "$check_file" ]; then
-      audit_file_value $check_file AllowRoot eq false hash
-      audit_file_value $check_file AllowRemoteRoot eq false hash
-      audit_file_value $check_file Use24Clock eq true hash
+      funct_file_value $check_file AllowRoot eq false hash
+      funct_file_value $check_file AllowRemoteRoot eq false hash
+      funct_file_value $check_file Use24Clock eq true hash
       audit_check_perms $check_file 0644 root root
     fi
   fi
@@ -1375,13 +1423,6 @@ audit_xlogin () {
   fi
 }
 
-# Audit inittab
-
-audit_inittab () {
-  check_file="/etc/inittab"
-  audit_check_perms $check_file 0600 root root
-}
-
 # Disable Local sendmail Service
 # Need to add code to disable relay if enabled
 
@@ -1397,7 +1438,7 @@ audit_sendmail_daemon () {
     fi
     if [ "$os_version" = "9" ] || [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       check_file="/etc/default/sendmail"
-      audit_file_value $check_file QUEUEINTERVAL eq 15m hash
+      funct_file_value $check_file QUEUEINTERVAL eq 15m hash
       funct_append_file $check_file "MODE=" hash
     else
       audit_initd_service sendmail disable
@@ -1407,11 +1448,11 @@ audit_sendmail_daemon () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    audit_chkconfig_service sendmail 3 off
-    audit_chkconfig_service sendmail 5 off
+    funct_chkconfig_service sendmail 3 off
+    funct_chkconfig_service sendmail 5 off
     check_file="/etc/sysconfig/sendmail"
-    audit_file_value $check_file DAEMON eq no hash
-    audit_file_value $check_file QUEUE eq 1h hash
+    funct_file_value $check_file DAEMON eq no hash
+    funct_file_value $check_file QUEUE eq 1h hash
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
@@ -1514,8 +1555,8 @@ audit_nis_server () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in yppasswdd ypserv ypxfrd; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -1531,8 +1572,8 @@ audit_nis_client () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="ypbind"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -1558,8 +1599,8 @@ audit_ldap_cache () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="ldap"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -1628,8 +1669,8 @@ audit_samba () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="smb"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -1645,8 +1686,8 @@ audit_autofs () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="autofs"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -1670,8 +1711,8 @@ audit_apache () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in httpd apache tomcat5 squid prixovy; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -1793,20 +1834,20 @@ audit_tcp_wrappers () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       audit_rpc_bind
       for service_name in `inetadm |awk '{print $3}' |grep "^svc"`; do
-        audit_command_value inetadm tcp_wrappers TRUE $service_name
+        funct_command_value inetadm tcp_wrappers TRUE $service_name
       done
     fi
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/hosts.deny"
-    audit_file_value $check_file ALL colon " ALL" hash
+    funct_file_value $check_file ALL colon " ALL" hash
     check_file="/etc/hosts.allow"
-    audit_file_value $check_file ALL colon " localhost" hash
-    audit_file_value $check_file ALL colon " 127.0.0.1" hash
+    funct_file_value $check_file ALL colon " localhost" hash
+    funct_file_value $check_file ALL colon " 127.0.0.1" hash
     if [ ! -f "$check_file" ]; then
       for ip_address in `ifconfig -a |grep 'inet addr' |grep -v ':127.' |awk '{print $2}' |cut -f2 -d":"`; do
         netmask=`ifconfig -a |grep '$ip_address' |awk '{print $3}' |cut -f2 -d":"`
-        audit_file_value $check_file ALL colon " $ip_address/$netmask" hash
+        funct_file_value $check_file ALL colon " $ip_address/$netmask" hash
       done
     fi
   fi
@@ -2117,8 +2158,8 @@ audit_core_dumps () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in kdump; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -2133,8 +2174,8 @@ audit_core_dumps () {
 audit_stack_protection () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/system"
-    audit_file_value $check_file "set noexec_user_stack" eq 1 star
-    audit_file_value $check_file "set noexec_user_stack_log" eq 1 star
+    funct_file_value $check_file "set noexec_user_stack" eq 1 star
+    funct_file_value $check_file "set noexec_user_stack_log" eq 1 star
   fi
 }
 
@@ -2147,7 +2188,7 @@ audit_stack_protection () {
 audit_tcp_strong_iss () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/inetinit"
-    audit_file_value $check_file TCP_STRONG_ISS eq 2 hash
+    funct_file_value $check_file TCP_STRONG_ISS eq 2 hash
     if [ "$os_version" != "11" ]; then
       audit_ndd_value /dev/tcp tcp_strong_iss 2
     fi
@@ -2225,10 +2266,10 @@ audit_ipadm_value () {
 audit_routing_params () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      audit_command_value routeadm ipv4-routing disabled
-      audit_command_value routeadm ipv6-routing disabled
-      audit_command_value routeadm ipv4-forwarding disabled
-      audit_command_value routeadm ipv6-forwarding disabled
+      funct_command_value routeadm ipv4-routing disabled
+      funct_command_value routeadm ipv6-routing disabled
+      funct_command_value routeadm ipv4-forwarding disabled
+      funct_command_value routeadm ipv6-forwarding disabled
       funct_file_exists /etc/notrouter yes
     fi
     if [ "$os_version" = "11" ]; then
@@ -2351,7 +2392,7 @@ audit_audit_class () {
   fi
 }
 
-audit_command_output () {
+funct_command_output () {
   if [ "$os_name" = "SunOS" ]; then
     command_name=$1
     total=`expr $total + 1`
@@ -2434,11 +2475,11 @@ audit_command_output () {
 audit_solaris_auditing () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
-      audit_command_output getcond
-      audit_command_output getpolicy
-      audit_command_output getnaflags
-      audit_command_output getplugin
-      audit_command_output userattr
+      funct_command_output getcond
+      funct_command_output getpolicy
+      funct_command_output getnaflags
+      funct_command_output getplugin
+      funct_command_output userattr
       if [ "$audit_mode" != 1 ]; then
         audit -s
       fi
@@ -2488,11 +2529,11 @@ audit_cron_perms () {
 audit_inetd_logging () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      audit_command_value inetadm tcp_trace TRUE tcp
+      funct_command_value inetadm tcp_trace TRUE tcp
     fi
     if [ "$os_version" = "9" ]; then
       check_file="/etc/default/inetd"
-      audit_file_value $check_file ENABLE_CONNECTION_LOGGING eq YES hash
+      funct_file_value $check_file ENABLE_CONNECTION_LOGGING eq YES hash
     fi
   fi
 }
@@ -2541,14 +2582,14 @@ audit_ftp_logging () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/vsftpd.conf"
     if [ -f "$check_file" ]; then
-      audit_file_value $check_file log_ftp_protocol eq YES hash
-      audit_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
+      funct_file_value $check_file log_ftp_protocol eq YES hash
+      funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
       audit_check_perms $check_file 0600 root root
     fi
     check_file="/etc/vsftpd/vsftpd.conf"
     if [ -f "$check_file" ]; then
-      audit_file_value $check_file log_ftp_protocol eq YES hash
-      audit_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
+      funct_file_value $check_file log_ftp_protocol eq YES hash
+      funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
       audit_check_perms $check_file 0600 root root
     fi
   fi
@@ -2559,8 +2600,8 @@ audit_ftp_logging () {
 audit_syslog_conf () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/syslog.conf"
-    audit_file_value $check_file "authpriv.*" tab "/var/log/secure" hash
-    audit_file_value $check_file "auth.*" tab "/var/log/messages" hash
+    funct_file_value $check_file "authpriv.*" tab "/var/log/secure" hash
+    funct_file_value $check_file "auth.*" tab "/var/log/messages" hash
   fi
 }
 
@@ -2669,7 +2710,7 @@ audit_failed_logins () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/login"
-      audit_file_value $check_file SYSLOG_FAILED_LOGINS eq 0 hash
+      funct_file_value $check_file SYSLOG_FAILED_LOGINS eq 0 hash
     fi
   fi
 }
@@ -2680,11 +2721,9 @@ audit_cron_logging () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/cron"
-      audit_file_value $check_file CRONLOG eq YES hash
-      if [ "$audit_mode" = 0 ]; then
-        chown root:root /var/cron/log
-        chmod go-rwx /var/cron/log
-      fi
+      funct_file_value $check_file CRONLOG eq YES hash
+      check_file="/var/cron/log"
+      audit_check_perms $check_file 0640 root root
     fi
   fi
 }
@@ -2763,8 +2802,8 @@ audit_system_accounting () {
     fi
     check_file="/etc/audit/audit.rules"
     # Set failure mode to syslog notice
-    funct_append_file $check_file "## Things that could affect time" hash
     funct_append_file $check_file "-f 1" hash
+    # Things that could affect time
     funct_append_file $check_file "-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change" hash
     if [ "$os_platform" = "x86_64" ]; then
       funct_append_file $check_file "-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change" hash
@@ -2855,11 +2894,11 @@ audit_system_accounting () {
     #- Make file immutable - MUST BE LAST!
     funct_append_file $check_file "-e 2" hash
     service_name="sysstat"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 on
+    funct_chkconfig_service $service_name 5 on
     service_bname="auditd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 on
+    funct_chkconfig_service $service_name 5 on
   fi
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
@@ -2908,7 +2947,7 @@ audit_kernel_accounting () {
       check_file="/etc/system"
       check_acc=`cat $check_file |grep -v '^*' |grep 'c2audit:audit_load'`
       if [ `expr "$check_acc" : "[A-z]"` != 1 ]; then
-        audit_file_value $check_file c2audit colon audit_load star
+        funct_file_value $check_file c2audit colon audit_load star
         if [ "$audit_mode" = 0 ]; then
           log_file="$work_dir/bsmconv.log"
           echo "y" >> $log_file
@@ -2922,11 +2961,11 @@ audit_kernel_accounting () {
         fi
       fi
       check_file="/etc/security/audit_control"
-      audit_file_value $check_file flags colon "lo,ad,cc" hash
-      audit_file_value $check_file naflags colon "lo,ad,ex" hash
-      audit_file_value $check_file minfree colon 20 hash
+      funct_file_value $check_file flags colon "lo,ad,cc" hash
+      funct_file_value $check_file naflags colon "lo,ad,ex" hash
+      funct_file_value $check_file minfree colon 20 hash
       check_file="/etc/security/audit_user"
-      audit_file_value $check_file root colon "lo,ad:no" hash
+      funct_file_value $check_file root colon "lo,ad:no" hash
     fi
   fi
 }
@@ -2973,7 +3012,7 @@ audit_daemon_umask () {
     else
       if [ "$os_version" = "7" ] || [ "$os_version" = "6" ]; then
         check_file="/etc/init.d/umask.sh"
-        audit_file_value $check_file umask space 022 hash
+        funct_file_value $check_file umask space 022 hash
         if [ "$audit_mode" = "0" ]; then
           if [ -f "$check_file" ]; then
             audit_check_perms $check_file 0744 root sys
@@ -2987,13 +3026,13 @@ audit_daemon_umask () {
         fi
       else
         check_file="/etc/default/init"
-        audit_file_value $check_file CMASK eq 022 hash
+        funct_file_value $check_file CMASK eq 022 hash
       fi
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/sysconfig/init"
-    audit_file_value $check_file umask space 027 hash
+    funct_file_value $check_file umask space 027 hash
     if [ "$audit_mode" = "0" ]; then
       if [ -f "$check_file" ]; then
         audit_check_perms $check_file 0755 root root
@@ -3056,6 +3095,7 @@ audit_unconfined_daemons () {
 }
 
 # Check single user mode requires password
+# Fix permissions on /etc/inittab
 
 audit_sulogin () {
   if [ "$os_name" = "Linux" ]; then
@@ -3085,12 +3125,14 @@ audit_sulogin () {
       audit_check_perms $check_file 0600 root root
     fi
     check_file="/etc/sysconfig/init"
-    audit_file_value $check_file SINGLE eq "/sbin/sulogin" hash
-    audit_file_value $check_file PROMPT eq no hash
+    funct_file_value $check_file SINGLE eq "/sbin/sulogin" hash
+    funct_file_value $check_file PROMPT eq no hash
+    audit_check_perms $check_file 0600 root root
   fi
 }
 
 # Check filesystems are mounted with nodev
+# Ignore / and /boot
 
 audit_mount_nodev () {  
   if [ "$os_name" = "Linux" ]; then
@@ -3123,6 +3165,8 @@ audit_mount_nodev () {
     audit_check_perms $check_file 0644 root root
   fi
 }
+
+# Disable user mountable file systems on Linux
 
 audit_mount_fdi () {
   if [ "$os_name" = "Linux" ]; then
@@ -3179,36 +3223,38 @@ audit_mount_fdi () {
 # Set Sticky Bit on World Writable Directories
 
 audit_sticky_bit () {
-  total=`expr $total + 1`
-  if [ "$os_version" = "10" ]; then
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Sticky bits set on world writable directories [This may take a while]"
-    fi
-    log_file="$work_dir/sticky_bits"
-    for check_dir in `find / \( -fstype nfs -o -fstype cachefs \
-      -o -fstype autofs -o -fstype ctfs \
-      -o -fstype mntfs -o -fstype objfs \
-      -o -fstype proc \) -prune -o -type d \
-      \( -perm -0002 -a ! -perm -1000 \) -print`; do
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Sticky bit not set on $check_dir [$score]"
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    total=`expr $total + 1`
+    if [ "$os_version" = "10" ]; then
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  Sticky bits set on world writable directories [This may take a while]"
       fi
-      if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   Sticky bit on $check_dir"
-        chmod +t $check_dir
-        echo "$check_dir" >> $log_file
-      fi
-    done
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/sticky_bits"
-      if [ -f "$restore_file" ]; then
-        for check_dir in `cat $restore_file`; do
-          if [ -d "$check_dir" ]; then
-            echo "Restoring:  Removing sticky bit from $check_dir"
-            chmod -t $check_dir
-          fi
-        done
+      log_file="$work_dir/sticky_bits"
+      for check_dir in `find / \( -fstype nfs -o -fstype cachefs \
+        -o -fstype autofs -o -fstype ctfs \
+        -o -fstype mntfs -o -fstype objfs \
+        -o -fstype proc \) -prune -o -type d \
+        \( -perm -0002 -a ! -perm -1000 \) -print`; do
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Sticky bit not set on $check_dir [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          echo "Setting:   Sticky bit on $check_dir"
+          chmod +t $check_dir
+          echo "$check_dir" >> $log_file
+        fi
+      done
+      if [ "$audit_mode" = 2 ]; then
+        restore_file="$restore_dir/sticky_bits"
+        if [ -f "$restore_file" ]; then
+          for check_dir in `cat $restore_file`; do
+            if [ -d "$check_dir" ]; then
+              echo "Restoring:  Removing sticky bit from $check_dir"
+              chmod -t $check_dir
+            fi
+          done
+        fi
       fi
     fi
   fi
@@ -3219,8 +3265,8 @@ audit_sticky_bit () {
 audit_selinux () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/selinux/config"
-    audit_file_value $check_file SELINUX eq enforcing hash
-    audit_file_value $check_file SELINUXTYPE eq targeted hash
+    funct_file_value $check_file SELINUX eq enforcing hash
+    funct_file_value $check_file SELINUXTYPE eq targeted hash
   fi
 }
 
@@ -3229,7 +3275,7 @@ audit_selinux () {
 audit_yum_conf () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/yum.conf"
-    audit_file_value $check_file gpgcheck eq 1 hash
+    funct_file_value $check_file gpgcheck eq 1 hash
   fi
 }
 
@@ -3248,32 +3294,32 @@ audit_yum_conf () {
 
 audit_ssh_config () {
   check_file="/etc/ssh/sshd_config"
-  #audit_file_value $check_file Host space "*" hash
-  audit_file_value $check_file Protocol space 2 hash
-  audit_file_value $check_file X11Forwarding space no hash
+  #funct_file_value $check_file Host space "*" hash
+  funct_file_value $check_file Protocol space 2 hash
+  funct_file_value $check_file X11Forwarding space no hash
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_version" = "6" ]; then
-      audit_file_value $check_file MaxAuthTries space 3 hash
-      audit_file_value $check_file MaxAuthTriesLog space 0 hash
-      audit_file_value $check_file RhostsAuthentication space no hash
+      funct_file_value $check_file MaxAuthTries space 3 hash
+      funct_file_value $check_file MaxAuthTriesLog space 0 hash
+      funct_file_value $check_file RhostsAuthentication space no hash
     fi
   else
-    audit_file_value $check_file MaxAuthTries space 3 hash
-    audit_file_value $check_file MaxAuthTriesLog space 0 hash
-    audit_file_value $check_file RhostsAuthentication space no hash
+    funct_file_value $check_file MaxAuthTries space 3 hash
+    funct_file_value $check_file MaxAuthTriesLog space 0 hash
+    funct_file_value $check_file RhostsAuthentication space no hash
   fi
-  audit_file_value $check_file IgnoreRhosts space yes hash
-  audit_file_value $check_file RhostsRSAAuthentication space no hash
-  audit_file_value $check_file PermitRootLogin space no hash
-  audit_file_value $check_file PermitEmptyPasswords space no hash
-  audit_file_value $check_file PermitUserEnvironment space no hash
-  audit_file_value $check_file HostbasedAuthentication space no hash
-  audit_file_value $check_file Banner space /etc/issue hash
-  audit_file_value $check_file ClientAliveInterval space 300 hash
-  audit_file_value $check_file ClientAliveCountMax space 0 hash
-  audit_file_value $check_file LogLevel space VERBOSE hash
+  funct_file_value $check_file IgnoreRhosts space yes hash
+  funct_file_value $check_file RhostsRSAAuthentication space no hash
+  funct_file_value $check_file PermitRootLogin space no hash
+  funct_file_value $check_file PermitEmptyPasswords space no hash
+  funct_file_value $check_file PermitUserEnvironment space no hash
+  funct_file_value $check_file HostbasedAuthentication space no hash
+  funct_file_value $check_file Banner space /etc/issue hash
+  funct_file_value $check_file ClientAliveInterval space 300 hash
+  funct_file_value $check_file ClientAliveCountMax space 0 hash
+  funct_file_value $check_file LogLevel space VERBOSE hash
   # Enable on new machines
-  # audit_file_value $check_file Cipher space "aes128-ctr,aes192-ctr,aes256-ctr" hash
+  # funct_file_value $check_file Cipher space "aes128-ctr,aes192-ctr,aes256-ctr" hash
 }
 
 # Disable login: Prompts on Serial Ports
@@ -3304,7 +3350,7 @@ audit_serial_login () {
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/pmadm.log"
         if [ -f "$restore_file" ]; then
-          echo "Setting:   Serial port logins to enabled"
+          echo "Restoring: Serial port logins to enabled"
           pmadm -e -p zsmon -s ttya
           pmadm -e -p zsmon -s ttyb
         fi
@@ -3319,7 +3365,7 @@ audit_nobody_rpc () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/keyserv"
-      audit_file_value $check_file ENABLE_NOBODY_KEYS eq NO hash
+      funct_file_value $check_file ENABLE_NOBODY_KEYS eq NO hash
     fi
   fi
 }
@@ -3365,10 +3411,10 @@ audit_pam_rhosts () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for check_file in `ls /etc/pam.d/*`; do
-      echo "Checking:  Rhost authentication disabled in $check_file [$score]"
       if [ "$audit_mode" = 2 ]; then
         funct_restore_file $check_file $restore_dir
       else
+        echo "Checking:  Rhost authentication disabled in $check_file [$score]"
         pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
         if [ "$pam_check" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
@@ -3475,7 +3521,7 @@ audit_ftp_conf () {
 audit_login_delay () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/login"
-    audit_file_value $check_file SLEEPTIME eq 4 hash
+    funct_file_value $check_file SLEEPTIME eq 4 hash
   fi
 }
 
@@ -3489,8 +3535,8 @@ audit_cde_screen_lock () {
         mkdir -p $dir_name
       fi
       new_file="$dir_name/sys.resources"
-      audit_file_value $new_file "dtsession*saverTimeout" colon " 10" star
-      audit_file_value $new_file "dtsession*lockTimeout" colon " 10" star
+      funct_file_value $new_file "dtsession*saverTimeout" colon " 10" star
+      funct_file_value $new_file "dtsession*lockTimeout" colon " 10" star
       if [ "$audit_mode" = 0 ]; then
         if [ -f "$new_file" ]; then
           audit_check_perms $new_file 0444 root sys
@@ -3505,17 +3551,106 @@ audit_cde_screen_lock () {
 audit_gnome_screen_lock () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/usr/openwin/lib/app-defaults/XScreenSaver"
-    audit_file_value $check_file "*timeout:" space "0:10:00" bang
-    audit_file_value $check_file "*lockTimeout:" space "0:00:00" bang
-    audit_file_value $check_file "*lockTimeout:" space "0:00:00" bang
+    funct_file_value $check_file "*timeout:" space "0:10:00" bang
+    funct_file_value $check_file "*lockTimeout:" space "0:00:00" bang
+    funct_file_value $check_file "*lockTimeout:" space "0:00:00" bang
   fi
 }
 
 # Restrict at/cron to Authorized Users
+# Verify that a [at,cron].allow exists rather than a [at,cron].deny
 
 audit_cron_allow () {
-  check_file="/etc/cron.deny"
-  funct_file_exists $check_file yes
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    check_file="/etc/cron.deny"
+    funct_file_exists $check_file no
+    check_file="/etc/at.deny"
+    funct_file_exists $check_file no
+    check_file="/etc/cron.allow"
+    funct_file_exists $check_file yes
+    if [ "$audit_mode" = 0 ]; then
+      echo "Got Here"
+      if [ "$os_name" = "SunOS" ]; then
+        if [ "`cat $check_file |wc -l`" = "0" ]; then
+          dir_name="/var/spool/cron/crontabs"
+          if [ -d "$dir_name" ]; then
+            for user_name in `ls $dir_name`; do
+              check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
+              if [ "$check_id" = "$user_name" ]; then
+                echo "$user_name" >> $check_file
+              fi
+            done
+          fi
+        fi
+      fi
+      if [ "$os_name" = "Linux" ]; then
+        if [ "`cat $check_file |wc -l`" = "0" ]; then
+          dir_name="/var/spool/cron"
+          if [ -d "$dir_name" ]; then
+            for user_name in `ls $dir_name`; do
+              check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
+              if [ "$check_id" = "$user_name" ]; then
+                echo "$user_name" >> $check_file
+              fi
+            done
+          fi
+        fi
+      fi
+      if [ "$os_name" = "Linux" ]; then
+        for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
+          if [ -d "$dir_name" ]; then
+            for user_name in `ls -l $dir_name grep '-' |awk '{print $4}' |uniq`; do
+              user_check=`cat $check_file |grep ''$user_name''`
+              if [ "$user_check" != "$user_name" ]; then
+                echo "$user_name" >> $check_file
+              fi
+            done
+          fi
+        done
+      fi
+    fi
+    audit_check_perms $check_file 0640 root root
+    check_file="/etc/at.allow"
+    funct_file_exists $check_file yes
+    if [ "$audit_mode" = 0 ]; then
+      if [ "$os_name" = "SunOS" ]; then
+        if [ "`cat $check_file |wc -l`" = "0" ]; then
+          dir_name="/var/spool/cron/atjobs"
+          if [ -d "$dir_name" ]; then
+            for user_name in `ls $dir_name`; do
+              user_check=`cat $check_file |grep ''$user_name''`
+              if [ "$user_check" != "$user_name" ]; then
+                echo "$user_name" >> $check_file
+              fi
+            done
+          fi
+        fi
+      fi
+      if [ "$os_name" = "Linux" ]; then
+        if [ "`cat $check_file |wc -l`" = "0" ]; then
+          dir_name="/var/spool/at/spool"
+          if [ -d "$dir_name" ]; then
+            for user_name in `ls /var/spool/at/spool`; do
+              user_check=`cat $check_file |grep ''$user_name''`
+              if [ "$user_check" != "$user_name" ]; then
+                echo "$user_name" >> $check_file
+              fi
+            done
+          fi
+        fi
+      fi
+    fi
+    audit_check_perms $check_file 0640 root root
+    if [ "$os_name" = "Linux" ]; then
+      for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
+        audit_check_perms $dir_name 0640 root root
+      done
+      check_file="/etc/crontab"
+      audit_check_perms $check_file 0640 root root
+      check_file="/etc/anacrontab"
+      audit_check_perms $check_file 0640 root root
+    fi
+  fi
 }
 
 # Restrict root Login to System Console
@@ -3524,7 +3659,7 @@ audit_console_login () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/login"
-      audit_file_value $check_file CONSOLE eq /dev/console hash
+      funct_file_value $check_file CONSOLE eq /dev/console hash
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/system/console-login:terma"
@@ -3575,9 +3710,9 @@ audit_retry_limit () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       check_file="/etc/default/login"
-      audit_file_value $check_file RETRIES eq 3 hash
+      funct_file_value $check_file RETRIES eq 3 hash
       check_file="/etc/security/policy.conf"
-      audit_file_value $check_file LOCK_AFTER_RETRIES eq YES hash
+      funct_file_value $check_file LOCK_AFTER_RETRIES eq YES hash
       if [ "$os_version" = "11" ]; then
         svcadm restart svc:/system/name-service/cache
       fi
@@ -3595,6 +3730,11 @@ audit_eeprom_security () {
 # Secure the GRUB Menu
 
 audit_grub_security () {
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    if [ "$os_name" = "Linux" ]; then
+      check_file="/etc/grub.conf"
+      audit_check_perms $check_file 0600 root root
+    fi
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"
 #    grub_check=`cat $check_file |grep "^password --md5" |awk '{print $1}'`
@@ -3642,15 +3782,30 @@ audit_grub_security () {
 #      fi
 #    fi
 #  fi
-  :
+  fi
 }
 
-# Disable System Accounts
+# Disable System Accounts that do not have shell
 
 audit_system_accounts () {
-#  for user_name in bin nuucp smmsp listen gdm webserverd nobody noaccess nobody4 svctag; do
-    :
-#  done
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    check_file="/etc/passwd"
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  System accounts have valid shells"
+      for user_name in `egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
+        if [ "$audit_mode" = 1 ]; then
+          echo "Warning:   System account $user_name has an invalid shell"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          echo "Setting:   System account $user_name to have shell /sbin/nologin"
+          funct_backup_file $check_file
+          usermod -s /sbin/nologin $user_name
+        fi
+      done
+    else
+      funct_restore_file $check_file $restore_dir 
+    fi
+  fi
 }
 
 # Set Password Expiration Parameters on Active Accounts
@@ -3663,17 +3818,17 @@ audit_system_accounts () {
 audit_password_expiry () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/passwd"
-    audit_file_value $check_file PASSLENGTH eq 8 hash
-    audit_file_value $check_file MAXWEEKS eq 13 hash
-    audit_file_value $check_file MINWEEKS eq 1 hash
-    audit_file_value $check_file WARNWEEKS eq 4 hash
+    funct_file_value $check_file PASSLENGTH eq 8 hash
+    funct_file_value $check_file MAXWEEKS eq 13 hash
+    funct_file_value $check_file MINWEEKS eq 1 hash
+    funct_file_value $check_file WARNWEEKS eq 4 hash
   fi
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/login.defs"
-    audit_file_value $check_file PASS_MAX_DAYS eq 90 hash
-    audit_file_value $check_file PASS_MIN_DAYS eq 7 hash
-    audit_file_value $check_file PASS_WARN_AGE eq 14 hash
-    audit_file_value $check_file PASS_MIN_LEN eq 9 hash
+    funct_file_value $check_file PASS_MAX_DAYS eq 90 hash
+    funct_file_value $check_file PASS_MIN_DAYS eq 7 hash
+    funct_file_value $check_file PASS_WARN_AGE eq 14 hash
+    funct_file_value $check_file PASS_MIN_LEN eq 9 hash
     audit_check_perms $check_file 0640 root root
   fi
 }
@@ -3683,18 +3838,18 @@ audit_password_expiry () {
 audit_strong_password () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/passwd"
-    audit_file_value $check_file PASSLENGTH eq 8 hash
-    audit_file_value $check_file NAMECHECK eq YES hash
-    audit_file_value $check_file HISTORY eq 10 hash
-    audit_file_value $check_file MINDIFF eq 3 hash
-    audit_file_value $check_file MINALPHA eq 2 hash
-    audit_file_value $check_file MINUPPER eq 1 hash
-    audit_file_value $check_file MINLOWER eq 1 hash
-    audit_file_value $check_file MINNONALPHA eq 1 hash
-    audit_file_value $check_file MAXREPEATS eq 0 hash
-    audit_file_value $check_file WHITESPACE eq YES hash
-    audit_file_value $check_file DICTIONDBDIR eq /var/passwd hash
-    audit_file_value $check_file DICTIONLIST eq /usr/share/lib/dict/words hash
+    funct_file_value $check_file PASSLENGTH eq 8 hash
+    funct_file_value $check_file NAMECHECK eq YES hash
+    funct_file_value $check_file HISTORY eq 10 hash
+    funct_file_value $check_file MINDIFF eq 3 hash
+    funct_file_value $check_file MINALPHA eq 2 hash
+    funct_file_value $check_file MINUPPER eq 1 hash
+    funct_file_value $check_file MINLOWER eq 1 hash
+    funct_file_value $check_file MINNONALPHA eq 1 hash
+    funct_file_value $check_file MAXREPEATS eq 0 hash
+    funct_file_value $check_file WHITESPACE eq YES hash
+    funct_file_value $check_file DICTIONDBDIR eq /var/passwd hash
+    funct_file_value $check_file DICTIONLIST eq /usr/share/lib/dict/words hash
   fi
 }
 
@@ -3787,12 +3942,14 @@ audit_root_home () {
 audit_default_umask () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/login"
-    audit_file_value $check_file UMASK space 077 hash
+    funct_file_value $check_file UMASK space 077 hash
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile \
-      /etc/skel/.bashrc; do
-      audit_file_value $check_file "umask" space 077 hash
+    for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile; do
+      funct_file_value $check_file "umask" space 077 hash
+    done
+    for check_file in /etc/bashrc /etc/skel/.bashrc; do
+      funct_file_value $check_file "UMASK" eq 077 hash
     done
   fi
 }
@@ -3803,11 +3960,11 @@ audit_ftp_umask () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/ftpd/ftpaccess"
-      audit_file_value $check_file defumask space 077 hash
+      funct_file_value $check_file defumask space 077 hash
     fi
     if [ "$os_version" = "11" ]; then
       check_file="/etc/proftpd.conf"
-      audit_file_value $check_file Umask space 027 hash
+      funct_file_value $check_file Umask space 027 hash
     fi
   fi
 }
@@ -3818,7 +3975,7 @@ audit_mesgn () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile \
       /etc/skel/.bashrc; do
-      audit_file_value $check_file mesg space n hash
+      funct_file_value $check_file mesg space n hash
     done
   fi
 }
@@ -3828,7 +3985,7 @@ audit_mesgn () {
 audit_inactive_users () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/usr/sadm/defadduser"
-    audit_file_value $check_file definact eq 35 hash
+    funct_file_value $check_file definact eq 35 hash
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:   Inactive lockout"
@@ -3882,8 +4039,8 @@ audit_cde_banner () {
       dir_name=`dirname $check_file |sed 's/usr/etc/'`
       new_file="$dir_name/Xresources"
       if [ -f "$new_file" ]; then
-        audit_file_value $new_file "Dtlogin*greeting.labelString" colon "Authorized uses only" star
-        audit_file_value $new_file "Dtlogin*greeting.persLabelString" colon "Authorized uses only" star
+        funct_file_value $new_file "Dtlogin*greeting.labelString" colon "Authorized uses only" star
+        funct_file_value $new_file "Dtlogin*greeting.persLabelString" colon "Authorized uses only" star
       fi
     done
   fi
@@ -3896,7 +4053,7 @@ audit_gnome_banner () {
     total=`expr $total + 1`
     if [ "$os_version" = "10" ]; then
       check_file="/etc/X11/gdm.conf"
-      audit_file_value $check_file Welcome eq "Authorised users only" hash
+      funct_file_value $check_file Welcome eq "Authorised users only" hash
     fi
     if [ "$os_version" = "11" ]; then
       check_file="/etc/gdm/Init/Default"
@@ -3949,14 +4106,14 @@ audit_ftp_banner () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/ftpd/banner.msg"
-      audit_file_value $check_file Authorised space "users only" hash
+      funct_file_value $check_file Authorised space "users only" hash
       if [ "$audit_mode" = 0 ]; then
         audit_check_perms $check_file 0444 root root
       fi
     fi
     if [ "$os_version" = "11" ]; then
       check_file="/etc/proftpd.conf"
-      audit_file_value $check_file DisplayConnect space /etc/issue hash
+      funct_file_value $check_file DisplayConnect space /etc/issue hash
       if [ "$audit_mode" = 0 ]; then
         svcadm restart ftp
       fi
@@ -3969,7 +4126,7 @@ audit_ftp_banner () {
 audit_telnet_banner () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/telnetd"
-    audit_file_value $check_file BANNER eq /etc/issue hash
+    funct_file_value $check_file BANNER eq /etc/issue hash
   fi
 }
 
@@ -4080,20 +4237,18 @@ audit_file_perms () {
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  File permissions [This may take a while]"
-      for rpm_name in `rpm -qa`; do
-        for check_file=`rpm -V $rpm_name| awk '{print $2}'`; do
-          if [ "$audit_mode" = 1 ]; then
-            echo "Warning:   Incorrect permissions on $file_name"
-          fi
-          if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Correct permissions on $file_name"
-            log_file="$work_dir/$log_file"
-            file_perms=`stat -c %a $check_file`
-            file_owner=`ls -l $check_file |awk '{print $3","$4}'`
-            echo "$check_file,$file_perms,$file_owner" >> $log_file
-            yum reinstall $rpm_name
-          fi
-        done
+      for check_file=`rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
+        if [ "$audit_mode" = 1 ]; then
+          echo "Warning:   Incorrect permissions on $file_name"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          echo "Setting:   Correct permissions on $file_name"
+          log_file="$work_dir/$log_file"
+          file_perms=`stat -c %a $check_file`
+          file_owner=`ls -l $check_file |awk '{print $3","$4}'`
+          echo "$check_file,$file_perms,$file_owner" >> $log_file
+          yum reinstall $rpm_name
+        fi
       done
     else
       restore_file="$restore_dir/$log_file"
@@ -4246,9 +4401,10 @@ audit_check_perms () {
     echo "Checking:  File permissions on $check_file"
   fi
   total=`expr $total + 1`
-  if [ ! -f "$check_file" ]; then
+  if [ ! -f "$check_file" ] && [ ! -d "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      echo "Notice:    File $check_file does not exist"
+      echo "Notice:    File $check_file does not exist [$score]"
+      score=`expr $score + 1`
     fi
     return
   fi
@@ -4504,6 +4660,44 @@ audit_groups_exist () {
   fi
 }
 
+# Make sure root's primary group is root
+
+audit_root_group () {
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    log_file="root_primary_grooup.log"
+    check_file="/etc/group"
+    group_check=`grep "^root:" /etc/passwd | cut -f4 -d:`
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Primary group for root is root"
+      if [ "$group_check" != "0" ];then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Group $group_id does not exist in group file [$score]"
+        fi
+        if [ "$audit_mode" = 0 ];then
+          log_file="$work_dir/$log_file"
+          echo "$group_check" > $log_file
+          echo "Setting:   Primary group for root to root"
+          usermod -g 0 root
+        fi
+      else
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Secure:    Primary group for root is root [$score]"
+        fi
+      fi
+    else
+      restore_file="$restore_dir/$log_file"
+      if [ -e "$restore_file" ]; then
+        restore_value=`cat $restore_file`
+        if [ "$restore_value" != "$group_check" ]; then
+          usermod -g $restore_value root
+        fi
+      fi
+    fi
+  fi
+}
+
 # Check That Users Are Assigned Home Directories
 # Check That Defined Home Directories Exist
 # Check User Home Directory Ownership
@@ -4570,7 +4764,7 @@ audit_home_ownership () {
         found=0
         for test_user in root bin daemon adm lp sync shutdown halt mail news uucp \
           operator games gopher ftp nobody nscd vcsa rpc mailnull smmsp pcap ntp \
-          dbus avahi sshd rpcuser nfsnobody haldaemon avahi-autoipd distcache apache \
+          dbus sshd rpcuser nfsnobody haldaemon distcache apache \
           oprofile webalizer dovecot squid named xfs gdm sabayon; do
           if [ "$check_user" = "$test_user" ]; then
             found=1
@@ -4659,7 +4853,7 @@ audit_reserved_ids () {
         found=0
         for test_user in root bin daemon adm lp sync shutdown halt mail news uucp \
           operator games gopher ftp nobody nscd vcsa rpc mailnull smmsp pcap ntp \
-          dbus avahi sshd rpcuser nfsnobody haldaemon avahi-autoipd distcache apache \
+          dbus sshd rpcuser nfsnobody haldaemon distcache apache \
           oprofile webalizer dovecot squid named xfs gdm sabayon; do
           if [ "$check_user" = "$test_user" ]; then
             found=1
@@ -4777,9 +4971,6 @@ audit_writable_files () {
     if [ "$audit_mode" = 0 ]; then
       log_file="$work_dir/$log_file"
     fi
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/$log_file"
-    fi
     if [ "$audit_mode" != 2 ]; then
       for check_file in `find / \( -fstype nfs -o -fstype cachefs \
         -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
@@ -4797,6 +4988,7 @@ audit_writable_files () {
       done
     fi
     if [ "$audit_mode" = 2 ]; then
+      restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
         for check_file in `cat $restore_file`; do
           if [ -f "$check_file" ]; then
@@ -4920,8 +5112,8 @@ audit_power_management () {
   if [ "$os_name" = "SunOS" ]; then
     total=`expr $total + 1`
     if [ "$os_version" = "10" ]; then
-      audit_file_value /etc/default/power PMCHANGEPERM eq "-" hash
-      audit_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
+      funct_file_value /etc/default/power PMCHANGEPERM eq "-" hash
+      funct_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
     fi
     if [ "$os_version" = "11" ]; then
       poweradm_test=`poweradm list |grep suspend |awk '{print $2}' |cut -f2 -d"="`
@@ -4931,6 +5123,7 @@ audit_power_management () {
         if [ -f "$log_file" ]; then
           restore_value=`cat $log_file`
           if [ "$poweradm_test" != "$restore_value" ]; then
+            echo "Restoring: Power suspend to $restore_value"
             poweradm set suspend-enable=$restore_value
             poweradm update
           fi
@@ -4958,8 +5151,8 @@ audit_power_management () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="apmd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -4967,7 +5160,7 @@ audit_power_management () {
 
 audit_sys_suspend () {
   if [ "$os_name" = "SunOS" ]; then
-    audit_file_value /etc/default/sys-suspend PERMS eq "-" hash
+    funct_file_value /etc/default/sys-suspend PERMS eq "-" hash
   fi
 }
 
@@ -5010,11 +5203,13 @@ audit_inetd () {
 audit_ssh_forwarding () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/ssh/sshd_config"
-    audit_file_value $check_file AllowTcpForwarding space yes hash
+    funct_file_value $check_file AllowTcpForwarding space yes hash
   fi
 }
 
 # Create issue file
+# Checks for notice in /etc/issue
+# Removes version information on Linux
 
 audit_issue_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5117,8 +5312,8 @@ audit_wins () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="rarpd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5133,8 +5328,8 @@ audit_winbind () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="winbind"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5150,8 +5345,8 @@ audit_bootparams () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="bootparamd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5175,8 +5370,8 @@ audit_postgresql () {
   fi  
   if [ "$os_name" = "Linux" ]; then
     service_name="postgresql"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5202,9 +5397,9 @@ audit_dns_server () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    for service_name in avahi-daemon avahi-dnsconfd named; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+    for service_name in avahi avahi-autoipd avahi-daemon avahi-dnsconfd named; do
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5213,15 +5408,15 @@ audit_dns_server () {
 
 audit_avahi_conf () {
   if [ "$os_name" = "Linux" ]; then
-    $check_file="/etc/avahi/avahi-daemon.conf"
-    audit_file_value $check_file disable-user-service-publishing eq yes hash
-    audit_file_value $check_file disable-publishing eq yes hash
-    audit_file_value $check_file publish-address eq no hash
-    audit_file_value $check_file publish-binfo eq no hash
-    audit_file_value $check_file publish-workstation eq no hash
-    audit_file_value $check_file publish-domain eq no hash
-    audit_file_value $check_file disallow-other-stacks eq yes hash
-    audit_file_value $check_file check-response-ttl eq yes hash
+    check_file="/etc/avahi/avahi-daemon.conf"
+    funct_file_value $check_file disable-user-service-publishing eq yes hash after "\[publish\]"
+    funct_file_value $check_file disable-publishing eq yes hash after "\[publish\]"
+    funct_file_value $check_file publish-address eq no hash after "\[publish\]"
+    funct_file_value $check_file publish-binfo eq no hash after "\[publish\]"
+    funct_file_value $check_file publish-workstation eq no hash after "\[publish\]"
+    funct_file_value $check_file publish-domain eq no hash after "\[publish\]"
+    funct_file_value $check_file disallow-other-stacks eq yes hash after "\[server\]"
+    funct_file_value $check_file check-response-ttl eq yes hash after "\[server\]"
   fi
 }
 
@@ -5230,8 +5425,8 @@ audit_avahi_conf () {
 audit_dns_client () {
   if [ "$os_name" = "Linux" ]; then
     for service_name in nscd; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5241,7 +5436,7 @@ audit_dns_client () {
 audit_ntp () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/inet/ntp.conf"
-    audit_file_value $check_file server space pool.ntp.org hash
+    funct_file_value $check_file server space pool.ntp.org hash
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       service_name="svc:/network/ntp4:default"
       audit_service $service_name enabled
@@ -5277,11 +5472,11 @@ audit_ntp () {
       fi
     fi
     service_name="ntp"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     funct_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
     funct_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
-    audit_file_value $check_file OPTIONS eq "-u ntp:ntp -p /var/run/ntpd.pid" hash
+    funct_file_value $check_file OPTIONS eq "-u ntp:ntp -p /var/run/ntpd.pid" hash
   fi
 }
 
@@ -5300,8 +5495,8 @@ audit_krb5 () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in kadmin kprop krb524 krb5kdc; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5339,8 +5534,8 @@ audit_routing_daemons () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in bgpd ospf6d ospfd ripd ripngd; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5356,8 +5551,8 @@ audit_ipmi () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in ipmi; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5384,8 +5579,8 @@ audit_vnc () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in vncserver; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5479,8 +5674,8 @@ audit_echo () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in telnet login rlogin rsh shell; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5510,8 +5705,8 @@ audit_remote_shell () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in telnet login rlogin rsh shell; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5531,8 +5726,8 @@ audit_font_server () {
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in xfs; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5579,12 +5774,12 @@ audit_nfs () {
       audit_service $service_name disabled
     fi
     check_file="/etc/system"
-    audit_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
+    funct_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
   fi
   if [ "$os_name" = "Linux" ]; then
     for service_name in nfs nfslock portmap rpc; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -5601,8 +5796,8 @@ audit_tftp_server () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    audit_chkconfig_service tftp 3 off
-    audit_chkconfig_service tftp 5 off
+    funct_chkconfig_service tftp 3 off
+    funct_chkconfig_service tftp 5 off
     if [ -e "/tftpboot" ]; then
       audit_check_perms /tftpboot 0744 root root
     fi
@@ -5631,11 +5826,11 @@ audit_iscsi () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="iscsi"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     service_name="iscsd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5685,14 +5880,14 @@ audit_hotplug () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="pcscd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     service_name="haldaemon"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     service_name="kudzu"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5846,11 +6041,11 @@ audit_zones () {
 audit_xen () {
   if [ "$os_name" = "Linux" ]; then
     service_name="xend"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     service_name="xendomains"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
   fi
 }
 
@@ -5879,11 +6074,11 @@ audit_snmp () {
   fi
   if [ "$os_name" = "Linux" ]; then
     service_name="snmpd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     service_name="snmptrapd"
-    audit_chkconfig_service $service_name 3 off
-    audit_chkconfig_service $service_name 5 off
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 5 off
     funct_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
   fi
 }
@@ -5914,33 +6109,33 @@ audit_modprobe_conf () {
 audit_sysctl () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/sysctl.conf"
-    audit_file_value $check_file net.ipv4.conf.default.secure_redirects eq 0 hash
-    audit_file_value $check_file net.ipv4.conf.all.secure_redirects eq 0 hash
-    audit_file_value $check_file net.ipv4.icmp_echo_ignore_broadcasts eq 1 hash
-    audit_file_value $check_file net.ipv4.conf.all.accept_redirects eq 0 hash
-    audit_file_value $check_file net.ipv4.conf.default.accept_redirects eq 0 hash
-    audit_file_value $check_file net.ipv4.tcp_syncookies eq 1 hash
-    audit_file_value $check_file net.ipv4.tcp_max_syn_backlog eq 4096 hash
-    audit_file_value $check_file net.ipv4.conf.all.rp_filter eq 1 hash
-    audit_file_value $check_file net.ipv4.conf.default.rp_filter eq 1 hash
-    audit_file_value $check_file net.ipv4.conf.all.accept_source_route eq 0 hash
-    audit_file_value $check_file net.ipv4.conf.default.accept_source_route eq 0 hash
+    funct_file_value $check_file net.ipv4.conf.default.secure_redirects eq 0 hash
+    funct_file_value $check_file net.ipv4.conf.all.secure_redirects eq 0 hash
+    funct_file_value $check_file net.ipv4.icmp_echo_ignore_broadcasts eq 1 hash
+    funct_file_value $check_file net.ipv4.conf.all.accept_redirects eq 0 hash
+    funct_file_value $check_file net.ipv4.conf.default.accept_redirects eq 0 hash
+    funct_file_value $check_file net.ipv4.tcp_syncookies eq 1 hash
+    funct_file_value $check_file net.ipv4.tcp_max_syn_backlog eq 4096 hash
+    funct_file_value $check_file net.ipv4.conf.all.rp_filter eq 1 hash
+    funct_file_value $check_file net.ipv4.conf.default.rp_filter eq 1 hash
+    funct_file_value $check_file net.ipv4.conf.all.accept_source_route eq 0 hash
+    funct_file_value $check_file net.ipv4.conf.default.accept_source_route eq 0 hash
     # Disable these if machine used as a firewall or gateway
-    audit_file_value $check_file net.ipv4.tcp_max_orphans eq 256 hash
-    audit_file_value $check_file net.ipv4.conf.all.log_martians eq 1 hash
-    audit_file_value $check_file net.ipv4.ip_forward eq 0 hash
-    audit_file_value $check_file net.ipv4.conf.all.send_redirects eq 0 hash
-    audit_file_value $check_file net.ipv4.conf.default.send_redirects eq 0 hash
-    audit_file_value $check_file net.ipv4.icmp_ignore_bogus_error_responses eq 1 hash
+    funct_file_value $check_file net.ipv4.tcp_max_orphans eq 256 hash
+    funct_file_value $check_file net.ipv4.conf.all.log_martians eq 1 hash
+    funct_file_value $check_file net.ipv4.ip_forward eq 0 hash
+    funct_file_value $check_file net.ipv4.conf.all.send_redirects eq 0 hash
+    funct_file_value $check_file net.ipv4.conf.default.send_redirects eq 0 hash
+    funct_file_value $check_file net.ipv4.icmp_ignore_bogus_error_responses eq 1 hash
     # IPv6 stuff
-    audit_file_value $check_file net.ipv6.conf.default.accept_redirects eq 0 hash
-    audit_file_value $check_file net.ipv6.conf.default.accept_ra eq 0 hash
+    funct_file_value $check_file net.ipv6.conf.default.accept_redirects eq 0 hash
+    funct_file_value $check_file net.ipv6.conf.default.accept_ra eq 0 hash
     # Randomise kernel memory placement
-    audit_file_value $check_file kernel.randomize_va_space eq 1 hash
+    funct_file_value $check_file kernel.randomize_va_space eq 1 hash
     # Configure kernel shield
-    audit_file_value $check_file kernel.exec-shield eq 1 hash
+    funct_file_value $check_file kernel.exec-shield eq 1 hash
     # Restrict core dumps
-    audit_file_value $check_file fs.suid.dumpable eq 0 hash
+    funct_file_value $check_file fs.suid.dumpable eq 0 hash
     funct_append_file /etc/security/limits.conf "* hard core 0"
     # Check file permissions
     audit_check_perms $check_file 0600 root root  
@@ -5961,8 +6156,8 @@ audit_xinetd () {
         audit_xinetd_service $service_name disable yes
       done
     else
-      audit_chkconfig_service xinetd 3 off
-      audit_chkconfig_service xinetd 5 off
+      funct_chkconfig_service xinetd 3 off
+      funct_chkconfig_service xinetd 5 off
     fi
   fi
 }
@@ -5990,18 +6185,21 @@ audit_legacy () {
     fi
   fi
 }
-
+  
 # Turn off cups if not required on Linux
 
 audit_cups () {
   if [ "$os_name" = "Linux" ]; then
-    audit_chkconfig_service cups 3 off
-    audit_chkconfig_service cups 5 off
-    audit_check_perms /etc/init.d/cups 0744 root root
-    audit_check_perms /etc/cups/cupsd.conf 0600 lp sys
-    audit_check_perms /etc/cups/client.conf 0644 root lp
-    audit_file_value /etc/cups/cupsd.conf User space lp hash
-    audit_file_value /etc/cups/cupsd.conf Group space sys hash
+    funct_rpm_check cups
+    if [ "$rpm_check" = "cups" ]; then
+      funct_chkconfig_service cups 3 off
+      funct_chkconfig_service cups 5 off
+      audit_check_perms /etc/init.d/cups 0744 root root
+      audit_check_perms /etc/cups/cupsd.conf 0600 lp sys
+      audit_check_perms /etc/cups/client.conf 0644 root lp
+      funct_file_value /etc/cups/cupsd.conf User space lp hash
+      funct_file_value /etc/cups/cupsd.conf Group space sys hash
+    fi
   fi
 }
 
@@ -6021,8 +6219,8 @@ audit_chkconfig () {
       rpcgssd rpcimapd rpcsvcgssd rstatd rusersd rwhod saslauthd \
       settroubleshoot smartd spamassasin \
       tog-pegasus tux wpa_supplicant zebra; do
-      audit_chkconfig_service $service_name 3 off
-      audit_chkconfig_service $service_name 5 off
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
     done
   fi
 }
@@ -6127,6 +6325,7 @@ audit_sendmail_aliases () {
 # Set to remember up to 4 passwords
 # Set password length to a minimum of 9 characters
 # Set strong password creation via pam_cracklib.so and pam_passwdqc.so
+# Restrict su command using wheel
 
 audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
@@ -6158,11 +6357,12 @@ audit_system_auth () {
     else
       funct_restore_file $check_file $restore_dir
     fi
+    auth_string="account"
     search_string="remember=5"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Password entry not enabled in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^account' |grep '$search_string$' |awk '{print $4}'`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $4}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
@@ -6184,11 +6384,12 @@ audit_system_auth () {
     else
       funct_restore_file $check_file $restore_dir
     fi
+    auth_string="auth"
     search_string="no_magic_root"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Auth entry not enabled in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $5}'`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $5}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
@@ -6210,11 +6411,12 @@ audit_system_auth () {
     else
       funct_restore_file $check_file $restore_dir
     fi
+    auth_string="account"
     search_string="reset"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Account entry not enabled in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^account' |grep '$search_string$' |awk '{print $6}'`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $6}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
@@ -6236,11 +6438,12 @@ audit_system_auth () {
     else
       funct_restore_file $check_file $restore_dir
     fi
+    auth_string="password"
     search_string="minlen=9"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Password minimum length not enabled in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^password' |grep '$search_string$' |awk '{print $8}'`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
@@ -6262,39 +6465,40 @@ audit_system_auth () {
     else
       funct_restore_file $check_file $restore_dir
     fi
-  fi
-  search_string="16,12,8"
-  if [ "$audit_mode" != 2 ]; then
-    echo "Checking:  Password minimum strength enabled in $check_file"
-    total=`expr $total + 1`
-    check_value=`cat $check_file |grep '^password' |grep '$search_string$' |awk '{print $8}'`
-    if [ "$check_value" != "$search_string" ]; then
-      if [ "$audit_mode" = "1" ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Password minimum length not enabled in $check_file [$score]"
-      fi
-      if [ "$audit_mode" = 0 ]; then
-        funct_backup_file $check_file
-        echo "Setting:   Password minimum length in $check_file"
-        cp $check_file $temp_file
-        cat $temp_file |sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' > $check_file
-        rm $temp_file
+    auth_string="password"
+    search_string="16,12,8"
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Password minimum strength enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Password minimum length not enabled in $check_file [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Password minimum length enabled in $check_file [$score]"
+        fi
       fi
     else
-      if [ "$audit_mode" = "1" ]; then  
-        score=`expr $score + 1`
-        echo "Secure:    Password minimum length enabled in $check_file [$score]"
-      fi
+      funct_restore_file $check_file $restore_dir
     fi
-  else
-    funct_restore_file $check_file $restore_dir
-  fi
-  search_string="unlock_time=900"
-  check_file="/etc/pam.d/password-auth"
-  if [ "$audit_mode" != 2 ]; then
+    auth_string="auth"
+    search_string="unlock_time=900"
+    check_file="/etc/pam.d/password-auth"
+    if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Lockout for failed password attempts enabled in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
@@ -6316,33 +6520,63 @@ audit_system_auth () {
     else
       funct_restore_file $check_file $restore_dir
     fi
+    auth_string="auth"
     search_string="unlock_time=900"
     check_file="/etc/pam.d/system-auth"
     if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Lockout for failed password attempts enabled in $check_file"
-        total=`expr $total + 1`
-        check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
-        if [ "$check_value" != "$search_string" ]; then
-          if [ "$audit_mode" = "1" ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
-          fi
-          if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
-            echo "Setting:   Password minimum length in $check_file"
-            cp $check_file $temp_file
-            cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file
-            rm $temp_file
-          fi
-        else
-          if [ "$audit_mode" = "1" ]; then  
-            score=`expr $score + 1`
-            echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
-          fi
+      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file
+          rm $temp_file
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
+        fi
       fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+    auth_string="auth"
+    search_string="use_uid"
+    check_file="/etc/pam.d/su"
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
 }
 
 # Add pam.deny to pam config files
@@ -6560,6 +6794,7 @@ audit_naming_services () {
 
 audit_user_services () {
   audit_root_home
+  audit_root_group
   audit_mesgn
   audit_groups_exist
   audit_home_perms
@@ -6578,7 +6813,7 @@ audit_user_services () {
   audit_cron_perms
   audit_group_wheel
   ##  audit_cron_allow
-  ##  audit_system_accounts
+  audit_system_accounts
 }
 
 # Audit print services
@@ -6819,10 +7054,10 @@ audit_search_fs () {
       audit_bpjava_msvc
     else
       check_file="/etc/hosts.allow"
-      audit_file_value $check_file bpcd colon " ALL" hash
-      audit_file_value $check_file vnetd colon " ALL" hash
-      audit_file_value $check_file bpcd vopied " ALL" hash
-      audit_file_value $check_file bpcd bpjava-msvc " ALL" hash
+      funct_file_value $check_file bpcd colon " ALL" hash
+      funct_file_value $check_file vnetd colon " ALL" hash
+      funct_file_value $check_file bpcd vopied " ALL" hash
+      funct_file_value $check_file bpcd bpjava-msvc " ALL" hash
     fi
     audit_extended_attributes
   fi
@@ -6879,6 +7114,9 @@ audit_select () {
   audit_mode=$1
   function=$2
   check_environment
+  if [ "`expr $function : audit_`" != "6" ]; then
+    function="audit_$function"
+  fi
   $function
   print_results
 }
@@ -6927,7 +7165,7 @@ audit_system () {
   print_results
 }
 
-while getopts abdlps:u:hASVL args; do
+while getopts abdlps:u:z:hASVL args; do
   case $args in
     a)
       echo "Running:   In audit mode (no changes will be made to system)"
@@ -6947,10 +7185,21 @@ while getopts abdlps:u:hASVL args; do
       audit_select $audit_mode $function
       exit
       ;;
+    z)
+      echo "Running:   In audit mode (no changes will be made to system)"
+      echo "           Filesystem checks will not be done"
+      audit_mode=0
+      do_fs=0
+      function="$OPTARG"
+      echo "Auditing:  Selecting $function"
+      audit_select $audit_mode $function
+      exit
+      ;;
     S)
       echo ""
       echo "Functions:"
-      cat $0 |grep 'audit_' |grep '()' | awk '{print $1}'
+      echo ""
+      cat $0 |grep 'audit_' |grep '()' | awk '{print $1}' |grep -v cat |sed 's/audit_//g' |sort
       ;;
     A)
       echo "Running:   In audit mode (no changes will be made to system)"
