@@ -137,6 +137,8 @@
 #               Added rpm check code
 #               1.5.5 Fri 22 Feb 2013 07:23:16 EST
 #               Cleaned up code for selective audit
+#               1.5.6 Fri  3 May 2013 16:25:36 EST
+#               Fixed minor bug with for loop
 
 # No warrantry is implied or given with this script
 # It is based on numerous security guidelines
@@ -167,6 +169,7 @@
 # 10/09 U8
 #  9/10 U9
 #  8/11 U10
+#  1/13 U11
 
 # audit_mode = 1 : Audit Mode
 # audit_mode = 0 : Lockdown Mode
@@ -4237,7 +4240,7 @@ audit_file_perms () {
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  File permissions [This may take a while]"
-      for check_file=`rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
+      for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
         if [ "$audit_mode" = 1 ]; then
           echo "Warning:   Incorrect permissions on $file_name"
         fi
