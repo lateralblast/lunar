@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.5.6
+# Version:      1.5.8
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -139,6 +139,10 @@
 #               Cleaned up code for selective audit
 #               1.5.6 Fri  3 May 2013 16:25:36 EST
 #               Fixed minor bug with for loop
+#               1.5.7 Fri May 24 15:46:54 EST 2013
+#               Initial Debian/Ubuntu support
+#               1.5.8 Fri May 24 21:04:33 EST 2013
+#               Improved Debian/Ubuntu support
 
 # No warrantry is implied or given with this script
 # It is based on numerous security guidelines
@@ -197,6 +201,7 @@ company_name="Lateral Blast Pty Ltd"
 print_usage () {
   echo ""
   echo "Usage: $0 [-a|c|l|h|V] [-u]"
+  echo ""
   echo "-a: Run in audit mode (no changes made to system)"
   echo "-A: Run in audit mode (no changes made to system)"
   echo "    [includes filesystem checks which take some time]"
@@ -217,7 +222,7 @@ print_usage () {
   echo ""
   echo "$0 -b"
   echo "Previous backups:"
-  echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25  22_12_2012_07_37_44"
+  echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25"
   echo ""
   echo "Restore from previous backup:"
   echo ""
@@ -239,6 +244,11 @@ check_os_release () {
       os_version=`cat /etc/redhat-release | awk '{print $3}' |cut -f1 -d'.'`
       os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d'.'`
       os_vendor=`cat /etc/redhat-release | awk '{print $1}'`
+      linux_dist="redhat"  
+    else 
+       if [ -f "/etc/debian_version" ]; then
+         linux_dist="debian"  
+       fi
     fi
   fi
   if [ "$os_name" = "SunOS" ]; then
@@ -262,12 +272,24 @@ check_os_release () {
   echo "Platform:  $os_vendor $os_name $os_version Update $os_update on $os_platform"
 }
 
+# Check if a deb is installed, if so rpm_check will be be set with name of dep,
+# otherwise it will be empty
+
+funct_deb_check () {
+  package_name=$1
+  rpm_check=`dpkg -l $package_name 2>1 |grep $package_name |awk '{print $2}'`
+}
+
 # Check if an rpm is installed, if so rpm_check will be be set with name of rpm,
 # otherwise it will be empty
 
 funct_rpm_check () {
   package_name=$1
-  rpm_check=`rpm -qi $package_name |grep $package_name |grep Name |awk '{print $3}'`
+  if [ "$linux_dist" = "debian" ]; then
+    funct_deb_check $package_name
+  else
+    rpm_check=`rpm -qi $package_name |grep $package_name |grep Name |awk '{print $3}'`
+  fi
 }
 
 # Do some environment checks
@@ -1459,28 +1481,30 @@ audit_sendmail_daemon () {
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
-    search_string="Addr=127.0.0.1"
-    restore=0
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Mail transfer agent is running in local-only mode"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep -v '^#' |grep 'O DaemonPortOptions' |awk '{print $3}' |grep '$search_string'`
-      if [ "$check_value" = "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Mail transfer agent is not running in local-only mode [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file 
-          echo "Setting:   Mail transfer agent to run in local-only mode"
-          cp $check_file $temp_file
-          cat $temp_file |awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA"; next} { print }' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Mail transfer agent is running in local-only mode [$score]"
+    if [ -f "$check_file" ]; then
+      search_string="Addr=127.0.0.1"
+      restore=0
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  Mail transfer agent is running in local-only mode"
+        total=`expr $total + 1`
+        check_value=`cat $check_file |grep -v '^#' |grep 'O DaemonPortOptions' |awk '{print $3}' |grep '$search_string'`
+        if [ "$check_value" = "$search_string" ]; then
+          if [ "$audit_mode" = "1" ]; then
+            score=`expr $score - 1`
+            echo "Warning:   Mail transfer agent is not running in local-only mode [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            funct_backup_file $check_file 
+            echo "Setting:   Mail transfer agent to run in local-only mode"
+            cp $check_file $temp_file
+            cat $temp_file |awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA"; next} { print }' > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then  
+            score=`expr $score + 1`
+            echo "Secure:    Mail transfer agent is running in local-only mode [$score]"
+          fi
         fi
       fi
     else
@@ -1855,32 +1879,34 @@ audit_tcp_wrappers () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    package_name="tcp_wrappers"
-    total=`expr $total + 1`
-    log_file="ntp.log"
-    audit_linux_package check $package_name
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  TCP Wrappers is installed"
-    fi
-    if [ "$package_name" != "ntp" ]; then
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   TCP Wrappers is not installed [$score]"
+    if [ "$dist_linux" = "redhat" ]; then
+      package_name="tcp_wrappers"
+      total=`expr $total + 1`
+      log_file="$package_name.log"
+      audit_linux_package check $package_name
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  TCP Wrappers is installed"
       fi
-      if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   TCP Wrappers to installed"
-        log_file="$work_dir/$log_file"
-        echo "Installed $package_name" >> $log_file
-        audit_linux_package install $package_name
-      fi
-    else
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    TCP Wrappers is installed [$score]"
-      fi
-      if [ "$audit_mode" = 2 ]; then
-        restore_file="$restore_dir/$log_file"
-        audit_linux_package restore $package_name $restore_file
+      if [ "$package_name" != "tcp_wrappers" ]; then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   TCP Wrappers is not installed [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          echo "Setting:   TCP Wrappers to installed"
+          log_file="$work_dir/$log_file"
+          echo "Installed $package_name" >> $log_file
+          audit_linux_package install $package_name
+        fi
+      else
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score + 1`
+          echo "Secure:    TCP Wrappers is installed [$score]"
+        fi
+        if [ "$audit_mode" = 2 ]; then
+          restore_file="$restore_dir/$log_file"
+          audit_linux_package restore $package_name $restore_file
+        fi
       fi
     fi
   fi
@@ -2746,13 +2772,28 @@ audit_linux_package () {
     restore_file=$3
     if [ "$os_name" = "Linux" ]; then
       if [ "$package_mode" = "check" ]; then
-        package_name=`rpm -qi $package_check |grep '^Name' |awk '{print $3}'`
+        if [ "$linux_dist" = "redhat" ]; then
+          package_name=`rpm -qi $package_check |grep '^Name' |awk '{print $3}'`
+        fi
+        if [ "$linux_dist" = "debian" ]; then
+          package_name=`dpkg -l $package_check 2>1 |grep $package_check |awk '{print $2}'`
+        fi
       fi
       if [ "$package_mode" = "install" ]; then
-        yum -y install $package_check
+        if [ "$linux_dist" = "redhat" ]; then
+          yum -y install $package_check
+        fi
+        if [ "$linux_dist" = "debian" ]; then
+          apt-get install $package_check
+        fi
       fi
       if [ "$package_mode" = "uninstall" ]; then
-        rpm -e $package_check
+        if [ "$linux_dist" = "redhat" ]; then
+          rpm -e $package_check
+        fi
+        if [ "$linux_dist" = "debian" ]; then
+          apt-get purge $package_check
+        fi
       fi
       if [ "$package_mode" = "restore" ]; then
         if [ -f "$restore_file" ]; then
@@ -2761,9 +2802,19 @@ audit_linux_package () {
             package_action=`cat $restore_file |grep $package_check |awk '{print $1}'`
             echo "Restoring: Package $package_action to $package_action"
             if [ "$package_action" = "Installed" ]; then
-              rpm -e $package_check
+              if [ "$linux_dist" = "redhat" ]; then
+                rpm -e $package_check
+              fi
+              if [ "$linux_dist" = "debian" ]; then
+                apt-get purge $package_check
+              fi
             else
-              yum -y install $package_check
+              if [ "$linux_dist" = "redhat" ]; then
+                yum -y install $package_check
+              fi
+              if [ "$linux_dist" = "debian" ]; then
+                apt-get install $package_check
+              fi
             fi
           fi
         fi
@@ -2942,7 +2993,7 @@ audit_system_accounting () {
   fi
 }
 
-# Enable Kernel Level Auditing
+# Enable Kernel Accounting
 
 audit_kernel_accounting () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3103,34 +3154,36 @@ audit_unconfined_daemons () {
 audit_sulogin () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/inittab"
-    sulogin_check=`grep -l sulogin $check_file`
-    total=`expr $total + 1`
-    if [ "$sulogin_check" = "" ]; then
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   No Authentication required for single usermode [$score]"
+    if [ -f "$check_file" ]; then
+      sulogin_check=`grep -l sulogin $check_file`
+      total=`expr $total + 1`
+      if [ "$sulogin_check" = "" ]; then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   No Authentication required for single usermode [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          echo "Setting:   Single user mode to require authentication"
+          funct_backup_file $check_file
+          cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' > $temp_file
+          cat $temp_file > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score + 1`
+          echo "Secure:    Single usermode requires authentication [$score]"
+        fi
+        if [ "$audit_mode" = 2 ]; then
+          funct_restore_file $check_file $restore_dir
+        fi
+        audit_check_perms $check_file 0600 root root
       fi
-      if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   Single user mode to require authentication"
-        funct_backup_file $check_file
-        cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' > $temp_file
-        cat $temp_file > $check_file
-        rm $temp_file
-      fi
-    else
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    Single usermode requires authentication [$score]"
-      fi
-      if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
-      fi
+      check_file="/etc/sysconfig/init"
+      funct_file_value $check_file SINGLE eq "/sbin/sulogin" hash
+      funct_file_value $check_file PROMPT eq no hash
       audit_check_perms $check_file 0600 root root
     fi
-    check_file="/etc/sysconfig/init"
-    funct_file_value $check_file SINGLE eq "/sbin/sulogin" hash
-    funct_file_value $check_file PROMPT eq no hash
-    audit_check_perms $check_file 0600 root root
   fi
 }
 
@@ -3180,42 +3233,46 @@ audit_mount_fdi () {
       check_dir="/usr/share/hal/fdi/policy/20thirdparty"
       check_file="$check_dir/floppycdrom.fdi"
     fi
-    if [ ! -f "$check_file" ]; then
-      touch $check_file
-      chmod 640 $check_file
-      chown root:root $check_file
+    if [ -d "$check_dir" ]; then
+      if [ ! -f "$check_file" ]; then
+        touch $check_file
+        chmod 640 $check_file
+        chown root:root $check_file
+      fi
     fi
-    if [ "$audit_mode" != "2" ]; then
-      fdi_check=`cat $check_file |grep -v "Default policies" |head -1 |wc -l`
-      total=`expr $total + 1`
-      if [ "$fdi_check" = 1 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   User mountable filesystems enabled [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Disabling user mountable filesystems"
-          funct_backup_file $check_file
-          echo '<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- --> >' > $temp_file
-          echo '<deviceinfo version="0.2">' >> $temp_file
-          echo '  <!-- Default policies merged onto computer root object -->' >> $temp_file
-          echo '  <device>' >> $temp_file
-          echo '    <match key="info.udi" string="/org/freedesktop/Hal/devices/computer">' >> $temp_file
-          echo '      <merge key="storage.policy.default.mount_option.nodev" type="bool">true</merge>' >> $temp_file
-          echo '      <merge key="storage.policy.default.mount_option.nosuid" type="bool">true</merge>' >> $temp_file
-          echo '    </match>' >> $temp_file
-          echo '  </device>' >> $temp_file
-          echo '</deviceinfo>' >> $temp_file
-          cat $temp_file > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    User mountable filesystems disabled [$score]"
-        fi
-        if [ "$audit_mode" = 2 ]; then
-          funct_restore_file $check_file $restore_dir
+    if [ -f "$check_file" ]; then
+      if [ "$audit_mode" != "2" ]; then
+        fdi_check=`cat $check_file |grep -v "Default policies" |head -1 |wc -l`
+        total=`expr $total + 1`
+        if [ "$fdi_check" = 1 ]; then
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score - 1`
+            echo "Warning:   User mountable filesystems enabled [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            echo "Setting:   Disabling user mountable filesystems"
+            funct_backup_file $check_file
+            echo '<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- --> >' > $temp_file
+            echo '<deviceinfo version="0.2">' >> $temp_file
+            echo '  <!-- Default policies merged onto computer root object -->' >> $temp_file
+            echo '  <device>' >> $temp_file
+            echo '    <match key="info.udi" string="/org/freedesktop/Hal/devices/computer">' >> $temp_file
+            echo '      <merge key="storage.policy.default.mount_option.nodev" type="bool">true</merge>' >> $temp_file
+            echo '      <merge key="storage.policy.default.mount_option.nosuid" type="bool">true</merge>' >> $temp_file
+            echo '    </match>' >> $temp_file
+            echo '  </device>' >> $temp_file
+            echo '</deviceinfo>' >> $temp_file
+            cat $temp_file > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score + 1`
+            echo "Secure:    User mountable filesystems disabled [$score]"
+          fi
+          if [ "$audit_mode" = 2 ]; then
+            funct_restore_file $check_file $restore_dir
+          fi
         fi
       fi
     fi
@@ -6149,18 +6206,21 @@ audit_sysctl () {
 
 audit_xinetd () {
   if [ "$os_name" = "Linux" ]; then
-    xinetd_check=`cat /etc/xinetd.d/* |grep disable |awk '{print $3}' |grep no |head -1 |wc -l`
-    if [ "$xinetd_check" = "1" ]; then
-      for service_name in amanda amandaidx amidxtape auth chargen-dgram \
-        chargen-stream cvs daytime-dgram daytime-stream discard-dgram \
-        echo-dgram echo-stream eklogin ekrb5-telnet gssftp klogin krb5-telnet \
-        kshell ktalk ntalk rexec rlogin rsh rsync talk tcpmux-server telnet \
-        tftp time-dgram time-stream uucp; do
-        audit_xinetd_service $service_name disable yes
-      done
-    else
-      funct_chkconfig_service xinetd 3 off
-      funct_chkconfig_service xinetd 5 off
+    check_dir="/etc/xinetd.d"
+    if [ -d "$check_dir" ]; then
+      xinetd_check=`cat $check_dir/* |grep disable |awk '{print $3}' |grep no |head -1 |wc -l`
+      if [ "$xinetd_check" = "1" ]; then
+        for service_name in amanda amandaidx amidxtape auth chargen-dgram \
+          chargen-stream cvs daytime-dgram daytime-stream discard-dgram \
+          echo-dgram echo-stream eklogin ekrb5-telnet gssftp klogin krb5-telnet \
+          kshell ktalk ntalk rexec rlogin rsh rsync talk tcpmux-server telnet \
+          tftp time-dgram time-stream uucp; do
+          audit_xinetd_service $service_name disable yes
+        done
+      else
+        funct_chkconfig_service xinetd 3 off
+        funct_chkconfig_service xinetd 5 off
+      fi
     fi
   fi
 }
@@ -6258,58 +6318,60 @@ audit_passwd_perms () {
 audit_sendmail_greeting () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
-    search_string="v/"
-    restore=0
-    if [ "$audit_mode" != 2 ]; then
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep -v '^#' |grep 'O SmtpGreetingMessage' |awk '{print $4}' |grep 'v/'`
-      if [ "$check_value" = "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Found version information in sendmail greeting [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file 
-          echo "Setting:   Sendmail greeting to have no version information"
-          cp $check_file $temp_file
-          cat $temp_file |awk '/O SmtpGreetingMessage=/ { print "O SmtpGreetingMessage=Mail Server Ready; $b"; next} { print }' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    No version information in sendmail greeting [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    funct_disable_value $check_file "O HelpFile" hash
-    if [ "$audit_mode" != 2 ]; then
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep -v '^#' |grep '$search_string'`
-      if [ "$check_value" = "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Found help information in sendmail greeting [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Sendmail to have no help information"
-          cp $check_file $temp_file
-          cat $temp_file |sed 's/^O HelpFile=/#O HelpFile=/' > $check_file
-          rm $temp_file
+    if [ -f "$check_file" ]; then
+      search_string="v/"
+      restore=0
+      if [ "$audit_mode" != 2 ]; then
+        total=`expr $total + 1`
+        check_value=`cat $check_file |grep -v '^#' |grep 'O SmtpGreetingMessage' |awk '{print $4}' |grep 'v/'`
+        if [ "$check_value" = "$search_string" ]; then
+          if [ "$audit_mode" = "1" ]; then
+            score=`expr $score - 1`
+            echo "Warning:   Found version information in sendmail greeting [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            funct_backup_file $check_file 
+            echo "Setting:   Sendmail greeting to have no version information"
+            cp $check_file $temp_file
+            cat $temp_file |awk '/O SmtpGreetingMessage=/ { print "O SmtpGreetingMessage=Mail Server Ready; $b"; next} { print }' > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then  
+            score=`expr $score + 1`
+            echo "Secure:    No version information in sendmail greeting [$score]"
+          fi
         fi
       else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    No help information in sendmail greeting [$score]"
-        fi
+        funct_restore_file $check_file $restore_dir
       fi
-    else
-      funct_restore_file $check_file $restore_dir
+      funct_disable_value $check_file "O HelpFile" hash
+      if [ "$audit_mode" != 2 ]; then
+        total=`expr $total + 1`
+        check_value=`cat $check_file |grep -v '^#' |grep '$search_string'`
+        if [ "$check_value" = "$search_string" ]; then
+          if [ "$audit_mode" = "1" ]; then
+            score=`expr $score - 1`
+            echo "Warning:   Found help information in sendmail greeting [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            funct_backup_file $check_file
+            echo "Setting:   Sendmail to have no help information"
+            cp $check_file $temp_file
+            cat $temp_file |sed 's/^O HelpFile=/#O HelpFile=/' > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then  
+            score=`expr $score + 1`
+            echo "Secure:    No help information in sendmail greeting [$score]"
+          fi
+        fi
+      else
+        funct_restore_file $check_file $restore_dir
+      fi
+      audit_check_perms $check_file 0444 root root
     fi
-    audit_check_perms $check_file 0444 root root
   fi
 }
 
@@ -6323,7 +6385,8 @@ audit_sendmail_aliases () {
   fi
 }
 
-# Audit /etc/pam.d/system-auth
+# Audit /etc/pam.d/system-auth on RedHat
+# Audit /etc/pam.d/common-auth on Debian
 # Lockout accounts after 5 failures
 # Set to remember up to 4 passwords
 # Set password length to a minimum of 9 characters
@@ -6332,7 +6395,12 @@ audit_sendmail_aliases () {
 
 audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
-    check_file="/etc/pam.d/system-auth"
+    if [ "$linux_dist" = "debian" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
     search_string="nullok"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:   For nullok entry in $check_file"
@@ -6497,7 +6565,12 @@ audit_system_auth () {
     fi
     auth_string="auth"
     search_string="unlock_time=900"
-    check_file="/etc/pam.d/password-auth"
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/password-auth"
+    fi
+    if [ "$linux_dist" = "debian" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Lockout for failed password attempts enabled in $check_file"
       total=`expr $total + 1`
@@ -6525,7 +6598,12 @@ audit_system_auth () {
     fi
     auth_string="auth"
     search_string="unlock_time=900"
-    check_file="/etc/pam.d/system-auth"
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$linux_dist" = "debian" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Lockout for failed password attempts enabled in $check_file"
       total=`expr $total + 1`
@@ -6626,33 +6704,35 @@ audit_pam_wheel () {
 
 audit_password_hashing () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$audit_mode" != 2 ]; then
-      log_file="hashing.log"
-      echo "Checking:  Password hashing is set to SHA512"
-      total=`expr $total + 1`
-      check_value=`authconfig --test |grep hashing |awk '{print $5}'`
-      if [ "$check_value" != "sha512" ]; then
+    if [ -f "/usr/sbin/authconfig" ]; then
+      if [ "$audit_mode" != 2 ]; then
+        log_file="hashing.log"
+        echo "Checking:  Password hashing is set to SHA512"
+        total=`expr $total + 1`
+        check_value=`authconfig --test |grep hashing |awk '{print $5}'`
+        if [ "$check_value" != "sha512" ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Password hashing not set to SHA512 [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Password hashing to SHA512"
-          log_file="$work_dir/$log_file"
-          echo "$check_value" > $log_file
-          authconfig --passalgo=sha512
+            score=`expr $score - 1`
+            echo "Warning:   Password hashing not set to SHA512 [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            echo "Setting:   Password hashing to SHA512"
+            log_file="$work_dir/$log_file"
+            echo "$check_value" > $log_file
+            authconfig --passalgo=sha512
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then  
+            score=`expr $score + 1`
+            echo "Secure:    Password hashing set to SHA512 [$score]"
+          fi
         fi
       else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Password hashing set to SHA512 [$score]"
+        restore_file="$restore_dir/$log_file"
+        if [ -f "$restore_file" ]; then
+          check_value=`cat $restore_file`
+          authconfig --passalgo=$check_value
         fi
-      fi
-    else
-      restore_file="$restore_dir/$log_file"
-      if [ -f "$restore_file" ]; then
-        check_value=`cat $restore_file`
-        authconfig --passalgo=$check_value
       fi
     fi
   fi
@@ -6729,31 +6809,33 @@ audit_super_users () {
 audit_logrotate () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/logrotate.d/syslog"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Logrotate is set up"
-      total=`expr $total + 1`
-      search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
-      check_value=`cat $check_file |grep '$search_string'`
-      if [ "$check_value" != "$search_string" ]; then
-        score=`expr $score - 1`
-        if [ "$audit_mode" = 1 ]; then
-          echo "Warning:   UID 0 for $user_name [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Removing:  Configuring logrotate"
-          cat $check_file |sed 's,.*{,$search_string {,' > $temp_file
-          cat $temp_file > $check_file
-          rm $temp_file
+    if [ -f "$check_file" ]; then
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  Logrotate is set up"
+        total=`expr $total + 1`
+        search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
+        check_value=`cat $check_file |grep '$search_string'`
+        if [ "$check_value" != "$search_string" ]; then
+          score=`expr $score - 1`
+          if [ "$audit_mode" = 1 ]; then
+            echo "Warning:   UID 0 for $user_name [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            funct_backup_file $check_file
+            echo "Removing:  Configuring logrotate"
+            cat $check_file |sed 's,.*{,$search_string {,' > $temp_file
+            cat $temp_file > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score + 1`
+            echo "Secure:    Log rotate is configured [$score]"
+          fi
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Log rotate is configured [$score]"
-        fi
+        funct_restore_file $check_file $restore_dir
       fi
-    else
-      funct_restore_file $check_file $restore_dir
     fi
   fi
 }
