@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.5.9
+# Version:      1.6.0
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -145,6 +145,8 @@
 #               Improved Debian/Ubuntu support
 #               1.5.9 Sat May 25 11:40:50 EST 2013
 #               Improved Debian/Ubuntu support
+#               1.6.0 Sat May 25 22:35:36 EST 2013
+#               Improved Debian/Ubuntu support
 
 # No warrantry is implied or given with this script
 # It is based on numerous security guidelines
@@ -249,12 +251,20 @@ check_os_release () {
       linux_dist="redhat"  
     else 
       if [ -f "/etc/debian_version" ]; then
+        os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d'.'`
+        os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d'.'`
+        os_vendor=`lsb_release -i |awk '{print $3}'`
         linux_dist="debian"  
       fi
       if [ ! -f "/usr/sbin/sysv-rc-conf" ]; then
-        echo "The sysv-rc-conf package is required by this script"
-        echo "Attempting to install"
+        echo "Notice:    The sysv-rc-conf package is required by this script"
+        echo "Notice:    Attempting to install"
         apt-get install sysv-rc-conf
+      fi
+      if [ ! -f "/usr/bin/bc" ]; then
+        echo "Notice:    The bc package is required by this script"
+        echo "Notice:    Attempting to install"
+        apt-get install bc 
       fi
     fi
   fi
@@ -3356,8 +3366,10 @@ audit_selinux () {
 
 audit_yum_conf () {
   if [ "$os_name" = "Linux" ]; then
-    check_file="/etc/yum.conf"
-    funct_file_value $check_file gpgcheck eq 1 hash
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/yum.conf"
+      funct_file_value $check_file gpgcheck eq 1 hash
+    fi
   fi
 }
 
@@ -5525,7 +5537,7 @@ audit_ntp () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    echk_file="/etc/ntp.conf"
+    check_file="/etc/ntp.conf"
     total=`expr $total + 1`
     log_file="ntp.log"
     audit_linux_package check ntp
@@ -6423,9 +6435,8 @@ audit_system_auth () {
     if [ "$linux_dist" = "redhat" ]; then
       check_file="/etc/pam.d/system-auth"
     fi
-    search_string="nullok"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:   For nullok entry in $check_file"
+      echo "Checking:  For nullok entry in $check_file"
       total=`expr $total + 1`
       check_value=0
       check_value=`cat $check_file |grep -v '^#' |grep 'nullok' |head -1 |wc -l`
