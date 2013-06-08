@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.6.0
+# Version:      1.6.1
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -13,140 +13,6 @@
 # Description:  Audit script based on various benchmarks
 #               Addition improvements added
 #               Writen in bourne shell so it can be run on different releases
-#               Need to add trap and ntp support
-
-# Changes:      0.0.0 Thursday, 25 October 2012  9:40:54 AM EST
-#               Initial version
-#               0.0.1 Thursday,  1 November 2012  2:28:41 PM EST
-#               Added initial audit code
-#               0.0.2 Fri  2 Nov 2012 13:24:54 EST
-#               Created subroutines for updating files and parameters
-#               0.0.3 Thursday,  8 November 2012  9:35:19 PM EST
-#               Added restore code
-#               0.0.4 Saturday, 10 November 2012 11:37:22 AM EST
-#               Added kernel accounting
-#               1.0.0 Monday, 12 November 2012 10:45:27 AM EST
-#               Initial Github Commit
-#               1.0.1 Monday, 12 November 2012  9:52:17 PM EST
-#               Formating fixes
-#               1.0.2 Monday, 12 November 2012 10:03:54 PM EST
-#               Additional cleanup
-#               1.0.3 Thu 15 Nov 2012 02:37:31 EST
-#               Initial Solaris 11 support
-#               1.0.4 Fri 16 Nov 2012 10:57:17 EST
-#               Updated Solaris 11 support, Initial re-commit to new repository
-#               1.0.5 Sat 17 Nov 2012 09:55:07 EST
-#               Added echo services
-#               1.0.6 Monday, 19 November 2012  8:13:20 AM EST
-#               Solaris 10 and 11 support mostly done - some minor additions could be made
-#               1.0.7 Monday, 19 November 2012 11:02:05 AM EST
-#               Added initial support for Solaris versions less than 10
-#               1.0.8 Thursday, 20 December 2012  2:46:32 PM EST
-#               Fixed problem with inetadm command
-#               1.0.9 Thursday, 20 December 2012  3:47:52 PM EST
-#               Added -A and -L switches and moved filesystem searches to it
-#               1.1.0 Thu 20 Dec 2012 17:01:52 EST
-#               Cleaned up formating
-#               1.1.1 Fri Dec 21 21:43:39 EST 2012
-#               Initial Solaris 9 testing completed
-#               1.1.2 Sat Dec 22 08:13:17 EST 2012
-#               Fixed bugs with parameter value checking
-#               1.1.3 Sat Dec 22 08:27:53 EST 2012
-#               Fixed bug with home directory check
-#               1.1.4 Sat Dec 22 08:50:38 EST 2012
-#               Fixed bug with inetd code
-#               1.1.5 Sat Dec 22 08:54:05 EST 2012
-#               Fixed Solaris 9 update version detection
-#               1.1.6 Sat Dec 22 16:45:16 EST 2012
-#               Updated documentation
-#               1.1.7 Thu Feb 14 20:46:31 EST 2013
-#               Initial Linux support
-#               1.1.8 Fri Feb 15 18:40:48 EST 2013
-#               Linux xinetd and chkconfig support added
-#               1.1.9 Sat Feb 16 12:01:05 EST 2013
-#               Added sysctl audit for Linux
-#               1.2.0 Sat Feb 16 14:09:03 EST 2013
-#               Added ftpd logging checking for Linux
-#               1.2.1 Sat Feb 16 14:22:58 EST 2013
-#               Updated file update to support tabs
-#               1.2.2 Sat Feb 16 22:30:05 EST 2013
-#               Added pam options for Linux
-#               1.2.3 Sun Feb 17 02:17:04 EST 2013
-#               Added code for sendmail greeting
-#               1.2.4 Sun 17 Feb 2013 08:27:32 EST
-#               Added code for vsftpd banner
-#               1.2.5 Sun Feb 17 19:55:54 EST 2013
-#               Added securetty check for Linux
-#               1.2.6 Sun 17 Feb 2013 20:40:27 EST
-#               Added auditd config
-#               1.2.7 Mon Feb 18 03:11:37 EST 2013
-#               Added warning banners
-#               1.2.8 Mon Feb 18 04:42:08 EST 2013
-#               Added X11 warning messages
-#               1.2.9 Mon Feb 18 09:41:55 EST 2013
-#               Added Linux core dumps and rhosts for PAM
-#               1.3.0 Mon Feb 18 13:42:24 EST 2013
-#               Added gdm.conf audit
-#               1.3.1 Mon Feb 18 14:38:04 EST 2013
-#               Added Linux nodev audit
-#               1.3.2 Mon Feb 18 15:08:26 EST 2013
-#               Added Linux FDI audit
-#               1.3.3 Mon Feb 18 17:53:30 EST 2013
-#               Added X11 nolisten
-#               1.3.4 Mon Feb 18 20:30:30 EST 2013
-#               Improved file octal derivation on Solaris
-#               1.3.5 Tue Feb 19 12:47:55 EST 2013
-#               Added file verification for Linux
-#               1.3.6 Tue Feb 19 14:48:33 EST 2013
-#               Added password strength testing on Linux
-#               1.3.7 Tue Feb 19 15:09:05 EST 2013
-#               Added Cipher directive to SSH config
-#               1.3.8 Tue Feb 19 15:37:52 EST 2013
-#               Added logrotate configuration
-#               1.3.9 Tue Feb 19 15:52:20 EST 2013
-#               Added module loading and mounting to auditd
-#               1.4.0 Tue Feb 19 17:03:17 EST 2013
-#               Added modprobe.conf check
-#               1.4.1 Tue Feb 19 17:25:39 EST 2013
-#               Added sendmail local-only mode check
-#               1.4.2 Tue Feb 19 17:32:12 EST 2013
-#               Added code to check NTP running as ntp user
-#               1.4.3 Tue Feb 19 21:01:02 EST 2013
-#               Added selective function to run individual tests
-#               1.4.4 Tue Feb 19 21:34:30 EST 2013
-#               Added selinux
-#               1.4.5 Tue Feb 19 21:46:55 EST 2013
-#               Added yum config check
-#               1.4.6 Tue Feb 19 22:59:12 EST 2013
-#               Added lockout for failed password attempts
-#               1.4.7 Wed Feb 20 10:13:46 EST 2013
-#               Simplified RPM verify routine
-#               1.4.8 Wed Feb 20 10:59:28 EST 2013
-#               Added root primary group audit
-#               1.4.9 Wed Feb 20 11:16:28 EST 2013
-#               Added system account shell check
-#               1.5.0 Wed Feb 20 15:00:07 EST 2013
-#               Added handling for [at,cron].[deny,allow]
-#               1.5.1 Wed Feb 20 16:03:18 EST 2013
-#               Fixed file append function
-#               1.5.2 Thu Feb 21 14:00:42 EST 2013
-#               Fixed code to update files
-#               1.5.3 Thursday, 21 February 2013  3:29:49 PM EST
-#               Improved code to fix cron
-#               1.5.4 Thu Feb 21 16:49:46 EST 2013
-#               Added rpm check code
-#               1.5.5 Fri 22 Feb 2013 07:23:16 EST
-#               Cleaned up code for selective audit
-#               1.5.6 Fri  3 May 2013 16:25:36 EST
-#               Fixed minor bug with for loop
-#               1.5.7 Fri May 24 15:46:54 EST 2013
-#               Initial Debian/Ubuntu support
-#               1.5.8 Fri May 24 21:04:33 EST 2013
-#               Improved Debian/Ubuntu support
-#               1.5.9 Sat May 25 11:40:50 EST 2013
-#               Improved Debian/Ubuntu support
-#               1.6.0 Sat May 25 22:35:36 EST 2013
-#               Improved Debian/Ubuntu support
 
 # No warrantry is implied or given with this script
 # It is based on numerous security guidelines
@@ -893,7 +759,9 @@ funct_replace_value () {
   if [ "$audit_mode" != 2 ]; then
     echo "Checking:  File $check_file contains \"$correct_value\" rather than \"$check_value\""
   fi
-  check_dfs=`cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g"`
+	if [ -f "$check_file" ]; then
+	  check_dfs=`cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g"`
+	fi
   if [ "$check_dfs" != 0 ]; then
     if [ "$audit_mode" != 2 ]; then
       if [ "$audit_mode" = 1 ]; then
@@ -2357,36 +2225,38 @@ audit_routing_params () {
 audit_create_class () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/security/audit_class"
-    class_check=`cat $check_file |grep "Security Lockdown"`
-    total=`expr $total + 1`
-    if [ `expr "$class_check" : "[A-z]"` != 1 ]; then
-      if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Audit class not enabled [$score]"
-      else
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Audit class to enabled"
-          if [ ! -f "$work_dir$check_file" ]; then
-            echo "Saving:    File $check_file to $work_dir$check_file"
-            find $check_file | cpio -pdm $work_dir 2> /dev/null
-          fi
-          file_length=`wc -l $check_file |awk '{print $1}' |sed 's/ //g'`
-          file_length=`expr $file_length - 1`
-          head -$file_length $check_file > $temp_file
-          echo "0x0100000000000000:lck:Security Lockdown" >> $temp_file
-          tail -1 $check_file >> $temp_file
-          cp $temp_file $check_file
-        fi
-      fi
-    fi
-    if [ "$audit_mode" = 2 ]; then
-      if [ -f "$restore_dir/$check_file" ]; then
-        cp -p $restore_dir/$check_file $check_file
-        if [ "$os_version" = "10" ]; then
-          pkgchk -f -n -p $check_file 2> /dev/null
-        else
-          pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-        fi
+		if [ -f "$check_file" ]; then
+	    class_check=`cat $check_file |grep "Security Lockdown"`
+	    total=`expr $total + 1`
+	    if [ `expr "$class_check" : "[A-z]"` != 1 ]; then
+	      if [ "$audit_mode" = 1 ]; then
+	        score=`expr $score - 1`
+	        echo "Warning:   Audit class not enabled [$score]"
+	      else
+	        if [ "$audit_mode" = 0 ]; then
+	          echo "Setting:   Audit class to enabled"
+	          if [ ! -f "$work_dir$check_file" ]; then
+	            echo "Saving:    File $check_file to $work_dir$check_file"
+	            find $check_file | cpio -pdm $work_dir 2> /dev/null
+	          fi
+	          file_length=`wc -l $check_file |awk '{print $1}' |sed 's/ //g'`
+	          file_length=`expr $file_length - 1`
+	          head -$file_length $check_file > $temp_file
+	          echo "0x0100000000000000:lck:Security Lockdown" >> $temp_file
+	          tail -1 $check_file >> $temp_file
+	          cp $temp_file $check_file
+	        fi
+	      fi
+	    fi
+	    if [ "$audit_mode" = 2 ]; then
+	      if [ -f "$restore_dir/$check_file" ]; then
+	        cp -p $restore_dir/$check_file $check_file
+	        if [ "$os_version" = "10" ]; then
+	          pkgchk -f -n -p $check_file 2> /dev/null
+	        else
+	          pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+ 	       fi
+				fi
       fi
     fi
   fi
@@ -2544,16 +2414,18 @@ audit_solaris_auditing () {
       if [ "$audit_mode" = 0 ]; then
         log_file="$workdir$check_file"
         rolemod -K audit_flags=lo,ad,ft,ex,lck:no root
-        audit_check=`cat $check_file |grep "audit -n" |cut -f4 -d'/'`
-        if [ "$audit_check" != "audit -n" ]; then
-          if [ ! -f "$log_file" ]; then
-            echo "Saving:    File $check_file to $work_dir$check_file"
-            find $check_file | cpio -pdm $work_dir 2> /dev/null
-          fi
-          echo "0 * * * * /usr/sbin/audit -n" >> $check_file
-          chown root:root /var/audit 
-          chmod 750 /var/audit
-          pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+				if [ -f "$check_file" ]; then
+	        audit_check=`cat $check_file |grep "audit -n" |cut -f4 -d'/'`
+	        if [ "$audit_check" != "audit -n" ]; then
+	          if [ ! -f "$log_file" ]; then
+	            echo "Saving:    File $check_file to $work_dir$check_file"
+	            find $check_file | cpio -pdm $work_dir 2> /dev/null
+	          fi
+	          echo "0 * * * * /usr/sbin/audit -n" >> $check_file
+	          chown root:root /var/audit 
+	          chmod 750 /var/audit
+	          pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+					fi
         fi
       fi
     fi
@@ -2989,37 +2861,39 @@ audit_system_accounting () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       cron_file="/var/spool/cron/crontabs/sys"
-      sar_check=`cat $check_file |grep -v "^#" |grep "sa2"`
-      total=`expr $total + 1`
-      if [ `expr "$sar_check" : "[A-z]"` != 1 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   System Accounting is not enabled [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   System Accounting to enabled"
-          if [ ! -f "$log_file" ]; then
-            echo "Saving:    File $check_file to $work_dir$check_file"
-            find $check_file | cpio -pdm $work_dir 2> /dev/null
-          fi
-          echo "0,20,40 * * * * /usr/lib/sa/sa1" >> $check_file
-          echo "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A" >> $check_file
-          chown sys:sys /var/adm/sa/* 
-          chmod go-wx /var/adm/sa/*
-          if [ "$os_version" = "10" ]; then
-            pkgchk -f -n -p $check_file 2> /dev/null
-          else
-            pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-          fi
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    System Accounting is already enabled [$score]"
-        fi
-        if [ "$audit_mode" = 2 ]; then
-          funct_restore_file $check_file $restore_dir
-        fi
+			if [ -f "$check_file" ]; then
+	      sar_check=`cat $check_file |grep -v "^#" |grep "sa2"`
+	      total=`expr $total + 1`
+	      if [ `expr "$sar_check" : "[A-z]"` != 1 ]; then
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score - 1`
+	          echo "Warning:   System Accounting is not enabled [$score]"
+	        fi
+	        if [ "$audit_mode" = 0 ]; then
+	          echo "Setting:   System Accounting to enabled"
+	          if [ ! -f "$log_file" ]; then
+	            echo "Saving:    File $check_file to $work_dir$check_file"
+	            find $check_file | cpio -pdm $work_dir 2> /dev/null
+	          fi
+	          echo "0,20,40 * * * * /usr/lib/sa/sa1" >> $check_file
+	          echo "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A" >> $check_file
+	          chown sys:sys /var/adm/sa/* 
+	          chmod go-wx /var/adm/sa/*
+	          if [ "$os_version" = "10" ]; then
+	            pkgchk -f -n -p $check_file 2> /dev/null
+	          else
+	            pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+	          fi
+	        fi
+	      else
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score + 1`
+	          echo "Secure:    System Accounting is already enabled [$score]"
+	        fi
+	        if [ "$audit_mode" = 2 ]; then
+	          funct_restore_file $check_file $restore_dir
+	        fi
+				fi
       fi
     fi
   fi
@@ -3031,28 +2905,30 @@ audit_kernel_accounting () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/system"
-      check_acc=`cat $check_file |grep -v '^*' |grep 'c2audit:audit_load'`
-      if [ `expr "$check_acc" : "[A-z]"` != 1 ]; then
-        funct_file_value $check_file c2audit colon audit_load star
-        if [ "$audit_mode" = 0 ]; then
-          log_file="$work_dir/bsmconv.log"
-          echo "y" >> $log_file
-          echo "y" | /etc/security/bsmconv
-        fi
-      fi
-      if [ "$audit_mode" = 2 ]; then
-        restore_file="$restore_dir/bsmconv.log"
-        if [ -f "$restore_file" ]; then
-          echo "y" | /etc/security/bsmunconv
-        fi
-      fi
-      check_file="/etc/security/audit_control"
-      funct_file_value $check_file flags colon "lo,ad,cc" hash
-      funct_file_value $check_file naflags colon "lo,ad,ex" hash
-      funct_file_value $check_file minfree colon 20 hash
-      check_file="/etc/security/audit_user"
-      funct_file_value $check_file root colon "lo,ad:no" hash
-    fi
+			if [ -f "$check_file" ]; then
+	      check_acc=`cat $check_file |grep -v '^*' |grep 'c2audit:audit_load'`
+	      if [ `expr "$check_acc" : "[A-z]"` != 1 ]; then
+	        funct_file_value $check_file c2audit colon audit_load star
+	        if [ "$audit_mode" = 0 ]; then
+	          log_file="$work_dir/bsmconv.log"
+	          echo "y" >> $log_file
+	          echo "y" | /etc/security/bsmconv
+	        fi
+	      fi
+	      if [ "$audit_mode" = 2 ]; then
+	        restore_file="$restore_dir/bsmconv.log"
+	        if [ -f "$restore_file" ]; then
+	          echo "y" | /etc/security/bsmunconv
+	        fi
+	      fi
+	      check_file="/etc/security/audit_control"
+	      funct_file_value $check_file flags colon "lo,ad,cc" hash
+	      funct_file_value $check_file naflags colon "lo,ad,ex" hash
+	      funct_file_value $check_file minfree colon 20 hash
+	      check_file="/etc/security/audit_user"
+	      funct_file_value $check_file root colon "lo,ad:no" hash
+	    fi
+		fi
   fi
 }
 
@@ -3134,27 +3010,29 @@ audit_mount_setuid () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       check_file="/etc/rmmount.conf"
-      nosuid_check=`cat $check_file |grep -v "^#" |grep "\-o nosuid"`
-      log_file="$work_dir/$check_file"
-      total=`expr $total + 1`
-      if [ `expr "$nosuid_check" : "[A-z]"` != 1 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Set-UID not restricted on user mounted devices [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Set-UID restricted on user mounted devices"
-          funct_backup_file $check_file
-          funct_append_file $check_file "mount * hsfs udfs ufs -o nosuid" hash
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Set-UID not restricted on user mounted devices [$score]"
-        fi
-        if [ "$audit_mode" = 2 ]; then
-          funct_restore_file $check_file $restore_dir
-        fi
+			if [ -f "$check_file" ]; then
+	      nosuid_check=`cat $check_file |grep -v "^#" |grep "\-o nosuid"`
+	      log_file="$work_dir/$check_file"
+	      total=`expr $total + 1`
+	      if [ `expr "$nosuid_check" : "[A-z]"` != 1 ]; then
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score - 1`
+	          echo "Warning:   Set-UID not restricted on user mounted devices [$score]"
+	        fi
+	        if [ "$audit_mode" = 0 ]; then
+	          echo "Setting:   Set-UID restricted on user mounted devices"
+	          funct_backup_file $check_file
+	          funct_append_file $check_file "mount * hsfs udfs ufs -o nosuid" hash
+	        fi
+	      else
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score + 1`
+	          echo "Secure:    Set-UID not restricted on user mounted devices [$score]"
+	        fi
+	        if [ "$audit_mode" = 2 ]; then
+	          funct_restore_file $check_file $restore_dir
+	        fi
+				fi
       fi
     fi
   fi
@@ -3225,32 +3103,34 @@ audit_sulogin () {
 audit_mount_nodev () {  
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/fstab"
-    if [ "$audit_mode" != "2" ]; then
-      nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
-      total=`expr $total + 1`
-      if [ "$nodev_check" = 1 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Found filesystems that should be mounted nodev [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Setting nodev on filesystems"
-          funct_backup_file $check_file
-          cat $check_file | awk '( $3 ~ /^ext[23]$/ && $2 != "/" ) { $4 = $4 ",nodev" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' > $temp_file
-          cat $temp_file > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    No filesystem that should be mounted with nodev [$score]"
-        fi
-        if [ "$audit_mode" = 2 ]; then
-          funct_restore_file $check_file $restore_dir
-        fi
-      fi
-    fi
-    audit_check_perms $check_file 0644 root root
+		if [ -e "$check_file" ]; then
+	    if [ "$audit_mode" != "2" ]; then
+	      nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
+	      total=`expr $total + 1`
+	      if [ "$nodev_check" = 1 ]; then
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score - 1`
+	          echo "Warning:   Found filesystems that should be mounted nodev [$score]"
+	        fi
+	        if [ "$audit_mode" = 0 ]; then
+	          echo "Setting:   Setting nodev on filesystems"
+	          funct_backup_file $check_file
+	          cat $check_file | awk '( $3 ~ /^ext[23]$/ && $2 != "/" ) { $4 = $4 ",nodev" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' > $temp_file
+	          cat $temp_file > $check_file
+	          rm $temp_file
+	        fi
+	      else
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score + 1`
+	          echo "Secure:    No filesystem that should be mounted with nodev [$score]"
+	        fi
+	        if [ "$audit_mode" = 2 ]; then
+	          funct_restore_file $check_file $restore_dir
+	        fi
+	      fi
+	    fi
+	    audit_check_perms $check_file 0644 root root
+		fi
   fi
 }
 
@@ -3473,34 +3353,36 @@ audit_pam_rhosts () {
     if [ "$audit_mode" = 2 ]; then
       funct_restore_file $check_file $restore_dir
     else
-      echo "Checking:  Rhost authentication disabled in $check_file"
-      pam_check=`cat $check_file | grep -v "^#" |grep "pam_rhosts_auth" |head -1 |wc -l`
-      if [ "$pam_check" = "1" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score -1`
-          echo "Warning:   Rhost authentication enabled in $check_file [$score]"
-        else
-          log_file="$work_dir$check_file"
-          if [ ! -f "$log_file" ]; then
-            echo "Saving:    File $check_file to $work_dir$check_file"
-            find $check_file | cpio -pdm $work_dir 2> /dev/null
-          fi
-          echo "Setting:   Rhost authentication to disabled in $check_file"
-          sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file
-          cat $temp_file > $check_file
-          rm $temp_file
-          if [ "$os_version" != "11" ]; then
-            pkgchk -f -n -p $check_file 2> /dev/null
-          else
-            pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
-          fi
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Rhost authentication disabled in $check_file [$score]"
-        fi
-      fi
+			if [ -f "$check_file" ]; then
+	      echo "Checking:  Rhost authentication disabled in $check_file"
+	      pam_check=`cat $check_file | grep -v "^#" |grep "pam_rhosts_auth" |head -1 |wc -l`
+	      if [ "$pam_check" = "1" ]; then
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score -1`
+	          echo "Warning:   Rhost authentication enabled in $check_file [$score]"
+	        else
+	          log_file="$work_dir$check_file"
+	          if [ ! -f "$log_file" ]; then
+	            echo "Saving:    File $check_file to $work_dir$check_file"
+	            find $check_file | cpio -pdm $work_dir 2> /dev/null
+	          fi
+	          echo "Setting:   Rhost authentication to disabled in $check_file"
+	          sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file
+	          cat $temp_file > $check_file
+	          rm $temp_file
+	          if [ "$os_version" != "11" ]; then
+	            pkgchk -f -n -p $check_file 2> /dev/null
+	          else
+	            pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+	          fi
+	        fi
+	      else
+	        if [ "$audit_mode" = 1 ]; then
+	          score=`expr $score + 1`
+	          echo "Secure:    Rhost authentication disabled in $check_file [$score]"
+	        fi
+	      fi
+			fi
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
