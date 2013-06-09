@@ -33,9 +33,20 @@ Usage
 	-u: Undo lockdown (changes made to system)
 	-h: Display usage
 	-V: Display version
+	-v: Verbose mode [used with -a and -A]
+	    [Provides more information about the audit taking place]
+
 
 Examples
 --------
+
+Run in Audit Mode:
+
+	./lunar -a
+
+Run in Audit Mode and provide more information:
+
+	./lunar -a -v
 
 Display previous backups:
 
@@ -46,6 +57,10 @@ Display previous backups:
 Restore from previous backup:
 
 	./lunar -u 21_12_2012_19_45_05
+
+List tests:
+
+	./lunar -S
 
 Only run shell based tests:
 
