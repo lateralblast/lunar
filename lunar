@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.6.2
+# Version:      1.6.3
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -18,6 +18,9 @@
 # It is based on numerous security guidelines
 # As with any system changes, the script should be vetted and
 # changed to suit the environment in which it is being used
+
+# Unless your organization is specifically using the service, disable it. 
+# The best defense against a service being exploited is to disable it.
 
 # Even if a service is set to off the script will audit the configuration
 # file so that if a service is re-enabled the configuration is secure
@@ -122,6 +125,28 @@ print_usage () {
   echo "$0 -s audit_shell_services"
   echo ""
   exit
+}
+
+# funct_verbose_message
+#
+# Print a message if verbose mode enabled
+
+funct_verbose_message () {
+  if [ "$verbose" = 1 ]; then
+    audit_text=$1
+    audit_style=$2
+    if [ "$audit_style" = "fix" ]; then
+      if [ "$audit_text" = "" ]; then
+        echo ""
+      else
+        echo "# Fix:     # $audit_text"
+      fi
+    else
+      echo ""
+      echo "# $audit_text"
+      echo ""
+    fi
+  fi
 }
 
 # check_os_release
@@ -319,6 +344,20 @@ funct_command_value () {
     if [ "$audit_mode" = 1 ]; then
       score=`expr $score - 1`
       echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" [$score]"
+      if [ "$command_name" = "routeadm" ]; then
+        if [ "$correct_value" = "disabled" ]; then
+          set_command="routeadm -d"
+        else
+          set_command="routeadm -e"
+        fi
+        funct_verbose_message "" fix
+        funct_verbose_message "$set_command $parameter_name" fix
+        funct_verbose_message "" fix
+      else
+        funct_verbose_message "" fix
+        funct_verbose_message "$set_command $parameter_name=$correct_value" fix
+        funct_verbose_message "" fix
+      fi
     else
       if [ "$audit_mode" = 0 ]; then
         echo "Setting:   $parameter_name to $correct_value"
@@ -455,6 +494,15 @@ funct_file_value () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+        if [ "$check_file" = "/etc/default/sendmail" ]; then
+          funct_verbose_message "" fix
+          funct_verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" fix
+          funct_verbose_message "" fix
+        else
+          funct_verbose_message "" fix
+          funct_verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" fix
+          funct_verbose_message "" fix
+        fi
       else
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
@@ -483,6 +531,34 @@ funct_file_value () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+          if [ "$check_parameter" != "$parameter_name" ]; then
+            if [ "$separator_value" = "tab" ]; then
+              funct_verbose_message "" fix
+              funct_verbose_message "echo -e \"$parameter_name\t$correct_value\" >> $check_file" fix
+              funct_verbose_message "" fix
+            else
+              if [ "$position" = "after" ]; then
+                funct_verbose_message "" fix
+                funct_verbose_message "cat $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" fix
+                funct_verbose_message "cat $temp_file > $check_file" fix
+                funct_verbose_message "" fix
+              else
+                funct_verbose_message "" fix
+                funct_verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" fix
+                funct_verbose_message "" fix
+              fi
+            fi
+          else
+            if [ "$check_file" = "/etc/default/sendmail" ]; then
+              funct_verbose_message "" fix
+              funct_verbose_message "sed \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" fix
+            else
+              funct_verbose_message "" fix
+              funct_verbose_message "sed \"s/^$parameter_name.*/$parameter_name$spacer$correct_value/\" $check_file > $temp_file" fix
+            fi
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "" fix
+          fi
         else
           if [ "$audit_mode" = 0 ]; then
             if [ "$separator" = "tab" ]; then
@@ -575,6 +651,10 @@ funct_disable_value () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "cat $check_file |sed 's/$parameter_name/$comment_value&' > $temp_file" fix
+          funct_verbose_message "cat $temp_file > $check_file" fix
+          funct_verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
@@ -610,6 +690,8 @@ funct_disable_value () {
   fi
 }
 
+# funct_append_file
+#
 # Code to append a file with a line
 #
 # check_file      = The name of the original file
@@ -648,6 +730,9 @@ funct_append_file () {
     if [ "$audit_mode" = 1 ]; then
       score=`expr $score - 1`
       echo "Warning:   Parameter \"$parameter\" does not exist in $check_file [$score]"
+      funct_verbose_message "" fix
+      funct_verbose_message "echo \"$parameter\" >> $check_file" fix
+      funct_verbose_message "" fix
     else
       if [ "$audit_mode" = 0 ]; then
         echo "Setting:   Parameter \"$parameter_name\" in $check_file"
@@ -671,6 +756,9 @@ funct_append_file () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Parameter \"$parameter\" does not exist in $check_file [$score]"
+        funct_verbose_message "" fix
+        funct_verbose_message "echo \"$parameter\" >> $check_file" fix
+        funct_verbose_message "" fix
       else
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Parameter \"$parameter\" in $check_file"
@@ -696,6 +784,8 @@ funct_append_file () {
   fi
 }
 
+# funct_file_exists
+#
 # Check to see a file exists and create it or delete it
 # 
 # check_file    = File to check fo
@@ -768,6 +858,8 @@ if [ `expr "$args" : "\-"` != 1 ]; then
   print_usage
 fi
 
+# funct_replace_value
+#
 # Replace a value in a file with the correct value
 #
 # As there is no interactive sed on Solaris, ie sed -i
@@ -811,6 +903,10 @@ funct_replace_value () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   File $check_file contains \"$check_value\" rather than \"$correct_value\" [$score]"
+        funct_verbose_message "" fix
+        funct_verbose_message "sed -e \"s/$new_check_value/$new_correct_value/\" < $check_file > $temp_file" fix
+        funct_verbose_message "cp $temp_file $check_file" fix
+        funct_verbose_message "" fix
       fi
       if [ "$audit_mode" = 0 ]; then
         funct_backup_file $check_file
@@ -837,6 +933,8 @@ funct_replace_value () {
   fi
 }
 
+# apply_latest_patches
+#
 # Code to apply patches
 # Nothing done with this yet
 
@@ -844,12 +942,12 @@ apply_latest_patches () {
   :
 }
 
-# Check is a packae is installed
+# funct_check_pkg
+#
+# Check is a package is installed
 #
 # Install package if it's not installed and in the pkg dir under the base dir
 # Needs some more work
-#
-# pkg_name  = Name of package to search for
 
 funct_check_pkg () {
   if [ "$os_name" = "SunOS" ]; then
@@ -869,13 +967,22 @@ funct_check_pkg () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Package $pkg_name is not installed [$score]"
+        if [ "$os_version" = "11" ]; then
+          funct_verbose_message "" fix
+          funct_verbose_message  "pkgadd $pkg_name" fix
+          funct_verbose_message "" fix
+        else
+          funct_verbose_message "" fix
+          funct_verbose_message  "pkgadd -d $base_dir/pkg $pkg_name" fix
+          funct_verbose_message "" fix
+        fi
       fi
       if [ "$audit_mode" = 0 ]; then
         pkg_dir="$base_dir/pkg/$pkg_name"
         if [ -d "$pkg_dir" ]; then
           echo "Installing: $pkg_name"
           if [ "$os_version" = "11" ]; then
-            :
+            pkgadd $pkg_name
           else
             pkgadd -d $base_dir/pkg $pkg_name
             pkg_check=`pkginfo $1`
@@ -903,23 +1010,7 @@ funct_check_pkg () {
   fi
 }
 
-# funct_verbose_message
-#
-# Print a message if verbose mode enabled
-
-funct_verbose_message () {
-  if [ "$verbose" = "1" ]; then
-    audit_title=$1
-    echo ""
-    echo "# $audit_title:"
-    echo ""
-  fi
-}
-
 # audit_encryption_kit
-#
-# Install Solaris Encryption Kit on Solaris 10 if it isn't installed
-# Needs package installation code done
 #
 # The Solaris 10 Encryption Kit contains kernel modules that implement 
 # various encryption algorithms for IPsec and Kerberos, utilities that 
@@ -934,18 +1025,6 @@ funct_verbose_message () {
 #
 # This action is not needed for systems running Solaris 10 08/07 and newer
 # as the Solaris 10 Encryption Kit is installed by default.
-#
-# Fix (Solaris 10):
-#
-# <code> # unzip -qq sol-10-encrypt-GA-iso.zip </code>
-# <code> # lofiadm -a `pwd`/sol-10-encrypt-GA.iso /dev/lofi/1 </code>
-# <code> # mount -F hsfs -o ro /dev/lofi/1 /mnt </code>
-# <code> # mount -F hsfs -o ro /dev/lofi/1 /mnt </code>
-# <code> # cd /mnt/Encryption_10/`uname -p`/Packages </code>
-# <code> # pkgadd -d . all </code>
-# <code> # cd / </code>
-# <code> # umount /mnt </code>
-# <code> # lofiadm -d /dev/lofi/1 </code>
 
 audit_encryption_kit () {
   if [ "$os_name" = "SunOS" ]; then
@@ -960,14 +1039,14 @@ audit_encryption_kit () {
   fi
 }
 
-# audit_svcadm_service
+# funct_svcadm_service
 # 
 # Function to audit a svcadm service and enable or disable
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enabled/disabled
 
-audit_svcadm_service () {
+funct_svcadm_service () {
   if [ "$os_name" = "SunOS" ]; then
     service_name=$1
     correct_status=$2
@@ -984,6 +1063,10 @@ audit_svcadm_service () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Service $service_name is enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "inetadm -d $service_name" fix
+          funct_verbose_message "svcadm refresh $service_name" fix
+          funct_verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Service $service_name to $correct_status"
@@ -1020,14 +1103,14 @@ audit_svcadm_service () {
   fi
 }
 
-# audit_initd_service
+# funct_initd_service
 #
 # Code to audit an init.d service, and enable, or disable service
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enabled/disabled
 
-audit_initd_service () {
+funct_initd_service () {
   if [ "$os_name" = "SunOS" ]; then
     service_name=$1
     correct_status=$2
@@ -1057,6 +1140,10 @@ audit_initd_service () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Service $service_name is not $correct_status [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "mv /etc/init.d/$service_name /etc/init.d/_$service_name" fix
+          funct_verbose_message "/etc/init.d/$service_name stop" fix
+          funct_verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             log_file="$work_dir/$log_file"
@@ -1124,6 +1211,15 @@ audit_xinetd_service () {
           if [ "$audit_mode" = 1 ]; then	
             score=`expr $score - 1`
             echo "Warning:   Service $service_name does not have $parameter_name set to $correct_status [$score]"
+            if [ "$linux_dist" = "redhat" ]; then
+              command_line="chkconfig $service_name $correct_status"
+            fi
+            if [ "$linux_dist" = "debian" ]; then
+              command_line="update-rc.d $service_name $correct_status"
+            fi
+            funct_verbose_message "" fix
+            funct_verbose_message "$command_line" fix
+            funct_verbose_message "" fix
           else
             if [ "$audit_mode" = 0 ]; then
               log_file="$work_dir/$log_file"
@@ -1200,6 +1296,10 @@ funct_chkconfig_service () {
           if [ "$audit_mode" = 1 ]; then	
             score=`expr $score - 1`
             echo "Warning:   Service $service_name at run level $service_level is not $correct_status [$score]"
+            command_line="$chk_config --level $service_level $service_name $correct_status"
+            funct_verbose_message "" fix
+            funct_verbose_message "$command_line" fix
+            funct_verbose_message "" fix
           else
             if [ "$audit_mode" = 0 ]; then
               log_file="$work_dir/$log_file"
@@ -1238,22 +1338,22 @@ funct_chkconfig_service () {
   fi
 }
 
-# audit_service
+# funct_service
 #
 # Service audit routine wrapper, sends to appropriate function based on service type
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enable/disabled
 
-audit_service () {
+funct_service () {
   if [ "$os_name" = "SunOS" ]; then
     service_name=$1
     correct_status=$2
     if [ `expr "$service_name" : "svc:"` = 4 ]; then
-      audit_svcadm_service $service_name $correct_status
+      funct_svcadm_service $service_name $correct_status
     else
-      audit_initd_service $service_name $correct_status
-      audit_inetd_service $service_name $correct_status
+      funct_initd_service $service_name $correct_status
+      funct_inetd_service $service_name $correct_status
     fi
   fi
 }
@@ -1264,20 +1364,14 @@ audit_service () {
 #
 # The ToolTalk service enables independent CDE applications to communicate
 # with each other without having direct knowledge of each other. 
-#
-# Unless your organization is specifically using the service, disable it. 
-# The best defense against a service being exploited is to disable it.
-#
-# Fix (Solaris 10):
-#
-# <code> # svcadm disable svc:/network/rpc/cde-ttdbserver:tcp </code>
+# Not required unless running CDE applications.
 
 audit_cde_ttdb () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "CDE ToolTalk Database Server"
       service_name="svc:/network/rpc/cde-ttdbserver:tcp"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1287,20 +1381,14 @@ audit_cde_ttdb () {
 # Local CDE Calendar Manager
 #
 # CDE Calendar Manager is an appointment and resource scheduling tool. 
-#
-# Unless your organization is specifically using the service, disable it. 
-# The best defense against a service being exploited is to disable it.
-#
-# Fix (Solaris 10):
-#
-# <code> # svcadm disable svc:/network/rpc/cde-calendar-manager:default </code>
+# Not required unless running CDE applications.
 
 audit_cde_cal () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Local CDE Calendar Manager"
       service_name="svc:/network/rpc/cde-calendar-manager:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1308,36 +1396,32 @@ audit_cde_cal () {
 
 # audit_cde_spc
 #
-# Subprocess control
+# CDE Subprocess control.
 #
-# Fix (Solaris 10):
-#
-# <code> # svcadm disable svc:/network/cde-spc:default </code>
+# Not required unless running CDE applications.
 
 audit_cde_spc () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Subprocess control"
       service_name="svc:/network/cde-spc:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_opengl
 #
-# Disable OpenGL
+# OpenGL
 #
-# Fix (Solaris 10):
-#
-# <code> # svcadm disable svc:/application/opengl/ogl-select:default </code>
+# Not required unless running a GUI. Not required on a server.
 
 audit_opengl () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "OpenGL"
       service_name="svc:/application/opengl/ogl-select:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1346,16 +1430,14 @@ audit_opengl () {
 #
 # CDE Print
 #
-# Fix (Solaris 10):
-#
-# <code> # svcadm disable svc:/application/cde-printinfo:default </code>
+# Not required unless running CDE applications.
 
 audit_cde_print () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "CDE Print"
       service_name="svc:/application/cde-printinfo:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1364,16 +1446,14 @@ audit_cde_print () {
 #
 # PPD cache
 #
-# Fix (Solaris 10):
-#
-# <code> # svcadm disable svc:/application/print/ppd-cache-update:default </code>
+# Cache for Printer Descriptions. Not required unless using print services.
 
 audit_ppd_cache () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "PPD Cache"
       service_name="svc:/application/print/ppd-cache-update:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1381,6 +1461,9 @@ audit_ppd_cache () {
 # audit_gdm_conf
 #
 # Audit gdm.conf
+#
+# Gnome Display Manager should not be used on a server, but if it is it
+# should be locked down to disable root access.
 
 audit_gdm_conf () {
   if [ "$os_name" = "Linux" ]; then
@@ -1397,8 +1480,20 @@ audit_gdm_conf () {
 
 # audit_xlogin
 #
-# Local Graphical Login Environment
-# Turn off XDMCP listening
+# The CDE login service provides the capability of logging into the system 
+# using  Xwindows. XDMCP provides the capability of doing this remotely.
+# If XDMCP remote session access to a machine is not required at all, 
+# but graphical login access for the console is required, then
+# leave the service in local-only mode. 
+#
+# Most modern servers are rack mount so you will not be able to log
+# into the console using X Windows anyway.
+# Disabling these does not prevent support staff from running
+# X Windows applications remotely over SSH.
+#
+# Running these commands will kill  any active graphical sessions 
+# on the console or using XDMCP. It will not kill any X Windows
+# applications running via SSH.
 
 audit_xlogin () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1407,17 +1502,17 @@ audit_xlogin () {
     fi
     if [ "$os_version" = "10" ]; then
       service_name="svc:/application/graphical-login/cde-login"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/gdm2-login"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/application/graphical_login/gdm:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       service_name="dtlogin"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -1429,12 +1524,17 @@ audit_xlogin () {
        greet_check=`cat $check_file |grep 'private system' |wc -l`
        if [ "$greet_check" != 1 ]; then
          echo "Checking:  Checking $check_file for security message"
+         greet_mesg="This is a private system --- Authorized use only!"
          if [ "$audit_mode" = 1 ]; then
            score=`expr $score - 1`
            echo "Warning:   File $check_file does not have a security message [$score]"
+           funct_verbose_message "" fix
+           funct_verbose_message "cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" > $temp_file" fix
+           funct_verbose_message "cat $temp_file > $check_file" fix
+           funct_verbose_message "rm $temp_file" fix
+           funct_verbose_message "" fix
          else
            echo "Setting:   Security message in $check_file"
-           greet_mesg="This is a private system --- Authorized use only!"
            funct_backup_file $check_file
            cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue="$greet_mesg" > $temp_file
            cat $temp_file > $check_file
@@ -1454,14 +1554,19 @@ audit_xlogin () {
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
         greet_check= `cat $check_file |grep 'private system' |wc -l`
+        greet_mesg="This is a private system --- Authorized USE only!"
         if [ "$greet_check" != 1 ]; then
            echo "Checking:  File $check_file for security message"
            if [ "$audit_mode" = 1 ]; then
              score=`expr $score - 1`
              echo "Warning:   File $check_file does not have a security message [$score]"
+             funct_verbose_message "" fix
+             funct_verbose_message "cat $check_file |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"$greet_mesg\" > $temp_file" fix
+             funct_verbose_message "cat $temp_file > $check_file" fix
+             funct_verbose_message "rm $temp_file" fix
+             funct_verbose_message "" fix
            else
              echo "Setting:   Security message in $check_file"
-             greet_mesg="This is a private system --- Authorized USE only!"
              funct_backup_file $check_file
              cat $check_file |awk '/GreetString=/ { print "GreetString=" GreetString; next }; { print }' GreetString="$greet_mesg" > $temp_file
              cat $temp_file > $check_file
@@ -1486,6 +1591,12 @@ audit_xlogin () {
            if [ "$audit_mode" = 1 ]; then
              score=`expr $score - 1`
              echo "Warning:   X11 nolisten directive not found in $check_file [$score]"
+             funct_verbose_message "" fix
+             funct_verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
+             funct_verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
+             funct_verbose_message "cat $temp_file > $check_file" fix
+             funct_verbose_message "rm $temp_file" fix
+             funct_verbose_message "" fix
            else
              echo "Setting:   Security message in $check_file"
              funct_backup_file $check_file
@@ -1508,25 +1619,38 @@ audit_xlogin () {
 # audit_sendmail_daemon
 #
 # Local sendmail Service
-# Need to add code to disable relay if enabled
+#
+# If sendmail is set to local only mode, users on remote systems cannot 
+# connect to the sendmail daemon. This eliminates the possibility of a 
+# remote exploit attack against sendmail. Leaving sendmail in local-only 
+# mode permits mail to be sent out from the local system. 
+# If the local system will not be processing or sending any mail, 
+# disable the sendmail service. If you disable sendmail for local use, 
+# messages sent to the root account, such as for cron job output or audit 
+# daemon warnings, will fail to be delivered properly. 
+# Another solution often used is to disable sendmail's local-only mode and 
+# to have a cron job process all mail that is queued on the local system and 
+# send it to a relay host that is defined in the sendmail.cf file. 
+# It is recommended that sendmail be left in localonly mode unless there is 
+# a specific requirement to disable it.
 
 audit_sendmail_daemon () {
   if [ "$os_name" = "SunOS" ]; then
     funct_verbose_message "Sendmail Daemon"
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       service_name="svc:/network/smtp:sendmail"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       service_name="sendmail"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "9" ] || [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       check_file="/etc/default/sendmail"
       funct_file_value $check_file QUEUEINTERVAL eq 15m hash
       funct_append_file $check_file "MODE=" hash
     else
-      audit_initd_service sendmail disable
+      funct_initd_service sendmail disable
       check_file="/var/spool/cron/crontabs/root"
       check_string="0 * * * * /usr/lib/sendmail -q"
       funct_append_file $check_file $check_string has
@@ -1553,6 +1677,11 @@ audit_sendmail_daemon () {
           if [ "$audit_mode" = "1" ]; then
             score=`expr $score - 1`
             echo "Warning:   Mail transfer agent is not running in local-only mode [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "cp $check_file $temp_file" fix
+            funct_verbose_message "cat $temp_file |awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA\"; next} { print }' > $check_file" fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file 
@@ -1577,13 +1706,16 @@ audit_sendmail_daemon () {
 # audit_webconsole
 #
 # Local Web Console
+#
+# The Java Web Console (smcwebserver(1M)) provides a common location 
+# for users to access web-based system management applications. 
 
 audit_webconsole () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Web Console"
       service_name="svc:/system/webconsole:console"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1591,13 +1723,21 @@ audit_webconsole () {
 # audit_wbem
 #
 # Local WBEM
+#
+# Web-Based Enterprise Management (WBEM) is a set of management and Internet 
+# technologies. Solaris WBEM Services software provides WBEM services in the 
+# Solaris OS, including secure access and manipulation of management data. 
+# The software includes a Solaris platform provider that enables management 
+# applications to access information about managed resources such as devices 
+# and software in the Solaris OS. WBEM is used by the Solaris Management 
+# Console (SMC).
 
 audit_wbem () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "WBEM"
       service_name="svc:/application/management/wbem"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1605,17 +1745,26 @@ audit_wbem () {
 # audit_print
 #
 # Local BSD Print Protocol Adapter
+#
+# RFC 1179 describes the Berkeley system based line printer protocol. 
+# The service is used to control local Berkeley system based print spooling. 
+# It listens on port 515 for incoming print jobs. 
+# Secure by default limits access to the line printers by only allowing 
+# print jobs to be initiated from the local system. 
+# If the machine does not have locally attached printers, 
+# disable this service. 
+# Note that this service is not required for printing to a network printer.
 
 audit_print () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Printing Daemons"
       service_name="svc:/application/print/ipp-listener:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/print/rfc1179"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/print/server:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1623,13 +1772,21 @@ audit_print () {
 # audit_keyserv
 #
 # RPC Encryption Key
+#
+# The keyserv process is only required for sites that are using 
+# Oracle's Secure RPC mechanism. The most common uses for Secure RPC on 
+# Solaris machines are NIS+ and "secure NFS", which uses the Secure RPC 
+# mechanism to provide higher levels of security than the standard NFS 
+# protocols. Do not confuse "secure NFS" with sites that use Kerberos 
+# authentication as a mechanism for providing higher levels of NFS security. 
+# "Kerberized" NFS does not require the keyserv process to be running.
 
 audit_keyserv () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "RPC Encryption Key"
       service_name="svc:/network/rpc/keyserv"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1637,6 +1794,12 @@ audit_keyserv () {
 # audit_nis_server
 #
 # NIS Server Daemons
+#
+# These daemons are only required on systems that are acting as an 
+# NIS server for the local site. Typically there are only a small 
+# number of NIS servers on any given network. 
+# These services are disabled by default unless the system has been 
+# previously configured to act as a NIS server.
 
 audit_nis_server () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1645,19 +1808,19 @@ audit_nis_server () {
     fi
     if [ "$os_version" = "10" ]; then
       service_name="svc:/network/nis/server"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nis/passwd"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nis/update"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nis/xfr"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/network/nis/server"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nis/domain"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -1672,13 +1835,18 @@ audit_nis_server () {
 # audit_nis_client
 #
 # NIS Client Daemons
+#
+# If the local site is not using the NIS naming service to distribute 
+# system and user configuration information, this service may be disabled. 
+# This service is disabled by default unless the NIS service has been 
+# configured on the system.
 
 audit_nis_client () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "NIS Client Daemons"
       service_name="svc:/network/nis/client"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -1692,13 +1860,19 @@ audit_nis_client () {
 # audit_nisplus
 #
 # NIS+ Daemons
+#
+# NIS+ was designed to be a more secure version of NIS. However, 
+# the use of NIS+ has been deprecated by Oracle and customers are 
+# encouraged to use LDAP as an alternative naming service. 
+# This service is disabled by default unless the NIS+ service has 
+# been configured on the system.
 
 audit_nisplus () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "NIS+ Daemons"
       service_name="svc:/network/rpc/nisplus"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1706,13 +1880,20 @@ audit_nisplus () {
 # audit_ldap_cache
 #
 # LDAP Cache Manager
+#
+# If the local site is not currently using LDAP as a naming service, 
+# there is no need to keep LDAP-related daemons running on the local 
+# machine. This service is disabled by default unless LDAP client 
+# services have been configured on the system. 
+# If a naming service is required, users are encouraged to use LDAP 
+# instead of NIS/NIS+.
 
 audit_ldap_cache () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "LDAP Client"
       service_name="svc:/network/ldap/client"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -1726,14 +1907,17 @@ audit_ldap_cache () {
 # audit_kerberos_tgt
 #
 # Kerberos TGT Expiration Warning
-# Need to add code to check if kerberos is being used
+#
+# While Kerberos can be a security enhancement, if the local site is 
+# not currently using Kerberos then there is no need to have the 
+# Kerberos TGT expiration warning enabled.
 
 audit_kerberos_tgt () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Kerberos Ticket Warning"
       service_name="svc:/network/security/ktkt_warn"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1742,13 +1926,27 @@ audit_kerberos_tgt () {
 #
 # Generic Security Services (GSS) Daemons
 # Need to add code to check if kerberos is being used
+#
+# The GSS API is a security abstraction layer that is designed to make it 
+# easier for developers to integrate with different authentication schemes. 
+# It is most commonly used in applications for sites that use Kerberos for 
+# network authentication, though it can also allow applications to 
+# interoperate with other authentication schemes.
+# Note: Since this service uses Oracle's standard RPC mechanism, it is 
+# important that the system's RPC portmapper (rpcbind) also be enabled 
+# when this service is turned on. This daemon will be taken offline if 
+# rpcbind is disabled.
+#
+# GSS does not expose anything external to the system as it is configured 
+# to use TLI (protocol = ticotsord) by default. However, unless your 
+# organization is using the GSS API, disable it.
 
 audit_gss () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Generic Security Services"
       service_name="svc:/network/rpc/gss"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1756,7 +1954,22 @@ audit_gss () {
 # audit_volfs
 #
 # Volume Manager
-# Need to add code to see if something is mounted and warn
+#
+# The volume manager automatically mounts external devices for users whenever 
+# the device is attached to the system. These devices include CD-R, CD-RW, 
+# floppies, DVD, USB and 1394 mass storage devices. See the vold (1M) manual 
+# page for more details.
+# Note: Since this service uses Oracle's standard RPC mechanism, it is 
+# important that the system's RPC portmapper (rpcbind) also be enabled 
+# when this service is turned on.
+#
+# Allowing users to mount and access data from removable media devices makes 
+# it easier for malicious programs and data to be imported onto your network. 
+# It also introduces the risk that sensitive data may be transferred off the 
+# system without a log record. Another alternative is to edit the 
+# /etc/vold.conf file and comment out any removable devices that you do not 
+# want users to be able to mount.
+
 
 audit_volfs () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1765,19 +1978,19 @@ audit_volfs () {
     fi
     if [ "$os_version" = "10" ]; then
       service_name="svc:/system/filesystem/volfs"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/system/filesystem/rmvolmgr"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       service_name="svc:/network/rpc/smserver"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       service_name="volmgt"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1786,6 +1999,14 @@ audit_volfs () {
 #
 # Samba Support
 # Need to add code to see if samba is being used
+#
+# Solaris includes the popular open source Samba server for providing file 
+# and print services to Windows-based systems. This allows a Solaris system 
+# to act as a file or print server on a Windows network, and even act as a 
+# Domain Controller (authentication server) to older Windows operating 
+# systems. Note that on Solaris releases prior to 11/06 the file 
+# /etc/sfw/smb.conf does not exist and the service will not be started by 
+# default even on newer releases.
 
 audit_samba () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1795,10 +2016,10 @@ audit_samba () {
     if [ "$os_version" = "10" ]; then
       if [ $os_update -ge 4 ]; then
         service_name="svc:/network/samba"
-        audit_service $service_name disabled
+        funct_service $service_name disabled
       else
         service_name="samba"
-        audit_service $service_name disabled
+        funct_service $service_name disabled
       fi
     fi
   fi
@@ -1813,14 +2034,26 @@ audit_samba () {
 # audit_autofs
 #
 # Automount Daemon
-# Need to add code to see if automounter is in use and warn
+#
+# The automount daemon is normally used to automatically mount NFS file systems 
+# from remote file servers when needed. However, the automount daemon can also 
+# be configured to mount local (loopback) file systems as well, which may 
+# include local user home directories, depending on the system configuration. 
+# Sites that have local home directories configured via the automount daemon 
+# in this fashion will need to ensure that this daemon is running for Oracle's 
+# Solaris Management Console administrative interface to function properly. 
+# If the automount daemon is not running, the mount points created by SMC will 
+# not be mounted.
+# Note: Since this service uses Oracle's standard RPC mechanism, it is important 
+# that the system's RPC portmapper (rpcbind) also be enabled when this service 
+# is turned on.
 
 audit_autofs () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Autofs"
       service_name="svc:/system/filesystem/autofs"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -1835,6 +2068,18 @@ audit_autofs () {
 #
 # Apache Services
 # Need to add code to see if apache is in use and warn
+#
+# The action in this section describes disabling the Apache 1.x and 2.x web 
+# servers provided with Solaris 10. Both services are disabled by default. 
+# Run control scripts for Apache 1 and the NCA web servers still exist, 
+# but the services will only be started if the respective configuration 
+# files have been set up appropriately, and these configuration files do not 
+# exist by default.
+# Even if the system is a Web server, the local site may choose not to use 
+# the Web server provided with Solaris in favor of a locally developed and 
+# supported Web environment. If the machine is a Web server, the administrator 
+# is encouraged to search the Web for additional documentation on Web server 
+# security.
 
 audit_apache () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1843,15 +2088,15 @@ audit_apache () {
     fi
     if [ "$os_version" = "10" ]; then
       service_name="svc:/network/http:apache2"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/network/http:apache22"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       service_name="apache"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -1866,21 +2111,27 @@ audit_apache () {
 # audit_svm
 #
 # Solaris Volume Manager Services
+#
+# The Solaris Volume Manager, formerly known as Solstice DiskSuite, provides 
+# functionality for managing disk storage, disk arrays, etc. However, many 
+# systems without large storage arrays do not require that these services be 
+# enabled or may be using an alternate volume manager rather than the bundled 
+# SVM functionality. This service is disabled by default in the OS.
 
 audit_svm () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Solaris Volume Manager Daemons"
       service_name="svc:/system/metainit"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/system/mdmonitor"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       if [ $os_update -lt 4 ]; then
         service_name="svc:/platform/sun4u/mpxio-upgrade"
       else
         service_name="svc:/system/device/mpxio-upgrade"
       fi
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1888,19 +2139,34 @@ audit_svm () {
 # audit_svm_gui
 #
 # Solaris Volume Manager GUI
+#
+# The Solaris Volume Manager, formerly Solstice DiskSuite, provides software 
+# RAID capability for Solaris systems. This functionality can either be 
+# controlled via the GUI administration tools provided with the operating 
+# system, or via the command line. However, the GUI tools cannot function 
+# without several daemons listed in Item 2.3.12 Disable Solaris Volume 
+# Manager Services enabled. If you have disabled Solaris Volume Manager 
+# Services, also disable the Solaris Volume Manager GUI.
+# Note: Since these services use Oracle's standard RPC mechanism, it is 
+# important that the system's RPC portmapper (rpcbind) also be enabled 
+# when these services are turned on.
+#
+# Since the same functionality that is in the GUI is available from the 
+# command line interface, administrators are strongly urged to leave these 
+# daemons disabled and administer volumes directly from the command line.
 
 audit_svm_gui () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Solaris Volume Manager GUI Daemons"
       service_name="svc:/network/rpc/mdcomm"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/meta"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/metamed"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/metamh"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1908,6 +2174,16 @@ audit_svm_gui () {
 # audit_svccfg_value
 #
 # Local RPC Port Mapping Service
+#
+# Remote Procedure Calls (RPC) is used by many services within the Solaris 10 
+# operating system. Some of these services allow external connections to use 
+# the service (e.g. NFS, NIS).
+#
+# RPC-based services are typically deployed to use very weak or non-existent 
+# authentication and yet may share very sensitive information. Unless one of 
+# the services is required on this machine, it is best to disable RPC-based 
+# tools completely. If you are unsure whether or not a particular third-party 
+# application requires RPC services, consult with the application vendor.
 
 audit_svccfg_value () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1938,6 +2214,10 @@ audit_svccfg_value () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Service $service_name $service_property not set to $correct_value [$score]"
+        command_line="svccfg -s $service_name setprop $service_property = $correct_value"
+        funct_verbose_message "" fix
+        funct_verbose_message "$command_line" fix
+        funct_verbose_message "" fix
       else
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   $service_name $service_propery to $correct_value"
@@ -1958,8 +2238,20 @@ audit_svccfg_value () {
 
 # audit_rpc_bind
 #
-# RPC bind on Solaris 11
-# Check that rpc bind has tcp wrappers enable in case it's turned on
+# RPC bind on Solaris 10 and 11
+#
+# The rpcbind utility is a server that converts RPC program numbers into 
+# universal addresses. It must be running on the host to be able to make 
+# RPC calls on a server on that machine.
+# When an RPC service is started, it tells rpcbind the address at which it is 
+# listening, and the RPC program numbers it is prepared to serve. When a client 
+# wishes to make an RPC call to a given program number, it first contacts 
+# rpcbind on the server machine to determine the address where RPC requests 
+# should be sent.
+# The rpcbind utility should be started before any other RPC service. Normally, 
+# standard RPC servers are started by port monitors, so rpcbind must be started 
+# before port monitors are invoked.
+# Check that rpc bind has tcp wrappers enabled in case it's turned on.
 
 audit_rpc_bind () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1972,7 +2264,7 @@ audit_rpc_bind () {
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/network/rpc/bind"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -1990,6 +2282,20 @@ secure_baseline () {
 # audit_tcp_wrappers
 #
 # Configure TCP Wrappers
+#
+# TCP Wrappers is a host-based access control system that allows administrators 
+# to control who has access to various network services based on the IP address 
+# of the remote end of the connection. TCP Wrappers also provide logging 
+# information via syslog about both successful and unsuccessful connections. 
+# Rather than enabling TCP Wrappers for all services with "inetadm -M ...", 
+# the administrator has the option of enabling TCP Wrappers for individual 
+# services with "inetadm -m <svcname> tcp_wrappers=TRUE", where <svcname> is 
+# the name of the specific service that uses TCP Wrappers. 
+#
+# TCP Wrappers provides more granular control over which systems can access 
+# services which limits the attack vector. The logs show attempted access to 
+# services from non-authorized systems, which can help identify unauthorized 
+# access attempts. 
 
 audit_tcp_wrappers () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2054,6 +2360,16 @@ audit_tcp_wrappers () {
 #
 # Modify Network Parameters
 # Checks and sets ndd values
+#
+# Network device drivers have parameters that can be set to provide stronger 
+# security settings, depending on environmental needs. 
+#
+# The tcp_extra_priv_ports_add parameter adds a non privileged port to the 
+# privileged port list.
+# Lock down dtspcd(8) (CDE Subprocess Control Service). This optional service 
+# is seldom used. It has historically been associated with malicious scans. 
+# Making it a privileged port prevents users from opening up the service on a 
+# Solaris machine.
 
 audit_ndd_value () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2093,14 +2409,18 @@ audit_ndd_value () {
         echo "Checking:  NDD $ndd_name $ndd_property"
       fi
       if [ "$current_value" -ne "$correct_value" ]; then
+        command_line="ndd -set $ndd_name $ndd_property $correct_value"
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   NDD \"$ndd_name $ndd_property\" not set to \"$correct_value\" [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "$command_line" fix
+          funct_verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   NDD \"$ndd_name $ndd_property\" to \"$correct_value\""
             echo "$ndd_name,$ndd_property,$correct_value" >> $log_file
-            ndd -set $ndd_name $ndd_property $correct_value
+            `$command_line`
           fi
         fi
       else
@@ -2118,6 +2438,129 @@ audit_ndd_value () {
 # audit_kernel_params
 #
 # Code to audit ndd values and create init script so change survives a reboot
+#
+# Network device drivers have parameters that can be set to provide stronger 
+# security settings, depending on environmental needs. This section describes 
+# modifications to network parameters for IP, ARP and TCP.
+# The settings described in this section meet most functional needs while 
+# providing additional security against common network attacks. However, 
+# it is important to understand the needs of your particular environment 
+# to determine if these settings are appropriate for you.
+#
+# The ip_forward_src_routed and ip6_forward_src_routed parameters control 
+# whether IPv4/IPv6 forwards packets with source IPv4/IPv6 routing options
+# Keep this parameter disabled to prevent denial of service attacks through 
+# spoofed packets.
+#
+# The ip_forward_directed_broadcasts parameter controls whether or not Solaris 
+# forwards broadcast packets for a specific network if it is directly connected 
+# to the machine.
+# The default value of 1 causes Solaris to forward broadcast packets. 
+# An attacker could send forged packets to the broadcast address of a remote 
+# network, resulting in a broadcast flood. Setting this value to 0 prevents 
+# Solaris from forwarding these packets. Note that disabling this parameter 
+# also disables broadcast pings.
+#
+# The ip_respond_to_timestamp parameter controls whether or not to respond to 
+# ICMP timestamp requests.
+# Reduce attack surface by restricting a vector for host discovery.
+#
+# The ip_respond_to_timestamp_broadcast parameter controls whether or not to 
+# respond to ICMP broadcast timestamp requests.
+# Reduce attack surface by restricting a vector for bulk host discovery.
+#
+# The ip_respond_to_address_mask_broadcast parameter controls whether or not 
+# to respond to ICMP netmask requests, typically sent by diskless clients when 
+# booting.
+# An attacker could use the netmask information to determine network topology. 
+# The default value is 0.
+#
+# The ip6_send_redirects parameter controls whether or not IPv6 sends out 
+# ICMPv6 redirect messages.
+# A malicious user can exploit the ability of the system to send ICMP redirects 
+# by continually sending packets to the system, forcing the system to respond 
+# with ICMP redirect messages, resulting in an adverse impact on the CPU and 
+# performance of the system.
+#
+# The ip_respond_to_echo_broadcast parameter controls whether or not IPv4 
+# responds to a broadcast ICMPv4 echo request.
+# Responding to echo requests verifies that an address is valid, which can aid 
+# attackers in mapping out targets. ICMP echo requests are often used by 
+# network monitoring applications.
+#
+# The ip6_respond_to_echo_multicast and ip_respond_to_echo_multicast parameters 
+# control whether or not IPv6 or IPv4 responds to a multicast IPv6 or IPv4 echo 
+# request.
+# Responding to multicast echo requests verifies that an address is valid, 
+# which can aid attackers in mapping out targets.
+#
+# The ip_ire_arp_interval parameter determines the intervals in which Solaris 
+# scans the IRE_CACHE (IP Resolved Entries) and deletes entries that are more 
+# than one scan old. This interval is used for solicited arp entries, not 
+# un-solicited which are handled by arp_cleanup_interval.
+# This helps mitigate ARP attacks (ARP poisoning). Consult with your local 
+# network team for additional security measures in this area, such as using 
+# static ARP, or fixing MAC addresses to switch ports.
+#
+# The ip_ignore_redirect and ip6_ignore_redirect parameters determine if 
+# redirect messages will be ignored. ICMP redirect messages cause a host to 
+# re-route packets and could be used in a DoS attack. The default value for 
+# this is 0. Setting this parameter to 1 causes redirect messages to be 
+# ignored.
+# IP redirects should not be necessary in a well-designed, well maintained 
+# network. Set to a value of 1 if there is a high risk for a DoS attack. 
+# Otherwise, the default value of 0 is sufficient.
+#
+# The ip_strict_dst_multihoming and ip6_strict_dst_multihoming parameters 
+# determines whether a packet arriving on a non -forwarding interface can be 
+# accepted for an IP address that is not explicitly configured on that 
+# interface. If ip_forwarding is enabled, or xxx:ip_forwarding (where xxx is 
+# the interface name) for the appropriate interfaces is enabled, then this 
+# parameter is ignored because the packet is actually forwarded.
+# Set this parameter to 1 for systems that have interfaces that cross strict 
+# networking domains (for example, a firewall or a VPN node).
+#
+# The ip_send_redirects parameter controls whether or not IPv4 sends out 
+# ICMPv4 redirect messages.
+# A malicious user can exploit the ability of the system to send ICMP 
+# redirects by continually sending packets to the system, forcing the system 
+# to respond with ICMP redirect messages, resulting in an adverse impact on 
+# the CPU performance of the system.
+#
+# The arp_cleanup_interval parameter controls the length of time, in 
+# milliseconds, that an unsolicited Address Resolution Protocal (ARP) 
+# request remains in the ARP cache.
+# If unsolicited ARP requests are allowed to remain in the ARP cache for long 
+# periods an attacker could fill up the ARP cache with bogus entries. 
+# Set this parameter to 60000 ms (1 minute) to reduce the effectiveness of ARP 
+# attacks. The default value is 300000.
+#
+# The tcp_rev_src_routes parameter determines if TCP reverses the IP source 
+# routing option for incoming connections. If set to 0, TCP does not reverse 
+# IP source. If set to 1, TCP does the normal reverse source routing. 
+# The default setting is 0.
+# If IP source routing is needed for diagnostic purposes, enable it. 
+# Otherwise leave it disabled.
+#
+# The tcp_conn_req_max_q0 parameter determines how many half-open TCP 
+# connections can exist for a port. This setting is closely related with 
+# tcp_conn_req_max_q.
+# It is necessary to control the number of completed connections to the system 
+# to provide some protection against Denial of Service attacks. Note that the 
+# value of 4096 is a minimum to establish a good security posture for this 
+# setting. In environments where connections numbers are high, such as a busy 
+# webserver, this value may need to be increased.
+#
+# The tcp_conn_req_max_q parameter determines the maximum number of incoming 
+# connections that can be accepted on a port. This setting is closely related 
+# with tcp_conn_req_max_q0.
+# Restricting the number of "half open" connections limits the damage of DOS 
+# attacks where the attacker floods the network with "SYNs". Having this split 
+# from the tcp_conn_req_max_q parameter allows the administrator some discretion 
+# in this area.
+# Note that the value of 1024 is a minimum to establish a good security posture 
+# for this setting. In environments where connections numbers are high, such as 
+# a busy webserver, this value may need to be increased.
 
 audit_kernel_params () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2231,6 +2674,12 @@ audit_kernel_params () {
 # COREADM_GLOB_SETID_ENABLED=yes
 # COREADM_PROC_SETID_ENABLED=no
 # COREADM_GLOB_LOG_ENABLED=yes
+#
+# The action described in this section creates a protected directory to store 
+# core dumps and also causes the system to create a log entry whenever a regular 
+# process dumps core.
+# Core dumps, particularly those from set-UID and set-GID processes, may contain 
+# sensitive data.
 
 audit_core_dumps () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2350,6 +2799,16 @@ audit_core_dumps () {
 #
 # set noexec_user_stack=1
 # set noexec_user_stack_log=1
+# 
+# Buffer overflow exploits have been the basis for many highly publicized 
+# compromises and defacements of large numbers of Internet connected systems. 
+# Many of the automated tools in use by system attackers exploit well-known 
+# buffer overflow problems in vendor-supplied and third-party software.
+#
+# Enabling stack protection prevents certain classes of buffer overflow 
+# attacks and is a significant security enhancement. However, this does not 
+# protect against buffer overflow attacks that do not execute code on the 
+# stack (such as return-to-libc exploits).
 
 audit_stack_protection () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2367,6 +2826,22 @@ audit_stack_protection () {
 # Checks for the following values in /etc/default/inetinit:
 #
 # TCP_STRONG_ISS=2
+#
+# The variable TCP_STRONG_ISS sets the mechanism for generating the order of 
+# TCP packets. If an attacker can predict the next sequence number, it is 
+# possible to inject fraudulent packets into the data stream to hijack the 
+# session. Solaris supports three sequence number methods:
+#
+# 0 = Old-fashioned sequential initial sequence number generation. 
+# 1 = Improved sequential generation, with random variance in increment. 
+# 2 = RFC 1948 sequence number generation, unique-per-connection-ID.
+#
+# The RFC 1948 method is widely accepted as the strongest mechanism for TCP 
+# packet generation. This makes remote session hijacking attacks more difficult, 
+# as well as any other network-based attack that relies on predicting TCP 
+# sequence number information. It is theoretically possible that there may be a 
+# small performance hit in connection setup time when this setting is used, but 
+# there are no benchmarks that establish this.
 
 audit_tcp_strong_iss () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2412,14 +2887,18 @@ audit_ipadm_value () {
         echo "Checking:  Value of \"$ipadm_name\" for \"$ipadm_property\" is \"$correct_value\""
       fi
       if [ "$current_value" -ne "$correct_value" ]; then
+        command_line="ipadm set-prop -p $ipadm_name=$correct_value $ipadm_property"
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Value of \"$ipadm_name $ipadm_property\" not set to \"$correct_value\" [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "$command_line" fix
+          funct_verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Value of \"$ipadm_name $ipadm_property\" to \"$correct_value\""
             echo "$ipadm_name,$ipadm_property,$correct_value" >> $log_file
-            ipadm set-prop -p $ipadm_name=$correct_value $ipadm_property
+            `$command_line`
           fi
         fi
       else
@@ -2450,6 +2929,16 @@ audit_ipadm_value () {
 # TCP Reverse IP Source Routing
 # Maximum Number of Half-open TCP Connections
 # Maximum Number of Incoming Connections
+#
+# The network routing daemon, in.routed, manages network routing tables. 
+# If enabled, it periodically supplies copies of the system's routing tables 
+# to any directly connected hosts and networks and picks up routes supplied 
+# to it from other networks and hosts. 
+# Routing Internet Protocol (RIP) is a legacy protocol with a number of 
+# security issues (e.g. no authentication, no zoning, and no pruning).
+# Routing (in.routed) is disabled by default in all Solaris 10 systems, 
+# if there is a default router defined. If no default gateway is defined 
+# during system installation, network routing is enabled.
 
 audit_routing_params () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2494,6 +2983,8 @@ audit_routing_params () {
 # audit_create_class
 #
 # Create An Audit Class
+#
+# Creating Audit Classes improves the auditing capabilities of Solaris.
 
 audit_create_class () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2737,6 +3228,10 @@ audit_solaris_auditing () {
 # audit_cron_perms
 #
 # Audit Cron Permissions
+#
+# Make sure system cron entries are only viewable by system accounts.
+# Viewing cron entries may provide vectors of attack around temporary
+# file creation and race conditions.
 
 audit_cron_perms () {
   if [ "$os_name" = "Linux" ]; then
@@ -2761,11 +3256,25 @@ audit_cron_perms () {
 # audit_inetd_logging
 #
 # inetd Connection Logging
+#
+# The inetd process starts Internet standard services and the "tracing" feature 
+# can be used to log information about the source of any network connections 
+# seen by the daemon.
+# Rather than enabling inetd tracing for all services with "inetadm -M ...", 
+# the administrator has the option of enabling tracing for individual services 
+# with "inetadm -m <svcname> tcp_trace=TRUE", where <svcname> is the name of 
+# the specific service that uses tracing.
+# This information is logged via syslogd (1M) and is deposited by default in 
+# /var/adm/messages with other system log messages. If the administrator wants 
+# to capture this information in a separate file, simply modify /etc/syslog.conf 
+# to log daemon.notice to some other log file destination. 
 
 audit_inetd_logging () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" ="10" ] || [ "$os_version" = "9" ]; then
+      funct_verbose_message "" fix
       funct_verbose_message "Logging inetd Connections"
+      funct_verbose_message "" fix
     fi
     if [ "$os_version" = "10" ]; then
       funct_command_value inetadm tcp_trace TRUE tcp
@@ -2781,6 +3290,17 @@ audit_inetd_logging () {
 # audit_ftp_logging
 # 
 # FTP daemon Logging
+#
+# Information about FTP sessions will be logged via syslogd (1M), 
+# but the system must be configured to capture these messages.
+# If the FTP daemon is installed and enabled, it is recommended that the 
+# "debugging" (-d) and connection logging (-l) flags also be enabled to 
+# track FTP activity on the system. Note that enabling debugging on the FTP 
+# daemon can cause user passwords to appear in clear-text form in the system 
+# logs, if users accidentally type their passwords at the username prompt.
+# All of this information is logged by syslogd (1M), but syslogd (1M) must be 
+# configured to capture this information to a separate file so it may be more 
+# easily reviewed.
 
 audit_ftp_logging () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2798,6 +3318,9 @@ audit_ftp_logging () {
         if [ "$check_value" -eq 0 ]; then
           score=`expr $score - 1`
           echo "Warning:   FTP daemon logging not enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "inetadm -m svc:/network/ftp exec=\"/usr/sbin/in.ftpd -a -l -d\"" fix
+          funct_verbose_message "" fix
         else
           score=`expr $score + 1`
           echo "Secure:    FTP daemon logging enabled [$score]"
@@ -2842,6 +3365,12 @@ audit_ftp_logging () {
 # audit_syslog_conf
 #
 # Audit syslog.conf
+#
+# By default, Solaris systems do not capture logging information that is sent 
+# to the LOG_AUTH facility.
+# A great deal of important security-related information is sent via the 
+# LOG_AUTH facility (e.g., successful and failed su attempts, failed login 
+# attempts, root login attempts, etc.).
 
 audit_syslog_conf () {
   if [ "$os_name" = "Linux" ]; then
@@ -2854,7 +3383,9 @@ audit_syslog_conf () {
 
 # audit_logadm_value
 #
-# Enable Debug Level Daemon Logging
+# Enable Debug Level Daemon Logging.
+#
+# Improved logging capability.
 
 audit_logadm_value () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2870,6 +3401,10 @@ audit_logadm_value () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Logging for $log_name not enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" fix
+          funct_verbose_message "svcadm refresh svc:/system/system-log" fix
+          funct_verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Syslog to capture $log_facility"
@@ -2926,7 +3461,10 @@ audit_logadm_value () {
 
 # audit_debug_logging
 #
-# Connection logging
+# Connection logging.
+#
+# Connections to server should be logged so they can be audited in the event
+# of and attack.
 
 audit_debug_logging () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2939,7 +3477,10 @@ audit_debug_logging () {
 
 # audit_syslog_auth
 #
-# Capture syslog AUTH Messages
+# Capture syslog AUTH Messages.
+#
+# Make sure authentication requests are logged. This is especially important
+# for authentication requests to accounts/roles with raised priveleges.
 
 audit_syslog_auth () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2953,6 +3494,14 @@ audit_syslog_auth () {
 # audit_login_records
 #
 # Login Records
+#
+# If the file /var/adm/loginlog exists, it will capture failed login attempt 
+# messages with the login name, tty specification, and time. This file does 
+# not exist by default and must be manually created.
+# Tracking failed login attempts is critical to determine when an attacker 
+# is attempting a brute force attack on user accounts. Note that this is only 
+# for login-based such as login, telnet, rlogin, etc. and does not include SSH. 
+# Review the loginlog file on a regular basis.
 
 audit_login_records () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2966,6 +3515,13 @@ audit_login_records () {
 # audit_failed_logins
 #
 # Capture All Failed Login Attempts
+#
+# The SYS_FAILED_LOGINS variable is used to determine how many failed login 
+# attempts occur before a failed login message is logged. Setting the value 
+# to 0 will cause a failed login message on every failed login attempt.
+# The SYSLOG_FAILED_LOGINS parameter in the /etc/default/login file is used 
+# to control how many login failures are allowed before log messages are 
+# generated-if set to zero then all failed logins will be logged.
 
 audit_failed_logins () {
   if [ "$os_name" = "SunOS" ]; then
@@ -2981,6 +3537,14 @@ audit_failed_logins () {
 # audit_cron_logging
 #
 # Cron Logging
+#
+# Setting the CRONLOG parameter to YES in the /etc/default/cron file causes 
+# information to be logged for every cron job that gets executed on the system. 
+# This setting is the default for Solaris.
+# A common attack vector is for programs that are run out of cron to be 
+# subverted to execute commands as the owner of the cron job. Log data on 
+# commands that are executed out of cron can be found in the /var/cron/log file. 
+# Review this file on a regular basis.
 
 audit_cron_logging () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3064,6 +3628,15 @@ audit_linux_package () {
 # audit_system_accounting
 #
 # System Accounting
+#
+# System accounting gathers baseline system data (CPU utilization, disk I/O, 
+# etc.) every 20 minutes. The data may be accessed with the sar command, or by 
+# reviewing the nightly report files named /var/adm/sa/sar*.
+# Note: The sys id must be added to /etc/cron.allow to run the system 
+# accounting commands..
+# Once a normal baseline for the system has been established, abnormalities 
+# can be investigated to detect unauthorized activity such as CPU-intensive 
+# jobs and activity outside of normal usage hours.
 
 audit_system_accounting () {
   if [ "$os_name" = "Linux" ]; then
@@ -3082,6 +3655,16 @@ audit_system_accounting () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   System accounting not enabled [$score]"
+        if [ "$linux_dist" = "redhat" ]; then
+          funct_verbose_message "" fix
+          funct_verbose_message "yum -y install $package_check" fix
+          funct_verbose_message "" fix
+        fi
+        if [ "$linux_dist" = "debian" ]; then
+          funct_verbose_message "" fix
+          funct_verbose_message "apt-get install $package_check" fix
+          funct_verbose_message "" fix
+        fi
       fi
       if [ "$audit_mode" = 0 ]; then
         echo "Setting:   System Accounting to enabled"
@@ -3211,6 +3794,12 @@ audit_system_accounting () {
 	      if [ "$audit_mode" = 1 ]; then
 	        score=`expr $score - 1`
 	        echo "Warning:   System Accounting is not enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "echo \"0,20,40 * * * * /usr/lib/sa/sa1\" >> $check_file" fix
+          funct_verbose_message "echo \"45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A\" >> $check_file" fix
+          funct_verbose_message "chown sys:sys /var/adm/sa/*" fix
+          funct_verbose_message "chmod go-wx /var/adm/sa/*" fix
+          funct_verbose_message "" fix
 	      fi
 	      if [ "$audit_mode" = 0 ]; then
 	        echo "Setting:   System Accounting to enabled"
@@ -3244,6 +3833,14 @@ audit_system_accounting () {
 # audit_kernel_accounting
 #
 # Kernel Accounting
+#
+# Kernel-level auditing provides information on commands and system calls that 
+# are executed on the local system. The audit trail may be reviewed with the 
+# praudit command. Note that enabling kernel-level auditing on Solaris disables 
+# the automatic mounting of external devices via the Solaris volume manager 
+# daemon (vold).
+# Kernel-level auditing can consume a large amount of disk space and even cause 
+# system performance impact, particularly on heavily used machines. 
 
 audit_kernel_accounting () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3281,6 +3878,31 @@ audit_kernel_accounting () {
 #
 # Set daemon umask
 # Default Service File Creation Mask
+#
+# The umask (1) utility overrides the file mode creation mask as specified by 
+# the CMASK value in the /etc/default/init file. The most permissive file 
+# permission is mode 666 ( 777 for executable files). The CMASK value subtracts 
+# from this value. For example, if CMASK is set to a value of 022, files 
+# created will have a default permission of 644 (755 for executables). 
+# See the umask (1) manual page for a more detailed description.
+# Note: There are some known bugs in the following daemons that are impacted by 
+# changing the CMASK parameter from its default setting: 
+# (Note: Current or future patches may have resolved these issues. 
+# Consult with your Oracle Support representative)
+# 6299083 picld i initialise picld_door file with wrong permissions after JASS
+# 4791006 ldap_cachemgr initialise i ldap_cache_door file with wrong permissions
+# 6299080 nscd i initialise name_service_door file with wrong permissions after 
+# JASS
+# The ldap_cachemgr issue has been fixed but the others are still unresolved. 
+# While not directly related to this, there is another issue related to 077 
+# umask settings:
+# 2125481 in.lpd failed to print files when the umask is set 077
+# Set the system default file creation mask (umask) to at least 022 to prevent 
+# daemon processes from creating world-writable files by default. The NSA and 
+# DISA recommend a more restrictive umask values of 077 (Note: The execute bit 
+# only applies to executable files). This may cause problems for certain 
+# applications- consult vendor documentation for further information. 
+# The default setting for Solaris is 022.
 
 audit_daemon_umask () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3295,6 +3917,9 @@ audit_daemon_umask () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Default service file creation mask not set to $umask_value [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"$umask_value\"" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Default service file creation mask to $umask_value"
@@ -3357,6 +3982,15 @@ audit_daemon_umask () {
 #
 # Restrict Set-UID on User Mounted Devices
 # Set nodev on filesystems
+#
+# If the volume manager (vold) is enabled to permit users to mount external 
+# devices, the administrator can force these file systems to be mounted with 
+# the nosuid option to prevent users from bringing set-UID programs onto the 
+# system via CD-ROMs, floppy disks, USB drives or other removable media.
+# Removable media is one vector by which malicious software can be introduced 
+# onto the system. The risk can be mitigated by forcing use of the nosuid 
+# option. Note that this setting is included in the default rmmount.conf file 
+# for Solaris 8 and later.
 
 audit_mount_setuid () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3393,7 +4027,7 @@ audit_mount_setuid () {
 
 # audit_unconfined_daemons
 #
-# Look for unconfined daemons
+# Unconfined daemons.
 
 audit_unconfined_daemons () {
   if [ "$os_name" = "Linux" ]; then
@@ -3416,8 +4050,13 @@ audit_unconfined_daemons () {
 
 # audit_sulogin
 #
-# Check single user mode requires password
-# Fix permissions on /etc/inittab
+# Check single user mode requires password.
+#
+# Permissions on /etc/inittab.
+#
+# With remote console access it is possible to gain access to servers as though
+# you were in front of them, therefore entering single user mode should require
+# a password.
 
 audit_sulogin () {
   if [ "$os_name" = "Linux" ]; then
@@ -3430,6 +4069,11 @@ audit_sulogin () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   No Authentication required for single usermode [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" fix
+          funct_verbose_message "cat $temp_file > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Single user mode to require authentication"
@@ -3459,7 +4103,11 @@ audit_sulogin () {
 # audit_mount_nodev
 #
 # Check filesystems are mounted with nodev
-# Ignore / and /boot
+#
+# Prevents device files from being created on filesystems where they should
+# not be created. This can stop possible vectors of attack and escalated
+# privileges.
+# Ignore / and /boot.
 
 audit_mount_nodev () {  
   if [ "$os_name" = "Linux" ]; then
@@ -3473,6 +4121,11 @@ audit_mount_nodev () {
 	        if [ "$audit_mode" = 1 ]; then
 	          score=`expr $score - 1`
 	          echo "Warning:   Found filesystems that should be mounted nodev [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "cat $check_file | awk '( $3 ~ /^ext[23]$/ && $2 != \"/\" ) { $4 = $4 \",nodev\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
 	        fi
 	        if [ "$audit_mode" = 0 ]; then
 	          echo "Setting:   Setting nodev on filesystems"
@@ -3498,7 +4151,9 @@ audit_mount_nodev () {
 
 # audit_mount_fdi
 #
-# User mountable file systems on Linux
+# User mountable file systems on Linux.
+#
+# This can stop possible vectors of attack and escalated privileges.
 
 audit_mount_fdi () {
   if [ "$os_name" = "Linux" ]; then
@@ -3525,6 +4180,20 @@ audit_mount_fdi () {
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   User mountable filesystems enabled [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "echo '<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> <!-- -*- SGML -*- --> >' > $temp_file" fix
+            funct_verbose_message "echo '<deviceinfo version=\"0.2\">' >> $temp_file" fix
+            funct_verbose_message "echo '  <!-- Default policies merged onto computer root object -->' >> $temp_file" fix
+            funct_verbose_message "echo '  <device>' >> $temp_file" fix
+            funct_verbose_message "echo '    <match key=\"info.udi\" string=\"/org/freedesktop/Hal/devices/computer\">' >> $temp_file" fix
+            funct_verbose_message "echo '      <merge key=\"storage.policy.default.mount_option.nodev\" type=\"bool\">true</merge>' >> $temp_file" fix
+            funct_verbose_message "echo '      <merge key=\"storage.policy.default.mount_option.nosuid\" type=\"bool\">true</merge>' >> $temp_file" fix
+            funct_verbose_message "echo '    </match>' >> $temp_file" fix
+            funct_verbose_message "echo '  </device>' >> $temp_file" fix
+            funct_verbose_message "echo '</deviceinfo>' >> $temp_file" fix
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Disabling user mountable filesystems"
@@ -3560,6 +4229,17 @@ audit_mount_fdi () {
 # audit_sticky_bit
 #
 # Set Sticky Bit on World Writable Directories
+#
+# When the so-called sticky bit (set with chmod +t) is set on a directory, 
+# then only the owner of a file may remove that file from the directory 
+# (as opposed to the usual behavior where anybody with write access to that 
+# directory may remove the file).
+# Setting the sticky bit prevents users from overwriting each others files, 
+# whether accidentally or maliciously, and is generally appropriate for most 
+# world-writable directories (e.g. /tmp). However, consult appropriate vendor 
+# documentation before blindly applying the sticky bit to any world writable 
+# directories found in order to avoid breaking any application dependencies 
+# on a given directory.
 
 audit_sticky_bit () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -3578,6 +4258,9 @@ audit_sticky_bit () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Sticky bit not set on $check_dir [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "chmod +t $check_dir" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Sticky bit on $check_dir"
@@ -3602,7 +4285,9 @@ audit_sticky_bit () {
 
 # audit_selinux
 #
-# Audit selinux
+# Audit SELinux
+#
+# Make sure SELinux is configured appropriately.
 
 audit_selinux () {
   if [ "$os_name" = "Linux" ]; then
@@ -3616,6 +4301,9 @@ audit_selinux () {
 # audit_yum_conf
 #
 # Audit yum configuration
+# 
+# Make sure GPG checks are enabled for yum so that malicious sofware can not
+# be installed.
 
 audit_yum_conf () {
   if [ "$os_name" = "Linux" ]; then
@@ -3641,6 +4329,72 @@ audit_yum_conf () {
 # SSH PermitEmptyPasswords to no
 # SSH Banner
 # Warning Banner for the SSH Service
+#
+# SSH is a secure, encrypted replacement for common login services such as 
+# telnet, ftp, rlogin, rsh, and rcp.
+# It is strongly recommended that sites abandon older clear-text login 
+# protocols and use SSH to prevent session hijacking and sniffing of 
+# sensitive data off the network. Most of these settings are the default 
+# in Solaris 10 with the following exceptions:
+# MaxAuthTries (default is 6) 
+# MaxAuthTriesLog (default is 3) 
+# Banner (commented out) 
+# X11Forwarding (default is "yes")
+#
+# SSH supports two different and incompatible protocols: SSH1 and SSH2. 
+# SSH1 was the original protocol and was subject to security issues. 
+# SSH2 is more advanced and secure.
+# Secure Shell version 2 (SSH2) is more secure than the legacy SSH1 version, 
+# which is being deprecated.
+#
+# The X11Forwarding parameter provides the ability to tunnel X11 traffic 
+# through the connection to enable remote graphic connections.
+# Disable X11 forwarding unless there is an operational requirement to use 
+# X11 applications directly. There is a small risk that the remote X11 servers 
+# of users who are logged in via SSH with X11 forwarding could be compromised 
+# by other users on the X11 server. Note that even if X11 forwarding is disabled 
+# that users can may be able to install their own forwarders.
+#
+# The MaxAuthTries paramener specifies the maximum number of authentication 
+# attempts permitted per connection. The default value is 6.
+# Setting the MaxAuthTries parameter to a low number will minimize the risk of 
+# successful brute force attacks to the SSH server.
+#
+# The MaxAuthTriesLog parameter specifies the maximum number of failed 
+# authorization attempts before a syslog error message is generated. 
+# The default value is 3.
+# Setting this parameter to 0 ensures that every failed authorization is logged.
+#
+# The IgnoreRhosts parameter specifies that .rhosts and .shosts files will not 
+# be used in RhostsRSAAuthentication or HostbasedAuthentication.
+# Setting this parameter forces users to enter a password when authenticating 
+# with SSH.
+# 
+# The RhostsAuthentication parameter specifies if authentication using rhosts 
+# or /etc/hosts.equiv is permitted. The default is no.
+# Rhosts authentication is insecure and should not be permitted.
+# Note that this parameter only applies to SSH protocol version 1.
+#
+# The RhostsRSAAuthentication parameter specifies if rhosts or /etc/hosts.equiv 
+# authentication together with successful RSA host authentication is permitted. 
+# The default is no.
+# Rhosts authentication is insecure and should not be permitted, even with RSA 
+# host authentication.
+#
+# The PermitRootLogin parameter specifies if the root user can log in using 
+# ssh(1). The default is no.
+# The root user must be restricted from directly logging in from any location 
+# other than the console.
+#
+# The PermitEmptyPasswords parameter specifies if the server allows login to 
+# accounts with empty password strings.
+# All users must be required to have a password.
+#
+# The Banner parameter specifies a file whose contents must sent to the remote 
+# user before authentication is permitted. By default, no banner is displayed.
+# Banners are used to warn connecting users of the particular site's policy 
+# regarding connection. Consult with your legal department for the appropriate 
+# warning banner for your site.
 
 audit_ssh_config () {
   funct_verbose_message "SSH Configuration"
@@ -3676,6 +4430,16 @@ audit_ssh_config () {
 # audit_serial_login
 #
 # login: Prompts on Serial Ports
+#
+# The pmadm command provides service administration for the lower level of the 
+# Service Access Facility hierarchy and can be used to disable the ability to 
+# login on a particular port.
+# By disabling the login: prompt on the system serial devices, unauthorized 
+# users are limited in their ability to gain access by attaching modems, 
+# terminals, and other remote access devices to these ports. Note that this 
+# action may safely be performed even if console access to the system is 
+# provided via the serial ports, because the login: prompt on the console 
+# device is provided through a different mechanism.
 
 audit_serial_login () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3693,6 +4457,10 @@ audit_serial_login () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Serial port logins not disabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "pmadm -d -p zsmon -s ttya" fix
+          funct_verbose_message "pmadm -d -p zsmon -s ttyb" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Serial port logins to disabled"
@@ -3716,6 +4484,12 @@ audit_serial_login () {
 # audit_nobody_rpc 
 #
 # "nobody" Access for RPC Encryption Key Storage Service
+#
+# The keyserv process, if enabled, stores user keys that are utilized with 
+# Sun's Secure RPC mechanism.
+# The action listed prevents keyserv from using default keys for the nobody 
+# user, effectively stopping this user from accessing information via Secure 
+# RPC.
 
 audit_nobody_rpc () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3730,6 +4504,13 @@ audit_nobody_rpc () {
 # audit_pam_rhosts
 #
 # .rhosts Support in /etc/pam.conf
+#
+# Used in conjunction with the BSD-style "r-commands" (rlogin, rsh, rcp), 
+# .rhosts files implement a weak form of authentication based on the network 
+# address or host name of the remote computer (which can be spoofed by a 
+# potential attacker to exploit the local system).
+# Disabling .rhosts support helps prevent users from subverting the system's 
+# normal access control mechanisms.
 
 audit_pam_rhosts () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3746,6 +4527,11 @@ audit_pam_rhosts () {
 	        if [ "$audit_mode" = 1 ]; then
 	          score=`expr $score -1`
 	          echo "Warning:   Rhost authentication enabled in $check_file [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" fix
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
 	        else
 	          log_file="$work_dir$check_file"
 	          if [ ! -f "$log_file" ]; then
@@ -3784,6 +4570,11 @@ audit_pam_rhosts () {
             total=`expr $total + 1`
             score=`expr $score - 1`
             echo "Warning:   Rhost authentication enabled in $check_file [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" fix
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file
@@ -3807,6 +4598,17 @@ audit_pam_rhosts () {
 # audit_ftp_users
 #
 # Restrict FTP Use
+#
+# If FTP is permitted to be used on the system, the file /etc/ftpd/ftpusers is 
+# used to specify a list of users who are not allowed to access the system via 
+# FTP.
+# FTP is an old and insecure protocol that transfers files and credentials in 
+# clear text and is better replaced by using sftp instead. However, if it is 
+# permitted for use in your environment, it is important to ensure that the 
+# default "system" accounts are not permitted to transfer files via FTP, 
+# especially the root account. Consider also adding the names of other 
+# privileged or shared accounts that may exist on your system such as user 
+# oracle and the account which your Web server process runs under.
 
 audit_ftp_users () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3889,6 +4691,12 @@ audit_ftp_conf () {
 # audit_login_delay
 #
 # Set Delay between Failed Login Attempts to 4
+#
+# The SLEEPTIME variable in the /etc/default/login file controls the number of 
+# seconds to wait before printing the "login incorrect" message when a bad 
+# password is provided.
+# Delaying the "login incorrect" message can help to slow down brute force 
+# password-cracking attacks.
 
 audit_login_delay () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3901,6 +4709,12 @@ audit_login_delay () {
 # audit_cde_screen_lock
 #
 # Set Default Screen Lock for CDE Users
+#
+# The default timeout for keyboard/mouse inactivity is 30 minutes before a 
+# password-protected screen saver is invoked by the CDE session manager.
+# Many organizations prefer to set the default timeout value to 10 minutes, 
+# though this setting can still be overridden by individual users in their 
+# own environment.
 
 audit_cde_screen_lock () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3925,6 +4739,13 @@ audit_cde_screen_lock () {
 # audit_gnome_screen_lock
 #
 # Set Default Screen Lock for GNOME Users
+#
+# The default timeout is 30 minutes of keyboard and mouse inactivity before a 
+# password-protected screen saver is invoked by the Xscreensaver application 
+# used in the GNOME windowing environment.
+# Many organizations prefer to set the default timeout value to 10 minutes, 
+# though this setting can still be overridden by individual users in their 
+# own environment.
 
 audit_gnome_screen_lock () {
   if [ "$os_name" = "SunOS" ]; then
@@ -3940,6 +4761,18 @@ audit_gnome_screen_lock () {
 #
 # Restrict at/cron to Authorized Users
 # Verify that a [at,cron].allow exists rather than a [at,cron].deny
+#
+# The cron.allow and at.allow files are a list of users who are allowed to run 
+# the crontab and at commands to submit jobs to be run at scheduled intervals.
+# On many systems, only the system administrator needs the ability to schedule 
+# jobs.
+# Note that even though a given user is not listed in cron.allow, cron jobs can 
+# still be run as that user. The cron.allow file only controls administrative 
+# access to the crontab command for scheduling and modifying cron jobs. 
+# Much more effective access controls for the cron system can be obtained by 
+# using Role-Based Access Controls (RBAC).
+# Note that if System Accounting is enabled, add the user sys to the cron.allow 
+# file in addition to the root account.
 
 audit_cron_allow () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4037,6 +4870,25 @@ audit_cron_allow () {
 # audit_console_login
 #
 # Restrict root Login to System Console
+#
+# Privileged access to the system via the root account must be accountable 
+# to a particular user. The system console is supposed to be protected from 
+# unauthorized access and is the only location where it is considered 
+# acceptable # to permit the root account to login directly, in the case of 
+# system emergencies. This is the default configuration for Solaris.
+# Use an authorized mechanism such as RBAC, the su command or the freely 
+# available sudo package to provide administrative access through unprivileged 
+# accounts. These mechanisms provide at least some limited audit trail in the 
+# event of problems.
+# Note that in addition to the configuration steps included here, there may be 
+# other login services (such as SSH) that require additional configuration to 
+# prevent root logins via these services.
+# A more secure practice is to make root a "role" instead of a user account. 
+# Role Based Access Control (RBAC) is similar in function to sudo, but provides 
+# better logging ability and additional authentication requirements. With root 
+# defined as a role, administrators would have to login under their account and 
+# provide root credentials to invoke privileged commands. This restriction also 
+# includes logging in to the console, except for single user mode.
 
 audit_console_login () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4047,9 +4899,9 @@ audit_console_login () {
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/system/console-login:terma"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/system/console-login:termb"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -4068,6 +4920,11 @@ audit_console_login () {
           total=`expr $total + 1`
           score=`expr $score - 1`
           echo "Warning:   Consoles enabled on$console_list [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
+          funct_verbose_message "cat $temp_file > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
@@ -4092,6 +4949,16 @@ audit_console_login () {
 # audit_retry_limit
 #
 # Set Retry Limit for Account Lockout
+#
+# The RETRIES parameter is the number of failed login attempts a user is 
+# allowed before being disconnected from the system and forced to reconnect. 
+# When LOCK_AFTER_RETRIES is set in /etc/security/policy.conf, then the user's 
+# account is locked after this many failed retries (the account can only be 
+# unlocked by the administrator using the command:passwd -u <username>
+# Setting these values helps discourage brute force password guessing attacks. 
+# The action specified here sets the lockout limit at 3, which complies with 
+# NSA and DISA recommendations. This may be too restrictive for some operations 
+# with large user populations.
 
 audit_retry_limit () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4111,7 +4978,11 @@ audit_retry_limit () {
 # audit_eeprom_security
 #
 # Set EEPROM Security Mode and Log Failed Access
-# Haven't coded anything for this as don't see any value for it in a DC
+#
+# Oracle SPARC systems support the use of a EEPROM password for the console.
+# Setting the EEPROM password helps prevent attackers with physical access to 
+# the system console from booting off some external device (such as a CD-ROM 
+# or floppy) and subverting the security of the system.
 
 audit_eeprom_security () {
   :
@@ -4120,6 +4991,20 @@ audit_eeprom_security () {
 # audit_grub_security
 #
 # Secure the GRUB Menu
+#
+# GRUB is a boot loader for x86/x64 based systems that permits loading an OS 
+# image from any location. Oracle x86 systems support the use of a GRUB Menu 
+# password for the console.
+# The flexibility that GRUB provides creates a security risk if its 
+# configuration is modified by an unauthorized user. The failsafe menu entry 
+# needs to be secured in the same environments that require securing the 
+# systems firmware to avoid unauthorized removable media boots. Setting the 
+# GRUB Menu password helps prevent attackers with physical access to the 
+# system console from booting off some external device (such as a CD-ROM or 
+# floppy) and subverting the security of the system.
+# The actions described in this section will ensure you cannot get to failsafe 
+# or any of the GRUB command line options without first entering the password. 
+# Note that you can still boot into the default OS selection without a password.
 
 audit_grub_security () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4181,6 +5066,15 @@ audit_grub_security () {
 # audit_system_accounts
 #
 # System Accounts that do not have shell
+#
+# There are a number of accounts provided with the Solaris OS that are used to 
+# manage applications and are not intended to provide an interactive shell.
+# It is important to make sure that accounts that are not being used by regular
+# users are locked to prevent them from logging in or running an interactive 
+# shell. By default, Solaris sets the password field for these accounts to an 
+# invalid string, but it is also recommended that the shell field in the 
+# password file be set to "false." This prevents the account from potentially 
+# being used to run any commands.
 
 audit_system_accounts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4191,6 +5085,9 @@ audit_system_accounts () {
       for user_name in `egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
         if [ "$audit_mode" = 1 ]; then
           echo "Warning:   System account $user_name has an invalid shell"
+          funct_verbose_message "" fix
+          funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   System account $user_name to have shell /sbin/nologin"
@@ -4212,6 +5109,21 @@ audit_system_accounts () {
 # To fix existing accounts:
 # useradd -D -f 7
 # chage -m 7 -M 90 -W 14 -I 7
+#
+# Many organizations require users to change passwords on a regular basis.
+# Since /etc/default/passwd sets defaults in terms of number of weeks 
+# (even though the actual values on user accounts are kept in terms of days), 
+# it is probably best to choose interval values that are multiples of 7.
+# Actions for this item do not work on accounts stored on network directories 
+# such as LDAP.
+# The commands for this item set all active accounts (except the root account) 
+# to force password changes every 91 days (13 weeks), and then prevent password 
+# changes for seven days (one week) thereafter. Users will begin receiving 
+# warnings 28 days (4 weeks) before their password expires. Sites also have the
+# option of expiring idle accounts after a certain number of days (see the on-
+# line manual page for the usermod command, particularly the -f option).
+# These are recommended starting values, but sites may choose to make them more 
+# restrictive depending on local policies.
 
 audit_password_expiry () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4236,6 +5148,20 @@ audit_password_expiry () {
 # audit_strong_password
 #
 # Set Strong Password Creation Policies
+#
+# Password policies are designed to force users to make better password choices 
+# when selecting their passwords.
+# Administrators may wish to change some of the parameters in this remediation 
+# step (particularly PASSLENGTH and MINDIFF) if changing their systems to use 
+# MD5, SHA-256, SHA-512 or Blowfish password hashes ("man crypt.conf" for more 
+# information). Similarly, administrators may wish to add site-specific 
+# dictionaries to the DICTIONLIST parameter.
+# Sites often have differing opinions on the optimal value of the HISTORY 
+# parameter (how many previous passwords to remember per user in order to 
+# prevent re-use). The values specified here are in compliance with DISA 
+# requirements. If this is too restrictive for your site, you may wish to set 
+# a HISTORY value of 4 and a MAXREPEATS of 2. Consult your local security 
+# policy for guidance.
 
 audit_strong_password () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4259,6 +5185,14 @@ audit_strong_password () {
 # audit_root_group
 #
 # Set Default Group for root Account
+# For Solaris 9 and earlier, the default group for the root account is the 
+# "other" group, which may be shared by many other accounts on the system. 
+# Solaris 10 has adopted GID 0 (group "root") as default group for the root 
+# account.
+# If your system has been upgraded from an earlier version of Solaris, the 
+# password file may contain the older group classification for the root user. 
+# Using GID 0 for the root account helps prevent root-owned files from 
+# accidentally becoming accessible to non-privileged users.
 
 audit_root_group () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4273,6 +5207,9 @@ audit_root_group () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Root default group incorrectly set [$score]"
+        funct_verbose_message "" fix
+        funct_verbose_message "passmgmt -m -g 0 root" fix
+        funct_verbose_message "" fix
       fi
       if [ "$audit_mode" = 0 ]; then
         echo "$group_check" >> $log_file
@@ -4299,6 +5236,12 @@ audit_root_group () {
 # audit_root_home
 #
 # Change Home Directory for root Account
+#
+# By default, the Solaris OS root user's home directory is "/".
+# Changing the home directory for the root account provides segregation from 
+# the OS distribution and activities performed by the root user. A further 
+# benefit is that the root home directory can have more restricted permissions, 
+# preventing viewing of the root system account files by non-root users.
 
 audit_root_home () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4315,6 +5258,11 @@ audit_root_home () {
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   Root home directory incorrectly set [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "mkdir -m 700 /root" fix
+            funct_verbose_message "mv -i /.?* /root/" fix
+            funct_verbose_message "passmgmt -m -h /root root" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "$home_check" >> $log_file
@@ -4349,6 +5297,20 @@ audit_root_home () {
 # audit_default_umask
 #
 # Set Default umask for Users
+#
+# The default umask(1) determines the permissions of files created by users. 
+# The user creating the file has the discretion of making their files and 
+# directories readable by others via the chmod(1) command. Users who wish to 
+# allow their files and directories to be readable by others by default may 
+# choose a different default umask by inserting the umask command into the 
+# standard shell configuration files (.profile, .cshrc, etc.) in their home 
+# directories.
+# Setting a very secure default value for umask ensures that users make a 
+# conscious choice about their file permissions. A default umask setting of 
+# 077 causes files and directories created by users to not be readable by any 
+# other user on the system. A umask of 027 would make files and directories 
+# readable by users in the same Unix group, while a umask of 022 would make 
+# files readable by every user on the system.
 
 audit_default_umask () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4371,6 +5333,12 @@ audit_default_umask () {
 # audit_ftp_umask
 #
 # Set Default umask for FTP Users
+#
+# If FTP is permitted, set the umask value to apply to files created by the 
+# FTP server.
+# Many users assume that files transmitted over FTP inherit their system umask 
+# value when they do not. This setting ensures that files transmitted over FTP 
+# are protected.
 
 audit_ftp_umask () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4386,7 +5354,17 @@ audit_ftp_umask () {
   fi
 }
 
+# audit_mesgn
+#
 # Set "mesg n" as Default for All Users
+#
+# The "mesg n" command blocks attempts to use the write or talk commands to 
+# contact users at their terminals, but has the side effect of slightly 
+# strengthening permissions on the user's tty device.
+# Note: Setting mesg n for all users may cause "mesg: cannot change mode" 
+# to be displayed when using su - <user>.
+# Since write and talk are no longer widely used at most sites, the incremental 
+# security increase is worth the loss of functionality.
 
 audit_mesgn () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4401,6 +5379,12 @@ audit_mesgn () {
 # audit_inactive_users
 #
 # Lock Inactive User Accounts
+# 
+# Guidelines published by the U.S. Department of Defense specify that user 
+# accounts must be locked out after 35 days of inactivity. This number may 
+# vary based on the particular site's policy.
+# Inactive accounts pose a threat to system security since the users are not 
+# logging in to notice failed login attempts or other anomalies.
 
 audit_inactive_users () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4418,6 +5402,9 @@ audit_inactive_users () {
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   Inactive lockout not set for $user_name [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "usermod -f 35 $user_name" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Saving:    File $check_file to $work_dir$check_file"
@@ -4438,7 +5425,24 @@ audit_inactive_users () {
   fi
 }
 
+# audit_security_banner
+#
 # Create Warnings for Standard Login Services
+#
+# Presenting a warning message prior to the normal user login may assist the 
+# prosecution of trespassers on the computer system. Changing some of these 
+# login banners also has the side effect of hiding OS version information and 
+# other detailed system information from attackers attempting to target 
+# specific exploits at a system.
+# Guidelines published by the US Department of Defense require that warning 
+# messages include at least the name of the organization that owns the system, 
+# the fact that the system is subject to monitoring and that such monitoring 
+# is in compliance with local statutes, and that use of the system implies 
+# consent to such monitoring. It is important that the organization's legal 
+# counsel review the content of all messages before any system modifications 
+# are made, as these warning messages are inherently site-specific. 
+# More information (including citations of relevant case law) can be found at 
+# http://www.justice.gov/criminal/cybercrime/
 
 audit_security_banner () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4456,6 +5460,14 @@ audit_security_banner () {
 # audit_cde_banner
 #
 # Create Warning Banner for CDE Users
+#
+# The Common Desktop Environment (CDE) provides a uniform desktop environment 
+# for users across diverse Unix platforms.
+# Warning messages inform users who are attempting to login to the system of 
+# their legal status regarding the system and must include the name of the 
+# organization that owns the system and any monitoring policies that are in 
+# place. Consult with your organization's legal counsel for the appropriate 
+# wording for your specific organization.
 
 audit_cde_banner () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4493,6 +5505,9 @@ audit_gnome_banner () {
             if [ "$audit_mode" = 1 ]; then
               score=`expr $score - 1`
               echo "Warning:   Warning banner not found in $check_file [$score]"
+              funct_verbose_message "" fix
+              funct_verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> $check_file" fix
+              funct_verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
               funct_backup_file $check_file
@@ -4535,6 +5550,12 @@ audit_tcpsyn_cookie () {
 # audit_ftp_banner
 #
 # Create Warning Banner for FTP daemon
+#
+# The action for this item sets a warning message for FTP users before they 
+# log in. Warning messages inform users who are attempting to access the 
+# system of their legal status regarding the system. Consult with your 
+# organization's legal counsel for the appropriate wording for your 
+# specific organization.
 
 audit_ftp_banner () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4560,6 +5581,14 @@ audit_ftp_banner () {
 # audit_telnet_banner
 #
 # Check Banner Setting for telnet is Null
+#
+# The BANNER variable in the file /etc/default/telnetd can be used to display 
+# text before the telnet login prompt. Traditionally, it has been used to 
+# display the OS level of the target system.
+# The warning banner provides information that can be used in reconnaissance 
+# for an attack. By default, Oracle distributes this file with the BANNER 
+# variable set to null. It is not necessary to create a separate warning banner 
+# for telnet if a warning is set in the /etc/issue file.
 
 audit_telnet_banner () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4573,6 +5602,14 @@ audit_telnet_banner () {
 #
 # Check for Remote Consoles
 # On Linux remove tty[0-9]* from /etc/securetty if run in lockdown mode
+#
+# The consadm command can be used to select or display alternate console devices.
+# Since the system console has special properties to handle emergency situations, 
+# it is important to ensure that the console is in a physically secure location 
+# and that unauthorized consoles have not been defined. The "consadm -p" command 
+# displays any alternate consoles that have been defined as auxiliary across 
+# reboots. If no remote consoles have been defined, there will be no output from 
+# this command.
 
 audit_remote_consoles () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4588,6 +5625,9 @@ audit_remote_consoles () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Console enabled on $console_device [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "consadm -d $console_device" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "$console_device" >> $log_file
@@ -4619,6 +5659,9 @@ audit_remote_consoles () {
 # Verify System File Permissions
 # Use system package verification tool to generate list 
 # of files that do not match the initial package permissions
+#
+# It is important to ensure that system files and directories are maintained 
+# with the permissions they were intended to have from the OS vendor (Oracle).
 
 audit_file_perms () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4686,6 +5729,9 @@ audit_file_perms () {
       for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
         if [ "$audit_mode" = 1 ]; then
           echo "Warning:   Incorrect permissions on $file_name"
+          funct_verbose_message "" fix
+          funct_verbose_message "yum reinstall $rpm_name" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Correct permissions on $file_name"
@@ -4721,6 +5767,10 @@ audit_file_perms () {
 # Ensure Password Fields are Not Empty
 # Verify System Account Default Passwords
 # Ensure Password Fields are Not Empty
+#
+# An account with an empty password field means that anybody may log in as 
+# that user without providing a password at all (assuming that PASSREQ=NO 
+# in /etc/default/login). All accounts must have passwords or be locked.
 
 audit_password_fields () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4733,6 +5783,12 @@ audit_password_fields () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   No password field for $user_name in $check_file [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "passwd -d $user_name" fix
+          if [ "$os_name" = "SunOS" ]; then
+            funct_verbose_message "passwd -N $user_name" fix
+          fi
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
@@ -4753,6 +5809,13 @@ audit_password_fields () {
 #
 # Verify No Legacy "+" Entries Exist in passwd, shadow, and group Files
 # Prevent NIS maps from being inserted into files
+#
+# The character + in various files used to be markers for systems to insert 
+# data from NIS maps at a certain point in a system configuration file. 
+# These entries are no longer required on Solaris systems, but may exist in 
+# files that have been imported from other platforms.
+# These entries may provide an avenue for attackers to gain privileged access 
+# on the system.
 
 audit_nis_entries () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4767,6 +5830,10 @@ audit_nis_entries () {
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   NIS entry \"$file_entry\" in $check_file [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message 'sed -e "s/^+/#&/" < $check_file > $temp_file' fix
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file
@@ -4800,6 +5867,10 @@ audit_nis_entries () {
 #
 # Verify No UID 0 Accounts Exist Other than root
 # Make sure no users other than root have UID 0
+#
+# Any account with UID 0 has superuser privileges on the system.
+# This access must be limited to only the default root account 
+# and only from the system console.
 
 audit_super_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -4811,6 +5882,9 @@ audit_super_users () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   UID 0 for $user_name [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "userdel $user_name" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           check_file="/etc/shadow"
@@ -4875,6 +5949,12 @@ audit_check_perms () {
     if [ "$audit_mode" = 1 ]; then
       score=`expr $score - 1`
       echo "Warning:   File $check_file has incorrect permissions [$score]"
+      funct_verbose_message "" fix
+      funct_verbose_message "chmod $check_perms $check_file" fix
+      if [ "$check_owner" != "" ]; then
+        funct_verbose_message "chown $check_owner:$check_group $check_file" fix
+      fi
+      funct_verbose_message "" fix
     fi
     if [ "$audit_mode" = 0 ]; then
       log_file="$work_dir/$log_file"
@@ -4955,6 +6035,13 @@ audit_dot_files () {
 #
 # Ensure root PATH Integrity
 # Make sure root PATH variable does not have errors which can be exploited
+#
+# The root user can execute any command on the system and could be fooled into 
+# executing programs unemotionally if the PATH is not set correctly.
+# Including the current working directory (.) or other writable directory in 
+# root's executable path makes it likely that an attacker can gain superuser 
+# access by forcing an administrator operating as root to execute a Trojan 
+# horse program.
 
 audit_root_path () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5009,6 +6096,11 @@ audit_root_path () {
 #
 # Check Permissions on User Home Directories
 # Make sure passwords are only accessible by user
+#
+# While the system administrator can establish secure permissions for users' 
+# home directories, the users can easily override these.
+# Group or world-writable user home directories may enable malicious users to 
+# steal or modify other users' data or to gain another user's system privileges.
 
 audit_home_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5029,6 +6121,11 @@ audit_home_perms () {
 #
 # Check User Dot File Permissions
 # Set permissions to be only read/write by user
+#
+# While the system administrator can establish secure permissions for users' 
+# "dot" files, the users can easily override these.
+# Group or world-writable user configuration files may enable malicious users to 
+# steal or modify other users' data or to gain another user's system privileges.
 
 audit_user_dotfiles () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5051,6 +6148,11 @@ audit_user_dotfiles () {
 #
 # Check Permissions on User .netrc Files
 # Set permissions to be only read/write by user
+#
+# While the system administrator can establish secure permissions for users' 
+# .netrc files, the users can easily override these.
+# Users' .netrc files may contain unencrypted passwords that may be used to 
+# attack other systems.
 
 audit_user_netrc () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5079,6 +6181,12 @@ audit_user_netrc () {
 # audit_user_rhosts
 #
 # Check for Presence of User .rhosts Files
+#
+# While no .rhosts files are shipped with Solaris, users can easily create them.
+# This action is only meaningful if .rhosts support is permitted in the file 
+# /etc/pam.conf. Even though the .rhosts files are ineffective if support is 
+# disabled in /etc/pam.conf, they may have been brought over from other systems 
+# and could contain information useful to an attacker for those other systems.
 
 audit_user_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5107,6 +6215,11 @@ audit_user_rhosts () {
 # audit_groups_exist
 #
 # Check Groups in /etc/passwd
+#
+# Over time, system administration errors and changes can lead to groups being 
+# defined in /etc/passwd but not in /etc/group.
+# Groups defined in the /etc/passwd file but not in the /etc/group file pose a 
+# threat to system security since group permissions are not properly managed.
 
 audit_groups_exist () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5154,6 +6267,9 @@ audit_root_group () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Group $group_id does not exist in group file [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "usermod -g 0 root" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ];then
           log_file="$work_dir/$log_file"
@@ -5184,6 +6300,21 @@ audit_root_group () {
 # Check That Users Are Assigned Home Directories
 # Check That Defined Home Directories Exist
 # Check User Home Directory Ownership
+#
+# The /etc/passwd file defines a home directory that the user is placed in upon 
+# login. If there is no defined home directory, the user will be placed in "/" 
+# and will not be able to write any files or have local environment variables set.
+# All users must be assigned a home directory in the /etc/passwd file.
+#
+# Users can be defined to have a home directory in /etc/passwd, even if the 
+# directory does not actually exist.
+# If the user's home directory does not exist, the user will be placed in "/" 
+# and will not be able to write any files or have local environment variables set.
+#
+# The user home directory is space defined for the particular user to set local 
+# environment variables and to store personal files.
+# Since the user is accountable for files stored in the user home directory, 
+# the user must be the owner of the directory.
 
 audit_home_ownership () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5298,6 +6429,12 @@ audit_home_ownership () {
 #
 # Check That Reserved UIDs Are Assigned to System Accounts
 # Make sure lower ids are only given to system accounts
+#
+# Traditionally, Unix systems establish "reserved" UIDs (0-99 range) that are 
+# intended for system accounts.
+# If a user is assigned a UID that is in the reserved range, even if it is not 
+# presently in use, security exposures can arise if a subsequently installed 
+# application uses the same UID.
 
 audit_reserved_ids () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5377,6 +6514,10 @@ audit_reserved_ids () {
 # function:   String describing action, eg users
 # term:       String describing term, eg name
 # check_file: File to parse
+#
+# Although the useradd program will not let you create a duplicate User ID 
+# (UID), it is possible for an administrator to manually edit the /etc/passwd 
+# file and change the UID field.
 
 audit_duplicate_ids () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5417,7 +6558,23 @@ audit_duplicate_ids () {
 #
 # Check for Duplicate UIDs
 # Check for Duplicate User Names
-# Duplicate UIDs or usernames may result in escalation of privileges through administative error
+# Duplicate UIDs or usernames may result in escalation of privileges through 
+# administative error
+#
+# Although the useradd program will not let you create a duplicate User ID 
+# (UID), it is possible for an administrator to manually edit the /etc/passwd 
+# file and change the UID field.
+# Users must be assigned unique UIDs for accountability and to ensure 
+# appropriate access protections.
+#
+# Although the useradd program will not let you create a duplicate user name, 
+# it is possible for an administrator to manually edit the /etc/passwd file 
+# and change the user name.
+# If a user is assigned a duplicate user name, it will create and have access 
+# to files with the first UID for that username in /etc/passwd. For example, 
+# if "test4" has a UID of 1000 and a subsequent "test4" entry has a UID of 2000, 
+# logging in as "test4" will use UID 1000. Effectively, the UID is shared, which 
+# is a security problem.
 
 audit_duplicate_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5431,7 +6588,18 @@ audit_duplicate_users () {
 #
 # Check for Duplicate GIDs
 # Check for Duplicate Group Names
-# Duplicate groups may result in escalation of privileges through administative error
+# Duplicate groups may result in escalation of privileges through administative 
+# error
+# Although the groupadd program will not let you create a duplicate Group ID 
+# (GID), it is possible for an administrator to manually edit the /etc/group 
+# file and change the GID field.
+# 
+# Although the groupadd program will not let you create a duplicate group name, 
+# it is possible for an administrator to manually edit the /etc/group file and 
+# change the group name.
+# If a group is assigned a duplicate group name, it will create and have access 
+# to files with the first GID for that group in /etc/groups. Effectively, the 
+# GID is shared, which is a security problem.
 
 audit_duplicate_groups () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5444,7 +6612,11 @@ audit_duplicate_groups () {
 # audit_netrc_files
 #
 # Check for Presence of User .netrc Files
-# .netrc files contain data for logging into a remote host for file transfers via FTP
+#
+# .netrc files contain data for logging into a remote host for file transfers 
+# via FTP
+# The .netrc file presents a significant security risk since it stores passwords 
+# in unencrypted form.
 
 audit_netrc_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5456,7 +6628,14 @@ audit_netrc_files () {
 # audit_forward_files
 #
 # Check for Presence of User .forward Files
-# .forward files should be inspected to make sure information is not leaving the organisation
+# .forward files should be inspected to make sure information is not leaving 
+# the organisation
+#
+# The .forward file specifies an email address to forward the user's mail to.
+# Use of the .forward file poses a security risk in that sensitive data may be 
+# inadvertently transferred outside the organization. The .forward file also 
+# poses a risk as it can be used to execute commands that may perform unintended 
+# actions.
 
 audit_forward_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5468,6 +6647,14 @@ audit_forward_files () {
 # audit_writable_files
 #
 # Find World Writable Files
+#
+# Unix-based systems support variable settings to control access to files. 
+# World writable files are the least secure. See the chmod(2) man page for more 
+# information.
+# Data in world-writable files can be modified and compromised by any user on 
+# the system. World writable files may also indicate an incorrectly written 
+# script or program that could potentially be the cause of a larger compromise 
+# to the system's integrity.
 
 audit_writable_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5488,6 +6675,9 @@ audit_writable_files () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   File $check_file is world writable [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "chmod o-w $check_file" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "$check_file" >> $log_file
@@ -5513,6 +6703,14 @@ audit_writable_files () {
 # audit_suid_files
 #
 # Find SUID/SGID System Executables
+#
+# The owner of a file can set the file's permissions to run with the owner's or 
+# group's permissions, even if the user running the program is not the owner or 
+# a member of the group. The most common reason for a SUID/SGID program is to 
+# enable users to perform functions (such as changing their password) that 
+# require root privileges.
+# There are valid reasons for SUID/SGID programs, but it is important to 
+# identify and review such programs to ensure they are legitimate.
 
 audit_suid_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5539,6 +6737,12 @@ audit_suid_files () {
 # audit_unowned_files
 #
 # Find Un-owned Files and Directories
+#
+# Sometimes when administrators delete users from the password file they 
+# neglect to remove all files owned by those users from the system.
+# A new user who is assigned the deleted user's user ID or group ID may then 
+# end up "owning" these files, and thus have more access on the system than 
+# was intended.
 
 audit_unowned_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5560,6 +6764,13 @@ audit_unowned_files () {
 # audit_extended_attributes
 #
 # Find Files and Directories with Extended Attributes
+#
+# Extended attributes are implemented as files in a "shadow" file system that 
+# is not generally visible via normal administration commands without special 
+# arguments.
+# Attackers or malicious users could "hide" information, exploits, etc. 
+# in extended attribute areas. Since extended attributes are rarely used, 
+# it is important to find files with extended attributes set.
 
 audit_extended_attributes () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5581,6 +6792,9 @@ audit_extended_attributes () {
 # audit_process_accounting
 #
 # Enable process accounting at boot time
+# Process accounting logs information about every process that runs to 
+# completion on the system, including the amount of CPU time, memory, etc. 
+# consumed by each process.
 
 audit_process_accounting () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5622,6 +6836,15 @@ audit_process_accounting () {
 # audit_dfstab
 #
 # Use full path names in /etc/dfs/dfstab file
+#
+# The commands in the dfstab file are executed via the /usr/sbin/shareall 
+# script at boot time, as well as by administrators executing the shareall 
+# command during the uptime of the machine.
+# It seems prudent to use the absolute pathname to the share command to 
+# protect against any exploits stemming from an attack on the administrator's 
+# PATH environment, etc. However, if an attacker is able to corrupt root's path 
+# to this extent, other attacks seem more likely and more damaging to the 
+# integrity of the system
 
 audit_dfstab () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5633,6 +6856,11 @@ audit_dfstab () {
 # audit_power_management
 #
 # Restrict access to power management functions
+#
+# The settings in /etc/default/power control which users have access to the 
+# configuration settings for the system power management and checkpoint and 
+# resume features. By setting both values to -, configuration changes are 
+# restricted to only the root user.
 
 audit_power_management () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5660,6 +6888,10 @@ audit_power_management () {
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   Power suspend enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "poweradm set suspend-enable=false" fix
+          funct_verbose_message "poweradm update" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           log_file="$work_dir/$log_file"
@@ -5687,6 +6919,13 @@ audit_power_management () {
 # audit_sys_suspend
 #
 # Restrict access to sys-suspend feature
+#
+# The /etc/default/sys-suspend settings control which users are allowed to use 
+# the sys-suspend command to shut down the system.
+# Bear in mind that users with physical access to the system can simply remove 
+# power from the machine if they are truly motivated to take the system 
+# off-line, and granting sys-suspend access may be a more graceful way of 
+# allowing normal users to shut down their own machines.
 
 audit_sys_suspend () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5698,6 +6937,12 @@ audit_sys_suspend () {
 # audit_rhosts_files
 #
 # Create symlinks for dangerous files
+#
+# The /.rhosts, /.shosts, and /etc/hosts.equiv files enable a weak form of 
+# access control. Attackers will often target these files as part of their 
+# exploit scripts. By linking these files to /dev/null, any data that an 
+# attacker writes to these files is simply discarded (though an astute 
+# attacker can still remove the link prior to writing their malicious data).
 
 audit_rhosts_files () {
   if [ "$os_name" = "SunOS" ]; then 
@@ -5724,13 +6969,16 @@ audit_rhosts_files () {
 # audit_inetd
 #
 # Remove Support for Internet Services (inetd)
+#
+# If the actions in this section result in disabling all inetd-based services, 
+# then there is no point in running inetd at boot time.
 
 audit_inetd () {
   if [ "$os_name" = "SunOS" ]; then 
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Internet Services"
       service_name="svc:/network/inetd:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -5741,7 +6989,7 @@ audit_inetd () {
 
 audit_ssh_forwarding () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-      funct_verbose_message "SSH Forwarding"
+    funct_verbose_message "SSH Forwarding"
     check_file="/etc/ssh/sshd_config"
     funct_file_value $check_file AllowTcpForwarding space yes hash
   fi
@@ -5752,6 +7000,18 @@ audit_ssh_forwarding () {
 # Create issue file
 # Checks for notice in /etc/issue
 # Removes version information on Linux
+#
+# The contents of the /etc/issue file are displayed prior to the login prompt 
+# on the system's console and serial devices, and also prior to logins via 
+# telnet. /etc/motd is generally displayed after all successful logins, no 
+# matter where the user is logging in from, but is thought to be less useful 
+# because it only provides notification to the user after the machine has been 
+# accessed.
+# Warning messages inform users who are attempting to login to the system of 
+# their legal status regarding the system and must include the name of the 
+# organization that owns the system and any monitoring policies that are in 
+# place. Consult with your organization's legal counsel for the appropriate 
+# wording for your specific organization.
 
 audit_issue_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -5811,10 +7071,17 @@ audit_issue_banner () {
 # Samba: Set Group Ownership of smb.conf File
 # Samba: Set Secure Permissions on smbpasswd File
 # Samba: Set Group Ownership of smbpasswd File
+#
+# Set the permissions of the smbpasswd file to 600, so that the contents of 
+# the file can not be viewed by any user other than root
+# If the smbpasswd file were set to read access for other users, the lanman 
+# hashes could be accessed by an unauthorized user and cracked using various 
+# password cracking tools. Setting the file to 600 limits access to the file 
+# by users other than root.
 
 audit_smbpasswd_perms () {
   if [ "$os_name" = "SunOS" ]; then
-      funct_verbose_message "SMB Password File"
+    funct_verbose_message "SMB Password File"
     audit_check_perms /etc/sfw/private/smbpasswd 0600 root root
   fi
 }
@@ -5822,6 +7089,13 @@ audit_smbpasswd_perms () {
 # audit_smbconf_perms
 #
 # Samba: Set Secure Permissions on smb.conf File
+#
+# The smb.conf file is only to be writeable by root to prevent unauthorized 
+# changes of the configuration file
+#
+# The smb.conf file is the configuration file for the Samba suite and contains 
+# runtime configuration information for Samba.
+# All configuration files must be protected from tampering.
 
 audit_smbconf_perms () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5833,6 +7107,13 @@ audit_smbconf_perms () {
 # audit_syslog_perms
 #
 # syslog: Set Secure Permissions on Log File
+#
+# The log file for sendmail (by default in Solaris 10, /var/log/syslog) 
+# is set to 644 so that sendmail (running as root) can write to the file and 
+# anyone can read the file.
+# Setting the log file /var/log/syslog to 644 allows sendmail (running as root) 
+# to create entries, but prevents anyone (other than root) from modifying the 
+# log file, thus rendering the log data worthless.
 
 audit_syslog_perms () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5851,7 +7132,7 @@ audit_rarp () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "RARP Daemon"
       service_name="svc:/network/rarp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -5865,7 +7146,7 @@ audit_wins () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "WINS Daemon"
       service_name="svc:/network/wins:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -5885,7 +7166,7 @@ audit_winbind () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Winbind Daemon"
       service_name="svc:/network/winbind:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -5906,7 +7187,7 @@ audit_bootparams () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Bootparams Daemon"
       service_name="svc:/network/rpc/bootparams:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -5927,15 +7208,15 @@ audit_postgresql () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "PostgreSQL Database"
       service_name="svc:/application/database/postgresql_83:default_32bit"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/database/postgresql_83:default_64bit"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/database/postgresql:version_81"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/database/postgresql:version_82"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/database/postgresql:version_82_64bit"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi  
   if [ "$os_name" = "Linux" ]; then
@@ -5948,29 +7229,41 @@ audit_postgresql () {
 
 # audit_webmin
 #
-# Turn off webmin if not required
+# Webmin is a web-based system configuration tool for Unix-like systems, 
+# although recent versions can also be installed and run on Windows.
+# With it, it is possible to configure operating system internals, such 
+# as users, disk quotas, services or configuration files, as well as modify 
+# and control open source apps, such as the Apache HTTP Server, PHP or MySQL.
+#
+# Turn off webmin if it is not being used.
 
 audit_webmin () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Webmin Daemon"
       service_name="svc:/application/management/webmin:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_dns_server
 #
-# Turn off DNS Server if not required
-# May be required for jumpstart servers
+# The Domain Name System (DNS) is a hierarchical distributed naming system 
+# for computers, services, or any resource connected to the Internet or a 
+# private network. It associates various information with domain names 
+# assigned to each of the participating entities. 
+# In general servers will be clients of an upstream DNS server within an
+# organisation so do not need to provide DNS server services themselves.
+# An obvious exception to this is DNS servers themselves and servers that
+# provide boot and install services such as Jumpstart or Kickstart servers.
 
 audit_dns_server () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "DNS Server"
       service_name="svc:/network/dns/server:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -5984,7 +7277,16 @@ audit_dns_server () {
 
 # audit_avahi_conf
 #
-# Audit Avahi Daemon config
+# mDNS / Avahi Daemon config
+# 
+# The multicast Domain Name System (mDNS) is a zero configuration host name 
+# resolution service. It uses essentially the same programming interfaces, 
+# packet formats and operating semantics as the unicast Domain Name System 
+# (DNS) to resolve host names to IP addresses within small networks that do 
+# not include a local name server, but can also be used in conjunction with 
+# such servers.
+# It is best to turn off mDNS in a server environment, but if it is used then
+# the services advertised should be restricted.
 
 audit_avahi_conf () {
   if [ "$os_name" = "Linux" ]; then
@@ -6003,7 +7305,13 @@ audit_avahi_conf () {
 
 # audit_dns_client
 #
-# Audit DNS Client
+# Name Server Caching Daemon 
+#
+# Nscd is a daemon that provides a cache for the most common name service 
+# requests. The default configuration file, /etc/nscd.conf, determines the 
+# behavior of the cache daemon.
+# Unless required disable Name Server Caching Daemon as it can result in
+# stale or incorrect DNS information being cached by the system.
 
 audit_dns_client () {
   if [ "$os_name" = "Linux" ]; then
@@ -6018,6 +7326,10 @@ audit_dns_client () {
 # audit_ntp
 #
 # Turn on NTP
+# 
+# Network Time Protocol (NTP) is a networking protocol for clock synchronization 
+# between computer systems.
+# Most security mechanisms require network time to be synchronized.
 
 audit_ntp () {
   if [ "$os_name" = "SunOS" ]; then
@@ -6026,7 +7338,7 @@ audit_ntp () {
     funct_file_value $check_file server space pool.ntp.org hash
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       service_name="svc:/network/ntp4:default"
-      audit_service $service_name enabled
+      funct_service $service_name enabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6077,11 +7389,11 @@ audit_krb5 () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Kerberos"
       service_name="svc:/network/security/krb5kdc:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/security/kadmin:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/security/krb5_prop:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6102,29 +7414,29 @@ audit_routing_daemons () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Routing Daemons"
       service_name="svc:/network/routing/zebra:quagga"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/ospf:quagga"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/rip:quagga"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/ripng:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/ripng:quagga"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/ospf6:quagga"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/bgp:quagga"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/legacy-routing:ipv4"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/legacy-routing:ipv6"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/rdisc:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/route:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/routing/ndp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6145,7 +7457,7 @@ audit_ipmi () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "IPMI Daemons"
       service_name="svc:/network/ipmievd:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6166,7 +7478,7 @@ audit_apocd () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "APOC Daemons"
       service_name="svc:/network/apocd/udp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6180,7 +7492,7 @@ audit_vnc () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "VNC Daemons"
       service_name="svc:/application/x11/xvnc-inetd:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6201,13 +7513,13 @@ audit_ipsec () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "IPSEC Services"
       service_name="svc:/network/ipsec/manual-key:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/ipsec/ike:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/ipsec/ipsecalgs:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/ipsec/policy:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6221,7 +7533,7 @@ audit_ticotsord () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Ticotsor Daemon"
       service_name="svc:/network/rpc-100235_1/rpc_ticotsord:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6235,7 +7547,7 @@ audit_ftp_server () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "FTP Daemon"
       service_name="svc:/network/ftp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6249,9 +7561,9 @@ audit_ipfilter () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "IP Filter"
       service_name="svc:/network/ipfilter:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/pfil:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6265,33 +7577,33 @@ audit_echo () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Echo and Chargen Services"
       service_name="svc:/network/echo:dgram"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/echo:stream"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/time:dgram"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/time:stream"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/tname:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/comsat:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/discard:dgram"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/discard:stream"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/chargen:dgram"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/chargen:stream"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/spray:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/daytime:dgram"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/daytime:stream"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/talk:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 #  if [ "$os_name" = "Linux" ]; then
@@ -6312,21 +7624,21 @@ audit_remote_shell () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Telnet and Rlogin Services"
       service_name="svc:/network/shell:kshell"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/login:eklogin"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/login:klogin"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/rex:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rexec:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/shell:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/login:rlogin"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/telnet:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6347,11 +7659,11 @@ audit_font_server () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Font Server"
       service_name="svc:/application/x11/xfs:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/font/stfsloader:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/font/fc-cache:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6372,15 +7684,15 @@ audit_remote_info () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Remote Information Services"
       service_name="svc:/network/rpc/rstat:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nfs/rquota:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/rusers:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/finger:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/rpc/wall:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6394,21 +7706,21 @@ audit_nfs () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "NFS Services"
       service_name="svc:/network/nfs/mapid:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nfs/status:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nfs/cbd:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nfs/nlockmgr:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nfs/client:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/nfs/server:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" != "11" ]; then
       service_name="nfs.server"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     check_file="/etc/system"
     funct_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
@@ -6431,9 +7743,9 @@ audit_tftp_server () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "TFTPD Daemon"
       service_name="svc:/network/tftp/udp6:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/tftp/udp4:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6455,7 +7767,7 @@ audit_dhcp_server () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "DHCP Server"
       service_name="svc:/network/dhcp-server:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6469,7 +7781,7 @@ audit_iscsi () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "iSCSI Target Service"
       service_name="svc:/system/iscsitgt:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6503,12 +7815,12 @@ audit_uucp () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Samba Web Configuration Deamon"
       service_name="svc:/network/swat:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "UUCP Service"
       service_name="uucp"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6522,7 +7834,7 @@ audit_ocfserv () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "OCF Service"
       service_name="svc:/network/rpc/ocfserv:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6536,7 +7848,7 @@ audit_hotplug () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Hotplug Service"
       service_name="svc:/system/hotplug:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6562,7 +7874,7 @@ audit_tname () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Tname Daemon"
       service_name="svc:/network/tname:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6576,7 +7888,7 @@ audit_slp () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "SLP Daemon"
       service_name="svc:/network/slp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6590,7 +7902,7 @@ audit_tnd () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "TN Daemon"
       service_name="svc:/network/tnd:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6604,7 +7916,7 @@ audit_labeld () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Label Daemon"
       service_name="svc:/system/labeld:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6618,7 +7930,7 @@ audit_ldap () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "LDAP Client"
       service_name="svc:/network/ldap/client:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
@@ -6632,12 +7944,14 @@ audit_kdm_config () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Graphics Configuration"
       service_name="svc:/platform/i86pc/kdmconfig:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_bpcd
+#
+# BPC 
 #
 # Turn off bpcd
 
@@ -6646,12 +7960,14 @@ audit_bpcd () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "BPC Daemon"
       service_name="svc:/network/bpcd/tcp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_vnetd
+#
+# VNET Daemon
 #
 # Turn off vnetd
 
@@ -6660,60 +7976,77 @@ audit_vnetd () {
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "VNET Daemon"
       service_name="svc:/network/vnetd/tcp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_vopied
 #
-# Turn off vopied
+# Veritas Online Passwords In Everything
+#
+# Turn off vopied if not required. It is associated with Symantec products.
 
 audit_vopied () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "VOPIE Daemon"
       service_name="svc:/network/vopied/tcp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_bpjava_msvc
 #
-# Turn off bpjava-msvc
+# BPJava Service
+#
+# Turn off bpjava-msvc if not required. It is associated with NetBackup.
 
 audit_bpjava_msvc () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "BPJava Service"
       service_name="svc:/network/bpjava-msvc/tcp:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
-# audit_service_tags
+# funct_service_tags
 #
-# Turn off Service Tags
+# Service Tags
+#
+# A service tag enables automatic discovery of assets, including software and 
+# hardware. A service tag uniquely identifies each tagged asset, and allows 
+# information about the asset to be shared over a local network in a standard 
+# XML format.
+# Turn off Service Tags if not being used. It can provide information that can
+# be used as vector of attack.
 
-audit_service_tags () {
+funct_service_tags () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "Service Tags Daemons"
       service_name="svc:/network/stdiscover:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/network/stlisten:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/stosreg:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
 }
 
 # audit_zones
 #
-# Turn off Zone services
+# Operating system-level virtualization is a server virtualization method 
+# where the kernel of an operating system allows for multiple isolated 
+# user-space instances, instead of just one. Such instances (often called 
+# containers, VEs, VPSs or jails) may look and feel like a real server, 
+# from the point of view of its owner. 
+#
+# Turn off Zone services if zones are not being used.
 
 audit_zones () {
   if [ "$os_name" = "SunOS" ]; then
@@ -6722,13 +8055,13 @@ audit_zones () {
       if [ "$zone_check" != "1" ]; then
         funct_verbose_message "Zone Daemons"
         service_name="svc:/system/rcap:default"
-        audit_service $service_name disabled
+        funct_service $service_name disabled
         service_name="svc:/system/pools:default"
-        audit_service $service_name disabled
+        funct_service $service_name disabled
         service_name="svc:/system/tsol-zones:default"
-        audit_service $service_name disabled
+        funct_service $service_name disabled
         service_name="svc:/system/zones:default"
-        audit_service $service_name disabled
+        funct_service $service_name disabled
       fi
     fi
   fi
@@ -6736,7 +8069,12 @@ audit_zones () {
 
 # audit_xen
 #
-# Turn off Xen services
+# Xen Services
+#
+# Xen is a hypervisor providing services that allow multiple computer 
+# operating systems to execute on the same computer hardware concurrently.
+#
+# Turn off Xen services if they are not being used.
 
 audit_xen () {
   if [ "$os_name" = "Linux" ]; then
@@ -6752,29 +8090,37 @@ audit_xen () {
 
 # audit_snmp
 #
-# Turn off SNMP
+# SNMP configuration
+#
+# Simple Network Management Protocol (SNMP) is an "Internet-standard protocol 
+# for managing devices on IP networks". Devices that typically support SNMP 
+# include routers, switches, servers, workstations, printers, modem racks, and 
+# more. It is used mostly in network management systems to monitor network-
+# attached devices for conditions that warrant administrative attention.
+# Turn off SNMP if not used. If SNMP is used lock it down. SNMP can reveal
+# configuration information about systems leading to vectors of attack.
 
 audit_snmp () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "SNMP Daemons"
       service_name="svc:/application/management/seaport:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/management/snmpdx:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/management/dmi:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="svc:/application/management/sma:default"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "SNMP Daemons"
       service_name="init.dmi"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="init.sma"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
       service_name="init.snmpdx"
-      audit_service $service_name disabled
+      funct_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -6791,8 +8137,11 @@ audit_snmp () {
 
 # audit_modprobe_conf
 #
-# Audit modprobe.conf
-# Check entries are in place so kernel modules can't be force loaded
+# Kernel Module Probe Configuration
+# 
+# Check entries are in place so kernel modules can't be force loaded.
+# Some modules may getting unintentionally loaded that could reduce system
+# security.
 
 audit_modprobe_conf () {
   if [ "$os_name" = "Linux" ]; then
@@ -6814,8 +8163,10 @@ audit_modprobe_conf () {
 
 # audit_sysctl
 #
-# Network tuning parameters for sysctl under Linux
-# Check and review to see which are suitable for you environment
+# Sysctl Settings
+#
+# Network tuning parameters for sysctl under Linux.
+# Check and review to see which are suitable for you environment.
 
 audit_sysctl () {
   if [ "$os_name" = "Linux" ]; then
@@ -6856,7 +8207,11 @@ audit_sysctl () {
 
 # audit_xinetd
 #
-# Audit xinetd services on Linux
+# Xinetd Services
+#
+# Audit xinetd services on Linux. Make sure services that are not required
+# are not running. Leaving unrequired services running can lead to vectors
+# of attack.
 
 audit_xinetd () {
   if [ "$os_name" = "Linux" ]; then
@@ -6882,7 +8237,11 @@ audit_xinetd () {
 
 # audit_legacy
 #
-# Turn off inetd and init.d services on Solaris (legacy for Solaris 10+)
+# Legacy Services
+#
+# Turn off inetd and init.d services on Solaris (legacy for Solaris 10+).
+# Most of these services have now migrated to the new Service Manifest
+# methodology.
 
 audit_legacy () {
   if [ "$os_name" = "SunOS" ]; then
@@ -6894,7 +8253,7 @@ audit_legacy () {
         100221 100232 100235 kerbd rstatd rusersd sprayd walld \
         printer shell login telnet ftp tftp 100083 100229 100230 \
         100242 100234 100134 100155 rquotad 100424 100422; do
-        audit_inetd_service $service_name disabled
+        funct_inetd_service $service_name disabled
       done
       funct_verbose_message "Init Services"
       for service_name in llc2 pcmcia ppd slpd boot.server autoinstall \
@@ -6902,7 +8261,7 @@ audit_legacy () {
         PRESERVE ncalogd ncad ab2mgr dmi mipagent nfs.client autofs rpc \
         directory ldap.client lp spc volmgt dtlogin ncakmod samba dhcp \
         nfs.server kdc.master kdc apache snmpdx; do
-        audit_initd_service $service_name disabled
+        funct_initd_service $service_name disabled
       done
     fi
   fi
@@ -6910,7 +8269,9 @@ audit_legacy () {
   
 # audit_cups
 #
-# Turn off cups if not required on Linux
+# Printing Services
+#
+# Turn off cups if not required on Linux.
 
 audit_cups () {
   if [ "$os_name" = "Linux" ]; then
@@ -6930,7 +8291,12 @@ audit_cups () {
 
 # audit_chkconfig
 #
-# Code to check services are turned off via chkconfig in Linux
+# Linux Chkconfig Services
+#
+# Check services are turned off via chkconfig in Linux that do not need to be
+# enabled. 
+# Running services that are not required can leave potential vectors of attack
+# open.
 
 audit_chkconfig () {
   if [ "$os_name" = "Linux" ]; then
@@ -6955,7 +8321,11 @@ audit_chkconfig () {
 
 # audit_linux_logfiles
 #
-# Code to check permission on log files under Linux
+# Linux Log File Permissions
+#
+# Check permission on log files under Linux. Make sure they are only readable
+# by system accounts. This stops sensitive system information from being
+# disclosed
 
 audit_linux_logfiles () {
   if [ "$os_name" = "Linux" ]; then
@@ -6972,7 +8342,11 @@ audit_linux_logfiles () {
 
 # audit_passwd_perms
 #
-# Audit /etc/*passwd* permission under Linux
+# Password File Permissions
+#
+# Audit password file permission under Linux. This stops password hashes and
+# other information being disclosed. Password hashes can be used to crack
+# passwords via brute force cracking tools.
 
 audit_passwd_perms () {
   if [ "$os_name" = "Linux" ]; then
@@ -6986,7 +8360,11 @@ audit_passwd_perms () {
 
 # audit_sendmail_greeting
 #
-# Audit Sendmail Greeting
+# Sendmail Greeting
+#
+# Make sure sendmail greeting does not expose version or system information.
+# This reduces information that can be obtained remotely and thus reduces
+# vectors of attack.
 
 audit_sendmail_greeting () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -7002,6 +8380,11 @@ audit_sendmail_greeting () {
           if [ "$audit_mode" = "1" ]; then
             score=`expr $score - 1`
             echo "Warning:   Found version information in sendmail greeting [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "cp $check_file $temp_file" fix
+            funct_verbose_message 'cat $temp_file |awk '/O SmtpGreetingMessage=/ { print "O SmtpGreetingMessage=Mail Server Ready; $b"; next} { print }' > $check_file' fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file 
@@ -7051,7 +8434,9 @@ audit_sendmail_greeting () {
 
 # audit_sendmail_aliases
 #
-# Audit sendmail aliases
+# Sendmail Aliases
+#
+# Make sure sendmail aliases are configured appropriately.
 
 audit_sendmail_aliases () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -7349,6 +8734,8 @@ audit_pam_deny () {
 
 # audit_pam_wheel
 #
+# PAM Wheel group membership
+#
 # Make sure wheel group membership is required to su
 
 audit_pam_wheel () {
@@ -7364,6 +8751,11 @@ audit_pam_wheel () {
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
           echo "Warning:   Wheel group membership not required for su in $check_file [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |awk '( $1==\"#auth\" && $2==\"required\" && $3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",$3,\"\tuse_uid\"; next }; { print }' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+          funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
@@ -7386,7 +8778,9 @@ audit_pam_wheel () {
 
 # audit_password_hashing
 #
-# Check that password hashing is set to SHA512
+# Password hashing
+#
+# Check that password hashing is set to SHA512.
 
 audit_password_hashing () {
   if [ "$os_name" = "Linux" ]; then
@@ -7427,7 +8821,9 @@ audit_password_hashing () {
 
 # audit_group_wheel
 #
-# Audit Wheel Group
+# Wheel Group
+#
+# Make sure there is a wheel group so privileged account access is limited.
 
 audit_group_wheel () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -7462,7 +8858,9 @@ audit_group_wheel () {
 
 # audit_super_users
 #
-# Make sure not other accounts than root have UID 0
+# Super Users
+#
+# Make sure not other accounts than root have UID 0.
 
 audit_super_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -7501,7 +8899,9 @@ audit_super_users () {
 
 # audit_logrotate
 #
-# Audit logrotate
+# Logrotate
+#
+# Make sure logroate is set up appropriately.
 
 audit_logrotate () {
   if [ "$os_name" = "Linux" ]; then
@@ -7813,7 +9213,7 @@ funct_audit_network_services () {
   audit_echo
   audit_ocfserv 
   audit_tname
-  audit_service_tags
+  funct_service_tags
   audit_ticotsord
   audit_boot_server
   audit_slp
@@ -7877,11 +9277,13 @@ funct_audit_system_all () {
   funct_audit_update_services
 }
 
-# audit_search_fs
+# funct_audit_search_fs
 #
 # Audit Filesystem
+#
+# Run various filesystem audits, add support for NetBackup
 
-audit_search_fs () {
+funct_audit_search_fs () {
   if [ "$os_name" = "SunOS" ]; then
     funct_verbose_message "Filesystem Search"
     nb_check=`pkginfo -l |grep SYMCnbclt |grep PKG |awk '{print $2}'`
@@ -8016,7 +9418,7 @@ funct_audit_system () {
   fi
   funct_audit_system_all
   if [ "$do_fs" = 1 ]; then
-    audit_search_fs
+    funct_audit_search_fs
   fi
   #funct_audit_test_subset
   if [ `expr "$os_platform" : "sparc"` != 1 ]; then
