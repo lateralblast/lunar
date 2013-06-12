@@ -138,3 +138,5 @@
 #               Updated documentation and added verbose mode
 #               1.6.4 Wed Jun 12 10:35:31 EST 2013
 #               Fixed NTP test and added audit test information
+#               1.6.5 Wed Jun 12 17:13:57 EST 2013
+#               Added initial SUSE support
