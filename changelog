@@ -136,3 +136,5 @@
 #               Improved documentation   
 #               1.6.3 Tue Jun 11 14:25:01 EST 2013
 #               Updated documentation and added verbose mode
+#               1.6.4 Wed Jun 12 10:35:31 EST 2013
+#               Fixed NTP test and added audit test information
