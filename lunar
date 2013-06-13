@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.6.6
+# Version:      1.6.9
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -542,7 +542,7 @@ funct_file_value () {
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`
         echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
-        if [ "$check_file" = "/etc/default/sendmail" ]; then
+        if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
           funct_verbose_message "" fix
           funct_verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" fix
           funct_verbose_message "" fix
@@ -562,7 +562,7 @@ funct_file_value () {
             echo "Notice:    Service restart required for SSH"
           fi
           funct_backup_file $check_file
-          if [ "$check_file" = "/etc/default/sendmail" ]; then
+          if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
             echo "$parameter_name$separator\"$correct_value\"" >> $check_file
           else
             echo "$parameter_name$separator$correct_value" >> $check_file
@@ -597,7 +597,7 @@ funct_file_value () {
               fi
             fi
           else
-            if [ "$check_file" = "/etc/default/sendmail" ]; then
+            if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
               funct_verbose_message "" fix
               funct_verbose_message "sed \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" fix
             else
@@ -635,7 +635,7 @@ funct_file_value () {
                 fi
               fi
             else
-              if [ "$check_file" = "/etc/default/sendmail" ]; then
+              if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
                 sed "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > $temp_file
               else
                 sed "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
@@ -1655,6 +1655,23 @@ audit_xlogin () {
       else
         funct_restore_file $check_file $restore_dir
       fi  
+    fi
+  fi
+}
+
+# audit_postfix_daemon
+#
+# Postfix is installed and active by default on SUSE.
+# If the system need not accept remote SMTP connections, disable remote SMTP 
+# connections by setting SMTPD_LISTEN_REMOTE="no" in the /etc/sysconfig/mail 
+# SMTP connections are not accepted in a default configuration.
+#.
+
+audit_postfix_daemon () {
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist"= "suse" ]; then
+      check_file="/etc/sysconfig/mail"
+      funct_file_value $check_file SMTPD_LISTEN_REMOTE eq no hash
     fi
   fi
 }
@@ -7323,6 +7340,30 @@ audit_power_management () {
   fi
 }
 
+# audit_email_services
+#
+# Remote mail clients (like Eudora, Netscape Mail and Kmail) may retrieve mail 
+# from remote mail servers using IMAP, the Internet Message Access Protocol, 
+# or POP, the Post Office Protocol. If this system is a mail server that must 
+# offer the POP protocol then either qpopper or cyrus may be activated.
+
+audit_email_services () {
+  if [ "$os_name" = "Linux" ]; then
+    funct_verbose_message "Cyrus IMAP Daemon"
+    service_name="cyrus"
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 3 off
+    funct_verbose_message "IMAP Daemon"
+    service_name="imapd"
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 3 off
+    funct_verbose_message "Qpopper POP Daemon"
+    service_name="qpopper"
+    funct_chkconfig_service $service_name 3 off
+    funct_chkconfig_service $service_name 3 off
+  fi
+}
+
 # audit_sys_suspend
 #
 # The /etc/default/sys-suspend settings control which users are allowed to use 
@@ -8709,8 +8750,15 @@ audit_cups () {
     funct_rpm_check cups
     if [ "$rpm_check" = "cups" ]; then
       funct_verbose_message "Printing Services"
-      funct_chkconfig_service cups 3 off
-      funct_chkconfig_service cups 5 off
+      service_name="cups"
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
+      service_name="cups-lpd"
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
+      service_name="cupsrenice"
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
       funct_check_perms /etc/init.d/cups 0744 root root
       funct_check_perms /etc/cups/cupsd.conf 0600 lp sys
       funct_check_perms /etc/cups/client.conf 0644 root lp
@@ -8731,18 +8779,21 @@ audit_cups () {
 audit_chkconfig () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Miscellaneous Services"
-    for service_name in wu-ftpd ftp vsftpd \
+    for service_name in wu-ftpd ftp vsftpd aaeventd\
       tftp acpid amd arptables_jg arpwatch atd netfs irda isdn \
       bluetooth capi conman cpuspeed cryrus-imapd dc_client \
-      dc_server dhcdbd dhcp6s dhcrelay \
+      dc_server dhcdbd dhcp6s dhcrelay chargen chargen-udp\
       dovecot dund gpm hidd hplip ibmasm innd ip6tables \
       lisa lm_sensors mailman mctrans mdmonitor mdmpd microcode_ctl \
       mysqld netplugd network NetworkManager openibd \
-      pand postfix psacct mutipathd \
+      pand postfix psacct mutipathd daytime daytime-udp\
       radiusd radvd rdisc readahead_early readahead_later rhnsd \
       rpcgssd rpcimapd rpcsvcgssd rstatd rusersd rwhod saslauthd \
-      settroubleshoot smartd spamassasin \
-      tog-pegasus tux wpa_supplicant zebra; do
+      settroubleshoot smartd spamassasin echo echo-udp\
+      time time-udp vnc svcgssd rpmconfigcheck rsh rsync rsyncd \
+      saslauthd powerd raw rexec rlogin rpasswdd openct\
+      ipxmount joystick esound evms fam gpm gssd pcscd\
+      tog-pegasus tux wpa_supplicant zebra ncpfs; do
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
     done
@@ -9478,14 +9529,16 @@ funct_audit_file_services () {
   audit_uucp
 }
 
-# funct_audit_sendmail_services
+# funct_audit_mail_services
 #
 # Audit sendmail
 
-funct_audit_sendmail_services () {
+funct_audit_mail_services () {
   audit_sendmail_daemon
   audit_sendmail_greeting
   audit_sendmail_aliases
+  audit_email_services
+  audit_postfix_daemon
 }
 
 # funct_audit_ftp_services
@@ -9704,7 +9757,7 @@ funct_audit_system_all () {
   funct_audit_firewall_services
   funct_audit_password_services
   funct_audit_kernel_services
-  funct_audit_sendmail_services
+  funct_audit_mail_services
   funct_audit_user_services
   funct_audit_disk_services
   funct_audit_virtualisation_services

@@ -142,3 +142,9 @@
 #               Added inital SUSE support
 #               1.6.6 Thu Jun 13 16:50:19 EST 2013
 #               Added OS X support
+#               1.6.7 Thu Jun 13 19:09:55 EST 2013
+#               Added Cyrus and Qpopper check
+#               1.6.8 Thu Jun 13 19:23:10 EST 2013
+#               Added Postfix check
+#               1.6.9 Thu Jun 13 19:52:00 EST 2013
+#               Improved SuSE support
