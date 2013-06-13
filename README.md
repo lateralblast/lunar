@@ -12,7 +12,7 @@ based on the date (see Examples below).
 
 Supported Operating Systems:
 
-Linux (Red Hat 5.x, Red Hat 6.x, Debian, and Ubuntu) and Solaris (6,7,8,9,10 and 11)
+Linux (Red Hat 5.x, Red Hat 6.x, Debian, and Ubuntu), Solaris (6,7,8,9,10 and 11), and Mac OS X
 
 
 Usage 
