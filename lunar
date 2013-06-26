@@ -187,9 +187,10 @@ check_os_release () {
   echo ""
   os_name=`uname`
   if [ "$os_name" = "Darwin" ]; then
-    os_version=`sw_vers |grep ProductVersion |awk '{print $2}' |awk -F'.' '{print $1"."$2}'`
-    os_update=`sw_vers |grep ProductVersion |awk '{print $2}' |cut -f3 -d"."`
-    os_vendor="Apple"
+	set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
+	os_version=$1.$2
+	os_update=$3
+	os_vendor="Apple"
   fi
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
