@@ -29,7 +29,7 @@ Usage
 	-L: Run in lockdown mode (changes made to system)
 	    [includes filesystem checks which take some time]
 	-d: Show changes previously made to system
-	-p: Show previously versions of file
+	-p: Show previousl versions of file
 	-u: Undo lockdown (changes made to system)
 	-h: Display usage
 	-V: Display version
