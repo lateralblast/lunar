@@ -1,150 +1,153 @@
-# Changes:      0.0.0 Thursday, 25 October 2012  9:40:54 AM EST
-#               Initial version
-#               0.0.1 Thursday,  1 November 2012  2:28:41 PM EST
-#               Added initial audit code
-#               0.0.2 Fri  2 Nov 2012 13:24:54 EST
-#               Created subroutines for updating files and parameters
-#               0.0.3 Thursday,  8 November 2012  9:35:19 PM EST
-#               Added restore code
-#               0.0.4 Saturday, 10 November 2012 11:37:22 AM EST
-#               Added kernel accounting
-#               1.0.0 Monday, 12 November 2012 10:45:27 AM EST
-#               Initial Github Commit
-#               1.0.1 Monday, 12 November 2012  9:52:17 PM EST
-#               Formating fixes
-#               1.0.2 Monday, 12 November 2012 10:03:54 PM EST
-#               Additional cleanup
-#               1.0.3 Thu 15 Nov 2012 02:37:31 EST
-#               Initial Solaris 11 support
-#               1.0.4 Fri 16 Nov 2012 10:57:17 EST
-#               Updated Solaris 11 support, Initial re-commit to new repository
-#               1.0.5 Sat 17 Nov 2012 09:55:07 EST
-#               Added echo services
-#               1.0.6 Monday, 19 November 2012  8:13:20 AM EST
-#               Solaris 10 and 11 support mostly done - some minor additions could be made
-#               1.0.7 Monday, 19 November 2012 11:02:05 AM EST
-#               Added initial support for Solaris versions less than 10
-#               1.0.8 Thursday, 20 December 2012  2:46:32 PM EST
-#               Fixed problem with inetadm command
-#               1.0.9 Thursday, 20 December 2012  3:47:52 PM EST
-#               Added -A and -L switches and moved filesystem searches to it
-#               1.1.0 Thu 20 Dec 2012 17:01:52 EST
-#               Cleaned up formating
-#               1.1.1 Fri Dec 21 21:43:39 EST 2012
-#               Initial Solaris 9 testing completed
-#               1.1.2 Sat Dec 22 08:13:17 EST 2012
-#               Fixed bugs with parameter value checking
-#               1.1.3 Sat Dec 22 08:27:53 EST 2012
-#               Fixed bug with home directory check
-#               1.1.4 Sat Dec 22 08:50:38 EST 2012
-#               Fixed bug with inetd code
-#               1.1.5 Sat Dec 22 08:54:05 EST 2012
-#               Fixed Solaris 9 update version detection
-#               1.1.6 Sat Dec 22 16:45:16 EST 2012
-#               Updated documentation
-#               1.1.7 Thu Feb 14 20:46:31 EST 2013
-#               Initial Linux support
-#               1.1.8 Fri Feb 15 18:40:48 EST 2013
-#               Linux xinetd and chkconfig support added
-#               1.1.9 Sat Feb 16 12:01:05 EST 2013
-#               Added sysctl audit for Linux
-#               1.2.0 Sat Feb 16 14:09:03 EST 2013
-#               Added ftpd logging checking for Linux
-#               1.2.1 Sat Feb 16 14:22:58 EST 2013
-#               Updated file update to support tabs
-#               1.2.2 Sat Feb 16 22:30:05 EST 2013
-#               Added pam options for Linux
-#               1.2.3 Sun Feb 17 02:17:04 EST 2013
-#               Added code for sendmail greeting
-#               1.2.4 Sun 17 Feb 2013 08:27:32 EST
-#               Added code for vsftpd banner
-#               1.2.5 Sun Feb 17 19:55:54 EST 2013
-#               Added securetty check for Linux
-#               1.2.6 Sun 17 Feb 2013 20:40:27 EST
-#               Added auditd config
-#               1.2.7 Mon Feb 18 03:11:37 EST 2013
-#               Added warning banners
-#               1.2.8 Mon Feb 18 04:42:08 EST 2013
-#               Added X11 warning messages
-#               1.2.9 Mon Feb 18 09:41:55 EST 2013
-#               Added Linux core dumps and rhosts for PAM
-#               1.3.0 Mon Feb 18 13:42:24 EST 2013
-#               Added gdm.conf audit
-#               1.3.1 Mon Feb 18 14:38:04 EST 2013
-#               Added Linux nodev audit
-#               1.3.2 Mon Feb 18 15:08:26 EST 2013
-#               Added Linux FDI audit
-#               1.3.3 Mon Feb 18 17:53:30 EST 2013
-#               Added X11 nolisten
-#               1.3.4 Mon Feb 18 20:30:30 EST 2013
-#               Improved file octal derivation on Solaris
-#               1.3.5 Tue Feb 19 12:47:55 EST 2013
-#               Added file verification for Linux
-#               1.3.6 Tue Feb 19 14:48:33 EST 2013
-#               Added password strength testing on Linux
-#               1.3.7 Tue Feb 19 15:09:05 EST 2013
-#               Added Cipher directive to SSH config
-#               1.3.8 Tue Feb 19 15:37:52 EST 2013
-#               Added logrotate configuration
-#               1.3.9 Tue Feb 19 15:52:20 EST 2013
-#               Added module loading and mounting to auditd
-#               1.4.0 Tue Feb 19 17:03:17 EST 2013
-#               Added modprobe.conf check
-#               1.4.1 Tue Feb 19 17:25:39 EST 2013
-#               Added sendmail local-only mode check
-#               1.4.2 Tue Feb 19 17:32:12 EST 2013
-#               Added code to check NTP running as ntp user
-#               1.4.3 Tue Feb 19 21:01:02 EST 2013
-#               Added selective function to run individual tests
-#               1.4.4 Tue Feb 19 21:34:30 EST 2013
-#               Added selinux
-#               1.4.5 Tue Feb 19 21:46:55 EST 2013
-#               Added yum config check
-#               1.4.6 Tue Feb 19 22:59:12 EST 2013
-#               Added lockout for failed password attempts
-#               1.4.7 Wed Feb 20 10:13:46 EST 2013
-#               Simplified RPM verify routine
-#               1.4.8 Wed Feb 20 10:59:28 EST 2013
-#               Added root primary group audit
-#               1.4.9 Wed Feb 20 11:16:28 EST 2013
-#               Added system account shell check
-#               1.5.0 Wed Feb 20 15:00:07 EST 2013
-#               Added handling for [at,cron].[deny,allow]
-#               1.5.1 Wed Feb 20 16:03:18 EST 2013
-#               Fixed file append function
-#               1.5.2 Thu Feb 21 14:00:42 EST 2013
-#               Fixed code to update files
-#               1.5.3 Thursday, 21 February 2013  3:29:49 PM EST
-#               Improved code to fix cron
-#               1.5.4 Thu Feb 21 16:49:46 EST 2013
-#               Added rpm check code
-#               1.5.5 Fri 22 Feb 2013 07:23:16 EST
-#               Cleaned up code for selective audit
-#               1.5.6 Fri  3 May 2013 16:25:36 EST
-#               Fixed minor bug with for loop
-#               1.5.7 Fri May 24 15:46:54 EST 2013
-#               Initial Debian/Ubuntu support
-#               1.5.8 Fri May 24 21:04:33 EST 2013
-#               Improved Debian/Ubuntu support
-#               1.5.9 Sat May 25 11:40:50 EST 2013
-#               Improved Debian/Ubuntu support
-#               1.6.0 Sat May 25 22:35:36 EST 2013
-#               Improved Debian/Ubuntu support
-#               1.6.1 Sun Jun  9 09:05:44 EST 2013
-#               Added some file checks
-#               1.6.2 Sun Jun  9 23:18:37 EST 2013
-#               Improved documentation   
-#               1.6.3 Tue Jun 11 14:25:01 EST 2013
-#               Updated documentation and added verbose mode
-#               1.6.4 Wed Jun 12 10:35:31 EST 2013
-#               Fixed NTP test and added audit test information
-#               1.6.5 Wed Jun 12 17:13:57 EST 2013
-#               Added inital SUSE support
-#               1.6.6 Thu Jun 13 16:50:19 EST 2013
-#               Added OS X support
-#               1.6.7 Thu Jun 13 19:09:55 EST 2013
-#               Added Cyrus and Qpopper check
-#               1.6.8 Thu Jun 13 19:23:10 EST 2013
-#               Added Postfix check
-#               1.6.9 Thu Jun 13 19:52:00 EST 2013
-#               Improved SuSE support
+# Changes:      
+# 0.0.0 Thursday, 25 October 2012  9:40:54 AM EST
+# Initial version
+# 0.0.1 Thursday,  1 November 2012  2:28:41 PM EST
+# Added initial audit code
+# 0.0.2 Fri  2 Nov 2012 13:24:54 EST
+# Created subroutines for updating files and parameters
+# 0.0.3 Thursday,  8 November 2012  9:35:19 PM EST
+# Added restore code
+# 0.0.4 Saturday, 10 November 2012 11:37:22 AM EST
+# Added kernel accounting
+# 1.0.0 Monday, 12 November 2012 10:45:27 AM EST
+# Initial Github Commit
+# 1.0.1 Monday, 12 November 2012  9:52:17 PM EST
+# Formating fixes
+# 1.0.2 Monday, 12 November 2012 10:03:54 PM EST
+# Additional cleanup
+# 1.0.3 Thu 15 Nov 2012 02:37:31 EST
+# Initial Solaris 11 support
+# 1.0.4 Fri 16 Nov 2012 10:57:17 EST
+# Updated Solaris 11 support, Initial re-commit to new repository
+# 1.0.5 Sat 17 Nov 2012 09:55:07 EST
+# Added echo services
+# 1.0.6 Monday, 19 November 2012  8:13:20 AM EST
+# Solaris 10 and 11 support mostly done - some minor additions could be made
+# 1.0.7 Monday, 19 November 2012 11:02:05 AM EST
+# Added initial support for Solaris versions less than 10
+# 1.0.8 Thursday, 20 December 2012  2:46:32 PM EST
+# Fixed problem with inetadm command
+# 1.0.9 Thursday, 20 December 2012  3:47:52 PM EST
+# Added -A and -L switches and moved filesystem searches to it
+# 1.1.0 Thu 20 Dec 2012 17:01:52 EST
+# Cleaned up formating
+# 1.1.1 Fri Dec 21 21:43:39 EST 2012
+# Initial Solaris 9 testing completed
+# 1.1.2 Sat Dec 22 08:13:17 EST 2012
+# Fixed bugs with parameter value checking
+# 1.1.3 Sat Dec 22 08:27:53 EST 2012
+# Fixed bug with home directory check
+# 1.1.4 Sat Dec 22 08:50:38 EST 2012
+# Fixed bug with inetd code
+# 1.1.5 Sat Dec 22 08:54:05 EST 2012
+# Fixed Solaris 9 update version detection
+# 1.1.6 Sat Dec 22 16:45:16 EST 2012
+# Updated documentation
+# 1.1.7 Thu Feb 14 20:46:31 EST 2013
+# Initial Linux support
+# 1.1.8 Fri Feb 15 18:40:48 EST 2013
+# Linux xinetd and chkconfig support added
+# 1.1.9 Sat Feb 16 12:01:05 EST 2013
+# Added sysctl audit for Linux
+# 1.2.0 Sat Feb 16 14:09:03 EST 2013
+# Added ftpd logging checking for Linux
+# 1.2.1 Sat Feb 16 14:22:58 EST 2013
+# Updated file update to support tabs
+# 1.2.2 Sat Feb 16 22:30:05 EST 2013
+# Added pam options for Linux
+# 1.2.3 Sun Feb 17 02:17:04 EST 2013
+# Added code for sendmail greeting
+# 1.2.4 Sun 17 Feb 2013 08:27:32 EST
+# Added code for vsftpd banner
+# 1.2.5 Sun Feb 17 19:55:54 EST 2013
+# Added securetty check for Linux
+# 1.2.6 Sun 17 Feb 2013 20:40:27 EST
+# Added auditd config
+# 1.2.7 Mon Feb 18 03:11:37 EST 2013
+# Added warning banners
+# 1.2.8 Mon Feb 18 04:42:08 EST 2013
+# Added X11 warning messages
+# 1.2.9 Mon Feb 18 09:41:55 EST 2013
+# Added Linux core dumps and rhosts for PAM
+# 1.3.0 Mon Feb 18 13:42:24 EST 2013
+# Added gdm.conf audit
+# 1.3.1 Mon Feb 18 14:38:04 EST 2013
+# Added Linux nodev audit
+# 1.3.2 Mon Feb 18 15:08:26 EST 2013
+# Added Linux FDI audit
+# 1.3.3 Mon Feb 18 17:53:30 EST 2013
+# Added X11 nolisten
+# 1.3.4 Mon Feb 18 20:30:30 EST 2013
+# Improved file octal derivation on Solaris
+# 1.3.5 Tue Feb 19 12:47:55 EST 2013
+# Added file verification for Linux
+# 1.3.6 Tue Feb 19 14:48:33 EST 2013
+# Added password strength testing on Linux
+# 1.3.7 Tue Feb 19 15:09:05 EST 2013
+# Added Cipher directive to SSH config
+# 1.3.8 Tue Feb 19 15:37:52 EST 2013
+# Added logrotate configuration
+# 1.3.9 Tue Feb 19 15:52:20 EST 2013
+# Added module loading and mounting to auditd
+# 1.4.0 Tue Feb 19 17:03:17 EST 2013
+# Added modprobe.conf check
+# 1.4.1 Tue Feb 19 17:25:39 EST 2013
+# Added sendmail local-only mode check
+# 1.4.2 Tue Feb 19 17:32:12 EST 2013
+# Added code to check NTP running as ntp user
+# 1.4.3 Tue Feb 19 21:01:02 EST 2013
+# Added selective function to run individual tests
+# 1.4.4 Tue Feb 19 21:34:30 EST 2013
+# Added selinux
+# 1.4.5 Tue Feb 19 21:46:55 EST 2013
+# Added yum config check
+# 1.4.6 Tue Feb 19 22:59:12 EST 2013
+# Added lockout for failed password attempts
+# 1.4.7 Wed Feb 20 10:13:46 EST 2013
+# Simplified RPM verify routine
+# 1.4.8 Wed Feb 20 10:59:28 EST 2013
+# Added root primary group audit
+# 1.4.9 Wed Feb 20 11:16:28 EST 2013
+# Added system account shell check
+# 1.5.0 Wed Feb 20 15:00:07 EST 2013
+# Added handling for [at,cron].[deny,allow]
+# 1.5.1 Wed Feb 20 16:03:18 EST 2013
+# Fixed file append function
+# 1.5.2 Thu Feb 21 14:00:42 EST 2013
+# Fixed code to update files
+# 1.5.3 Thursday, 21 February 2013  3:29:49 PM EST
+# Improved code to fix cron
+# 1.5.4 Thu Feb 21 16:49:46 EST 2013
+# Added rpm check code
+# 1.5.5 Fri 22 Feb 2013 07:23:16 EST
+# Cleaned up code for selective audit
+# 1.5.6 Fri  3 May 2013 16:25:36 EST
+# Fixed minor bug with for loop
+# 1.5.7 Fri May 24 15:46:54 EST 2013
+# Initial Debian/Ubuntu support
+# 1.5.8 Fri May 24 21:04:33 EST 2013
+# Improved Debian/Ubuntu support
+# 1.5.9 Sat May 25 11:40:50 EST 2013
+# Improved Debian/Ubuntu support
+# 1.6.0 Sat May 25 22:35:36 EST 2013
+# Improved Debian/Ubuntu support
+# 1.6.1 Sun Jun  9 09:05:44 EST 2013
+# Added some file checks
+# 1.6.2 Sun Jun  9 23:18:37 EST 2013
+# Improved documentation   
+# 1.6.3 Tue Jun 11 14:25:01 EST 2013
+# Updated documentation and added verbose mode
+# 1.6.4 Wed Jun 12 10:35:31 EST 2013
+# Fixed NTP test and added audit test information
+# 1.6.5 Wed Jun 12 17:13:57 EST 2013
+# Added inital SUSE support
+# 1.6.6 Thu Jun 13 16:50:19 EST 2013
+# Added OS X support
+# 1.6.7 Thu Jun 13 19:09:55 EST 2013
+# Added Cyrus and Qpopper check
+# 1.6.8 Thu Jun 13 19:23:10 EST 2013
+# Added Postfix check
+# 1.6.9 Thu Jun 13 19:52:00 EST 2013
+# support
+# 1.7.0 Wed 21 Aug 2013 15:50:51 EST
+# Added check for root SSH keys
