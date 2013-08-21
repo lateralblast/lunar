@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.7.0
+# Version:      1.7.3
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -3314,6 +3314,8 @@ audit_cron_perms () {
 
 audit_inetd_logging () {
   if [ "$os_name" = "SunOS" ]; then
+    check_file="/etc/default/syslogd"
+    funct_file_value $check_file LOG_FROM_REMOTE eq NO hash
     if [ "$os_version" ="10" ] || [ "$os_version" = "9" ]; then
       funct_verbose_message "" fix
       funct_verbose_message "Logging inetd Connections"
@@ -3565,6 +3567,7 @@ audit_failed_logins () {
       funct_verbose_message "Failed Login Attempts"
       check_file="/etc/default/login"
       funct_file_value $check_file SYSLOG_FAILED_LOGINS eq 0 hash
+      funct_file_value $check_file SYSLOG eq YES hash
     fi
   fi
 }
@@ -5165,10 +5168,11 @@ audit_password_expiry () {
   if [ "$os_name" = "SunOS" ]; then
     funct_verbose_message "Password Expiration Parameters on Active Accounts"
     check_file="/etc/default/passwd"
-    funct_file_value $check_file PASSLENGTH eq 8 hash
     funct_file_value $check_file MAXWEEKS eq 13 hash
     funct_file_value $check_file MINWEEKS eq 1 hash
     funct_file_value $check_file WARNWEEKS eq 4 hash
+    check_file="/etc/default/login"
+    funct_file_value $check_file DISABLETIME eq 3600 hash
   fi
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Password Expiration Parameters on Active Accounts"
@@ -5352,14 +5356,14 @@ audit_default_umask () {
   fi
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/login"
-    funct_file_value $check_file UMASK space 077 hash
+    funct_file_value $check_file UMASK eq 077 hash
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile; do
       funct_file_value $check_file "umask" space 077 hash
     done
     for check_file in /etc/bashrc /etc/skel/.bashrc; do
-      funct_file_value $check_file "UMASK" eq 077 hash
+      funct_file_value $check_file UMASK eq 077 hash
     done
   fi
 }

@@ -151,3 +151,9 @@
 # support
 # 1.7.0 Wed 21 Aug 2013 15:50:51 EST
 # Added check for root SSH keys
+# 1.7.1 Wed 21 Aug 2013 15:57:47 EST
+# Added check for SYSLOG=YES in /etc/default/login for Solaris
+# 1.7.2 Wed 21 Aug 2013 16:10:15 EST
+# Added DISABLETIME flag to /etc/default/login check for Solaris
+# 1.7.3 Wed 21 Aug 2013 16:16:45 EST
+# Added check for LOG_FROM_REMOTE=NO in /etc/default/syslogd for Solaris
