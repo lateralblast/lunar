@@ -157,3 +157,5 @@
 # Added DISABLETIME flag to /etc/default/login check for Solaris
 # 1.7.3 Wed 21 Aug 2013 16:16:45 EST
 # Added check for LOG_FROM_REMOTE=NO in /etc/default/syslogd for Solaris
+# 1.7.4 Sun 25 Aug 2013 19:35:39 EST
+# Fixed ssh key check code

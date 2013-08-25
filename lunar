@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.7.3
+# Version:      1.7.4
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -9382,17 +9382,17 @@ audit_super_users () {
 # Make sure there are not ssh keys for root
 #
 
-audit_root_users () {
+audit_root_keys () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Root SSH keys"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Root SSH keys"
-      total=`expr $total + 1`
       root_home=`cat /etc/passwd |grep ^root |cut -f6 -d:`
-      for check_file in $root_home/.authorized_keys $root_home/.authorized_keys2; do
+      for check_file in $root_home/.ssh/authorized_keys $root_home/.ssh/authorized_keys2; do
+        total=`expr $total + 1`
         if [ "$audit_home" != 2 ]; then
           if [ -f "$check_file" ]; then
-            if [ "`wc -l $check_file`" ge 1 ]; then
+            if [ "`wc -l $check_file |awk '{print $1}'`" -ge 1 ]; then
               if [ "$audit_mode" = 1 ]; then
                 score=`expr $score - 1`
                 echo "Warning:   Keys file $check_file exists [$score]"
@@ -9400,6 +9400,11 @@ audit_root_users () {
               if [ "$audit_mode" = 0 ]; then
                 funct_backup_file $check_file
                 echo "Removing:  Keys file $check_file"
+              fi
+            else
+              if [ "$audit_mode" = 1 ]; then
+                score=`expr $score + 1`
+                echo "Secure:    Keys file $check_file does not contain any keys"
               fi
             fi
           else
