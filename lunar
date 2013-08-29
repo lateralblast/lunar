@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.7.4
+# Version:      1.7.6
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -64,6 +64,7 @@ date_suffix=`date +%d_%m_%Y_%H_%M_%S`
 work_dir="$base_dir/$date_suffix"
 temp_dir="$base_dir/tmp"
 temp_file="$temp_dir/temp_file"
+wheel_group="wheel"
 reboot=0
 total=0
 verbose=0
@@ -4455,18 +4456,14 @@ audit_ssh_config () {
   #funct_file_value $check_file Host space "*" hash
   funct_file_value $check_file Protocol space 2 hash
   funct_file_value $check_file X11Forwarding space no hash
-  if [ "$os_name" = "Linux" ]; then
-    if [ "$os_version" = "6" ]; then
-      funct_file_value $check_file MaxAuthTries space 3 hash
-      funct_file_value $check_file MaxAuthTriesLog space 0 hash
-      funct_file_value $check_file RhostsAuthentication space no hash
-    fi
-  else
-    funct_file_value $check_file MaxAuthTries space 3 hash
-    funct_file_value $check_file MaxAuthTriesLog space 0 hash
-    funct_file_value $check_file RhostsAuthentication space no hash
-  fi
+  funct_file_value $check_file MaxAuthTries space 3 hash
+  funct_file_value $check_file MaxAuthTriesLog space 0 hash
+  funct_file_value $check_file RhostsAuthentication space no hash
   funct_file_value $check_file IgnoreRhosts space yes hash
+  funct_file_value $check_file StrictModes space yes hash
+  funct_file_value $check_file AllowTcpForwarding space no hash
+  funct_file_value $check_file ServerKeyBits space 1024 hash
+  funct_file_value $check_file GatewayPorts space no hash
   funct_file_value $check_file RhostsRSAAuthentication space no hash
   funct_file_value $check_file PermitRootLogin space no hash
   funct_file_value $check_file PermitEmptyPasswords space no hash
@@ -4639,6 +4636,31 @@ audit_pam_rhosts () {
             score=`expr $score + 1`
             echo "Secure:    Rhost authentication disabled in $check_file [$score]"
           fi
+        fi
+      fi
+    done
+  fi
+}
+
+# audit_old_users
+#
+# Audit users to check for accounts that have not been logged into etc
+#
+
+audit_old_users () {
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || ["$os_name" = "Darwin" ]; then
+    check_file="/etc/passwd"
+    for user_name in `cat $check_file |grep -v "/usr/bin/false" |grep -v "LK" |cut -f1 -d:`; do
+      login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
+      if [ "$login_status" = "Never" ]; then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   User $user_name has never logged in and their account is not locked [$score]"
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   User $user_name to locked"
+          passwd -l $user_name
         fi
       fi
     done
@@ -5857,7 +5879,7 @@ audit_setup_file () {
   if [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Setup file"
     check_file="/var/db/.AppleSetupDone"
-    funct_check_perms $check_file 0400 root wheel
+    funct_check_perms $check_file 0400 root $wheel_group 
   fi
 }
 
@@ -9313,7 +9335,7 @@ audit_group_wheel () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Wheel group exists in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^wheel:'`
+      check_value=`cat $check_file |grep '^$wheel_group:'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
@@ -9321,9 +9343,9 @@ audit_group_wheel () {
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
-          echo "Setting:   Adding wheel group to $check_file"
+          echo "Setting:   Adding $wheel_group group to $check_file"
           groupadd wheel
-          usermod -G wheel root
+          usermod -G $wheel_group root
         fi
       else
         if [ "$audit_mode" = "1" ]; then  
@@ -9334,6 +9356,18 @@ audit_group_wheel () {
     else
       funct_restore_file $check_file $restore_dir
     fi
+  fi
+}
+
+# audit_su_wheel
+#
+# Make sure su has a wheel group ownership
+#
+
+audit_su_wheel() {
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+    $check_file=`which su`
+    funct_check_perms $check_file 4750 root $wheel_group 
   fi
 }
 
@@ -9525,6 +9559,8 @@ funct_audit_user_services () {
   audit_daemon_umask
   audit_cron_perms
   audit_group_wheel
+  audit_su_wheel
+  audit_old_users
   ##  audit_cron_allow
   audit_system_accounts
 }

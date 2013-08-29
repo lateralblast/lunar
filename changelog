@@ -159,3 +159,7 @@
 # Added check for LOG_FROM_REMOTE=NO in /etc/default/syslogd for Solaris
 # 1.7.4 Sun 25 Aug 2013 19:35:39 EST
 # Fixed ssh key check code
+# 1.7.5 Thu 29 Aug 2013 15:12:31 EST
+# Added su wheel group check
+# 1.7.6 Thu 29 Aug 2013 15:33:13 EST
+# Added check for users that have never logged in to make sure accounts are locked
