@@ -165,3 +165,5 @@
 # Added check for users that have never logged in to make sure accounts are locked
 # 1.7.7 Fri 30 Aug 2013 15:01:51 EST
 # Added default crypto check
+# 1.7.8 Fri 30 Aug 2013 15:16:08 EST
+# Added code to check wheel group users
