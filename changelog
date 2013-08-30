@@ -163,3 +163,5 @@
 # Added su wheel group check
 # 1.7.6 Thu 29 Aug 2013 15:33:13 EST
 # Added check for users that have never logged in to make sure accounts are locked
+# 1.7.7 Fri 30 Aug 2013 15:01:51 EST
+# Added default crypto check
