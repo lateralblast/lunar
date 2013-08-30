@@ -167,3 +167,5 @@
 # Added default crypto check
 # 1.7.8 Fri 30 Aug 2013 15:16:08 EST
 # Added code to check wheel group users
+# 1.7.9 Fri 30 Aug 2013 15:45:06 EST
+# Added restore function to wheel checks

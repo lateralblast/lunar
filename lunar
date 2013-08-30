@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.7.8
+# Version:      1.7.9
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -9380,24 +9380,28 @@ audit_wheel_group () {
 
 audit_wheel_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    $check_file="/etc/group"
-    for user_name in `cat $check_file |grep '^$wheel_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
-      last_login=`last -1 guest |grep '[a-z]' |awk '{print $1}'`
-      if [ "$last_login" = "wtmp" ]; then
-        lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
-        if [ "$lock_test" = "$user_name" ]; then
-          if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   User $user_name has not logged in recently and their account is not locked [$score]"
-          fi
-          if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
-            echo "Setting:   User $user_name to locked"
-            passwd -l $user_name
+    check_file="/etc/group"
+    if [ "$audit_mode" != 2 ]; then
+      for user_name in `cat $check_file |grep '^$wheel_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
+        last_login=`last -1 guest |grep '[a-z]' |awk '{print $1}'`
+        if [ "$last_login" = "wtmp" ]; then
+          lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
+          if [ "$lock_test" = "$user_name" ]; then
+            if [ "$audit_mode" = 1 ]; then
+              score=`expr $score - 1`
+              echo "Warning:   User $user_name has not logged in recently and their account is not locked [$score]"
+            fi
+            if [ "$audit_mode" = 0 ]; then
+              funct_backup_file $check_file
+              echo "Setting:   User $user_name to locked"
+              passwd -l $user_name
+            fi
           fi
         fi
-      fi
-    done
+      done
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
   fi  
 }
 
@@ -9409,8 +9413,40 @@ audit_wheel_users () {
 
 audit_wheel_su () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    $check_file=`which su`
+    check_file=`which su`
     funct_check_perms $check_file 4750 root $wheel_group 
+  fi
+}
+
+#
+# audit_wheel_sudo
+#
+# Check wheel group settings in sudoers
+#
+
+audit_wheel_sudo () {
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+    for check_dir in /etc /usr/local/etc /usr/sfw/etc /opt/csw/etc; do
+      check_file="$check_dir/sudoers"
+      if [ -f "$check_file" ]; then
+        if [ "$audit_mode" != 2 ]; then
+          nopasswd_check=`cat $check_file |grep $wheel_group |awk '{print $3}'`
+          if [ "$nopasswd_check" = "NOPASSWD" ]; then
+            if [ "$audit_mode" = 1 ]; then
+              score=`expr $score - 1`
+              echo "Warning:   Group $wheel_group does not require password to escalate privileges [$score]"
+            fi
+            if [ "$audit_mode" = 0 ]; then
+              funct_backup_file $check_file
+              echo "Setting:   User $user_name to locked"
+              passwd -l $user_name
+            fi
+          fi
+        else
+          funct_restore_file $check_file $restore_dir
+        fi
+      fi
+    done
   fi
 }
 
