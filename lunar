@@ -4760,6 +4760,21 @@ audit_ftp_conf () {
   fi
 }
 
+# audit_pass_req
+#
+# Set PASSREQ to YES in /etc/default/login to prevent users from loging on
+# without a password
+#
+
+audit_pass_req () {
+  if [ "$os_name" = "SunOS" ]; then
+    funct_verbose_message"Delay between Failed Login Attempts"
+    check_file="/etc/default/login"
+    funct_file_value $check_file PASSREQ eq YES hash
+  fi
+}
+
+
 # audit_login_delay
 #
 # The SLEEPTIME variable in the /etc/default/login file controls the number of 
@@ -9824,6 +9839,7 @@ funct_audit_password_services () {
   audit_login_records
   audit_failed_logins
   audit_login_delay
+  audit_pass_req
   audit_pam_wheel
   audit_password_hashing
   audit_pam_deny

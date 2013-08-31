@@ -169,3 +169,5 @@
 # Added code to check wheel group users
 # 1.7.9 Fri 30 Aug 2013 15:45:06 EST
 # Added restore function to wheel checks
+# 1.8.0 Sat 31 Aug 2013 15:51:56 EST
+# Added check for PASSREQ = YES in /etc/default/login
