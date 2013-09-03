@@ -171,3 +171,15 @@
 # Added restore function to wheel checks
 # 1.8.0 Sat 31 Aug 2013 15:51:56 EST
 # Added check for PASSREQ = YES in /etc/default/login
+# 1.8.1 Tue  3 Sep 2013 13:54:12 EST
+# Added check for SYSLOG = YES in /etc/default/su
+# 1.8.2 Tue  3 Sep 2013 13:56:58 EST
+# Added check for MINDIGIT = 1 in /etc/default/passwd
+# 1.8.3 Tue  3 Sep 2013 14:55:16 EST
+# Added check for UsePrivilegeSeparation yes in /etc/ssh/sshd_config
+# 1.8.4 Tue  3 Sep 2013 14:58:27 EST
+# Added check for PrintMotd no in /etc/ssh/sshd_config
+# 1.8.5 Tue  3 Sep 2013 15:01:25 EST
+# Added check for LoginGraceTime 120 in /etc/ssh/sshd_config
+# 1.8.6 Tue  3 Sep 2013 16:06:05 EST
+# Added check to make sure shells in /etc/shells exit
