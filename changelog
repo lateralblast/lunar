@@ -183,3 +183,5 @@
 # Added check for LoginGraceTime 120 in /etc/ssh/sshd_config
 # 1.8.6 Tue  3 Sep 2013 16:06:05 EST
 # Added check to make sure shells in /etc/shells exist
+# 1.8.7 Thu 12 Sep 2013 15:51:09 EST
+# Added ability to load modules
