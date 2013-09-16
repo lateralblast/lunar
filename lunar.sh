@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.8.7
+# Version:      1.8.8
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -79,13 +79,17 @@ company_name="Lateral Blast Pty Ltd"
 # Load modules for modules directory
 
 if [ -d "$module_dir" ]; then
-  source $modules_dir/*.sh
+  for file_name in `ls $module_dir/*.sh`; do
+    source $file_name
+  done
 fi
 
 # Private modules for customers
 
 if [ -d "$private_dir" ]; then
-  source $private_dir/*.sh
+  for file_name in `ls $private_dir/*.sh`; do
+    source $file_name
+  done
 fi
 
 # print_usage
@@ -143,6 +147,14 @@ print_usage () {
   exit
 }
 
+# funct_print_audit_info
+#
+# This function searches the script for the information associated
+# with a function.
+# It finds the line starting with # function_name
+# then reads until it finds a #.
+#.
+
 funct_print_audit_info () {
   if [ "$verbose" = 1 ]; then
     function=$1
@@ -173,6 +185,7 @@ funct_print_audit_info () {
 # funct_verbose_message
 #
 # Print a message if verbose mode enabled
+#.
 
 funct_verbose_message () {
   if [ "$verbose" = 1 ]; then
@@ -195,6 +208,7 @@ funct_verbose_message () {
 # check_os_release
 #
 # Get OS release information
+#.
 
 check_os_release () {
   echo ""
@@ -264,6 +278,7 @@ check_os_release () {
 #
 # Check if a deb is installed, if so rpm_check will be be set with name of dep,
 # otherwise it will be empty
+#.
 
 funct_deb_check () {
   package_name=$1
@@ -274,6 +289,7 @@ funct_deb_check () {
 #
 # Check if an rpm is installed, if so rpm_check will be be set with name of rpm,
 # otherwise it will be empty
+#.
 
 funct_rpm_check () {
   package_name=$1
@@ -288,6 +304,7 @@ funct_rpm_check () {
 #
 # Do some environment checks
 # Create base and temporary directory
+#.
 
 check_environment () {
   check_os_release
@@ -324,6 +341,7 @@ check_environment () {
 # print_previous
 #
 # Print previous changes
+#.
 
 print_previous () {
   if [ -d "$base_dir" ]; then
@@ -334,6 +352,7 @@ print_previous () {
 # print_changes
 #
 # Do a diff between previous file (saved) and existing file
+#.
 
 print_changes () {
   for saved_file in `find $base_dir -type f -print`; do
@@ -358,6 +377,7 @@ print_changes () {
 # Depending on the command_name send an appropriate check_command and set_command are set
 # If the current_value is not the correct_value then it is fixed if run in lockdown mode
 # A copy of the value is stored in a log file, which can be restored
+#.
 
 funct_command_value () {
   command_name=$1
@@ -455,6 +475,7 @@ funct_command_value () {
 # funct_backup_file
 #
 # Backup file
+#.
 
 funct_backup_file () {
   check_file=$1
@@ -474,6 +495,7 @@ funct_backup_file () {
 #
 # check_file      = The name of the original file
 # restore_dir     = The directory to restore from
+#.
 
 funct_restore_file () {
   check_file=$1
@@ -517,6 +539,7 @@ funct_restore_file () {
 #
 # If the current_value is not the correct_value then it is fixed if run in lockdown mode
 # A copy of the value is stored in a log file, which can be restored
+#.
 
 funct_file_value () {
   check_file=$1
@@ -688,6 +711,7 @@ funct_file_value () {
 # check_file      = Name of file to check
 # parameter_name  = Line to comment out
 # comment_value   = The character to use as a comment, eg # (passed as hash) 
+#.
 
 funct_disable_value () {
   check_file=$1
@@ -761,6 +785,7 @@ funct_disable_value () {
 # check_file      = The name of the original file
 # parameter       = The parameter/line to add to a file
 # comment_value   = The character used in the file to distinguish a line as a comment
+#.
 
 funct_append_file () {
   check_file=$1
@@ -936,6 +961,7 @@ fi
 # check_value   = Value to check for
 # correct_value = What the value should be
 # position      = Position of value in the line
+#.
 
 funct_replace_value () {
   check_file=$1
@@ -1003,6 +1029,7 @@ funct_replace_value () {
 #
 # Code to apply patches
 # Nothing done with this yet
+#.
 
 apply_latest_patches () {
   :
@@ -1014,6 +1041,7 @@ apply_latest_patches () {
 #
 # Install package if it's not installed and in the pkg dir under the base dir
 # Needs some more work
+#.
 
 funct_check_pkg () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1112,6 +1140,7 @@ audit_encryption_kit () {
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enabled/disabled
+#.
 
 funct_svcadm_service () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1176,6 +1205,7 @@ funct_svcadm_service () {
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enabled/disabled
+#.
 
 funct_initd_service () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1333,6 +1363,7 @@ audit_xinetd_service () {
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enabled/disabled
+#.
 
 funct_chkconfig_service () {
   if [ "$os_name" = "Linux" ]; then
@@ -1409,6 +1440,7 @@ funct_chkconfig_service () {
 #
 # service_name    = Name of service
 # correct_status  = What the status of the service should be, ie enable/disabled
+#.
 
 funct_service () {
   if [ "$os_name" = "SunOS" ]; then
@@ -1685,7 +1717,7 @@ audit_xlogin () {
 
 audit_postfix_daemon () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$linux_dist"= "suse" ]; then
+    if [ "$linux_dist" = "suse" ]; then
       check_file="/etc/sysconfig/mail"
       funct_file_value $check_file SMTPD_LISTEN_REMOTE eq no hash
     fi
@@ -2328,6 +2360,7 @@ audit_rpc_bind () {
 # Establish a Secure Baseline
 # This uses the Solaris 10 svcadm baseline
 # Don't really need this so haven't coded anything for it yet
+#.
 
 secure_baseline () {
   :
@@ -2353,7 +2386,7 @@ secure_baseline () {
 audit_tcp_wrappers () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message"TCP Wrappers"
+      funct_verbose_message "TCP Wrappers"
       audit_rpc_bind
       for service_name in `inetadm |awk '{print $3}' |grep "^svc"`; do
         funct_command_value inetadm tcp_wrappers TRUE $service_name
@@ -2615,7 +2648,7 @@ audit_ndd_value () {
 # a busy webserver, this value may need to be increased.
 #.
 
-audit_kernel_params () {
+funct_create_nddscript () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" != "11" ]; then
       funct_verbose_message "Kernel ndd Parameters"
@@ -2667,7 +2700,69 @@ audit_kernel_params () {
             ln -s $check_file $rcd_file
           fi
         fi
+      else
+        if [ "$audit_mode" = 1 ]; then
+          funct_verbose_message "" fix
+          if [ ! -f "$check_file" ]; then
+            funct_verbose_message "Create an init script $check_file containing the following:"
+            funct_verbose_message "#!/sbin/sh" fix
+            funct_verbose_message "case \"\$1\" in" fix
+            funct_verbose_message "start)" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forwarding 0" fix
+            if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0" fix
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0" fix
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_forwarding 0" fix
+            fi
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forward_directed_broadcasts 0" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q0 4096" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q 1024" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp 0" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp_broadcast 0" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_address_mask_broadcast 0" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_multicast 0" fix
+            if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0" fix
+            fi
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1" fix
+            if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1" fix
+            fi
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112" fix
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1" fix
+            if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1" fix
+            fi
+            funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0" fix
+            if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+              funct_verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0" fix
+            fi
+            funct_verbose_message "esac" fix
+            funct_verbose_message "exit 0" fix
+            funct_verbose_message "" fix
+            funct_verbose_message "Then run the following command(s)" fix
+            funct_verbose_message "chmod 750 $check_file" fix
+            if [ ! -f "$rcd_file" ]; then
+              funct_verbose_message "ln -s $check_file $rcd_file" fix
+            fi
+          fi
+        fi
       fi
+    fi
+  fi
+}
+
+audit_kernel_params () {
+  if [ "$os_name" = "SunOS" ]; then
+    if [ "$os_version" != "11" ]; then
+      funct_create_nddscript 
+      funct_verbose_message "Kernel ndd Parameters"
+      check_file="/etc/init.d/ndd-netconfig"
+      rcd_file="/etc/rc2.d/S99ndd-netconfig"
       audit_ndd_value /dev/ip ip_forward_src_routed 0
       audit_ndd_value /dev/ip ip_forwarding 0
       if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
@@ -3169,6 +3264,7 @@ audit_audit_class () {
 # funct_command_output
 #
 # Code to test command output
+#.
 
 funct_command_output () {
   if [ "$os_name" = "SunOS" ]; then
@@ -4687,7 +4783,7 @@ audit_pam_rhosts () {
 # audit_old_users
 #
 # Audit users to check for accounts that have not been logged into etc
-#
+#.
 
 audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || ["$os_name" = "Darwin" ]; then
@@ -5100,7 +5196,7 @@ audit_retry_limit () {
 # audit_crypt_policy
 #
 # Set default cryptographic algorithms
-#
+#.
 
 audit_crypt_policy () {
   if [ "$os_name" = "SunOS" ]; then
@@ -5487,7 +5583,7 @@ audit_ftp_umask () {
 # audit_shells
 #
 # Check that shells in /etc/shells exist
-#
+#.
 
 audit_shells () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
@@ -7476,6 +7572,7 @@ audit_power_management () {
 # from remote mail servers using IMAP, the Internet Message Access Protocol, 
 # or POP, the Post Office Protocol. If this system is a mail server that must 
 # offer the POP protocol then either qpopper or cyrus may be activated.
+#.
 
 audit_email_services () {
   if [ "$os_name" = "Linux" ]; then
@@ -9054,6 +9151,376 @@ audit_sendmail_aliases () {
   fi
 }
 
+# audit_system_auth_nullok
+#
+# Ensure null passwords are not accepted
+#.
+
+audit_system_auth_nullok () {
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  For nullok entry in $check_file"
+      total=`expr $total + 1`
+      check_value=0
+      check_value=`cat $check_file |grep -v '^#' |grep 'nullok' |head -1 |wc -l`
+      if [ "$check_value" = 1 ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Found nullok entry in $check_file [$score]"
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |sed 's/ nullok//' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Removing nullok entries from $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/ nullok//' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    No nullok entries in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_password_history
+#
+# Audit the number of remembered passwords
+#.
+
+audit_system_auth_password_history () {
+  auth_string=$1
+  search_string=$2
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Password entry not enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $4}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Password entry not enabled in $check_file [$score]"
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" $search_string\"; next };' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password entry in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " $search_string"; next };' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Password entry enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_no_magic_root
+#
+# Make sure root account isn't locked as part of account locking
+#.
+
+audit_system_auth_no_magic_root () {
+  auth_string=$1
+  search_string=$2
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Auth entry not enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $5}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Auth entry not enabled in $check_file [$score]"
+          funct_verbose_message "rm $temp_file" fix
+          funct_verbose_message "cat $temp_file |awk '( $1 == \"auth\" && $2 == \"required\" && $3 == \"pam_deny.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root\"; print $0; next };' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Auth entry in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root"; print $0; next };' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Auth entry enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_account_reset
+#
+# Reset attempt counter to 0 after number of tries have been used
+#.
+
+audit_system_auth_account_reset () {
+  auth_string=$1
+  search_string=$2
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Account reset entry not enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $6}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Account reset entry not enabled in $check_file [$score]"
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_permit.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Account reset entry in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_permit.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Account entry enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_password_minlen
+# 
+# Audit minimum password length
+#.
+
+audit_system_auth_password_minlen () {
+  auth_string=$1
+  search_string=$2
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Password minimum length not enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Password minimum length not enabled in $check_file [$score]"
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |awk '( $1 == \"password\" && $2 == \"requisite\" && $3 == \"pam_cracklib.so\" ) { print $0  \" dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9\"; next }; { print }' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |awk '( $1 == "password" && $2 == "requisite" && $3 == "pam_cracklib.so" ) { print $0  " dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9"; next }; { print }' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Password minimum length enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_password_strength
+#
+# Audit password strength
+#.
+
+audit_system_auth_password_strength () {
+  auth_string=$1
+  search_string=$2
+  if [ "$os_name" = "Linux" ]; then
+    funct_verbose_message "PAM Authentication"
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Password minimum strength enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Password strength settings not enabled in $check_file [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "" fix
+          funct_verbose_message "" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Password strength settings enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_unlock_time
+#
+# Audit time before account is unlocked after unsuccesful tries
+#.
+
+audit_system_auth_unlock_time () {
+  auth_string=$1
+  search_string=$2
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Lockout time for failed password attempts enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Lockout time for failed password attempts not enabled in $check_file [$score]"
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Lockout time for failed password attempts enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+# audit_system_auth_use_uid
+#
+# Audit wheel Set UID
+#.
+
+audit_system_auth_use_uid () {
+  auth_string=$1
+  search_string=$2
+  check_file="/etc/pam.d/su"
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$linux_dist" = "redhat" ]; then
+      check_file="/etc/pam.d/system-auth"
+    fi
+    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+      check_file="/etc/pam.d/common-auth"
+    fi
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
+      total=`expr $total + 1`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      if [ "$check_value" != "$search_string" ]; then
+        if [ "$audit_mode" = "1" ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
+          funct_verbose_message "cp $check_file $temp_file" fix
+          funct_verbose_message "cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          echo "Setting:   Password minimum length in $check_file"
+          cp $check_file $temp_file
+          cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = "1" ]; then  
+          score=`expr $score + 1`
+          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
+        fi
+      fi
+    else
+      funct_restore_file $check_file $restore_dir
+    fi
+  fi
+}
+
+
 # audit_system_auth
 #
 # Audit /etc/pam.d/system-auth on RedHat
@@ -9075,259 +9542,28 @@ audit_system_auth () {
       check_file="/etc/pam.d/system-auth"
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  For nullok entry in $check_file"
-      total=`expr $total + 1`
-      check_value=0
-      check_value=`cat $check_file |grep -v '^#' |grep 'nullok' |head -1 |wc -l`
-      if [ "$check_value" = 1 ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Found nullok entry in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Removing nullok entries from $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |sed 's/ nullok//' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    No nullok entries in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="account"
-    search_string="remember=5"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Password entry not enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $4}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Password entry not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Password entry in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " remember=5"; next };' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Password entry enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="auth"
-    search_string="no_magic_root"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Auth entry not enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $5}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Auth entry not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Auth entry in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root"; print $0; next };' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Auth entry enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="account"
-    search_string="reset"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Account entry not enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $6}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Account entry not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Account entry in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_permit.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Account entry enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="password"
-    search_string="minlen=9"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Password minimum length not enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Password minimum length not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |awk '( $1 == "password" && $2 == "requisite" && $3 == "pam_cracklib.so" ) { print $0  " dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9"; next }; { print }' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Password minimum length enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="password"
-    search_string="16,12,8"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Password minimum strength enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Password minimum length not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Password minimum length enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="auth"
-    search_string="unlock_time=900"
-    if [ "$linux_dist" = "redhat" ]; then
-      check_file="/etc/pam.d/password-auth"
-    fi
-    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
-      check_file="/etc/pam.d/common-auth"
-    fi
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="auth"
-    search_string="unlock_time=900"
-    if [ "$linux_dist" = "redhat" ]; then
-      check_file="/etc/pam.d/system-auth"
-    fi
-    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
-      check_file="/etc/pam.d/common-auth"
-    fi
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    auth_string="auth"
-    search_string="use_uid"
-    check_file="/etc/pam.d/su"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
-      total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file
-          rm $temp_file
-        fi
-      else
-        if [ "$audit_mode" = "1" ]; then  
-          score=`expr $score + 1`
-          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
-        fi
-      fi
-    else
-      funct_restore_file $check_file $restore_dir
+      audit_system_auth_nullok
+      auth_string="account"
+      search_string="remember=5"
+      audit_system_auth_password_history auth_string search_string
+      auth_string="auth"
+      search_string="no_magic_root"
+      audit_system_auth_no_magic_root auth_string search_string
+      auth_string="account"
+      search_string="reset"
+      audit_system_auth_account_reset auth_string search_string
+      auth_string="password"
+      search_string="minlen=9"
+      audit_system_auth_password_minlen auth_string search_string
+      auth_string="password"
+      search_string="16,12,8"
+      audit_system_auth_password_strength auth_string search_string
+      auth_string="auth"
+      search_string="unlock_time=900"
+      audit_system_auth_unlock_time auth_string search_string
+      auth_string="auth"
+      search_string="use_uid"
+      audit_system_auth_use_uid auth_string search_string
     fi
   fi
 }
@@ -9499,7 +9735,7 @@ audit_wheel_users () {
 # audit_wheel_su
 #
 # Make sure su has a wheel group ownership
-#
+#.
 
 audit_wheel_su () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
@@ -9512,7 +9748,7 @@ audit_wheel_su () {
 # audit_wheel_sudo
 #
 # Check wheel group settings in sudoers
-#
+#.
 
 audit_wheel_sudo () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
@@ -9583,7 +9819,7 @@ audit_super_users () {
 # audit_root_keys
 #
 # Make sure there are not ssh keys for root
-#
+#.
 
 audit_root_keys () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
@@ -9667,6 +9903,7 @@ audit_logrotate () {
 # funct_audit_x11_services
 #
 # Audit X11 Services
+#.
 
 funct_audit_x11_services () {
   audit_cde_ttdb
@@ -9687,6 +9924,7 @@ funct_audit_x11_services () {
 # funct_audit_naming_services
 #
 # Audit Naming Services
+#.
 
 funct_audit_naming_services () {
   audit_nis_server
@@ -9706,6 +9944,7 @@ funct_audit_naming_services () {
 # funct_audit_user_services
 #
 # Audit users and groups
+#.
 
 funct_audit_user_services () {
   audit_root_home
@@ -9737,6 +9976,7 @@ funct_audit_user_services () {
 # funct_audit_print_services
 #
 # Audit print services
+#.
 
 funct_audit_print_services () {
   audit_ppd_cache
@@ -9758,6 +9998,7 @@ funct_audit_web_services () {
 # funct_audit_disk_services
 #
 # Audit disk and hardware related services
+#.
 
 funct_audit_disk_services () {
   audit_svm
@@ -9771,6 +10012,7 @@ funct_audit_disk_services () {
 # funct_audit_file_services
 #
 # Audit file permissions
+#.
 
 funct_audit_file_services () {
   audit_syslog_perms
@@ -9812,6 +10054,7 @@ funct_audit_ftp_services () {
 # funct_audit_kernel_services
 #
 # Audit kernel services
+#.
 
 funct_audit_kernel_services () {
   audit_sysctl
@@ -9829,6 +10072,7 @@ funct_audit_kernel_services () {
 # funct_audit_routing_services
 #
 # Audit routing services
+#.
 
 funct_audit_routing_services () {
   audit_routing_daemons
@@ -9838,6 +10082,7 @@ funct_audit_routing_services () {
 # funct_audit_windows_services
 #
 # Audit windows services 
+#.
 
 funct_audit_windows_services () {
   audit_smbpasswd_perms
@@ -9850,6 +10095,7 @@ funct_audit_windows_services () {
 # funct_audit_startup_services
 #
 # Audit startup services
+#.
 
 funct_audit_startup_services () {
   audit_xinetd
@@ -9862,6 +10108,7 @@ funct_audit_startup_services () {
 # funct_audit_shell_services
 #
 # Audit remote shell services
+#.
 
 funct_audit_shell_services () {
   audit_issue_banner
@@ -9884,6 +10131,7 @@ funct_audit_shell_services () {
 # funct_audit_accounting_services
 #
 # Audit accounting services
+#.
 
 funct_audit_accounting_services () {
   audit_system_accounting
@@ -9894,6 +10142,7 @@ funct_audit_accounting_services () {
 # funct_audit_firewall_services
 #
 # Audit firewall related services
+#.
 
 funct_audit_firewall_services () {
   audit_ipsec
@@ -9904,6 +10153,7 @@ funct_audit_firewall_services () {
 # funct_audit_password_services
 #
 # Audit password related services
+#.
 
 funct_audit_password_services () {
   audit_system_auth
@@ -9924,6 +10174,7 @@ funct_audit_password_services () {
 # funct_audit_log_services
 #
 # Audit log files and log related services
+#.
 
 funct_audit_log_services () {
   audit_linux_logfiles
@@ -9938,6 +10189,7 @@ funct_audit_log_services () {
 # funct_audit_network_services
 #
 # Audit Network Service
+#.
 
 funct_audit_network_services () {
   audit_snmp
@@ -9957,6 +10209,7 @@ funct_audit_network_services () {
 # funct_audit_update_services
 #
 # Update services
+#.
 
 funct_audit_update_services () {
   apply_latest_patches
@@ -9966,6 +10219,7 @@ funct_audit_update_services () {
 # funct_audit_other_services
 #
 # Other remaining services
+#.
 
 funct_audit_other_services () {
   audit_postgresql
@@ -9975,6 +10229,7 @@ funct_audit_other_services () {
 # funct_audit_virtualisation_services
 #
 # Audit vitualisation services
+#.
 
 funct_audit_virtualisation_services () {
   audit_zones
@@ -9984,6 +10239,7 @@ funct_audit_virtualisation_services () {
 # funct_audit_system_all
 #
 # Audit All System 
+#.
 
 funct_audit_osx_services () {
   audit_bt_sharing
@@ -10006,6 +10262,7 @@ funct_audit_osx_services () {
 # funct_audit_system_all
 #
 # Audit All System 
+#.
 
 funct_audit_system_all () {
   
@@ -10040,6 +10297,7 @@ funct_audit_system_all () {
 # Audit Filesystem
 #
 # Run various filesystem audits, add support for NetBackup
+#.
 
 funct_audit_search_fs () {
   if [ "$os_name" = "SunOS" ]; then
@@ -10068,6 +10326,7 @@ funct_audit_search_fs () {
 # funct_audit_system_x86
 #
 # Audit x86
+#.
 
 funct_audit_system_x86 () {
   if [ "$os_name" = "SunOS" ]; then
@@ -10079,6 +10338,7 @@ funct_audit_system_x86 () {
 # funct_audit_system_sparc
 #
 # Audit SPARC
+#.
 
 funct_audit_system_sparc () {
   if [ "$os_name" = "SunOS" ]; then
@@ -10089,6 +10349,7 @@ funct_audit_system_sparc () {
 # funct_audit_test_subset
 #
 # Audit Subset for testing
+#.
 
 funct_audit_test_subset () {
   audit_legacy
@@ -10097,6 +10358,7 @@ funct_audit_test_subset () {
 # print_results
 #
 # Print Results
+#.
 
 print_results () {
   echo ""
@@ -10126,6 +10388,7 @@ print_results () {
 # funct_audit_select
 #
 # Selective Audit
+#.
 
 funct_audit_select () {
   audit_mode=$1
@@ -10142,6 +10405,7 @@ funct_audit_select () {
 # funct_audit_system () {
 #
 # Audit System
+#.
 
 funct_audit_system () {
   audit_mode=$1

@@ -185,3 +185,5 @@
 # Added check to make sure shells in /etc/shells exist
 # 1.8.7 Thu 12 Sep 2013 15:51:09 EST
 # Added ability to load modules
+# 1.8.8 Mon Sep 16 05:23:51 EDT 2013
+# Bug fixes
