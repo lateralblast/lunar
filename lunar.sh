@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.8.8
+# Version:      1.8.9
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -1427,8 +1427,10 @@ funct_chkconfig_service () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
+        total=`expr $total + 1`
+        score=`expr $score + 1`
         echo "Checking:  Service $service_name at run level $service_level"
-        echo "Notice:    Service $service_name is not installed"
+        echo "Notice:    Service $service_name is not installed [$score]"
       fi
     fi
   fi
@@ -4787,21 +4789,43 @@ audit_pam_rhosts () {
 
 audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || ["$os_name" = "Darwin" ]; then
-    check_file="/etc/passwd"
-    for user_name in `cat $check_file |grep -v "/usr/bin/false" |grep -v "LK" |cut -f1 -d:`; do
-      login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
-      if [ "$login_status" = "Never" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   User $user_name has never logged in and their account is not locked [$score]"
+    never_count=0
+    if [ "$audit_mode" = 2 ]; then
+      check_file="/etc/shadow"
+      funct_restore_file $check_file $restore_dir
+    else
+      check_file="/etc/passwd"
+      for user_name in `cat $check_file |grep -v "/usr/bin/false" |egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" |cut -f1 -d:`; do
+        check_file="/etc/shadow"
+        shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "*|!!|NP|LK|UP"`
+        if [ "$shadow_field" != "" ]; then
+          login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
+          if [ "$login_status" = "Never" ]; then
+            if [ "$audit_mode" = 1 ]; then
+              never_count=`expr $never_count + 1`
+              total=`expr $total + 1`
+              score=`expr $score - 1`
+              echo "Warning:   User $user_name has never logged in and their account is not locked [$score]"
+              funct_verbose_message "" fix
+              funct_verbose_message "passwd -l $user_name" fix
+              funct_verbose_message "" fix
+            fi
+            if [ "$audit_mode" = 0 ]; then
+              funct_backup_file $check_file
+              echo "Setting:   User $user_name to locked"
+              passwd -l $user_name
+            fi
+          fi
         fi
-        if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
-          echo "Setting:   User $user_name to locked"
-          passwd -l $user_name
+      done
+      if [ "$never_count" = 0 ]; then
+        if [ "$audit_mode" = 1 ]; then
+          total=`expr $total + 1`
+          score=`expr $score + 1`
+          echo "Secure:    No user has never logged in and their account is not locked [$score]"
         fi
       fi
-    done
+    fi
   fi
 }
 
@@ -5312,6 +5336,8 @@ audit_system_accounts () {
       echo "Checking:  System accounts have valid shells"
       for user_name in `egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
         if [ "$audit_mode" = 1 ]; then
+          total=`expr $total + 1`
+          score=`expr $score - 1`
           echo "Warning:   System account $user_name has an invalid shell"
           funct_verbose_message "" fix
           funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
@@ -6449,10 +6475,12 @@ audit_password_fields () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Password Fields"
     check_file="/etc/shadow"
+    empty_count=0
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Password fields"
       total=`expr $total + 1`
       for user_name in `cat /etc/shadow |awk -F":" '{print $1":"$2":"}' |grep "::$" |cut -f1 -d":"`; do
+        empty_count=1
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   No password field for $user_name in $check_file [$score]"
@@ -6472,6 +6500,10 @@ audit_password_fields () {
           fi
         fi
       done
+      if [ "$empty_count" = 0 ]; then
+        score=`expr $score + 1`
+        echo "Secure:    No empty password entries"
+      fi
     else
       funct_restore_file $check_file $restore_dir
     fi
@@ -6548,6 +6580,7 @@ audit_super_users () {
       echo "Checking:  Super users other than root"
       total=`expr $total + 1`
       for user_name in `awk -F: '$3 == "0" { print $1 }' /etc/passwd |grep -v root`; do
+        echo "$user_name"
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`
           echo "Warning:   UID 0 for $user_name [$score]"
@@ -6668,8 +6701,7 @@ funct_check_perms () {
 
 # audit_dot_files
 #
-# Check for a dot file and remove it
-# Remove is currently disabled
+# Check for a dot file and copy it to backup directory
 #.
 
 audit_dot_files () {
@@ -6679,18 +6711,27 @@ audit_dot_files () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  For $check_file files"
       for dir_name in `cat /etc/passwd |cut -f6 -d':'`; do
-        check_file="$dir_name/$check_file"
-        if [ -f "$check_file" ]; then
+        if [ "$dir_name" = "/" ]; then
+          dot_file="/$check_file"
+        else
+          dot_file="$dir_name/$check_file"
+        fi
+        if [ -f "$dot_file" ]; then
           if [ "$audit_mode" = 1 ];then
             total=`expr $total + 1`
             score=`expr $score - 1`
-            echo "Warning:   File $check_file exists [$score]"
+            echo "Warning:   File $dot_file exists [$score]"
+            funct_verbose_message "mv $dot_file $dot_file.disabled" fix
           fi
           if [ "$audit_mode" = 0 ];then
-            funct_backup_file $check_file
-            #echo "Removing:  File $check_file"
-            #funct_file_exists $check_file no
+            funct_backup_file $dot_file
           fi
+        else
+          if [ "$audit_mode" = 1 ];then
+            total=`expr $total + 1`
+            score=`expr $score + 1`
+            echo "Secure:    File $dot_file does not exist [$score]"
+          fi          
         fi
       done
     else
@@ -6716,40 +6757,48 @@ audit_root_path () {
     funct_verbose_message "Root PATH Environment Integrity"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Root PATH"
-      total=`expr $total + 1`
       if [ "$audit_mode" = 1 ]; then
         if [ "`echo $PATH | grep :: `" != "" ]; then
+          total=`expr $total + 1`
           score=`expr $score - 1`
           echo "Warning:   Empty directory in PATH [$score]"
         else
+          total=`expr $total + 1`
           score=`expr $score + 1`
           echo "Secure:    No empty directory in PATH [$score]"
         fi
         if [ "`echo $PATH | grep :$`"  != "" ]; then
+          total=`expr $total + 1`
           score=`expr $score - 1`
           echo "Warning:   Trailing : in PATH [$score]"
         else
+          total=`expr $total + 1`
           score=`expr $score + 1`
           echo "Secure:    No trailing : in PATH [$score]"
         fi
         for dir_name in `echo $PATH | sed -e 's/::/:/' -e 's/:$//' -e 's/:/ /g'`; do
           if [ "$dir_name" = "." ]; then
+            total=`expr $total + 1`
             score=`expr $score - 1`
             echo "Warning:   PATH contains . [$score]"
           fi
           if [ -d "$dir_name" ]; then
             dir_perms=`ls -ld $dir_name | cut -f1 -d" "`
             if [ "`echo $dir_perms | cut -c6`" != "-" ]; then
+              total=`expr $total + 1`
               score=`expr $score - 1`
               echo "Warning:   Group write permissions set on directory $dir_name [$score]"
             else
+              total=`expr $total + 1`
               score=`expr $score + 1`
               echo "Secure:    Group write permission not set on directory $dir_name [$score]"
             fi
             if [ "`echo $dir_perms | cut -c9`" != "-" ]; then
+              total=`expr $total + 1`
               score=`expr $score - 1`
               echo "Warning:   Other write permissions set on directory $dir_name [$score]"
             else
+              total=`expr $total + 1`
               score=`expr $score + 1`
               echo "Secure:    Other write permission not set on directory $dir_name [$score]"
             fi
@@ -6776,8 +6825,8 @@ audit_home_perms () {
     fi
     check_fail=0
     for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$" |grep "home"`; do
-      if [ -f "$check_file" ]; then
-        funct_check_perms $check_file 0700
+      if [ -d "$home_dir" ]; then
+        funct_check_perms $home_dir 0700
       fi
     done
   fi
@@ -6922,6 +6971,7 @@ audit_root_group () {
     log_file="root_primary_grooup.log"
     check_file="/etc/group"
     group_check=`grep "^root:" /etc/passwd | cut -f4 -d:`
+    total=`expr $total + 1`
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Primary group for root is root"
       if [ "$group_check" != "0" ];then
@@ -6940,7 +6990,7 @@ audit_root_group () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
+          score=`expr $score + 1`
           echo "Secure:    Primary group for root is root [$score]"
         fi
       fi
@@ -7102,7 +7152,6 @@ audit_reserved_ids () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi
-    uuid_check=0
     total=`expr $total + 1`
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
@@ -7121,12 +7170,6 @@ audit_reserved_ids () {
           fi
         fi
       done
-      if [ "$uuid_check" = 0 ]; then
-        if [ "$audit_mode" = 1 ];then
-          score=`expr $score + 1`
-          echo "Secure:    No non system users have a reserved UID [$score]"
-        fi
-      fi
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
@@ -7134,7 +7177,6 @@ audit_reserved_ids () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi
-    uuid_check=0
     total=`expr $total + 1`
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read check_user check_uid; do
@@ -7155,12 +7197,6 @@ audit_reserved_ids () {
           fi
         fi
       done
-      if [ "$uuid_check" = 0 ]; then
-        if [ "$audit_mode" = 1 ];then
-          score=`expr $score + 1`
-          echo "Secure:    No non system users have a reserved UID [$score]"
-        fi
-      fi
     fi
   fi
 }
@@ -9835,6 +9871,7 @@ audit_root_keys () {
               if [ "$audit_mode" = 1 ]; then
                 score=`expr $score - 1`
                 echo "Warning:   Keys file $check_file exists [$score]"
+                funct_verbose_message "mv $check_file $check_file.disabled" fix
               fi
               if [ "$audit_mode" = 0 ]; then
                 funct_backup_file $check_file
@@ -9874,11 +9911,11 @@ audit_logrotate () {
         echo "Checking:  Logrotate is set up"
         total=`expr $total + 1`
         search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
-        check_value=`cat $check_file |grep '$search_string'`
+        check_value=`cat $check_file |grep "$search_string" |sed 's/ {//g'`
         if [ "$check_value" != "$search_string" ]; then
           score=`expr $score - 1`
           if [ "$audit_mode" = 1 ]; then
-            echo "Warning:   UID 0 for $user_name [$score]"
+            echo "Warning:   Log rotate is not configured for $search_string [$score]"
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file
@@ -9900,12 +9937,12 @@ audit_logrotate () {
   fi
 }
 
-# funct_audit_x11_services
+# audit_x11_services
 #
 # Audit X11 Services
 #.
 
-funct_audit_x11_services () {
+audit_x11_services () {
   audit_cde_ttdb
   audit_cde_cal
   audit_cde_spc
@@ -9921,12 +9958,12 @@ funct_audit_x11_services () {
   audit_vnc
 }
 
-# funct_audit_naming_services
+# audit_naming_services
 #
 # Audit Naming Services
 #.
 
-funct_audit_naming_services () {
+audit_naming_services () {
   audit_nis_server
   audit_nis_client
   audit_nisplus
@@ -9946,7 +9983,7 @@ funct_audit_naming_services () {
 # Audit users and groups
 #.
 
-funct_audit_user_services () {
+audit_user_services () {
   audit_root_home
   audit_root_group
   audit_root_keys

@@ -187,3 +187,27 @@
 # Added ability to load modules
 # 1.8.8 Mon Sep 16 05:23:51 EDT 2013
 # Bug fixes
+# 1.8.9 Mon Sep 16 19:38:17 EST 2013
+# Fixed logrotate check
+# 1.9.0 Mon 16 Sep 2013 20:03:12 EST
+# Fixed scoring on root group check
+# 1.9.1 Mon Sep 16 20:07:42 EST 2013
+# Added fix information to root SSH key check
+# 1.9.2 Mon 16 Sep 2013 20:28:54 EST
+# Fixed home directory permissions check
+# 1.9.3 Mon 16 Sep 2013 21:02:02 EST
+# Fix dot file checking
+# 1.9.4 Mon 16 Sep 2013 21:14:17 EST
+# Fixed scoring for root PATH check
+# 1.9.5 Mon 16 Sep 2013 22:23:33 EST
+# Fixed scoring for empty password field testing
+# 1.9.6 Tue 17 Sep 2013 08:46:54 EST
+# Fixed scoring in reserved UID check
+# 1.9.7 Tue 17 Sep 2013 08:54:15 EST
+# Fixed scoring for old user logins test
+# 1.9.8 Tue 17 Sep 2013 10:09:50 EST
+# Improved checking for old user logins
+# 1.9.9 Tue 17 Sep 2013 10:42:36 EST
+# Fixed scoring for System Account audit
+# 2.0.0 Tue 17 Sep 2013 10:58:53 EST
+# Numerous bug fixes
