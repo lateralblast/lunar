@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      1.8.9
+# Version:      2.0.1
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -2192,7 +2192,7 @@ audit_apache () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Apache"
+    funct_verbose_message "Apache and web based services"
     for service_name in httpd apache tomcat5 squid prixovy; do
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
@@ -3504,17 +3504,20 @@ audit_ftp_logging () {
   fi
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "FTPD Daemon Message"
-    check_file="/etc/vsftpd.conf"
-    if [ -f "$check_file" ]; then
-      funct_file_value $check_file log_ftp_protocol eq YES hash
-      funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
-      funct_check_perms $check_file 0600 root root
-    fi
-    check_file="/etc/vsftpd/vsftpd.conf"
-    if [ -f "$check_file" ]; then
-      funct_file_value $check_file log_ftp_protocol eq YES hash
-      funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
-      funct_check_perms $check_file 0600 root root
+    funct_rpm_check vsftpd
+    if [ "$rpm_check" = "vsftpd" ]; then
+      check_file="/etc/vsftpd.conf"
+      if [ -f "$check_file" ]; then
+        funct_file_value $check_file log_ftp_protocol eq YES hash
+        funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
+        funct_check_perms $check_file 0600 root root
+      fi
+      check_file="/etc/vsftpd/vsftpd.conf"
+      if [ -f "$check_file" ]; then
+        funct_file_value $check_file log_ftp_protocol eq YES hash
+        funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
+        funct_check_perms $check_file 0600 root root
+      fi
     fi
   fi
 }
@@ -4918,7 +4921,10 @@ audit_ftp_conf () {
     audit_ftp_users /etc/ftpd/ftpusers
   fi
   if [ "$os_name" = "Linux" ]; then
-    audit_ftp_users /etc/vsftpd/ftpusers
+    funct_rpm_check vsftpd
+    if [ "$rpm_check" = "vsftpd" ]; then
+      audit_ftp_users /etc/vsftpd/ftpusers
+    fi
   fi
 }
 
@@ -8865,13 +8871,16 @@ audit_snmp () {
   fi
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "SNMP Daemons"
-    service_name="snmpd"
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 5 off
-    service_name="snmptrapd"
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 5 off
-    funct_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
+    funct_rpm_check net-snmp
+    if [ "$rpm_check" = "net-snmp" ]; then
+      service_name="snmpd"
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
+      service_name="snmptrapd"
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 5 off
+      funct_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
+    fi
   fi
 }
 
@@ -9978,7 +9987,7 @@ audit_naming_services () {
   audit_avahi_conf
 }
 
-# funct_audit_user_services
+# audit_user_services
 #
 # Audit users and groups
 #.
@@ -10010,48 +10019,64 @@ audit_user_services () {
   audit_system_accounts
 }
 
-# funct_audit_print_services
+# audit_print_services
 #
 # Audit print services
 #.
 
-funct_audit_print_services () {
+audit_print_services () {
   audit_ppd_cache
   audit_print
   audit_cups
 }
 
-# funct_audit_web_services
+# audit_web_services
 #
 # Audit web services
 
-funct_audit_web_services () {
+audit_web_services () {
   audit_webconsole
   audit_wbem
   audit_apache
   audit_webmin
 }
 
-# funct_audit_disk_services
+# audit_disk_services
 #
 # Audit disk and hardware related services
 #.
 
-funct_audit_disk_services () {
+audit_disk_services () {
   audit_svm
   audit_svm_gui
-  audit_hotplug
   audit_iscsi
+}
+
+# audit_hardware_services
+#
+# Audit hardware related services
+#.
+
+audit_hardware_services () {
+  audit_hotplug
+}
+
+# audit_power_services
+#.
+# Audit power related services
+#.
+
+audit_power_services () {
   audit_power_management
   audit_sys_suspend
 }
 
-# funct_audit_file_services
+# audit_file_services
 #
 # Audit file permissions
 #.
 
-funct_audit_file_services () {
+audit_file_services () {
   audit_syslog_perms
   audit_volfs
   audit_autofs
@@ -10063,11 +10088,11 @@ funct_audit_file_services () {
   audit_uucp
 }
 
-# funct_audit_mail_services
+# audit_mail_services
 #
 # Audit sendmail
 
-funct_audit_mail_services () {
+audit_mail_services () {
   audit_sendmail_daemon
   audit_sendmail_greeting
   audit_sendmail_aliases
@@ -10075,11 +10100,11 @@ funct_audit_mail_services () {
   audit_postfix_daemon
 }
 
-# funct_audit_ftp_services
+# audit_ftp_services
 #
 # Audit FTP Services
 
-funct_audit_ftp_services () {
+audit_ftp_services () {
   audit_ftp_logging
   audit_ftp_umask
   audit_ftp_conf
@@ -10088,12 +10113,12 @@ funct_audit_ftp_services () {
   audit_ftp_banner
 }
 
-# funct_audit_kernel_services
+# audit_kernel_services
 #
 # Audit kernel services
 #.
 
-funct_audit_kernel_services () {
+audit_kernel_services () {
   audit_sysctl
   audit_kernel_accounting
   audit_kernel_params
@@ -10106,22 +10131,22 @@ funct_audit_kernel_services () {
   audit_selinux
 }
 
-# funct_audit_routing_services
+# audit_routing_services
 #
 # Audit routing services
 #.
 
-funct_audit_routing_services () {
+audit_routing_services () {
   audit_routing_daemons
   audit_routing_params
 }
 
-# funct_audit_windows_services
+# audit_windows_services
 #
 # Audit windows services 
 #.
 
-funct_audit_windows_services () {
+audit_windows_services () {
   audit_smbpasswd_perms
   audit_smbconf_perms
   audit_samba
@@ -10129,12 +10154,12 @@ funct_audit_windows_services () {
   audit_winbind
 }
 
-# funct_audit_startup_services
+# audit_startup_services
 #
 # Audit startup services
 #.
 
-funct_audit_startup_services () {
+audit_startup_services () {
   audit_xinetd
   audit_chkconfig
   audit_legacy
@@ -10142,12 +10167,12 @@ funct_audit_startup_services () {
   audit_inetd_logging
 }
 
-# funct_audit_shell_services
+# audit_shell_services
 #
 # Audit remote shell services
 #.
 
-funct_audit_shell_services () {
+audit_shell_services () {
   audit_issue_banner
   audit_ssh_config
   audit_remote_consoles
@@ -10165,55 +10190,55 @@ funct_audit_shell_services () {
   audit_sulogin
 }
 
-# funct_audit_accounting_services
+# audit_accounting_services
 #
 # Audit accounting services
 #.
 
-funct_audit_accounting_services () {
+audit_accounting_services () {
   audit_system_accounting
   audit_process_accounting
   audit_audit_class
 }
 
-# funct_audit_firewall_services
+# audit_firewall_services
 #
 # Audit firewall related services
 #.
 
-funct_audit_firewall_services () {
+audit_firewall_services () {
   audit_ipsec
   audit_ipfilter
   audit_tcp_wrappers
 }
 
-# funct_audit_password_services
+# audit_password_services
 #
 # Audit password related services
 #.
 
-funct_audit_password_services () {
-  audit_system_auth
-  audit_password_expiry
-  audit_strong_password
-  audit_passwd_perms
-  audit_retry_limit
-  audit_login_records
-  audit_failed_logins
-  audit_login_delay
-  audit_pass_req
-  audit_pam_wheel
-  audit_password_hashing
-  audit_pam_deny
+audit_password_services () {
+  #audit_system_auth
+  #audit_password_expiry
+  #audit_strong_password
+  #audit_passwd_perms
+  #audit_retry_limit
+  #audit_login_records
+  #audit_failed_logins
+  #audit_login_delay
+  #audit_pass_req
+  #audit_pam_wheel
+  #audit_password_hashing
+  #audit_pam_deny
   audit_crypt_policy
 }
 
-# funct_audit_log_services
+# audit_log_services
 #
 # Audit log files and log related services
 #.
 
-funct_audit_log_services () {
+audit_log_services () {
   audit_linux_logfiles
   audit_syslog_conf
   audit_debug_logging
@@ -10223,12 +10248,12 @@ funct_audit_log_services () {
   audit_logrotate
 }
 
-# funct_audit_network_services
+# audit_network_services
 #
 # Audit Network Service
 #.
 
-funct_audit_network_services () {
+audit_network_services () {
   audit_snmp
   audit_ntp
   audit_ipmi
@@ -10303,29 +10328,31 @@ funct_audit_osx_services () {
 
 funct_audit_system_all () {
   
-  funct_audit_shell_services
-  funct_audit_accounting_services
-  funct_audit_firewall_services
-  funct_audit_password_services
-  funct_audit_kernel_services
-  funct_audit_mail_services
-  funct_audit_user_services
-  funct_audit_disk_services
-  funct_audit_virtualisation_services
-  funct_audit_x11_services
-  funct_audit_naming_services
-  funct_audit_file_services
-  funct_audit_web_services
-  funct_audit_print_services
-  funct_audit_routing_services
-  funct_audit_windows_services
-  funct_audit_startup_services
-  funct_audit_log_services
-  funct_audit_network_services
-  funct_audit_other_services
-  funct_audit_update_services
+  audit_shell_services
+  audit_accounting_services
+  audit_firewall_services
+  audit_password_services
+  audit_kernel_services
+  audit_mail_services
+  audit_user_services
+  audit_disk_services
+  audit_hardware_services
+  audit_power_services
+  audit_virtualisation_services
+  audit_x11_services
+  audit_naming_services
+  audit_file_services
+  audit_web_services
+  audit_print_services
+  audit_routing_services
+  audit_windows_services
+  audit_startup_services
+  audit_log_services
+  audit_network_services
+  audit_other_services
+  audit_update_services
   if [ "$os_name" = "Darwin" ]; then
-    funct_audit_osx_services
+    audit_osx_services
   fi
 }
 

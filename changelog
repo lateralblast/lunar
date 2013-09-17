@@ -211,3 +211,5 @@
 # Fixed scoring for System Account audit
 # 2.0.0 Tue 17 Sep 2013 10:58:53 EST
 # Numerous bug fixes
+# 2.0.1 Tue 17 Sep 2013 14:43:54 EST
+# Improved SNMP daemon check on Linux
