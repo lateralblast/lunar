@@ -213,3 +213,5 @@
 # Numerous bug fixes
 # 2.0.1 Tue 17 Sep 2013 14:43:54 EST
 # Improved SNMP daemon check on Linux
+# 2.0.2 Wed 18 Sep 2013 13:13:23 EST
+# Added RSA SecurID PAM check

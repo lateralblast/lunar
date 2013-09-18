@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.0.1
+# Version:      2.0.2
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -9672,35 +9672,44 @@ audit_pam_wheel () {
 
 audit_password_hashing () {
   if [ "$os_name" = "Linux" ]; then
-    if [ -f "/usr/sbin/authconfig" ]; then
-      funct_verbose_message "Password Hashing"
-      if [ "$audit_mode" != 2 ]; then
-        log_file="hashing.log"
-        echo "Checking:  Password hashing is set to SHA512"
-        total=`expr $total + 1`
-        check_value=`authconfig --test |grep hashing |awk '{print $5}'`
-        if [ "$check_value" != "sha512" ]; then
-        if [ "$audit_mode" = "1" ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Password hashing not set to SHA512 [$score]"
-          fi
-          if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Password hashing to SHA512"
-            log_file="$work_dir/$log_file"
-            echo "$check_value" > $log_file
-            authconfig --passalgo=sha512
+    hashing=$1
+    if [ "$1" = "" ]; then
+      hashing="sha512"
+    fi
+    if [ "$os_name" = "Linux" ]; then
+      if [ -f "/usr/sbin/authconfig" ]; then
+        funct_verbose_message "Password Hashing"
+        if [ "$audit_mode" != 2 ]; then
+          log_file="hashing.log"
+          echo "Checking:  Password hashing is set to $hashing"
+          total=`expr $total + 1`
+          check_value=`authconfig --test |grep hashing |awk '{print $5}'`
+          if [ "$check_value" != "$hashing" ]; then
+            if [ "$audit_mode" = "1" ]; then
+              score=`expr $score - 1`
+              echo "Warning:   Password hashing not set to $hashing [$score]"
+              funct_verbose_message "" fix
+              funct_verbose_message "authconfig --passalgo=$hashing" fix
+              funct_verbose_message "" fix
+            fi
+            if [ "$audit_mode" = 0 ]; then
+              echo "Setting:   Password hashing to $hashing"
+              log_file="$work_dir/$log_file"
+              echo "$check_value" > $log_file
+              authconfig --passalgo=$hashing
+            fi
+          else
+            if [ "$audit_mode" = "1" ]; then  
+              score=`expr $score + 1`
+              echo "Secure:    Password hashing set to $hashing [$score]"
+            fi
           fi
         else
-          if [ "$audit_mode" = "1" ]; then  
-            score=`expr $score + 1`
-            echo "Secure:    Password hashing set to SHA512 [$score]"
+          restore_file="$restore_dir/$log_file"
+          if [ -f "$restore_file" ]; then
+            check_value=`cat $restore_file`
+            authconfig --passalgo=$check_value
           fi
-        fi
-      else
-        restore_file="$restore_dir/$log_file"
-        if [ -f "$restore_file" ]; then
-          check_value=`cat $restore_file`
-          authconfig --passalgo=$check_value
         fi
       fi
     fi
@@ -9925,6 +9934,11 @@ audit_logrotate () {
           score=`expr $score - 1`
           if [ "$audit_mode" = 1 ]; then
             echo "Warning:   Log rotate is not configured for $search_string [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "cat $check_file |sed 's,.*{,$search_string {,' > $temp_file" fix
+            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "rm $temp_file" fix
+            funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file
@@ -9937,6 +9951,78 @@ audit_logrotate () {
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score + 1`
             echo "Secure:    Log rotate is configured [$score]"
+          fi
+        fi
+      else
+        funct_restore_file $check_file $restore_dir
+      fi
+    fi
+  fi
+}
+
+# audit_rsa_securid_pam
+#
+# Check that RSA is installed
+#.
+
+audit_rsa_securid_pam () {
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ]; then
+    check_file="/etc/sd_pam.conf"
+    if [ -f "$check_file" ]; then
+      search_string="pam_securid.so"
+      if [ "$os_name" = "SunOS" ]; then 
+        check_file="/etc/pam.conf"
+        if [ -f "$check_file" ]; then
+          check_value=`cat $check_file |grep "$search_string" |awk '{print  $3}'`
+        fi
+      fi
+      if [ "$os_name" = "Linux" ]; then
+        check_file="/etc/pam.d/sudo"
+        if [ -f "$check_file" ]; then
+          check_value=`cat $check_file |grep "$search_string" |awk '{print  $4}'`
+        fi
+      fi
+      funct_verbose_message "RSA SecurID PAM Agent Configuration"
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  RSA SecurID PAM Agent is enabled for sudo"
+        total=`expr $total + 1`
+        if [ "$check_value" != "$search_string" ]; then
+          score=`expr $score - 1`
+          if [ "$audit_mode" = 1 ]; then
+            echo "Warning:   RSA SecurID PAM Agent is not enabled for sudo [$score]"
+            funct_verbose_message "" fix
+            if [ "$os_name" = "Linux" ]; then
+              funct_verbose_message "cat $check_file |sed 's/^auth/#\&/' > $temp_file" fix
+              funct_verbose_message "cat $temp_file > $check_file" fix
+              funct_verbose_message "echo \"auth\trequired\tpam_securid.so reserve\" >> $check_file" fix
+              funct_verbose_message "rm $temp_file" fix
+            fi
+            if [ "$os_name" = "SunOS" ]; then
+              funct_verbose_message "echo \"sudo\tauth\trequired\tpam_securid.so reserve\" >> $check_file" fix
+            fi
+            funct_verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            funct_backup_file $check_file
+            echo "Fixing:    Configuring RSA SecurID PAM Agent for sudo"
+            if [ "$os_name" = "Linux" ]; then
+              cat $check_file |sed 's/^auth/#\&/' > $temp_file
+              cat $temp_file > $check_file
+              echo "auth\trequired\tpam_securid.so reserve" >> $check_file
+              rm $temp_file
+            fi
+            if [ "$os_name" = "SunOS" ]; then
+              echo "sudo\tauth\trequired\tpam_securid.so reserve" >> $check_file
+            fi
+            #echo "Removing:  Configuring logrotate"
+            #cat $check_file |sed 's,.*{,$search_string {,' > $temp_file
+            #cat $temp_file > $check_file
+            #rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score + 1`
+            echo "Secure:    RSA SecurID PAM Agent is configured for sudo [$score]"
           fi
         fi
       else
@@ -10218,18 +10304,19 @@ audit_firewall_services () {
 #.
 
 audit_password_services () {
-  #audit_system_auth
-  #audit_password_expiry
-  #audit_strong_password
-  #audit_passwd_perms
-  #audit_retry_limit
-  #audit_login_records
-  #audit_failed_logins
-  #audit_login_delay
-  #audit_pass_req
-  #audit_pam_wheel
-  #audit_password_hashing
-  #audit_pam_deny
+  audit_rsa_securid_pam
+  audit_system_auth
+  audit_password_expiry
+  audit_strong_password
+  audit_passwd_perms
+  audit_retry_limit
+  audit_login_records
+  audit_failed_logins
+  audit_login_delay
+  audit_pass_req
+  audit_pam_wheel
+  audit_password_hashing
+  audit_pam_deny
   audit_crypt_policy
 }
 
@@ -10268,42 +10355,42 @@ audit_network_services () {
   audit_nobody_rpc
 }
 
-# funct_audit_update_services
+# audit_update_services
 #
 # Update services
 #.
 
-funct_audit_update_services () {
+audit_update_services () {
   apply_latest_patches
   audit_yum_conf
 }
 
-# funct_audit_other_services
+# audit_other_services
 #
 # Other remaining services
 #.
 
-funct_audit_other_services () {
+audit_other_services () {
   audit_postgresql
   audit_encryption_kit
 }
 
-# funct_audit_virtualisation_services
+# audit_virtualisation_services
 #
 # Audit vitualisation services
 #.
 
-funct_audit_virtualisation_services () {
+audit_virtualisation_services () {
   audit_zones
   audit_xen
 }
 
-# funct_audit_system_all
+# audit_osx_services
 #
 # Audit All System 
 #.
 
-funct_audit_osx_services () {
+audit_osx_services () {
   audit_bt_sharing
   audit_guest_sharing
   audit_file_sharing
