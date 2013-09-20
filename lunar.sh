@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.0.3
+# Version:      2.0.4
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -9578,9 +9578,10 @@ audit_system_auth_use_uid () {
 # Restrict su command using wheel
 #.
 
-audit_system_auth () {
+audit_system_auth () { 
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "PAM Authentication"
+    funct_rpm_check libpam-cracklib
     if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
       check_file="/etc/pam.d/common-auth"
     fi
@@ -9602,15 +9603,19 @@ audit_system_auth () {
       search_string="minlen"
       search_value="9"
       audit_system_auth_password_policy auth_string search_string search_value
+      auth_string="password"
       search_string="dcredit"
       search_value="-1"
       audit_system_auth_password_policy auth_string search_string search_value
+      auth_string="password"
       search_string="lcredit"
       search_value="-1"
       audit_system_auth_password_policy auth_string search_string search_value
+      auth_string="password"
       search_string="ocredit"
       search_value="-1"
       audit_system_auth_password_policy auth_string search_string search_value
+      auth_string="password"
       search_string="ucredit"
       search_value="-1"
       audit_system_auth_password_policy auth_string search_string search_value

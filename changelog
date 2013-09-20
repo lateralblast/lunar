@@ -217,3 +217,5 @@
 # Added RSA SecurID PAM check
 # 2.0.3 Fri 20 Sep 2013 16:57:09 EST
 # Added better handling for *credit password parameters under Linux
+# 2.0.4 Fri 20 Sep 2013 18:21:21 EST
+# Cleaned up linux PAM audit
