@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.0.4
+# Version:      2.0.5
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -9249,7 +9249,11 @@ audit_system_auth_nullok () {
 audit_system_auth_password_history () {
   auth_string=$1
   search_string=$2
+  search_value=$3
   if [ "$os_name" = "Linux" ]; then
+    check_file="/etc/security/opasswd"
+    funct_file_exists $check_file 
+    funct_check_perms $check_file 0600 root root
     if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
       check_file="/etc/pam.d/common-auth"
     fi
@@ -9257,28 +9261,28 @@ audit_system_auth_password_history () {
       check_file="/etc/pam.d/system-auth"
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Password entry not enabled in $check_file"
+      echo "Checking:  Password entry $search_string set to $search_value in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $4}'`
-      if [ "$check_value" != "$search_string" ]; then
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
+      if [ "$check_value" != "$search_value" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
-          echo "Warning:   Password entry not enabled in $check_file [$score]"
+          echo "Warning:   Password entry $search_string is not set to $search_value in $check_file [$score]"
           funct_verbose_message "cp $check_file $temp_file" fix
-          funct_verbose_message "cat $temp_file |awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" $search_string\"; next };' > $check_file" fix
+          funct_verbose_message "cat $temp_file |awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" $search_string=$search_value\"; next };' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
           echo "Setting:   Password entry in $check_file"
           cp $check_file $temp_file
-          cat $temp_file |awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " $search_string"; next };' > $check_file
+          cat $temp_file |awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " $search_string=$search_value"; next };' > $check_file
           rm $temp_file
         fi
       else
         if [ "$audit_mode" = "1" ]; then  
           score=`expr $score + 1`
-          echo "Secure:    Password entry enabled in $check_file [$score]"
+          echo "Secure:    Password entry $search_string set to $search_value in $check_file [$score]"
         fi
       fi
     else
@@ -9481,6 +9485,7 @@ audit_system_auth_password_strength () {
 audit_system_auth_unlock_time () {
   auth_string=$1
   search_string=$2
+  search_value=$3
   if [ "$os_name" = "Linux" ]; then
     if [ "$linux_dist" = "redhat" ]; then
       check_file="/etc/pam.d/system-auth"
@@ -9491,20 +9496,20 @@ audit_system_auth_unlock_time () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Lockout time for failed password attempts enabled in $check_file"
       total=`expr $total + 1`
-      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+      check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
           echo "Warning:   Lockout time for failed password attempts not enabled in $check_file [$score]"
           funct_verbose_message "cp $check_file $temp_file" fix
-          funct_verbose_message "cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file" fix
+          funct_verbose_message "cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 $search_string=$search_value\n/' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
           echo "Setting:   Password minimum length in $check_file"
           cp $check_file $temp_file
-          cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 unlock_time=900\n/' > $check_file
+          cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 $search_string=$search_value\n/' > $check_file
           rm $temp_file
         fi
       else
@@ -9591,43 +9596,45 @@ audit_system_auth () {
     if [ "$audit_mode" != 2 ]; then
       audit_system_auth_nullok
       auth_string="account"
-      search_string="remember=5"
-      audit_system_auth_password_history auth_string search_string
+      search_string="remember"
+      search_value="10"
+      audit_system_auth_password_history $auth_string $search_string $search_value
       auth_string="auth"
       search_string="no_magic_root"
-      audit_system_auth_no_magic_root auth_string search_string
+      audit_system_auth_no_magic_root $auth_string $search_string
       auth_string="account"
       search_string="reset"
-      audit_system_auth_account_reset auth_string search_string
+      audit_system_auth_account_reset $auth_string $search_string
       auth_string="password"
       search_string="minlen"
       search_value="9"
-      audit_system_auth_password_policy auth_string search_string search_value
+      audit_system_auth_password_policy $auth_string $search_string $search_value
       auth_string="password"
       search_string="dcredit"
       search_value="-1"
-      audit_system_auth_password_policy auth_string search_string search_value
+      audit_system_auth_password_policy $auth_string $search_string $search_value
       auth_string="password"
       search_string="lcredit"
       search_value="-1"
-      audit_system_auth_password_policy auth_string search_string search_value
+      audit_system_auth_password_policy $auth_string $search_string $search_value
       auth_string="password"
       search_string="ocredit"
       search_value="-1"
-      audit_system_auth_password_policy auth_string search_string search_value
+      audit_system_auth_password_policy $auth_string $search_string $search_value
       auth_string="password"
       search_string="ucredit"
       search_value="-1"
-      audit_system_auth_password_policy auth_string search_string search_value
+      audit_system_auth_password_policy $auth_string $search_string $search_value
       auth_string="password"
       search_string="16,12,8"
-      audit_system_auth_password_strength auth_string search_string
+      audit_system_auth_password_strength $auth_string $search_string
       auth_string="auth"
-      search_string="unlock_time=900"
-      audit_system_auth_unlock_time auth_string search_string
+      search_string="unlock_time"
+      search_value="900"
+      audit_system_auth_unlock_time $auth_string $search_string $search_value
       auth_string="auth"
       search_string="use_uid"
-      audit_system_auth_use_uid auth_string search_string
+      audit_system_auth_use_uid $auth_string $search_string
     fi
   fi
 }

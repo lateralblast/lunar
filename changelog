@@ -219,3 +219,5 @@
 # Added better handling for *credit password parameters under Linux
 # 2.0.4 Fri 20 Sep 2013 18:21:21 EST
 # Cleaned up linux PAM audit
+# 2.0.5 Sat 21 Sep 2013 15:32:55 EST
+# Improved linux password history audit
