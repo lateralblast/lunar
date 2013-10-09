@@ -921,7 +921,7 @@ funct_file_exists () {
     fi
   else
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  File $check_file does exists [$score]"
+      echo "Checking:  File $check_file exists"
     fi
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
