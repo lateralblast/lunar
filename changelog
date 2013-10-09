@@ -245,3 +245,5 @@
 # Fixed message for inactive user account check
 # 2.1.7 Wed  9 Oct 2013 16:32:47 EST
 # Fixed scoring on inactive user account check
+# 2.1.8 Thu 10 Oct 2013 08:46:13 EST
+# Fixed console report on Solaris

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.1.6
+# Version:      2.1.8
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -6385,9 +6385,9 @@ audit_telnet_banner () {
 audit_remote_consoles () {
   if [ "$os_name" = "SunOS" ]; then
     funct_verbose_message "Remote Consoles"
-    disable_ttys=0
     log_file="remoteconsoles.log"
     if [ "$audit_mode" != 2 ]; then
+      disable_ttys=0
       echo "Checking:  Remote consoles"
       log_file="$work_dir/$log_file"
       for console_device in `/usr/sbin/consadm -p`; do
@@ -6406,7 +6406,7 @@ audit_remote_consoles () {
           consadm -d $console_device
         fi
       done
-      if [ "$disable_ttys" = 1 ]; then
+      if [ "$disable_ttys" = 0 ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
           score=`expr $score + 1`
