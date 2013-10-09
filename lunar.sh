@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.1.9
+# Version:      2.2.1
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -5801,10 +5801,16 @@ audit_security_banner () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Security banners"
     fi
-    funct_file_exists /etc/motd yes
-    funct_check_perms /etc/motd 0644 root root
-    funct_file_exists /etc/issue yes
-    funct_check_perms /etc/issue 0644 root root
+    check_file="/etc/motd"
+    funct_file_exists $check_file yes
+    if [ -f "$check_file" ]; then
+      funct_check_perms $check_file 0644 root root
+    fi
+    check_file="/etc/issue"
+    funct_file_exists $check_file yes
+    if [ -f "$check_file" ]; then
+      funct_check_perms $check_file 0644 root root
+    fi
   fi
 }
 

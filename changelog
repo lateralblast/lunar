@@ -251,3 +251,5 @@
 # Fixed output for check that file exists
 # 2.2.0 Thu 10 Oct 2013 09:44:36 EST
 # Fixed scoring for file permissions check
+# 2.2.1 Thu 10 Oct 2013 09:59:41 EST
+# Fixed security banner check scoring
