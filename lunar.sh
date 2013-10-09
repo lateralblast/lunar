@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.0.5
+# Version:      2.1.2
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -75,22 +75,6 @@ private_dir="private"
 # Change it as required
 
 company_name="Lateral Blast Pty Ltd"
-
-# Load modules for modules directory
-
-if [ -d "$module_dir" ]; then
-  for file_name in `ls $module_dir/*.sh`; do
-    source $file_name
-  done
-fi
-
-# Private modules for customers
-
-if [ -d "$private_dir" ]; then
-  for file_name in `ls $private_dir/*.sh`; do
-    source $file_name
-  done
-fi
 
 # print_usage
 #
@@ -216,10 +200,10 @@ check_os_release () {
   echo ""
   os_name=`uname`
   if [ "$os_name" = "Darwin" ]; then
-	set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
-	os_version=$1.$2
-	os_update=$3
-	os_vendor="Apple"
+    set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
+    os_version=$1.$2
+    os_update=$3
+    os_vendor="Apple"
   fi
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
@@ -245,8 +229,8 @@ check_os_release () {
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
-          os_version=`cat /etc/SuSe-release |grep ^VERSION |awk '{print $3}' |cut -f1 -d "."`
-          os_update=`cat /etc/SuSe-release |grep ^VERSION |awk '{print $3}' |cut -f2 -d "."`
+          os_version=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f1 -d "."`
+          os_update=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f2 -d "."`
           os_vendor="SuSE"
           linux_dist="suse"
         fi
@@ -292,11 +276,13 @@ funct_deb_check () {
 #.
 
 funct_rpm_check () {
-  package_name=$1
-  if [ "$linux_dist" = "debian" ]; then
-    funct_deb_check $package_name
-  else
-    rpm_check=`rpm -qi $package_name |grep $package_name |grep Name |awk '{print $3}'`
+  if [ $os_name = "Linux" ]; then
+    package_name=$1
+    if [ "$linux_dist" = "debian" ]; then
+      funct_deb_check $package_name
+    else
+      rpm_check=`rpm -qi $package_name |grep $package_name |grep Name |awk '{print $3}'`
+    fi
   fi
 }
 
@@ -308,7 +294,11 @@ funct_rpm_check () {
 
 check_environment () {
   check_os_release
-  id_check=`id -u`
+  if [ "$os_name" = "Solaris" ]; then
+    id_check=`id |cut -c5`
+  else
+    id_check=`id -u`
+  fi
   if [ "$id_check" != "0" ]; then
     if [ "$os_name" != "Darwin" ]; then
       echo ""
@@ -320,6 +310,26 @@ check_environment () {
       temp_dir="/tmp"
       work_dir="$base_dir/$date_suffix"
     fi
+  fi
+  # Load modules for modules directory
+  if [ -d "$module_dir" ]; then
+    for file_name in `ls $module_dir/*.sh`; do
+      if [ "$os_name" = "SunOS" ]; then
+        . $file_name
+      else
+        source $file_name
+      fi
+    done
+  fi
+  # Private modules for customers
+  if [ -d "$private_dir" ]; then
+    for file_name in `ls $private_dir/*.sh`; do
+      if [ "$os_name" = "SunOS" ]; then
+        . $file_name
+      else
+        source $file_name
+      fi
+    done
   fi
   if [ ! -d "$base_dir" ]; then
     mkdir -p $base_dir
@@ -1280,6 +1290,54 @@ funct_initd_service () {
             fi
           fi
         fi
+      fi
+    fi
+  fi
+}
+
+# funct_inetd_service
+#
+# Change status of an inetd (/etc/inetd.conf) services
+#
+#.
+
+funct_inetd_service () {
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ]; then
+    service_name=$1
+    correct_status=$2
+    check_file="/etc/inetd.conf"
+    log_file="$service_name.log"
+    if [ -f "$check_file" ]; then
+      if [ "$correct_status" = "disabled" ]; then
+        actual_status=`cat $check_file |grep '^$service_name' |grep -v '^#' |awk '{print $1}'`
+      else
+        actual_status=`cat $check_file |grep '^$service_name' |awk '{print $1}'`
+      fi
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  If inetd service $service_name is set to $correct_status"
+        total=`expr $total + 1`
+        if [ "$actual_status" != "" ]; then
+          if [ "$audit_mode" = 1 ]; then  
+            score=`expr $score - 1`
+            echo "Warning:   Service $service_name does not have $parameter_name set to $correct_status [$score]"
+          else
+            if [ "$audit_mode" = 0 ]; then
+              funct_backup_file $check_file
+              if [ "$correct_status" = "disable" ]; then
+                funct_disable_value $check_file $service_name hash 
+              else
+                :
+              fi
+            fi
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score + 1`
+            echo "Secure:    Service $service_name is set to $correct_status [$score]"
+          fi
+        fi
+      else
+        funct_restore_file $check_file $restore_dir
       fi
     fi
   fi
@@ -4599,7 +4657,7 @@ audit_ssh_config () {
     # Check for kerberos
     check_file="/etc/krb5/krb5.conf"
     if [ -f "$check_file" ]; then
-      admin_check=`cat $check_file |grep -v ^# |grep "admin_server" |cut -f2 -d= |sed 's/ //g' |wc -l |sed 's/ //g'`
+      admin_check=`cat $check_file |grep -v '^#' |grep "admin_server" |cut -f2 -d= |sed 's/ //g' |wc -l |sed 's/ //g'`
       if [ "$admin_server" != "0" ]; then
         check_file="/etc/ssh/sshd_config"
         funct_file_value $check_file GSSAPIAuthentication space yes hash
@@ -5341,18 +5399,23 @@ audit_system_accounts () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  System accounts have valid shells"
       for user_name in `egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
-        if [ "$audit_mode" = 1 ]; then
-          total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   System account $user_name has an invalid shell"
-          funct_verbose_message "" fix
-          funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
-          funct_verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   System account $user_name to have shell /sbin/nologin"
-          funct_backup_file $check_file
-          usermod -s /sbin/nologin $user_name
+        shadow_field=`grep "$user_name:" /etc/shadow |egrep -v '*|NP|UP|LK' |cut -f1 -d:`;
+        if [ "$shadow_field" = "$user_name" ]; then
+          echo "Warning:   System account $user_name has an invalid shell but the account is disabled"
+        else
+          if [ "$audit_mode" = 1 ]; then
+            total=`expr $total + 1`
+            score=`expr $score - 1`
+            echo "Warning:   System account $user_name has an invalid shell"
+            funct_verbose_message "" fix
+            funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
+            funct_verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            echo "Setting:   System account $user_name to have shell /sbin/nologin"
+            funct_backup_file $check_file
+            usermod -s /sbin/nologin $user_name
+          fi
         fi
       done
     else
@@ -5624,7 +5687,7 @@ audit_shells () {
       if [ "$audit_mode" = 2 ]; then
         restore_file $check_file $restore_dir
       else
-        for check_shell in `cat $check_file |grep -v ^#`; do
+        for check_shell in `cat $check_file |grep -v '^#'`; do
           if [ ! -f "check_shell" ]; then
             if [ "$audit_mode" = 1 ]; then
               score=`expr $score - 1`
@@ -5686,7 +5749,7 @@ audit_inactive_users () {
       for user_check in `cat $check_file |grep -v 'nobody4'`; do
         inactive_check=`echo $user_check |cut -f 7 -d":"`
         user_name=`echo $user_check |cut -f 1 -d":"`
-        if [ "$inactive_check" == "" ]; then
+        if [ "$inactive_check" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   Inactive lockout not set for $user_name [$score]"
@@ -9906,7 +9969,7 @@ audit_root_keys () {
     funct_verbose_message "Root SSH keys"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Root SSH keys"
-      root_home=`cat /etc/passwd |grep ^root |cut -f6 -d:`
+      root_home=`cat /etc/passwd |grep '^root' |cut -f6 -d:`
       for check_file in $root_home/.ssh/authorized_keys $root_home/.ssh/authorized_keys2; do
         total=`expr $total + 1`
         if [ "$audit_home" != 2 ]; then

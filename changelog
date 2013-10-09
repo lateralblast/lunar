@@ -221,3 +221,19 @@
 # Cleaned up linux PAM audit
 # 2.0.5 Sat 21 Sep 2013 15:32:55 EST
 # Improved linux password history audit
+# 2.0.6 Wed  9 Oct 2013 09:50:53 EST
+# Moved directory check
+# 2.0.7 Wed  9 Oct 2013 09:56:16 EST
+# Fixed id check under Solaris
+# 2.0.8 Wed  9 Oct 2013 10:55:38 EST
+# Fixed call to funct_inetd_service
+# 2.0.9 Wed  9 Oct 2013 10:56:44 EST
+# Fixed source on Solaris
+# 2.1.0 Wed  9 Oct 2013 11:19:38 EST
+# Fixed "==" evaluation
+# 2.1.1 Wed  9 Oct 2013 14:16:37 EST
+# Added check for disabled account to system account check
+# 2.1.2 Wed  9 Oct 2013 14:25:31 EST
+# Fixed grep command in audit_shells
+# 2.1.3 Wed  9 Oct 2013 14:28:33 EST
+# Fixed other grep commands
