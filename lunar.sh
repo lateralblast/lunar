@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.1.2
+# Version:      2.1.5
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -200,7 +200,7 @@ check_os_release () {
   echo ""
   os_name=`uname`
   if [ "$os_name" = "Darwin" ]; then
-    set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
+    `set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')`
     os_version=$1.$2
     os_update=$3
     os_vendor="Apple"
@@ -294,7 +294,7 @@ funct_rpm_check () {
 
 check_environment () {
   check_os_release
-  if [ "$os_name" = "Solaris" ]; then
+  if [ "$os_name" = "SunOS" ]; then
     id_check=`id |cut -c5`
   else
     id_check=`id -u`
@@ -6730,7 +6730,7 @@ funct_check_perms () {
     fi
     if [ "$audit_mode" = 0 ]; then
       log_file="$work_dir/$log_file"
-      if [ "$os_name" = "Solaris" ]; then
+      if [ "$os_name" = "SunOS" ]; then
         file_perms=`truss -vstat -tstat ls -ld $check_file 2>&1 |grep 'm=' |tail -1 |awk '{print $3}' |cut -f2 -d'=' |cut -c4-7`
       else
         file_perms=`stat -c %a $check_file`
