@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.1.5
+# Version:      2.1.6
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -4858,7 +4858,7 @@ audit_old_users () {
       check_file="/etc/passwd"
       for user_name in `cat $check_file |grep -v "/usr/bin/false" |egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" |cut -f1 -d:`; do
         check_file="/etc/shadow"
-        shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "*|!!|NP|LK|UP"`
+        shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "\*|\!\!|NP|LK|UP"`
         if [ "$shadow_field" != "" ]; then
           login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
           if [ "$login_status" = "Never" ]; then
@@ -5399,7 +5399,7 @@ audit_system_accounts () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  System accounts have valid shells"
       for user_name in `egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
-        shadow_field=`grep "$user_name:" /etc/shadow |egrep -v '*|NP|UP|LK' |cut -f1 -d:`;
+        shadow_field=`grep "$user_name:" /etc/shadow |egrep -v "\*|\!\!|NP|UP|LK" |cut -f1 -d:`;
         if [ "$shadow_field" = "$user_name" ]; then
           echo "Warning:   System account $user_name has an invalid shell but the account is disabled"
         else
@@ -5744,9 +5744,10 @@ audit_inactive_users () {
     funct_file_value $check_file definact eq 35 hash
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:   Inactive lockout"
+      echo "Checking:  Lockout status for inactive user accounts"
       total=`expr $total + 1`
-      for user_check in `cat $check_file |grep -v 'nobody4'`; do
+      for user_check in `cat $check_file |grep -v 'nobody4' |grep -v 'root'` ; do
+        total=`expr $total + 1`
         inactive_check=`echo $user_check |cut -f 7 -d":"`
         user_name=`echo $user_check |cut -f 1 -d":"`
         if [ "$inactive_check" = "" ]; then

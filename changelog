@@ -241,3 +241,7 @@
 # Fixed set command on Solaris
 # 2.1.5 Wed  9 Oct 2013 14:38:56 EST
 # Fixed two SunOS checks
+# 2.1.6 Wed  9 Oct 2013 14:47:08 EST
+# Fixed message for inactive user account check
+# 2.1.7 Wed  9 Oct 2013 16:32:47 EST
+# Fixed scoring on inactive user account check
