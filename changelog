@@ -249,3 +249,5 @@
 # Fixed console report on Solaris
 # 2.1.9 Thu 10 Oct 2013 09:30:40 EST
 # Fixed output for check that file exists
+# 2.2.0 Thu 10 Oct 2013 09:44:36 EST
+# Fixed scoring for file permissions check

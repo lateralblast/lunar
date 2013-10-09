@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.1.8
+# Version:      2.1.9
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -6707,8 +6707,8 @@ funct_check_perms () {
   total=`expr $total + 1`
   if [ ! -f "$check_file" ] && [ ! -d "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      echo "Notice:    File $check_file does not exist [$score]"
       score=`expr $score + 1`
+      echo "Notice:    File $check_file does not exist [$score]"
     fi
     return
   fi
