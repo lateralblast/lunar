@@ -253,3 +253,5 @@
 # Fixed scoring for file permissions check
 # 2.2.1 Thu 10 Oct 2013 09:59:41 EST
 # Fixed security banner check scoring
+# 2.2.2 Wed 15 Jan 2014 09:32:48 EST
+# Fixed bug with shadow check on OS X
