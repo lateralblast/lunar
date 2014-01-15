@@ -37,3 +37,7 @@ https://github.com/richardatlateralblast/lunar/wiki/ubuntu
 Solaris 11:
 
 https://github.com/richardatlateralblast/lunar/wiki/solaris11
+
+CentOS:
+
+https://github.com/richardatlateralblast/lunar/wiki/centos
