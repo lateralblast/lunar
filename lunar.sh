@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.2.2
+# Version:      2.2.3
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -226,6 +226,11 @@ check_os_release () {
           echo "Notice:    The bc package is required by this script"
           echo "Notice:    Attempting to install"
           apt-get install bc
+        fi
+        if [ ! -f "/usr/bin/finger" ]; then
+          echo "Notice:    The finger package is required by this script"
+          echo "Notice:    Attempting to install"
+          apt-get install finger
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
@@ -3487,7 +3492,7 @@ audit_inetd_logging () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/syslogd"
     funct_file_value $check_file LOG_FROM_REMOTE eq NO hash
-    if [ "$os_version" ="10" ] || [ "$os_version" = "9" ]; then
+    if [ "$os_version" = "10" ] || [ "$os_version" = "9" ]; then
       funct_verbose_message "" fix
       funct_verbose_message "Logging inetd Connections"
       funct_verbose_message "" fix
@@ -4468,40 +4473,42 @@ audit_mount_fdi () {
 
 audit_sticky_bit () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "World Writable Directories and Sticky Bits"
-    total=`expr $total + 1`
-    if [ "$os_version" = "10" ]; then
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Sticky bits set on world writable directories [This may take a while]"
-      fi
-      log_file="$work_dir/sticky_bits"
-      for check_dir in `find / \( -fstype nfs -o -fstype cachefs \
-        -o -fstype autofs -o -fstype ctfs \
-        -o -fstype mntfs -o -fstype objfs \
-        -o -fstype proc \) -prune -o -type d \
-        \( -perm -0002 -a ! -perm -1000 \) -print`; do
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Sticky bit not set on $check_dir [$score]"
-          funct_verbose_message "" fix
-          funct_verbose_message "chmod +t $check_dir" fix
-          funct_verbose_message "" fix
+    if [ "$do_fs" = 1 ]; then
+      funct_verbose_message "World Writable Directories and Sticky Bits"
+      total=`expr $total + 1`
+      if [ "$os_version" = "10" ]; then
+        if [ "$audit_mode" != 2 ]; then
+          echo "Checking:  Sticky bits set on world writable directories [This may take a while]"
         fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Sticky bit on $check_dir"
-          chmod +t $check_dir
-          echo "$check_dir" >> $log_file
-        fi
-      done
-      if [ "$audit_mode" = 2 ]; then
-        restore_file="$restore_dir/sticky_bits"
-        if [ -f "$restore_file" ]; then
-          for check_dir in `cat $restore_file`; do
-            if [ -d "$check_dir" ]; then
-              echo "Restoring:  Removing sticky bit from $check_dir"
-              chmod -t $check_dir
-            fi
-          done
+        log_file="$work_dir/sticky_bits"
+        for check_dir in `find / \( -fstype nfs -o -fstype cachefs \
+          -o -fstype autofs -o -fstype ctfs \
+          -o -fstype mntfs -o -fstype objfs \
+          -o -fstype proc \) -prune -o -type d \
+          \( -perm -0002 -a ! -perm -1000 \) -print`; do
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score - 1`
+            echo "Warning:   Sticky bit not set on $check_dir [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "chmod +t $check_dir" fix
+            funct_verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            echo "Setting:   Sticky bit on $check_dir"
+            chmod +t $check_dir
+            echo "$check_dir" >> $log_file
+          fi
+        done
+        if [ "$audit_mode" = 2 ]; then
+          restore_file="$restore_dir/sticky_bits"
+          if [ -f "$restore_file" ]; then
+            for check_dir in `cat $restore_file`; do
+              if [ -d "$check_dir" ]; then
+                echo "Restoring:  Removing sticky bit from $check_dir"
+                chmod -t $check_dir
+              fi
+            done
+          fi
         fi
       fi
     fi
@@ -4994,7 +5001,7 @@ audit_ftp_conf () {
 
 audit_pass_req () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message"Delay between Failed Login Attempts"
+    funct_verbose_message "Delay between Failed Login Attempts"
     check_file="/etc/default/login"
     funct_file_value $check_file PASSREQ eq YES hash
   fi
@@ -5012,7 +5019,7 @@ audit_pass_req () {
 
 audit_login_delay () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message"Delay between Failed Login Attempts"
+    funct_verbose_message "Delay between Failed Login Attempts"
     check_file="/etc/default/login"
     funct_file_value $check_file SLEEPTIME eq 4 hash
   fi
@@ -5827,7 +5834,7 @@ audit_security_banner () {
 
 audit_cde_banner () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message"CDE Warning Banner"
+    funct_verbose_message "CDE Warning Banner"
     for check_file in /usr/dt/config/*/Xresources ; do
       dir_name=`dirname $check_file |sed 's/usr/etc/'`
       new_file="$dir_name/Xresources"
@@ -7157,9 +7164,7 @@ audit_home_ownership () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    echo ""
-    echo "# Ownership of Home Directories"
-    echo ""
+    funct_verbose_message "Ownership of Home Directories"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Ownership of home directories"
     fi
@@ -7424,43 +7429,45 @@ audit_forward_files () {
 
 audit_writable_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "World Writable Files"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  For world writable files [This might take a while]"
-    fi
-    log_file="worldwritable.log"
-    total=`expr $total + 1`
-    if [ "$audit_mode" = 0 ]; then
-      log_file="$work_dir/$log_file"
-    fi
-    if [ "$audit_mode" != 2 ]; then
-      for check_file in `find / \( -fstype nfs -o -fstype cachefs \
-        -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
-        -o -fstype objfs -o -fstype proc \) -prune \
-        -o -type f -perm -0002 -print`; do
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   File $check_file is world writable [$score]"
-          funct_verbose_message "" fix
-          funct_verbose_message "chmod o-w $check_file" fix
-          funct_verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "$check_file" >> $log_file
-          echo "Setting:   File $check_file non world writable [$score]"
-          chmod o-w $check_file
-        fi
-      done
-    fi
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/$log_file"
-      if [ -f "$restore_file" ]; then
-        for check_file in `cat $restore_file`; do
-          if [ -f "$check_file" ]; then
-            echo "Restoring: File $check_file to previous permissions"
-            chmod o+w $check_file
+    if [ "$do_fs" = 1 ]; then
+      funct_verbose_message "World Writable Files"
+      if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  For world writable files [This might take a while]"
+      fi
+      log_file="worldwritable.log"
+      total=`expr $total + 1`
+      if [ "$audit_mode" = 0 ]; then
+        log_file="$work_dir/$log_file"
+      fi
+      if [ "$audit_mode" != 2 ]; then
+        for check_file in `find / \( -fstype nfs -o -fstype cachefs \
+          -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
+          -o -fstype objfs -o -fstype proc \) -prune \
+          -o -type f -perm -0002 -print`; do
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score - 1`
+            echo "Warning:   File $check_file is world writable [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "chmod o-w $check_file" fix
+            funct_verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            echo "$check_file" >> $log_file
+            echo "Setting:   File $check_file non world writable [$score]"
+            chmod o-w $check_file
           fi
         done
+      fi
+      if [ "$audit_mode" = 2 ]; then
+        restore_file="$restore_dir/$log_file"
+        if [ -f "$restore_file" ]; then
+          for check_file in `cat $restore_file`; do
+            if [ -f "$check_file" ]; then
+              echo "Restoring: File $check_file to previous permissions"
+              chmod o+w $check_file
+            fi
+          done
+        fi
       fi
     fi
   fi

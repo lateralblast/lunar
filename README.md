@@ -19,68 +19,21 @@ Supported Operating Systems:
 
 Linux (Red Hat 5.x, Red Hat 6.x, Debian, and Ubuntu), Solaris (6,7,8,9,10 and 11), and Mac OS X
 
+More Information
+----------------
 
-Usage
------
+For more information refer to wiki:
 
-```
-lunar [-a|c|l|h|V] [-u]
+https://github.com/richardatlateralblast/lunar/wiki
 
--a: Run in audit mode (no changes made to system)
--A: Run in audit mode (no changes made to system)
-    [includes filesystem checks which take some time]
--s: Run in selective mode (only run tests you want to)
--S: List functions available to selective mode
--l: Run in lockdown mode (changes made to system)
--L: Run in lockdown mode (changes made to system)
-    [includes filesystem checks which take some time]
--d: Show changes previously made to system
--p: Show previousl versions of file
--u: Undo lockdown (changes made to system)
--h: Display usage
--V: Display version
--v: Verbose mode [used with -a and -A]
-    [Provides more information about the audit taking place]
-```
+Usage:
 
+https://github.com/richardatlateralblast/lunar/wiki/usage
 
-Examples
---------
+Ubuntu:
 
-Run in Audit Mode:
+https://github.com/richardatlateralblast/lunar/wiki/ubuntu
 
-```
-./lunar.sh -a
-```
+Solaris 11:
 
-Run in Audit Mode and provide more information:
-
-```
-./lunar.sh -a -v
-```
-
-Display previous backups:
-
-```
-./lunar.sh -b
-Previous backups:
-21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25
-```
-
-Restore from previous backup:
-
-```
-./lunar.sh -u 21_12_2012_19_45_05
-```
-
-List tests:
-
-```
-./lunar.sh -S
-```
-
-Only run shell based tests:
-
-```
-./lunar.sh -s audit_shell_services
-```
+https://github.com/richardatlateralblast/lunar/wiki/solaris11
