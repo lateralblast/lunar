@@ -1,0 +1,20 @@
+# audit_firewall_setting
+#
+# Apple's firewall will protect your computer from certain incoming attacks.
+# Apple offers three firewall options: Allow all, Allow only essential, and
+# Allow access for specific incoming connections. Unless you have a specific
+# need to allow incoming connection (for services such as SSH, file sharing,
+# or web services), set the firewall to "Allow only essential services,"
+# otherwise use the "allow access for specific incoming connections" option.
+#
+# 0 = off
+# 1 = on for specific services
+# 2 = on for essential services
+#.
+
+audit_firewall_setting () {
+  if [ "$os_name" = "Darwin" ]; then
+    funct_verbose_message "Firewall Settings"
+    funct_defaults_check /Library/Preferences/com.apple.alf globalstate 1 int
+  fi
+}

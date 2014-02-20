@@ -1,0 +1,20 @@
+# audit_file_sharing
+#
+# Apple's File Sharing uses a combination of many technologies: FTP, SMB
+# (Windows sharing) and AFP (Mac sharing). Generally speaking, file sharing
+# should be turned off and a dedicated, well-managed file server should be
+# used to share files. If file sharing must be turned on, the user should be
+# aware of the security implications of each option.
+#.
+
+audit_file_sharing () {
+  if [ "$os_name" = "Darwin" ]; then
+    funct_verbose_message "Apple File Sharing"
+    funct_launchctl_check com.apple.AppleFileServer
+    funct_verbose_message "FTP Services"
+    funct_launchctl_check ftp
+    funct_verbose_message "Samba Services"
+    funct_launchctl_check nmbd
+    funct_launchctl_check smbd
+  fi
+}

@@ -257,3 +257,5 @@
 # Fixed bug with shadow check on OS X
 # 2.2.3 Wed 15 Jan 2014 11:07:20 EST
 # Minor bug fixes
+# 2.2.4 Thu 20 Feb 2014 14:55:44 EST
+# Split code out to be more manageable
