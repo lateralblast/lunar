@@ -6,6 +6,8 @@
 # not be created. This can stop possible vectors of attack and escalated
 # privileges.
 # Ignore / and /boot.
+#
+# Refer to Section 1.1.2 Page(s) 15-16 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_mount_nodev () {
@@ -14,7 +16,7 @@ audit_mount_nodev () {
     if [ -e "$check_file" ]; then
       funct_verbose_message "File Systems mounted with nodev"
       if [ "$audit_mode" != "2" ]; then
-        nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
+        nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3|swap|tmpfs" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
         total=`expr $total + 1`
         if [ "$nodev_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
