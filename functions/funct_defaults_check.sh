@@ -9,7 +9,12 @@ funct_defaults_check () {
     defaults_parameter=$2
     defaults_value=$3
     defaults_type=$4
-    defaults_host=$5
+    if [ "$defaults_type" == "dict" ]; then
+      defaults_second_value=$5
+      defaults_second_type=$6
+    else
+      defaults_host=$5
+    fi
     defaults_read="read"
     defaults_write="write"
     backup_file=$defaults_file
@@ -56,6 +61,18 @@ funct_defaults_check () {
                 $defaults_command write $defaults_file $defaults_parameter -int $defaults_value
                 if [ "$defaults_file" ="/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
+                fi
+              else
+                if [ "$defaults_type" = "dict" ]; then
+                  if [ "$defaults_second_type" == "bool" ]; then
+                    $defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value
+                  else
+                    if [ "$defaults_second_type" == "int" ]; then
+                      $defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value
+                    fi
+                  fi
+                else
+                  $defaults_command write $defaults_file $defaults_parameter "$defaults_value"
                 fi
               fi
             fi

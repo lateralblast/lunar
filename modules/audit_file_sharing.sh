@@ -5,6 +5,8 @@
 # should be turned off and a dedicated, well-managed file server should be
 # used to share files. If file sharing must be turned on, the user should be
 # aware of the security implications of each option.
+#
+# Refer to Section 2.4.8 Page(s) 23-24 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_file_sharing () {

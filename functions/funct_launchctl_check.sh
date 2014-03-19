@@ -18,7 +18,7 @@ funct_launchctl_check () {
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $dscl_dir$dscl_file
           echo "Setting:   Service $launchctl_service to disabled"
-          sudo dscl . -create $dscl_file $dscl_parameter \"$dscl_value\"
+          sudo launchctl unload -w $launchctl_service.plist
         fi
       else
         if [ "$audit_mode" = 1 ]; then

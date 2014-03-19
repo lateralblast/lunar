@@ -1,6 +1,6 @@
 # audit_logrotate
 #
-# Make sure logroate is set up appropriately.
+# Make sure logrotate is set up appropriately.
 #.
 
 audit_logrotate () {

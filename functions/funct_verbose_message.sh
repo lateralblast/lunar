@@ -11,7 +11,7 @@ funct_verbose_message () {
       if [ "$audit_text" = "" ]; then
         echo ""
       else
-        echo "# Fix:     # $audit_text"
+        echo "[ Fix ]    $audit_text"
       fi
     else
       echo ""

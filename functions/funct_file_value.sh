@@ -46,6 +46,15 @@ funct_file_value () {
       fi
     fi
   fi
+  if [ "$id_check" = "0" ]; then
+    cat_command="cat"
+    sed_command="sed"
+    echo_command="echo"
+  else
+    cat_command="sudo cat"
+    sed_command="sudo sed"
+    echo_command="sudo echo"
+  fi
   if [ "$audit_mode" = 2 ]; then
     funct_restore_file $check_file $restore_dir
   else
@@ -83,9 +92,9 @@ funct_file_value () {
       fi
     else
       if [ "$separator" = "tab" ]; then
-        check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq`
+        check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq`
       else
-        check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq`
+        check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq`
       fi
       if [ "$check_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
@@ -99,8 +108,8 @@ funct_file_value () {
             else
               if [ "$position" = "after" ]; then
                 funct_verbose_message "" fix
-                funct_verbose_message "cat $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" fix
-                funct_verbose_message "cat $temp_file > $check_file" fix
+                funct_verbose_message "$cat_command $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" fix
+                funct_verbose_message "$cat_command $temp_file > $check_file" fix
                 funct_verbose_message "" fix
               else
                 funct_verbose_message "" fix
@@ -111,20 +120,20 @@ funct_file_value () {
           else
             if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
               funct_verbose_message "" fix
-              funct_verbose_message "sed \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" fix
+              funct_verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" fix
             else
               funct_verbose_message "" fix
-              funct_verbose_message "sed \"s/^$parameter_name.*/$parameter_name$spacer$correct_value/\" $check_file > $temp_file" fix
+              funct_verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer$correct_value/\" $check_file > $temp_file" fix
             fi
-            funct_verbose_message "cat $temp_file > $check_file" fix
+            funct_verbose_message "$cat_command $temp_file > $check_file" fix
             funct_verbose_message "" fix
           fi
         else
           if [ "$audit_mode" = 0 ]; then
             if [ "$separator" = "tab" ]; then
-              check_parameter=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $1}'`
+              check_parameter=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $1}'`
             else
-              check_parameter=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f1 -d"$separator" |sed 's/ //g' |uniq`
+              check_parameter=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f1 -d"$separator" |sed 's/ //g' |uniq`
             fi
             echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
             if [ "$check_file" = "/etc/system" ]; then
@@ -137,20 +146,20 @@ funct_file_value () {
             funct_backup_file $check_file
             if [ "$check_parameter" != "$parameter_name" ]; then
               if [ "$separator_value" = "tab" ]; then
-                echo -e "$parameter_name\t$correct_value" >> $check_file
+                $echo_command -e "$parameter_name\t$correct_value" >> $check_file
               else
                 if [ "$position" = "after" ]; then
-                  cat $check_file |sed "s,$search_value,&\n$parameter_name$separator$correct_value," > $temp_file
-                  cat $temp_file > $check_file
+                  $cat_command $check_file |sed "s,$search_value,&\n$parameter_name$separator$correct_value," > $temp_file
+                  $cat_command $temp_file > $check_file
                 else
-                  echo "$parameter_name$separator$correct_value" >> $check_file
+                  $echo_command "$parameter_name$separator$correct_value" >> $check_file
                 fi
               fi
             else
               if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
-                sed "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > $temp_file
+                $sed_command "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > $temp_file
               else
-                sed "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
+                $sed_command "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
               fi
               cat $temp_file > $check_file
               if [ "$os_name" = "SunOS" ]; then

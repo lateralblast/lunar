@@ -19,7 +19,7 @@ audit_wheel_group () {
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
           echo "Setting:   Adding $wheel_group group to $check_file"
-          groupadd wheel
+          groupadd $wheel_group
           usermod -G $wheel_group root
         fi
       else

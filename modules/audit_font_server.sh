@@ -1,6 +1,6 @@
 # audit_font_server
 #
-# Turn off cont server
+# Turn off font server
 #.
 
 audit_font_server () {

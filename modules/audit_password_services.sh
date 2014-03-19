@@ -18,4 +18,6 @@ audit_password_services () {
   audit_password_hashing
   audit_pam_deny
   audit_crypt_policy
+  audit_account_lockout
+  audit_sudo_timeout
 }

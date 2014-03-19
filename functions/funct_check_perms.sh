@@ -16,6 +16,11 @@ funct_check_perms () {
   check_perms=$2
   check_owner=$3
   check_group=$4
+  if [ "$id_check" = "0" ]; then
+    find_command="find"
+  else
+    find_command="sudo find"
+  fi
   if [ "$audit_mode" != 2 ]; then
     echo "Checking:  File permissions on $check_file"
   fi
@@ -28,9 +33,9 @@ funct_check_perms () {
     return
   fi
   if [ "$check_owner" != "" ]; then
-    check_result=`find $check_file -perm $check_perms -user $check_owner -group $check_group`
+    check_result=`$find_command $check_file -perm $check_perms -user $check_owner -group $check_group`
   else
-    check_result=`find $check_file -perm $check_perms`
+    check_result=`$find_command $check_file -perm $check_perms`
   fi
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then

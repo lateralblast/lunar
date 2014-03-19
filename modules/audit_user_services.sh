@@ -28,4 +28,5 @@ audit_user_services () {
   audit_old_users
   ##  audit_cron_allow
   audit_system_accounts
+  audit_root_account
 }

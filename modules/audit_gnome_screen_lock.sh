@@ -14,6 +14,5 @@ audit_gnome_screen_lock () {
     check_file="/usr/openwin/lib/app-defaults/XScreenSaver"
     funct_file_value $check_file "*timeout:" space "0:10:00" bang
     funct_file_value $check_file "*lockTimeout:" space "0:00:00" bang
-    funct_file_value $check_file "*lockTimeout:" space "0:00:00" bang
   fi
 }

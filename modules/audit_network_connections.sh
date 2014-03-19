@@ -6,6 +6,7 @@
 audit_network_connections () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
+      check_file = "/etc/security/audit_event"
       funct_verbose_message "Auditing of Incomming Network Connections"
       funct_append_file $check_file "lck:AUE_ACCEPT" hash
       funct_append_file $check_file "lck:AUE_CONNECT" hash

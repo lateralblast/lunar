@@ -7,7 +7,7 @@
 
 audit_login_autologin () {
   if [ "$os_name" = "darwin" ]; then
-    funct_verbose_message "core dumps"
+    funct_verbose_message "autologin"
     funct_defaults_check /library/preferences/.globalpreferences com.apple.userspref.disableautologin yes bool
   fi
 }

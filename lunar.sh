@@ -214,6 +214,12 @@ check_os_release () {
 
 check_environment () {
   check_os_release
+  if [ "$os_name" = "Darwin" ]; then
+    echo ""
+    echo "Checking: If node is managed"
+    echo ""
+    managed_node=`sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d:`
+  fi
   if [ "$os_name" = "SunOS" ]; then
     id_check=`id |cut -c5`
   else

@@ -12,7 +12,7 @@ audit_xinetd_service () {
     parameter_name=$2
     correct_status=$3
     check_file="/etc/xinetd.d/$service_name"
-    log_file="$service_name.log"
+    log_file="$work_dir/$service_name.log"
     if [ -f "$check_file" ]; then
       actual_status=`cat $check_file |grep $parameter_name |awk '{print $3}'`
       if [ "$audit_mode" != 2 ]; then

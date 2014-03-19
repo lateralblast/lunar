@@ -15,6 +15,7 @@ audit_root_ssh_keys () {
           if [ -f "$check_file" ]; then
             if [ "`wc -l $check_file |awk '{print $1}'`" -ge 1 ]; then
               if [ "$audit_mode" = 1 ]; then
+                total=`expr $total + 1`
                 score=`expr $score - 1`
                 echo "Warning:   Keys file $check_file exists [$score]"
                 funct_verbose_message "mv $check_file $check_file.disabled" fix
@@ -25,14 +26,16 @@ audit_root_ssh_keys () {
               fi
             else
               if [ "$audit_mode" = 1 ]; then
+                total=`expr $total + 1`
                 score=`expr $score + 1`
-                echo "Secure:    Keys file $check_file does not contain any keys"
+                echo "Secure:    Keys file $check_file does not contain any keys [$score]"
               fi
             fi
           else
             if [ "$audit_mode" = 1 ]; then
+              total=`expr $total + 1`
               score=`expr $score + 1`
-              echo "Secure:    Keys file $check_file does not exist"
+              echo "Secure:    Keys file $check_file does not exist [$score]"
             fi
           fi
         else

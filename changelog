@@ -1,4 +1,4 @@
-# Changes:      
+# Changes:
 # 0.0.0 Thursday, 25 October 2012  9:40:54 AM EST
 # Initial version
 # 0.0.1 Thursday,  1 November 2012  2:28:41 PM EST
@@ -134,7 +134,7 @@
 # 1.6.1 Sun Jun  9 09:05:44 EST 2013
 # Added some file checks
 # 1.6.2 Sun Jun  9 23:18:37 EST 2013
-# Improved documentation   
+# Improved documentation
 # 1.6.3 Tue Jun 11 14:25:01 EST 2013
 # Updated documentation and added verbose mode
 # 1.6.4 Wed Jun 12 10:35:31 EST 2013
@@ -259,3 +259,83 @@
 # Minor bug fixes
 # 2.2.4 Thu 20 Feb 2014 14:55:44 EST
 # Split code out to be more manageable
+# 2.2.5 Wed 12 Mar 2014 11:45:34 EST
+# Various typo fixes
+# 2.2.6 Thu 13 Mar 2014 15:39:00 EST
+# Fixed Login Warning for OS X
+# 2.2.7 Thu 13 Mar 2014 15:59:31 EST
+# Fixed Launchctl check for OS X
+# 2.2.8 Thu 13 Mar 2014 16:00:45 EST
+# Added Apple Remote Events code for OS X
+# 2.2.9 Fri 14 Mar 2014 09:33:14 EST
+# Added Internet Sharing code for OS X
+# 2.3.0 Fri 14 Mar 2014 15:55:55 EST
+# Added Account Lockout code for OS X
+# 2.3.1 Mon 17 Mar 2014 06:40:22 EST
+# Added Printer Sharing code for OS X
+# 2.3.2 Mon 17 Mar 2014 07:58:31 EST
+# Added hot corner check to screen lock check for OS X
+@ 2.3.3 Mon 17 Mar 2014 10:37:20 EST
+# Added SSH check for OS X
+# 2.3.4 Mon 17 Mar 2014 11:21:34 EST
+# Added DVD/CD sharing check for OS X
+# 2.3.5 Mon 17 Mar 2014 15:28:31 EST
+# Added Wake on Lan check for OS X
+# 2.3.6 Mon 17 Mar 2014 16:00:01 EST
+# Added File Vault check for OS X
+# 2.3.7 Mon 17 Mar 2014 17:03:59 EST
+# Added Gatekeeper check for OS X
+# 2.3.8 Tue 18 Mar 2014 09:06:10 EST
+# Added Safe Downloads list check for OS X
+# 2.3.9 Tue 18 Mar 2014 09:07:23 EST
+# Updated CIS reference for firewall settings fo OS X
+# 2.4.0 Tue 18 Mar 2014 09:50:12 EST
+# Added Secure Keyboard Entry check for OS X
+# 2.4.1 Tue 18 Mar 2014 11:59:01 EST
+# Added Secure Empty Trash check for OS X
+# 2.4.2 Tue 18 Mar 2014 12:09:43 EST
+# Cleaned up some defaults checks for OS X
+# 2.4.3 Tue 18 Mar 2014 12:25:29 ES
+# Added OX Security Auditing check
+# 2.4.4 Tue 18 Mar 2014 12:38:16 EST
+# Cleaned up some code
+# 2.4.5 Tue 18 Mar 2014 15:25:02 EST
+# Added code to check system log retention on OS X
+# 2.4.6 Tue 18 Mar 2014 15:44:13 EST
+# Added code to check bonjour advertising on OS X
+# 2.4.7 Tue 18 Mar 2014 16:13:11 EST
+# Added sudo timeout check
+# 2.4.8 Tue 18 Mar 2014 16:33:21 EST
+# Added Keychain Lock time check for OS X
+# 2.4.9 Wed 19 Mar 2014 07:15:21 EST
+# Added user home directory permisions check for OS X
+# 2.5.0 Wed 19 Mar 2014 07:32:50 EST
+# Added autologin check for OS X
+# 2.5.1 Wed 19 Mar 2014 08:22:03 EST
+# Added autologout check for OS X
+# 2.5.2 Wed 19 Mar 2014 08:48:57 EST
+# Added pwpolicy function for OS X
+# 2.5.3 Wed 19 Mar 2014 09:13:10 EST
+# Added password complexity checks for OS X
+# 2.5.4 Wed 19 Mar 2014 09:18:19 EST
+# Added CIS reference to account login details check for OS X
+# 2.5.5 Wed 19 Mar 2014 09:23:03 EST
+# Added password hints check for OS X
+# 2.5.6 Wed 19 Mar 2014 09:24:56 EST
+# Added CIS reference for guest account check for OS X
+# 2.5.7 Wed 19 Mar 2014 09:27:16 EST
+# Added CIS reference for guest file sharing check for OS X
+# 2.5.8 Wed 19 Mar 2014 09:32:40 EST
+# Added file extensions check for OS X
+# 2.5.9 Wed 19 Mar 2014 11:36:56 EST
+# Added Safari Auto-run check for OS X
+# 2.6.0 Wed 19 Mar 2014 11:42:21 EST
+# Fixed bug with launchctl check
+# 2.6.1 Wed 19 Mar 2014 11:44:25 EST
+# Fixed bug with gatekeeper and wake on lan check
+# 2.6.2 Wed 19 Mar 2014 12:05:53 EST
+# Various bug fixes
+# 2.6.3 Wed 19 Mar 2014 12:20:50 EST
+# Improved ability to run script as non root user in audit only mode
+# 2.6.4 Wed 19 Mar 2014 13:24:05 EST
+# More bug fixes
