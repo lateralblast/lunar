@@ -351,3 +351,5 @@
 # Moved grouped function files to full_* to better distinguish them
 # 2.6.8 Thu 20 Mar 2014 17:29:21 EST
 # Added support to old users check to use last rather than finger if finger is not available
+# 2.6.9 Thu 20 Mar 2014 22:56:31 EST
+# Updated SELinux check

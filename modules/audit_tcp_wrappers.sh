@@ -45,7 +45,7 @@ audit_tcp_wrappers () {
       package_name="tcp_wrappers"
       total=`expr $total + 1`
       log_file="$package_name.log"
-      audit_linux_package check $package_name
+      funct_linux_package check $package_name
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  TCP Wrappers is installed"
       fi
@@ -58,7 +58,7 @@ audit_tcp_wrappers () {
           echo "Setting:   TCP Wrappers to installed"
           log_file="$work_dir/$log_file"
           echo "Installed $package_name" >> $log_file
-          audit_linux_package install $package_name
+          funct_linux_package install $package_name
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -67,7 +67,7 @@ audit_tcp_wrappers () {
         fi
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/$log_file"
-          audit_linux_package restore $package_name $restore_file
+          funct_linux_package restore $package_name $restore_file
         fi
       fi
     fi

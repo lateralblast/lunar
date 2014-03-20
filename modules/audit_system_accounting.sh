@@ -15,7 +15,7 @@ audit_system_accounting () {
     funct_verbose_message "System Accounting"
     total=`expr $total + 1`
     log_file="sysstat.log"
-    audit_linux_package check sysstat
+    funct_linux_package check sysstat
     if [ "$linux_dist" = "debian" ]; then
       check_file="/etc/default/sysstat"
       funct_file_value $check_file ENABLED eq true hash
@@ -43,7 +43,7 @@ audit_system_accounting () {
         echo "Setting:   System Accounting to enabled"
         log_file="$work_dir/$log_file"
         echo "Installed sysstat" >> $log_file
-        audit_linux_package install sysstat
+        funct_linux_package install sysstat
       fi
     else
       if [ "$audit_mode" = 1 ]; then
@@ -52,7 +52,7 @@ audit_system_accounting () {
       fi
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$log_file"
-        audit_linux_package restore sysstat $restore_file
+        funct_linux_package restore sysstat $restore_file
       fi
     fi
     check_file="/etc/audit/audit.rules"

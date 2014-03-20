@@ -1,4 +1,4 @@
-# audit_linux_package
+# funct_linux_package
 #
 # Check package
 # Takes the following variables:
@@ -7,7 +7,7 @@
 # restore_file:   Restore file to check
 #.
 
-audit_linux_package () {
+funct_linux_package () {
   if [ "$os_name" = "Linux" ]; then
     package_mode=$1
     package_check=$2

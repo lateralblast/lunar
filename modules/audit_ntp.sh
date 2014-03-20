@@ -25,7 +25,7 @@ audit_ntp () {
     check_file="/etc/ntp.conf"
     total=`expr $total + 1`
     log_file="ntp.log"
-    audit_linux_package check ntp
+    funct_linux_package check ntp
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  NTP is enabled"
     fi
@@ -38,7 +38,7 @@ audit_ntp () {
         echo "Setting:   NTP to enabled"
         log_file="$work_dir/$log_file"
         echo "Installed ntp" >> $log_file
-        audit_linux_package install ntp
+        funct_linux_package install ntp
       fi
     else
       if [ "$audit_mode" = 1 ]; then
@@ -47,7 +47,7 @@ audit_ntp () {
       fi
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$log_file"
-        audit_linux_package restore ntp $restore_file
+        funct_linux_package restore ntp $restore_file
       fi
     fi
     service_name="ntp"

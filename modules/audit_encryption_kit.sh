@@ -19,10 +19,10 @@ audit_encryption_kit () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
       funct_verbose_message "Encryption Toolkit"
-      funct_check_pkg SUNWcry
-      funct_check_pkg SUNWcryr
+      funct_solaris_package SUNWcry
+      funct_solaris_package SUNWcryr
       if [ $os_update -le 4 ]; then
-        funct_check_pkg SUNWcryman
+        funct_solaris_package SUNWcryman
       fi
     fi
   fi
