@@ -1,9 +1,9 @@
-# audit_kernel_services
+# full_audit_kernel_services
 #
 # Audit kernel services
 #.
 
-audit_kernel_services () {
+full_audit_kernel_services () {
   audit_sysctl
   audit_kernel_accounting
   audit_kernel_params

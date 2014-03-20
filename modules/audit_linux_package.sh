@@ -30,6 +30,9 @@ audit_linux_package () {
         if [ "$linux_dist" = "debian" ]; then
           apt-get install $package_check
         fi
+        if [ "$package_check" = "aide" ]; then
+          /usr/sbin/aide --init -B 'database_out=file:/var/lib/aide/aide.db.gz'
+        fi
       fi
       if [ "$package_mode" = "uninstall" ]; then
         if [ "$linux_dist" = "redhat" ]; then

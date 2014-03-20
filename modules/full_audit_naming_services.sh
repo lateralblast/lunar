@@ -1,9 +1,9 @@
-# audit_naming_services
+# full_audit_naming_services
 #
 # Audit Naming Services
 #.
 
-audit_naming_services () {
+full_audit_naming_services () {
   audit_nis_server
   audit_nis_client
   audit_nisplus

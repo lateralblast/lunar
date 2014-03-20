@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      2.6.6
+# Version:      2.6.7
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -143,7 +143,7 @@ check_os_release () {
   echo ""
   os_name=`uname`
   if [ "$os_name" = "Darwin" ]; then
-    `set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')`
+    set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
     os_version=$1.$2
     os_update=$3
     os_vendor="Apple"

@@ -1,9 +1,9 @@
-# audit_network_services
+# full_audit_network_services
 #
 # Audit Network Service
 #.
 
-audit_network_services () {
+full_audit_network_services () {
   audit_snmp
   audit_ntp
   audit_ipmi

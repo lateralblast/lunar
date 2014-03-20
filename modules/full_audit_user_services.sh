@@ -1,9 +1,9 @@
-# audit_user_services
+# full_audit_user_services
 #
 # Audit users and groups
 #.
 
-audit_user_services () {
+full_audit_user_services () {
   audit_root_home
   audit_root_default_group
   audit_root_primary_group

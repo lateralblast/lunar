@@ -1,9 +1,9 @@
-# audit_x11_services
+# full_audit_x11_services
 #
 # Audit X11 Services
 #.
 
-audit_x11_services () {
+full_audit_x11_services () {
   audit_cde_ttdb
   audit_cde_cal
   audit_cde_spc

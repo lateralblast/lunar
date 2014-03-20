@@ -1,9 +1,9 @@
-# audit_shell_services
+# full_audit_shell_services
 #
 # Audit remote shell services
 #.
 
-audit_shell_services () {
+full_audit_shell_services () {
   audit_issue_banner
   audit_ssh_config
   audit_remote_consoles

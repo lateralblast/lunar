@@ -1,9 +1,9 @@
-# audit_osx_services
+# full_audit_osx_services
 #
 # Audit All System
 #.
 
-audit_osx_services () {
+full_audit_osx_services () {
   audit_bt_sharing
   audit_guest_sharing
   audit_file_sharing

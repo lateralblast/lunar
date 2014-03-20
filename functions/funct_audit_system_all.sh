@@ -4,31 +4,30 @@
 #.
 
 funct_audit_system_all () {
-
-  audit_shell_services
-  audit_accounting_services
-  audit_firewall_services
-  audit_password_services
-  audit_kernel_services
-  audit_mail_services
-  audit_user_services
-  audit_disk_services
-  audit_hardware_services
-  audit_power_services
-  audit_virtualisation_services
-  audit_x11_services
-  audit_naming_services
-  audit_file_services
-  audit_web_services
-  audit_print_services
-  audit_routing_services
-  audit_windows_services
-  audit_startup_services
-  audit_log_services
-  audit_network_services
-  audit_other_services
-  audit_update_services
+  full_audit_shell_services
+  full_audit_accounting_services
+  full_audit_firewall_services
+  full_audit_password_services
+  full_audit_kernel_services
+  full_audit_mail_services
+  full_audit_user_services
+  full_audit_disk_services
+  full_audit_hardware_services
+  full_audit_power_services
+  full_audit_virtualisation_services
+  full_audit_x11_services
+  full_audit_naming_services
+  full_audit_file_services
+  full_audit_web_services
+  full_audit_print_services
+  full_audit_routing_services
+  full_audit_windows_services
+  full_audit_startup_services
+  full_audit_log_services
+  full_audit_network_services
+  full_audit_other_services
+  full_audit_update_services
   if [ "$os_name" = "Darwin" ]; then
-    audit_osx_services
+    full_audit_osx_services
   fi
 }

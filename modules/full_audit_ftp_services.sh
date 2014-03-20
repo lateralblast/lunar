@@ -1,8 +1,8 @@
-# audit_ftp_services
+# full_audit_ftp_services
 #
 # Audit FTP Services
 
-audit_ftp_services () {
+full_audit_ftp_services () {
   audit_ftp_logging
   audit_ftp_umask
   audit_ftp_conf

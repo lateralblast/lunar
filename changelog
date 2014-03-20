@@ -343,3 +343,9 @@
 # Added swap to nodev check
 # 2.6.6 Thu 20 Mar 2014 13:52:09 EST
 # Added nosuid filesystem mount check for Linux
+# 2.6.7 Thu 20 Mar 2014 14:41:40 EST
+# Fixed system log check
+# 2.6.8 Thu 20 Mar 2014 14:45:20 EST
+# Added aide check for Linux
+# 2.6.7 Thu 20 Mar 2014 16:55:35 EST
+# Moved grouped function files to full_* to better distinguish them

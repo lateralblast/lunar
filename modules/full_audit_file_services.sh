@@ -1,9 +1,9 @@
-# audit_file_services
+# full_audit_file_services
 #
 # Audit file permissions
 #.
 
-audit_file_services () {
+full_audit_file_services () {
   audit_syslog_perms
   audit_volfs
   audit_autofs

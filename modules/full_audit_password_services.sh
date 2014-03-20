@@ -1,9 +1,9 @@
-# audit_password_services
+# full_audit_password_services
 #
 # Audit password related services
 #.
 
-audit_password_services () {
+full_audit_password_services () {
   audit_rsa_securid_pam
   audit_system_auth
   audit_password_expiry
