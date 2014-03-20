@@ -6,6 +6,12 @@
 audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     never_count=0
+    finger_bin=`which finger`
+    if [ -f "$finger_bin" ]; then
+      finger_test=0
+    else
+      finger_test=1
+    fi
     if [ "$audit_mode" = 2 ]; then
       check_file="/etc/shadow"
       funct_restore_file $check_file $restore_dir
@@ -15,13 +21,21 @@ audit_old_users () {
         check_file="/etc/shadow"
         shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "\*|\!\!|NP|LK|UP"`
         if [ "$shadow_field" != "" ]; then
-          login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
-          if [ "$login_status" = "Never" ]; then
+          if [ "$finger_test" = 0 ]
+            login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
+          else
+            login_status=`last $user_name |awk '{print $1}' |grep "$user_name"`
+          fi
+          if [ "$login_status" = "Never" ] || [ "$login_status" = "$user_name" ]; then
             if [ "$audit_mode" = 1 ]; then
               never_count=`expr $never_count + 1`
               total=`expr $total + 1`
               score=`expr $score - 1`
-              echo "Warning:   User $user_name has never logged in and their account is not locked [$score]"
+              if [ "$finger_test" = 0 ]; then
+                echo "Warning:   User $user_name has never logged in and their account is not locked [$score]"
+              else
+                echo "Warning:   User $user_name has not logged in recently and their account is not locked [$score]"
+              fi
               funct_verbose_message "" fix
               funct_verbose_message "passwd -l $user_name" fix
               funct_verbose_message "" fix
@@ -38,7 +52,7 @@ audit_old_users () {
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
           score=`expr $score + 1`
-          echo "Secure:    No user has never logged in and their account is not locked [$score]"
+          echo "Secure:    There are no users who have never logged that do not have their account locked [$score]"
         fi
       fi
     fi
