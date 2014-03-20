@@ -14,4 +14,5 @@ audit_file_services () {
   audit_nfs
   audit_uucp
   audit_cd_sharing
+  audit_filesystem_partitions
 }

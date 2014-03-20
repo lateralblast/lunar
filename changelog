@@ -339,3 +339,7 @@
 # Improved ability to run script as non root user in audit only mode
 # 2.6.4 Wed 19 Mar 2014 13:24:05 EST
 # More bug fixes
+# 2.6.5 Wed 19 Mar 2014 17:10:44 EST
+# Added swap to nodev check
+# 2.6.6 Thu 20 Mar 2014 13:52:09 EST
+# Added nosuid filesystem mount check for Linux

@@ -2,6 +2,8 @@
 #
 # Make sure GPG checks are enabled for yum so that malicious sofware can not
 # be installed.
+#
+# Refer to Section 1.2.2 Page(s) 32 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_yum_conf () {

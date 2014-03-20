@@ -11,6 +11,8 @@
 # documentation before blindly applying the sticky bit to any world writable
 # directories found in order to avoid breaking any application dependencies
 # on a given directory.
+#
+# Refer to Section 1.17 Page(s) 26 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_sticky_bit () {
