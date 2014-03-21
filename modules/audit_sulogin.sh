@@ -7,6 +7,8 @@
 # With remote console access it is possible to gain access to servers as though
 # you were in front of them, therefore entering single user mode should require
 # a password.
+#
+# Refer to Section 1.5.4-5 Page(s) 43-44 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_sulogin () {

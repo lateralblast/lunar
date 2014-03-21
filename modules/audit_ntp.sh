@@ -3,6 +3,8 @@
 # Network Time Protocol (NTP) is a networking protocol for clock synchronization
 # between computer systems.
 # Most security mechanisms require network time to be synchronized.
+#
+# Refer to Section 3.6 Page(s) 62-63 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_ntp () {

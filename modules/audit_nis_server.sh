@@ -5,6 +5,8 @@
 # number of NIS servers on any given network.
 # These services are disabled by default unless the system has been
 # previously configured to act as a NIS server.
+#
+# Refer to Section 2.1.7 Page(s) 51-52 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_nis_server () {
@@ -34,6 +36,9 @@ audit_nis_server () {
     for service_name in yppasswdd ypserv ypxfrd; do
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
+      if [ "$os_vendor" = "CentOS" ]; then
+        funct_linux_package uninstall $service_name
+      fi
     done
   fi
 }

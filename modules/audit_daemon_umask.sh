@@ -1,5 +1,7 @@
 # audit_daemon_umask
 #
+# Solaris:
+#
 # The umask (1) utility overrides the file mode creation mask as specified by
 # the CMASK value in the /etc/default/init file. The most permissive file
 # permission is mode 666 ( 777 for executable files). The CMASK value subtracts
@@ -24,6 +26,19 @@
 # only applies to executable files). This may cause problems for certain
 # applications- consult vendor documentation for further information.
 # The default setting for Solaris is 022.
+#
+# Linux
+#
+# Set the default umask for all processes started at boot time.
+# The settings in umask selectively turn off default permission when a file is
+# created by a daemon process.
+# Setting the umask to 027 will make sure that files created by daemons will
+# not be readable, writable or executable by any other than the group and
+# owner of the daemon process and will not be writable by the group of the
+# daemon process. The daemon process can manually override these settings if
+# these files need additional permission.
+#
+# Refer to Section 3.1 Page(s) 58-59 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_daemon_umask () {

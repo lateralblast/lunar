@@ -278,7 +278,7 @@
 @ 2.3.3 Mon 17 Mar 2014 10:37:20 EST
 # Added SSH check for OS X
 # 2.3.4 Mon 17 Mar 2014 11:21:34 EST
-# Added DVD/CD sharing check for OS X
+# Added DVD/CDo sharing check for OS X
 # 2.3.5 Mon 17 Mar 2014 15:28:31 EST
 # Added Wake on Lan check for OS X
 # 2.3.6 Mon 17 Mar 2014 16:00:01 EST
@@ -353,3 +353,45 @@
 # Added support to old users check to use last rather than finger if finger is not available
 # 2.6.9 Thu 20 Mar 2014 22:56:31 EST
 # Updated SELinux check
+# 2.7.0 Fri 21 Mar 2014 10:29:30 EST
+# Added CIS reference to unconfined daemons test
+# 2.7.1 Fri 21 Mar 2014 10:32:24 EST
+# Added permissions check for /etc/grub to SELinux test
+# 2.7.2 Fri 21 Mar 2014 10:38:24 EST
+# Added CIS reference to single user mode test
+# 2.7.3 Fri 21 Mar 2014 10:46:47 EST
+# Added core dumps restriction to Linux and added CIS reference
+# 2.7.4 Fri 21 Mar 2014 10:56:56 EST
+# Added execshield check
+# 2.7.6 Fri 21 Mar 2014 14:02:30 EST
+# Added code to remove telnet-server package on Linux
+# 2.7.7 Fri 21 Mar 2014 14:06:58 EST
+# Added code to remove rsh-server on package Linux
+# 2.7.8 Fri 21 Mar 2014 14:10:30 EST
+# Added code to remove YP/NIS server packages on Linux
+# 2.7.9 Fri 21 Mar 2014 14:13:10 EST
+# Added code to remove tftp-server package on Linux
+# 2.8.0 Fri 21 Mar 2014 14:29:43 EST
+# Added /etc/netboot check for Solaris 11
+# 2.8.1 Fri 21 Mar 2014 14:51:23 EST
+# Added code to remove talk-server package on Linux
+# 2.8.2 Fri 21 Mar 2014 15:14:24 EST
+# Added code to remove xinetd-server package on Linux
+# 2.8.3 Fri 21 Mar 2014 15:16:44 EST
+# Added CIS references for various xinetd based services for Linux
+# 2.8.4 Fri 21 Mar 2014 15:20:21 EST
+# Added CIS reference for daemon umask check
+# 2.8.5 Fri 21 Mar 2014 15:26:05 EST
+# Added code to remove X Windows package on Linux
+# 2.8.6 Fri 21 Mar 2014 15:47:54 EST
+# Fixed bugs with OS vendor determination
+# 2.8.7 Fri 21 Mar 2014 16:01:40 EST
+# Moved Avahi server code to separate module and added CIS reference
+# 2.8.8 Fri 21 Mar 2014 16:10:05 EST
+# Added code to remove dhcp server package on Linux
+# 2.8.9 Fri 21 Mar 2014 16:11:40 EST
+# Added CIS reference for NTP
+# 2.9.0 Fri 21 Mar 2014 16:19:07 EST
+# Added code to remove openldap-servers package on Linux
+# 2.9.1 Fri 21 Mar 2014 16:20:45 EST
+# Added CIS reference for NFS check

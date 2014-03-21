@@ -1,9 +1,10 @@
 # audit_legacy
 #
+# Solaris:
+#
 # Turn off inetd and init.d services on Solaris (legacy for Solaris 10+).
 # Most of these services have now migrated to the new Service Manifest
 # methodology.
-#.
 
 audit_legacy () {
   if [ "$os_name" = "SunOS" ]; then

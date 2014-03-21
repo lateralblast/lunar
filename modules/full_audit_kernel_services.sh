@@ -14,4 +14,6 @@ full_audit_kernel_services () {
   audit_modprobe_conf
   audit_unconfined_daemons
   audit_selinux
+  audit_execshield
+  audit_virtual_memory
 }

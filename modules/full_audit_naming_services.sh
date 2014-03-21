@@ -15,5 +15,6 @@ full_audit_naming_services () {
   audit_dns_server
   audit_krb5
   audit_nis_entries
+  audit_avahi_server
   audit_avahi_conf
 }

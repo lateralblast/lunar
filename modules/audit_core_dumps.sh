@@ -1,5 +1,7 @@
 # audit_core_dumps
 #
+# Solaris:
+#
 # Restrict Core Dumps to Protected Directory
 #
 # Although /etc/coreadm.conf isn't strictly needed,
@@ -21,6 +23,20 @@
 # process dumps core.
 # Core dumps, particularly those from set-UID and set-GID processes, may contain
 # sensitive data.
+#
+# Linux:
+#
+# A core dump is the memory of an executable program. It is generally used to
+# determine why a program aborted. It can also be used to glean confidential
+# information from a core file. The system provides the ability to set a soft
+# limit for core dumps, but this can be overridden by the user.
+#
+# Setting a hard limit on core dumps prevents users from overriding the soft
+# variable. If core dumps are required, consider setting limits for user groups
+# (see limits.conf(5)). In addition, setting the fs.suid_dumpable variable to 0
+# will prevent setuid programs from dumping core.
+#
+# Refer to Section 1.6.1 Page(s) 44-45 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_core_dumps () {
@@ -130,5 +146,9 @@ audit_core_dumps () {
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
     done
+    check_file="/etc/security/limits.conf"
+    funct_append_file $check_file "* hard core 0"
+    check_file="/etc/sysctl.conf"
+    funct_file_value $check_file fs.suid_dumpable eq 0 hash
   fi
 }

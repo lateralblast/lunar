@@ -17,4 +17,5 @@ full_audit_x11_services () {
   audit_opengl
   audit_font_server
   audit_vnc
+  audit_xwindows_server
 }

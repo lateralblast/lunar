@@ -2,7 +2,7 @@
 #
 # Make sure SELinux is configured appropriately.
 #
-# Refer to Section 1.4.1-5 Page(s) 36-40 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section 1.4.1-5, 1.5.1 Page(s) 36-40, 41-42 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_selinux () {
@@ -11,6 +11,7 @@ audit_selinux () {
     check_file="/etc/selinux/config"
     funct_file_value $check_file SELINUX eq enforcing hash
     funct_file_value $check_file SELINUXTYPE eq targeted hash
+    funct_check_perms $check_file 0400 root root
     check_file="/etc/grub.conf"
     funct_file_value $check_file selinux eq 1 hash
     funct_file_value $check_file enforcing eq 1 hash
