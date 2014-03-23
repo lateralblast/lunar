@@ -395,3 +395,5 @@
 # Added code to remove openldap-servers package on Linux
 # 2.9.1 Fri 21 Mar 2014 16:20:45 EST
 # Added CIS reference for NFS check
+# 2.9.2 Sun 23 Mar 2014 12:32:36 EST
+# Minor bug fixes

@@ -21,7 +21,7 @@ audit_old_users () {
         check_file="/etc/shadow"
         shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "\*|\!\!|NP|LK|UP"`
         if [ "$shadow_field" != "" ]; then
-          if [ "$finger_test" = 0 ]
+          if [ "$finger_test" = 0 ]; then
             login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
           else
             login_status=`last $user_name |awk '{print $1}' |grep "$user_name"`
