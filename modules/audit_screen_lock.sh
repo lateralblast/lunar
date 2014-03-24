@@ -19,8 +19,8 @@ audit_screen_lock () {
     if [ "$audit_mode" != 2 ]; then
       if [ -f "~/Library/Preferences/com.apple.dock" ]; then
         echo "Checking:  No screensaver disable hot corners are enable"
-        share_test=`launchctl list |awk '{print $3}' |grep ODSAgent |wc -l`
-        if [ "$actual_value" = "1" ]; then
+        screen_test=`launchctl list |awk '{print $3}' |grep ODSAgent |wc -l`
+        if [ "$screen_test" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
             score=`expr $score - 1`

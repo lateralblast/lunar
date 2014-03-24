@@ -11,8 +11,8 @@ audit_printer_sharing() {
     funct_verbose_message "Printer Sharing"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Printer Sharing is disabled"
-      share_test=`system_profiler SPPrintersDataType |grep Shared |awk '{print $2}' |grep 'Yes'`
-      if [ "$actual_value" = "Yes" ]; then
+      printer_test=`system_profiler SPPrintersDataType |grep Shared |awk '{print $2}' |grep 'Yes'`
+      if [ "$printer_test" = "Yes" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
           score=`expr $score - 1`

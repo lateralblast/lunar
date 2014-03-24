@@ -13,7 +13,7 @@ audit_cd_sharing() {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  DVD/CD Sharing is disabled"
       share_test=`launchctl list |awk '{print $3}' |grep ODSAgent |wc -l`
-      if [ "$actual_value" = "1" ]; then
+      if [ "$share_test" = "1" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
           score=`expr $score - 1`
