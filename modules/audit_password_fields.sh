@@ -7,6 +7,8 @@
 # An account with an empty password field means that anybody may log in as
 # that user without providing a password at all (assuming that PASSREQ=NO
 # in /etc/default/login). All accounts must have passwords or be locked.
+#
+# Refer to Section 9.2.1 Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_password_fields () {

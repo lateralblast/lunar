@@ -5,6 +5,8 @@
 # A new user who is assigned the deleted user's user ID or group ID may then
 # end up "owning" these files, and thus have more access on the system than
 # was intended.
+#
+# Refer to Section 9.1.11-2 Page(s) 160-1 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_unowned_files () {

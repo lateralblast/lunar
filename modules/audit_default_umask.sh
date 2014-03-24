@@ -13,6 +13,8 @@
 # other user on the system. A umask of 027 would make files and directories
 # readable by users in the same Unix group, while a umask of 022 would make
 # files readable by every user on the system.
+#
+# Refer to Section 7.4 Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_default_umask () {

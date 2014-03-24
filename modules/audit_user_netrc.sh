@@ -4,6 +4,8 @@
 # .netrc files, the users can easily override these.
 # Users' .netrc files may contain unencrypted passwords that may be used to
 # attack other systems.
+#
+# Refer to Section 9.2.9 Page(s) 168-169 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_user_netrc () {

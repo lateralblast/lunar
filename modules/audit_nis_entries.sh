@@ -6,6 +6,8 @@
 # files that have been imported from other platforms.
 # These entries may provide an avenue for attackers to gain privileged access
 # on the system.
+#
+# Refer to Section 9.2.2-4 Page(s) 163-5 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_nis_entries () {

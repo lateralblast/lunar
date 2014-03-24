@@ -451,3 +451,39 @@
 # Added CIS reference for system account test
 # 3.1.9 Mon 24 Mar 2014 17:47:28 EST
 # Added CIS reference for default root group test
+# 3.2.0 Mon 24 Mar 2014 18:12:53 EST
+# Added CIS reference for user default umask test
+# 3.2.1 Mon 24 Mar 2014 19:36:42 EST
+# Added code to test Gnome login message on Linux
+# 3.2.2 Mon 24 Mar 2014 21:06:01 EST
+# Added CIS reference for world writable files test
+# 3.2.3 Mon 24 Mar 2014 21:09:52 EST
+# Added CIS reference for unowned file check
+# 3.2.4 Mon 24 Mar 2014 21:11:25 EST
+# Added CIS reference for suid system executables test
+# 3.2.5 Mon 24 Mar 2014 21:14:24 EST
+# Added CIS reference for password field test
+# 3.2.6 Mon 24 Mar 2014 21:16:41 EST
+# Added CIS reference for legacy NIS entries test
+# 3.2.7 Mon 24 Mar 2014 21:21:11 EST
+# Added CIS reference for reserved id test
+# 3.2.8 Mon 24 Mar 2014 21:23:46 EST
+# Added CIS reference for root path test
+# 3.2.9 Mon 24 Mar 2014 21:25:58 EST
+# Added CIS reference for user home permissions test
+# 3.3.0 Mon 24 Mar 2014 21:27:52 EST
+# Added CIS reference for user dot files test
+# 3.3.1 Mon 24 Mar 2014 21:29:32 EST
+# Added CIS reference for user .netrc test
+# 3.3.2 Mon 24 Mar 2014 21:35:03 EST
+# Added CIS reference for user .rhosts test
+# 3.3.3 Mon 24 Mar 2014 21:39:43 EST
+# Added CIS reference for group test
+# 3.3.4 Mon 24 Mar 2014 21:45:24 EST
+# Added CIS reference for duplicate ids test
+# 3.3.5 Mon 24 Mar 2014 21:47:39 EST
+# Added CIS reference for duplicate gids test
+# 3.3.6 Mon 24 Mar 2014 21:54:09 EST
+# Added CIS reference for duplicate users test
+# 3.3.7 Tue 25 Mar 2014 06:21:54 EST
+# Added CIS reference for user .forward test

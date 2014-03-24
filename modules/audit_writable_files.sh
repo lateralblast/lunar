@@ -7,6 +7,8 @@
 # the system. World writable files may also indicate an incorrectly written
 # script or program that could potentially be the cause of a larger compromise
 # to the system's integrity.
+#
+# Refer to Section 9.1.10 Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_writable_files () {

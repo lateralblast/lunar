@@ -7,6 +7,8 @@
 # require root privileges.
 # There are valid reasons for SUID/SGID programs, but it is important to
 # identify and review such programs to ensure they are legitimate.
+#
+# Refer to Section 9.1.13-4 Page(s) 161-2 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_suid_files () {

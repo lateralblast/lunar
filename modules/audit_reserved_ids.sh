@@ -5,6 +5,8 @@
 # If a user is assigned a UID that is in the reserved range, even if it is not
 # presently in use, security exposures can arise if a subsequently installed
 # application uses the same UID.
+#
+# Refer to Section 9.2.5 Page(s) 165 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_reserved_ids () {

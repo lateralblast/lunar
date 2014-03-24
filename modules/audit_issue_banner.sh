@@ -11,6 +11,8 @@
 # organization that owns the system and any monitoring policies that are in
 # place. Consult with your organization's legal counsel for the appropriate
 # wording for your specific organization.
+#
+# Refer to Section 8.1-2 Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_issue_banner () {

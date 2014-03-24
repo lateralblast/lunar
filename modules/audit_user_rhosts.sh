@@ -5,6 +5,8 @@
 # /etc/pam.conf. Even though the .rhosts files are ineffective if support is
 # disabled in /etc/pam.conf, they may have been brought over from other systems
 # and could contain information useful to an attacker for those other systems.
+#
+# Refer to Section 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_user_rhosts () {

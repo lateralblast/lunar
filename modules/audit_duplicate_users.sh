@@ -14,6 +14,8 @@
 # if "test4" has a UID of 1000 and a subsequent "test4" entry has a UID of 2000,
 # logging in as "test4" will use UID 1000. Effectively, the UID is shared, which
 # is a security problem.
+#
+# Refer to Section 9.2.16 Page(s) 174-5 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_duplicate_users () {

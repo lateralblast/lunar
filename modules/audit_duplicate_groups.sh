@@ -12,6 +12,8 @@
 # If a group is assigned a duplicate group name, it will create and have access
 # to files with the first GID for that group in /etc/groups. Effectively, the
 # GID is shared, which is a security problem.
+#
+# Refer to Section 9.2.15,17 Page(s) 173-5 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_duplicate_groups () {

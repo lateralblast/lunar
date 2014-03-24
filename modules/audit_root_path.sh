@@ -6,6 +6,8 @@
 # root's executable path makes it likely that an attacker can gain superuser
 # access by forcing an administrator operating as root to execute a Trojan
 # horse program.
+#
+# Refer to Section 9.2.6 Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_root_path () {

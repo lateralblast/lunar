@@ -4,6 +4,8 @@
 # "dot" files, the users can easily override these.
 # Group or world-writable user configuration files may enable malicious users to
 # steal or modify other users' data or to gain another user's system privileges.
+#
+# Refer to Section 9.2.8 Page(s) 167-168 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_user_dotfiles () {

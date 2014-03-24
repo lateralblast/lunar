@@ -18,6 +18,8 @@
 # environment variables and to store personal files.
 # Since the user is accountable for files stored in the user home directory,
 # the user must be the owner of the directory.
+#
+# Refer to Section 9.2.6,12,13 Page(s) 166-7,171-2 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_home_ownership () {

@@ -4,6 +4,8 @@
 # defined in /etc/passwd but not in /etc/group.
 # Groups defined in the /etc/passwd file but not in the /etc/group file pose a
 # threat to system security since group permissions are not properly managed.
+#
+# Refer to Section 9.2.11 Page(s) 170-1 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_groups_exist () {
