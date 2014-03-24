@@ -80,6 +80,7 @@
 # warning banner for your site.
 #
 # Refer to Section 6.2.1 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section 2.4.14.9 Page(s) 57-60 CIS OS X 10.5 Benchmark v1.1.0
 #.
 
 audit_ssh_config () {
