@@ -501,3 +501,5 @@
 # Added code to add NTP pool servers to config file
 # 3.4.4 Tue 25 Mar 2014 09:21:15 EST
 # Improved launchctl function to be able to turn off and on services
+# 3.4.5 Tue 25 Mar 2014 10:19:31 EST
+# Added samba config lockdown tests

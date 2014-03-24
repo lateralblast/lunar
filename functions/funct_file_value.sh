@@ -29,7 +29,11 @@ funct_file_value () {
     if [ "$comment_value" = "bang" ]; then
       comment_value="!"
     else
-      comment_value="#"
+      if [ "$comment_value" = "semicolon" ]; then
+        comment_value=";"
+      else
+        comment_value="#"
+      fi
     fi
   fi
   if [ `expr "$separator" : "eq"` = 2 ]; then
