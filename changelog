@@ -495,3 +495,7 @@
 # Fixed printer sharing test for OS X
 # 3.4.1 Tue 25 Mar 2014 08:09:02 EST
 # Added firmware password test for OS X
+# 3.4.2 Tue 25 Mar 2014 08:29:09 EST
+# Added CIS NTP reference for OS X
+# 3.4.3 Tue 25 Mar 2014 08:42:51 EST
+# Added code to add NTP pool servers to config file
