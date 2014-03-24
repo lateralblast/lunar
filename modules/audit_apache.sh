@@ -23,10 +23,11 @@
 # recommended that the package(s) be deleted.
 #
 # Refer to Section 3.11,14 Page(s) 66-69 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section 2.4.14.7 Page(s) 56-7 CIS OS X 10.5 Benchmark v1.1.0
 #.
 
 audit_apache () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Apache and web based services"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
@@ -55,5 +56,14 @@ audit_apache () {
       funct_linux_package uninstall httpd
       funct_linux_package uninstall squid
     fi
+    for check_dir in /etc /etc/sfw /etc/apache /etc/apache2 /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
+      check_file="$check_dir/httpd.conf"
+      if [ -f "$check_file" ]; then
+        funct_file_value $check_file ServerTokens space Prod hash
+        funct_file_value $check_file ServerSignature space Off hash
+        funct_file_value $check_file UserDir space Off hash
+        funct_file_value $check_file TraceEnable space Off hash
+      fi
+    done
   fi
 }
