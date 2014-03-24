@@ -499,3 +499,5 @@
 # Added CIS NTP reference for OS X
 # 3.4.3 Tue 25 Mar 2014 08:42:51 EST
 # Added code to add NTP pool servers to config file
+# 3.4.4 Tue 25 Mar 2014 09:21:15 EST
+# Improved launchctl function to be able to turn off and on services

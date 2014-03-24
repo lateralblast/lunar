@@ -10,6 +10,6 @@ audit_login_warning () {
   if [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Login message warning"
     funct_defaults_check /Library/Preferences/SystemConfiguration/com.apple.nat NAT Enabled dict 0 int
-    funct_launchctl_check com.apple.InternetSharing
+    funct_launchctl_check com.apple.InternetSharing off
   fi
 }

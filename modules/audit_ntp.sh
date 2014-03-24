@@ -22,6 +22,7 @@ audit_ntp () {
     if [ "$os_name" = "Darwin" ]; then
       check_file="/private/etc/hostconfig"
       funct_file_value $check_file TIMESYNC eq -YES- hash
+      funct_launchctl_check org.ntp.ntpd on
       check_file="/private/etc/ntp.conf"
     fi
     if [ "$os_name" = "Linux" ]; then

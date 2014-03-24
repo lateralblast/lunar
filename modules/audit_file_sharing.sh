@@ -12,11 +12,11 @@
 audit_file_sharing () {
   if [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Apple File Sharing"
-    funct_launchctl_check com.apple.AppleFileServer
+    funct_launchctl_check com.apple.AppleFileServer off
     funct_verbose_message "FTP Services"
-    funct_launchctl_check ftp
+    funct_launchctl_check ftp off
     funct_verbose_message "Samba Services"
-    funct_launchctl_check nmbd
-    funct_launchctl_check smbd
+    funct_launchctl_check nmbd off
+    funct_launchctl_check smbd off
   fi
 }
