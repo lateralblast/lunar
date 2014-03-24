@@ -1,6 +1,8 @@
 # audit_pam_wheel
 #
 # PAM Wheel group membership. Make sure wheel group membership is required to su.
+#
+# Refer to Section 6.5 Page(s) 142-3 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_pam_wheel () {

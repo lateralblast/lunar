@@ -35,14 +35,18 @@ funct_linux_package () {
         fi
       fi
       if [ "$package_mode" = "uninstall" ]; then
-        if [ "$linux_dist" = "redhat" ]; then
-          rpm -e $package_check
-        fi
-        if [ "$linux_dist" = "suse" ]; then
-          zypper remove $package_check
-        fi
-        if [ "$linux_dist" = "debian" ]; then
-          apt-get purge $package_check
+        if [ "$package_uninstall" = "yes" ]; then
+          if [ "$linux_dist" = "redhat" ]; then
+            rpm -e $package_check
+          fi
+          if [ "$linux_dist" = "suse" ]; then
+            zypper remove $package_check
+          fi
+          if [ "$linux_dist" = "debian" ]; then
+            apt-get purge $package_check
+          fi
+        else
+          echo "Warning:   Not uninstalling package as package uninstall has been set to no"
         fi
       fi
       if [ "$package_mode" = "restore" ]; then

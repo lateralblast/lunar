@@ -11,6 +11,8 @@
 # using Role-Based Access Controls (RBAC).
 # Note that if System Accounting is enabled, add the user sys to the cron.allow
 # file in addition to the root account.
+#
+# Refer to Section 6.1.10-11 Page(s) 125-7 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_cron_allow () {
@@ -20,8 +22,10 @@ audit_cron_allow () {
     funct_file_exists $check_file no
     check_file="/etc/at.deny"
     funct_file_exists $check_file no
-    check_file="/etc/cron.allow"
-    funct_file_exists $check_file yes
+    cron_file="/etc/cron.allow"
+    funct_file_exists $cron_file yes
+    at_file="/etc/at.allow"
+    funct_file_exists $at_file yes
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ]; then
         if [ "`cat $check_file |wc -l`" = "0" ]; then
@@ -30,7 +34,8 @@ audit_cron_allow () {
             for user_name in `ls $dir_name`; do
               check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
               if [ "$check_id" = "$user_name" ]; then
-                echo "$user_name" >> $check_file
+                echo "$user_name" >> $cron_file
+                echo "$user_name" >> $at_file
               fi
             done
           fi
@@ -43,7 +48,8 @@ audit_cron_allow () {
             for user_name in `ls $dir_name`; do
               check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
               if [ "$check_id" = "$user_name" ]; then
-                echo "$user_name" >> $check_file
+                echo "$user_name" >> $cron_file
+                echo "$user_name" >> $at_file
               fi
             done
           fi
@@ -55,7 +61,8 @@ audit_cron_allow () {
             for user_name in `ls -l $dir_name grep '-' |awk '{print $4}' |uniq`; do
               user_check=`cat $check_file |grep ''$user_name''`
               if [ "$user_check" != "$user_name" ]; then
-                echo "$user_name" >> $check_file
+                echo "$user_name" >> $cron_file
+                echo "$user_name" >> $at_file
               fi
             done
           fi
@@ -96,12 +103,11 @@ audit_cron_allow () {
     funct_check_perms $check_file 0640 root root
     if [ "$os_name" = "Linux" ]; then
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
-        funct_check_perms $dir_name 0640 root root
+        funct_check_perms $dir_name 0700 root root
       done
-      check_file="/etc/crontab"
-      funct_check_perms $check_file 0640 root root
-      check_file="/etc/anacrontab"
-      funct_check_perms $check_file 0640 root root
+      for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
+        funct_check_perms $check_file 0700 root root
+      done
     fi
   fi
 }

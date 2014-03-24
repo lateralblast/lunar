@@ -3,6 +3,8 @@
 # Make sure system cron entries are only viewable by system accounts.
 # Viewing cron entries may provide vectors of attack around temporary
 # file creation and race conditions.
+#
+# Refer to Section 6.1.3-9 Page(s) 119-125 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_cron_perms () {

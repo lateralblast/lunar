@@ -1,6 +1,12 @@
 # audit_password_hashing
 #
 # Check that password hashing is set to SHA512.
+#
+# The SHA-512 algorithm provides much stronger hashing than MD5, thus providing
+# additional protection to the system by increasing the level of effort for an
+# attacker to successfully determine passwords.
+#
+# Refer to Section 6.3.1 Page(s) 138-9 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_password_hashing () {

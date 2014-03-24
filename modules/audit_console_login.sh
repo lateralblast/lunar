@@ -18,6 +18,8 @@
 # defined as a role, administrators would have to login under their account and
 # provide root credentials to invoke privileged commands. This restriction also
 # includes logging in to the console, except for single user mode.
+#
+# Refer to Section 6.4 Page(s) 142-3 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_console_login () {

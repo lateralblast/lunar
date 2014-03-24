@@ -9,6 +9,8 @@
 # password file may contain the older group classification for the root user.
 # Using GID 0 for the root account helps prevent root-owned files from
 # accidentally becoming accessible to non-privileged users.
+#
+# Refer to Section 7.3 Page(s) 147 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_root_default_group () {

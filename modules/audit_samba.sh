@@ -7,6 +7,8 @@
 # systems. Note that on Solaris releases prior to 11/06 the file
 # /etc/sfw/smb.conf does not exist and the service will not be started by
 # default even on newer releases.
+#
+# Refer to Section 3.13 Page(s) 68 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_samba () {
@@ -29,5 +31,8 @@ audit_samba () {
     service_name="smb"
     funct_chkconfig_service $service_name 3 off
     funct_chkconfig_service $service_name 5 off
+    if [ "$os_vendor" = "CentOS" ]; then
+      funct_linux_package uninstall samba
+    fi
   fi
 }

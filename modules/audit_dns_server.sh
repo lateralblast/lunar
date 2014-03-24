@@ -9,6 +9,7 @@
 # An obvious exception to this is DNS servers themselves and servers that
 # provide boot and install services such as Jumpstart or Kickstart servers.
 #
+# Refer to Section 3.9 Page(s) 65-66 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_dns_server () {
@@ -25,5 +26,8 @@ audit_dns_server () {
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
     done
+    if [ "$os_vendor" = "CentOS" ]; then
+      funct_linux_package uninstall bind
+    fi
   fi
 }

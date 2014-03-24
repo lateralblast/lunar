@@ -78,6 +78,8 @@
 # Banners are used to warn connecting users of the particular site's policy
 # regarding connection. Consult with your legal department for the appropriate
 # warning banner for your site.
+#
+# Refer to Section 6.2.1 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_ssh_config () {

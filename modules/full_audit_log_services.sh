@@ -5,6 +5,7 @@
 #.
 
 full_audit_log_services () {
+  audit_syslog_server
   audit_linux_logfiles
   audit_syslog_conf
   audit_debug_logging

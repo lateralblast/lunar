@@ -19,6 +19,23 @@
 # To fix existing accounts:
 # useradd -D -f 7
 # chage -m 7 -M 90 -W 14 -I 7
+#
+# Linux:
+#
+# The PASS_MAX_DAYS parameter in /etc/login.defs allows an administrator to
+# force passwords to expire once they reach a defined age. It is recommended
+# that the PASS_MAX_DAYS parameter be set to less than or equal to 90 days.
+#
+# The PASS_MIN_DAYS parameter in /etc/login.defs allows an administrator to
+# prevent users from changing their password until a minimum number of days
+# have passed since the last time the user changed their password.
+# It is recommended that PASS_MIN_DAYS parameter be set to 7 or more days.
+#
+# The PASS_WARN_AGE parameter in /etc/login.defs allows an administrator to
+# notify users that their password will expire in a defined number of days.
+# It is recommended that the PASS_WARN_AGE parameter be set to 7 or more days.
+#
+# Refer to Section 7.1.1-3 Page(s) 143-146 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_password_expiry () {

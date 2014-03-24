@@ -1,6 +1,16 @@
 # audit_system_auth_unlock_time
 #
 # Audit time before account is unlocked after unsuccesful tries
+#
+# Lock out userIDs after n unsuccessful consecutive login attempts.
+# The first sets of changes are made to the main PAM configuration files
+# /etc/pam.d/system-auth and /etc/pam.d/password-auth. The second set of
+# changes are applied to the program specific PAM configuration file
+# (in this case, the ssh daemon). The second set of changes must be applied
+# to each program that will lock out userID's.
+# Set the lockout number to the policy in effect at your site.
+#
+# Refer to Section 6.3.3 Page(s) 139-140 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_system_auth_unlock_time () {

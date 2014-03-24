@@ -8,6 +8,8 @@
 # invalid string, but it is also recommended that the shell field in the
 # password file be set to "false." This prevents the account from potentially
 # being used to run any commands.
+#
+# Refer to Section 7.2 Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
 #.
 
 audit_system_accounts () {

@@ -397,3 +397,57 @@
 # Added CIS reference for NFS check
 # 2.9.2 Sun 23 Mar 2014 12:32:36 EST
 # Minor bug fixes
+# 2.9.3 Sun 23 Mar 2014 12:38:22 EST
+# Added CIS reference to NIS server check and code to remove package on Linux
+# 2.9.4 Sun 23 Mar 2014 12:46:47 EST
+# Added package uninstall disable/enable variable
+# 2.9.5 Sun 23 Mar 2014 12:53:28 EST
+# Added CIS reference to FTP server check and code to remove package on Linux
+# 2.9.6 Sun 23 Mar 2014 12:59:18 EST
+# Added CIS reference to HTTP server check and code to remove package on Linux
+# 2.9.7 Sun 23 Mar 2014 13:04:24 EST
+# Added CIS reference for Dovecot check and code to remove package on Linux
+# 2.9.8 Sun 23 Mar 2014 13:07:47 EST
+# Added CIS reference to Samba server check and code to remove package on Linux
+# 2.9.9 Sun 23 Mar 2014 13:11:41 EST
+# Added CIS reference to Squid server check and code to remove package on Linux
+# 3.0.0 Sun 23 Mar 2014 13:18:10 EST
+# Added CIS reference to SNMP check and code to remove package on Linux
+# 3.0.1 Sun 23 Mar 2014 13:23:20 EST
+# Added CIS reference to Postfix check and code to check local-only agent mode on Linux
+# 3.0.2 Sun 23 Mar 2014 13:37:30 EST
+# Added code to install and configure rsyslog on Linux
+# 3.0.3 Sun Sun 23 Mar 2014 15:38:27 EST
+# Added CIS references to system accounting check
+# 3.0.4 Sun 23 Mar 2014 15:41:50 EST
+# Added CIS references to logrotate check
+# 3.0.5 Sun 23 Mar 2014 16:01:36 EST
+# Added CIS references to sysctl check
+# 3.0.6 Sun 23 Mar 2014 16:15:53 EST
+# Added CIS references to TCP wrappers check
+# 3.0.7 Mon 24 Mar 2014 09:20:12 EST
+# Added iptables check
+# 3.0.8 Mon 24 Mar 2014 09:22:53 EST
+# Added CIS reference to cron permissions check
+# 3.0.9 Mon 24 Mar 2014 09:35:34 EST
+# Cleaned up crow.allow test and added CIS reference
+# 3.1.0 Mon 24 Mar 2014 09:59:21 EST
+# Added CIS reference to SSH test
+# 3.1.1 Mon 24 Mar 2014 10:02:57 EST
+# Added CIS reference to password hashing algorithm test
+# 3.1.2 Mon 24 Mar 2014 10:10:33 EST
+@ Added CIS reference to password policy test
+# 3.1.3 Mon 24 Mar 2014 10:26:28 EST
+# Added CIS reference for account lockout timeout test
+# 3.1.4 Mon 24 Mar 2014 17:31:53 EST
+# Added CIS reference for password reuse test
+# 3.1.5 Mon 24 Mar 2014 17:36:23 EST
+# Added CIS reference for remote console test
+# 3.1.6 Mon 24 Mar 2014 17:38:52 EST
+# Added CIS reference for pam wheel test
+# 3.1.7 Mon 24 Mar 2014 17:40:29 EST
+# Added CIS reference for password expiry test
+# 3.1.8 Mon 24 Mar 2014 17:45:45 EST
+# Added CIS reference for system account test
+# 3.1.9 Mon 24 Mar 2014 17:47:28 EST
+# Added CIS reference for default root group test
