@@ -10,10 +10,11 @@
 # for Solaris 8 and later.
 #
 # Refer to Section 1.1.3,13,15 Page(s) 14-25 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_mount_setuid () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Set-UID on Monunted Devices"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
