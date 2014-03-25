@@ -9,10 +9,11 @@
 # to the system's integrity.
 #
 # Refer to Section 9.1.10 Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.4 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_writable_files () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$do_fs" = 1 ]; then
       funct_verbose_message "World Writable Files"
       if [ "$audit_mode" != 2 ]; then
