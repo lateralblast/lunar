@@ -531,3 +531,5 @@
 # Added sendmail test and CIS reference for FreeBSD
 # 3.5.9 Tue 25 Mar 2014 16:04:18 EST
 # Added bind test and CIS reference for FreeBSD
+# 3.6.0 Tue 25 Mar 2014 16:27:15 EST
+# Added NFS test and CIS reference for FreeBSD
