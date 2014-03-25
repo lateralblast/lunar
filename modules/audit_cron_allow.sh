@@ -13,19 +13,31 @@
 # file in addition to the root account.
 #
 # Refer to Section 6.1.10-11 Page(s) 125-7 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_cron_allow () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "At/Cron Authorized Users"
-    check_file="/etc/cron.deny"
+    if [ "$os_name" = "FreeBSD" ]; then
+      base_dir="/var/cron"
+      cron_group="wheel"
+      check_file="/etc/crontab"
+      funct_check_perms $check_file 0640 root $cron_group
+    else
+      base_dir="/etc"
+      cron_group="root"
+    fi
+    check_file="$hase_dir/cron.deny"
     funct_file_exists $check_file no
-    check_file="/etc/at.deny"
+    check_file="$base_dir/at.deny"
     funct_file_exists $check_file no
-    cron_file="/etc/cron.allow"
+    cron_file="$base_dir/cron.allow"
     funct_file_exists $cron_file yes
-    at_file="/etc/at.allow"
+    funct_check_perms $check_file 0400 root $cron_group
+    at_file="$base_dir/at.allow"
     funct_file_exists $at_file yes
+    funct_check_perms $check_file 0400 root $cron_group
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ]; then
         if [ "`cat $check_file |wc -l`" = "0" ]; then

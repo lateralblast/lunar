@@ -565,5 +565,7 @@
 # Added unowned files test and CIS reference for FreeBSD
 # 3.7.6 Tue 25 Mar 2014 22:29:47 EST
 # Added initial PAM test and CIS reference for FreeBSD
-# 3.7.3 Tue 25 Mar 2014 22:34:36 EST
+# 3.7.7 Tue 25 Mar 2014 22:34:36 EST
 # Added dotfiles test and CIS reference for FreeBSD
+# 3.7.8 Tue 25 Mar 2014 22:47:39 EST
+# Added cron/at test and CIS references for FreeBSD
