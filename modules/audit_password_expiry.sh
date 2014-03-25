@@ -16,11 +16,11 @@
 # restrictive depending on local policies.
 # For Linux this will apply to new accounts
 #
+# Linux:
+#
 # To fix existing accounts:
 # useradd -D -f 7
 # chage -m 7 -M 90 -W 14 -I 7
-#
-# Linux:
 #
 # The PASS_MAX_DAYS parameter in /etc/login.defs allows an administrator to
 # force passwords to expire once they reach a defined age. It is recommended
@@ -35,26 +35,35 @@
 # notify users that their password will expire in a defined number of days.
 # It is recommended that the PASS_WARN_AGE parameter be set to 7 or more days.
 #
-# Refer to Section 7.1.1-3 Page(s) 143-146 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.1.1-3 Page(s) 143-146 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.3 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_password_expiry () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Password Expiration Parameters on Active Accounts"
-    check_file="/etc/default/passwd"
-    funct_file_value $check_file MAXWEEKS eq 13 hash
-    funct_file_value $check_file MINWEEKS eq 1 hash
-    funct_file_value $check_file WARNWEEKS eq 4 hash
-    check_file="/etc/default/login"
-    funct_file_value $check_file DISABLETIME eq 3600 hash
-  fi
-  if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Password Expiration Parameters on Active Accounts"
-    check_file="/etc/login.defs"
-    funct_file_value $check_file PASS_MAX_DAYS eq 90 hash
-    funct_file_value $check_file PASS_MIN_DAYS eq 7 hash
-    funct_file_value $check_file PASS_WARN_AGE eq 14 hash
-    funct_file_value $check_file PASS_MIN_LEN eq 9 hash
-    funct_check_perms $check_file 0640 root root
+    if [ "$os_name" = "SunOS" ]; then
+      check_file="/etc/default/passwd"
+      funct_file_value $check_file MAXWEEKS eq 13 hash
+      funct_file_value $check_file MINWEEKS eq 1 hash
+      funct_file_value $check_file WARNWEEKS eq 4 hash
+      check_file="/etc/default/login"
+      funct_file_value $check_file DISABLETIME eq 3600 hash
+    fi
+    if [ "$os_name" = "Linux" ]; then
+      check_file="/etc/login.defs"
+      funct_file_value $check_file PASS_MAX_DAYS eq 90 hash
+      funct_file_value $check_file PASS_MIN_DAYS eq 7 hash
+      funct_file_value $check_file PASS_WARN_AGE eq 14 hash
+      funct_file_value $check_file PASS_MIN_LEN eq 9 hash
+      funct_check_perms $check_file 0640 root root
+    fi
+    if [ "$os_name" = "FreeBSD" ]; then
+      if [ "$os_version" > 5 ]; then
+        check_file="/etc/adduser.conf"
+        funct_file_value $check_file passwdtype eq yes hash
+        funct_file_value $check_file upwexpire eq 91d hash
+      fi
+    fi
   fi
 }

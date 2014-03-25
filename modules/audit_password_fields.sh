@@ -8,11 +8,12 @@
 # that user without providing a password at all (assuming that PASSREQ=NO
 # in /etc/default/login). All accounts must have passwords or be locked.
 #
-# Refer to Section 9.2.1 Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.1 Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.2 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_password_fields () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Password Fields"
     check_file="/etc/shadow"
     empty_count=0

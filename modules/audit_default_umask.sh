@@ -14,22 +14,23 @@
 # readable by users in the same Unix group, while a umask of 022 would make
 # files readable by every user on the system.
 #
-# Refer to Section 7.4 Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.4 Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.8 Page(s) 29 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_default_umask () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Default umask for Users"
   fi
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/login"
     funct_file_value $check_file UMASK eq 077 hash
   fi
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile; do
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+    for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/csh.login /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do
       funct_file_value $check_file "umask" space 077 hash
     done
-    for check_file in /etc/bashrc /etc/skel/.bashrc; do
+    for check_file in /etc/bashrc /etc/skel/.bashrc /etc/login.defs; do
       funct_file_value $check_file UMASK eq 077 hash
     done
   fi

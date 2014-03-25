@@ -573,3 +573,11 @@
 # Added security banner test and CIS references for FreeBSD
 # 3.8.0 Wed 26 Mar 2014 05:57:25 EST
 # Added X11 listen test and CIS reference for FreeBSD
+# 3.8.1 Wed 26 Mar 2014 06:09:12 EST
+# Added system account test and CIS reference for FreeBSD
+# 3.8.2 Wed 26 Mar 2014 07:13:36 EST
+# Added toor account test and CIS reference for FreeBSD
+# 3.8.3 Wed 26 Mar 2014 07:19:10 EST
+# Added uid 0 test and CIS reference for FreeBSD
+# 3.8.4 Wed 26 Mar 2014 07:30:35 EST
+# Added umask test and CIS reference for FreeBSD

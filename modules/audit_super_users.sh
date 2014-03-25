@@ -3,10 +3,12 @@
 # Any account with UID 0 has superuser privileges on the system.
 # This access must be limited to only the default root account
 # and only from the system console.
+#
+# Refer to Section(s) 8.6 Page(s) 28 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_super_users () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Accounts with UID 0"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Super users other than root"

@@ -9,11 +9,12 @@
 # password file be set to "false." This prevents the account from potentially
 # being used to run any commands.
 #
-# Refer to Section 7.2 Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.2 Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.1 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_system_accounts () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "System Accounts that do not have a shell"
     check_file="/etc/passwd"
     if [ "$audit_mode" != 2 ]; then
@@ -28,13 +29,21 @@ audit_system_accounts () {
             score=`expr $score - 1`
             echo "Warning:   System account $user_name has an invalid shell"
             funct_verbose_message "" fix
-            funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
+            if [ "$os_name" = "FreeBSD" ]; then
+              funct_verbose_message "pw moduser $user_name -s /sbin/nologin" fix
+            else
+              funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
+            fi
             funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   System account $user_name to have shell /sbin/nologin"
             funct_backup_file $check_file
-            usermod -s /sbin/nologin $user_name
+            if [ "$os_name" = "FreeBSD" ]; then
+              pw moduser $user_name -s /sbin/nologin
+            else
+              usermod -s /sbin/nologin $user_name
+            fi
           fi
         fi
       done
