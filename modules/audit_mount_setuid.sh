@@ -9,8 +9,8 @@
 # option. Note that this setting is included in the default rmmount.conf file
 # for Solaris 8 and later.
 #
-# Refer to Section 1.1.3,13,15 Page(s) 14-25 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.1.3,13,15 Page(s) 14-25 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_mount_setuid () {
