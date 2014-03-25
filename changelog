@@ -569,3 +569,5 @@
 # Added dotfiles test and CIS reference for FreeBSD
 # 3.7.8 Tue 25 Mar 2014 22:47:39 EST
 # Added cron/at test and CIS references for FreeBSD
+# 3.7.9 Tue 25 Mar 2014 22:54:48 EST
+# Added security banner test and CIS references for FreeBSD

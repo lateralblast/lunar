@@ -12,11 +12,12 @@
 # place. Consult with your organization's legal counsel for the appropriate
 # wording for your specific organization.
 #
-# Refer to Section 8.1-2 Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.1-2 Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_issue_banner () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Security Warning Message"
     total=`expr $total + 1`
     check_file="/etc/issue"

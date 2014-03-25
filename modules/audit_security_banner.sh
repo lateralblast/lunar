@@ -14,10 +14,12 @@
 # are made, as these warning messages are inherently site-specific.
 # More information (including citations of relevant case law) can be found at
 # http://www.justice.gov/criminal/cybercrime/
+#
+# Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_security_banner () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Warnings for Standard Login Services"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Security banners"
