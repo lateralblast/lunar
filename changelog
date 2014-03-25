@@ -589,3 +589,5 @@
 # Added serial logins test and CIS reference for FreeBSD
 # 3.8.8 Wed 26 Mar 2014 08:54:37 EST
 # Added single user password test and CIS reference for FreeBSD
+# 3.8.9 Wed 26 Mar 2014 09:20:46 EST
+# Added X wrapper test and CIS reference for FreeBSD

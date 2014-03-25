@@ -38,6 +38,33 @@ audit_xlogin () {
       funct_service $service_name disabled
     fi
   fi
+  if [ "$os_name" = "FreeBSD" ]; then
+    check_file="/etc/ttys"
+    check_string="nodaemon"
+    ttys_test=`cat $check_file |grep $check_string |awk '{print $5}'`
+    if [ "$ttys_test" != "on" ]; then
+      if [ "$audit_mode" != 2 ]; then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   X wrapper is not disabled [$score]"
+        fi
+        if [ "$audit_mode" = 2 ]; then
+          echo "Setting:   X wrapper to disabled"
+          backup_file $check_file
+          tmp_file="/tmp/ttys_$check_string"
+          sed -e '/xdm -nodaemon/s/off/on/' $check_file > $tmp_file
+          cat $tmp_file > $check_file
+        fi
+      else
+        funct_restore_file $check_file $restore_dir
+      fi
+    else
+      if [ "$audit_mode" = 1 ]; then
+        score=`expr $score + 1`
+        echo "Secure:    X wrapper is disabled [$score]"
+      fi
+    fi
+  fi
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     check_file="/etc/X11/xdm/Xresources"
     if [ -f "$check_file" ]; then
