@@ -581,3 +581,5 @@
 # Added uid 0 test and CIS reference for FreeBSD
 # 3.8.4 Wed 26 Mar 2014 07:30:35 EST
 # Added umask test and CIS reference for FreeBSD
+# 3.8.5 Wed 26 Mar 2014 07:36:10 EST
+# Added mesg n test and CIS reference for FreeBSD

@@ -27,7 +27,8 @@ audit_default_umask () {
     funct_file_value $check_file UMASK eq 077 hash
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/csh.login /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do
+    for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/csh.login \
+      /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do
       funct_file_value $check_file "umask" space 077 hash
     done
     for check_file in /etc/bashrc /etc/skel/.bashrc /etc/login.defs; do
