@@ -12,11 +12,12 @@
 # directories found in order to avoid breaking any application dependencies
 # on a given directory.
 #
-# Refer to Section 1.17 Page(s) 26 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.17 Page(s) 26 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.3 Page(s) 21-22 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_sticky_bit () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$do_fs" = 1 ]; then
       funct_verbose_message "World Writable Directories and Sticky Bits"
       total=`expr $total + 1`

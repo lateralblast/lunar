@@ -553,3 +553,5 @@
 # Added nosuid mount test and CIS reference for FreeBSD
 # 3.7.0 Tue 25 Mar 2014 21:58:55 EST
 # Added passwd and group permissions test and CIS reference for FreeBSD
+# 3.7.1 Tue 25 Mar 2014 22:02:50 EST
+# Added sticky bit test and CIS reference for FreeBSD
