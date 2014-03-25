@@ -23,11 +23,27 @@
 # English uppercase letters, English lowercase letters, Westernized Arabic
 # numerals, and non- alphanumeric characters.
 #
-# Refer to Section 5.12-19 Page(s) 58-66 CIS Apple OS X 10.8 Benchmark v1.0.0
+# FreeBSD
+#
+# MD5 encryption hashes are powerful, but in recent years other, more reliable
+# ciphers have been adopted. Blowfish is one of the more powerful algorithms
+# out there and fully supported for the FreeBSD password file database.
+# Users will need to change their passwords for the settings to take effect as
+# well as having the login.conf database rebuilt as is done here.
+# There are interoperability issues with NIS and NIS+ configurations.
+# In those cases, other algorithms are supported, including MD5 which is
+# currently the default, and des. Administrators should also familiarize
+# themselves with the FIPS-180 standard which contains information about US
+# government accepted password hashes. Administrators working for the
+# government may be required to use a different and more accepted algorithm
+# over Blowfish.
+#
+# Refer to Section(s) 5.12-19 Page(s) 58-66 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 8.10 Page(s) 30 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_strong_password () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Strong Password Creation Policies"
     if  [ "$os_name" = "SunOS" ]; then
       check_file="/etc/default/passwd"
@@ -53,6 +69,10 @@ audit_strong_password () {
       funct_pwpolicy_check minChars 15
       funct_pwpolicy_check passwordCannotBeName 1
       funct_pwpolicy_check minutesUntilFailedLoginReset 0
+    fi
+    if [ "$os_name" = "FreeBSD" ]; then
+      check_file="/etc/login.conf"
+      funct_file_value $check_file passwd_format eq blf hash
     fi
   fi
 }

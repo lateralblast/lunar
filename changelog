@@ -583,3 +583,7 @@
 # Added umask test and CIS reference for FreeBSD
 # 3.8.5 Wed 26 Mar 2014 07:36:10 EST
 # Added mesg n test and CIS reference for FreeBSD
+# 3.8.6 Wed 26 Mar 2014 07:45:29 EST
+# Added password algorithm test and CIS reference for FreeBSD
+# 3.8.7 Wed 26 Mar 2014 08:35:24 EST
+# Added serial logins test and CIS reference for FreeBSD
