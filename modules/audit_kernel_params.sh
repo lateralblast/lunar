@@ -137,7 +137,7 @@
 #
 # Block users from viewing processes in other groups
 #
-# Refer to Section 4.2 Page(s) 16-17 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section 4.2,5.3 Page(s) 16-19 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_kernel_params () {
@@ -146,6 +146,8 @@ audit_kernel_params () {
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/sysctl.conf"
       funct_file_value $check_file kern.securelevel eq 1 hash
+      funct_file_value $check_file net.inet.tcp.log_in_vain eq 1 hash
+      funct_file_value $check_file net.inet.udp.log_in_vain eq 1 hash
       if [ "$os_version" > 5 ]; then
         funct_file_value $check_file security.bsd.see_other_uids 0 hash
         funct_file_value $check_file security.bsd.see_other_gids 0 hash
