@@ -547,3 +547,5 @@
 # Added system accounting code and CIS reference for FreeBSD
 # 3.6.7 Tue 25 Mar 2014 17:52:12 EST
 # Added TCP/UDP packet logging code and CIS reference for FreeBSD
+# 3.6.8 Tue 25 Mar 2014 21:42:42 EST
+# Added newsyslog and CIS reference for FreeBSD
