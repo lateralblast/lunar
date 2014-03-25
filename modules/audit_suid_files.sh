@@ -8,11 +8,12 @@
 # There are valid reasons for SUID/SGID programs, but it is important to
 # identify and review such programs to ensure they are legitimate.
 #
-# Refer to Section 9.1.13-4 Page(s) 161-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Sectioni(s) 9.1.13-4 Page(s) 161-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.5 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_suid_files () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Set UID/GID Files"
     if [ "$audit_mode" = 1 ]; then
       echo "Checking:  For files with SUID/SGID set [This might take a while]"

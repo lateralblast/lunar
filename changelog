@@ -555,3 +555,7 @@
 # Added passwd and group permissions test and CIS reference for FreeBSD
 # 3.7.1 Tue 25 Mar 2014 22:02:50 EST
 # Added sticky bit test and CIS reference for FreeBSD
+# 3.7.2 Tue 25 Mar 2014 22:05:40 EST
+# Added world writable files test and CIS reference for FreeBSD
+# 3.7.3 Tue 25 Mar 2014 22:09:34 EST
+# Added suid and sgid files test and CIS reference for FreeBSD
