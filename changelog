@@ -537,3 +537,5 @@
 # Added NIS test and CIS reference for FreeBSD
 # 3.6.2 Tue 25 Mar 2014 16:39:59 EST
 # Added printing test and CIS reference for FreeBSD
+# 3.6.3 Tue 25 Mar 2014 16:50:16 EST
+# Added core dump test and CIS reference for FreeBSD
