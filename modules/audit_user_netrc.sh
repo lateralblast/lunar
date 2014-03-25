@@ -6,10 +6,11 @@
 # attack other systems.
 #
 # Refer to Section 9.2.9 Page(s) 168-169 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_user_netrc () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "User Netrc Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User netrc file permissions"

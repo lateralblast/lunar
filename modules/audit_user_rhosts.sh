@@ -7,10 +7,11 @@
 # and could contain information useful to an attacker for those other systems.
 #
 # Refer to Section 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_user_rhosts () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "User RHosts Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User rhosts files"

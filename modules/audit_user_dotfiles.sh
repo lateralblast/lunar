@@ -6,10 +6,11 @@
 # steal or modify other users' data or to gain another user's system privileges.
 #
 # Refer to Section 9.2.8 Page(s) 167-168 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_user_dotfiles () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "User Dot Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User dot file permissions"
