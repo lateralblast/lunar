@@ -561,3 +561,5 @@
 # Added suid and sgid files test and CIS reference for FreeBSD
 # 3.7.4 Tue 25 Mar 2014 22:15:30 EST
 # Added user homde directory permissions test and CIS reference for FreeBSD
+# 3.7.5 Tue 25 Mar 2014 22:18:28 EST
+# Added unowned files test and CIS reference for FreeBSD
