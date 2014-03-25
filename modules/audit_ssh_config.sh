@@ -81,6 +81,7 @@
 #
 # Refer to Section 6.2.1 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section 2.4.14.9 Page(s) 57-60 CIS OS X 10.5 Benchmark v1.1.0
+# Refer to Section 1.2 Page(s) 2-3 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_ssh_config () {
@@ -129,6 +130,10 @@ audit_ssh_config () {
         funct_file_value $check_file UsePAM space yes hash
         #funct_file_value $check_file Host space "*" hash
       fi
+    fi
+    if [ "$os_name" = "FreeBSD" ]; then
+      check_file="/etc/rc.conf"
+      funct_file_value $check_file sshd_enable eq YES hash
     fi
     #
     # Additional options:

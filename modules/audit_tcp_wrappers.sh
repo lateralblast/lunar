@@ -39,20 +39,25 @@
 # permissions could be changed either inadvertently or through malicious actions.
 #
 # Refer to Section 5.5.1-5 Page(s) 110-114 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section 1.3 Page(s) 3-4 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_tcp_wrappers () {
-  if [ "$os_name" = "SunOS" ]; then
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "TCP Wrappers"
-      audit_rpc_bind
-      for service_name in `inetadm |awk '{print $3}' |grep "^svc"`; do
-        funct_command_value inetadm tcp_wrappers TRUE $service_name
-      done
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Darwin" ]; then
+    funct_verbose_message "TCP Wrappers"
+    if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+        audit_rpc_bind
+        for service_name in `inetadm |awk '{print $3}' |grep "^svc"`; do
+          funct_command_value inetadm tcp_wrappers TRUE $service_name
+        done
+      fi
     fi
-  fi
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Hosts Allow/Deny"
+    if [ "$os_name" = "FreeBSD" ]; then
+      check_file="/etc/rc.conf"
+      funct_file_value $check_file inetd_enable eq YES hash
+      funct_file_value $check_file inetd_flags eq "-Wwl -C60" hash
+    fi
     check_file="/etc/hosts.deny"
     funct_file_value $check_file ALL colon " ALL" hash
     check_file="/etc/hosts.allow"
@@ -66,36 +71,35 @@ audit_tcp_wrappers () {
     fi
     funct_file_perms /etc/hosts.deny 0644 root root
     funct_file_perms /etc/hosts.allow 0644 root root
-  fi
-  if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "TCP Wrappers"
-    if [ "$dist_linux" = "redhat" ] || [ "$dist_linux" = "suse" ]; then
-      package_name="tcp_wrappers"
-      total=`expr $total + 1`
-      log_file="$package_name.log"
-      funct_linux_package check $package_name
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  TCP Wrappers is installed"
-      fi
-      if [ "$package_name" != "tcp_wrappers" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   TCP Wrappers is not installed [$score]"
+    if [ "$os_name" = "Linux" ]; then
+      if [ "$dist_linux" = "redhat" ] || [ "$dist_linux" = "suse" ]; then
+        package_name="tcp_wrappers"
+        total=`expr $total + 1`
+        log_file="$package_name.log"
+        funct_linux_package check $package_name
+        if [ "$audit_mode" != 2 ]; then
+          echo "Checking:  TCP Wrappers is installed"
         fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   TCP Wrappers to installed"
-          log_file="$work_dir/$log_file"
-          echo "Installed $package_name" >> $log_file
-          funct_linux_package install $package_name
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    TCP Wrappers is installed [$score]"
-        fi
-        if [ "$audit_mode" = 2 ]; then
-          restore_file="$restore_dir/$log_file"
-          funct_linux_package restore $package_name $restore_file
+        if [ "$package_name" != "tcp_wrappers" ]; then
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score - 1`
+            echo "Warning:   TCP Wrappers is not installed [$score]"
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            echo "Setting:   TCP Wrappers to installed"
+            log_file="$work_dir/$log_file"
+            echo "Installed $package_name" >> $log_file
+            funct_linux_package install $package_name
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score + 1`
+            echo "Secure:    TCP Wrappers is installed [$score]"
+          fi
+          if [ "$audit_mode" = 2 ]; then
+            restore_file="$restore_dir/$log_file"
+            funct_linux_package restore $package_name $restore_file
+          fi
         fi
       fi
     fi

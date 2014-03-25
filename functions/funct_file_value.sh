@@ -87,7 +87,7 @@ funct_file_value () {
             echo "Notice:    Service restart required for SSH"
           fi
           funct_backup_file $check_file
-          if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
+          if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ]; then
             echo "$parameter_name$separator\"$correct_value\"" >> $check_file
           else
             echo "$parameter_name$separator$correct_value" >> $check_file
@@ -122,7 +122,7 @@ funct_file_value () {
               fi
             fi
           else
-            if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
+            if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ]; then
               funct_verbose_message "" fix
               funct_verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" fix
             else
@@ -160,7 +160,7 @@ funct_file_value () {
                 fi
               fi
             else
-              if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
+              if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ]; then
                 $sed_command "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > $temp_file
               else
                 $sed_command "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file

@@ -513,3 +513,11 @@
 # Added code to disable mDNS on OS X
 # 3.5.0 Tue 25 Mar 2014 13:47:00 EST
 # Initial FreeBSD support
+# 3.5.1 Tue 25 Mar 2014 13:54:21 EST
+# Added rc.conf and loader.conf support to file functions
+# 3.5.2 Tue 25 Mar 2014 14:02:58 EST
+# Added FreeBSD support and CIS reference to SSH test
+# 3.5.3 Tue 25 Mar 2014 14:14:26 EST
+# Added CIS reference for FreeBSD for TCP Wrappers and added inetd flag test for FreeBSD
+# 3.5.4 Tue 25 Mar 2014 14:29:21 EST
+# Added ipfw code and CIS reference for FreeBSD
