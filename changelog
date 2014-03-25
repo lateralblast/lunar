@@ -521,3 +521,5 @@
 # Added CIS reference for FreeBSD for TCP Wrappers and added inetd flag test for FreeBSD
 # 3.5.4 Tue 25 Mar 2014 14:29:21 EST
 # Added ipfw code and CIS reference for FreeBSD
+# 3.5.5 Tue 25 Mar 2014 14:42:04 EST
+# Added inet/init code and CIS reference for FreeBSD
