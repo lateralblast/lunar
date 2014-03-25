@@ -14,6 +14,8 @@
 # Running these commands will kill  any active graphical sessions
 # on the console or using XDMCP. It will not kill any X Windows
 # applications running via SSH.
+#
+# Refer to Section(s) 7.7 Page(s) 26 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_xlogin () {
@@ -36,7 +38,7 @@ audit_xlogin () {
       funct_service $service_name disabled
     fi
   fi
-  if [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     check_file="/etc/X11/xdm/Xresources"
     if [ -f "$check_file" ]; then
       funct_verbose_message "X Security Message"

@@ -571,3 +571,5 @@
 # Added cron/at test and CIS references for FreeBSD
 # 3.7.9 Tue 25 Mar 2014 22:54:48 EST
 # Added security banner test and CIS references for FreeBSD
+# 3.8.0 Wed 26 Mar 2014 05:57:25 EST
+# Added X11 listen test and CIS reference for FreeBSD
