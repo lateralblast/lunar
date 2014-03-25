@@ -19,15 +19,28 @@
 # system. The command below allows read/write access for root and read access
 # for everyone else.
 #
-#  Refer to Section 9.1.2-9 Page(s) 153-9 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.1.2-9 Page(s) 153-9 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_passwd_perms () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "Group and Password File Permissions"
-    funct_check_perms /etc/group 0644 root root
-    funct_check_perms /etc/passwd 0644 root root
-    funct_check_perms /etc/gshadow 0400 root root
-    funct_check_perms /etc/shadow 0400 root root
+    if [ "$os_name" = "Linux" ]; then
+      for check_file in /etc/passwd /etc/group; do
+        funct_check_perms $check_file 0644 root root
+      done
+      for check_file in /etc/shadow /etc/gshadow; do
+        funct_check_perms $check_file 0400 root root
+      done
+    fi
+    if [ "$os_name" = "FreeBSD" ]; then
+      for check_file in /etc/passwd /etc/group /etc/pwd.db; do
+        funct_check_perms $check_file 0644 root wheel
+      done
+      for check_file in /etc/master.passwd /etc/spwd.db; do
+        funct_check_perms $check_file 0644 root wheel
+      done
+    fi
   fi
 }

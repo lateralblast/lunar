@@ -551,3 +551,5 @@
 # Added newsyslog and CIS reference for FreeBSD
 # 3.6.9 Tue 25 Mar 2014 21:50:08 EST
 # Added nosuid mount test and CIS reference for FreeBSD
+# 3.7.0 Tue 25 Mar 2014 21:58:55 EST
+# Added passwd and group permissions test and CIS reference for FreeBSD
