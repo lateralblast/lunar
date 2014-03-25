@@ -13,9 +13,11 @@
 # send it to a relay host that is defined in the sendmail.cf file.
 # It is recommended that sendmail be left in localonly mode unless there is
 # a specific requirement to disable it.
+#
+# Refer to Section 3.5 Page(s) 10 CIS FreeBSD Benchmark v1.0.5
 #.
 
-audit_sendmail_daemon () {
+audit_sendmail_daemon() {
   if [ "$os_name" = "SunOS" ]; then
     funct_verbose_message "Sendmail Daemon"
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
@@ -44,7 +46,24 @@ audit_sendmail_daemon () {
     funct_file_value $check_file DAEMON eq no hash
     funct_file_value $check_file QUEUE eq 1h hash
   fi
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "FreeBSD" ]; then
+    check_file="/etc/rc.conf"
+    if [ "$os_version" < 5 ]; then
+      funct_file_value $check_file sendmail_enable eq NONE hash
+    else
+      if [ "$os_version" > 5 ]; then
+        if [ "$os_version" = "5" ] && [ "$os_update" = "0" ]; then
+          funct_file_value $check_file sendmail_enable eq NONE hash
+        else
+          funct_file_value $check_file sendmail_enable eq NO hash
+          funct_file_value $check_file sendmail_submit_enable eq NO hash
+          funct_file_value $check_file sendmail_outbound_enable eq NO hash
+          funct_file_value $check_file sendmail_msp_queue_enable eq NO hash
+        fi
+      fi
+    fi
+  fi
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     check_file="/etc/mail/sendmail.cf"
     if [ -f "$check_file" ]; then
       funct_verbose_message "Sendmail Configuration"
