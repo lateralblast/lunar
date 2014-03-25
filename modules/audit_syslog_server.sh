@@ -19,12 +19,14 @@
 audit_syslog_server () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$os_name" = "FreeBSD" ]; then
-      funct_verbose_message="Syslog Daemon"
-      check_file="/etc/syslog.conf"
-      funct_file_value $check_file "daemon.debiug" tab "/var/log/daemon.log" hash
-      check_file="/var/log/daemon.log"
-      funct_file_exists $check_file yes
-      funct_file_perms $check_file 600 root wheel
+      if [ "$os_version" < 5 ]
+        funct_verbose_message="Syslog Daemon"
+        check_file="/etc/syslog.conf"
+        funct_file_value $check_file "daemon.debiug" tab "/var/log/daemon.log" hash
+        check_file="/var/log/daemon.log"
+        funct_file_exists $check_file yes
+        funct_file_perms $check_file 600 root wheel
+      fi
     fi
     if [ "$os_name" = "Linux" ]; then
       funct_verbose_message="Rsyslog Daemon"

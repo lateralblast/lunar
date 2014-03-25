@@ -543,3 +543,5 @@
 # Added kernel parameters code and CIS reference for FreeBSD
 # 3.6.5 Tue 25 Mar 2014 17:37:52 EST
 # Added syslog logging entry and CIS reference for FreeBSD while fixing bug with Syslog server code
+# 3.6.6 Tue 25 Mar 2014 17:48:07 EST
+# Added system accounting code and CIS reference for FreeBSD
