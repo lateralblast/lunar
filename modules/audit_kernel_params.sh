@@ -137,7 +137,7 @@
 #
 # Block users from viewing processes in other groups
 #
-# Refer to Section 4.2 Page(s) 16- CIS FreeBSD Benchmark v1.0.5
+# Refer to Section 4.2 Page(s) 16-17 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_kernel_params () {
