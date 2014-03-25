@@ -7,7 +7,7 @@
 # previously configured to act as a NIS server.
 #
 # Refer to Section 2.1.7 Page(s) 51-52 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 3.7-8 Page(s) 11-12 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section 3.12-3 Page(s) 13-14 CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_nis_server () {
@@ -43,17 +43,12 @@ audit_nis_server () {
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      funct_file_value $check_file rpc_lockd_enable eq NO hash
-      funct_file_value $check_file rpc_statd_enable eq NO hash
-      if [ "$os_version" < 5 ]; then
-        funct_file_value $check_file portmap_enable eq NO hash
-        funct_file_value $check_file nfs_server_enable eq NO hash
-        funct_file_value $check_file single_mountd_enable eq NO hash
-      else
-        funct_file_value $check_file rpcbind_enable eq NO hash
-        funct_file_value $check_file nfs_server_enable eq NO hash
-        funct_file_value $check_file mountd_enable eq NO hash
-      fi
+      funct_file_value $check_file nis_server_enable eq NO hash
+      funct_file_value $check_file nis_ypxfrd_enable eq NO hash
+      funct_file_value $check_file nis_yppasswdd_enable eq NO hash
+      funct_file_value $check_file rpc_ypupdated_enable eq NO hash
+      funct_file_value $check_file nis_client_enable eq NO hash
+      funct_file_value $check_file nis_ypset_enable eq NO hash
     fi
   fi
 }
