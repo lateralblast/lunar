@@ -524,8 +524,10 @@
 # 3.5.5 Tue 25 Mar 2014 14:42:04 EST
 # Added inet/init code and CIS reference for FreeBSD
 # 3.5.6 Tue 25 Mar 2014 15:32:56 EST
-# Added daemon umask and CIS reference for FreeBSD
+# Added daemon umask test and CIS reference for FreeBSD
 # 3.5.7 Tue 25 Mar 2014 15:40:44 EST
 # Added syslog and CIS reference for FreeBSD
-# 3.5.8 Tue 25 Mar 2014 15:59:26 EST
-# Added sendmail and CIS reference for FreeBSD
+# 3.5.8 Tue 25 test Mar 2014 15:59:26 EST
+# Added sendmail test and CIS reference for FreeBSD
+# 3.5.9 Tue 25 Mar 2014 16:04:18 EST
+# Added bind test and CIS reference for FreeBSD
