@@ -511,3 +511,5 @@
 # Added Xgrid check
 # 3.4.9 Tue 25 Mar 2014 10:57:18 EST
 # Added code to disable mDNS on OS X
+# 3.5.0 Tue 25 Mar 2014 13:47:00 EST
+# Initial FreeBSD support

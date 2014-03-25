@@ -84,7 +84,7 @@
 #.
 
 audit_ssh_config () {
-  if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
     funct_verbose_message "SSH Configuration"
     if [ "$os_name" = "Darwin" ]; then
       check_file="/etc/sshd_config"

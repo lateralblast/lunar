@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      3.4.9
+# Version:      3.5.0
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -201,7 +201,12 @@ check_os_release () {
       os_update=`cat /etc/release |grep Solaris |awk '{print $4}' |cut -f2 -d'_' |sed 's/[A-z]//g'`
     fi
   fi
-  if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ]; then
+  if [ "$os_name" = "FreeBSD" ]; then
+    os_version=`uname -r |cut -f1 -d "."`
+    os_update=`uname -r |cut -f2 -d "."`
+    os_vendor=$os_name
+  fi
+  if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ] || [ "$os_name" != "FreeBSD" ]; then
     echo "OS not supported"
     exit
   fi
