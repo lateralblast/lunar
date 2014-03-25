@@ -1,5 +1,7 @@
 # audit_kernel_params
 #
+# Solaris:
+#
 # Network device drivers have parameters that can be set to provide stronger
 # security settings, depending on environmental needs. This section describes
 # modifications to network parameters for IP, ARP and TCP.
@@ -122,52 +124,76 @@
 # Note that the value of 1024 is a minimum to establish a good security posture
 # for this setting. In environments where connections numbers are high, such as
 # a busy webserver, this value may need to be increased.
+#
+# FreeBSD:
+#
+# FreeBSD offers a securelevel feature which will set a default system security
+# profile. Setting this to a value of one (1) will set the system immutable and
+# system append-only flags on files (see the chflags manual page). These flags
+# cannot be turned off once this is set, and certain devices, for instance
+# /dev/mem, may not be opened for writing.
+#
+# Block users from viewing unowned processes
+#
+# Block users from viewing processes in other groups
+#
+# Refer to Section 4.2 Page(s) 16- CIS FreeBSD Benchmark v1.0.5
 #.
 
 audit_kernel_params () {
-  if [ "$os_name" = "SunOS" ]; then
-    if [ "$os_version" != "11" ]; then
-      funct_create_nddscript
-      funct_verbose_message "Kernel ndd Parameters"
-      check_file="/etc/init.d/ndd-netconfig"
-      rcd_file="/etc/rc2.d/S99ndd-netconfig"
-      audit_ndd_value /dev/ip ip_forward_src_routed 0
-      audit_ndd_value /dev/ip ip_forwarding 0
-      if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
-        audit_ndd_value /dev/ip ip6_forward_src_routed 0
-        audit_ndd_value /dev/tcp tcp_rev_src_routes 0
-        audit_ndd_value /dev/ip ip6_forwarding 0
-      fi
-      audit_ndd_value /dev/ip ip_forward_directed_broadcasts 0
-      audit_ndd_value /dev/tcp tcp_conn_req_max_q0 4096
-      audit_ndd_value /dev/tcp tcp_conn_req_max_q 1024
-      audit_ndd_value /dev/ip ip_respond_to_timestamp 0
-      audit_ndd_value /dev/ip ip_respond_to_timestamp_broadcast 0
-      audit_ndd_value /dev/ip ip_respond_to_address_mask_broadcast 0
-      audit_ndd_value /dev/ip ip_respond_to_echo_multicast 0
-      if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
-        audit_ndd_value /dev/ip ip6_respond_to_echo_multicast 0
-      fi
-      audit_ndd_value /dev/ip ip_respond_to_echo_broadcast 0
-      audit_ndd_value /dev/arp arp_cleanup_interval 60000
-      audit_ndd_value /dev/ip ip_ire_arp_interval 60000
-      audit_ndd_value /dev/ip ip_ignore_redirect 1
-      if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
-        audit_ndd_value /dev/ip ip6_ignore_redirect 1
-      fi
-      audit_ndd_value /dev/tcp tcp_extra_priv_ports_add 6112
-      audit_ndd_value /dev/ip ip_strict_dst_multihoming 1
-      if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
-        audit_ndd_value /dev/ip ip6_strict_dst_multihoming 1
-      fi
-      audit_ndd_value /dev/ip ip_send_redirects 0
-      if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
-        audit_ndd_value /dev/ip ip6_send_redirects 0
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ]; then
+    funct_verbose_message "Kernel Parameters"
+    if [ "$os_name" = "FreeBSD" ]; then
+      check_file="/etc/sysctl.conf"
+      funct_file_value $check_file kern.securelevel eq 1 hash
+      if [ "$os_version" > 5 ]; then
+        funct_file_value $check_file security.bsd.see_other_uids 0 hash
+        funct_file_value $check_file security.bsd.see_other_gids 0 hash
       fi
     fi
-    if [ "$audit_mode" = 2 ]; then
-      if [ -f "$check_file" ]; then
-        funct_file_exists $check_file no
+    if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_version" != "11" ]; then
+        funct_create_nddscript
+        check_file="/etc/init.d/ndd-netconfig"
+        rcd_file="/etc/rc2.d/S99ndd-netconfig"
+        audit_ndd_value /dev/ip ip_forward_src_routed 0
+        audit_ndd_value /dev/ip ip_forwarding 0
+        if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+          audit_ndd_value /dev/ip ip6_forward_src_routed 0
+          audit_ndd_value /dev/tcp tcp_rev_src_routes 0
+          audit_ndd_value /dev/ip ip6_forwarding 0
+        fi
+        audit_ndd_value /dev/ip ip_forward_directed_broadcasts 0
+        audit_ndd_value /dev/tcp tcp_conn_req_max_q0 4096
+        audit_ndd_value /dev/tcp tcp_conn_req_max_q 1024
+        audit_ndd_value /dev/ip ip_respond_to_timestamp 0
+        audit_ndd_value /dev/ip ip_respond_to_timestamp_broadcast 0
+        audit_ndd_value /dev/ip ip_respond_to_address_mask_broadcast 0
+        audit_ndd_value /dev/ip ip_respond_to_echo_multicast 0
+        if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+          audit_ndd_value /dev/ip ip6_respond_to_echo_multicast 0
+        fi
+        audit_ndd_value /dev/ip ip_respond_to_echo_broadcast 0
+        audit_ndd_value /dev/arp arp_cleanup_interval 60000
+        audit_ndd_value /dev/ip ip_ire_arp_interval 60000
+        audit_ndd_value /dev/ip ip_ignore_redirect 1
+        if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+          audit_ndd_value /dev/ip ip6_ignore_redirect 1
+        fi
+        audit_ndd_value /dev/tcp tcp_extra_priv_ports_add 6112
+        audit_ndd_value /dev/ip ip_strict_dst_multihoming 1
+        if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+          audit_ndd_value /dev/ip ip6_strict_dst_multihoming 1
+        fi
+        audit_ndd_value /dev/ip ip_send_redirects 0
+        if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
+          audit_ndd_value /dev/ip ip6_send_redirects 0
+        fi
+      fi
+      if [ "$audit_mode" = 2 ]; then
+        if [ -f "$check_file" ]; then
+          funct_file_exists $check_file no
+        fi
       fi
     fi
   fi

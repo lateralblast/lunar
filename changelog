@@ -539,3 +539,5 @@
 # Added printing test and CIS reference for FreeBSD
 # 3.6.3 Tue 25 Mar 2014 16:50:16 EST
 # Added core dump test and CIS reference for FreeBSD
+# 3.6.4 Tue 25 Mar 2014 17:02:17 EST
+# Added kernel parameters code and CIS reference for FreeBSD
