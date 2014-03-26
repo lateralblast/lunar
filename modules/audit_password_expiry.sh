@@ -133,23 +133,23 @@ audit_password_expiry () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Password Expiration Parameters on Active Accounts"
     if [ "$os_name" = "AIX" ]; then
-      funct_sec_check /etc/security/user default mindiff 4
-      funct_sec_check /etc/security/user default minage 1
-      funct_sec_check /etc/security/user default maxage 13
-      funct_sec_check /etc/security/user default minlen 8
-      funct_sec_check /etc/security/user default minalpha 2
-      funct_sec_check /etc/security/user default minother 2
-      funct_sec_check /etc/security/user default maxrepeats 2
-      funct_sec_check /etc/security/user default histexpire 13
-      funct_sec_check /etc/security/user default histsize 20
-      funct_sec_check /etc/security/user default maxexpired 2
+      funct_chsec_check /etc/security/user default mindiff 4
+      funct_chsec_check /etc/security/user default minage 1
+      funct_chsec_check /etc/security/user default maxage 13
+      funct_chsec_check /etc/security/user default minlen 8
+      funct_chsec_check /etc/security/user default minalpha 2
+      funct_chsec_check /etc/security/user default minother 2
+      funct_chsec_check /etc/security/user default maxrepeats 2
+      funct_chsec_check /etc/security/user default histexpire 13
+      funct_chsec_check /etc/security/user default histsize 20
+      funct_chsec_check /etc/security/user default maxexpired 2
       if [ "$os_version" > 4 ]; then
         if [ "$os_version" = "5" ]
           if [ "$os_update" > 3 ]; then
-            funct_sec_check /etc/security/login.cfg usw pwd_algorithm ssha256
+            funct_chsec_check /etc/security/login.cfg usw pwd_algorithm ssha256
           fi
         else
-          funct_sec_check /etc/security/login.cfg usw pwd_algorithm ssha256
+          funct_chsec_check /etc/security/login.cfg usw pwd_algorithm ssha256
         fi
       fi
     fi

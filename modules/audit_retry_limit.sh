@@ -64,12 +64,12 @@ audit_retry_limit () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Retry Limit for Account Lockout"
     if [ "$os_name" = "AIX" ]; then
-      funct_sec_check /etc/security/login.cfg default logininterval 300
-      funct_sec_check /etc/security/login.cfg default logindisable 10
-      funct_sec_check /etc/security/login.cfg default loginreenable 360
-      funct_sec_check /etc/security/login.cfg usw logintimeout 30
-      funct_sec_check /etc/security/login.cfg default logindelay 10
-      funct_sec_check /etc/security/user default loginretries 3
+      funct_chsec_check /etc/security/login.cfg default logininterval 300
+      funct_chsec_check /etc/security/login.cfg default logindisable 10
+      funct_chsec_check /etc/security/login.cfg default loginreenable 360
+      funct_chsec_check /etc/security/login.cfg usw logintimeout 30
+      funct_chsec_check /etc/security/login.cfg default logindelay 10
+      funct_chsec_check /etc/security/user default loginretries 3
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then

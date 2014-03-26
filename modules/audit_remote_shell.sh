@@ -19,7 +19,7 @@ audit_remote_shell () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Telnet and Rlogin Services"
     if [ "$os_name" = "AIX" ]; then
-      funct_sec_check /etc/security/user root rlogin false
+      funct_chsec_check /etc/security/user root rlogin false
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then

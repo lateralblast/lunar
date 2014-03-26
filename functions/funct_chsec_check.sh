@@ -1,9 +1,9 @@
-# funct_sec_check
+# funct_chsec_check
 #
 # Function to check sec under AIX
 #.
 
-funct_sec_check() {
+funct_chsec_check() {
   if [ "$os_name" == "AIX" ]; then
     sec_file=$1
     sec_stanza=$2
