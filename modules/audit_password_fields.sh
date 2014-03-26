@@ -10,7 +10,7 @@
 #
 # Refer to Section(s) 9.2.1 Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.2 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 2.2.15 Page(s) 218 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.2.15 Page(s) 219 CIS AIX Benchmark v1.1.0
 #.
 
 audit_password_fields () {

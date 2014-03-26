@@ -14,10 +14,11 @@
 #
 # Refer to Section 6.1.10-11 Page(s) 125-7 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.2.13-4 Page(s) 217-8 CIS AIX Benchmark v1.1.0
 #.
 
 audit_cron_allow () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "At/Cron Authorized Users"
     if [ "$os_name" = "FreeBSD" ]; then
       base_dir="/var/cron"
@@ -25,8 +26,13 @@ audit_cron_allow () {
       check_file="/etc/crontab"
       funct_check_perms $check_file 0640 root $cron_group
     else
-      base_dir="/etc"
-      cron_group="root"
+      if [ "$os_name" = "AIX" ]; then
+        base_dir="/var/adm/cron"
+        cron_group="root"
+      else
+        base_dir="/etc"
+        cron_group="root"
+      fi
     fi
     check_file="$hase_dir/cron.deny"
     funct_file_exists $check_file no
@@ -39,7 +45,7 @@ audit_cron_allow () {
     funct_file_exists $at_file yes
     funct_check_perms $check_file 0400 root $cron_group
     if [ "$audit_mode" = 0 ]; then
-      if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
         if [ "`cat $check_file |wc -l`" = "0" ]; then
           dir_name="/var/spool/cron/crontabs"
           if [ -d "$dir_name" ]; then

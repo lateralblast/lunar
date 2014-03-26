@@ -633,3 +633,5 @@
 # Added duplicate user test and CIS reference for AIX
 # 4.1.0 Thu 27 Mar 2014 09:01:12 EST
 # Added empty password field test and CIS reference for AIX
+# 4.1.1 Thu 27 Mar 2014 09:09:00 EST
+# Added cron/at allow tests and CIS references for AIX
