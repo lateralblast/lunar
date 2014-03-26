@@ -14,10 +14,11 @@
 # GID is shared, which is a security problem.
 #
 # Refer to Section 9.2.15,17 Page(s) 173-5 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.2.17 Page(s) 220 CIS AIX Benchmark v1.1.0
 #.
 
 audit_duplicate_groups () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Duplicate Groups"
     audit_duplicate_ids 1 groups name /etc/group
     audit_duplicate_ids 3 groups id /etc/group

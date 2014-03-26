@@ -625,3 +625,7 @@
 # Added Trusted Execution tests and CIS reference for AIX
 # 4.0.6 Thu 27 Mar 2014 08:12:32 EST
 # Added code to check AIX package is installed
+# 4.0.7 Thu 27 Mar 2014 08:44:18 EST
+# Added root PATH check and CIS reference for AIX
+# 4.0.8 Thu 27 Mar 2014 08:48:48 EST
+# Added duplicate group test and CIS reference for AIX
