@@ -10,10 +10,11 @@
 #
 # Refer to Section 9.1.10 Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.4 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.6.13 Page(s) 233-4 CIS AIX Benchmark v1.1.0
 #.
 
 audit_writable_files () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$do_fs" = 1 ]; then
       funct_verbose_message "World Writable Files"
       if [ "$audit_mode" != 2 ]; then
@@ -25,10 +26,21 @@ audit_writable_files () {
         log_file="$work_dir/$log_file"
       fi
       if [ "$audit_mode" != 2 ]; then
-        for check_file in `find / \( -fstype nfs -o -fstype cachefs \
+        if [ "$os_name" = "SunOS" ]; then
+          find_command="find / \( -fstype nfs -o -fstype cachefs \
           -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
           -o -fstype objfs -o -fstype proc \) -prune \
-          -o -type f -perm -0002 -print`; do
+          -o -type f -perm -0002 -print"
+        fi
+        if [ "$os_name" = "Linux" ]; then
+          find_command="df --local -P | awk {'if (NR!=1) print $6'} \
+          | xargs -I '{}' find '{}' -xdev -type f -perm -0002"
+        fi
+        if [ "$os_name" = "AIX" ]; then
+          find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
+          \( -type d -o -type f \) -perm -o+w -ls"
+        fi
+        for check_file in `$find_command`; do
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   File $check_file is world writable [$score]"

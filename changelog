@@ -613,3 +613,5 @@
 # Added dt test and CIS reference for AIX
 # 4.0.0 Wed 26 Mar 2014 17:54:55 EST
 # Added rcnfs test and CIS reference for AIX
+# 4.0.1 Wed 26 Mar 2014 20:36:07 EST
+# Added world writable files test and CIS reference for AIX
