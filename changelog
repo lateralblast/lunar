@@ -619,3 +619,5 @@
 # Added unowned files test and CIS reference for AIX
 # 4.0.3 Wed 26 Mar 2014 20:53:15 EST
 # Added setuid files test and CIS reference for AIX
+# 4.0.4 Thu 27 Mar 2014 07:41:22 EST
+# Added Trusted Execution handling code for AIX
