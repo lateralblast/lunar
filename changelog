@@ -601,3 +601,5 @@
 # Added rlogin test and CIS reference for AIX
 # 3.9.4 Wed 26 Mar 2014 14:34:31 EST
 # Added code to drive chuser and added su group test and CIS reference for AIX
+# 3.9.5 Wed 26 Mar 2014 16:48:23 EST
+# Added system user rlogin test and CIS reference for AIX

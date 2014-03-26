@@ -12,7 +12,16 @@
 # prohibited, instead elevation to root should only be allowed once a user
 # has authenticated locally through their individual user account.
 #
-# Refer to Section(s) 1.2.7 Page(s) 31 CIS AIX Benchmark v1.1.0
+# System account lockdown:
+#
+# This change disables direct login access for the generic system accounts
+# i.e. daemon, bin, sys, adm, uucp, nobody and lpd.
+# This change disables direct local and remote login to the generic system
+# accounts i.e. daemon, bin, sys, adm, uucp, nobody and lpd. It is recommended
+# that a password is not set on these accounts to ensure that the only access
+# is via su from the root account.
+#
+# Refer to Section(s) 1.2.7,9 Page(s) 31,33 CIS AIX Benchmark v1.1.0
 #.
 
 audit_remote_shell () {
@@ -20,6 +29,9 @@ audit_remote_shell () {
     funct_verbose_message "Telnet and Rlogin Services"
     if [ "$os_name" = "AIX" ]; then
       funct_chsec_check /etc/security/user root rlogin false
+      for user_name in daemon bin sys adm uucp nobody lpd; do
+        funct_chuser_check login false rlogin false $user_name
+      done
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then

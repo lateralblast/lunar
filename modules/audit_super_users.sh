@@ -11,7 +11,7 @@
 audit_super_users() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$os_name" = "AIX" ]; then
-      funct_chuser_check /etc/security/user su true sugroups system root
+      funct_chuser_check su true sugroups system root
     else
       funct_verbose_message "Accounts with UID 0"
       if [ "$audit_mode" != 2 ]; then
