@@ -126,7 +126,7 @@
 #
 # Refer to Section(s) 7.1.1-3 Page(s) 143-146 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.3 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 1.1.1-11 Page(s) 17-26 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.1.1-11 Page(s) 17-26 CIS FreeBSD Benchmark v1.1.0
 #.
 
 audit_password_expiry () {

@@ -595,3 +595,5 @@
 # Added initial AIX support
 # 3.9.1 Wed 26 Mar 2014 13:35:49 EST
 # Added password parameter tests and CIS references for AIX
+# 3.9.2 Wed 26 Mar 2014 13:58:21 EST
+# Added login retry limit test and CIS references for AIX
