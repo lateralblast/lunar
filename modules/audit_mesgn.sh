@@ -9,10 +9,11 @@
 # security increase is worth the loss of functionality.
 #
 # Refer to Section(s) 8.9 Page(s) 29 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.12.7 Page(s) 211-2 CIS AIX Benchmark v1.1.0
 #.
 
 audit_mesgn () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Default mesg Settings for Users"
     for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/skel/.bashrc \
       /etc/csh.login /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do

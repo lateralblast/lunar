@@ -645,3 +645,5 @@
 # Added FTP users test and CIS reference for AIX
 # 4.1.6 Thu 27 Mar 2014 10:55:57 EST
 # Added sar accounting test and CIS reference for AIX
+# 4.1.7 Thu 27 Mar 2014 10:58:32 EST
+# Added mesgn test and CIS reference for AIX
