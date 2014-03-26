@@ -49,7 +49,7 @@ audit_ftp_banner () {
             fi
           fi
         else
-          funct_restore_file $message_file
+          funct_restore_file $message_file $restore_dir
         fi
       else
         funct_verbose_message "" fix

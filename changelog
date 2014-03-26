@@ -641,3 +641,5 @@
 # Added FTP banner test and CIS reference for AIX
 # 4.1.4 Thu 27 Mar 2014 10:13:14 EST
 # Added FTP daemon umask test and CIS reference for AIX
+# 4.1.5 Thu 27 Mar 2014 10:35:00 EST
+# Added FTP users test and CIS reference for AIX
