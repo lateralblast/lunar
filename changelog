@@ -603,3 +603,5 @@
 # Added code to drive chuser and added su group test and CIS reference for AIX
 # 3.9.5 Wed 26 Mar 2014 16:48:23 EST
 # Added system user rlogin test and CIS reference for AIX
+# 3.9.6 Wed 26 Mar 2014 17:37:12 EST
+# Added code to drive [rm,ls,ch]itab on AIX
