@@ -16,10 +16,11 @@
 # is a security problem.
 #
 # Refer to Section 9.2.16 Page(s) 174-5 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.2.16 Page(s) 219 CIS AIX Benchmark v1.1.0
 #.
 
 audit_duplicate_users () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Duplicate Users"
     audit_duplicate_ids 1 users name /etc/passwd
     audit_duplicate_ids 3 users id /etc/passwd
