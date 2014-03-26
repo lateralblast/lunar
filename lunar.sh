@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      3.8.8
+# Version:      3.9.0
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -207,7 +207,12 @@ check_os_release () {
     os_update=`uname -r |cut -f2 -d "."`
     os_vendor=$os_name
   fi
-  if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ] || [ "$os_name" != "FreeBSD" ]; then
+  if [ "$os_name" = "AIX" ]; then
+    os_vendor="IBM"
+    os_version=`oslevel |cut -f1 -d.`
+    os_update=`oslevel |cut -f2 -d.`
+  fi
+  if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ] || [ "$os_name" != "FreeBSD" ] || [ "$os_name" != "AIX" ]; then
     echo "OS not supported"
     exit
   fi
