@@ -593,3 +593,5 @@
 # Added X wrapper test and CIS reference for FreeBSD
 # 3.9.0 Wed 26 Mar 2014 11:21:34 EST
 # Added initial AIX support
+# 3.9.1 Wed 26 Mar 2014 13:35:49 EST
+# Added password parameter tests and CIS references for AIX
