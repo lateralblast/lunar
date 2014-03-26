@@ -621,3 +621,5 @@
 # Added setuid files test and CIS reference for AIX
 # 4.0.4 Thu 27 Mar 2014 07:41:22 EST
 # Added Trusted Execution handling code for AIX
+# 4.0.5 Thu 27 Mar 2014 07:57:51 EST
+# Added Trusted Execution tests and CIS reference for AIX
