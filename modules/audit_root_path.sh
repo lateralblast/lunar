@@ -8,10 +8,11 @@
 # horse program.
 #
 # Refer to Section 9.2.6 Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.12.20 Page(s) 223 CIS AIX Benchmark v1.1.0
 #.
 
 audit_root_path () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Root PATH Environment Integrity"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Root PATH"
