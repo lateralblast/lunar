@@ -10,17 +10,29 @@
 #
 # Refer to Sectioni(s) 9.1.13-4 Page(s) 161-2 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.5 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.16.1 Page(s) 231-2 CIS AIX Benchmark v1.1.0
 #.
 
 audit_suid_files () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Set UID/GID Files"
     if [ "$audit_mode" = 1 ]; then
       echo "Checking:  For files with SUID/SGID set [This might take a while]"
-      for check_file in `find / \( -fstype nfs -o -fstype cachefs \
+      if [ "$os_name" = "SunOS" ]; then
+        find_command="find / \( -fstype nfs -o -fstype cachefs \
         -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
         -o -fstype objfs -o -fstype proc \) -prune \
-        -o -type f \( -perm -4000 -o -perm -2000 \) -print`; do
+        -o -type f \( -perm -4000 -o -perm -2000 \) -print"
+      fi
+      if [ "$os_name" = "AIX" ]; then
+        find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
+        \( -perm -04000 -o -perm -02000 \) -typ e f -ls"
+      fi
+      if [ "$os_name" = "Linux" ]; then
+        find_command="df --local -P | awk {'if (NR!=1) print $6'} \
+        | xargs -I '{}' find '{}' -xdev -type f -perm -4000 -print"
+      fi
+      for check_file in `$find_command`; do
         echo "Warning:   File $check_file is SUID/SGID"
         file_type=`file $check_file |awk '{print $5}'`
         if [ "$file_type" != "script" ]; then

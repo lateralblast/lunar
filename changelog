@@ -617,3 +617,5 @@
 # Added world writable files test and CIS reference for AIX
 # 4.0.2 Wed 26 Mar 2014 20:45:50 EST
 # Added unowned files test and CIS reference for AIX
+# 4.0.3 Wed 26 Mar 2014 20:53:15 EST
+# Added setuid files test and CIS reference for AIX
