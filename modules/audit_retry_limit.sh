@@ -57,7 +57,7 @@
 # pre-defined number of attempts to get their password right, prior to locking
 # the account.
 #
-# Refer to Section(s) 1.2.1-6 Page(s) 26-31 CIS FreeBSD Benchmark v1.1.0
+# Refer to Section(s) 1.2.1-6 Page(s) 26-31 CIS AIX Benchmark v1.1.0
 #.
 
 audit_retry_limit () {

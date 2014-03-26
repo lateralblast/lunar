@@ -597,3 +597,5 @@
 # Added password parameter tests and CIS references for AIX
 # 3.9.2 Wed 26 Mar 2014 13:58:21 EST
 # Added login retry limit test and CIS references for AIX
+# 3.9.3 Wed 26 Mar 2014 14:06:37 EST
+# Added rlogin test and CIS reference for AIX
