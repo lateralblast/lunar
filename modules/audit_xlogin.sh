@@ -16,9 +16,14 @@
 # applications running via SSH.
 #
 # Refer to Section(s) 7.7 Page(s) 26 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.3.4 Page(s) 38 CIS AIX Benchmark v1.1.0
 #.
 
 audit_xlogin () {
+  if [ "$os_name" = "AIX" ]; then
+    funct_verbose_message "CDE Startup"
+    funct_itab_check dt off
+  fi
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       funct_verbose_message "XDMCP Listening"
