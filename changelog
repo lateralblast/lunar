@@ -611,3 +611,5 @@
 # Added lpd and piobe test and CIS reference for AIX
 # 3.9.9 Wed 26 Mar 2014 17:50:30 EST
 # Added dt test and CIS reference for AIX
+# 4.0.0 Wed 26 Mar 2014 17:54:55 EST
+# Added rcnfs test and CIS reference for AIX

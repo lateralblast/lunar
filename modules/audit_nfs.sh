@@ -8,12 +8,16 @@
 #
 # Refer to Section 3.8 Page(s) 64-65 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section 3.7-11 Page(s) 11-13 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.3.5 Page(s) 39 CIS AIX Benchmark v1.1.0
 #.
 
 audit_nfs () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$nfsd_enable" = "no" ]; then
       funct_verbose_message "NFS Services"
+      if [ "$os_name" = "AIX" ]; then
+        funct_itab_check rcnfs off
+      fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
           service_name="svc:/network/nfs/mapid:default"
