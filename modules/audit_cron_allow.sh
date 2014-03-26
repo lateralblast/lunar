@@ -14,7 +14,7 @@
 #
 # Refer to Section 6.1.10-11 Page(s) 125-7 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 2.2.13-4 Page(s) 217-8 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.12.13-4 Page(s) 217-8 CIS AIX Benchmark v1.1.0
 #.
 
 audit_cron_allow () {

@@ -16,7 +16,7 @@
 # is a security problem.
 #
 # Refer to Section 9.2.16 Page(s) 174-5 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 2.2.16 Page(s) 219 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.12.16 Page(s) 219 CIS AIX Benchmark v1.1.0
 #.
 
 audit_duplicate_users () {

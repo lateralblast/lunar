@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.1.2
+# Version:      4.1.3
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -73,6 +73,7 @@ modules_dir="modules"
 private_dir="private"
 package_uninstall="no"
 country_suffix="au"
+language_suffix="en_US"
 osx_mdns_enable="yes"
 nfsd_enable="no"
 
