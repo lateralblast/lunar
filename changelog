@@ -607,3 +607,5 @@
 # Added code to drive [rm,ls,ch]itab on AIX
 # 3.9.7 Wed 26 Mar 2014 17:41:27 EST
 # Added qdaemon test and CIS reference for AIX
+# 3.9.8 Wed 26 Mar 2014 17:45:23 EST
+# Added lpd and piobe test and CIS reference for AIX

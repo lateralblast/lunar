@@ -10,7 +10,7 @@
 # Note that this service is not required for printing to a network printer.
 #
 # Refer to Section 3.14 Page(s) 14-15 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 1.3.1 Page(s) 34 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 1.3.1-2 Page(s) 34-36 CIS AIX Benchmark v1.1.0
 #.
 
 audit_print () {
@@ -18,6 +18,8 @@ audit_print () {
     funct_verbose_message "Printing Daemons"
     if [ "$os_name" = "AIX" ]; then
       funct_itab_check qdaemon off
+      funct_itab_check lpd off
+      funct_itab_check piobe off
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
