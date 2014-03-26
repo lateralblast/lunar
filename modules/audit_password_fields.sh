@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 9.2.1 Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.2 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.2.15 Page(s) 218 CIS AIX Benchmark v1.1.0
 #.
 
 audit_password_fields () {
@@ -20,7 +21,12 @@ audit_password_fields () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Password fields"
       total=`expr $total + 1`
-      for user_name in `cat /etc/shadow |awk -F":" '{print $1":"$2":"}' |grep "::$" |cut -f1 -d":"`; do
+      if [ "$os_name" = "AIX" ]; then
+        empty_command="pwdck –n ALL"
+      else
+        empty_command="cat /etc/shadow |awk -F":" '{print $1":"$2":"}' |grep "::$" |cut -f1 -d":""
+      fi
+      for user_name in `$empty_command`; do
         empty_count=1
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score - 1`

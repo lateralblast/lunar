@@ -631,3 +631,5 @@
 # Added duplicate group test and CIS reference for AIX
 # 4.0.9 Thu 27 Mar 2014 08:52:25 EST
 # Added duplicate user test and CIS reference for AIX
+# 4.1.0 Thu 27 Mar 2014 09:01:12 EST
+# Added empty password field test and CIS reference for AIX
