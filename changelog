@@ -623,3 +623,5 @@
 # Added Trusted Execution handling code for AIX
 # 4.0.5 Thu 27 Mar 2014 07:57:51 EST
 # Added Trusted Execution tests and CIS reference for AIX
+# 4.0.6 Thu 27 Mar 2014 08:12:32 EST
+# Added code to check AIX package is installed
