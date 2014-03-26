@@ -16,23 +16,31 @@
 # http://www.justice.gov/criminal/cybercrime/
 #
 # Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.2.12 Page(s) 216 CIS AIX Benchmark v1.1.0
 #.
 
 audit_security_banner () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Warnings for Standard Login Services"
+    if [ "$os_name" = "AIX" ]; then
+      user_name="bin"
+      group_name="bin"
+    else
+      user_name="root"
+      group_name="root"
+    fi
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Security banners"
     fi
     check_file="/etc/motd"
     funct_file_exists $check_file yes
     if [ -f "$check_file" ]; then
-      funct_check_perms $check_file 0644 root root
+      funct_check_perms $check_file 0644 $user_name $group_name
     fi
     check_file="/etc/issue"
     funct_file_exists $check_file yes
     if [ -f "$check_file" ]; then
-      funct_check_perms $check_file 0644 root root
+      funct_check_perms $check_file 0644 $user_name $group_name
     fi
   fi
 }

@@ -635,3 +635,5 @@
 # Added empty password field test and CIS reference for AIX
 # 4.1.1 Thu 27 Mar 2014 09:09:00 EST
 # Added cron/at allow tests and CIS references for AIX
+# 4.1.2 Thu 27 Mar 2014 09:14:09 EST
+# Added security motd test and CIS reference for AIX
