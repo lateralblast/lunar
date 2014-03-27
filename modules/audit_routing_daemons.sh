@@ -4,7 +4,7 @@
 #
 # AIX:
 #
-# Refer to Section(s) 1.3.12-3 Page(s) 47-50 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 1.3.12-3,5 Page(s) 47-50,51-2 CIS AIX Benchmark v1.1.0
 #.
 
 audit_routing_daemons () {
@@ -38,7 +38,7 @@ audit_routing_daemons () {
       fi
     fi
     if [ "$os_name" = "AIX" ]; then
-      for service_name in gated mrouted; do
+      for service_name in gated mrouted routed; do
         funct_rctcp_check $service_name off
       done
     fi
