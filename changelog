@@ -659,3 +659,5 @@
 # Added i4ls test and CIS reference of AIX
 # 4.2.3 Thu 27 Mar 2014 15:45:39 EST
 # Added serial login test and CIS reference for AIX
+# 4.2.4 Thu 27 Mar 2014 16:06:59 EST
+# Added user home directory tests and CIS references for AIX
