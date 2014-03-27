@@ -21,11 +21,19 @@
 #
 # Refer to Section(s) 9.1.2-9 Page(s) 153-9 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.11.1-3 Page(s) 192-4 CIS AIX Benchmark v1.1.0
 #.
 
 audit_passwd_perms () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Group and Password File Permissions"
+    if [ "$os_name" = "AIX" ]; then
+      for check_file in /etc/passwd /etc/group; do
+        funct_check_perms $check_file 0644 root security
+      done
+      check_dir="/etc/security"
+      funct_check_perms $check_dir 0750 root security
+    fi
     if [ "$os_name" = "Linux" ]; then
       for check_file in /etc/passwd /etc/group; do
         funct_check_perms $check_file 0644 root root

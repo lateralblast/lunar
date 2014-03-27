@@ -665,3 +665,5 @@
 # Added /var/adm/sa ownership test and CIS reference for AIX
 # 4.2.6 Thu 27 Mar 2014 16:30:53 EST
 # Added snmp and ras permissions test and CIS reference for AIX
+# 4.2.7 Thu 27 Mar 2014 17:11:37 EST
+# Added various file/directory permissions tests and CIS references for AIX

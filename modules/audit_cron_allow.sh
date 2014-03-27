@@ -14,7 +14,7 @@
 #
 # Refer to Section 6.1.10-11 Page(s) 125-7 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 2.12.13-4 Page(s) 217-8 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.11.8-10,2.12.13-4 Page(s) 196-8,217-8 CIS AIX Benchmark v1.1.0
 #.
 
 audit_cron_allow () {
@@ -28,7 +28,7 @@ audit_cron_allow () {
     else
       if [ "$os_name" = "AIX" ]; then
         base_dir="/var/adm/cron"
-        cron_group="root"
+        cron_group="cron"
       else
         base_dir="/etc"
         cron_group="root"
@@ -49,6 +49,7 @@ audit_cron_allow () {
         if [ "`cat $check_file |wc -l`" = "0" ]; then
           dir_name="/var/spool/cron/crontabs"
           if [ -d "$dir_name" ]; then
+            funct_check_perms $dir_name 0770 root $cron_group
             for user_name in `ls $dir_name`; do
               check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
               if [ "$check_id" = "$user_name" ]; then
