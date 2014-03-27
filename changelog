@@ -661,3 +661,7 @@
 # Added serial login test and CIS reference for AIX
 # 4.2.4 Thu 27 Mar 2014 16:06:59 EST
 # Added user home directory tests and CIS references for AIX
+# 4.2.5 Thu 27 Mar 2014 16:16:13 EST
+# Added /var/adm/sa ownership test and CIS reference for AIX
+# 4.2.6 Thu 27 Mar 2014 16:30:53 EST
+# Added snmp and ras permissions test and CIS reference for AIX

@@ -9,11 +9,24 @@
 # configuration information about systems leading to vectors of attack.
 #
 # Refer to Section 3.15 Page(s) 69 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.11.12-6 Page(s) 198-201 CIS AIX Benchmark v1.1.0
 #.
 
 audit_snmp () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "SNMP Daemons"
+    if [ "$os_name" = "AIX" ]; then
+      check_file="/var/tmp/snmpd.log"
+      funct_check_perms $check_file 0640 root system
+      check_file="/var/tmp/hostmibd.log"
+      funct_check_perms $check_file 0640 root system
+      check_file="/var/tmp/dpid2.log"
+      funct_check_perms $check_file 0640 root system
+      check_file="/var/ct/RMstart.log"
+      funct_check_perms $check_file 0640 root system
+      check_dir="/var/adm/ras"
+      funct_check_perms $check_file 0700 root system
+    fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         funct_verbose_message "SNMP Daemons"
