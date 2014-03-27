@@ -7,10 +7,11 @@
 #
 # Refer to Section 9.2.9 Page(s) 168-169 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.5.1 Page(s) 101-102 CIS AIX Benchmark v1.1.0
 #.
 
 audit_user_netrc () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "User Netrc Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User netrc file permissions"
