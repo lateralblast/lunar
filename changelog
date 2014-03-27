@@ -667,3 +667,5 @@
 # Added snmp and ras permissions test and CIS reference for AIX
 # 4.2.7 Thu 27 Mar 2014 17:11:37 EST
 # Added various file/directory permissions tests and CIS references for AIX
+# 4.2.8 Thu 27 Mar 2014 17:44:09 EST
+# Added Initial TCP Wrappers test and CIS references for AIX

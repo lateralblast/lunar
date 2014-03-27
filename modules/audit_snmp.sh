@@ -24,8 +24,6 @@ audit_snmp () {
       funct_check_perms $check_file 0640 root system
       check_file="/var/ct/RMstart.log"
       funct_check_perms $check_file 0640 root system
-      check_dir="/audit"
-      funct_check_perms $check_dir 0640 root audit
       check_dir="/var/adm/ras"
       funct_check_perms $check_file 0700 root system
       check_file="/smit.log"
