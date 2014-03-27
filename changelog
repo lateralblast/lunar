@@ -651,3 +651,5 @@
 # Added writesrv test and CIS reference for AIX
 # 4.1.9 Thu 27 Mar 2014 11:11:56 EST
 # Added power management test and CIS reference for AIX
+# 4.2.0 Thu 27 Mar 2014 11:30:22 EST
+# Added online documentation daemon test and CIS reference for httpdlite on AIX

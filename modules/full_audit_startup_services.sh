@@ -9,4 +9,5 @@ full_audit_startup_services () {
   audit_legacy
   audit_inetd
   audit_inetd_logging
+  audit_online_documentation
 }
