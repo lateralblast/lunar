@@ -689,3 +689,5 @@
 # Added gated test and CIS reference for AIX
 # 4.3.8 Fri 28 Mar 2014 09:56:38 EST
 # Added mrouted test and CIS reference for AIX
+# 4.3.9 Fri 28 Mar 2014 10:14:12 EST
+# Added named test and CIS reference for AIX
