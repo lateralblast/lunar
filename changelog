@@ -705,3 +705,5 @@
 # Added snmpdmibd test and CIS reference for AIX
 # 4.4.5 Fri 28 Mar 2014 10:33:56 EST
 # Added aixmibd test and CIS reference for AIX
+# 4.4.6 Fri 28 Mar 2014 10:51:38 EST
+# Added NPD tests and CIS references for AIX

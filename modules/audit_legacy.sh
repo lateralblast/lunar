@@ -7,6 +7,7 @@
 # methodology.
 #
 # Refer to Section 2.1-8 Page(s) 4-8 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.3.17 Page(s) 54-5 CIS AIX Benchmark v1.1.0
 #.
 
 audit_legacy_inet() {
