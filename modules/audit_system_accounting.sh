@@ -265,11 +265,16 @@
 #
 # Refer to Section 4.2.1.1-18 Page(s) 77-96 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section 5.2 Page(s) 18 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.11.17 Page(s) 202 CIS AIX Benchmark v1.1.0
 #.
 
 audit_system_accounting () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "System Accounting"
+    if [ "$os_name" = "AIX" ]; then
+      check_dir="/var/adm/sa"
+      funct_check_perms $check_dir 0755 adm adm
+    fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/var/account/acct"
       funct_file_exists $check_file yes
