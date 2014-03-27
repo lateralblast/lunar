@@ -8,10 +8,11 @@
 #
 # Refer to Section 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.5.1 Page(s) 101-102 CIS AIX Benchmark v1.1.0
 #.
 
 audit_user_rhosts () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "User RHosts Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User rhosts files"
