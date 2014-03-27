@@ -657,3 +657,5 @@
 # Added NCS test and CIS reference for AIX
 # 4.2.2 Thu 27 Mar 2014 15:13:04 EST
 # Added i4ls test and CIS reference of AIX
+# 4.2.3 Thu 27 Mar 2014 15:45:39 EST
+# Added serial login test and CIS reference for AIX

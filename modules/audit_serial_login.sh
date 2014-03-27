@@ -11,23 +11,71 @@
 # device is provided through a different mechanism.
 #
 # Refer to Section(s) 3.1 Page(s) 9 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.12.1 Page(s) 206-7 CIS AIX Benchmark v1.1.0
 #.
 
 audit_serial_login () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Login on Serial Ports"
+    if [ "$os_name" = "AIX" ]; then
+      tty_list=`lsitab –a |grep "on:/usr/sbin/getty" |awk '{print $2}'`
+      if [ `expr "$tty_list" : "[A-z]"` != 1 ]; then
+        if [ "$audit_mode" = 1 ]; then
+          total=`expr $total + 1`
+          score=`expr $score + 1`
+          echo "Secure:    Serial port logins disabled [$score]"
+        fi
+        if [ "$audit_mode" = 2 ]; then
+          tty_list=`lsitab –a |grep "/usr/sbin/getty" |awk '{print $2}'`
+          for tty_name in `echo "$tty_list"`; do
+            log_file="$restore_dir/$tty_name"
+            if [ -f "$log_file" ]; then
+              previous_value=`cat $log_file`
+              chitab "$previous_value $tty_name"
+            fi
+          done
+        fi
+      else
+        for tty_name in `echo "$tty_list"`; do
+          if [ "$audit_mode" != 2 ]; then
+            log_file="$work_dir/$tty_name"
+            actual_value=`lsitab -a |grep "on:/usr/sbin/getty" |grep $tty_name`
+            new_value=`echo "$actual_value" |sed 's/on/off/g'`
+            if [ "$audit_mode" = 1 ]; then
+              total=`expr $total + 1`
+              score=`expr $score - 1`
+              echo "Warning:   Serial port logins not disabled on $tty_name [$score]"
+              funct_verbose_message "" fix
+              funct_verbose_message "chitab \"$new_value\"" fix
+              funct_verbose_message "" fix
+            fi
+            if [ "$audit_mode" = 0 ]; then
+              echo "$actual_value" > $log_file
+              chitab "$new_value $tty_name"
+            fi
+          else
+            log_file="$restore_dir/$tty_name"
+            if [ -f "$log_file" ]; then
+              previous_value=`cat $log_file`
+              chitab "$previous_value $tty_name"
+            fi
+          fi
+        done
+      fi
+    fi
     if [ "$os_name" = "SunOS" ]; then
-      total=`expr $total + 1`
       if [ "$os_version" = "10" ]; then
         serial_test=`pmadm -L |egrep "ttya|ttyb" |cut -f4 -d ":" |grep "ux" |wc -l`
         log_file="$work_dir/pmadm.log"
         if [ `expr "$serial_test" : "2"` = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
+            total=`expr $total + 1`
             score=`expr $score + 1`
             echo "Secure:    Serial port logins disabled [$score]"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
+            total=`expr $total + 1`
             score=`expr $score - 1`
             echo "Warning:   Serial port logins not disabled [$score]"
             funct_verbose_message "" fix
