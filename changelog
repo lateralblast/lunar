@@ -653,3 +653,5 @@
 # Added power management test and CIS reference for AIX
 # 4.2.0 Thu 27 Mar 2014 11:30:22 EST
 # Added online documentation daemon test and CIS reference for httpdlite on AIX
+# 4.2.1 Thu 27 Mar 2014 15:05:10 EST
+# Added NCS test and CIS reference for AIX
