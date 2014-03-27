@@ -15,7 +15,7 @@ funct_itab_check() {
       fi
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Service \"$service_name\" is \"$correct_value\""
+      echo "Checking:  Service \"$service_name\" is not \"$correct_value\""
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`

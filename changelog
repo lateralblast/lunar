@@ -669,3 +669,5 @@
 # Added various file/directory permissions tests and CIS references for AIX
 # 4.2.8 Thu 27 Mar 2014 17:44:09 EST
 # Added Initial TCP Wrappers test and CIS references for AIX
+# 4.2.9 Fri 28 Mar 2014 07:52:02 EST
+# Added code to drive rctcp on AIX
