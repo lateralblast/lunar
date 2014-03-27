@@ -647,3 +647,5 @@
 # Added sar accounting test and CIS reference for AIX
 # 4.1.7 Thu 27 Mar 2014 10:58:32 EST
 # Added mesgn test and CIS reference for AIX
+# 4.1.8 Thu 27 Mar 2014 11:06:00 EST
+# Added writesrv test and CIS reference for AIX

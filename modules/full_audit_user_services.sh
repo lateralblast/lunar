@@ -9,6 +9,7 @@ full_audit_user_services () {
   audit_root_primary_group
   audit_root_ssh_keys
   audit_mesgn
+  audit_writesrv
   audit_groups_exist
   audit_home_perms
   audit_home_ownership
@@ -26,7 +27,7 @@ full_audit_user_services () {
   audit_wheel_group
   audit_wheel_su
   audit_old_users
-  ##  audit_cron_allow
+  audit_cron_allow
   audit_system_accounts
   audit_root_account
 }
