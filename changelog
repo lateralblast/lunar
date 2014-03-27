@@ -695,3 +695,5 @@
 # Added routed test and CIS reference for AIX
 # 4.4.0 Fri 28 Mar 2014 10:21:13 EST
 # Added rwhod test and CIS reference for AIX
+# 4.4.1 Fri 28 Mar 2014 10:26:21 EST
+# Added timed test and CIS reference for AIX

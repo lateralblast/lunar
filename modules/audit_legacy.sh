@@ -33,16 +33,20 @@ audit_legacy_init() {
 }
 
 audit_legacy() {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Legacy Inet/Init Services"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" != "11" ]; then
+    if [ "$os_name" = "AIX" ]; then
+      funct_rctcp_check timed off
+    else
+      if [ "$os_name" = "SunOS" ]; then
+        if [ "$os_version" != "11" ]; then
+          audit_legacy_inet
+          audit_legacy_init
+        fi
+      else
         audit_legacy_inet
         audit_legacy_init
       fi
-    else
-      audit_legacy_inet
-      audit_legacy_init
     fi
   fi
 }
