@@ -683,3 +683,7 @@
 # Added dhcprd test and CIS reference for AIX
 # 4.3.5 Fri 28 Mar 2014 08:56:33 EST
 # Added dhcpsd test and CIS reference for AIX
+# 4.3.6 Fri 28 Mar 2014 09:01:46 EST
+# Added autoconf6 test and CIS reference for AIX
+# 4.3.7 Fri 28 Mar 2014 09:14:02 EST
+# Added gated test and CIS reference for AIX
