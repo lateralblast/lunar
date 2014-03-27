@@ -671,3 +671,5 @@
 # Added Initial TCP Wrappers test and CIS references for AIX
 # 4.2.9 Fri 28 Mar 2014 07:52:02 EST
 # Added code to drive rctcp on AIX
+# 4.3.0 Fri 28 Mar 2014 08:18:59 EST
+# Added sendmail test and CIS reference for AIX
