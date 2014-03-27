@@ -4,7 +4,7 @@
 # information to DHCP clients in the network. You must disable this service if
 # the server is not a DHCP server.
 #
-# Refer to Section(s) 1.3.10 Page(s) 45-r CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 1.3.10 Page(s) 45-6 CIS AIX Benchmark v1.1.0
 #.
 
 audit_dhcpsd() {
