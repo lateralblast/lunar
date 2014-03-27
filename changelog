@@ -679,3 +679,5 @@
 # Added sendmail disable variable
 # 4.3.3 Fri 28 Mar 2014 08:46:02 EST
 # Added dhcpcd test and CIS reference for AIX
+# 4.3.3 Fri 28 Mar 2014 08:52:12 EST
+# Added dhcprd test and CIS reference for AIX
