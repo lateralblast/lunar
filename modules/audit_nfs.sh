@@ -13,7 +13,7 @@
 
 audit_nfs () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    if [ "$nfsd_enable" = "no" ]; then
+    if [ "$nfsd_disable" = "yes" ]; then
       funct_verbose_message "NFS Services"
       if [ "$os_name" = "AIX" ]; then
         funct_itab_check rcnfs off
