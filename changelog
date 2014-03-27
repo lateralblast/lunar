@@ -697,3 +697,11 @@
 # Added rwhod test and CIS reference for AIX
 # 4.4.1 Fri 28 Mar 2014 10:26:21 EST
 # Added timed test and CIS reference for AIX
+# 4.4.2 Fri 28 Mar 2014 10:29:26 EST
+# Added dpid2 test and CIS reference for AIX
+# 4.4.3 Fri 28 Mar 2014 10:31:32 EST
+# Added hostmibd test and CIS reference for AIX
+# 4.4.4 Fri 28 Mar 2014 10:32:07 EST
+# Added snmpdmibd test and CIS reference for AIX
+# 4.4.5 Fri 28 Mar 2014 10:33:56 EST
+# Added aixmibd test and CIS reference for AIX

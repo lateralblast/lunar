@@ -9,7 +9,7 @@
 # configuration information about systems leading to vectors of attack.
 #
 # Refer to Section 3.15 Page(s) 69 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.3.7 Page(s) 41-2 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 1.3.7,18-21 Page(s) 41-2,55-60 CIS AIX Benchmark v1.1.0
 #.
 
 audit_snmp () {
@@ -17,7 +17,9 @@ audit_snmp () {
     if [ "$snmpd_disable" = "yes" ]; then
       funct_verbose_message "SNMP Daemons and Log Permissions"
       if [ "$os_name" = "AIX" ]; then
-        funct_rctcp_check snmpd off
+        for service_name in snmpd dpid2 hostmibd snmpmibd aixmibd; do
+          funct_rctcp_check $service_name off
+        done
         for check_file in /var/tmp/snmpd.log /var/tmp/hostmibd.log \
         /var/tmp/dpid2.log /var/ct/RMstart.log /smit.log; do
           funct_check_perms $check_file 0640 root system
