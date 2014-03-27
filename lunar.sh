@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.3.1
+# Version:      4.3.3
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -80,6 +80,8 @@ osx_mdns_enable="yes"
 
 nfsd_disable="yes"
 snmpd_disable="yes"
+dhcpcd_disable="yes"
+sendmail_disable="yes"
 
 # This is the company name that will go into the securit message
 # Change it as required

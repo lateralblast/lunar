@@ -675,3 +675,7 @@
 # Added sendmail test and CIS reference for AIX
 # 4.3.1 Fri 28 Mar 2014 08:31:37 EST
 # Added snmp test and CIS reference for AIX
+# 4.3.2 Fri 28 Mar 2014 08:37:56 EST
+# Added sendmail disable variable
+# 4.3.3 Fri 28 Mar 2014 08:46:02 EST
+# Added dhcpcd test and CIS reference for AIX

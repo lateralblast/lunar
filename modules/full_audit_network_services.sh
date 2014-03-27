@@ -16,4 +16,5 @@ full_audit_network_services () {
   audit_slp
   audit_tnd
   audit_nobody_rpc
+  audit_dhcpcd
 }

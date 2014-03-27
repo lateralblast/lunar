@@ -9,7 +9,7 @@
 # configuration information about systems leading to vectors of attack.
 #
 # Refer to Section 3.15 Page(s) 69 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 2.11.6,12-6 Page(s) 195-6,198-201 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 1.3.7 Page(s) 41-2 CIS AIX Benchmark v1.1.0
 #.
 
 audit_snmp () {
