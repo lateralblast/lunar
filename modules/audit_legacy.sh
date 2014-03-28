@@ -7,7 +7,7 @@
 # methodology.
 #
 # Refer to Section 2.1-8 Page(s) 4-8 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 1.3.17 Page(s) 54-5 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 1.3.17,24-52 Page(s) 54-5,63-96 CIS AIX Benchmark v1.1.0
 #.
 
 audit_legacy_inet() {
@@ -38,6 +38,35 @@ audit_legacy() {
     funct_verbose_message "Legacy Inet/Init Services"
     if [ "$os_name" = "AIX" ]; then
       funct_rctcp_check timed off
+      funct_subserver_check telnet tcp6 off
+      funct_subserver_check exec tcp6 off
+      funct_subserver_check daytime udp off
+      funct_subserver_check shell tcp6 off
+      funct_subserver_check cmsd sunrpc_tcp off
+      funct_subserver_check ttdbserver sunrpc_tcp off
+      funct_subserver_check uucp tcp off
+      funct_subserver_check time udp off
+      funct_subserver_check login tcp off
+      funct_subserver_check talk udp off
+      funct_subserver_check ntalk udp off
+      funct_subserver_check ftp tcp6 off
+      funct_subserver_check chargen tcp off
+      funct_subserver_check discard tcp off
+      funct_subserver_check dtspc tcp off
+      funct_subserver_check echo tcp off
+      funct_subserver_check echo udp off
+      funct_subserver_check pcnfsd udp off
+      funct_subserver_check rstatd udp off
+      funct_subserver_check rusersd udp off
+      funct_subserver_check rwalld udp off
+      funct_subserver_check sprayd udp off
+      funct_subserver_check klogin tcp off
+      funct_subserver_check rquotad udp off
+      funct_subserver_check tftp udp off
+      funct_subserver_check imap2 tcp off
+      funct_subserver_check pop3 tcp off
+      funct_subserver_check finger tcp off
+      funct_subserver_check instsrv tcp off
     else
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" != "11" ]; then
