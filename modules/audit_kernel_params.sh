@@ -328,8 +328,19 @@ audit_kernel_params () {
         fi
       fi
       if [ "$audit_mode" = 2 ]; then
-        if [ -f "$check_file" ]; then
-          funct_file_exists $check_file no
+        if [ "$os_name" = "AIX" ]; then
+          for parameter_name in ipsrcrouteforward ipignoreredirects \
+          clean_partial_conns ipsrcroutesend ipforwarding ipsendredirects \
+          ip6srcrouteforward directed_broadcast tcp_pmtu_discover bcastping \
+          icmpaddressmask udp_pmtu_discover ipsrcrouterecv nonlocsrcroute \
+          tcp_tcpsecure sockthresh rfc1323 tcp_sendspace tcp_recvspace \
+          tcp_mssdflt portcheck nfs_use_reserved_ports; do
+            funct_no_check $parameter_name
+          done
+        else
+          if [ -f "$check_file" ]; then
+            funct_file_exists $check_file no
+          fi
         fi
       fi
     fi

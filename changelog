@@ -715,3 +715,7 @@
 # Added hosts.equiv tests and CIS references for AIX
 # 4.5.0 Fri 28 Mar 2014 12:54:51 EST
 # Added code to drive no on AIX
+# 4.5.1 Fri 28 Mar 2014 13:33:07 EST
+# Added network kernel tuning parameter test and CIS references for AIX
+# 4.5.2 Fri 28 Mar 2014 14:38:14 EST
+# Added code to drive subserver on AIX
