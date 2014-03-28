@@ -137,12 +137,147 @@
 #
 # Block users from viewing processes in other groups
 #
+# AIX:
+#
+# The ipsrcrouteforward will be set to 0, to prevent source-routed packets
+# being forwarded by the system. This would prevent a hacker from using
+# source-routed packets to bridge an external facing server to an internal LAN,
+# possibly even through a firewall.
+#
+# The ipignoreredirects will be set to 1, to prevent IP re-directs being
+# processed by the system.
+#
+# The clean_partial_conns parameter determines whether or not the system is
+# open to SYN attacks. This parameter, when enabled, clears down connections
+# in the SYN RECEIVED state after a set period of time. This attempts to stop
+# DoS attacks when a hacker may flood a system with SYN flag set packets.
+#
+# The ipsrcroutesend parameter will be set to 0, to ensure that any local
+# applications cannot send source routed packets.
+#
+# The ipforwarding parameter will be set to 0, to ensure that redirected
+# packets do not reach remote networks. This should only be enabled if the
+# system is performing the function of an IP router. This is typically handled
+# by a dedicated network device.
+#
+# The ipsendredirects parameter will be set to 0, to ensure that redirected
+# packets do not reach remote networks.
+#
+# The ip6srcrouteforward parameter will be set to 0, to prevent source-routed
+# packets being forwarded by the system. This would prevent a hacker from using
+# source-routed packets to bridge an external facing server to an internal LAN,
+# possibly even through a firewall.
+#
+# The directed_broadcast parameter will be set to 0, to prevent directed
+# broadcasts being sent network gateways. This would prevent a redirected
+# packet from reaching a remote network.
+#
+# The tcp_pmtu_discover parameter will be set to 0. The idea of MTU discovery
+# is to avoid packet fragmentation between remote networks. This is achieved
+# by discovering the network route and utilizing the smallest MTU size within
+# that path when transmitting packets. When tcp_pmtu_discover is enabled,
+# it leaves the system vulnerable to source routing attacks.
+#
+# The bcastping parameter will be set to 0. This means that the system will
+# not respond to ICMP packets sent to the broadcast address. By default, when
+# this is enabled the system is susceptible to smurf attacks, where a hacker
+# utilizes this tool to send a small number of ICMP echo packets.
+# These packets can generate huge numbers of ICMP echo replies and seriously
+# affect the performance of the targeted host and network. This parameter will
+# be disabled to ensure protection from this type of attack.
+#
+# The icmpaddressmask parameter will be set to 0, This means that the system
+# will not respond to ICMP address mask request pings. By default, when this
+# is enabled the system is susceptible to source routing attacks.
+# This is typically a feature performed by a device such as a network router
+# and should not be enabled within the operating system.
+#
+# The udp_pmtu_discover parameter will be set to 0. The idea of MTU discovery
+# is to avoid packet fragmentation between remote networks. This is achieved
+# by discovering the network route and utilizing the smallest MTU size within
+# that path when transmitting packets. When udp_pmtu_discover is enabled, it
+# leaves the system vulnerable to source routing attacks.
+#
+# The ipsrcrouterecv parameter will be set to 0, This means that the system
+# will not accept source routed packets. By default, when this is enabled the
+# system is susceptible to source routing attacks.
+#
+# The nonlocsrcroute parameter will be set to 0. This means that the system
+# will not allow source routed packets to be addressed to hosts outside of
+# the LAN. By default, when this is enabled the system is susceptible to
+# source routing attacks.
+#
+# The tcp_tcpsecure parameter value determines if the system is protected
+# from three specific vulnerabilities:
+#
+# Fake SYN – This is used to terminate an established connection.
+# A tcp_tcpsecure value of 1 protects the system from this vulnerability.
+#
+# Fake RST – As above, this is used to terminate an established connection.
+# A tcp_tcpsecure value of 2 protects the system from this vulnerability.
+#
+# Fake data – A hacker may inject fake data into an established connection.
+# A tcp_tcpsecure value of 4 protects the system from this vulnerability.
+#
+# The tcp_tcpsecure parameter will be set to 7. This means that the system
+# will be protected from any connection reset and data integrity attacks.
+#
+# The sockthresh parameter will be set to 60. This means that 60% of network
+# memory can be used to service new socket connections, the remaining 40% is
+# reserved for existing sockets. This ensures a quality of service for existing
+# connections.
+#
+# The rfc1323 parameter will be set to 1. This means that the system will
+# allow the TCP windows sizes to exceed 64KB. This is a requirement for high
+# performance networks, particularly those which utilize large MTU sizes.
+#
+# The tcp_sendspace parameter will be set to 262144. This means that the system
+# default socket buffer size for sending data will be 262KB.
+# This is the minimum recommendation for modern high performance networks.
+#
+# The tcp_recvspace parameter will be set to 262144. This means that the system
+# default socket buffer size for receiving data will be 262KB.
+# This is the minimum recommendation for modern high performance networks.
+#
+# The tcp_mssdflt parameter will be set to 1448.
+# This value reflects the packet size minus the TCP/IP headers.
+#
+# The portcheck and nfs_use_reserved_ports parameters will both be set to 1.
+# This value means that NFS client requests that do not originate from the
+# privileged ports range (ports less than 1024) will be ignored by the local
+# system.
+#
 # Refer to Section 4.2,5.3 Page(s) 16-19 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.6.1-21 Page(s) 103-131 CIS AIX Benchmark v1.1.0
 #.
 
 audit_kernel_params () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Kernel Parameters"
+    if [ "$os_name" = "AIX" ]; then
+      funct_no_check ipsrcrouteforward 0
+      funct_no_check ipignoreredirects 1
+      funct_no_check clean_partial_conns 1
+      funct_no_check ipsrcroutesend 0
+      funct_no_check ipforwarding 0
+      funct_no_check ipsendredirects 0
+      funct_no_check ip6srcrouteforward 0
+      funct_no_check directed_broadcast 0
+      funct_no_check tcp_pmtu_discover 0
+      funct_no_check bcastping 0
+      funct_no_check icmpaddressmask 0
+      funct_no_check udp_pmtu_discover 0
+      funct_no_check ipsrcrouterecv 0
+      funct_no_check nonlocsrcroute 0
+      funct_no_check tcp_tcpsecure 7
+      funct_no_check sockthresh 60
+      funct_no_check rfc1323 1
+      funct_no_check tcp_sendspace 262144
+      funct_no_check tcp_recvspace 262144
+      funct_no_check tcp_mssdflt 1448
+      funct_no_check portcheck 1
+      funct_no_check nfs_use_reserved_ports 1
+    fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/sysctl.conf"
       funct_file_value $check_file kern.securelevel eq 1 hash
