@@ -713,3 +713,5 @@
 # Added .rhosts tests and CIS references for AIX
 # 4.4.9 Fri 28 Mar 2014 12:43:48 EST
 # Added hosts.equiv tests and CIS references for AIX
+# 4.5.0 Fri 28 Mar 2014 12:54:51 EST
+# Added code to drive no on AIX
