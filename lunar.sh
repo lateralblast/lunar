@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.4.8
+# Version:      4.4.9
 # Release:      1
 # License:      Open Source
 # Group:        System

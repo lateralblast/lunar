@@ -709,3 +709,7 @@
 # Added NPD tests and CIS references for AIX
 # 4.4.7 Fri 28 Mar 2014 10:57:08 EST
 # Added .netrc tests and CIS references for AIX
+# 4.4.8 Fri 28 Mar 2014 10:59:05 EST
+# Added .rhosts tests and CIS references for AIX
+# 4.4.9 Fri 28 Mar 2014 12:43:48 EST
+# Added hosts.equiv tests and CIS references for AIX

@@ -8,22 +8,9 @@
 #.
 
 audit_rhosts_files () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "$os_name" = "SunOS" ] || ["$os_name" = "AIX" ]; then
     funct_verbose_message "Rhosts Files"
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Rhosts files"
-      fi
-      for check_file in /.rhosts /.shosts /etc/hosts.equiv; do
-        funct_file_exists $check_file no
-      done
-    fi
-  fi
-  if [ "$os_name" = "Linux" ]; then
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Rhosts files"
-    fi
-    for check_file in /.rhosts /.shosts /etc/hosts.equiv; do
+    for check_file in /.rhosts /.shosts /root/.rhosts /root/.shosts /etc/hosts.equiv; do
       funct_file_exists $check_file no
     done
   fi
