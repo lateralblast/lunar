@@ -723,3 +723,5 @@
 # Added legacy services tests and CIS references for AIX
 # 4.5.4 Sat 29 Mar 2014 20:45:37 EST
 # Added numerous CIS references for Solaris tests
+# 4.5.5 Sun 30 Mar 2014 09:07:50 EST
+# Added more CIS references for Solaris tests

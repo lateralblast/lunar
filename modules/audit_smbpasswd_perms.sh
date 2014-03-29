@@ -6,6 +6,8 @@
 # hashes could be accessed by an unauthorized user and cracked using various
 # password cracking tools. Setting the file to 600 limits access to the file
 # by users other than root.
+#
+# Refer to Section(s) 11.4-5 Page(s) 144-5 CIS Solaris 10 v1.1.0
 #.
 
 audit_smbpasswd_perms () {

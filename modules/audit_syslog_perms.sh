@@ -6,6 +6,8 @@
 # Setting the log file /var/log/syslog to 644 allows sendmail (running as root)
 # to create entries, but prevents anyone (other than root) from modifying the
 # log file, thus rendering the log data worthless.
+#
+# Refer to Section(s) 11.7-8 Page(s) 146-7 CIS Solaris 10 v1.1.0
 #.
 
 audit_syslog_perms () {

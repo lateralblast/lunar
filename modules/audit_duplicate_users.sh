@@ -18,6 +18,7 @@
 # Refer to Section(s) 9.2.16 Page(s) 174-5 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.12.16 Page(s) 219 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.15,18 Page(s) 82-3,5 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 9.15,18 Page(s) 128-9,131 CIS Solaris 10 v1.1.0
 #.
 
 audit_duplicate_users () {

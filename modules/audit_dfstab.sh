@@ -8,6 +8,8 @@
 # PATH environment, etc. However, if an attacker is able to corrupt root's path
 # to this extent, other attacks seem more likely and more damaging to the
 # integrity of the system
+#
+# Refer to Section(s) 10.2 Page(s) 138-9 CIS Solaris 10 v1.1.0
 #.
 
 audit_dfstab () {

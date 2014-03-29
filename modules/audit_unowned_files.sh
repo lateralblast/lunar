@@ -10,6 +10,7 @@
 # Refer to Section(s) 6.7 Page(s) 23 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.16.2 Page(s) 232-3 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.24 Page(s) 89-90 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 9.24 Page(s) 135-6 CIS Solaris 10 v1.1.0
 #.
 
 audit_unowned_files () {

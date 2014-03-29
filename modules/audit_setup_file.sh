@@ -3,6 +3,8 @@
 # Check ownership of /var/db/.AppleSetupDone
 # Incorrect ownership could lead to tampering. If deleted the Administrator
 # password will be reset on next boot.
+#
+# Refer to Section(s) 9.23 Page(s) 134-5 CIS Solaris 10 v1.1.0
 #.
 
 audit_setup_file () {

@@ -7,7 +7,8 @@
 # These entries may provide an avenue for attackers to gain privileged access
 # on the system.
 #
-# Refer to Section 9.2.2-4 Page(s) 163-5 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.2-4 Page(s) 163-5 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.4 Page(s) 1189 CIS Solaris 10 v1.1.0
 #.
 
 audit_nis_entries () {

@@ -8,6 +8,7 @@
 #
 # Refer to Section(s) 9.2.5 Page(s) 165 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.17 Page(s) 84-5 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 9.17 Page(s) 130-1 CIS Solaris 10 v1.1.0
 #.
 
 audit_reserved_ids () {

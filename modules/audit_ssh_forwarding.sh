@@ -1,6 +1,8 @@
 # audit_ssh_forwarding
 #
 # This one is optional, generally required for apps
+#
+# Refer to Section(s) 11.1 Page(s) 142-3 CIS Solaris 10 v1.1.0
 #.
 
 audit_ssh_forwarding () {

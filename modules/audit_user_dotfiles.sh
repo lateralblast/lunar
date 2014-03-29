@@ -8,6 +8,7 @@
 # Refer to Section(s) 9.2.8 Page(s) 167-168 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 9.8 Page(s) 77-8 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 9.8 Page(s) 122 CIS Solaris 10 v1.1.0
 #.
 
 audit_user_dotfiles () {
