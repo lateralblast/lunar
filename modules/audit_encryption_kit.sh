@@ -13,6 +13,8 @@
 #
 # This action is not needed for systems running Solaris 10 08/07 and newer
 # as the Solaris 10 Encryption Kit is installed by default.
+#
+# Refer to Section(s) 1.3 Page(s) 15-6 CIS Solaris 10 v5.1.0
 #.
 
 audit_encryption_kit () {

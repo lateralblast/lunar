@@ -6,6 +6,7 @@
 #
 # Refer to Section(s) 8.6 Page(s) 28 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.2.8 Page(s) 32 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 9-5 Page(s) 75-6 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_super_users() {

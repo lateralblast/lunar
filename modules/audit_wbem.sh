@@ -7,6 +7,8 @@
 # applications to access information about managed resources such as devices
 # and software in the Solaris OS. WBEM is used by the Solaris Management
 # Console (SMC).
+#
+# Refer to Section(s) 2.1.6 Page(s) 21-2 CIS Solaris 10 v5.1.0
 #.
 
 audit_wbem () {

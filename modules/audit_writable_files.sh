@@ -8,9 +8,10 @@
 # script or program that could potentially be the cause of a larger compromise
 # to the system's integrity.
 #
-# Refer to Section 9.1.10 Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.1.10 Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.4 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.16.3 Page(s) 233-4 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 5.1,9.22 Page(s) 45,88 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_writable_files () {

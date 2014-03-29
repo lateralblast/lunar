@@ -16,6 +16,8 @@
 #
 # Refer to Section(s) 7.4 Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.8 Page(s) 29 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 7.3 Page(s) 64-5 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 7.6 Page(s) 106-7 CIS Solaris 10 v5.1.0
 #.
 
 audit_default_umask () {

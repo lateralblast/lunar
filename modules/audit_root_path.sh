@@ -7,8 +7,9 @@
 # access by forcing an administrator operating as root to execute a Trojan
 # horse program.
 #
-# Refer to Section 9.2.6 Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.6 Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.12.20 Page(s) 223 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 9.6 Page(s) 76-7 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_root_path () {

@@ -6,6 +6,8 @@
 # Attackers or malicious users could "hide" information, exploits, etc.
 # in extended attribute areas. Since extended attributes are rarely used,
 # it is important to find files with extended attributes set.
+#
+# Refer to Section(s) 9.25 Page(s) 90-1 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_extended_attributes () {

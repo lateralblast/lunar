@@ -38,8 +38,9 @@
 # daemon process. The daemon process can manually override these settings if
 # these files need additional permission.
 #
-# Refer to Section 3.1 Page(s) 58-9 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 3.3 Page(s) 9-10 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.1 Page(s) 58-9 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.3 Page(s) 9-10 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 5.1 Page(s) 75-6 CIS Solaris 10 v5.1.0
 #.
 
 audit_daemon_umask () {

@@ -11,6 +11,8 @@
 #
 # Refer to Section(s) 7.2 Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.1 Page(s) 27 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 9.3 Page(s) 73-4 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 7.1 Page(s) 100-1 CIS Solaris 10 v5.1.0
 #.
 
 audit_system_accounts () {

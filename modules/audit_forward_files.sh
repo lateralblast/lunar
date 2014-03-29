@@ -9,7 +9,8 @@
 # poses a risk as it can be used to execute commands that may perform unintended
 # actions.
 #
-# Refer to Section 9.2.19 Page(s) 176-7 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.19 Page(s) 176-7 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.21 Page(s) 87 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_forward_files () {

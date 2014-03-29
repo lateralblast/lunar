@@ -2,7 +2,9 @@
 #
 # Create Warning Banner for GNOME Users
 #
-# Refer to Section 8.3 Page(s) 151 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.3 Page(s) 151 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.3 Page(s) 69-70 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 8.3 Page(s) 113-4 CIS Solaris 10 v5.1.0
 #.
 
 audit_gnome_banner () {

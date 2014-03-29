@@ -5,6 +5,9 @@
 # password is provided.
 # Delaying the "login incorrect" message can help to slow down brute force
 # password-cracking attacks.
+#
+# Refer to Section(s) 6.10 Page(s) 53-4 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 6.6 Page(s) 91 CIS Solaris 10 v5.1.0
 #.
 
 audit_login_delay () {

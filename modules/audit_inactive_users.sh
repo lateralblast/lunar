@@ -5,6 +5,9 @@
 # vary based on the particular site's policy.
 # Inactive accounts pose a threat to system security since the users are not
 # logging in to notice failed login attempts or other anomalies.
+#
+# Refer to Section(s) 7.6 Page(s) 66-7 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 7.9 Page(s) 109-110 CIS Solaris 10 v5.1.0
 #.
 
 audit_inactive_users () {

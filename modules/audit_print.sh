@@ -9,8 +9,9 @@
 # disable this service.
 # Note that this service is not required for printing to a network printer.
 #
-# Refer to Section 3.14 Page(s) 14-15 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.14 Page(s) 14-15 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.1-2 Page(s) 34-36 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.1.7 Page(s) 22 CIS Solaris 10 v5.1.0
 #.
 
 audit_print () {

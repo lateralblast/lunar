@@ -7,6 +7,8 @@
 # subverted to execute commands as the owner of the cron job. Log data on
 # commands that are executed out of cron can be found in the /var/cron/log file.
 # Review this file on a regular basis.
+#
+# Refer to Section(s) 4.7 Page(s) 71 CIS Solaris 10 v5.1.0
 #.
 
 audit_cron_logging () {

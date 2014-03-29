@@ -12,10 +12,13 @@
 # oracle and the account which your Web server process runs under.
 #
 # Refer to Section(s) 2.12.9 Page(s) 213-4 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 6.9 Page(s) 52-3 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 6.5 Page(s) 89-91 CIS Solaris 10 v5.1.0
 #.
 
 audit_ftp_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
+    funct_verbost_message "FTP Users"
     if [ "$os_name" = "AIX" ]; then
       $check_file=$1
       total=`expr $total + 1`

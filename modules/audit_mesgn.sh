@@ -10,6 +10,8 @@
 #
 # Refer to Section(s) 8.9 Page(s) 29 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.12.7 Page(s) 211-2 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 7.5 Page(s) 66 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 7.8 Page(s) 108-9 CIS Solaris 10 v5.1.0
 #.
 
 audit_mesgn () {

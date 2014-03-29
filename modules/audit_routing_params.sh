@@ -24,6 +24,9 @@
 # Routing (in.routed) is disabled by default in all Solaris 10 systems,
 # if there is a default router defined. If no default gateway is defined
 # during system installation, network routing is enabled.
+#
+# Refer to Section(s) 3.4-17 Page(s) 28-39 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 3.5 Page(s) 64-5 CIS Solaris 10 v5.1.0
 #.
 
 audit_routing_params () {

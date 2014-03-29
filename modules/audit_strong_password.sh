@@ -40,6 +40,8 @@
 #
 # Refer to Section(s) 5.12-19 Page(s) 58-66 CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section(s) 8.10 Page(s) 30 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 7.2 Page(s) 63-4 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 7.3 Page(s) 103-4 CIS Solaris 10 v5.1.0
 #.
 
 audit_strong_password () {

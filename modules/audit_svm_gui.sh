@@ -14,6 +14,8 @@
 # Since the same functionality that is in the GUI is available from the
 # command line interface, administrators are strongly urged to leave these
 # daemons disabled and administer volumes directly from the command line.
+#
+# Refer to Section(s) 2.2.13 Page(s) 33-4 CIS Solaris 10 v5.1.0
 #.
 
 audit_svm_gui () {

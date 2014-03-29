@@ -6,6 +6,8 @@
 # The SYSLOG_FAILED_LOGINS parameter in the /etc/default/login file is used
 # to control how many login failures are allowed before log messages are
 # generated-if set to zero then all failed logins will be logged.
+#
+# Refer to Section(s) 4.6 Page(s) 70-1 CIS Solaris 10 v5.1.0
 #.
 
 audit_failed_logins () {

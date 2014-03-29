@@ -6,9 +6,10 @@
 # disabled in /etc/pam.conf, they may have been brought over from other systems
 # and could contain information useful to an attacker for those other systems.
 #
-# Refer to Section 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.2 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.5.1 Page(s) 101-2 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 9.10 Page(s) 79 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_user_rhosts () {

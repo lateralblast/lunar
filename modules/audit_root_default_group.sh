@@ -10,7 +10,8 @@
 # Using GID 0 for the root account helps prevent root-owned files from
 # accidentally becoming accessible to non-privileged users.
 #
-# Refer to Section 7.3 Page(s) 147 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.3 Page(s) 147 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.4 Page(s) 104-5 CIS Solaris 10 v5.1.0
 #.
 
 audit_root_default_group () {

@@ -7,6 +7,8 @@
 # organization that owns the system and any monitoring policies that are in
 # place. Consult with your organization's legal counsel for the appropriate
 # wording for your specific organization.
+#
+# Refer to Section(s) 8.2 Page(s) 112-3 CIS Solaris 10 v5.1.0
 #.
 
 audit_cde_banner () {

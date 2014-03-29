@@ -10,6 +10,8 @@
 # All of this information is logged by syslogd (1M), but syslogd (1M) must be
 # configured to capture this information to a separate file so it may be more
 # easily reviewed.
+#
+# Refer to Section(s) 4.2 Page(s) 67 CIS Solaris 10 v5.1.0
 #.
 
 audit_ftp_logging () {

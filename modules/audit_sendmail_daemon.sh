@@ -14,8 +14,10 @@
 # It is recommended that sendmail be left in localonly mode unless there is
 # a specific requirement to disable it.
 #
-# Refer to Section 3.5 Page(s) 10 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.5 Page(s) 10 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.6 Page(s) 40-1 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.2 Page(s) 15-16 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 2.1.4 Page(s) 19-20 CIS Solaris 10 v5.1.0
 #.
 
 audit_sendmail_daemon() {

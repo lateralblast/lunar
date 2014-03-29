@@ -21,6 +21,9 @@
 # sequence number information. It is theoretically possible that there may be a
 # small performance hit in connection setup time when this setting is used, but
 # there are no benchmarks that establish this.
+#
+# Refer to Section(s) 3.3 Page(s) 27-8 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 3.4 Page(s) 63-4 CIS Solaris 10 v5.1.0
 #.
 
 audit_tcp_strong_iss () {

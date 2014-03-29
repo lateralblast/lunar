@@ -2,6 +2,8 @@
 #
 # Make sure authentication requests are logged. This is especially important
 # for authentication requests to accounts/roles with raised priveleges.
+#
+# Refer to Section(s) 4.4 Page(s) 68-9 CIS Solaris 10 v5.1.0
 #.
 
 audit_syslog_auth () {

@@ -7,6 +7,8 @@
 # is attempting a brute force attack on user accounts. Note that this is only
 # for login-based such as login, telnet, rlogin, etc. and does not include SSH.
 # Review the loginlog file on a regular basis.
+#
+# Refer to Section(s) 4.5 Page(s) 69-70 CIS Solaris 10 v5.1.0
 #.
 
 audit_login_records () {

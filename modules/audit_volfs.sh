@@ -14,6 +14,8 @@
 # system without a log record. Another alternative is to edit the
 # /etc/vold.conf file and comment out any removable devices that you do not
 # want users to be able to mount.
+#
+# Refer to Section(s) 2.8 Page(s) 20-1 CIS Solaris 11.1 v1.0.0
 #.
 
 

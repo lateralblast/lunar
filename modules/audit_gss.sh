@@ -13,6 +13,9 @@
 # GSS does not expose anything external to the system as it is configured
 # to use TLI (protocol = ticotsord) by default. However, unless your
 # organization is using the GSS API, disable it.
+#
+# Refer to Section(s) 2.7 Page(s) 19-20 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 2.2.7 Page(s) 27 CIS Solaris 10 v5.1.0
 #.
 
 audit_gss () {

@@ -11,6 +11,7 @@
 #
 # Refer to Section(s) 1.1.3,13,15 Page(s) 14-25 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 5.2 Page(s) 76-7 CIS Solaris 10 v5.1.0
 #.
 
 audit_mount_setuid () {

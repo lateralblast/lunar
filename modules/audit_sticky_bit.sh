@@ -14,6 +14,7 @@
 #
 # Refer to Section(s) 1.17 Page(s) 26 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.3 Page(s) 21-22 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 5.3 Page(s) 77-8 CIS Solaris 10 v5.1.0
 #.
 
 audit_sticky_bit () {

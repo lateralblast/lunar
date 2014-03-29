@@ -263,9 +263,10 @@
 # back. Users would most likely notice a system reboot and that could alert
 # administrators of an attempt to make unauthorized audit changes.
 #
-# Refer to Section 4.2.1.1-18 Page(s) 77-96 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 5.2 Page(s) 18 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 4.2.1.1-18 Page(s) 77-96 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 5.2 Page(s) 18 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.11.4-5,17 Page(s) 194-5,202 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 4.8 Page(s) 71-2 CIS Solaris 10 v5.1.0
 #.
 
 audit_system_accounting () {

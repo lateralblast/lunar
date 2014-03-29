@@ -36,8 +36,10 @@
 # (see limits.conf(5)). In addition, setting the fs.suid_dumpable variable to 0
 # will prevent setuid programs from dumping core.
 #
-# Refer to Section 1.6.1 Page(s) 44-45 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 4.1 Page(s) 16 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.6.1 Page(s) 44-45 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 4.1 Page(s) 16 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.1 Page(s) 25-6 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 3.2 Page(s) 61-2 CIS Solaris 10 v5.1.0
 #.
 
 audit_core_dumps () {

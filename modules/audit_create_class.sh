@@ -1,6 +1,8 @@
 # audit_create_class
 #
 # Creating Audit Classes improves the auditing capabilities of Solaris.
+#
+# Refer to Section(s) 4.1-5 Page(s) 39-45 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_create_class () {

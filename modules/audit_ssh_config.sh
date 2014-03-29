@@ -79,13 +79,15 @@
 # regarding connection. Consult with your legal department for the appropriate
 # warning banner for your site.
 #
-# Refer to Section 6.2.1 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 2.4.14.9 Page(s) 57-60 CIS OS X 10.5 Benchmark v1.1.0
-# Refer to Section 1.2 Page(s) 2-3 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 6.2.1 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.4.14.9 Page(s) 57-60 CIS OS X 10.5 Benchmark v1.1.0
+# Refer to Section(s) 1.2 Page(s) 2-3 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 6.3-7 Page(s) 47-51 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 6.1.1-11 Page(s) 78-87 CIS Solaris 10 v5.1.0
 #.
 
 audit_ssh_config () {
-  if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "SSH Configuration"
     if [ "$os_name" = "Darwin" ]; then
       check_file="/etc/sshd_config"

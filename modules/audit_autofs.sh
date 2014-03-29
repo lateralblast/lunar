@@ -12,6 +12,9 @@
 # Note: Since this service uses Oracle's standard RPC mechanism, it is important
 # that the system's RPC portmapper (rpcbind) also be enabled when this service
 # is turned on.
+#
+# Refer to Section(s) 2.9 Page(s) 21 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 2.2.10 Page(s) 30 CIS Solaris 10 v5.1.0
 #.
 
 audit_autofs () {

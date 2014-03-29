@@ -17,6 +17,8 @@
 #
 # Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.11.11,2.12.12 Page(s) 198,216 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 8.1 Page(s) 68-9 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 8.1 Page(s) 111-2 CIS Solaris 10 v5.1.0
 #.
 
 audit_security_banner () {
