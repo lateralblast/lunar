@@ -6,15 +6,18 @@
 # Inactive accounts pose a threat to system security since the users are not
 # logging in to notice failed login attempts or other anomalies.
 #
+# Refer to Section(s) 7.5 Page(s) 171-2 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 7.6 Page(s) 66-7 CIS Solaris 11.1 v1.0.0
 # Refer to Section(s) 7.9 Page(s) 109-110 CIS Solaris 10 v5.1.0
 #.
 
 audit_inactive_users () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Inactive User Accounts"
-    check_file="/usr/sadm/defadduser"
-    funct_file_value $check_file definact eq 35 hash
+    if [ "$os_name" = "SunOS" ]; then
+      check_file="/usr/sadm/defadduser"
+      funct_file_value $check_file definact eq 35 hash
+    fi
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Lockout status for inactive user accounts"

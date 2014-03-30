@@ -9,7 +9,7 @@
 # Restrict su command using wheel
 #
 # Refer to Section(s) 6.3.1 Page(s) 160-1 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 6.3.5 Page(s) 163-4 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.3.5-6 Page(s) 163-5 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_system_auth () {
