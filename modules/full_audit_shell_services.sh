@@ -15,6 +15,7 @@ full_audit_shell_services () {
   audit_telnet_banner
   audit_telnet_server
   audit_talk_server
+  audit_talk_client
   audit_pam_rhosts
   audit_user_netrc
   audit_user_rhosts
