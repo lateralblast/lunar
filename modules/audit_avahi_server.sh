@@ -7,7 +7,8 @@
 # automatically finds printers to print to, files to look at and people to
 # talk to, as well as network services running on the machine.
 #
-# Refer to Section 3.3 Page(s) 60 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.3 Page(s) 60 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.1.1 Page(s) 67 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_avahi_server () {

@@ -39,6 +39,7 @@
 # permissions could be changed either inadvertently or through malicious actions.
 #
 # Refer to Section(s) 5.5.1-5 Page(s) 110-114 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 4.5.1-5 Page(s) 95-8 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.3 Page(s) 3-4 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.10.1-4 Page(s) 188-192 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 2.11 Page(s) 22-23 CIS Solaris 11.1 v1.0.0

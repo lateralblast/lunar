@@ -735,3 +735,5 @@
 # Added code to remove talk client on Linux
 # 4.6.0 Sun 30 Mar 2014 21:03:03 EST
 # Fixed xinetd test for Linux
+# 4.6.1 Sun 30 Mar 2014 21:48:42 EST
+# Added CIS references and updated syslog configuration for Linux

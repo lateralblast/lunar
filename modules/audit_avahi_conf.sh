@@ -8,6 +8,8 @@
 # such servers.
 # It is best to turn off mDNS in a server environment, but if it is used then
 # the services advertised should be restricted.
+#
+# Refer to Section(s) 3.1.3-6 Page(s) 68-72 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_avahi_conf () {

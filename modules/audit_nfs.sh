@@ -6,8 +6,9 @@
 #
 # Turn off NFS services
 #
-# Refer to Section 3.8 Page(s) 64-65 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section 3.7-11 Page(s) 11-13 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.8 Page(s) 64-65 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.8 Page(s) 77 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.7-11 Page(s) 11-13 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.5 Page(s) 39 CIS AIX Benchmark v1.1.0
 #.
 

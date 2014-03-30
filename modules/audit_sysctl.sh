@@ -140,7 +140,8 @@
 # within the system (usually a single default route to a trusted router)
 # protects the system from bad routes.
 #
-# Refer to Section 5.1-5.2.8,5.4.1,2 Page(s) 98-107 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 5.1-5.2.8,5.4.1,2 Page(s) 98-107 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 4.1.1-2,4.2.1-8,4.4.1 Page(s) 82-94 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_sysctl () {

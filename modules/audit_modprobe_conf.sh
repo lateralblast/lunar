@@ -33,7 +33,7 @@
 # provide communication between cluster nodes.
 #
 # Refer to Section(s) 1.18-24,5.6.14 Page(s) 26-30,114-6 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.1.18-24 Page(s) 28-33 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.1.18-24,4.6.1-2 Page(s) 28-33,98-100 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_modprobe_conf () {

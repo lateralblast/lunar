@@ -19,7 +19,8 @@
 # Additionally, tcpmux-server can be leveraged by an attacker to effectively
 # port scan the server.
 #
-# Refer to Section 2.1.12-18 Page(s) 54-58 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.12-18 Page(s) 54-58 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.12-18 Page(s) 63-66 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_xinetd () {
