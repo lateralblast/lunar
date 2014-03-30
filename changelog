@@ -733,3 +733,5 @@
 # Added various client package tests for Linux
 # 4.5.9 Sun 30 Mar 2014 20:56:34 EST
 # Added code to remove talk client on Linux
+# 4.6.0 Sun 30 Mar 2014 21:03:03 EST
+# Fixed xinetd test for Linux

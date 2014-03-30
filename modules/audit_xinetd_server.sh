@@ -7,14 +7,15 @@
 # If there are no xinetd services required, it is recommended that the daemon
 # be deleted from the system.
 #
-# Refer to Section 2.1.11 Page(s) 54 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.11 Page(s) 54 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.11 Page(s) 62 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_xinetd_server () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      funct_verbose_message "RSH Server Daemon"
-      funct_linux_package uninstall xinetd-server
+      funct_verbose_message "Xinetd Server Daemon"
+      funct_linux_package uninstall xinetd
     fi
   fi
 }

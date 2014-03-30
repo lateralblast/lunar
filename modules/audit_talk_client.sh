@@ -5,7 +5,8 @@
 # The talk client (allows initialization of talk sessions) is installed by
 # default.
 #
-# Refer to Section 2.1.10 Page(s) 53-54 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.9 Page(s) 53 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.9 Page(s) 61 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_talk_client () {
