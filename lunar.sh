@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.6.1
+# Version:      4.6.2
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -86,6 +86,10 @@ sendmail_disable="yes"
 ipv6_disable="yes"
 routed_disable="yes"
 named_disable="yes"
+
+# Install packages
+
+install_rsyslog="no"
 
 # This is the company name that will go into the securit message
 # Change it as required
