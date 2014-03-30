@@ -5,7 +5,8 @@
 # These legacy service contain numerous security exposures and have been
 # replaced with the more secure SSH package.
 #
-# Refer to Section 2.1.3 Page(s) 48 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.3 Page(s) 48 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.3 Page(s) 56-7 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_rsh_server () {

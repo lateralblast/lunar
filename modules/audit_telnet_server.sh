@@ -7,7 +7,8 @@
 # the ability to steal credentials. The ssh package provides an encrypted
 # session and stronger security and is included in most Linux distributions.
 #
-# Refer to Section 2.1.1 Page(s) 47-48 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.1 Page(s) 47-48 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.1 Page(s) 55 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_telnet_server () {

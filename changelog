@@ -729,3 +729,5 @@
 # Added more CIS references for Linux tests and cleaned up some Linux test conditions
 # 4.5.7 Sun 30 Mar 2014 18:19:19 EST
 # Added kernel-PAE package check
+# 4.5.8 Sun 30 Mar 2014 18:46:32 EST
+# Added various client package tests for Linux

@@ -11,7 +11,8 @@
 # is a specific need for TFTP. In that case, extreme caution must be used when
 # configuring the services.
 #
-# Refer to Section 2.1.8 Page(s) 52 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.8 Page(s) 52 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.1.8 Page(s) 60 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_tftp_server () {
