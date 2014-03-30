@@ -28,6 +28,7 @@ full_audit_user_services () {
   audit_wheel_su
   audit_old_users
   audit_cron_allow
+  audit_cron
   audit_system_accounts
   audit_root_account
 }

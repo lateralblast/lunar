@@ -739,3 +739,5 @@
 # Added CIS references and updated syslog configuration for Linux
 # 4.6.2 Sun 30 Mar 2014 22:00:49 EST
 # Updated syslog and rsyslog test for Linux
+# 4.6.3 Mon 31 Mar 2014 09:35:36 EST
+# Added pam_deny and pam_ccred tests for Linux

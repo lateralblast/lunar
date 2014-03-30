@@ -7,6 +7,9 @@
 # Set password length to a minimum of 9 characters
 # Set strong password creation via pam_cracklib.so and pam_passwdqc.so
 # Restrict su command using wheel
+#
+# Refer to Section(s) 6.3.1 Page(s) 160-1 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.3.5 Page(s) 163-4 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_system_auth () {
@@ -17,6 +20,7 @@ audit_system_auth () {
       check_file="/etc/pam.d/common-auth"
     fi
     if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ]; then
+      funct_linux_package uninstall pam_ccreds
       check_file="/etc/pam.d/system-auth"
     fi
     if [ "$audit_mode" != 2 ]; then
