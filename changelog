@@ -727,3 +727,5 @@
 # Added more CIS references for Solaris tests
 # 4.5.6 Sun 30 Mar 2014 15:47:53 EST
 # Added more CIS references for Linux tests and cleaned up some Linux test conditions
+# 4.5.7 Sun 30 Mar 2014 18:19:19 EST
+# Added kernel-PAE package check
