@@ -21,7 +21,8 @@
 # Since the user is accountable for files stored in the user home directory,
 # the user must be the owner of the directory.
 #
-# Refer to Section(s) 9.2.6,12,13 Page(s) 166-7,171-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.7,12,13 Page(s) 166-7,171-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.7,12-14 Page(s) 192-3,197-200 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 2.11.18-20 Page(s) 202-6 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.12-4 Page(s) 80-1 CIS Solaris 11.1 v1.0.0
 # Refer to Section(s) 9.12-4 Page(s) 126-8 CIS Solaris 10 v1.1.0

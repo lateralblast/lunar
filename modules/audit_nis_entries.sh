@@ -8,6 +8,7 @@
 # on the system.
 #
 # Refer to Section(s) 9.2.2-4 Page(s) 163-5 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.2-4 Page(s) 188-190 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 9.4 Page(s) 1189 CIS Solaris 10 v1.1.0
 #.
 

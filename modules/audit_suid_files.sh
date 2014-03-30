@@ -9,6 +9,7 @@
 # identify and review such programs to ensure they are legitimate.
 #
 # Refer to Section(s) 9.1.13-4 Page(s) 161-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.1.13-4 Page(s) 186-7 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 6.5 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.16.1 Page(s) 231-2 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.23 Page(s) 88-9 CIS Solaris 11.1 v1.0.0
