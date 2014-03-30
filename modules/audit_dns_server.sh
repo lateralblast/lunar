@@ -32,7 +32,7 @@ audit_dns_server () {
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
         done
-        if [ "$os_vendor" = "CentOS" ]; then
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
           funct_linux_package uninstall bind
         fi
       fi

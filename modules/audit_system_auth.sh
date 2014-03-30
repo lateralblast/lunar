@@ -13,10 +13,10 @@ audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "PAM Authentication"
     funct_rpm_check libpam-cracklib
-    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+    if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Ubuntu" ]; then
       check_file="/etc/pam.d/common-auth"
     fi
-    if [ "$linux_dist" = "redhat" ]; then
+    if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ]; then
       check_file="/etc/pam.d/system-auth"
     fi
     if [ "$audit_mode" != 2 ]; then

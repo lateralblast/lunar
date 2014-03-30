@@ -59,7 +59,7 @@ audit_snmp () {
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
           funct_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
-          if [ "$os_vendor" = "CentOS" ]; then
+          if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
             funct_linux_package uninstall net-snmp
           fi
         fi

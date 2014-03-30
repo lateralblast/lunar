@@ -4,12 +4,13 @@
 # Install AIDE to make use of the file integrity features to monitor critical
 # files for changes that could affect the security of the system.
 #
-# Refer to Section 1.3.1,2 Page(s) 34-35 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.3.1-2 Page(s) 34-35 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.3.1-2 Page(s) 39-40 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_aide () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_name" = "Red" ]; then
       check_file="/etc/sysconfig/prelink"
       if [ -f "$check_file" ]; then
         prelink_check=`cat $check_file |grep PRELINKING |cut -f2 -d= |sed 's/ //g'`

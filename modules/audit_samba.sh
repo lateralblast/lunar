@@ -34,7 +34,7 @@ audit_samba () {
       service_name="smb"
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
-      if [ "$os_vendor" = "CentOS" ]; then
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
         funct_linux_package uninstall samba
       fi
     fi

@@ -18,7 +18,7 @@ audit_dhcp_server () {
       funct_service $service_name disabled
     fi
     if [ "$os_name" = "Linux" ]; then
-      if [ "$os_vendor" = "CentOS" ]; then
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
         funct_linux_package uninstall dhcp
       fi
     fi

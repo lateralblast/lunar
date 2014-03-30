@@ -4,6 +4,8 @@
 # enabled.
 # Running services that are not required can leave potential vectors of attack
 # open.
+#
+# Refer to Section(s) 1.2.4-5 Page(s) 36-7 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_chkconfig () {
@@ -15,8 +17,8 @@ audit_chkconfig () {
       dc_server dhcdbd dhcp6s dhcrelay chargen chargen-udp\
       dovecot dund gpm hidd hplip ibmasm innd ip6tables \
       lisa lm_sensors mailman mctrans mdmonitor mdmpd microcode_ctl \
-      mysqld netplugd network NetworkManager openibd \
-      pand postfix psacct mutipathd daytime daytime-udp\
+      mysqld netplugd network NetworkManager openibd yum-updatesd\
+      pand postfix psacct mutipathd daytime daytime-udp \
       radiusd radvd rdisc readahead_early readahead_later rhnsd \
       rpcgssd rpcimapd rpcsvcgssd rstatd rusersd rwhod saslauthd \
       settroubleshoot smartd spamassasin echo echo-udp\

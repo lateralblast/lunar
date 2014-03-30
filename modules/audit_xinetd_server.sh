@@ -12,7 +12,7 @@
 
 audit_xinetd_server () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       funct_verbose_message "RSH Server Daemon"
       funct_linux_package uninstall xinetd-server
     fi

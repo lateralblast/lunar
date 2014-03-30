@@ -11,11 +11,11 @@
 audit_postfix_daemon () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message="Postfix Daemon"
-    if [ "$linux_dist" = "suse" ]; then
+    if [ "$os_vendor" = "SuSE" ]; then
       check_file="/etc/sysconfig/mail"
       funct_file_value $check_file SMTPD_LISTEN_REMOTE eq no hash
     fi
-    if [ "$os_vendor" = "CentOS" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       check_file="/etc/postfix/main.cf"
       funct_file_value $check_file inet_interfaces eq localhost hash
     fi

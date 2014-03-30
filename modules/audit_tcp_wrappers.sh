@@ -90,7 +90,7 @@ audit_tcp_wrappers () {
     funct_file_perms /etc/hosts.deny 0644 root $group_name
     funct_file_perms /etc/hosts.allow 0644 root $group_name
     if [ "$os_name" = "Linux" ]; then
-      if [ "$dist_linux" = "redhat" ] || [ "$dist_linux" = "suse" ]; then
+      if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "CentOS" ]; then
         package_name="tcp_wrappers"
         total=`expr $total + 1`
         log_file="$package_name.log"

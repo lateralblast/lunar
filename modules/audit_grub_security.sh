@@ -13,6 +13,8 @@
 # The actions described in this section will ensure you cannot get to failsafe
 # or any of the GRUB command line options without first entering the password.
 # Note that you can still boot into the default OS selection without a password.
+#
+# Refer to Section(s) 1.5.3 Page(s) 47-8 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_grub_security () {

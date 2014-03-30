@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 1.5.4-5 Page(s) 43-44 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.2 Page(s) 9 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.5.4-5 Page(s) 48-9 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_sulogin () {

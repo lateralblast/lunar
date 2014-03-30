@@ -38,7 +38,7 @@ audit_nis_server () {
       for service_name in yppasswdd ypserv ypxfrd; do
         funct_chkconfig_service $service_name 3 off
         funct_chkconfig_service $service_name 5 off
-        if [ "$os_vendor" = "CentOS" ]; then
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
           funct_linux_package uninstall $service_name
         fi
       done

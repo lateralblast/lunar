@@ -290,7 +290,7 @@ audit_system_accounting () {
       total=`expr $total + 1`
       log_file="sysstat.log"
       funct_linux_package check sysstat
-      if [ "$linux_dist" = "debian" ]; then
+      if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         check_file="/etc/default/sysstat"
         funct_file_value $check_file ENABLED eq true hash
       fi
@@ -302,13 +302,13 @@ audit_system_accounting () {
           score=`expr $score - 1`
           echo "Warning:   System accounting not enabled [$score]"
           funct_verbose_message "" fix
-          if [ "$linux_dist" = "redhat" ]; then
+          if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ]; then
             funct_verbose_message "yum -y install $package_check" fix
           fi
-          if [ "$linux_dist" = "redhat" ]; then
+          if [ "$os_vendor" = "SuSE" ]; then
             funct_verbose_message "zypper install $package_check" fix
           fi
-          if [ "$linux_dist" = "debian" ]; then
+          if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
             funct_verbose_message "apt-get install $package_check" fix
           fi
           funct_verbose_message "" fix

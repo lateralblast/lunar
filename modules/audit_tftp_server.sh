@@ -32,7 +32,7 @@ audit_tftp_server () {
     funct_chkconfig_service tftp 5 off
     funct_check_perms /tftpboot 0744 root root
     funct_check_perms /var/tftpboot 0744 root root
-    if [ "$os_vendor" = "CentOS" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       funct_linux_package uninstall tftp-server
     fi
   fi

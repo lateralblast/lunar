@@ -18,10 +18,10 @@ audit_system_auth_password_history () {
     check_file="/etc/security/opasswd"
     funct_file_exists $check_file
     funct_check_perms $check_file 0600 root root
-    if [ "$linux_dist" = "debian" ] || [ "$linux_dist" = "suse" ]; then
+    if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Ubuntu" ]; then
       check_file="/etc/pam.d/common-auth"
     fi
-    if [ "$linux_dist" = "redhat" ]; then
+    if [ "$os_vendor" = "Red" ] || [ "$os_name" = "CentOS" ]; then
       check_file="/etc/pam.d/system-auth"
     fi
     if [ "$audit_mode" != 2 ]; then
