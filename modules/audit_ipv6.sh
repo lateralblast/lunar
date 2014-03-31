@@ -16,6 +16,7 @@
 #
 # Refer to Section(s) 1.3.11,22-3 Page(s) 47,60-2 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 4.4.2 Page(s) 94 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 4.4.2 Page(s) 85-6 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_ipv6() {
@@ -27,9 +28,16 @@ audit_ipv6() {
       done
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_verbose_message "IPv6"
-      check_file="/etc/modprobe.conf"
-      funct_append_file $check_file "options ipv6 \"disable=1\""
+      if [ "$disable_ipv6" = "yes" ]; then
+        funct_verbose_message "IPv6"
+        check_file="/etc/modprobe.conf"
+        funct_append_file $check_file "options ipv6 \"disable=1\""
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+          check_file="/etc/sysconfig/network"
+          funct_file_value $check_file NETWORKING_IPV6 eq no hash
+          funct_file_value $check_file IPV6INIT eq no hash
+        fi
+      fi
     fi
   fi
 }

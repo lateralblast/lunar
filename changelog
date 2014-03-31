@@ -747,3 +747,5 @@
 # Added more CIS references for Linux
 # 4.6.6 Mon 31 Mar 2014 14:44:00 EST
 # Added noexec tmpfs test for Linux
+# 4.6.7 Mon 31 Mar 2014 21:05:17 EST
+# More CIS references for Linux

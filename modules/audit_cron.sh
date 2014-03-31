@@ -5,6 +5,7 @@
 # monitoring that have to run and cron to execute them.
 #
 # Refer to Section(s) 6.1.1-2 Page(s) 138-9 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.1.1-2 Page(s) 121-2 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_cron_perms () {

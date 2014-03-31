@@ -6,6 +6,7 @@
 # open.
 #
 # Refer to Section(s) 1.2.4-5 Page(s) 36-7 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.2.4-5 Page(s) 34-5 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_chkconfig () {

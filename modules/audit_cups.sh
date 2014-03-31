@@ -9,6 +9,7 @@
 #
 # Refer to Section(s) 3.4 Page(s) 61 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.4 Page(s) 73-4 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.4 Page(s) 64 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_cups () {

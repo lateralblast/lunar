@@ -2,8 +2,9 @@
 #
 # Make sure SELinux is configured appropriately.
 #
-# Refer to Section(s) 1.4.1-5,1.5.1 Page(s) 36-40,41-42 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.4.1-5,1.5.1 Page(s) 41-45,46-7 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.4.1-5,1.5.1-2 Page(s) 36-40,41-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.4.1-5,1.5.1-2 Page(s) 41-45,46-7 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.4.1-5,1.5.1-2 Page(s) 39-42,43-4 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_selinux () {

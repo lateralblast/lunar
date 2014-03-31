@@ -142,6 +142,7 @@
 #
 # Refer to Section(s) 5.1-5.2.8,5.4.1,2 Page(s) 98-107 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 4.1.1-2,4.2.1-8,4.4.1 Page(s) 82-94 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 4.1.1-2,4.2.1-8,4.4.1.1 Page(s) 73-81,83-4 CIS Red Hat Linux 5 Benchmark v2.1.0
 #.
 
 audit_sysctl () {
@@ -167,8 +168,11 @@ audit_sysctl () {
     funct_file_value $check_file net.ipv4.conf.default.send_redirects eq 0 hash
     funct_file_value $check_file net.ipv4.icmp_ignore_bogus_error_responses eq 1 hash
     # IPv6 stuff
+    funct_file_value $check_file net.ipv6.conf.all.accept_ra eq 0 hash
     funct_file_value $check_file net.ipv6.conf.default.accept_redirects eq 0 hash
+    funct_file_value $check_file net.ipv6.conf.all.accept_ra eq 0 hash
     funct_file_value $check_file net.ipv6.conf.default.accept_ra eq 0 hash
+    funct_file_value $check_file net.ipv6.route.flush eq 1 hash
     # Randomise kernel memory placement
     funct_file_value $check_file kernel.randomize_va_space eq 1 hash
     # Configure kernel shield

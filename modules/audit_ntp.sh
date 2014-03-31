@@ -6,6 +6,7 @@
 #
 # Refer to Section(s) 3.6 Page(s) 62-63 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.6 Page(s) 75-6 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.6 Page(s) 65-6 CIS Red Hat Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 2.4.5.1 Page(s) 35-36 CIS Apple OS X 10.5 Benchmark v1.1.0
 #.
 

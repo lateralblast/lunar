@@ -8,6 +8,7 @@
 #
 # Refer to Section(2) 2.1.10 Page(s) 53-54 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.10 Page(s) 61-2 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 2.1.10 Page(s) 56 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_talk_server () {

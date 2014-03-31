@@ -24,6 +24,7 @@
 #
 # Refer to Section(s) 3.11,14 Page(s) 66-9 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.11,14 Page(s) 79-81 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.11,14 Page(s) 69-71 CIS Red Hat Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 2.4.14.7 Page(s) 56-7 CIS OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 2.10 Page(s) 21-2 CIS Solaris 11.1 v1.0.0
 # Refer to Section(s) 2.2.11 Page(s) 30-2 CIS Solaris 10 v5.1.0

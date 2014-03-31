@@ -7,7 +7,8 @@
 # Forcing users not to reuse their past 5 passwords make it less likely that
 # an attacker will be able to guess the password.
 #
-# Refer to Section 6.3.4 Page(s) 141-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.3.4 Page(s) 141-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.3.4 Page(s) 144-5 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_system_auth_password_history () {

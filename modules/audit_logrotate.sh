@@ -11,7 +11,8 @@
 # can easily archive these files to another system and spend less time looking
 # through inordinately large log files.
 #
-# Refer to Section 4.3 Page(s) 97 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 4.3 Page(s) 97 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 5.3 Page(s) 120-1 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_logrotate () {

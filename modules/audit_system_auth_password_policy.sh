@@ -2,7 +2,8 @@
 #
 # Audit password policies
 #
-# Refer to Section 6.3.2 Page(s) 139- CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.3.2 Page(s) 139-140 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.3.2 Page(s) 142-3 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_system_auth_password_policy () {

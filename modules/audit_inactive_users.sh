@@ -7,6 +7,7 @@
 # logging in to notice failed login attempts or other anomalies.
 #
 # Refer to Section(s) 7.5 Page(s) 171-2 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 7.5 Page(s) 151-2 CIS Red Hat Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 7.6 Page(s) 66-7 CIS Solaris 11.1 v1.0.0
 # Refer to Section(s) 7.9 Page(s) 109-110 CIS Solaris 10 v5.1.0
 #.

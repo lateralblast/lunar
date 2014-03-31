@@ -9,6 +9,7 @@
 #
 # Refer to Section(s) 3.7 Page(s) 63-64 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.7 Page(s) 76 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.7 Page(s) 66-7 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_ldap_server () {

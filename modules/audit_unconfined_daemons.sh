@@ -5,6 +5,7 @@
 #
 # Refer to Section(s) 1.4.6 Page(s) 40 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.4.6 Page(s) 45-6 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.4.6 Page(s) 43 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_unconfined_daemons () {
