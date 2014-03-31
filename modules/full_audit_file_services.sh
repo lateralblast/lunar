@@ -10,6 +10,7 @@ full_audit_file_services () {
   audit_dfstab
   audit_mount_setuid
   audit_mount_nodev
+  audit_mount_noexec
   audit_mount_fdi
   audit_nfs
   audit_uucp
