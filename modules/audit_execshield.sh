@@ -10,15 +10,22 @@
 # Refer to Section(s) 1.6.2 Page(s) 45-46 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.6.2,4 Page(s) 51,52-3 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.6.2 Page(s) 48 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 4.2 Page(s) 36-7 SLES 11 Benchmark v1.0.0
 #.
 
 audit_execshield () {
   if [ "$os_name" = "Linux" ]; then
+    funct_verbose_message "XD/NS Support"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       if [ "$os_version" > 4 ]; then
         funct_linux_package install kernel-PAE
         check_file="/etc/sysctl.conf"
         funct_file_vale $check_file kernel.exec-shield eq 1 hash
+      fi
+    else
+      if [ "$os_vendor" = "SuSE" ]; then
+        funct_linux_package install kernel-pae
+      fi
     fi
   fi
 }

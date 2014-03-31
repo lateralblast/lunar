@@ -751,3 +751,5 @@
 # More CIS references for Linux
 # 4.6.8 Tue  1 Apr 2014 09:48:55 EST
 # Added interactive boot test
+# 4.6.9 Tue  1 Apr 2014 10:13:02 EST
+# Added kernel-pae test and CIS reference for SuSE
