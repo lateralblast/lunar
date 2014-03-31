@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 1.5.4-5 Page(s) 43-44 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.2 Page(s) 9 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.4 Page(s) 33-4 SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.5.4-5 Page(s) 48-9 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.5.4-4 Page(s) 45-6 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
@@ -81,6 +82,8 @@ audit_sulogin () {
         funct_file_value $check_file PROMPT eq no hash
         funct_check_perms $check_file 0600 root root
       fi
+      check_file="/etc/sysconfig/boot"
+      funct_file_value $check_file PROMPT_FOR_CONFIRM eq no hash
     fi
   fi
 }

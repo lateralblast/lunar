@@ -15,6 +15,7 @@
 # Note that you can still boot into the default OS selection without a password.
 #
 # Refer to Section(s) 1.5.3 Page(s) 47-8 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.1 Page(s) 31-2 SLES 11 Benchmark v1.0.0
 #.
 
 audit_grub_security () {
@@ -22,6 +23,8 @@ audit_grub_security () {
     if [ "$os_name" = "Linux" ]; then
       funct_verbose_message "Grub Menu Security"
       check_file="/etc/grub.conf"
+      funct_check_perms $check_file 0600 root root
+      check_file="/boot/grub/menu.lst"
       funct_check_perms $check_file 0600 root root
     fi
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then

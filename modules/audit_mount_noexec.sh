@@ -7,6 +7,7 @@
 #
 # Refer to Section(s) 1.1.4 Page(s) 14-5 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.4 Page(s) 17-8 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 2.4 Page(s) 16-7 SLES 11 Benchmark v1.0.0
 #.
 
 audit_mount_noexec () {
