@@ -10,5 +10,35 @@
 #.
 
 audit_eeprom_security () {
-  :
+  if [ "$os_name" = "SunOS" ]; then
+    funct_verbose_message "EEPROM Password"
+    if [ "$audit_mode" = 2 ]; then
+      eeprom security-mode=none
+    else
+      echo "Checking:  EEPROM password is enabled"
+    fi
+    total=`expr $total + 1`
+    if [ "$audit_mode" != 2 ]; then
+      eeprom_check=`eeprom security-mode | awk -F= '{ print $2 }'`
+      if [ "$gdm_check" = "none" ]; then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   EEPROM password is not enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "eeprom security-mode=command" fix
+          funct_verbose_message "eeprom security-#badlogins=0" fix
+          funct_verbose_message "" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          eeprom security-mode=command
+          eeprom security-#badlogins=0
+        fi
+      else
+        if [ "$audit_mode" = 1 ];then
+          score=`expr $score + 1`
+          echo "Secure:    EEPROM password is enabled [$score]"
+        fi
+      fi
+    fi
+  fi
 }

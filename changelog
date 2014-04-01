@@ -761,3 +761,5 @@
 # Added shadow group member test for SuSE Linux
 # 4.7.3 Tue  1 Apr 2014 18:31:11 EST
 # Added gdm-autologin PAM check for Solaris 11
+# 4.7.4 Tue  1 Apr 2014 19:50:22 EST
+# Added EEEPROM password test for SPARC
