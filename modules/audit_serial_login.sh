@@ -114,7 +114,7 @@ audit_serial_login () {
           fi
           if [ "$audit_mode" = 2 ]; then
             echo "Setting:   Serial port logins to disabled"
-            backup_file $check_file
+            funct_backup_file $check_file
             tmp_file="/tmp/ttys_$check_string"
             awk '($4 == "dialup") { $5 = "off" } { print }' $check_file > $tmp_file
             cat $tmp_file > $check_file

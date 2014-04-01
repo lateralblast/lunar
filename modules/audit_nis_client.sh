@@ -9,6 +9,7 @@
 # Refer to Section(s) 2.2.3 Page(s) 24-5 CIS Solaris 10 v5.1.0
 # Refer to Section(s) 2.1.5 Page(s) 58 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.5 Page(s) 53 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.1.2 Page(s) 41 SLES 11 Benchmark v1.0.0
 #.
 
 audit_nis_client () {

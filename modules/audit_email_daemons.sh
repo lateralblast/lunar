@@ -11,6 +11,7 @@
 #
 # Refer to Section(s) 3.12 Page(s) 67 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.12 Page(s) 79-80 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.11 Page(s) 60 SLES 11 Benchmark v1.0.0
 #.
 
 audit_email_daemons () {

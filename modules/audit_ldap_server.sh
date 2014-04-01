@@ -7,9 +7,10 @@
 # If the server will not need to act as an LDAP client or server, it is
 # recommended that the software be disabled.
 #
-# Refer to Section(s) 3.7 Page(s) 63-64 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.7 Page(s) 63-4 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.7 Page(s) 76 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 3.7 Page(s) 66-7 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.6 Page(s) 56-7 SLES 11 Benchmark v1.0.0
 #.
 
 audit_ldap_server () {

@@ -57,7 +57,7 @@ audit_xlogin () {
         fi
         if [ "$audit_mode" = 2 ]; then
           echo "Setting:   X wrapper to disabled"
-          backup_file $check_file
+          funct_backup_file $check_file
           tmp_file="/tmp/ttys_$check_string"
           sed -e '/xdm -nodaemon/s/off/on/' $check_file > $tmp_file
           cat $tmp_file > $check_file

@@ -30,7 +30,7 @@ audit_sulogin () {
           fi
           if [ "$audit_mode" = 2 ]; then
             echo "Setting:   Single user mode to require a password"
-            backup_file $check_file
+            funct_backup_file $check_file
             tmp_file="/tmp/ttys_$check_string"
             awk '($4 == "console") { $5 = "insecure" } { print }' $check_file > $tmp_file
             cat $tmp_file > $check_file

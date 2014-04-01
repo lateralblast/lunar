@@ -8,6 +8,7 @@
 # Refer to Section(s) 2.1.4 Page(s) 49 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.4 Page(s) 57 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.4 Page(s) 52-3 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.1.4 Page(s) 42-3 SLES 11 Benchmark v1.0.0
 #.
 
 audit_rsh_client () {
