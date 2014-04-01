@@ -759,3 +759,5 @@
 # Added SuSEfirewall2 test
 # 4.7.2 Tue  1 Apr 2014 17:41:27 EST
 # Added shadow group member test for SuSE Linux
+# 4.7.3 Tue  1 Apr 2014 18:31:11 EST
+# Added gdm-autologin PAM check for Solaris 11

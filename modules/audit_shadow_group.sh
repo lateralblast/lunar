@@ -30,13 +30,14 @@ audit_shadow_group () {
           score=`expr $score - 1`
           echo "Warning:   Shadow group contains members [$score]"
           funct_verbose_message "" fix
-          funct_verbose_message "cat /etc/group |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
+          funct_verbose_message "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
           funct_verbose_message "cat $temp_file > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
           funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          cat /etc/group |awk -F':' '( $1 == "shadow" ) {print $1":"$2":"$3":" ; next}; {print}' > $temp_file
+          funct_backup_file $check_file
+          cat $check_file |awk -F':' '( $1 == "shadow" ) {print $1":"$2":"$3":" ; next}; {print}' > $temp_file
           cat $temp_file > $check_file
           rm $temp_file
         fi
