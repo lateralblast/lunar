@@ -752,8 +752,10 @@
 # 4.6.8 Tue  1 Apr 2014 09:48:55 EST
 # Added interactive boot test
 # 4.6.9 Tue  1 Apr 2014 10:13:02 EST
-# Added kernel-pae test and CIS reference for SuSE
+# Added kernel-pae test and CIS reference for SuSE Linux
 # 4.7.0 Tue  1 Apr 2014 13:45:14 EST
-# Added AppArmour and biosdevname test for SuSE
+# Added AppArmour and biosdevname test for SuSE Linux
 # 4.7.1 Tue  1 Apr 2014 14:49:16 EST
 # Added SuSEfirewall2 test
+# 4.7.2 Tue  1 Apr 2014 17:41:27 EST
+# Added shadow group member test for SuSE Linux

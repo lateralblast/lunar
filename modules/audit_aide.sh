@@ -7,6 +7,7 @@
 # Refer to Section(s) 1.3.1-2 Page(s) 34-5 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.3.1-2 Page(s) 39-40 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.3.1-2 Page(s) 36-7 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 8.3.1-2 Page(s) 112-3 SLES 11 Benchmark v1.0.0
 #.
 
 audit_aide () {

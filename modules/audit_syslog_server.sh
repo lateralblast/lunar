@@ -15,6 +15,7 @@
 # Refer to Section(s) 4.1.1-8 Page(s) 71-76 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 5.2.1-8 Page(s) 108-113 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 5.1.1-8 Page(s) 94-9 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 8.2.1-8 Page(s) 106-111 SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 5.1 Page(s) 18 CIS FreeBSD Benchmark v1.0.5
 #.
 
@@ -33,7 +34,7 @@ audit_syslog_server () {
     if [ "$os_name" = "Linux" ]; then
       if [ "$install_rsyslog" = "yes" ]; then
         funct_verbose_message="Rsyslog Daemon"
-        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ]; then
           if [ "$os_version" > 4 ]; then
             service_name="syslog"
             funct_chkconfig_service $service_name 3 off

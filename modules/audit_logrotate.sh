@@ -13,6 +13,7 @@
 #
 # Refer to Section(s) 4.3 Page(s) 97 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 5.3 Page(s) 120-1 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 8.4 Page(s) 113-4 SLES 11 Benchmark v1.0.0
 #.
 
 audit_logrotate () {
@@ -23,7 +24,11 @@ audit_logrotate () {
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  Logrotate is set up"
         total=`expr $total + 1`
-        search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
+        if [ "$os_vendor" = "SuSE" ]; then
+          search_string="/var/log/warn /var/log/messages /var/log/allmessages /var/log/localmessages /var/log/firewall /var/log/acpid /var/log/NetworkManager /var/log/mail /var/log/mail.info /var/log/mail.warn /var/log/mail.err /var/log/news/news.crit /var/log/news/news.err /var/log/news/news.notice"
+        else
+          search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
+        fi
         check_value=`cat $check_file |grep "$search_string" |sed 's/ {//g'`
         if [ "$check_value" != "$search_string" ]; then
           score=`expr $score - 1`

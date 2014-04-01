@@ -9,6 +9,7 @@
 #
 # Refer to Section(s) 6.3.4 Page(s) 141-2 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.3.4 Page(s) 144-5 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 9.3.3 Page(s) 134 SLES 11 Benchmark v1.0.0
 #.
 
 audit_system_auth_password_history () {
