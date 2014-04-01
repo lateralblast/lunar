@@ -9,4 +9,5 @@ full_audit_firewall_services () {
   audit_tcp_wrappers
   audit_iptables
   audit_ipfw
+  audit_suse_firewall
 }
