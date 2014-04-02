@@ -1,14 +1,14 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.7.4
+# Version:      4.7.5
 # Release:      1
 # License:      Open Source
 # Group:        System
 # Source:       N/A
 # URL:          http://lateralblast.com.au/
 # Distribution: Solaris, Red Hat Linux, SuSE Linux, Debian Linux,
-#               Ubuntu Linux, Mac OS X
+#               Ubuntu Linux, Mac OS X, AIX, FreeBSD
 # Vendor:       UNIX
 # Packager:     Richard Spindler <richard@lateralblast.com.au>
 # Description:  Audit script based on various benchmarks
@@ -245,9 +245,14 @@ check_environment () {
   check_os_release
   if [ "$os_name" = "Darwin" ]; then
     echo ""
-    echo "Checking: If node is managed"
-    echo ""
+    echo "Checking:  If node is managed"
     managed_node=`sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d:`
+    if [ "$managed_node" = "Error" ]; then
+      echo "Notice:    Node is not managed"
+    else
+      echo "Notice:    Node is managed"
+    fi
+    echo ""
   fi
   if [ "$os_name" = "SunOS" ]; then
     id_check=`id |cut -c5`

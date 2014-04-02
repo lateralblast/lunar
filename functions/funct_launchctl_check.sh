@@ -23,6 +23,7 @@ funct_launchctl_check () {
       actual_status="disabled"
     fi
     if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Service $launchctl_service is $required_status"
       if [ "$actual_status" != "$required_status" ]; then
         score=`expr $score - 1`
         echo "Warning:   Service $launchctl_service is $actual_status [$score]"
@@ -32,13 +33,13 @@ funct_launchctl_check () {
         if [ "$audit_mode" = 0 ]; then
           log_file="$work_dir/$log_file"
           echo "$actual_status" > $log_file
-          echo "Setting:   Service $launchctl_service to disabled"
+          echo "Setting:   Service $launchctl_service to $required_status"
           sudo launchctl $change_status -w $launchctl_service.plist
         fi
       else
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score + 1`
-          echo "Secure:    Service $launchctl_service to disabled [$score]"
+          echo "Secure:    Service $launchctl_service is $required_status [$score]"
         fi
       fi
     else

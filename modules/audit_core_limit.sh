@@ -12,10 +12,10 @@
 audit_core_limit () {
   if [ "$os_name" = "Darwin" ]; then
     total=`expr $total + 1`
-    funct_verbose_message "Core dumps"
+    funct_verbose_message "Core dump limits"
     if [ "$audit_mode" != 2 ]; then
       check_vale=`launchctl limit core |awk '{print $3}'`
-      login_message="Authorized use only"
+      echo "Checking:  Core dump limits"
       if [ "$check_value" != "0" ]; then
         score=`expr $score - 1`
         echo "Warning:   Core dumps unlimited [$score]"
@@ -23,14 +23,13 @@ audit_core_limit () {
         funct_verbose_message "launchctl limit core 0" fix
         funct_verbose_message "" fix
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
           echo "Setting:   Core dump limits"
           launchctl limit core 0
         fi
       else
         if [ "$audit_mode" = 1 ]; then
           score=`expr $score + 1`
-          echo "Secure:    Login warning exists [$score]"
+          echo "Secure:    Core dump limits exist [$score]"
         fi
       fi
     else

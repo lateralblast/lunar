@@ -62,7 +62,7 @@ funct_file_value () {
   if [ "$audit_mode" = 2 ]; then
     funct_restore_file $check_file $restore_dir
   else
-    echo "Checking:  Value of \"$parameter_name\" in $check_file is \"$correct_value\""
+    echo "Checking:  Value of \"$parameter_name\" is  set to \"$correct_value\" in $check_file"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
         score=`expr $score - 1`

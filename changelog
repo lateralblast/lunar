@@ -763,3 +763,5 @@
 # Added gdm-autologin PAM check for Solaris 11
 # 4.7.4 Tue  1 Apr 2014 19:50:22 EST
 # Added EEEPROM password test for SPARC
+# 4.7.5 Wed  2 Apr 2014 12:31:55 EST
+# Fixed bugs (thanks to Mark Lane for testing)

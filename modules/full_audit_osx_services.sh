@@ -34,4 +34,5 @@ full_audit_osx_services () {
   audit_file_extensions
   audit_firmware_password
   audit_xgrid
+  audit_internet_sharing
 }

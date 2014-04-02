@@ -64,7 +64,6 @@ audit_strong_password () {
       funct_file_value $check_file DICTIONLIST eq /usr/share/lib/dict/words hash
     fi
     if [ "$os_name" = "Darwin" ]; then
-      funct_verbose_message "Password Complexity"
       funct_pwpolicy_check requiresAlpha 1
       funct_pwpolicy_check requiresSymbol 1
       funct_pwpolicy_check maxMinutesUntilChangePassword 86400

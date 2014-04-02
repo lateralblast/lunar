@@ -21,6 +21,7 @@ funct_defaults_check () {
     defaults_command="sudo defaults"
     total=`expr $total + 1`
     if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
       if [ "$defaults_host" = "currentHost" ]; then
         defaults_read="-currentHost $defaults_read"
         defaults_write="-currentHost $defaults_write"

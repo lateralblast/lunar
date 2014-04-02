@@ -21,7 +21,7 @@ funct_pwpolicy_check() {
           score=`expr $score - 1`
           echo "Warning:   Password Policy for \"$parameter_name\" is not set to \"$correct_value\" [$score]"
           funct_verbose_message "" fix
-          if [ "$managed_node" == "Error" ]; then
+          if [ "$managed_node" = "Error" ]; then
             funct_verbose_message "sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$correct_value" fix
           else
             funct_verbose_message "sudo pwpolicy -n -setglobalpolicy $parameter_name=$correct_value" fix
@@ -32,7 +32,7 @@ funct_pwpolicy_check() {
           log_file="$work_dir/$log_file"
           echo "Setting:   Password Policy for \"$parameter_name\" to \"$correct_value\""
           echo "$actual_value" > $log_file
-          if [ "$managed_node" == "Error" ]; then
+          if [ "$managed_node" = "Error" ]; then
             sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$correct_value
           else
             sudo pwpolicy -n -setglobalpolicy $parameter_name=$correct_value

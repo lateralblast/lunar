@@ -14,8 +14,38 @@
 
 audit_bonjour_advertising() {
   if [ "$os_name" = "Darwin" ]; then
+    funct_verbose_message "Bonjour Multicast Advertising"
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
-    funct_file_value $check_file "      <string>-NoMulticastAdvertisements</string>" space "" hash after "/usr/sbin/mDNSResponder"
+    temp_file="$temp_dir/mdnsmcast"
+    if [ "$audit_mode" = 2 ]; then
+      funct_restore_file $check_file $restore_dir
+    else
+      total=`expr $total + 1`
+      echo "Checking:  Bonjour Multicast Advertising is disabled"
+      multicast_test=`cat $check_file |grep 'NoMulticastAdvertisements' |wc -l`
+      if [ "multicast_test" != "1" ]; then
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score - 1`
+          echo "Warning:   Bonjour Multicast Advertising enabled [$score]"
+          funct_verbose_message "" fix
+          funct_verbose_message "cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file" fix
+          funct_verbose_message "cat $temp_file > $check_file" fix
+          funct_verbose_message "rm $temp_file" fix
+          funct_verbose_message "" fix
+        fi
+        if [ "$audit_mode" = 0 ]; then
+          funct_backup_file $check_file
+          cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file
+          cat $temp_file > $check_file
+          rm $temp_file
+        fi
+      else
+        if [ "$audit_mode" = 1 ]; then
+          score=`expr $score + 1`
+          echo "Secure:    Bonjour Multicast Advertising disabled [$score]"
+        fi
+      fi
+    fi
     if [ "$osx_mdns_enable" != "yes" ]; then
       funct_launchctl_check com.apple.mDNSResponder off
       funct_launchctl_check com.apple.mDNSResponderHelper off

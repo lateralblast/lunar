@@ -51,15 +51,15 @@ audit_apache () {
         funct_service $service_name disabled
       fi
     fi
-  fi
-  if [ "$os_name" = "Linux" ]; then
-    for service_name in httpd apache tomcat5 squid prixovy; do
-      funct_chkconfig_service $service_name 3 off
-      funct_chkconfig_service $service_name 5 off
-    done
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      funct_linux_package uninstall httpd
-      funct_linux_package uninstall squid
+    if [ "$os_name" = "Linux" ]; then
+      for service_name in httpd apache tomcat5 squid prixovy; do
+        funct_chkconfig_service $service_name 3 off
+        funct_chkconfig_service $service_name 5 off
+      done
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+        funct_linux_package uninstall httpd
+        funct_linux_package uninstall squid
+      fi
     fi
     for check_dir in /etc /etc/sfw /etc/apache /etc/apache2 /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
       check_file="$check_dir/httpd.conf"
