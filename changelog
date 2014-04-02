@@ -765,3 +765,5 @@
 # Added EEEPROM password test for SPARC
 # 4.7.5 Wed  2 Apr 2014 12:31:55 EST
 # Fixed bugs (thanks to Mark Lane for testing)
+# 4.7.6 Wed  2 Apr 2014 15:13:36 EST
+# More bug fixes

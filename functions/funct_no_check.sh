@@ -25,7 +25,6 @@ funct_no_check() {
           echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\""
           echo "$actual_value" > $log_file
           no -p -o $parameter_name=$correct_value
-          fi
         fi
       else
         if [ "$audit_mode" = 1 ]; then

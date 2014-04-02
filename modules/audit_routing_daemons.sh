@@ -24,7 +24,7 @@ audit_routing_daemons () {
           svc:/network/routing/legacy-routing:ipv6 \
           svc:/network/routing/rdisc:default \
           svc:/network/routing/route:default \
-          svc:/network/routing/ndp:default \
+          svc:/network/routing/ndp:default; do
             funct_service $service_name disabled
           done
         fi

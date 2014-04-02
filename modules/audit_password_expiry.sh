@@ -149,7 +149,7 @@ audit_password_expiry () {
       funct_chsec_check /etc/security/user default histsize 20
       funct_chsec_check /etc/security/user default maxexpired 2
       if [ "$os_version" > 4 ]; then
-        if [ "$os_version" = "5" ]
+        if [ "$os_version" = "5" ]; then
           if [ "$os_update" > 3 ]; then
             funct_chsec_check /etc/security/login.cfg usw pwd_algorithm ssha256
           fi

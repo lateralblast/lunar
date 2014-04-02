@@ -54,11 +54,22 @@ audit_tcp_wrappers () {
     if [ "$os_name" = "AIX" ]; then
       package_name="netsec.options.tcpwrapper.base"
       funct_lslpp_check $package_name
-      if [ "$lslpp_check" = "$package_name" ]; then
-      else
-        funct_verbose_message "" fix
-        funct_verbose_message "TCP Wrappers not installed" fix
-        funct_verbose_message "" fix
+      if [ "$audit_mode" != 2 ]; then
+        total=`expr $total + 1`
+        if [ "$lslpp_check" != "$package_name" ]; then
+          if [ "$audit_mode" = 1 ]; then
+            score=`expr $score - 1`
+            echo "Warning:   TCP Wrappers not installed [$score]"
+            funct_verbose_message "" fix
+            funct_verbose_message "TCP Wrappers not installed" fix
+            funct_verbose_message "Install TCP Wrappers" fix
+            funct_verbose_message "" fix
+            total=`expr $total + 1`
+          fi
+        else
+          score=`expr $score + 1`
+          echo "Secure:    TCP Wrappers installed [$score]"
+        fi
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then
@@ -90,8 +101,8 @@ audit_tcp_wrappers () {
     else
       group_name="root"
     fi
-    funct_file_perms /etc/hosts.deny 0644 root $group_name
-    funct_file_perms /etc/hosts.allow 0644 root $group_name
+    funct_check_perms /etc/hosts.deny 0644 root $group_name
+    funct_check_perms /etc/hosts.allow 0644 root $group_name
     if [ "$os_name" = "Linux" ]; then
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "CentOS" ]; then
         package_name="tcp_wrappers"

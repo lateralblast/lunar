@@ -15,6 +15,7 @@ audit_pam_deny () {
         funct_append_file $check_file "rexecd\tauth\trequired\tpam_deny.so"
         funct_append_file $check_file "rsh\tauth\trequired\tpam_deny.so"
       else
+        :
         # Need to insert code here
         # sed -i .preCIS -e 's/nologin/deny/g' /etc/pam.d/rsh /etc/pam.d/rexecd
       fi

@@ -22,7 +22,7 @@
 audit_syslog_server () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$os_name" = "FreeBSD" ]; then
-      if [ "$os_version" < 5 ]
+      if [ "$os_version" < 5 ]; then
         funct_verbose_message="Syslog Daemon"
         check_file="/etc/syslog.conf"
         funct_file_value $check_file "daemon.debiug" tab "/var/log/daemon.log" hash

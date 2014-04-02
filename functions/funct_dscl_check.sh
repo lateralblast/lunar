@@ -11,6 +11,7 @@ funct_dscl_check () {
     dscl_dir="/var/db/dslocal/nodes/Default"
     total=`expr $total + 1`
     if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Parameter \"$dscl_parameter\" is set to \"$dscl_value\" in \"$dscl_file\""
       check_vale=`sudo dscl . -read $dscl_file $dscl_parameter`
       if [ "$check_value" != "$dscl_value" ]; then
         score=`expr $score - 1`
