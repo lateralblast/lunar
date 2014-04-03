@@ -28,7 +28,7 @@ audit_apparmour () {
               score=`expr $score - 1`
               echo "Warning:   AppArmour is not enabled [$score]"
               funct_verbose_message "" fix
-              funct_verbose_message "cat $check_file |sed 's/apparmour=0//g' < $temp_file" fix
+              funct_verbose_message "cat $check_file |sed 's/apparmour=0//g' > $temp_file" fix
               funct_verbose_message "cat $temp_file > $check_file" fix
               funct_verbose_message "enforce /etc/apparmor.d/*" fix
               funct_verbose_message "" fix
