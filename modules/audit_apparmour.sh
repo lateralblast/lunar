@@ -1,5 +1,13 @@
 # audit_apparmour
 #
+# AppArmor provides a Mandatory Access Control (MAC) system that greatly
+# augments the default Discretionary Access Control (DAC) model.
+# For an action to occur, both the traditional DAC permissions must be
+# satisfied as well as the AppArmor MAC rules. The action will not be
+# allowed if either one of these models does not permit the action.
+# In this way, AppArmor rules can only make a system's permissions more
+# restrictive and secure.
+#
 # Refer to Section(s) 4.5 Page(s) 38-9 SLES 11 Benchmark v1.0.0
 #.
 
@@ -20,9 +28,9 @@ audit_apparmour () {
               score=`expr $score - 1`
               echo "Warning:   AppArmour is not enabled [$score]"
               funct_verbose_message "" fix
-              funct_verbose_message "" fix
-              funct_verbose_message "" fix
-              funct_verbose_message "" fix
+              funct_verbose_message "cat $check_file |sed 's/apparmour=0//g' < $temp_file" fix
+              funct_verbose_message "cat $temp_file > $check_file" fix
+              funct_verbose_message "enforce /etc/apparmor.d/*" fix
               funct_verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then

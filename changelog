@@ -767,3 +767,5 @@
 # Fixed bugs (thanks to Mark Lane for testing)
 # 4.7.6 Wed  2 Apr 2014 15:13:36 EST
 # More bug fixes
+# 4.7.7 Thu  3 Apr 2014 15:05:09 EST
+# Updated AppArmour test for SuSE Linux

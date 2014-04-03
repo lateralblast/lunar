@@ -10,7 +10,7 @@
 # Refer to Section(s) 8.3.1-2 Page(s) 112-3 SLES 11 Benchmark v1.0.0
 #.
 
-audit_aide () {
+audit_aide() {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_name" = "Red" ]; then
       check_file="/etc/sysconfig/prelink"
