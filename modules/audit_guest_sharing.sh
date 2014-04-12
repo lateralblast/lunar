@@ -5,7 +5,7 @@
 # access should be used. Guest access allows guest to access files they
 # might not need access to.
 #
-# Refer to Section 6.1.4 Page(s) 75-76 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 6.1.4 Page(s) 75-76 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_guest_sharing () {

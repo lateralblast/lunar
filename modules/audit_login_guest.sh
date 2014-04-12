@@ -1,10 +1,15 @@
 # audit_login_guest
 #
-# Password hints can give an attacker a hint as well, so the option to display
-# hints should be turned off. If your organization has a policy to enter a help
-# desk number in the password hints areas, do not turn off the option.
+# ￼The Guest account allows a guest to log in to a Mac and use all of its
+# services. When the guest logs out, the Mac clears most of whatever the guest
+# did on the Mac. This allows one person to let another borrow the computer for
+# a short period, and still protect information in other accounts on the Mac.
+# The usage of a Guest account may give the Mac owner a false sense of security.
+# If the guest has physical access to the Mac and the owner is not present,
+# the guest could gain full access to the Mac. That said, use of the Guest
+# account allows for quick and moderately safe computer sharing.
 #
-# Refer to Section 6.1.3 Page(s) 74-75 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 1.4.2.7 Page(s) 29-30 CIS Apple OS X 10.6 Benchmark v1.0.0
 #.
 
 audit_login_guest () {

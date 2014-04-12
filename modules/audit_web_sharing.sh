@@ -9,7 +9,7 @@
 # (for global configurations). By default, Apache is fairly secure, but it can
 # be made more secure with a few additions to the /etc/apache2/httpd.conf file.
 #
-# Refer to Section 1.4.14.7 Page(s) 55-6 CIS Apple OS X 10.7 Benchmark v1.0.0
+# Refer to Section(s) 1.4.14.7 Page(s) 55-6 CIS Apple OS X 10.7 Benchmark v1.0.0
 #.
 
 audit_web_sharing () {

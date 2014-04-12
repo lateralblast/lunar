@@ -6,15 +6,15 @@
 # level of security is available by using a Screen Saver and the
 # "Require a password to wake the computer from sleep or screen saver" option.
 #
-# Refer to Section 2.3.1-2 Page(s) 13-14 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section 5.5 Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1-2 Page(s) 13-14 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 5.5 Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_screen_lock () {
   if [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Screen lock"
     funct_defaults_check com.apple.screensaver askForPassword 1 int currentHost
-    funct_defaults_check /Library/Preferences/.GlobalPreferences com.apple.autologout.AutoLogOutDelay 0 int
+    funct_defaults_check .GlobalPreferences com.apple.autologout.AutoLogOutDelay 0 int
     funct_defaults_check com.apple.screensaver idleTime 900 int currentHost
     if [ "$audit_mode" != 2 ]; then
       if [ -f "~/Library/Preferences/com.apple.dock" ]; then
