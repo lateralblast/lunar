@@ -130,7 +130,7 @@ audit_cron_allow () {
         funct_check_perms $dir_name 0700 root root
       done
       for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
-        funct_check_perms $check_file 0700 root root
+        funct_check_perms $check_file 0600 root root
       done
     fi
   fi

@@ -1,6 +1,16 @@
 # audit_file_metadata
 #
 # Auditing of File Metadata Modification Events
+#
+# The Solaris Audit service can be configured to record file metadata
+# modification events for every process running on the system.
+# This will allow the auditing service to determine when file ownership,
+# permissions and related information is changed.
+# This recommendation will provide an audit trail that contains information
+# related to changes of file metadata. The Solaris Audit service is used to
+# provide a more centralized and complete window into activities such as these.
+#
+# Refer to Section(s) 4.3 Page(s) 41-2 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_file_metadata () {
