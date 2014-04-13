@@ -22,7 +22,7 @@ audit_gate_keeper() {
         if [ "$audit_mode" = 0 ]; then
           echo "Seting:    Gatekeeper to enabled [$score]"
           echo "$actual_value" > $work_dir/$log_file
-          sudo cpctl --master-enable
+          sudo spctl --master-enable
         fi
       else
         if [ "$audit_mode" = 1 ]; then
