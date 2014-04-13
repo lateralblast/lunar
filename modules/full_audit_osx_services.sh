@@ -15,7 +15,6 @@ full_audit_osx_services () {
   audit_screen_lock
   audit_secure_swap
   audit_login_guest
-  audit_login_autologin
   audit_login_details
   audit_core_limit
   audit_remote_apple_events

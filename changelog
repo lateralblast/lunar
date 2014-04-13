@@ -775,3 +775,5 @@
 # Reference updates
 # 4.8.0 Sun 13 Apr 2014 17:40:02 EST
 # Reference updates and bug fixes
+# 4.8.1 Sun 13 Apr 2014 21:21:48 EST
+# Removed duplicate auto logout module
