@@ -8,7 +8,7 @@ funct_no_check() {
     parameter_name=$1
     correct_value=$2
     log_file="$parameter_name.log"
-    actual_value=`lssrc -a |grep '$parameter_name ' |cut -f2 -d= |sed 's/ //g'`
+    actual_value=`no -a |grep '$parameter_name ' |cut -f2 -d= |sed 's/ //g'`
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Parameter \"$parameter_name\" is \"$correct_value\""
       if [ "$actual_value" != "$correct_value" ]; then

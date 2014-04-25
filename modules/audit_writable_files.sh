@@ -45,6 +45,10 @@ audit_writable_files () {
           find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
           \( -type d -o -type f \) -perm -o+w -ls"
         fi
+        if [ "$os_name" = "FreeBSD" ]; then
+          find_command="find / \( -fstype ufs -type file -perm -0002 \
+          -a ! -perm -1000 \) -print"
+        fi
         for check_file in `$find_command`; do
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`

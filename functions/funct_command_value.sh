@@ -44,7 +44,7 @@ funct_command_value () {
   fi
   if [ "$command_name" = "inetadm" ]; then
     check_command="inetadm -l $service_name"
-    set_command="inetadm -M"
+    set_command="inetadm -m $service_name"
     current_value=`$check_command |grep "$parameter_name" |awk '{print $2}' |cut -f2 -d'='`
   fi
   if [ "$command_name" = "routeadm" ]; then

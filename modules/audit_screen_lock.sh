@@ -14,7 +14,6 @@ audit_screen_lock () {
   if [ "$os_name" = "Darwin" ]; then
     funct_verbose_message "Screen lock"
     funct_defaults_check com.apple.screensaver askForPassword 1 int currentHost
-    funct_defaults_check .GlobalPreferences com.apple.autologout.AutoLogOutDelay 0 int
     funct_defaults_check com.apple.screensaver idleTime 900 int currentHost
     if [ "$audit_mode" != 2 ]; then
       if [ -f "~/Library/Preferences/com.apple.dock" ]; then

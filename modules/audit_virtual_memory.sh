@@ -17,7 +17,7 @@ audit_virtual_memory () {
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       if [ "$os_version" > "5" ]; then
         check_file="/etc/sysctl.conf"
-        funct_file_vale $check_file kernel.randomize_va_space eq 2 hash
+        funct_file_value $check_file kernel.randomize_va_space eq 2 hash
       fi
     fi
   fi

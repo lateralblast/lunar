@@ -1,9 +1,9 @@
-# funct_chsec_check
+# funct_chuser_check
 #
 # Function to check sec under AIX
 #.
 
-funct_chsec_check() {
+funct_chuser_check() {
   if [ "$os_name" == "AIX" ]; then
     sec_file=$1
     parameter_name=$2

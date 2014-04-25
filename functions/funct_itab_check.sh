@@ -23,9 +23,9 @@ funct_itab_check() {
           echo "Warning:   Service \"$service_name\" is \"$correct_value\" [$score]"
           funct_verbose_message "" fix
           if [ "$correct_value" = "off" ]; then
-            funct_verbose_message "rmitab $service_name" fix
+            funct_verbose_message "rmitab `lsitab |grep '^$service_name'`" fix
           else
-            funct_verbose_message "chitab \"$correct_vale\"" fix
+            funct_verbose_message "chitab \"$correct_value\"" fix
           fi
           funct_verbose_message "" fix
         fi

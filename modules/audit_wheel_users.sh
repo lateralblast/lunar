@@ -8,7 +8,7 @@ audit_wheel_users () {
     check_file="/etc/group"
     if [ "$audit_mode" != 2 ]; then
       for user_name in `cat $check_file |grep '^$wheel_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
-        last_login=`last -1 guest |grep '[a-z]' |awk '{print $1}'`
+        last_login=`last -1 $user_name |grep '[a-z]' |awk '{print $1}'`
         if [ "$last_login" = "wtmp" ]; then
           lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
           if [ "$lock_test" = "$user_name" ]; then
