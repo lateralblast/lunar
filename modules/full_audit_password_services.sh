@@ -6,6 +6,7 @@
 full_audit_password_services () {
   audit_rsa_securid_pam
   audit_system_auth
+  audit_system_auth_use_uid
   audit_password_expiry
   audit_strong_password
   audit_passwd_perms

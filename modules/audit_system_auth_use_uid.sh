@@ -1,34 +1,37 @@
 # audit_system_auth_use_uid
 #
 # Audit wheel Set UID
+#
+# The su command allows a user to run a command or shell as another user.
+# The program has been superseded by sudo, which allows for more granular
+# control over privileged access. Normally, the su command can be executed
+# by any user. By uncommenting the pam_wheel.so statement in /etc/pam.d/su,
+# the su command will only allow users in the wheel group to execute su.
+#
+# Refer to Section(s) 6.5 Page(s) 165-6 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.5 Page(s) 145-6 CIS Red Hat Linux 6 Benchmark v1.2.0
 #.
 
 audit_system_auth_use_uid () {
-  auth_string=$1
-  search_string=$2
+  auth_string="auth"
+  search_string="use_uid"
   check_file="/etc/pam.d/su"
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ]; then
-      check_file="/etc/pam.d/system-auth"
-    fi
-    if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Ubuntu" ]; then
-      check_file="/etc/pam.d/common-auth"
-    fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Lockout for failed password attempts enabled in $check_file"
+      echo "Checking:  The use of su is restricted by sudo"
       total=`expr $total + 1`
       check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score - 1`
-          echo "Warning:   Lockout for failed password attempts not enabled in $check_file [$score]"
+          echo "Warning:   The use of su is not restricted by sudo in $check_file [$score]"
           funct_verbose_message "cp $check_file $temp_file" fix
           funct_verbose_message "cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
+          echo "Setting:   The use of su to be restricted by sudo in $check_file"
           cp $check_file $temp_file
           cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file
           rm $temp_file
@@ -36,7 +39,7 @@ audit_system_auth_use_uid () {
       else
         if [ "$audit_mode" = "1" ]; then
           score=`expr $score + 1`
-          echo "Secure:    Lockout for failed password attempts enabled in $check_file [$score]"
+          echo "Secure:    The use of su is restricted by sudo in $check_file [$score]"
         fi
       fi
     else

@@ -62,9 +62,6 @@ audit_system_auth () {
       search_string="unlock_time"
       search_value="900"
       audit_system_auth_unlock_time $auth_string $search_string $search_value
-      auth_string="auth"
-      search_string="use_uid"
-      audit_system_auth_use_uid $auth_string $search_string
     fi
   fi
 }
