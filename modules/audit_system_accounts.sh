@@ -24,7 +24,7 @@ audit_system_accounts () {
     check_file="/etc/passwd"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  System accounts have valid shells"
-      for user_name in `egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
+      for user_name in `cat /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do
         shadow_field=`grep "$user_name:" /etc/shadow |egrep -v "\*|\!\!|NP|UP|LK" |cut -f1 -d:`;
         if [ "$shadow_field" = "$user_name" ]; then
           echo "Warning:   System account $user_name has an invalid shell but the account is disabled"

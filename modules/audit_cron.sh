@@ -1,4 +1,4 @@
-# audit_cron_perms
+# audit_cron
 #
 # While there may not be user jobs that need to be run on the system,
 # the system does have maintenance jobs that may include security
@@ -9,7 +9,7 @@
 # Refer to Section(s) 9.1.1 Page(s) 114-5 SLES 11 Benchmark v1.0.0
 #.
 
-audit_cron_perms () {
+audit_cron () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Cron Daemon"
     service_name="crond"

@@ -1,4 +1,3 @@
-
 # audit_sysctl
 #
 # Network tuning parameters for sysctl under Linux.
@@ -169,7 +168,6 @@ audit_sysctl () {
     funct_file_value $check_file net.ipv4.conf.default.send_redirects eq 0 hash
     funct_file_value $check_file net.ipv4.icmp_ignore_bogus_error_responses eq 1 hash
     # IPv6 stuff
-    funct_file_value $check_file net.ipv6.conf.all.accept_ra eq 0 hash
     funct_file_value $check_file net.ipv6.conf.default.accept_redirects eq 0 hash
     funct_file_value $check_file net.ipv6.conf.all.accept_ra eq 0 hash
     funct_file_value $check_file net.ipv6.conf.default.accept_ra eq 0 hash
