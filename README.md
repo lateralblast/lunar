@@ -1,4 +1,4 @@
-![alt tag](https://raw.githubusercontent.com/richardatlateralblast/lunar/master/lunar.jpg)
+![alt tag](https://raw.githubusercontent.com/richardatlateralblast/lunar/master/lunar.png)
 
 lunar
 =====
