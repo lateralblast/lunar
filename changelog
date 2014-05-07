@@ -783,3 +783,5 @@
 # Fixed audit_system_auth_use_uid
 # 4.8.4: Tue  6 May 2014 12:42:52 EST
 # Minor fixes
+# 4.8.5: Thu  8 May 2014 09:14:24 EST
+# Fixed cron allow test for Solaris 11, Linux and FreeBSD

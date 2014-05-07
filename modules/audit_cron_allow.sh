@@ -26,27 +26,36 @@ audit_cron_allow () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "At/Cron Authorized Users"
     if [ "$os_name" = "FreeBSD" ]; then
-      base_dir="/var/cron"
+      cron_base_dir="/var/cron"
+      at_base_dir="/var/at"
       cron_group="wheel"
       check_file="/etc/crontab"
       funct_check_perms $check_file 0640 root $cron_group
     else
       if [ "$os_name" = "AIX" ]; then
-        base_dir="/var/adm/cron"
+        cron_base_dir="/var/adm/cron"
+        at_base_dir="/var/adm/cron"
         cron_group="cron"
       else
-        base_dir="/etc"
-        cron_group="root"
+        if [ "$os_name" = "SunOS" ] && [ "$os_version" = "11" ] || [ "$os_name" = "Linux" ]; then
+          cron_base_dir="/etc/cron.d"
+          at_base_base_dir="/etc/cron.d"
+          cron_group="root"
+        else
+          cron_base_dir="/etc"
+          at_base_base_dir="/etc"
+          cron_group="root"
+        fi
       fi
     fi
-    check_file="$hase_dir/cron.deny"
+    check_file="$cron_hase_dir/cron.deny"
     funct_file_exists $check_file no
-    check_file="$base_dir/at.deny"
+    check_file="$at_base_dir/at.deny"
     funct_file_exists $check_file no
-    cron_file="$base_dir/cron.allow"
+    cron_file="$cron_base_dir/cron.allow"
     funct_file_exists $cron_file yes
     funct_check_perms $check_file 0400 root $cron_group
-    at_file="$base_dir/at.allow"
+    at_file="$at_base_dir/at.allow"
     funct_file_exists $at_file yes
     funct_check_perms $check_file 0400 root $cron_group
     if [ "$audit_mode" = 0 ]; then

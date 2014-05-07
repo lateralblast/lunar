@@ -12,7 +12,7 @@ audit_linux_logfiles () {
       mailman messages news pgsql rpm pkgs sa samba scrollkeeper.log \
       secure spooler squid vbox wtmp; do
       if [ -f "/var/log/$log_file" ]; then
-        funct_check_perms /var/log/$log_file 0640 root root
+        funct_check_perms /var/log/$log_file 0600 root root
       fi
     done
   fi
