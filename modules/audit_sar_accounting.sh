@@ -14,10 +14,16 @@
 # activity report on a daily basis.
 #
 # Refer to Section(s) 2.12.8 Page(s) 212-3 CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 4.8 Page(s) 71-72 CIS Oracle Solaris 10 Benchmark v5.1.0
 #.
 
 audit_sar_accounting() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
+    if [ "$os_name" = "SunOS" ]; then
+      check_file="/var/spool/cron/crontabs/adm"
+      funct_append_file $check_file "0,20,40 * * * * /usr/lib/sa/sa1"
+      funct_append_file $check_file "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A"
+    fi
     if [ "$os_name" = "AIX" ]; then
       package_name="bos.acct"
       funct_lslpp_check $package_name
@@ -34,17 +40,17 @@ audit_sar_accounting() {
         funct_append_file $check_file "0 * * * 0,6 /usr/lib/sa/sa1 &"
         funct_append_file $check_file "0 18-7 * * 1-5 /usr/lib/sa/sa1 &"
         funct_append_file $check_file "5 18 * * 1-5 /usr/lib/sa/sa2 -s 8:00 -e 18:01 -i 3600 -ubcwyaqvm &"
-        $check_dir="/var/adm/sa"
-        if [ ! -d "$check_dir" ]; then
-          mkdir -p $check_dir
-        fi
-        funct_check_perms $check_dir 0755 adm adm
       else
         funct_verbose_message "" fix
         funct_verbose_message "Sar accounting requires $package_name to be installed" fix
         funct_verbose_message "" fix
       fi
     fi
+    $check_dir="/var/adm/sa"
+    if [ ! -d "$check_dir" ]; then
+      mkdir -p $check_dir
+    fi
+    funct_check_perms $check_dir 0750 adm adm
   fi
 }
 

@@ -1,4 +1,3 @@
-
 # audit_sticky_bit
 #
 # When the so-called sticky bit (set with chmod +t) is set on a directory,
@@ -34,7 +33,7 @@ audit_sticky_bit () {
           -o -fstype autofs -o -fstype ctfs \
           -o -fstype mntfs -o -fstype objfs \
           -o -fstype proc \) -prune -o -type d \
-          \( -perm -0002 -a ! -perm -1000 \) -print`; do
+          \( -perm -0002 -a -perm -1000 \) -print`; do
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score - 1`
             echo "Warning:   Sticky bit not set on $check_dir [$score]"

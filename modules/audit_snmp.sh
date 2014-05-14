@@ -31,8 +31,8 @@ audit_snmp () {
         funct_check_perms $check_file 0700 root system
       fi
       if [ "$os_name" = "SunOS" ]; then
+        funct_verbose_message "SNMP Daemons"
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          funct_verbose_message "SNMP Daemons"
           service_name="svc:/application/management/seaport:default"
           funct_service $service_name disabled
           service_name="svc:/application/management/snmpdx:default"
@@ -41,9 +41,7 @@ audit_snmp () {
           funct_service $service_name disabled
           service_name="svc:/application/management/sma:default"
           funct_service $service_name disabled
-        fi
-        if [ "$os_version" = "10" ]; then
-          funct_verbose_message "SNMP Daemons"
+        else
           service_name="init.dmi"
           funct_service $service_name disabled
           service_name="init.sma"

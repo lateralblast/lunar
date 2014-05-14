@@ -1,6 +1,7 @@
 # audit_sendmail_aliases
 #
 # Make sure sendmail aliases are configured appropriately.
+# Remove decode/uudecode alias
 #.
 
 audit_sendmail_aliases () {
