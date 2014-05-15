@@ -5,7 +5,6 @@
 
 full_audit_user_services () {
   audit_root_home
-  audit_root_default_group
   audit_root_primary_group
   audit_root_ssh_keys
   audit_mesgn
