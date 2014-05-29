@@ -11,7 +11,7 @@
 #.
 
 audit_syslog_conf () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "VMkernel" ]; then
     funct_verbose_message "Syslog Configuration"
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/syslog.conf"
@@ -24,6 +24,37 @@ audit_syslog_conf () {
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
       funct_file_value $check_file syslogd_flags eq -s hash
+    fi
+    if [ "$os_name" = "VMkernel" ]; then
+      total=`expr $total + 1`
+      backup_file="$work_dir/syslogremotehost"
+      current_value=`esxcli system syslog config get |grep Remote |awk '{print $3}'`
+      if [ "$audit_mode" != "2" ]; then
+        if [ "$current_value" = "<none>" ]; then
+          if [ "$audit_more" = "0" ]; then
+            if [ "$syslog_host" != "" ]; then
+              echo "$current_value" > $backup_file
+              esxcli system syslog config set --loghost="$syslog_host"
+            fi
+          fi
+          if [ "$audit_mode" = "1" ]; then
+            score=`expr $score - 1`
+            echo "Warning:   Syslog remote host is not enabled [$score]"
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then
+            score=`expr $score + 1`
+            echo "Secure:    Syslog remote host is enabled [$score]"
+          fi
+        fi
+      else
+        if [ -f "$backup_file" ]; then
+          previous_value=`cat $backup_file`
+          if [ "$previous_value" != "$current_value" ]; then
+            esxcli system syslog config set --loghost="$previous_value"
+          fi
+        fi
+      fi
     fi
   fi
 }

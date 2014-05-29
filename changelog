@@ -791,3 +791,5 @@
 # Deleted duplicate root group test
 # 4.8.8: Thu May 29 03:05:01 UTC 2014
 # Bug fixes and inital ESXi support (no tests)
+# 4.8.9: Thu 29 May 2014 16:28:43 EST
+# Improved scoring and added SNMP and Syslog tests for ESX

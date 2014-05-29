@@ -16,9 +16,38 @@
 #.
 
 audit_snmp () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "VMkernel" ]; then
     if [ "$snmpd_disable" = "yes" ]; then
       funct_verbose_message "SNMP Daemons and Log Permissions"
+      if [ "$os_name" = "VMkernel" ]; then
+        total=`expr $total + 1`
+        backup_file="$work_dir/snmpenable"
+        current_value=`esxcli system snmp get |grep Enable |awk '{print $2}'`
+        if [ "$audit_mode" != "2" ]; then
+          if [ "$current_value" = "true" ]; then
+            if [ "$audit_more" = "0" ]; then
+              echo "$current_value" > $backup_file
+              esxcli system snmp set --enable="false"
+            fi
+            if [ "$audit_mode" = "1" ]; then
+              score=`expr $score - 1`
+              echo "Warning:   SNMP is not enabled [$score]"
+            fi
+          else
+            if [ "$audit_mode" = "1" ]; then
+              score=`expr $score + 1`
+              echo "Secure:    SNMP is enabled [$score]"
+            fi
+          fi
+        else
+         if [ -f "$backup_file" ]; then
+            previous_value=`cat $backup_file`
+            if [ "$previous_value" != "$current_value" ]; then
+              esxcli system snmp set --enable="$previous_value"
+            fi
+          fi
+        fi
+      fi
       if [ "$os_name" = "AIX" ]; then
         for service_name in snmpd dpid2 hostmibd snmpmibd aixmibd; do
           funct_rctcp_check $service_name off
