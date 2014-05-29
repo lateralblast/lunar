@@ -30,7 +30,7 @@ Supported Operating Systems:
 - Mac OS X
 - FreeBSD (needs more testing)
 - AIX (needs more testing)
-- ESXi (initial support - no tests)
+- ESXi (initial support - some tests)
 
 More Information
 ----------------
