@@ -1,6 +1,8 @@
 # audit_privilege_events
 #
 # Auditing of Process and Privilege Events
+#
+# Refer to Section(s) 4.4 Page(s) 43-44 CIS Solaris 11.1 v1.0.0
 #.
 
 audit_privilege_events () {

@@ -29,7 +29,7 @@ audit_pam_wheel () {
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
-          echo "Setting:   Password minimum length in $check_file"
+          echo "Setting:   Su to require wheel group membership in PAM in $check_file"
           cp $check_file $temp_file
           cat $temp_file |awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' > $check_file
           rm $temp_file

@@ -1,14 +1,14 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.8.7
+# Version:      4.8.8
 # Release:      1
 # License:      Open Source
 # Group:        System
 # Source:       N/A
 # URL:          http://lateralblast.com.au/
 # Distribution: Solaris, Red Hat Linux, SuSE Linux, Debian Linux,
-#               Ubuntu Linux, Mac OS X, AIX, FreeBSD
+#               Ubuntu Linux, Mac OS X, AIX, FreeBSD, ESXi
 # Vendor:       UNIX
 # Packager:     Richard Spindler <richard@lateralblast.com.au>
 # Description:  Audit script based on various benchmarks
@@ -57,6 +57,7 @@
 
 args=$@
 score=0
+total=0
 pkg_company="LTRL"
 pkg_suffix="lunar"
 base_dir="/opt/$pkg_company$pkg_suffix"
@@ -66,7 +67,6 @@ temp_dir="$base_dir/tmp"
 temp_file="$temp_dir/temp_file"
 wheel_group="wheel"
 reboot=0
-total=0
 verbose=0
 functions_dir="functions"
 modules_dir="modules"
@@ -227,7 +227,12 @@ check_os_release () {
     os_version=`oslevel |cut -f1 -d.`
     os_update=`oslevel |cut -f2 -d.`
   fi
-  if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ] && [ "$os_name" != "FreeBSD" ] && [ "$os_name" != "AIX" ]; then
+  if [ "$os_name" = "VMkernel" ]; then
+    os_version=`uname -r`
+    os_update=`uname -v |awk '{print $4}'`
+    os_vendor="VMware"
+  fi
+  if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ] && [ "$os_name" != "FreeBSD" ] && [ "$os_name" != "AIX" ] && [ "$os_name" != "VMkernel" ]; then
     echo "OS not supported"
     exit
   fi
@@ -254,23 +259,24 @@ check_environment () {
     fi
     echo ""
   fi
-  if [ "$os_name" = "SunOS" ]; then
-    id_check=`id |cut -c5`
-  else
-    id_check=`id -u`
-  fi
-  if [ "$id_check" != "0" ]; then
-    if [ "$os_name" != "Darwin" ]; then
-      echo ""
-      echo "Stopping: $0 needs to be run as root"
-      echo ""
-      exit
+  if [ "$os_name" != "VMkernel" ]; then
+    if [ "$os_name" = "SunOS" ]; then
+      id_check=`id |cut -c5`
     else
-      base_dir="$HOME/.$pkg_suffix"
-      temp_dir="/tmp"
-      work_dir="$base_dir/$date_suffix"
+      id_check=`id -u`
+    fi
+    if [ "$id_check" != "0" ]; then
+      if [ "$os_name" != "Darwin" ]; then
+        echo ""
+        echo "Stopping: $0 needs to be run as root"
+        echo ""
+        exit
+      fi
     fi
   fi
+  base_dir="$HOME/.$pkg_suffix"
+  temp_dir="/tmp"
+  work_dir="$base_dir/$date_suffix"
   # Load functions from functions directory
   if [ -d "$functions_dir" ]; then
     if [ "$verbose" = "1" ]; then
@@ -284,7 +290,7 @@ check_environment () {
       else
         source $file_name
       fi
-      if [ "$verbose" == "1" ]; then
+      if [ "$verbose" = "1" ]; then
         echo "Loading:   $file_name"
       fi
     done
@@ -300,9 +306,15 @@ check_environment () {
       if [ "$os_name" = "SunOS" ]; then
         . $file_name
       else
-        source $file_name
+        if [ "$file_name" = "modules/audit_ftp_users.sh" ]; then
+          if [ "$os_name" != "VMkernel" ]; then
+             source $file_name
+          fi
+        else
+          source $file_name
+        fi
       fi
-      if [ "$verbose" == "1" ]; then
+      if [ "$verbose" = "1" ]; then
         echo "Loading:   $file_name"
       fi
     done
@@ -322,7 +334,7 @@ check_environment () {
         source $file_name
       fi
     done
-    if [ "$verbose" == "1" ]; then
+    if [ "$verbose" = "1" ]; then
       echo "Loading:   $file_name"
     fi
   fi

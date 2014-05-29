@@ -4,6 +4,10 @@
 # exploit the print server to gain access to the system.
 #
 # Refer to Section 2.2.4 Page(s) 19-20 CIS Apple OS X 10.8 Benchmark v1.0.0
+#
+# Printer sharing can be disabled via: cupsctl --no-share-printers
+# Need to update this code
+#
 #.
 
 audit_printer_sharing() {

@@ -2,7 +2,7 @@
 #
 # Set PASSREQ to YES in /etc/default/login to prevent users from loging on
 # without a password
-#
+#.
 
 audit_pass_req () {
   if [ "$os_name" = "SunOS" ]; then

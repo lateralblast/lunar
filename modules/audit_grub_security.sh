@@ -48,7 +48,7 @@ audit_grub_security () {
 #   echo "password --md5 $password_string" >> $check_file
 #   chmod 600 $check_file
 #   lock_check=`cat $check_file |grep lock`
-#   if [ "$lock_check" != "lock"]; then
+#   if [ "$lock_check" != "lock" ]; then
 #     cat $check_file |sed 's,Solaris failsafe,Solaris failsafe\
 #Lock,g' >> $temp_file
 #     cp $temp_file $check_file

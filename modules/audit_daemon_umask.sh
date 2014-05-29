@@ -46,7 +46,7 @@
 #.
 
 audit_daemon_umask () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || ["$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "11" ]; then
         funct_verbose_message "Daemon Umask"
