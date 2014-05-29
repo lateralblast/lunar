@@ -28,15 +28,15 @@ audit_groups_exist () {
         if [ "$group_exists" = 0 ]; then
           group_fail=1
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score - 1`
-            echo "Warning:   Group $group_id does not exist in group file [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Group $group_id does not exist in group file [$insecure Warnings]"
           fi
         fi
       done
       if [ "$group_fail" != 1 ]; then
         if [ "$audit_mode" = 1 ];then
-          score=`expr $score + 1`
-          echo "Secure:    No non existant group issues [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No non existant group issues [$secure Passes]"
         fi
       fi
     fi

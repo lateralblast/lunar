@@ -23,8 +23,8 @@ audit_mount_nodev () {
         total=`expr $total + 1`
         if [ "$nodev_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Found filesystems that should be mounted nodev [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Found filesystems that should be mounted nodev [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "cat $check_file | awk '( $3 ~ /^ext[2,3,4]|tmpfs$/ && $2 != \"/\" ) { $4 = $4 \",nodev\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -40,8 +40,8 @@ audit_mount_nodev () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    No filesystem that should be mounted with nodev [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No filesystem that should be mounted with nodev [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
             funct_restore_file $check_file $restore_dir

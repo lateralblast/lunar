@@ -16,8 +16,8 @@ audit_wake_on_lan() {
       if [ "$actual_value" = "1" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Wake on Lan is enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Wake on Lan is enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Seting:    Wake on Lan to disabled [$score]"
@@ -27,8 +27,8 @@ audit_wake_on_lan() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Wake on Lan is disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Wake on Lan is disabled [$secure Passes]"
         fi
       fi
     else

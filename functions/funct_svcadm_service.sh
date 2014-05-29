@@ -21,8 +21,8 @@ funct_svcadm_service () {
       fi
       if [ "$service_status" != "$correct_status" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Service $service_name is enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Service $service_name is enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "inetadm -d $service_name" fix
           funct_verbose_message "svcadm refresh $service_name" fix
@@ -53,8 +53,8 @@ funct_svcadm_service () {
         else
           if [ "$audit_mode" != 2 ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score + 1`
-              echo "Secure:    Service $service_name is already disabled [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    Service $service_name is already disabled [$secure Passes]"
             fi
           fi
         fi

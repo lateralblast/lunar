@@ -17,8 +17,8 @@ audit_logadm_value () {
       total=`expr $total + 1`
       if [ `expr "$check_log" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Logging for $log_name not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Logging for $log_name not enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" fix
           funct_verbose_message "svcadm refresh svc:/system/system-log" fix
@@ -69,8 +69,8 @@ audit_logadm_value () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Logging for $log_name already enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Logging for $log_name already enabled [$secure Passes]"
         fi
       fi
     fi

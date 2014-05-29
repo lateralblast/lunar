@@ -32,8 +32,8 @@ audit_user_netrc () {
     if [ "$check_fail" != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
         total=`expr $total + 1`
-        score=`expr $score + 1`
-        echo "Secure:    No user netrc files exist [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    No user netrc files exist [$secure Passes]"
       fi
     fi
   fi

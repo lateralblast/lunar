@@ -22,8 +22,8 @@ audit_eeprom_security () {
       eeprom_check=`eeprom security-mode | awk -F= '{ print $2 }'`
       if [ "$gdm_check" = "none" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   EEPROM password is not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   EEPROM password is not enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "eeprom security-mode=command" fix
           funct_verbose_message "eeprom security-#badlogins=0" fix
@@ -35,8 +35,8 @@ audit_eeprom_security () {
         fi
       else
         if [ "$audit_mode" = 1 ];then
-          score=`expr $score + 1`
-          echo "Secure:    EEPROM password is enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    EEPROM password is enabled [$secure Passes]"
         fi
       fi
     fi

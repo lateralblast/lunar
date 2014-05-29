@@ -22,8 +22,8 @@ audit_pam_gdm_autologin () {
         gdm_check=`cat $check_file |grep -v "^#" |grep "^gdm-autologin" |head -1 |wc -l`
         if [ "$gdm_check" != 0 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Gnome Autologin is enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Gnome Autologin is enabled [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "cat $check_file |sed 's/^gdm-autologin/#&/g' > $temp_file"
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -38,8 +38,8 @@ audit_pam_gdm_autologin () {
           fi
         else
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score + 1`
-            echo "Secure:    No members in shadow group [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No members in shadow group [$secure Passes]"
           fi
         fi
       fi

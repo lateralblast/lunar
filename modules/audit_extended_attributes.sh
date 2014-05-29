@@ -21,8 +21,8 @@ audit_extended_attributes () {
         -o -fstype objfs -o -fstype proc \) -prune \
         -o -xattr -print`; do
         total=`expr $total + 1`
-        score=`expr $score - 1`
-        echo "Warning:   File $check_file has extended attributes [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   File $check_file has extended attributes [$insecure Warnings]"
       done
     fi
   fi

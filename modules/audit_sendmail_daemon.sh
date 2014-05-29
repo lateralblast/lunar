@@ -87,8 +87,8 @@ audit_sendmail_daemon() {
           check_value=`cat $check_file |grep -v '^#' |grep 'O DaemonPortOptions' |awk '{print $3}' |grep '$search_string'`
           if [ "$check_value" = "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
-              score=`expr $score - 1`
-              echo "Warning:   Mail transfer agent is not running in local-only mode [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Mail transfer agent is not running in local-only mode [$insecure Warnings]"
               funct_verbose_message "" fix
               funct_verbose_message "cp $check_file $temp_file" fix
               funct_verbose_message "cat $temp_file |awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA\"; next} { print }' > $check_file" fix
@@ -104,8 +104,8 @@ audit_sendmail_daemon() {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              score=`expr $score + 1`
-              echo "Secure:    Mail transfer agent is running in local-only mode [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    Mail transfer agent is running in local-only mode [$secure Passes]"
             fi
           fi
         fi

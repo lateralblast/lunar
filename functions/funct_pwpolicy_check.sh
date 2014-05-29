@@ -18,8 +18,8 @@ funct_pwpolicy_check() {
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Password Policy for \"$parameter_name\" is not set to \"$correct_value\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Password Policy for \"$parameter_name\" is not set to \"$correct_value\" [$insecure Warnings]"
           funct_verbose_message "" fix
           if [ "$managed_node" = "Error" ]; then
             funct_verbose_message "sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$correct_value" fix
@@ -41,8 +41,8 @@ funct_pwpolicy_check() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Password Policy for \"$parameter_name\" is set to \"$correct_value\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Password Policy for \"$parameter_name\" is set to \"$correct_value\" [$secure Passes]"
         fi
       fi
     else

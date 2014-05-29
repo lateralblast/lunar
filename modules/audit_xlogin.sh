@@ -52,8 +52,8 @@ audit_xlogin () {
     if [ "$ttys_test" != "on" ]; then
       if [ "$audit_mode" != 2 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   X wrapper is not disabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   X wrapper is not disabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 2 ]; then
           echo "Setting:   X wrapper to disabled"
@@ -67,8 +67,8 @@ audit_xlogin () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    X wrapper is disabled [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    X wrapper is disabled [$secure Passes]"
       fi
     fi
   fi
@@ -83,8 +83,8 @@ audit_xlogin () {
          echo "Checking:  Checking $check_file for security message"
          greet_mesg="This is a private system --- Authorized use only!"
          if [ "$audit_mode" = 1 ]; then
-           score=`expr $score - 1`
-           echo "Warning:   File $check_file does not have a security message [$score]"
+           insecure=`expr $insecure + 1`
+           echo "Warning:   File $check_file does not have a security message [$insecure Warnings]"
            funct_verbose_message "" fix
            funct_verbose_message "cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" > $temp_file" fix
            funct_verbose_message "cat $temp_file > $check_file" fix
@@ -98,8 +98,8 @@ audit_xlogin () {
            rm $temp_file
            fi
         else
-          score=`expr $score + 1`
-          echo "Secure:    File $check_file has security message [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    File $check_file has security message [$secure Passes]"
         fi
       else
         funct_restore_file $check_file $restore_dir
@@ -115,8 +115,8 @@ audit_xlogin () {
         if [ "$greet_check" != 1 ]; then
            echo "Checking:  File $check_file for security message"
            if [ "$audit_mode" = 1 ]; then
-             score=`expr $score - 1`
-             echo "Warning:   File $check_file does not have a security message [$score]"
+             insecure=`expr $insecure + 1`
+             echo "Warning:   File $check_file does not have a security message [$insecure Warnings]"
              funct_verbose_message "" fix
              funct_verbose_message "cat $check_file |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"$greet_mesg\" > $temp_file" fix
              funct_verbose_message "cat $temp_file > $check_file" fix
@@ -130,8 +130,8 @@ audit_xlogin () {
              rm $temp_file
            fi
         else
-          score=`expr $score + 1`
-          echo "Secure:    File $check_file has security message [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    File $check_file has security message [$secure Passes]"
         fi
       else
         funct_restore_file $check_file $restore_dir
@@ -146,8 +146,8 @@ audit_xlogin () {
         if [ "$greet_check" != 1 ]; then
            echo "Checking:  For X11 nolisten directive in $check_file"
            if [ "$audit_mode" = 1 ]; then
-             score=`expr $score - 1`
-             echo "Warning:   X11 nolisten directive not found in $check_file [$score]"
+             insecure=`expr $insecure + 1`
+             echo "Warning:   X11 nolisten directive not found in $check_file [$insecure Warnings]"
              funct_verbose_message "" fix
              funct_verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
              funct_verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
@@ -163,8 +163,8 @@ audit_xlogin () {
              rm $temp_file
            fi
         else
-          score=`expr $score + 1`
-          echo "Secure:    X11 nolisten directive found in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    X11 nolisten directive found in $check_file [$secure Passes]"
         fi
       else
         funct_restore_file $check_file $restore_dir

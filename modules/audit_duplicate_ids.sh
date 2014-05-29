@@ -31,8 +31,8 @@ audit_duplicate_ids () {
           if [ "$file_check" = 1 ]; then
             file_id=`echo "$file_info" |cut -f2 -d":"`
             if [ "$audit_mode" = 1 ];then
-              score=`expr $score - 1`
-              echo "Warning:   There are multiple $function with $term $file_id [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   There are multiple $function with $term $file_id [$insecure Warnings]"
               duplicate=1
             fi
           fi
@@ -40,8 +40,8 @@ audit_duplicate_ids () {
       done
       if [ "$audit_mode" = 1 ]; then
         if [ "$duplicate" = 0 ];then
-          score=`expr $score + 1`
-          echo "Secure:    No $function with duplicate $term [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No $function with duplicate $term [$secure Passes]"
         fi
       fi
     fi

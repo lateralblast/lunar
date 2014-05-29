@@ -26,8 +26,8 @@ audit_ftp_banner () {
           if [ "actual_value" != "Authorised" ]; then
             if [ "$audit_mode" = 1 ]; then
               total=`expr $total + 1`
-              score=`expr $score - 1`
-              echo "Secure:    FTP warning message isn't enabled [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Secure:    FTP warning message isn't enabled [$secure Passes]"
               funct_verbose_message "" fix
               funct_verbose_message "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp" fix
               funct_verbose_message "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" /tmp/ftpd.tmp > /tmp/ftpd.msg" fix
@@ -46,8 +46,8 @@ audit_ftp_banner () {
           else
             if [ "$audit_mode" = 1 ]; then
               total=`expr $total + 1`
-              score=`expr $score + 1`
-              echo "Secure:    FTP warning message enabled [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    FTP warning message enabled [$secure Passes]"
             fi
           fi
         else

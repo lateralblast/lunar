@@ -21,8 +21,8 @@ funct_inetd_service () {
         total=`expr $total + 1`
         if [ "$actual_status" != "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Service $service_name does not have $parameter_name set to $correct_status [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Service $service_name does not have $parameter_name set to $correct_status [$insecure Warnings]"
           else
             if [ "$audit_mode" = 0 ]; then
               funct_backup_file $check_file
@@ -35,8 +35,8 @@ funct_inetd_service () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Service $service_name is set to $correct_status [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Service $service_name is set to $correct_status [$secure Passes]"
           fi
         fi
       else

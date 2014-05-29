@@ -35,8 +35,8 @@ audit_system_auth_account_reset () {
       check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $6}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Account reset entry not enabled in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Account reset entry not enabled in $check_file [$insecure Warnings]"
           funct_verbose_message "cp $check_file $temp_file" fix
           funct_verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_permit.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
@@ -50,8 +50,8 @@ audit_system_auth_account_reset () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Account entry enabled in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Account entry enabled in $check_file [$secure Passes]"
         fi
       fi
     else

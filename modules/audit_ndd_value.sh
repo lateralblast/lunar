@@ -54,8 +54,8 @@ audit_ndd_value () {
       if [ "$current_value" -ne "$correct_value" ]; then
         command_line="ndd -set $ndd_name $ndd_property $correct_value"
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   NDD \"$ndd_name $ndd_property\" not set to \"$correct_value\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   NDD \"$ndd_name $ndd_property\" not set to \"$correct_value\" [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "$command_line" fix
           funct_verbose_message "" fix
@@ -69,8 +69,8 @@ audit_ndd_value () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    NDD \"$ndd_name $ndd_property\" already set to \"$correct_value\" [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    NDD \"$ndd_name $ndd_property\" already set to \"$correct_value\" [$secure Passes]"
           fi
         fi
       fi

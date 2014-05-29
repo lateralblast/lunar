@@ -42,8 +42,8 @@ funct_replace_value () {
   if [ "$check_dfs" != 0 ]; then
     if [ "$audit_mode" != 2 ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   File $check_file contains \"$check_value\" rather than \"$correct_value\" [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   File $check_file contains \"$check_value\" rather than \"$correct_value\" [$insecure Warnings]"
         funct_verbose_message "" fix
         funct_verbose_message "sed -e \"s/$new_check_value/$new_correct_value/\" < $check_file > $temp_file" fix
         funct_verbose_message "cp $temp_file $check_file" fix
@@ -68,8 +68,8 @@ funct_replace_value () {
     fi
   else
     if [ "$audit_mode" = 1 ]; then
-      score=`expr $score + 1`
-      echo "Secure:    File $check_file contains \"$correct_value\" rather than \"$check_value\" [$score]"
+      secure=`expr $secure + 1`
+      echo "Secure:    File $check_file contains \"$correct_value\" rather than \"$check_value\" [$secure Passes]"
     fi
   fi
 }

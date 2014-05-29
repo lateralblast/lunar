@@ -16,8 +16,8 @@ audit_cd_sharing() {
       if [ "$share_test" = "1" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   DVD/CD sharing is enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   DVD/CD sharing is enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
           funct_verbose_message "" fix
@@ -29,8 +29,8 @@ audit_cd_sharing() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    DVD/CD Sharing disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    DVD/CD Sharing disabled [$secure Passes]"
         fi
       fi
     else

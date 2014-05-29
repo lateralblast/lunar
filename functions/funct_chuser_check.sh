@@ -18,8 +18,8 @@ funct_chuser_check() {
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Security Policy for \"$parameter_name\" is not set to \"$correct_value\" for \"$user_name\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Security Policy for \"$parameter_name\" is not set to \"$correct_value\" for \"$user_name\" [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "chuser $parameter_name=$correct_value $group_name=$group_value $user_name" fix
           funct_verbose_message "" fix
@@ -33,8 +33,8 @@ funct_chuser_check() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Password Policy for \"$parameter_name\" is set to \"$correct_value\" for \"$user_name\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Password Policy for \"$parameter_name\" is set to \"$correct_value\" for \"$user_name\" [$secure Passes]"
         fi
       fi
     else

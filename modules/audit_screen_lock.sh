@@ -22,8 +22,8 @@ audit_screen_lock () {
         if [ "$screen_test" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score - 1`
-            echo "Warning:   Screensaver disable hot corner is enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Screensaver disable hot corner is enabled [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
             funct_verbose_message "" fix
@@ -36,15 +36,15 @@ audit_screen_lock () {
         else
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score + 1`
-            echo "Secure:    No screensaver disable hot corners enabled [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No screensaver disable hot corners enabled [$secure Passes]"
           fi
         fi
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    No screensaver disable hot corners enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No screensaver disable hot corners enabled [$secure Passes]"
         fi
       fi
     else

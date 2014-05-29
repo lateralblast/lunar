@@ -38,8 +38,8 @@ audit_svccfg_value () {
     fi
     if [ "$current_value" != "$correct_value" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Service $service_name $service_property not set to $correct_value [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Service $service_name $service_property not set to $correct_value [$insecure Warnings]"
         command_line="svccfg -s $service_name setprop $service_property = $correct_value"
         funct_verbose_message "" fix
         funct_verbose_message "$command_line" fix
@@ -54,8 +54,8 @@ audit_svccfg_value () {
     else
       if [ "$audit_mode" != 2 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Service $service_name $service_property already set to $correct_value [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Service $service_name $service_property already set to $correct_value [$secure Passes]"
         fi
       fi
     fi

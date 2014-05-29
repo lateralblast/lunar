@@ -37,8 +37,8 @@ audit_unowned_files () {
       fi
       for check_file in `$find_command`; do
         total=`expr $total + 1`
-        score=`expr $score - 1`
-        echo "Warning:   File $check_file is unowned [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   File $check_file is unowned [$insecure Warnings]"
       done
     fi
   fi

@@ -25,8 +25,8 @@ audit_bonjour_advertising() {
       multicast_test=`cat $check_file |grep 'NoMulticastAdvertisements' |wc -l`
       if [ "multicast_test" != "1" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Bonjour Multicast Advertising enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Bonjour Multicast Advertising enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file" fix
           funct_verbose_message "cat $temp_file > $check_file" fix
@@ -41,8 +41,8 @@ audit_bonjour_advertising() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Bonjour Multicast Advertising disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Bonjour Multicast Advertising disabled [$secure Passes]"
         fi
       fi
     fi

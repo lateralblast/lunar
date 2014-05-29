@@ -18,8 +18,8 @@ audit_system_auth_nullok () {
       check_value=`cat $check_file |grep -v '^#' |grep 'nullok' |head -1 |wc -l`
       if [ "$check_value" = 1 ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Found nullok entry in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Found nullok entry in $check_file [$insecure Warnings]"
           funct_verbose_message "cp $check_file $temp_file" fix
           funct_verbose_message "cat $temp_file |sed 's/ nullok//' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
@@ -33,8 +33,8 @@ audit_system_auth_nullok () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score + 1`
-          echo "Secure:    No nullok entries in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No nullok entries in $check_file [$secure Passes]"
         fi
       fi
     else

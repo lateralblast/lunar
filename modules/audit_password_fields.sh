@@ -34,8 +34,8 @@ audit_password_fields () {
       for user_name in `$empty_command`; do
         empty_count=1
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   No password field for $user_name in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   No password field for $user_name in $check_file [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "passwd -d $user_name" fix
           if [ "$os_name" = "SunOS" ]; then
@@ -53,7 +53,7 @@ audit_password_fields () {
         fi
       done
       if [ "$empty_count" = 0 ]; then
-        score=`expr $score + 1`
+        secure=`expr $secure + 1`
         echo "Secure:    No empty password entries"
       fi
     else

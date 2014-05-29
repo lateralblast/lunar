@@ -27,8 +27,8 @@ audit_shadow_group () {
       shadow_check=`cat $check_file |grep -v "^#" |grep ^shadow |cut -f4 -d":" |wc -c`
       if [ "$shadow_check" != 0 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Shadow group contains members [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Shadow group contains members [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
           funct_verbose_message "cat $temp_file > $check_file" fix
@@ -43,8 +43,8 @@ audit_shadow_group () {
         fi
       else
         if [ "$audit_mode" = 1 ];then
-          score=`expr $score + 1`
-          echo "Secure:    No members in shadow group [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No members in shadow group [$secure Passes]"
         fi
       fi
     fi

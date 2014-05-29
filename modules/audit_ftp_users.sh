@@ -25,8 +25,8 @@ audit_ftp_users () {
       for  $user_name in `lsuser -c ALL | grep -v ^#name |grep -v root | cut -f1 -d:`; do
         if [ `lsuser -f $user_name | grep id | cut -f2 -d=` -lt 200 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   User $user_name not in $check_file [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   User $user_name not in $check_file [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 0 ]; then
             funct_backup_file $check_file
@@ -35,8 +35,8 @@ audit_ftp_users () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    User $user_name in $check_file [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    User $user_name in $check_file [$secure Passes]"
           fi
         fi
       done
@@ -55,8 +55,8 @@ audit_ftp_users () {
           ftpuser_check=`cat $check_file |grep -v '^#' |grep "^$user_name$"`
           if [ `expr "$ftpuser_check" : "[A-z]"` != 1 ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score - 1`
-              echo "Warning:   User $user_name not in $check_file [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   User $user_name not in $check_file [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
               funct_backup_file $check_file
@@ -65,8 +65,8 @@ audit_ftp_users () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score + 1`
-              echo "Secure:    User $user_name in $check_file [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    User $user_name in $check_file [$secure Passes]"
             fi
           fi
         fi
@@ -85,8 +85,8 @@ audit_ftp_users () {
           ftpuser_check=`cat $check_file |grep -v '^#' |grep "^$user_name$"`
           if [ `expr "$ftpuser_check" : "[A-z]"` != 1 ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score - 1`
-              echo "Warning:   User $user_name not in $check_file [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   User $user_name not in $check_file [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
               funct_backup_file $check_file
@@ -95,8 +95,8 @@ audit_ftp_users () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score + 1`
-              echo "Secure:    User $user_name in $check_file [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    User $user_name in $check_file [$secure Passes]"
             fi
           fi
         fi

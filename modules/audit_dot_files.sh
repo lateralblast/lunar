@@ -18,8 +18,8 @@ audit_dot_files () {
         if [ -f "$dot_file" ]; then
           if [ "$audit_mode" = 1 ];then
             total=`expr $total + 1`
-            score=`expr $score - 1`
-            echo "Warning:   File $dot_file exists [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   File $dot_file exists [$insecure Warnings]"
             funct_verbose_message "mv $dot_file $dot_file.disabled" fix
           fi
           if [ "$audit_mode" = 0 ];then
@@ -28,8 +28,8 @@ audit_dot_files () {
         else
           if [ "$audit_mode" = 1 ];then
             total=`expr $total + 1`
-            score=`expr $score + 1`
-            echo "Secure:    File $dot_file does not exist [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    File $dot_file does not exist [$secure Passes]"
           fi
         fi
       done

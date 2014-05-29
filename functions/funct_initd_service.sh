@@ -34,8 +34,8 @@ funct_initd_service () {
       total=`expr $total + 1`
       if [ "$actual_status" != "$correct_status" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Service $service_name is not $correct_status [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Service $service_name is not $correct_status [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "mv /etc/init.d/$service_name /etc/init.d/_$service_name" fix
           funct_verbose_message "/etc/init.d/$service_name stop" fix
@@ -74,8 +74,8 @@ funct_initd_service () {
         else
           if [ "$audit_mode" != 2 ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score + 1`
-              echo "Secure:    Service $service_name is $correct_status [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    Service $service_name is $correct_status [$secure Passes]"
             fi
           fi
         fi

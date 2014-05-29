@@ -23,8 +23,8 @@ audit_system_auth_use_uid () {
       check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   The use of su is not restricted by sudo in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   The use of su is not restricted by sudo in $check_file [$insecure Warnings]"
           funct_verbose_message "cp $check_file $temp_file" fix
           funct_verbose_message "cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
@@ -38,8 +38,8 @@ audit_system_auth_use_uid () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score + 1`
-          echo "Secure:    The use of su is restricted by sudo in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    The use of su is restricted by sudo in $check_file [$secure Passes]"
         fi
       fi
     else

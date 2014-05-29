@@ -25,9 +25,9 @@ audit_rsa_securid_pam () {
         echo "Checking:  RSA SecurID PAM Agent is enabled for sudo"
         total=`expr $total + 1`
         if [ "$check_value" != "$search_string" ]; then
-          score=`expr $score - 1`
+          insecure=`expr $insecure + 1`
           if [ "$audit_mode" = 1 ]; then
-            echo "Warning:   RSA SecurID PAM Agent is not enabled for sudo [$score]"
+            echo "Warning:   RSA SecurID PAM Agent is not enabled for sudo [$insecure Warnings]"
             funct_verbose_message "" fix
             if [ "$os_name" = "Linux" ]; then
               funct_verbose_message "cat $check_file |sed 's/^auth/#\&/' > $temp_file" fix
@@ -59,8 +59,8 @@ audit_rsa_securid_pam () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    RSA SecurID PAM Agent is configured for sudo [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    RSA SecurID PAM Agent is configured for sudo [$secure Passes]"
           fi
         fi
       else

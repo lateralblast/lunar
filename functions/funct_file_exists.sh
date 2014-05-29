@@ -19,8 +19,8 @@ funct_file_exists () {
     fi
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   File $check_file exists [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   File $check_file exists [$insecure Warnings]"
       fi
       if [ "$audit_mode" = 0 ]; then
         funct_backup_file $check_file
@@ -30,8 +30,8 @@ funct_file_exists () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    File $check_file does not exist [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    File $check_file does not exist [$secure Passes]"
       fi
     fi
   else
@@ -40,8 +40,8 @@ funct_file_exists () {
     fi
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   File $check_file does not exist [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   File $check_file does not exist [$insecure Warnings]"
       fi
       if [ "$audit_mode" = 0 ]; then
         echo "Creating:  File $check_file"
@@ -50,8 +50,8 @@ funct_file_exists () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Secure:    File $check_file exists [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Secure:    File $check_file exists [$secure Passes]"
       fi
     fi
   fi

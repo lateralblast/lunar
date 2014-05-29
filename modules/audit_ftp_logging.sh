@@ -28,14 +28,14 @@ audit_ftp_logging () {
       total=`expr $total + 1`
       if [ "$audit_mode" = 1 ]; then
         if [ "$check_value" -eq 0 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   FTP daemon logging not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   FTP daemon logging not enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "inetadm -m svc:/network/ftp exec=\"/usr/sbin/in.ftpd -a -l -d\"" fix
           funct_verbose_message "" fix
         else
-          score=`expr $score + 1`
-          echo "Secure:    FTP daemon logging enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    FTP daemon logging enabled [$secure Passes]"
         fi
       else
         if [ "$audit_mode" = 0 ]; then

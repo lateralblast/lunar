@@ -25,8 +25,8 @@ audit_nis_entries () {
       if [ "$audit_mode" != 2 ]; then
         for file_entry in `cat $check_file |grep "^+"`; do
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   NIS entry \"$file_entry\" in $check_file [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   NIS entry \"$file_entry\" in $check_file [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message 'sed -e "s/^+/#&/" < $check_file > $temp_file' fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -49,8 +49,8 @@ audit_nis_entries () {
         done
         if [ "$file_entry" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    No NIS entries in $check_file [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No NIS entries in $check_file [$secure Passes]"
           fi
         fi
       else

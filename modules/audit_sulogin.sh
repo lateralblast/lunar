@@ -25,8 +25,8 @@ audit_sulogin () {
       if [ "$ttys_test" != "insecure" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Single user mode does not require a password [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Single user mode does not require a password [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 2 ]; then
             echo "Setting:   Single user mode to require a password"
@@ -40,8 +40,8 @@ audit_sulogin () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Single user login requires password [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Single user login requires password [$secure Passes]"
         fi
       fi
     fi
@@ -52,8 +52,8 @@ audit_sulogin () {
         total=`expr $total + 1`
         if [ "$sulogin_check" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   No Authentication required for single usermode [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   No Authentication required for single usermode [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -69,8 +69,8 @@ audit_sulogin () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Single usermode requires authentication [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Single usermode requires authentication [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
             funct_restore_file $check_file $restore_dir

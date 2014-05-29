@@ -15,13 +15,13 @@ audit_unconfined_daemons () {
     total=`expr $total + 1`
     if [ "$daemon_check" = "" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Unconfined daemons $daemon_check [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Unconfined daemons $daemon_check [$insecure Warnings]"
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    No unconfined daemons [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    No unconfined daemons [$secure Passes]"
       fi
     fi
   fi

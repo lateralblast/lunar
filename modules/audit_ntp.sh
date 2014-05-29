@@ -12,7 +12,7 @@
 #.
 
 audit_ntp () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "VMkernel" ]; then
     funct_verbose_message "Network Time Protocol"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/inet/ntp.conf"
@@ -28,6 +28,12 @@ audit_ntp () {
       funct_launchctl_check org.ntp.ntpd on
       check_file="/private/etc/ntp.conf"
     fi
+    if [ "$os_name" = "VMkernel" ]; then
+      service_name="ntp"
+      funct_chkconfig_service $service_name 3 on
+      check_file="/etc/ntp.conf"
+      funct_append_file $check_file "restrict 127.0.0.1"
+    fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/ntp.conf"
       total=`expr $total + 1`
@@ -38,8 +44,8 @@ audit_ntp () {
       fi
       if [ "$package_name" != "ntp" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   NTP not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   NTP not enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   NTP to enabled"
@@ -49,8 +55,8 @@ audit_ntp () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    NTP enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    NTP installed [$secure Passes]"
         fi
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/$log_file"

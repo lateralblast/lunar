@@ -48,11 +48,11 @@ funct_command_output () {
     check_value=`$get_command`
     if [ "$audit_mode" = 1 ]; then
       if [ "$check_value" != "$correct_value" ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Command $command_name does not return correct value [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Command $command_name does not return correct value [$insecure Warnings]"
       else
-        score=`expr $score + 1`
-        echo "Secure:    Command $command_name returns correct value [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    Command $command_name returns correct value [$secure Passes]"
       fi
     fi
     if [ "$audit_mode" = 0 ]; then

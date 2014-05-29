@@ -15,8 +15,8 @@ audit_shells () {
           total=`expr $total + 1`
           if [ ! -f "check_shell" ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score - 1`
-              echo "Warning:   Shell $check_shell in $check_file does not exit [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Shell $check_shell in $check_file does not exit [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
               temp_file="$temp_dir/shells"

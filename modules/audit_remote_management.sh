@@ -20,8 +20,8 @@ audit_remote_management() {
       if [ "$actual_value" = "1" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Remote Management is enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Remote Management is enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
           funct_verbose_message "" fix
@@ -33,8 +33,8 @@ audit_remote_management() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Remote Management is disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Remote Management is disabled [$secure Passes]"
         fi
       fi
     else

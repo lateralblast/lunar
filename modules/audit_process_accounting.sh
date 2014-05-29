@@ -17,8 +17,8 @@ audit_process_accounting () {
     total=`expr $total + 1`
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Process accounting not enabled [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Process accounting not enabled [$insecure Warnings]"
       fi
       if [ "$audit_mode" = 0 ]; then
         echo "Setting:   Process accounting to enabled"
@@ -29,8 +29,8 @@ audit_process_accounting () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    Process accounting not enabled [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    Process accounting not enabled [$secure Passes]"
       fi
       if [ "$audit_mode" = 2 ]; then
         log_file="$restore_dir/acct.log"

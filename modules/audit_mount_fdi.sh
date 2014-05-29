@@ -28,8 +28,8 @@ audit_mount_fdi () {
         total=`expr $total + 1`
         if [ "$fdi_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   User mountable filesystems enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   User mountable filesystems enabled [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "echo '<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> <!-- -*- SGML -*- --> >' > $temp_file" fix
             funct_verbose_message "echo '<deviceinfo version=\"0.2\">' >> $temp_file" fix
@@ -63,8 +63,8 @@ audit_mount_fdi () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    User mountable filesystems disabled [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    User mountable filesystems disabled [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
             funct_restore_file $check_file $restore_dir

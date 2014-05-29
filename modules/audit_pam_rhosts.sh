@@ -25,7 +25,7 @@ audit_pam_rhosts () {
         if [ "$pam_check" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
             score=`expr $score -1`
-            echo "Warning:   Rhost authentication enabled in $check_file [$score]"
+            echo "Warning:   Rhost authentication enabled in $check_file [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -49,8 +49,8 @@ audit_pam_rhosts () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Rhost authentication disabled in $check_file [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Rhost authentication disabled in $check_file [$secure Passes]"
           fi
         fi
       fi
@@ -67,8 +67,8 @@ audit_pam_rhosts () {
         if [ "$pam_check" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score - 1`
-            echo "Warning:   Rhost authentication enabled in $check_file [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Rhost authentication enabled in $check_file [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -85,8 +85,8 @@ audit_pam_rhosts () {
         else
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score + 1`
-            echo "Secure:    Rhost authentication disabled in $check_file [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Rhost authentication disabled in $check_file [$secure Passes]"
           fi
         fi
       fi

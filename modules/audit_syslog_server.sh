@@ -57,8 +57,8 @@ audit_syslog_server () {
               if [ "$remote_check" != "1" ]; then
                 if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
                   total=`expr $total + 1`
-                  score=`expr $score - 1`
-                  echo "Warning:   Rsyslog is not sending messages to a remote server [$score]"
+                  insecure=`expr $insecure + 1`
+                  echo "Warning:   Rsyslog is not sending messages to a remote server [$insecure Warnings]"
                   funct_verbose_message "" fix
                   funct_verbose_message "Add a server entry to $check_file, eg:" fix
                   funct_verbose_message "*.* @@loghost.example.com" fix
@@ -66,8 +66,8 @@ audit_syslog_server () {
                 fi
               else
                 total=`expr $total + 1`
-                score=`expr $score + 1`
-                echo "Secure:    Rsyslog is sending messages to a remote server [$score]"
+                secure=`expr $secure + 1`
+                echo "Secure:    Rsyslog is sending messages to a remote server [$secure Passes]"
               fi
             fi
           fi

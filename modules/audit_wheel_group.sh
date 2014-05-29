@@ -13,8 +13,8 @@ audit_wheel_group () {
       check_value=`cat $check_file |grep '^$wheel_group:'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Wheel group does not exist in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Wheel group does not exist in $check_file [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
           funct_backup_file $check_file
@@ -24,8 +24,8 @@ audit_wheel_group () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Wheel group exists in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Wheel group exists in $check_file [$secure Passes]"
         fi
       fi
     else

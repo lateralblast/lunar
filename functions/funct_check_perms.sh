@@ -27,7 +27,7 @@ funct_check_perms () {
   total=`expr $total + 1`
   if [ ! -f "$check_file" ] && [ ! -d "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      score=`expr $score + 1`
+      secure=`expr $secure + 1`
       echo "Notice:    File $check_file does not exist [$score]"
     fi
     return
@@ -40,8 +40,8 @@ funct_check_perms () {
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then
     if [ "$audit_mode" = 1 ]; then
-      score=`expr $score - 1`
-      echo "Warning:   File $check_file has incorrect permissions [$score]"
+      insecure=`expr $insecure + 1`
+      echo "Warning:   File $check_file has incorrect permissions [$insecure Warnings]"
       funct_verbose_message "" fix
       funct_verbose_message "chmod $check_perms $check_file" fix
       if [ "$check_owner" != "" ]; then
@@ -66,8 +66,8 @@ funct_check_perms () {
     fi
   else
     if [ "$audit_mode" = 1 ]; then
-      score=`expr $score + 1`
-      echo "Secure:    File $check_file has correct permissions [$score]"
+      secure=`expr $secure + 1`
+      echo "Secure:    File $check_file has correct permissions [$secure Passes]"
     fi
   fi
   if [ "$audit_mode" = 2 ]; then

@@ -30,8 +30,8 @@ audit_inactive_users () {
         user_name=`echo $user_check |cut -f 1 -d":"`
         if [ "$inactive_check" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Inactive lockout not set for $user_name [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Inactive lockout not set for $user_name [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "usermod -f 35 $user_name" fix
             funct_verbose_message "" fix
@@ -44,8 +44,8 @@ audit_inactive_users () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Inactive lockout set for $user_name [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Inactive lockout set for $user_name [$secure Passes]"
           fi
         fi
       done

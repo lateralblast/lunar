@@ -32,8 +32,8 @@ funct_disable_value () {
       check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |uniq`
       if [ "$check_value" != "$parameter_name" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "cat $check_file |sed 's/$parameter_name/$comment_value&' > $temp_file" fix
           funct_verbose_message "cat $temp_file > $check_file" fix
@@ -64,8 +64,8 @@ funct_disable_value () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file [$secure Passes]"
           fi
         fi
       fi

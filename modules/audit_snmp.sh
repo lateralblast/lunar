@@ -30,13 +30,13 @@ audit_snmp () {
               esxcli system snmp set --enable="false"
             fi
             if [ "$audit_mode" = "1" ]; then
-              score=`expr $score - 1`
-              echo "Warning:   SNMP is not enabled [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   SNMP is not enabled [$insecure Warnings]"
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              score=`expr $score + 1`
-              echo "Secure:    SNMP is enabled [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    SNMP is enabled [$secure Passes]"
             fi
           fi
         else

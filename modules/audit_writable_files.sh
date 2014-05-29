@@ -51,8 +51,8 @@ audit_writable_files () {
         fi
         for check_file in `$find_command`; do
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   File $check_file is world writable [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   File $check_file is world writable [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "chmod o-w $check_file" fix
             funct_verbose_message "" fix

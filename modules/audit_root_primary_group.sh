@@ -28,8 +28,8 @@ audit_root_primary_group () {
       echo "Checking:  Primary group for root is root"
       if [ "$group_check" != "0" ];then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Group $group_id does not exist in group file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Group $group_id does not exist in group file [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "usermod -g 0 root" fix
           funct_verbose_message "" fix
@@ -42,8 +42,8 @@ audit_root_primary_group () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Primary group for root is root [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Primary group for root is root [$secure Passes]"
         fi
       fi
     else

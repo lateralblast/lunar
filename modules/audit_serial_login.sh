@@ -24,8 +24,8 @@ audit_serial_login () {
       if [ `expr "$tty_list" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Serial port logins disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Serial port logins disabled [$secure Passes]"
         fi
         if [ "$audit_mode" = 2 ]; then
           tty_list=`lsitab –a |grep "/usr/sbin/getty" |awk '{print $2}'`
@@ -45,8 +45,8 @@ audit_serial_login () {
             new_value=`echo "$actual_value" |sed 's/on/off/g'`
             if [ "$audit_mode" = 1 ]; then
               total=`expr $total + 1`
-              score=`expr $score - 1`
-              echo "Warning:   Serial port logins not disabled on $tty_name [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Serial port logins not disabled on $tty_name [$insecure Warnings]"
               funct_verbose_message "" fix
               funct_verbose_message "chitab \"$new_value\"" fix
               funct_verbose_message "" fix
@@ -72,14 +72,14 @@ audit_serial_login () {
         if [ `expr "$serial_test" : "2"` = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score + 1`
-            echo "Secure:    Serial port logins disabled [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Serial port logins disabled [$secure Passes]"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score - 1`
-            echo "Warning:   Serial port logins not disabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Serial port logins not disabled [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "pmadm -d -p zsmon -s ttya" fix
             funct_verbose_message "pmadm -d -p zsmon -s ttyb" fix
@@ -109,8 +109,8 @@ audit_serial_login () {
       if [ "$ttys_test" != "off" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Serial port logins not disabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Serial port logins not disabled [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 2 ]; then
             echo "Setting:   Serial port logins to disabled"
@@ -124,8 +124,8 @@ audit_serial_login () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Serial port logins disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Serial port logins disabled [$secure Passes]"
         fi
       fi
     fi

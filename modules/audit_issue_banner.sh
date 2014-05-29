@@ -32,8 +32,8 @@ audit_issue_banner () {
       echo "Checking:  Security message in $check_file"
       if [ "$issue_check" != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   No security message in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   No security message in $check_file [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Security message in $check_file"
@@ -62,8 +62,8 @@ audit_issue_banner () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Security message in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Security message in $check_file [$secure Passes]"
         fi
       fi
     else

@@ -45,8 +45,8 @@ audit_power_management () {
         fi
         if [ "$poweradm_test" != "false" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Power suspend enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Power suspend enabled [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "poweradm set suspend-enable=false" fix
             funct_verbose_message "poweradm update" fix
@@ -61,8 +61,8 @@ audit_power_management () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Power suspend disabled [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Power suspend disabled [$secure Passes]"
           fi
         fi
       fi

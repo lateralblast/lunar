@@ -14,8 +14,8 @@ funct_dscl_check () {
       echo "Checking:  Parameter \"$dscl_parameter\" is set to \"$dscl_value\" in \"$dscl_file\""
       check_vale=`sudo dscl . -read $dscl_file $dscl_parameter`
       if [ "$check_value" != "$dscl_value" ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Parameter \"$dscl_parameter\" not set to \"$dscl_value\" in \"$dscl_file\" [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Parameter \"$dscl_parameter\" not set to \"$dscl_value\" in \"$dscl_file\" [$insecure Warnings]"
         funct_verbose_message "" fix
         funct_verbose_message "sudo dscl . -create $dscl_file $dscl_parameter \"$dscl_value\"" fix
         funct_verbose_message "" fix
@@ -26,8 +26,8 @@ funct_dscl_check () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Parameter \"$dscl_parameter\" is set to \"$dscl_value\" in \"$dscl_file\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Parameter \"$dscl_parameter\" is set to \"$dscl_value\" in \"$dscl_file\" [$secure Passes]"
         fi
       fi
     else

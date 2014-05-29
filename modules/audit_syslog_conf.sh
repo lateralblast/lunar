@@ -32,19 +32,19 @@ audit_syslog_conf () {
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" = "<none>" ]; then
           if [ "$audit_more" = "0" ]; then
-            if [ "$syslog_host" != "" ]; then
+            if [ "$syslog_server" != "" ]; then
               echo "$current_value" > $backup_file
-              esxcli system syslog config set --loghost="$syslog_host"
+              esxcli system syslog config set --loghost="$syslog_server"
             fi
           fi
           if [ "$audit_mode" = "1" ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Syslog remote host is not enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Syslog remote host is not enabled [$insecure Warnings]"
           fi
         else
           if [ "$audit_mode" = "1" ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Syslog remote host is enabled [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Syslog remote host is enabled [$secure Passes]"
           fi
         fi
       else

@@ -51,22 +51,22 @@ audit_home_ownership() {
             home_check=1
             if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
               if [ "$audit_mode" = 1 ];then
-                score=`expr $score - 1`
-                echo "Warning:   User $check_user has no home directory defined [$score]"
+                insecure=`expr $insecure + 1`
+                echo "Warning:   User $check_user has no home directory defined [$insecure Warnings]"
               fi
             else
               if [ -d "$home_dir" ]; then
                 dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
-                    score=`expr $score - 1`
-                    echo "Warning:   Home Directory for $check_user is owned by $dir_owner [$score]"
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:   Home Directory for $check_user is owned by $dir_owner [$insecure Warnings]"
                   fi
                 else
                   if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      score=`expr $score - 1`
-                      echo "Warning:   User $check_user has no home directory [$score]"
+                      insecure=`expr $insecure + 1`
+                      echo "Warning:   User $check_user has no home directory [$insecure Warnings]"
                     fi
                   fi
                 fi
@@ -76,8 +76,8 @@ audit_home_ownership() {
         done
         if [ "$home_check" = 0 ]; then
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score + 1`
-            echo "Secure:    No ownership issues with home directories [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No ownership issues with home directories [$secure Passes]"
           fi
         fi
       fi
@@ -96,22 +96,22 @@ audit_home_ownership() {
             home_check=1
             if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
               if [ "$audit_mode" = 1 ];then
-                score=`expr $score - 1`
-                echo "Warning:   User $check_user has no home directory defined [$score]"
+                insecure=`expr $insecure + 1`
+                echo "Warning:   User $check_user has no home directory defined [$insecure Warnings]"
               fi
             else
               if [ -d "$home_dir" ]; then
                 dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
-                    score=`expr $score - 1`
-                    echo "Warning:   Home Directory for $check_user is owned by $dir_owner [$score]"
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:   Home Directory for $check_user is owned by $dir_owner [$insecure Warnings]"
                   fi
                 else
                   if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      score=`expr $score - 1`
-                      echo "Warning:   User $check_user has no home directory [$score]"
+                      insecure=`expr $insecure + 1`
+                      echo "Warning:   User $check_user has no home directory [$insecure Warnings]"
                     fi
                   fi
                 fi
@@ -121,8 +121,8 @@ audit_home_ownership() {
         done
         if [ "$home_check" = 0 ]; then
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score + 1`
-            echo "Secure:    No ownership issues with home directories [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No ownership issues with home directories [$secure Passes]"
           fi
         fi
       fi
@@ -143,22 +143,22 @@ audit_home_ownership() {
             home_check=1
             if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
               if [ "$audit_mode" = 1 ];then
-                score=`expr $score - 1`
-                echo "Warning:   User $check_user has no home directory defined [$score]"
+                insecure=`expr $insecure + 1`
+                echo "Warning:   User $check_user has no home directory defined [$insecure Warnings]"
               fi
             else
               if [ -d "$home_dir" ]; then
                 dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
-                    score=`expr $score - 1`
-                    echo "Warning:   Home Directory for $check_user is owned by $dir_owner [$score]"
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:   Home Directory for $check_user is owned by $dir_owner [$insecure Warnings]"
                   fi
                 else
                   if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      score=`expr $score - 1`
-                      echo "Warning:   User $check_user has no home directory [$score]"
+                      insecure=`expr $insecure + 1`
+                      echo "Warning:   User $check_user has no home directory [$insecure Warnings]"
                     fi
                   fi
                 fi
@@ -168,8 +168,8 @@ audit_home_ownership() {
         done
         if [ "$home_check" = 0 ]; then
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score + 1`
-            echo "Secure:    No ownership issues with home directories [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No ownership issues with home directories [$secure Passes]"
           fi
         fi
       fi

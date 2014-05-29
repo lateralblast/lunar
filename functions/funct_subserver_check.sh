@@ -20,8 +20,8 @@ funct_subserver_check() {
       if [ "$actual_value" != "$service_name" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Service \"$service_name\" Protocol \"$protocol_name\" is not \"$correct_value\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Service \"$service_name\" Protocol \"$protocol_name\" is not \"$correct_value\" [$insecure Warnings]"
           if [ "$correct_value" = "off" ]; then
             funct_verbose_message "" fix
             funct_verbose_message "chsubserver -r inetd -C /etc/inetd.conf -d -v '$service_name' -p '$protocol_name'" fix
@@ -45,8 +45,8 @@ funct_subserver_check() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Service \"$service_name\" Protocol \"$protocol_name\" is \"$correct_value\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Service \"$service_name\" Protocol \"$protocol_name\" is \"$correct_value\" [$secure Passes]"
         fi
       fi
     else

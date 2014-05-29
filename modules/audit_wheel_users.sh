@@ -13,8 +13,8 @@ audit_wheel_users () {
           lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
           if [ "$lock_test" = "$user_name" ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score - 1`
-              echo "Warning:   User $user_name has not logged in recently and their account is not locked [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   User $user_name has not logged in recently and their account is not locked [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
               funct_backup_file $check_file

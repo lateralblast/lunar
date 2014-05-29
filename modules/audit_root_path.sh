@@ -24,47 +24,47 @@ audit_root_path () {
       if [ "$audit_mode" = 1 ]; then
         if [ "`echo $PATH | grep :: `" != "" ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Empty directory in PATH [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Empty directory in PATH [$insecure Warnings]"
         else
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    No empty directory in PATH [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No empty directory in PATH [$secure Passes]"
         fi
         if [ "`echo $PATH | grep :$`"  != "" ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Trailing : in PATH [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Trailing : in PATH [$insecure Warnings]"
         else
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    No trailing : in PATH [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No trailing : in PATH [$secure Passes]"
         fi
         for dir_name in `echo $PATH | sed -e 's/::/:/' -e 's/:$//' -e 's/:/ /g'`; do
           if [ "$dir_name" = "." ]; then
             total=`expr $total + 1`
-            score=`expr $score - 1`
-            echo "Warning:   PATH contains . [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   PATH contains . [$insecure Warnings]"
           fi
           if [ -d "$dir_name" ]; then
             dir_perms=`ls -ld $dir_name | cut -f1 -d" "`
             if [ "`echo $dir_perms | cut -c6`" != "-" ]; then
               total=`expr $total + 1`
-              score=`expr $score - 1`
-              echo "Warning:   Group write permissions set on directory $dir_name [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Group write permissions set on directory $dir_name [$insecure Warnings]"
             else
               total=`expr $total + 1`
-              score=`expr $score + 1`
-              echo "Secure:    Group write permission not set on directory $dir_name [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    Group write permission not set on directory $dir_name [$secure Passes]"
             fi
             if [ "`echo $dir_perms | cut -c9`" != "-" ]; then
               total=`expr $total + 1`
-              score=`expr $score - 1`
-              echo "Warning:   Other write permissions set on directory $dir_name [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Other write permissions set on directory $dir_name [$insecure Warnings]"
             else
               total=`expr $total + 1`
-              score=`expr $score + 1`
-              echo "Secure:    Other write permission not set on directory $dir_name [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    Other write permission not set on directory $dir_name [$secure Passes]"
             fi
           fi
         done

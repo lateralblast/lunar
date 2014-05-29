@@ -50,7 +50,7 @@ funct_file_value () {
       fi
     fi
   fi
-  if [ "$id_check" = "0" ]; then
+  if [ "$id_check" = "0" ] || [ "$os_name" = "VMkernel" ]; then
     cat_command="cat"
     sed_command="sed"
     echo_command="echo"
@@ -65,8 +65,8 @@ funct_file_value () {
     echo "Checking:  Value of \"$parameter_name\" is set to \"$correct_value\" in $check_file"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$insecure Warnings]"
         if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
           funct_verbose_message "" fix
           funct_verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" fix
@@ -102,8 +102,8 @@ funct_file_value () {
       fi
       if [ "$check_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file [$insecure Warnings]"
           if [ "$check_parameter" != "$parameter_name" ]; then
             if [ "$separator_value" = "tab" ]; then
               funct_verbose_message "" fix
@@ -180,8 +180,8 @@ funct_file_value () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file [$secure Passes]"
           fi
         fi
       fi

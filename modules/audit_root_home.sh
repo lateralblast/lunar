@@ -22,8 +22,8 @@ audit_root_home () {
         log_file="$work_dir/roothome.log"
         if [ "$home_check" != "/root" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Root home directory incorrectly set [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Root home directory incorrectly set [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "mkdir -m 700 /root" fix
             funct_verbose_message "mv -i /.?* /root/" fix
@@ -39,8 +39,8 @@ audit_root_home () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Root home directory correctly set [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Root home directory correctly set [$secure Passes]"
           fi
         fi
         if [ "$audit_mode" = 2 ]; then

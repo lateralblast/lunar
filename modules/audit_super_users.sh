@@ -26,8 +26,8 @@ audit_super_users() {
         for user_name in `awk -F: '$3 == "0" { print $1 }' /etc/passwd |grep -v root`; do
           echo "$user_name"
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   UID 0 for $user_name [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   UID 0 for $user_name [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "userdel $user_name" fix
             funct_verbose_message "" fix
@@ -44,8 +44,8 @@ audit_super_users() {
         done
         if [ "$user_name" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    No accounts other than root have UID 0 [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No accounts other than root have UID 0 [$secure Passes]"
           fi
         fi
       else

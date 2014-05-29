@@ -25,8 +25,8 @@ funct_launchctl_check () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Service $launchctl_service is $required_status"
       if [ "$actual_status" != "$required_status" ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Service $launchctl_service is $actual_status [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Service $launchctl_service is $actual_status [$insecure Warnings]"
         funct_verbose_message "" fix
         funct_verbose_message "sudo launchctl $change_status -w $launchctl_service.plist" fix
         funct_verbose_message "" fix
@@ -38,8 +38,8 @@ funct_launchctl_check () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Service $launchctl_service is $required_status [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Service $launchctl_service is $required_status [$secure Passes]"
         fi
       fi
     else

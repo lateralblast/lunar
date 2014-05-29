@@ -14,8 +14,8 @@ audit_create_class () {
       total=`expr $total + 1`
       if [ `expr "$class_check" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Audit class not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Audit class not enabled [$insecure Warnings]"
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Audit class to enabled"

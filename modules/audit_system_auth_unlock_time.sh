@@ -31,8 +31,8 @@ audit_system_auth_unlock_time () {
       check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Lockout time for failed password attempts not enabled in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Lockout time for failed password attempts not enabled in $check_file [$insecure Warnings]"
           funct_verbose_message "cp $check_file $temp_file" fix
           funct_verbose_message "cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 $search_string=$search_value\n/' > $check_file" fix
           funct_verbose_message "rm $temp_file" fix
@@ -46,8 +46,8 @@ audit_system_auth_unlock_time () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Lockout time for failed password attempts enabled in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Lockout time for failed password attempts enabled in $check_file [$secure Passes]"
         fi
       fi
     else

@@ -12,8 +12,8 @@ audit_wheel_sudo () {
           nopasswd_check=`cat $check_file |grep $wheel_group |awk '{print $3}'`
           if [ "$nopasswd_check" = "NOPASSWD" ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score - 1`
-              echo "Warning:   Group $wheel_group does not require password to escalate privileges [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Group $wheel_group does not require password to escalate privileges [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
               funct_backup_file $check_file

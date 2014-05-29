@@ -19,8 +19,8 @@ audit_pam_wheel () {
       check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Wheel group membership not required for su in $check_file [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Wheel group membership not required for su in $check_file [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "cp $check_file $temp_file" fix
           funct_verbose_message "cat $temp_file |awk '( $1==\"#auth\" && $2==\"required\" && $3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",$3,\"\tuse_uid\"; next }; { print }' > $check_file" fix
@@ -36,8 +36,8 @@ audit_pam_wheel () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Wheel group membership required for su in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Wheel group membership required for su in $check_file [$secure Passes]"
         fi
       fi
     else

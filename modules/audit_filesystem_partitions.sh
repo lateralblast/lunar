@@ -16,13 +16,13 @@ audit_filesystem_partitions() {
       if [ "$mount_test" != "$filesystem" ]; then
         if [ "$audit_mode" != "2" ]; then
           if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Filesystem $filesystem is not a separate partition [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Filesystem $filesystem is not a separate partition [$insecure Warnings]"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Filesystem $filesystem is a separate filesystem [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Filesystem $filesystem is a separate filesystem [$secure Passes]"
           fi
         fi
       fi

@@ -17,13 +17,13 @@ funct_check_pkg () {
     fi
     if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
-        echo "Secure:    Package $pkg_name is already installed [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    Package $pkg_name is already installed [$secure Passes]"
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Package $pkg_name is not installed [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Package $pkg_name is not installed [$insecure Warnings]"
         if [ "$os_version" = "11" ]; then
           funct_verbose_message "" fix
           funct_verbose_message  "pkgadd $pkg_name" fix

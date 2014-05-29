@@ -30,8 +30,8 @@ audit_reserved_ids () {
         if [ "$found" = 0 ]; then
           uuid_check=1
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score - 1`
-            echo "Warning:   User $check_user has a reserved UID ($check_uid) [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   User $check_user has a reserved UID ($check_uid) [$insecure Warnings]"
           fi
         fi
       done
@@ -57,8 +57,8 @@ audit_reserved_ids () {
         if [ "$found" = 0 ]; then
           uuid_check=1
           if [ "$audit_mode" = 1 ];then
-            score=`expr $score - 1`
-            echo "Warning:   User $check_user has a reserved UID ($check_uid) [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   User $check_user has a reserved UID ($check_uid) [$insecure Warnings]"
           fi
         fi
       done

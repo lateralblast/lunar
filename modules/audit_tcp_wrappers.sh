@@ -58,8 +58,8 @@ audit_tcp_wrappers () {
         total=`expr $total + 1`
         if [ "$lslpp_check" != "$package_name" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   TCP Wrappers not installed [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   TCP Wrappers not installed [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "TCP Wrappers not installed" fix
             funct_verbose_message "Install TCP Wrappers" fix
@@ -67,8 +67,8 @@ audit_tcp_wrappers () {
             total=`expr $total + 1`
           fi
         else
-          score=`expr $score + 1`
-          echo "Secure:    TCP Wrappers installed [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    TCP Wrappers installed [$secure Passes]"
         fi
       fi
     fi
@@ -114,8 +114,8 @@ audit_tcp_wrappers () {
         fi
         if [ "$package_name" != "tcp_wrappers" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   TCP Wrappers is not installed [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   TCP Wrappers is not installed [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   TCP Wrappers to installed"
@@ -125,8 +125,8 @@ audit_tcp_wrappers () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    TCP Wrappers is installed [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    TCP Wrappers is installed [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
             restore_file="$restore_dir/$log_file"

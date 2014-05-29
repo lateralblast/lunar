@@ -56,8 +56,8 @@ audit_core_dumps () {
         total=`expr $total + 1`
         if [ `expr "$cores_check" : "/var/cores"` != 10 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Cores are not restricted to a private directory [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Cores are not restricted to a private directory [$insecure Warnings]"
           else
             if [ "$audit_mode" = 0 ]; then
               echo "Setting:   Making sure restricted to a private directory"
@@ -134,8 +134,8 @@ audit_core_dumps () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Cores are restricted to a private directory [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Cores are restricted to a private directory [$secure Passes]"
           fi
         fi
         if [ "$audit_mode" = 2 ]; then

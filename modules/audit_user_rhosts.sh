@@ -33,8 +33,8 @@ audit_user_rhosts () {
     if [ "$check_fail" != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
         total=`expr $total + 1`
-        score=`expr $score + 1`
-        echo "Secure:    No user rhosts files exist [$score]"
+        secure=`expr $secure + 1`
+        echo "Secure:    No user rhosts files exist [$secure Passes]"
       fi
     fi
   fi

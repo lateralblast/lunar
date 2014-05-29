@@ -21,8 +21,8 @@ audit_keychain_lock() {
       if [ "$actual_value" = "no-timeout" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Keychain Lock time is not set [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Keychain Lock time is not set [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
           funct_verbose_message "" fix
@@ -37,8 +37,8 @@ audit_keychain_lock() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Keychain Lock time is set [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Keychain Lock time is set [$secure Passes]"
         fi
       fi
     else

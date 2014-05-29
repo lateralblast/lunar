@@ -16,8 +16,8 @@ audit_gate_keeper() {
       if [ "$actual_value" = "disable" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Gatekeeper is not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Gatekeeper is not enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Seting:    Gatekeeper to enabled [$score]"
@@ -27,8 +27,8 @@ audit_gate_keeper() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Gatekeeper is enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Gatekeeper is enabled [$secure Passes]"
         fi
       fi
     else

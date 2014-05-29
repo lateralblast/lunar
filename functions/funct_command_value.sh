@@ -54,8 +54,8 @@ funct_command_value () {
   log_file="$work_dir/$command_name.log"
   if [ "$current_value" != "$correct_value" ]; then
     if [ "$audit_mode" = 1 ]; then
-      score=`expr $score - 1`
-      echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" [$score]"
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Parameter \"$parameter_name\" not set to \"$correct_value\" [$insecure Warnings]"
       if [ "$command_name" = "routeadm" ]; then
         if [ "$correct_value" = "disabled" ]; then
           set_command="routeadm -d"
@@ -89,11 +89,11 @@ funct_command_value () {
   else
     if [ "$audit_mode" != 2 ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score + 1`
+        secure=`expr $secure + 1`
         if [ "$parameter_name" = "tcp_wrappers" ]; then
           echo "Secure:    Service $service_name already has \"$parameter_name\" set to \"$correct_value\""
         else
-          echo "Secure:    Output for command $command_name \"$parameter_name\" already set to \"$correct_value\" [$score]"
+          echo "Secure:    Output for command $command_name \"$parameter_name\" already set to \"$correct_value\" [$secure Passes]"
         fi
       fi
     fi

@@ -25,8 +25,8 @@ audit_apparmour () {
         if [ "$armour_test" = "1" ]; then
           if [ ! -f "check_shell" ]; then
             if [ "$audit_mode" = 1 ]; then
-              score=`expr $score - 1`
-              echo "Warning:   AppArmour is not enabled [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   AppArmour is not enabled [$insecure Warnings]"
               funct_verbose_message "" fix
               funct_verbose_message "cat $check_file |sed 's/apparmour=0//g' > $temp_file" fix
               funct_verbose_message "cat $temp_file > $check_file" fix
@@ -43,8 +43,8 @@ audit_apparmour () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Secure:    AppArmour enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Secure:    AppArmour enabled [$secure Passes]"
           fi
         fi
       fi

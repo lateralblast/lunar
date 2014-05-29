@@ -32,8 +32,8 @@ audit_grub_security () {
 #    grub_check=`cat $check_file |grep "^password --md5" |awk '{print $1}'`
 #    if [ "$grub_check" != "password" ]; then
 #      if [ "$audit_mode" = 1 ]; then
-#        score=`expr $score - 1`
-#        echo "Warning:   Grub password not set [$score]"
+#        insecure=`expr $insecure + 1`
+#        echo "Warning:   Grub password not set [$insecure Warnings]"
 #      fi
 #      This code needs work
 #      if [ "$audit_mode" = 0 ]; then
@@ -57,8 +57,8 @@ audit_grub_security () {
 #     fi
 #    else
 #      if [ "$audit_mode" = 1 ]; then
-#        score=`expr $score + 1`
-#        echo "Secure:    Set-UID not restricted on user mounted devices [$score]"
+#        secure=`expr $secure + 1`
+#        echo "Secure:    Set-UID not restricted on user mounted devices [$secure Passes]"
 #      fi
 #      if [ "$audit_mode" = 2 ]; then
 #        restore_file="$restore_dir$check_file"

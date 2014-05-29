@@ -55,8 +55,8 @@ audit_console_login () {
       if [ "$disable_ttys" = 1 ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Consoles enabled on$console_list [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Consoles enabled on$console_list [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
           funct_verbose_message "cat $temp_file > $check_file" fix
@@ -73,8 +73,8 @@ audit_console_login () {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    No consoles enabled on tty[0-9]* [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No consoles enabled on tty[0-9]* [$secure Passes]"
         fi
       fi
     else

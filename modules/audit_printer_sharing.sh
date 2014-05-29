@@ -19,8 +19,8 @@ audit_printer_sharing() {
       if [ "$printer_test" = "Yes" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Printer sharing is enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Printer sharing is enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
           funct_verbose_message "" fix
@@ -32,8 +32,8 @@ audit_printer_sharing() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Printer Sharing disabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Printer Sharing disabled [$secure Passes]"
         fi
       fi
     else

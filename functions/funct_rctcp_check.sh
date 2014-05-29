@@ -19,8 +19,8 @@ funct_rctcp_check() {
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Service \"$service_name\" is not \"$correct_value\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Service \"$service_name\" is not \"$correct_value\" [$insecure Warnings]"
           funct_verbose_message "" fix
           if [ "$correct_value" = "off" ]; then
             funct_verbose_message "chrctcp -d $service_name" fix
@@ -58,8 +58,8 @@ funct_rctcp_check() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Service \"$service_name\" is \"$correct_value\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Service \"$service_name\" is \"$correct_value\" [$secure Passes]"
         fi
       fi
     else

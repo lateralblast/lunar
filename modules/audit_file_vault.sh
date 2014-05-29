@@ -15,8 +15,8 @@ audit_file_vault() {
       if [ "$actual_value" = "No CoreStorage logical volume groups found" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   File Vault is not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   File Vault is not enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
           funct_verbose_message "" fix
@@ -29,8 +29,8 @@ audit_file_vault() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    File Vault is enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    File Vault is enabled [$secure Passes]"
         fi
       fi
     else

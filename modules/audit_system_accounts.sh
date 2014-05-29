@@ -31,7 +31,7 @@ audit_system_accounts () {
         else
           if [ "$audit_mode" = 1 ]; then
             total=`expr $total + 1`
-            score=`expr $score - 1`
+            insecure=`expr $insecure + 1`
             echo "Warning:   System account $user_name has an invalid shell"
             funct_verbose_message "" fix
             if [ "$os_name" = "FreeBSD" ]; then

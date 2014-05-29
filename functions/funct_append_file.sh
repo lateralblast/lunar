@@ -37,8 +37,8 @@ funct_append_file () {
   fi
   if [ ! -f "$check_file" ]; then
     if [ "$audit_mode" = 1 ]; then
-      score=`expr $score - 1`
-      echo "Warning:   Parameter \"$parameter\" does not exist in $check_file [$score]"
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Parameter \"$parameter\" does not exist in $check_file [$insecure Warnings]"
       funct_verbose_message "" fix
       funct_verbose_message "echo \"$parameter\" >> $check_file" fix
       funct_verbose_message "" fix
@@ -63,8 +63,8 @@ funct_append_file () {
     check_value=`cat $check_file |grep -v '^$comment_value' |grep '$parameter'`
     if [ "$check_value" != "$parameter" ]; then
       if [ "$audit_mode" = 1 ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Parameter \"$parameter\" does not exist in $check_file [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Parameter \"$parameter\" does not exist in $check_file [$insecure Warnings]"
         funct_verbose_message "" fix
         funct_verbose_message "echo \"$parameter\" >> $check_file" fix
         funct_verbose_message "" fix
@@ -85,8 +85,8 @@ funct_append_file () {
     else
       if [ "$audit_mode" != 2 ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Parameter \"$parameter\" exists in $check_file [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Parameter \"$parameter\" exists in $check_file [$secure Passes]"
         fi
       fi
     fi

@@ -30,11 +30,11 @@ audit_old_users () {
             if [ "$audit_mode" = 1 ]; then
               never_count=`expr $never_count + 1`
               total=`expr $total + 1`
-              score=`expr $score - 1`
+              insecure=`expr $insecure + 1`
               if [ "$finger_test" = 0 ]; then
-                echo "Warning:   User $user_name has never logged in and their account is not locked [$score]"
+                echo "Warning:   User $user_name has never logged in and their account is not locked [$insecure Warnings]"
               else
-                echo "Warning:   User $user_name has not logged in recently and their account is not locked [$score]"
+                echo "Warning:   User $user_name has not logged in recently and their account is not locked [$insecure Warnings]"
               fi
               funct_verbose_message "" fix
               funct_verbose_message "passwd -l $user_name" fix
@@ -51,8 +51,8 @@ audit_old_users () {
       if [ "$never_count" = 0 ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    There are no users who have never logged that do not have their account locked [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    There are no users who have never logged that do not have their account locked [$secure Passes]"
         fi
       fi
     fi

@@ -793,3 +793,5 @@
 # Bug fixes and inital ESXi support (no tests)
 # 4.8.9: Thu 29 May 2014 16:28:43 EST
 # Improved scoring and added SNMP and Syslog tests for ESX
+# 4.9.0: Fri 30 May 2014 08:53:44 EST
+# Added NTP check for ESXi and made further improvements to scoring

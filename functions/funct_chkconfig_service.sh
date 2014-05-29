@@ -31,8 +31,8 @@ funct_chkconfig_service () {
       if [ "$actual_status" != "$correct_status" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Service $service_name at run level $service_level is not $correct_status [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Service $service_name at run level $service_level is not $correct_status [$insecure Warnings]"
             command_line="$chk_config --level $service_level $service_name $correct_status"
             funct_verbose_message "" fix
             funct_verbose_message "$command_line" fix
@@ -49,8 +49,8 @@ funct_chkconfig_service () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Service $service_name at run level $service_level is $correct_status [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Service $service_name at run level $service_level is $correct_status [$secure Passes]"
           fi
         fi
       fi
@@ -69,7 +69,7 @@ funct_chkconfig_service () {
     else
       if [ "$audit_mode" = 1 ]; then
         total=`expr $total + 1`
-        score=`expr $score + 1`
+        secure=`expr $secure + 1`
         echo "Checking:  Service $service_name at run level $service_level"
         echo "Notice:    Service $service_name is not installed [$score]"
       fi

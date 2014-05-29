@@ -21,8 +21,8 @@ audit_mount_noexec () {
         total=`expr $total + 1`
         if [ "$nodev_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Found tmpfs filesystems that should be mounted noexec [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Found tmpfs filesystems that should be mounted noexec [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "cat $check_file | awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 \",noexec\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -38,8 +38,8 @@ audit_mount_noexec () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    No filesystem that should be mounted with noexec [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    No filesystem that should be mounted with noexec [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
             funct_restore_file $check_file $restore_dir

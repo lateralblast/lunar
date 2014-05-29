@@ -304,8 +304,8 @@ audit_system_accounting () {
       fi
       if [ "$package_name" != "sysstat" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   System accounting not enabled [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   System accounting not enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ]; then
             funct_verbose_message "yum -y install $package_check" fix
@@ -326,8 +326,8 @@ audit_system_accounting () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    System accounting enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    System accounting enabled [$secure Passes]"
         fi
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/$log_file"
@@ -444,8 +444,8 @@ audit_system_accounting () {
         total=`expr $total + 1`
         if [ `expr "$sar_check" : "[A-z]"` != 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   System Accounting is not enabled [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   System Accounting is not enabled [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "echo \"0,20,40 * * * * /usr/lib/sa/sa1\" >> $check_file" fix
             funct_verbose_message "echo \"45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A\" >> $check_file" fix
@@ -471,8 +471,8 @@ audit_system_accounting () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    System Accounting is already enabled [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    System Accounting is already enabled [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
             funct_restore_file $check_file $restore_dir

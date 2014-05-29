@@ -27,8 +27,8 @@ audit_password_hashing () {
           check_value=`authconfig --test |grep hashing |awk '{print $5}'`
           if [ "$check_value" != "$hashing" ]; then
             if [ "$audit_mode" = "1" ]; then
-              score=`expr $score - 1`
-              echo "Warning:   Password hashing not set to $hashing [$score]"
+              insecure=`expr $insecure + 1`
+              echo "Warning:   Password hashing not set to $hashing [$insecure Warnings]"
               funct_verbose_message "" fix
               funct_verbose_message "authconfig --passalgo=$hashing" fix
               funct_verbose_message "" fix
@@ -41,8 +41,8 @@ audit_password_hashing () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              score=`expr $score + 1`
-              echo "Secure:    Password hashing set to $hashing [$score]"
+              secure=`expr $secure + 1`
+              echo "Secure:    Password hashing set to $hashing [$secure Passes]"
             fi
           fi
         else

@@ -14,8 +14,8 @@ funct_trust_check() {
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Trusted Execution setting for \"$parameter_name\" is not set to \"$correct_value\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Trusted Execution setting for \"$parameter_name\" is not set to \"$correct_value\" [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "trustchk -p $parameter_name=$correct_value" fix
           funct_verbose_message "" fix
@@ -29,8 +29,8 @@ funct_trust_check() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Password Policy for \"$parameter_name\" is set to \"$correct_value\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Password Policy for \"$parameter_name\" is set to \"$correct_value\" [$secure Passes]"
         fi
       fi
     else

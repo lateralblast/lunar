@@ -39,8 +39,8 @@ funct_defaults_check () {
         fi
       fi
       if [ "$check_value" != "$temp_value" ]; then
-        score=`expr $score - 1`
-        echo "Warning:   Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\" [$score]"
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\" [$insecure Warnings]"
         funct_verbose_message "" fix
         funct_verbose_message "$defaults_command write $defaults_file $defaults_parameter $defaults_value" fix
         if [ "$defaults_value" = "" ]; then
@@ -81,8 +81,8 @@ funct_defaults_check () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" [$secure Passes]"
         fi
       fi
     else

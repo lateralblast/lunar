@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.8.9
+# Version:      4.9.0
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -56,9 +56,10 @@
 # Set up some global variables
 
 args=$@
-score=1
+secure=0
+insecure=0
 total=0
-syslog_host=""
+syslog_server=""
 pkg_company="LTRL"
 pkg_suffix="lunar"
 base_dir="/opt/$pkg_company$pkg_suffix"
@@ -488,17 +489,9 @@ print_results () {
     fi
     echo "Reboot:    $reboot"
   fi
-  if [ "$audit_mode" = 1 ]; then
-    if [ $score -gt 1 ]; then
-      score=`expr $score -1`
-    else
-      if [ $score -ne 1 ]; then
-        score=0
-      fi
-    fi
-    echo "Tests:     $total"
-    echo "Score:     $score"
-  fi
+  echo "Tests:     $total"
+  echo "Secure:    $secure"
+  echo "Warnings:  $insecure"
   if [ "$audit_mode" = 0 ]; then
     echo "Backup:    $work_dir"
     echo "Restore:   $0 -u $date_suffix"

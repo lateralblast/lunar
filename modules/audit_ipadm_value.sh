@@ -31,8 +31,8 @@ audit_ipadm_value () {
       if [ "$current_value" -ne "$correct_value" ]; then
         command_line="ipadm set-prop -p $ipadm_name=$correct_value $ipadm_property"
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Value of \"$ipadm_name $ipadm_property\" not set to \"$correct_value\" [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Value of \"$ipadm_name $ipadm_property\" not set to \"$correct_value\" [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "$command_line" fix
           funct_verbose_message "" fix
@@ -46,8 +46,8 @@ audit_ipadm_value () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Value of \"$ipadm_name $ipadm_property\" already set to \"$correct_value\" [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Value of \"$ipadm_name $ipadm_property\" already set to \"$correct_value\" [$secure Passes]"
           fi
         fi
       fi

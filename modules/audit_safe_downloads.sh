@@ -18,8 +18,8 @@ audit_safe_downloads() {
       if [ "$actual_value" != "$update_file" ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score - 1`
-          echo "Warning:   Safe Downloads list has not be updated recently [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Safe Downloads list has not be updated recently [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "Open System Preferences" fix
           funct_verbose_message "Select Security & Privacy" fix
@@ -37,8 +37,8 @@ audit_safe_downloads() {
       else
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    Safe Downloads list has been updated recently [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Safe Downloads list has been updated recently [$secure Passes]"
         fi
       fi
     fi

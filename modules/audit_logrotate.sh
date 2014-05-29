@@ -31,9 +31,9 @@ audit_logrotate () {
         fi
         check_value=`cat $check_file |grep "$search_string" |sed 's/ {//g'`
         if [ "$check_value" != "$search_string" ]; then
-          score=`expr $score - 1`
+          insecure=`expr $insecure + 1`
           if [ "$audit_mode" = 1 ]; then
-            echo "Warning:   Log rotate is not configured for $search_string [$score]"
+            echo "Warning:   Log rotate is not configured for $search_string [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "cat $check_file |sed 's,.*{,$search_string {,' > $temp_file" fix
             funct_verbose_message "cat $temp_file > $check_file" fix
@@ -49,8 +49,8 @@ audit_logrotate () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Log rotate is configured [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Log rotate is configured [$secure Passes]"
           fi
         fi
       else

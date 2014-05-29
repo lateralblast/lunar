@@ -15,8 +15,8 @@ audit_software_update() {
       total=`expr $total + 1`
       if [ "$actual_status" != "$correct_status" ]; then
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Software Update is not $correct_status [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Software Update is not $correct_status [$insecure Warnings]"
           command_line="sudo softwareupdate --schedule $correct_status"
           funct_verbose_message "" fix
           funct_verbose_message "$command_line" fix
@@ -31,8 +31,8 @@ audit_software_update() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score + 1`
-          echo "Secure:    Software Update is $correct_status [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    Software Update is $correct_status [$secure Passes]"
         fi
       fi
     else

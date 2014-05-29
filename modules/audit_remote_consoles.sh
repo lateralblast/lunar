@@ -24,8 +24,8 @@ audit_remote_consoles () {
         total=`expr $total + 1`
         disable_ttys=1
         if [ "$audit_mode" = 1 ]; then
-          score=`expr $score - 1`
-          echo "Warning:   Console enabled on $console_device [$score]"
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Console enabled on $console_device [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "consadm -d $console_device" fix
           funct_verbose_message "" fix
@@ -39,8 +39,8 @@ audit_remote_consoles () {
       if [ "$disable_ttys" = 0 ]; then
         if [ "$audit_mode" = 1 ]; then
           total=`expr $total + 1`
-          score=`expr $score + 1`
-          echo "Secure:    No remote consoles enabled [$score]"
+          secure=`expr $secure + 1`
+          echo "Secure:    No remote consoles enabled [$secure Passes]"
         fi
       fi
     else

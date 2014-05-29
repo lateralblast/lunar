@@ -20,8 +20,8 @@ audit_xinetd_service () {
         total=`expr $total + 1`
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score - 1`
-            echo "Warning:   Service $service_name does not have $parameter_name set to $correct_status [$score]"
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Service $service_name does not have $parameter_name set to $correct_status [$insecure Warnings]"
             if [ "$linux_dist" = "debian" ]; then
               command_line="update-rc.d $service_name $correct_status"
             else
@@ -50,8 +50,8 @@ audit_xinetd_service () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score + 1`
-            echo "Secure:    Service $service_name has $parameter_name set to $correct_status [$score]"
+            secure=`expr $secure + 1`
+            echo "Secure:    Service $service_name has $parameter_name set to $correct_status [$secure Passes]"
           fi
         fi
       else
