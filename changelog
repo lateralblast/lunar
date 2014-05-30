@@ -803,3 +803,5 @@
 # Added Syslog directory test for ESXi
 # 4.9.4: Fri 30 May 2014 16:48:29 EST
 # Added software update test for ESXi
+# 4.9.5: Fri 30 May 2014 18:48:39 EST
+# Added Managed Object Browser test for ESXi
