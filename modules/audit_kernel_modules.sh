@@ -45,7 +45,6 @@ audit_kernel_modules () {
             echo "Warning:   Kernel module $module is not signed by VMware [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "esxcli system module set -e false -m $module" fix
-            funct_verbose_message "" fix
           fi
         else
           if [ "$audit_mode" = "1" ]; then

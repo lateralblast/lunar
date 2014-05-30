@@ -42,12 +42,11 @@ audit_syslog_conf () {
             insecure=`expr $insecure + 1`
             echo "Warning:   Syslog remote host is not enabled [$insecure Warnings]"
             funct_verbose_message "" fix
-            if [ "$syslog_server" != "" ]; then
+            if [ "$syslog_server" = "" ]; then
               funct_verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" fix
             else
               funct_verbose_message "esxcli system syslog config set --loghost=$syslog_server" fix
             fi
-            funct_verbose_message "" fix
           fi
         else
           if [ "$audit_mode" = "1" ]; then

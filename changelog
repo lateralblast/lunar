@@ -797,3 +797,5 @@
 # Added NTP check for ESXi and made further improvements to scoring
 # 4.9.1: Fri 30 May 2014 11:37:44 EST
 # Added signed kernel module test for ESXi
+# 4.9.2: Fri 30 May 2014 15:23:01 EST
+# Added shell timeout tests for ESXi
