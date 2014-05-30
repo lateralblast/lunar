@@ -31,11 +31,13 @@ audit_dvfilter () {
           echo "Warning:   Dvfilter enabled [$insecure Warnings]"
           funct_verbose_message "" fix
           funct_verbose_message "esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d" fix
+          funct_verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = "1" ]; then
           secure=`expr $secure + 1`
           echo "Secure:    Dvfilter disabled [$secure Passes]"
+          echo ""
         fi
       fi
     else

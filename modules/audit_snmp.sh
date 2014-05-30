@@ -35,11 +35,15 @@ audit_snmp () {
             if [ "$audit_mode" = "1" ]; then
               insecure=`expr $insecure + 1`
               echo "Warning:   SNMP is not enabled [$insecure Warnings]"
+              funct_verbose_message "" fix
+              funct_verbose_message "esxcli system snmp set --enable=\"false\"" fix
+              funct_verbose_message "" fix
             fi
           else
             if [ "$audit_mode" = "1" ]; then
               secure=`expr $secure + 1`
-              echo "Secure:    SNMP is enabled [$secure Passes]"
+              echo "Secure:    SNMP is disabled [$secure Passes]"
+              echo ""
             fi
           fi
         else
