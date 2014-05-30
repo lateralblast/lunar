@@ -795,3 +795,5 @@
 # Improved scoring and added SNMP and Syslog tests for ESX
 # 4.9.0: Fri 30 May 2014 08:53:44 EST
 # Added NTP check for ESXi and made further improvements to scoring
+# 4.9.1: Fri 30 May 2014 11:37:44 EST
+# Added signed kernel module test for ESXi

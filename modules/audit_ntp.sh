@@ -9,6 +9,7 @@
 # Refer to Section(s) 3.6 Page(s) 65-6 CIS Red Hat Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 2.4.5.1 Page(s) 35-6 CIS Apple OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 6.5 Page(s) 55-6 SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 1.9.2 Page(s) 16-7 ESX Server 4 Benchmark v1.1.0
 #.
 
 audit_ntp () {
