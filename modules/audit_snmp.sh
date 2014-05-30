@@ -22,7 +22,8 @@ audit_snmp () {
       funct_verbose_message "SNMP Daemons and Log Permissions"
       if [ "$os_name" = "VMkernel" ]; then
         total=`expr $total + 1`
-        backup_file="$work_dir/snmpenable"
+        log_file="snmpstatus"
+        backup_file="$work_dir/$log_file"
         current_value=`esxcli system snmp get |grep Enable |awk '{print $2}'`
         if [ "$audit_mode" != "2" ]; then
           if [ "$current_value" = "true" ]; then
@@ -41,8 +42,9 @@ audit_snmp () {
             fi
           fi
         else
-         if [ -f "$backup_file" ]; then
-            previous_value=`cat $backup_file`
+          restore_file="$restore_dir/$log_file"
+         if [ -f "$restore_file" ]; then
+            previous_value=`cat $restore_file`
             if [ "$previous_value" != "$current_value" ]; then
               esxcli system snmp set --enable="$previous_value"
             fi

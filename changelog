@@ -801,3 +801,5 @@
 # Added shell timeout tests for ESXi
 # 4.9.3: Fri 30 May 2014 15:40:43 EST
 # Added Syslog directory test for ESXi
+# 4.9.4: Fri 30 May 2014 16:48:29 EST
+# Added software update test for ESXi

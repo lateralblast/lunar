@@ -40,8 +40,9 @@ audit_shell_timeout () {
           fi
         fi
       else
-        if [ -f "$backup_file" ]; then
-          previous_value=`cat $backup_file`
+        restore_file="$restore_dir/$test"
+        if [ -f "$restore_file" ]; then
+          previous_value=`cat $restore_file`
           if [ "$previous_value" != "$current_value" ]; then
             esxcli system settings advanced set -o /UserVars/$test -i $previous_value
           fi

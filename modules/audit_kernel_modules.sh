@@ -30,7 +30,8 @@ audit_kernel_modules () {
     funct_verbose_message "Kernel Module Signing"
     for module in `esxcli system module list |grep '^[a-z]' |awk '($3 == "true") {print $1}'`; do
       total=`expr $total + 1`
-      backup_file="$work_dir/kernel_module_$module"
+      log_file="kernel_module_$module"
+      backup_file="$work_dir/$log_file"
       current_value=`esxcli system module get -m $module |grep 'Signed Status' |awk -F': ' '{print $2}'`
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" != "VMware Signed" ]; then
@@ -53,8 +54,9 @@ audit_kernel_modules () {
           fi
         fi
       else
-        if [ -f "$backup_file" ]; then
-          previous_value=`cat $backup_file`
+        restore_file="$restore_dir/$log_file"
+        if [ -f "$restore_file" ]; then
+          previous_value=`cat $restore_file`
           if [ "$previous_value" = "true" ]; then
             esxcli system module set -e true -m $module
           fi
