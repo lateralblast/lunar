@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.9.2
+# Version:      4.9.3
 # Release:      1
 # License:      Open Source
 # Group:        System
@@ -60,6 +60,7 @@ secure=0
 insecure=0
 total=0
 syslog_server=""
+syslog_logdir=""
 pkg_company="LTRL"
 pkg_suffix="lunar"
 base_dir="/opt/$pkg_company$pkg_suffix"

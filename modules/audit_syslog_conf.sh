@@ -6,6 +6,16 @@
 # LOG_AUTH facility (e.g., successful and failed su attempts, failed login
 # attempts, root login attempts, etc.).
 #
+# ESXi can be configured to store log files on an in-memory file system.
+# This occurs when the host's "/scratch" directory is linked to "/tmp/scratch".
+# When this is done only a single day's worth of logs are stored at any time,
+# in addition log files will be reinitialized upon each reboot.
+# This presents a security risk as user activity logged on the host is only
+# stored temporarily and will not persistent across reboots.
+# This can also complicate auditing and make it harder to monitor events and
+# diagnose issues.
+# ESXi host logging should always be configured to a persistent datastore.
+#
 # Refer to Section(s) 3.4 Page(s) 10 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 5.1.1 Page(s) 104-5 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.11.13 Page(s) 39-40 ESX Server 4 Benchmark v1.1.0
@@ -28,6 +38,39 @@ audit_syslog_conf () {
     fi
     if [ "$os_name" = "VMkernel" ]; then
       total=`expr $total + 1`
+      backup_file="$work_dir/sysloglogdir"
+      current_value=`esxcli system syslog config get |grep 'Local Log Output:' |awk '{print $4}'`
+      if [ "$audit_mode" != "2" ]; then
+        if [ "$current_value" = "/scratch/log" ]; then
+          if [ "$audit_more" = "0" ]; then
+            if [ "$syslog_logdir" != "" ]; then
+              echo "$current_value" > $backup_file
+              esxcli system syslog config set --logdir="$syslog_logdir"
+            fi
+          fi
+          if [ "$audit_mode" = "1" ]; then
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Syslog log directory is not persistent [$insecure Warnings]"
+            funct_verbose_message "" fix
+            if [ "$syslog_logdir" != "" ]; then
+              funct_verbose_message "esxcli system syslog config set --logdir=$syslog_logdir" fix
+            fi
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then
+            secure=`expr $secure + 1`
+            echo "Secure:    Syslog log directory is on a persistent datastore [$secure Passes]"
+          fi
+        fi
+      else
+        if [ -f "$backup_file" ]; then
+          previous_value=`cat $backup_file`
+          if [ "$previous_value" != "$current_value" ]; then
+            esxcli system syslog config set --logdir="$previous_value"
+          fi
+        fi
+      fi
+      total=`expr $total + 1`
       backup_file="$work_dir/syslogremotehost"
       current_value=`esxcli system syslog config get |grep Remote |awk '{print $3}'`
       if [ "$audit_mode" != "2" ]; then
@@ -40,6 +83,7 @@ audit_syslog_conf () {
           fi
           if [ "$audit_mode" = "1" ]; then
             insecure=`expr $insecure + 1`
+            funct_verbose_message "" fix
             echo "Warning:   Syslog remote host is not enabled [$insecure Warnings]"
             funct_verbose_message "" fix
             if [ "$syslog_server" = "" ]; then

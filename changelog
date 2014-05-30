@@ -799,3 +799,5 @@
 # Added signed kernel module test for ESXi
 # 4.9.2: Fri 30 May 2014 15:23:01 EST
 # Added shell timeout tests for ESXi
+# 4.9.3: Fri 30 May 2014 15:40:43 EST
+# Added Syslog directory test for ESXi
