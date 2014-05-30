@@ -25,6 +25,7 @@ audit_shell_timeout () {
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" != "$timeout" ]; then
           if [ "$audit_more" = "0" ]; then
+            echo "$current_value" > $backup_file
             esxcli system settings advanced set -o /UserVars/$test -i $timeout
           fi
           if [ "$audit_mode" = "1" ]; then

@@ -805,3 +805,5 @@
 # Added software update test for ESXi
 # 4.9.5: Fri 30 May 2014 18:48:39 EST
 # Added Managed Object Browser test for ESXi
+# 4.9.6: Fri 30 May 2014 20:44:33 EST
+# Added Dvfilter test for ESXi

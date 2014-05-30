@@ -20,4 +20,5 @@ full_audit_network_services () {
   audit_dhcprd
   audit_dhcpsd
   audit_mob
+  audit_dvfilter
 }
