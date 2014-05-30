@@ -51,6 +51,7 @@ audit_syslog_conf () {
           if [ "$audit_more" = "0" ]; then
             if [ "$syslog_logdir" != "" ]; then
               echo "$current_value" > $backup_file
+              echo "Setting:   Syslog log directory to a persistent datastore"
               esxcli system syslog config set --logdir="$syslog_logdir"
             fi
           fi

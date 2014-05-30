@@ -24,4 +24,5 @@ full_audit_shell_services () {
   audit_serial_login
   audit_sulogin
   audit_shell_timeout
+  audit_esxi_shell
 }

@@ -29,6 +29,7 @@ audit_mob () {
         if [ "$audit_more" = "0" ]; then
           if [ "$syslog_server" != "" ]; then
             echo "enabled" > $backup_file
+            echo "Setting:   Managed Object Browser to disabled"
             vim-cmd proxysvc/remove_service "/mob" "httpsWithRedirect"
           fi
         fi

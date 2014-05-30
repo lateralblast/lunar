@@ -37,6 +37,7 @@ audit_kernel_modules () {
         if [ "$current_value" != "VMware Signed" ]; then
           if [ "$audit_more" = "0" ]; then
             if [ "$syslog_server" != "" ]; then
+              echo "Setting:   Kernel module $module to disabled"
               echo "true" > $backup_file
               esxcli system module set -e false -m $module
             fi

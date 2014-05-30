@@ -29,6 +29,7 @@ audit_snmp () {
           if [ "$current_value" = "true" ]; then
             if [ "$audit_more" = "0" ]; then
               echo "$current_value" > $backup_file
+              echo "Setting:   SNMP to disabled"
               esxcli system snmp set --enable="false"
             fi
             if [ "$audit_mode" = "1" ]; then

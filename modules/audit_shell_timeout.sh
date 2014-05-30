@@ -26,6 +26,7 @@ audit_shell_timeout () {
         if [ "$current_value" != "$timeout" ]; then
           if [ "$audit_more" = "0" ]; then
             echo "$current_value" > $backup_file
+            echo "Setting:   Timeout value for $test to $timeout"
             esxcli system settings advanced set -o /UserVars/$test -i $timeout
           fi
           if [ "$audit_mode" = "1" ]; then
@@ -33,6 +34,7 @@ audit_shell_timeout () {
             echo "Warning:   Timeout value for $test not set to $timeout [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "esxcli system settings advanced set -o /UserVars/$test -i $timeout" fix
+            funct_verbose_message "" fix
           fi
         else
           if [ "$audit_mode" = "1" ]; then

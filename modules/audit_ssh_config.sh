@@ -87,9 +87,23 @@
 # Refer to Section(s) 1.2 Page(s) 2-3 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 6.3-7 Page(s) 47-51 CIS Solaris 11.1 v1.0.0
 # Refer to Section(s) 6.1.1-11 Page(s) 78-87 CIS Solaris 10 v5.1.0
+#
+# The ESXi shell, when enabled, can be accessed directly from the host console
+# through the DCUI or remotely using SSH. Remote access to the host should be
+# limited to the vSphere Client, remote command-line tools (vCLI/PowerCLI), and
+# through the published APIs. Under normal circumstances remote access to the
+# host using SSH should be disabled.
+#
+# Refer to:
+#
+# http://pubs.vmware.com/vsphere-55/index.jsp?topic=%2Fcom.vmware.vsphere.security.doc%2FGUID-12E27BF3-3769-4665-8769-DA76C2BC9FFE.html
 #.
 
 audit_ssh_config () {
+  if [ "$os_name" = "VMkernel" ]; then
+    funct_verbose_message "SSH"
+    funct_chkconfig_service SSH off
+  fi
   if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "SSH Configuration"
     if [ "$os_name" = "Darwin" ]; then

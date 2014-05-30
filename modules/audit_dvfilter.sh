@@ -15,7 +15,7 @@
 
 audit_dvfilter () {
   if [ "$os_name" = "VMkernel" ]; then
-    funct_verbose_message "Timeoute value for $test"
+    funct_verbose_message "Dvfilter"
     total=`expr $total + 1`
     backup_file="$work_dir/dvfilter"
     current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /Net/DVFilterBindIpAddress |cut -f2 -d,`
@@ -23,6 +23,7 @@ audit_dvfilter () {
       if [ "$current_value" != "0" ]; then
         if [ "$audit_more" = "0" ]; then
           echo "$current_value" > $backup_file
+          echo "Setting:   Dvfilter to disabled"
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d
         fi
         if [ "$audit_mode" = "1" ]; then

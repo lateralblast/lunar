@@ -30,8 +30,8 @@ audit_ntp () {
       check_file="/private/etc/ntp.conf"
     fi
     if [ "$os_name" = "VMkernel" ]; then
-      service_name="ntp"
-      funct_chkconfig_service $service_name 3 on
+      service_name="ntpd"
+      funct_chkconfig_service $service_name on
       check_file="/etc/ntp.conf"
       funct_append_file $check_file "restrict 127.0.0.1"
     fi

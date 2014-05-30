@@ -30,6 +30,7 @@ audit_software_update() {
     if [ "$audit_mode" != 2 ]; then
       if [ "$current_update" != "$available_update" ]; then
         if [ "$audit_mode" = 0 ]; then
+          echo "Notice:    Updating software"
           esxcli software profile install -d $vmware_depot -p $available_update --ok-to-remove
         fi
         if [ "$audit_mode" = 1 ]; then
