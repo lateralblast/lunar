@@ -33,6 +33,7 @@ audit_serial_login () {
             log_file="$restore_dir/$tty_name"
             if [ -f "$log_file" ]; then
               previous_value=`cat $log_file`
+              echo "Restoring: TTY $tty_name to $previous_value"
               chitab "$previous_value $tty_name"
             fi
           done
@@ -59,6 +60,7 @@ audit_serial_login () {
             log_file="$restore_dir/$tty_name"
             if [ -f "$log_file" ]; then
               previous_value=`cat $log_file`
+              echo "Restoring: TTY $tty_name to $previous_value"
               chitab "$previous_value $tty_name"
             fi
           fi

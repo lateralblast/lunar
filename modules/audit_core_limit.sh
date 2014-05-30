@@ -13,17 +13,21 @@ audit_core_limit () {
   if [ "$os_name" = "Darwin" ]; then
     total=`expr $total + 1`
     funct_verbose_message "Core dump limits"
+    log_file="corelimit"
+    backup_file="$work_dir/$log_file"
+    current_value=`launchctl limit core |awk '{print $3}'`
     if [ "$audit_mode" != 2 ]; then
-      check_vale=`launchctl limit core |awk '{print $3}'`
-      echo "Checking:  Core dump limits"
-      if [ "$check_value" != "0" ]; then
-        insecure=`expr $insecure + 1`
-        echo "Warning:   Core dumps unlimited [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "launchctl limit core 0" fix
-        funct_verbose_message "" fix
+      if [ "$current_value" != "0" ]; then
+        if [ "$audit_mode" = 0 ]; then
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Core dumps unlimited [$insecure Warnings]"
+          funct_verbose_message "" fix
+          funct_verbose_message "launchctl limit core 0" fix
+          funct_verbose_message "" fix
+        fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Core dump limits"
+          echo "$current_value" > $log_file
           launchctl limit core 0
         fi
       else
@@ -33,7 +37,14 @@ audit_core_limit () {
         fi
       fi
     else
-      launchctl limit core unlimited
+      restore_file="$restore_dir/$log_file"
+      if [ -f "$restore_file" ]; then
+        previous_value=`cat $restore_file`
+        if [ "$current_value" != "$previous_value" ]; then
+          echo "Restoring: Core limit to $previous_value"
+          launchctl limit core unlimited
+        fi
+      fi
     fi
   fi
 }

@@ -13,6 +13,7 @@ audit_eeprom_security () {
   if [ "$os_name" = "SunOS" ]; then
     funct_verbose_message "EEPROM Password"
     if [ "$audit_mode" = 2 ]; then
+      echo "Restoring: EEPROM password to none"
       eeprom security-mode=none
     else
       echo "Checking:  EEPROM password is enabled"

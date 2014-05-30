@@ -51,6 +51,7 @@ audit_snmp () {
          if [ -f "$restore_file" ]; then
             previous_value=`cat $restore_file`
             if [ "$previous_value" != "$current_value" ]; then
+              echo "Restoring: SNMP to $previous_value"
               esxcli system snmp set --enable="$previous_value"
             fi
           fi

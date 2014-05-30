@@ -49,6 +49,7 @@ audit_password_hashing () {
           restore_file="$restore_dir/$log_file"
           if [ -f "$restore_file" ]; then
             check_value=`cat $restore_file`
+            echo "Restoring: Password hashing to $check_value"
             authconfig --passalgo=$check_value
           fi
         fi

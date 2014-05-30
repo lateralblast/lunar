@@ -51,6 +51,7 @@ audit_root_primary_group () {
       if [ -e "$restore_file" ]; then
         restore_value=`cat $restore_file`
         if [ "$restore_value" != "$group_check" ]; then
+          echo "Restoring: Primary root group to $restore_value"
           usermod -g $restore_value root
         fi
       fi

@@ -33,9 +33,9 @@ audit_power_management () {
         poweradm_test=`poweradm list |grep suspend |awk '{print $2}' |cut -f2 -d"="`
         log_file="poweradm.log"
         if [ "$audit_mode" = 2 ]; then
-          log_file="$restore_dir"
+          restore_file="$restore_dir/#log_file"
           if [ -f "$log_file" ]; then
-            restore_value=`cat $log_file`
+            restore_value=`cat $restore_file`
             if [ "$poweradm_test" != "$restore_value" ]; then
               echo "Restoring: Power suspend to $restore_value"
               poweradm set suspend-enable=$restore_value
@@ -53,9 +53,9 @@ audit_power_management () {
             funct_verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            log_file="$work_dir/$log_file"
+            backup_file="$work_dir/$log_file"
             echo "Setting:   Power suspend to disabled"
-            echo "$poweradm_test" > $log_file
+            echo "$poweradm_test" > $backup_file
             poweradm set suspend-enable=false
             poweradm update
           fi

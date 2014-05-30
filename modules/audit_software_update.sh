@@ -51,6 +51,7 @@ audit_software_update() {
       if [ -f "$restore_file" ]; then
         previous_update=`cat $restore_file`
         if [ "$current_update" != "$previous_update" ]; then
+          echo "Restoring: Software to $previous_value"
           esxcli software profile install -d $vmware_depot -p $previous_update --ok-to-remove --alow-downgrades
         fi
       fi
@@ -91,9 +92,7 @@ audit_software_update() {
       if [ -f "$restore_file" ]; then
         previous_status=`cat $restore_file`
         if [ "$previous_status" != "$actual_status" ]; then
-          funct_verbose_message ""
-          funct_verbose_message "Restoring:   Software Update to $previous_status"
-          funct_verbose_message ""
+          echo "Restoring:   Software Update to $previous_status"
           sudo suftwareupdate --schedule $previous_status
         fi
       fi

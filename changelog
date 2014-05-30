@@ -809,3 +809,7 @@
 # Added Dvfilter test for ESXi
 # 4.9.7: Sat 31 May 2014 06:54:25 EST
 # Added DCUI, SSH and ESXi Shell tests fo ESXi
+# 4.9.8: Sat 31 May 2014 08:15:56 EST
+# Added Lockdown check for ESXi
+# 4.9.9: Sat 31 May 2014 09:47:48 EST
+# Minor code cleanup

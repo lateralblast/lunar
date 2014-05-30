@@ -45,6 +45,7 @@ audit_dvfilter () {
       if [ -f "$restore_file" ]; then
         previous_value=`cat $restore_file`
         if [ "$previous_value" != "$current_value" ]; then
+          echo "Restoring: Dvfilter to $previous_value"
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -i $previous_value
         fi
       fi
