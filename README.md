@@ -1,9 +1,12 @@
 ![alt tag](https://raw.githubusercontent.com/richardatlateralblast/lunar/master/lunar.png)
 
-lunar
+LUNAR
 =====
 
 Lockdown UNix Auditing and Reporting
+
+Introduction
+------------
 
 This scripts generates a scored audit report of a Unix host's security.
 It is based on the CIS and other frameworks.
@@ -31,6 +34,16 @@ Supported Operating Systems:
 - FreeBSD (needs more testing)
 - AIX (needs more testing)
 - ESXi (initial support - some tests)
+
+License
+-------
+
+License
+-------
+
+This software is licensed as CC-BA (Creative Commons By Attrbution)
+
+http://creativecommons.org/licenses/by/4.0/legalcode
 
 More Information
 ----------------

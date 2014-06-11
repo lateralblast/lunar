@@ -1,9 +1,10 @@
 #!/bin/sh
 
-# Name:         lunar (Lockdown UNIX Analyse Report)
-# Version:      4.9.9
+# Name:         lunar (Lockdown UNix Auditing and Reporting)
+# Version:      5.0.0
 # Release:      1
-# License:      Open Source
+# License:      CC-BA (Creative Commons By Attrbution)
+#               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
 # Source:       N/A
 # URL:          http://lateralblast.com.au/
