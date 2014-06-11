@@ -1,4 +1,4 @@
-![alt tag](https://raw.githubusercontent.com/richardatlateralblast/lunar/master/lunar.png)
+![alt tag](https://raw.githubusercontent.com/lateralblast/lunar/master/lunar.png)
 
 LUNAR
 =====
@@ -50,20 +50,20 @@ More Information
 
 For more information refer to wiki:
 
-https://github.com/richardatlateralblast/lunar/wiki
+https://github.com/lateralblast/lunar/wiki
 
 Usage:
 
-https://github.com/richardatlateralblast/lunar/wiki/usage
+https://github.com/lateralblast/lunar/wiki/usage
 
 Ubuntu:
 
-https://github.com/richardatlateralblast/lunar/wiki/ubuntu
+https://github.com/lateralblast/lunar/wiki/ubuntu
 
 Solaris 11:
 
-https://github.com/richardatlateralblast/lunar/wiki/solaris11
+https://github.com/lateralblast/lunar/wiki/solaris11
 
 CentOS:
 
-https://github.com/richardatlateralblast/lunar/wiki/centos
+https://github.com/lateralblast/lunar/wiki/centos
