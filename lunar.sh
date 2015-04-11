@@ -289,7 +289,7 @@ check_environment () {
       echo ""
     fi
     for file_name in `ls $functions_dir/*.sh`; do
-      if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
         . $file_name
       else
         source $file_name
@@ -307,7 +307,7 @@ check_environment () {
       echo ""
     fi
     for file_name in `ls $modules_dir/*.sh`; do
-      if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
         . $file_name
       else
         if [ "$file_name" = "modules/audit_ftp_users.sh" ]; then
@@ -332,7 +332,7 @@ check_environment () {
       echo ""
     fi
     for file_name in `ls $private_dir/*.sh`; do
-      if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
         . $file_name
       else
         source $file_name
