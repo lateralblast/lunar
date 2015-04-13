@@ -41,9 +41,9 @@ audit_home_ownership() {
     if [ "$os_name" = "AIX" ]; then
       if [ "$audit_mode" != 2 ]; then
         lsuser -c ALL | grep -v "^#name" | cut -f1 -d: | while read check_user; do
-          if [ `lsuser -f $NAME | grep id | cut -f2 -d=` -ge 200 ]; then
+          if [ `lsuser -f $check_user | grep id | cut -f2 -d=` -ge 200 ]; then
             found=0
-            home_dir=`lsuser -a home $NAME | cut -f 2 -d =`
+            home_dir=`lsuser -a home $check_user | cut -f 2 -d =`
           else
             found=1
           fi

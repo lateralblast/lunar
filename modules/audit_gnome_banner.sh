@@ -12,7 +12,7 @@
 
 audit_gnome_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message"Gnome Warning Banner"
+    funct_verbose_message "Gnome Warning Banner"
     if [ "$os_name" = "SunOS" ]; then
       total=`expr $total + 1`
       if [ "$os_version" = "10" ]; then
@@ -57,7 +57,7 @@ audit_gnome_banner () {
     fi
     if [ "$os_name" = "Linux" ]; then
       warning_message="Authorised users only"
-      actual_value=`gconftool-2 -get /apps/gdm/simple-greeter/banner_message_text`
+      actual_value=`gconftool-2 --get /apps/gdm/simple-greeter/banner_message_text`
       log_file="gnome_banner_warning"
       if [ "$audit_mode" != 2 ]; then
         if [ "$actual_value" != "$warning_message" ]; then
@@ -90,7 +90,7 @@ audit_gnome_banner () {
           fi
         fi
       fi
-      actual_value=`gconftool-2 -get /apps/gdm/simple-greeter/banner_message_enable`
+      actual_value=`gconftool-2 --get /apps/gdm/simple-greeter/banner_message_enable`
       log_file="gnome_banner_status"
       if [ "$audit_mode" != 2 ]; then
         if [ "$actual_value" != "true" ]; then

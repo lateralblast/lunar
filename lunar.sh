@@ -3,7 +3,7 @@
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
 # Version:      5.0.0
 # Release:      1
-# License:      CC-BA (Creative Commons By Attrbution)
+# License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
 # Source:       N/A
@@ -14,9 +14,9 @@
 # Packager:     Richard Spindler <richard@lateralblast.com.au>
 # Description:  Audit script based on various benchmarks
 #               Addition improvements added
-#               Writen in bourne shell so it can be run on different releases
+#               Written in bourne shell so it can be run on different releases
 
-# No warrantry is implied or given with this script
+# No warranty is implied or given with this script
 # It is based on numerous security guidelines
 # As with any system changes, the script should be vetted and
 # changed to suit the environment in which it is being used
@@ -185,18 +185,36 @@ check_os_release () {
         linux_dist="debian"
         if [ ! -f "/usr/sbin/sysv-rc-conf" ]; then
           echo "Notice:    The sysv-rc-conf package is required by this script"
-          echo "Notice:    Attempting to install"
-          apt-get install sysv-rc-conf
+		  while true; do
+			read -p "Do you wish to install this program?" yn
+			case $yn in
+				[Yy]* ) apt-get install sysv-rc-conf; break;;
+				[Nn]* ) echo "Exiting script"; exit;;
+				* ) echo "Please answer yes or no.";;
+			esac
+		  done
         fi
         if [ ! -f "/usr/bin/bc" ]; then
           echo "Notice:    The bc package is required by this script"
-          echo "Notice:    Attempting to install"
-          apt-get install bc
+          while true; do
+			read -p "Do you wish to install this program?" yn
+			case $yn in
+				[Yy]* ) apt-get install bc; break;;
+				[Nn]* ) echo "Exiting script"; exit;;
+				* ) echo "Please answer yes or no.";;
+			esac
+		  done
         fi
         if [ ! -f "/usr/bin/finger" ]; then
           echo "Notice:    The finger package is required by this script"
-          echo "Notice:    Attempting to install"
-          apt-get install finger
+		  while true; do
+			read -p "Do you wish to install this program?" yn
+			case $yn in
+				[Yy]* ) apt-get install finger; break;;
+				[Nn]* ) echo "Exiting script"; exit;;
+				* ) echo "Please answer yes or no.";;
+			esac
+		  done
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
