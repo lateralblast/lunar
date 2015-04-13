@@ -12,7 +12,7 @@
 
 audit_gnome_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message"Gnome Warning Banner"
+    funct_verbose_message "Gnome Warning Banner"
     if [ "$os_name" = "SunOS" ]; then
       total=`expr $total + 1`
       if [ "$os_version" = "10" ]; then
