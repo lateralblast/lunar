@@ -815,3 +815,5 @@
 # Minor code cleanup
 # 5.0.0: Wed 11 Jun 2014 18:54:58 EST
 # Updated license
+# 5.0.1: Tue 28 Apr 2015 15:05:14 AEST
+# Removed call to audit_root_account as it was split into several audit_root_* subroutines
