@@ -29,7 +29,6 @@ full_audit_user_services () {
   audit_cron_allow
   audit_cron
   audit_system_accounts
-  audit_root_account
   audit_shadow_group
   audit_dcui
 }
