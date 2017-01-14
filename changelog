@@ -821,3 +821,5 @@
 # Start adding support for Amazon Linux and added vfat to modprobe check
 # 5.0.3: Sat 14 Jan 2017 16:22:29 AEDT
 # Initial Amazon Linux support
+# 5.0.4: Sat 14 Jan 2017 17:22:34 AEDT
+# Fixed audit select function

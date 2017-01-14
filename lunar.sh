@@ -468,6 +468,22 @@ funct_audit_system () {
   print_results
 }
 
+# funct_audit_select
+#
+# Selective Audit
+#.
+
+funct_audit_select () {
+  audit_mode=$1
+  function=$2
+  check_environment
+  if [ "`expr $function : audit_`" != "6" ]; then
+    function="audit_$function"
+  fi
+  funct_print_audit_info $function
+  $function
+  print_results
+}
 
 # Get the path the script starts from
 
@@ -577,9 +593,9 @@ while getopts abdlps:u:z:hASVL args; do
       ;;
     S)
       echo ""
-      echo "Functions:"
+      echo "Modules:"
       echo ""
-      cat $0 |grep 'audit_' |grep '()' | awk '{print $1}' |grep -v cat |sed 's/audit_//g' |sort
+      ls $modules_dir | grep -v '^full_' |sed 's/\.sh//g'
       ;;
     A)
       if [ "$2" = "-v" ]; then
