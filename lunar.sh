@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.0.3
+# Version:      5.0.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -112,11 +112,12 @@ print_usage () {
   echo "-A: Run in audit mode (no changes made to system)"
   echo "    [includes filesystem checks which take some time]"
   echo "-s: Run in selective mode (only run tests you want to)"
+  echo "-d: Print information for a specific test"
   echo "-S: List functions available to selective mode"
   echo "-l: Run in lockdown mode (changes made to system)"
   echo "-L: Run in lockdown mode (changes made to system)"
   echo "    [includes filesystem checks which take some time]"
-  echo "-d: Show changes previously made to system"
+  echo "-c: Show changes previously made to system"
   echo "-p: Show previously versions of file"
   echo "-u: Undo lockdown (changes made to system)"
   echo "-h: Display usage"
@@ -544,9 +545,10 @@ print_results () {
   fi
   echo ""
 }
+
 # Handle command line arguments
 
-while getopts abdlps:u:z:hASVL args; do
+while getopts abcdlps:u:z:hASVL args; do
   case $args in
     a)
       if [ "$2" = "-v" ]; then
@@ -662,12 +664,18 @@ while getopts abdlps:u:z:hASVL args; do
       print_previous
       exit
       ;;
-    d)
+    c)
       echo ""
       echo "Printing changes:"
       echo ""
       print_changes
       exit
+      ;;
+    d)
+      check_environment
+      verbose=1
+      module=$2
+      funct_print_audit_info $module
       ;;
     b)
       echo ""

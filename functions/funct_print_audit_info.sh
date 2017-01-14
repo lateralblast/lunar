@@ -8,27 +8,31 @@
 
 funct_print_audit_info () {
   if [ "$verbose" = 1 ]; then
-    function=$1
+    module=$1
     comment_text=0
-    while read line
-    do
-      if [ "$line" = "# $function" ]; then
-        comment_text=1
-      else
-        if [ "$comment_text" = 1 ]; then
-          if [ "$line" = "#." ]; then
-            echo ""
-            comment_text=0
-          fi
+    dir_name=`pwd`
+    file_name="$dir_name/modules/$module.sh"
+    if [ -f "$file_name" ] ; then
+      echo "# Module: $module"
+      while read line ; do
+        if [ "$line" == "# $module" ]; then
+          comment_text=1
+        else
           if [ "$comment_text" = 1 ]; then
-            if [ "$line" = "#" ]; then
+            if [ "$line" == "#." ]; then
               echo ""
-            else
-              echo "$line"
+              comment_text=0
+            fi
+            if [ "$comment_text" == 1 ]; then
+              if [ "$line" == "#" ]; then
+                echo ""
+              else
+                echo "$line"
+              fi
             fi
           fi
         fi
-      fi
-    done < $0
+      done < $file_name
+   fi 
   fi
 }

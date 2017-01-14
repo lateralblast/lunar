@@ -823,3 +823,5 @@
 # Initial Amazon Linux support
 # 5.0.4: Sat 14 Jan 2017 17:22:34 AEDT
 # Fixed audit select function
+# 5.0.5: Sat 14 Jan 2017 19:34:40 AEDT
+# Fixed code to print module information
