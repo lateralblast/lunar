@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.0.1
+# Version:      5.0.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -185,36 +185,36 @@ check_os_release () {
         linux_dist="debian"
         if [ ! -f "/usr/sbin/sysv-rc-conf" ]; then
           echo "Notice:    The sysv-rc-conf package is required by this script"
-		  while true; do
-			read -p "Do you wish to install this program?" yn
-			case $yn in
-				[Yy]* ) apt-get install sysv-rc-conf; break;;
-				[Nn]* ) echo "Exiting script"; exit;;
-				* ) echo "Please answer yes or no.";;
-			esac
-		  done
+		      while true; do
+      			read -p "Do you wish to install this program?" yn
+      			case $yn in
+      				[Yy]* ) apt-get install sysv-rc-conf; break;;
+      				[Nn]* ) echo "Exiting script"; exit;;
+      				* ) echo "Please answer yes or no.";;
+      			esac
+    		  done
         fi
         if [ ! -f "/usr/bin/bc" ]; then
           echo "Notice:    The bc package is required by this script"
           while true; do
-			read -p "Do you wish to install this program?" yn
-			case $yn in
-				[Yy]* ) apt-get install bc; break;;
-				[Nn]* ) echo "Exiting script"; exit;;
-				* ) echo "Please answer yes or no.";;
-			esac
-		  done
+      			read -p "Do you wish to install this program?" yn
+      			case $yn in
+      				[Yy]* ) apt-get install bc; break;;
+      				[Nn]* ) echo "Exiting script"; exit;;
+      				* ) echo "Please answer yes or no.";;
+      			esac
+    		  done
         fi
         if [ ! -f "/usr/bin/finger" ]; then
           echo "Notice:    The finger package is required by this script"
-		  while true; do
-			read -p "Do you wish to install this program?" yn
-			case $yn in
-				[Yy]* ) apt-get install finger; break;;
-				[Nn]* ) echo "Exiting script"; exit;;
-				* ) echo "Please answer yes or no.";;
-			esac
-		  done
+    		  while true; do
+    			read -p "Do you wish to install this program?" yn
+    			case $yn in
+    				[Yy]* ) apt-get install finger; break;;
+    				[Nn]* ) echo "Exiting script"; exit;;
+    				* ) echo "Please answer yes or no.";;
+    			esac
+    		  done
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
@@ -222,6 +222,11 @@ check_os_release () {
           os_update=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f2 -d "."`
           os_vendor="SuSE"
           linux_dist="suse"
+        else
+          if [ -f "/etc/os-release" ]; then
+            os_vendor="Amazon"
+            os_version=`cat /etc/os-release |grep '^VERSION' |cut -f2 -d'"'`
+          fi
         fi
       fi
     fi

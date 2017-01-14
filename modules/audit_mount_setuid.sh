@@ -9,11 +9,12 @@
 # option. Note that this setting is included in the default rmmount.conf file
 # for Solaris 8 and later.
 #
-# Refer to Section(s) 1.1.3,13,15 Page(s) 14-25 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.1.3,13,15 Page(s) 17-27 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 2.3,13,15 Page(s) 16-25 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 6.1 Page(s) 21 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 5.2 Page(s) 76-7 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 1.1.3,13,15 Page(s) 14-25    CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.1.3,13,15 Page(s) 17-27    CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 2.3,13,15   Page(s) 16-25    CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 6.1         Page(s) 21       CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 5.2         Page(s) 76-7     CIS Solaris 10 v5.1.0
+# Refer to Section(s) 1.1.4,9,16  Page(s) 28,33,40 CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_mount_setuid () {

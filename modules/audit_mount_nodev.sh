@@ -7,10 +7,11 @@
 # privileges.
 # Ignore / and /boot.
 #
-# Refer to Section(s) 1.1.2,4,10,11,14,16 Page(s) 15-25 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.1.2,4,10,11,14,16 Page(s) 16-26 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 1.1.2,4,10,11,14,16 Page(s) 16-26 CIS Red Hat Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 2.2,4,10,11,14,16 Page(s) 15-25 SLES 11 Benchmark v1.2.0
+# Refer to Section(s) 1.1.2,4,10,11,14,16 Page(s) 15-25   CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.1.2,4,10,11,14,16 Page(s) 16-26   CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.1.2,4,10,11,14,16 Page(s) 16-26   CIS Red Hat Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.2,4,10,11,14,16   Page(s) 15-25   CIS SLES 11 Benchmark v1.2.0
+# Refer to Section(s) 1.1.8,14,17         Page(s) 32,38-9 CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_mount_nodev () {
