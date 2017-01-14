@@ -225,8 +225,8 @@ check_os_release () {
         else
           if [ -f "/etc/os-release" ]; then
             os_vendor="Amazon"
-            os_version=`cat /etc/os-release |grep '^VERSION' |cut -f2 -d'"' |cut -f1 -d.`
-            os_update=`cat /etc/os-release |grep '^VERSION' |cut -f2 -d'"' |cut -f2 -d.`
+            os_version=`cat /etc/os-release |grep '^VERSION_ID' |cut -f2 -d'"' |cut -f1 -d.`
+            os_update=`cat /etc/os-release |grep '^VERSION_ID' |cut -f2 -d'"' |cut -f2 -d.`
           fi
         fi
       fi
@@ -269,7 +269,7 @@ check_os_release () {
   echo "Vendor:   $os_vendor"
   echo "Name:     $os_name"
   echo "Version:  $os_version"
-  echo "Update:   $os_update on"
+  echo "Update:   $os_update"
 }
 
 # check_environment
