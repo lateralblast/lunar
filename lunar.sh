@@ -265,7 +265,11 @@ check_os_release () {
     exit
   fi
   os_platform=`uname -p`
-  echo "Platform:  $os_vendor $os_name $os_version Update $os_update on $os_platform"
+  echo "Platform: $os_platform"
+  echo "Vendor:   $os_vendor"
+  echo "Name:     $os_name"
+  echo "Version:  $os_version"
+  echo "Update:   $os_update on"
 }
 
 # check_environment
