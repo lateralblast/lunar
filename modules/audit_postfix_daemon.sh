@@ -5,7 +5,8 @@
 # connections by setting SMTPD_LISTEN_REMOTE="no" in the /etc/sysconfig/mail
 # SMTP connections are not accepted in a default configuration.
 #
-# Refer to Section 3.16 Page(s) 69-70 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.16   Page(s) 69-70 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 2.2.15 Page(s) 107-8 CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_postfix_daemon () {
@@ -15,7 +16,7 @@ audit_postfix_daemon () {
       check_file="/etc/sysconfig/mail"
       funct_file_value $check_file SMTPD_LISTEN_REMOTE eq no hash
     fi
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
       check_file="/etc/postfix/main.cf"
       funct_file_value $check_file inet_interfaces eq localhost hash
     fi

@@ -10,7 +10,7 @@
 # related to changes of file metadata. The Solaris Audit service is used to
 # provide a more centralized and complete window into activities such as these.
 #
-# Refer to Section(s) 4.3 Page(s) 41-2 CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 4.3 Page(s) 41-2 CIS Solaris 11.1 Benchmark v1.0.0
 #.
 
 audit_file_metadata () {

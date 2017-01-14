@@ -4,6 +4,8 @@
 # via FTP
 # The .netrc file presents a significant security risk since it stores passwords
 # in unencrypted form.
+#
+# Refer to Section(s) 6.2.12-3 Page(s) 264-6 CIS Amazon Linux Benchmark v1.0.0
 #.
 
 audit_netrc_files () {

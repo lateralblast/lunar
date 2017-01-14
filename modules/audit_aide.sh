@@ -13,7 +13,7 @@
 
 audit_aide() {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_name" = "Red" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
       check_file="/etc/sysconfig/prelink"
       if [ -f "$check_file" ]; then
         prelink_check=`cat $check_file |grep PRELINKING |cut -f2 -d= |sed 's/ //g'`

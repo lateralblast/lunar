@@ -21,13 +21,14 @@
 # Since the user is accountable for files stored in the user home directory,
 # the user must be the owner of the directory.
 #
-# Refer to Section(s) 9.2.7,12,3 Page(s) 166-7,171-2 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.7,12,3 Page(s) 166-7,171-2   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 192-3,197-200 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.7,12-4 Page(s) 170,174-6 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 13.12-3 Page(s) 162-3 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.11.18-20 Page(s) 202-6 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 9.12-4 Page(s) 80-1 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 9.12-4 Page(s) 126-8 CIS Solaris 10 v1.1.0
+# Refer to Section(s) 9.2.7,12-4 Page(s) 170,174-6     CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 13.12-3    Page(s) 162-3         CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.11.18-20 Page(s) 202-6         CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 9.12-4     Page(s) 80-1          CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 9.12-4     Page(s) 126-8         CIS Solaris 10 Benchmark v1.1.0
+# Refer to Section(s) 6.2.7-9    Page(s) 259-61        CIS Amazon Linux Benchmark v1.0.0
 #.
 
 audit_home_ownership() {

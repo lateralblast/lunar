@@ -22,13 +22,14 @@
 # Unless there is a need to run the system as a web server, or a proxy it is
 # recommended that the package(s) be deleted.
 #
-# Refer to Section(s) 3.11,14 Page(s) 66-9 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.11,14 Page(s) 79-81 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 3.11,14 Page(s) 69-71 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.10,13 Page(s) 59,61 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.4.14.7 Page(s) 56-7 CIS OS X 10.5 Benchmark v1.1.0
-# Refer to Section(s) 2.10 Page(s) 21-2 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 2.2.11 Page(s) 30-2 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 3.11,14  Page(s) 66-9  CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.11,14  Page(s) 79-81 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.11,14  Page(s) 69-71 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.10,13  Page(s) 59,61 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.4.14.7 Page(s) 56-7  CIS OS X 10.5 Benchmark v1.1.0
+# Refer to Section(s) 2.10     Page(s) 21-2  CIS Solaris 11.1 v1.0.0
+# Refer to Section(s) 2.2.11   Page(s) 30-2  CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.2.10   Page(s) 102   CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_apache () {
@@ -56,7 +57,7 @@ audit_apache () {
         funct_chkconfig_service $service_name 3 off
         funct_chkconfig_service $service_name 5 off
       done
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
         funct_linux_package uninstall httpd
         funct_linux_package uninstall squid
       fi

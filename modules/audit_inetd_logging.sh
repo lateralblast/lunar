@@ -12,7 +12,7 @@
 # to capture this information in a separate file, simply modify /etc/syslog.conf
 # to log daemon.notice to some other log file destination.
 #
-# Refer to Section(s) 4.1 Page(s) 66-7 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 4.1 Page(s) 66-7 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_inetd_logging () {

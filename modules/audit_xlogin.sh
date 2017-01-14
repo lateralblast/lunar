@@ -15,10 +15,10 @@
 # on the console or using XDMCP. It will not kill any X Windows
 # applications running via SSH.
 #
-# Refer to Section(s) 7.7 Page(s) 26 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 7.7   Page(s) 26 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.4 Page(s) 38 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 2.1 Page(s) 15 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 2.1.3 Page(s) 19 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.1   Page(s) 15 CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 2.1.3 Page(s) 19 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_xlogin () {

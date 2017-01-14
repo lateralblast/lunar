@@ -6,7 +6,7 @@
 # This service is disabled by default unless the NIS+ service has
 # been configured on the system.
 #
-# Refer to Section(s) 2.2.4 Page(s) 25 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.2.4 Page(s) 25 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_nisplus () {

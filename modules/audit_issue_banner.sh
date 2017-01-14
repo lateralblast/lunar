@@ -12,11 +12,12 @@
 # place. Consult with your organization's legal counsel for the appropriate
 # wording for your specific organization.
 #
-# Refer to Section(s) 8.1-2 Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 8.1.1-2 Page(s) 172-4 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 8.1-2 Page(s) 152-4 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 11.1-2 Page(s) 142-3 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 7.4 Page(s) 25 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 8.1-2     Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.1.1-2   Page(s) 172-4   CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 8.1-2     Page(s) 152-4   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 11.1-2    Page(s) 142-3   CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 7.4       Page(s) 25      CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.7.1.1-3 Page(s) 68-73   CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_issue_banner () {

@@ -7,8 +7,8 @@
 # application uses the same UID.
 #
 # Refer to Section(s) 9.2.17 Page(s) 202-3 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.17 Page(s) 84-5 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 9.17 Page(s) 130-1 CIS Solaris 10 v1.1.0
+# Refer to Section(s) 9.17   Page(s) 84-5  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 9.17   Page(s) 130-1 CIS Solaris 10 Benchmark v1.1.0
 #.
 
 audit_reserved_ids () {

@@ -7,7 +7,7 @@
 # If a naming service is required, users are encouraged to use LDAP
 # instead of NIS/NIS+.
 #
-# Refer to Section(s) 2.2.5 Page(s) 25-6 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.2.5 Page(s) 25-6 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_ldap_cache () {

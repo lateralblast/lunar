@@ -7,8 +7,8 @@
 # Disabling .rhosts support helps prevent users from subverting the system's
 # normal access control mechanisms.
 #
-# Refer to Section(s) 6.8 Page(s) 51-52 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 6.4 Page(s) 89 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 6.8 Page(s) 51-52 CIS Solaris 11.1 Benchmark  v1.0.0
+# Refer to Section(s) 6.4 Page(s) 89    CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_pam_rhosts () {

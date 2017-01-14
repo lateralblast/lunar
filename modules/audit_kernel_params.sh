@@ -247,10 +247,10 @@
 # privileged ports range (ports less than 1024) will be ignored by the local
 # system.
 #
-# Refer to Section(s) 4.2,5.3 Page(s) 16-19 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 4.2,5.3 Page(s) 16-19    CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.6.1-21 Page(s) 103-131 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 1.6.1-21 Page(s)  CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 3.1.1-18 Page(s) 38-61 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 1.6.1-21 Page(s)         CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 3.1.1-18 Page(s) 38-61   CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_kernel_params () {

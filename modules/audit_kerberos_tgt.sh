@@ -4,8 +4,8 @@
 # not currently using Kerberos then there is no need to have the
 # Kerberos TGT expiration warning enabled.
 #
-# Refer to Section(s) 2.6 Page(s) 19 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 2.2.6 Page(s) 26-7 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.6   Page(s) 19   CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 2.2.6 Page(s) 26-7 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_kerberos_tgt () {

@@ -12,8 +12,8 @@
 #.
 
 audit_apparmour () {
-  if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "SuSE" ]; then
+  if [ "$os_name" == "Linux" ]; then
+    if [ "$os_vendor" == "SuSE" ]; then
       funct_verbose_message "AppArmour"
       funct_linux_package install apparmour
       check_file="/boot/grub/menu.lst"

@@ -8,8 +8,8 @@
 # specific organization.
 #
 # Refer to Section(s) 2.12.11 Page(s) 215-6 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 8.4 Page(s) 70-1 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 8.4 Page(s) 114 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 8.4     Page(s) 70-1  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 8.4     Page(s) 114   CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_ftp_banner () {

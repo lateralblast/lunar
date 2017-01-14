@@ -6,7 +6,7 @@
 # enabled or may be using an alternate volume manager rather than the bundled
 # SVM functionality. This service is disabled by default in the OS.
 #
-# Refer to Section(s) 2.2.8,12 Page(s) 28,32-3 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.2.8,12 Page(s) 28,32-3 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_svm () {

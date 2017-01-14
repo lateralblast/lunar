@@ -3,7 +3,7 @@
 # If the actions in this section result in disabling all inetd-based services,
 # then there is no point in running inetd at boot time.
 #
-# Refer to Section(s) 10.6 Page(s) 141-2 CIS Solaris 10 v1.1.0
+# Refer to Section(s) 10.6 Page(s) 141-2 CIS Solaris 10 Benchmark v1.1.0
 #.
 
 audit_inetd () {

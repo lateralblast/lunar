@@ -7,7 +7,7 @@
 # off-line, and granting sys-suspend access may be a more graceful way of
 # allowing normal users to shut down their own machines.
 #
-# Refer to Section(s) 10.4 Page(s) 140 CIS Solaris 10 v1.1.0
+# Refer to Section(s) 10.4 Page(s) 140 CIS Solaris 10 Benchmark v1.1.0
 #.
 
 audit_sys_suspend () {

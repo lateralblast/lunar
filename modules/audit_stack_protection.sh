@@ -17,8 +17,8 @@
 # protect against buffer overflow attacks that do not execute code on the
 # stack (such as return-to-libc exploits).
 #
-# Refer to Section(s) 3.2 Page(s) 26-7 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 3.3 Page(s) 62-3 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 3.2 Page(s) 26-7 CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 3.3 Page(s) 62-3 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_stack_protection () {

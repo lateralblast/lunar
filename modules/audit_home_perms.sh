@@ -5,11 +5,11 @@
 # Group or world-writable user home directories may enable malicious users to
 # steal or modify other users' data or to gain another user's system privileges.
 #
-# Refer to Section(s) 5.4 Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(s) 6.6 Page(s) 22 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 13.7 Page(s) 158-9 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 9.7 Page(s) 77 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 9.7 Page(s) 121 CIS Solaris 10 v1.1.0
+# Refer to Section(s) 5.4  Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 6.6  Page(s) 22    CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 13.7 Page(s) 158-9 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 9.7  Page(s) 77    CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 9.7  Page(s) 121   CIS Solaris 10 Benchmark v1.1.0
 #.
 
 audit_home_perms () {

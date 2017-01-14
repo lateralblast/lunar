@@ -6,7 +6,7 @@
 # though this setting can still be overridden by individual users in their
 # own environment.
 #
-# Refer to Section(s) 6.7 Page(s) 91-2 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 6.7 Page(s) 91-2 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_cde_screen_lock () {

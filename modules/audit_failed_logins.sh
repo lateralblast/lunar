@@ -7,7 +7,7 @@
 # to control how many login failures are allowed before log messages are
 # generated-if set to zero then all failed logins will be logged.
 #
-# Refer to Section(s) 4.6 Page(s) 70-1 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 4.6 Page(s) 70-1 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_failed_logins () {

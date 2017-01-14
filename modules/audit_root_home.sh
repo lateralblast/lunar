@@ -6,7 +6,7 @@
 # benefit is that the root home directory can have more restricted permissions,
 # preventing viewing of the root system account files by non-root users.
 #
-# Refer to Section(s) 7.5 Page(s) 105-6 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 7.5 Page(s) 105-6 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_root_home () {

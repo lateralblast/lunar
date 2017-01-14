@@ -1,6 +1,8 @@
 # audit_ldap
 #
 # Turn off ldap
+#
+# Refer to Section(s) 2.3.5 Page(s) 115 CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_ldap () {
@@ -9,6 +11,11 @@ audit_ldap () {
       funct_verbose_message "LDAP Client"
       service_name="svc:/network/ldap/client:default"
       funct_service $service_name disabled
+    fi
+  fi
+  if [ "$os_name" = "Linux" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ] ; then
+      funct_linux_package uninstall openldap-clients
     fi
   fi
 }

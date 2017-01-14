@@ -58,8 +58,8 @@
 # the account.
 #
 # Refer to Section(s) 1.2.1-6 Page(s) 26-31 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 6.15 Page(s) 57-9 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 6.11 Page(s) 96-7 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 6.15    Page(s) 57-9  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 6.11    Page(s) 96-7  CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_retry_limit () {

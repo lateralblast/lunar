@@ -2,7 +2,7 @@
 #
 # Enable Debug Level Daemon Logging. Improved logging capability.
 #
-# Refer to Section(s) 4.3 Page(s) 67-8 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 4.3 Page(s) 67-8 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_logadm_value () {

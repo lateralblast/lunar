@@ -38,14 +38,15 @@
 # unauthorized write access. Although it is protected by default, the file
 # permissions could be changed either inadvertently or through malicious actions.
 #
-# Refer to Section(s) 5.5.1-5 Page(s) 110-114 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 4.5.1-5 Page(s) 95-8 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 4.5.1-5 Page(s) 86-9 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 7.4.1-5 Page(s) 77-80 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 1.3 Page(s) 3-4 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 5.5.1-5  Page(s) 110-114 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 4.5.1-5  Page(s) 95-8    CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 4.5.1-5  Page(s) 86-9    CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 7.4.1-5  Page(s) 77-80   CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 1.3      Page(s) 3-4     CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.10.1-4 Page(s) 188-192 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 2.11 Page(s) 22-3 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 2.4 Page(s) 36-7 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.11     Page(s) 22-3    CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 2.4      Page(s) 36-7    CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 3.4.1-5  Page(s) 130-4   CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_tcp_wrappers () {
@@ -104,7 +105,7 @@ audit_tcp_wrappers () {
     funct_check_perms /etc/hosts.deny 0644 root $group_name
     funct_check_perms /etc/hosts.allow 0644 root $group_name
     if [ "$os_name" = "Linux" ]; then
-      if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "CentOS" ]; then
+      if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Amazon" ] ; then
         package_name="tcp_wrappers"
         total=`expr $total + 1`
         log_file="$package_name.log"

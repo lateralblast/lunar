@@ -13,7 +13,7 @@
 # before port monitors are invoked.
 # Check that rpc bind has tcp wrappers enabled in case it's turned on.
 #
-# Refer to Section(s) 2.2.14 Page(s) 34-5 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.2.14 Page(s) 34-5 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_rpc_bind () {

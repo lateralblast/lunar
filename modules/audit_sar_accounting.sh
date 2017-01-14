@@ -14,7 +14,7 @@
 # activity report on a daily basis.
 #
 # Refer to Section(s) 2.12.8 Page(s) 212-3 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 4.8 Page(s) 71-72 CIS Oracle Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 4.8    Page(s) 71-72 CIS Oracle Solaris 10 Benchmark v5.1.0
 #.
 
 audit_sar_accounting() {

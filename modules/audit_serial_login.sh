@@ -10,10 +10,10 @@
 # provided via the serial ports, because the login: prompt on the console
 # device is provided through a different mechanism.
 #
-# Refer to Section(s) 3.1 Page(s) 9 CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 3.1    Page(s) 9     CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.12.1 Page(s) 206-7 CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 6.1 Page(s) 46-7 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 6.2 Page(s) 87-8 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 6.1    Page(s) 46-7  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 6.2    Page(s) 87-8  CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_serial_login () {

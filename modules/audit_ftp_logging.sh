@@ -11,7 +11,7 @@
 # configured to capture this information to a separate file so it may be more
 # easily reviewed.
 #
-# Refer to Section(s) 4.2 Page(s) 67 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 4.2 Page(s) 67 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_ftp_logging () {

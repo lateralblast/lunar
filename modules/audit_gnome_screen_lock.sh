@@ -7,8 +7,8 @@
 # though this setting can still be overridden by individual users in their
 # own environment.
 #
-# Refer to Section(s) 6.12 Page(s) 55-56 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 6.8 Page(s) 92-3 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 6.12 Page(s) 55-56 CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 6.8  Page(s) 92-3  CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_gnome_screen_lock () {

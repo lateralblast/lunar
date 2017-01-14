@@ -7,7 +7,7 @@
 # "Require a password to wake the computer from sleep or screen saver" option.
 #
 # Refer to Section(s) 2.3.1-2 Page(s) 13-14 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(s) 5.5 Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 5.5     Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_screen_lock () {

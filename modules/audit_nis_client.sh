@@ -5,11 +5,12 @@
 # This service is disabled by default unless the NIS service has been
 # configured on the system.
 #
-# Refer to Section(s) 2.5 Page(s) 18 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 2.2.3 Page(s) 24-5 CIS Solaris 10 v5.1.0
-# Refer to Section(s) 2.1.5 Page(s) 58 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 2.1.5 Page(s) 53 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 5.1.2 Page(s) 41 SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.5   Page(s) 18    CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 2.2.3 Page(s) 24-5  CIS Solaris 10 Benchmrk v5.1.0
+# Refer to Section(s) 2.1.5 Page(s) 58    CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 2.1.5 Page(s) 53    CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.1.2 Page(s) 41    CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1 Page(s) 110-1 CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_nis_client () {

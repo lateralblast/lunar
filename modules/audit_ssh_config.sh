@@ -82,11 +82,12 @@
 # Refer to Section(s) 6.2.1-15 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.2.1-15 Page(s) 147-159 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 6.2.1-15 Page(s) 130-141 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 9.2.1-15 Page(s) 121-131 SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.4.14.9 Page(s) 57-60 CIS OS X 10.5 Benchmark v1.1.0
-# Refer to Section(s) 1.2 Page(s) 2-3 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 6.3-7 Page(s) 47-51 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 6.1.1-11 Page(s) 78-87 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 9.2.1-15 Page(s) 121-131 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.4.14.9 Page(s) 57-60   CIS OS X 10.5 Benchmark v1.1.0
+# Refer to Section(s) 1.2      Page(s) 2-3     CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 6.3-7    Page(s) 47-51   CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 6.1.1-11 Page(s) 78-87   CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 5.2.1-16 Page(s) 201-18  CIS Amazon Linux Benchmark v2.0.0
 #
 # The ESXi shell, when enabled, can be accessed directly from the host console
 # through the DCUI or remotely using SSH. Remote access to the host should be
@@ -113,6 +114,7 @@ audit_ssh_config () {
     else
       check_file="/etc/ssh/sshd_config"
     fi
+    funct_check_perms $check_file 0600 root root
     #funct_file_value $check_file Host space "*" hash
     funct_file_value $check_file Protocol space 2 hash
     funct_file_value $check_file X11Forwarding space no hash

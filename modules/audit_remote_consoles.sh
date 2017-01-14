@@ -8,8 +8,8 @@
 # reboots. If no remote consoles have been defined, there will be no output from
 # this command.
 #
-# Refer to Section(s) 9.1 Page(s) 72 CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 9.1 Page(s) 116 CIS Solaris 10 v5.1.0
+# Refer to Section(s) 9.1 Page(s) 72  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 9.1 Page(s) 116 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_remote_consoles () {
