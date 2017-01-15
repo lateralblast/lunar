@@ -55,7 +55,7 @@ audit_gnome_banner () {
         fi
       fi
     fi
-    gconf_bin=`which gconftool-2`
+    gconf_bin=`which gconftool-2 2> /dev/null`
     if [ "$os_name" = "Linux" ] && [ -f "$gconf_bin" ]; then
       warning_message="Authorised users only"
       actual_value=`gconftool-2 --get /apps/gdm/simple-greeter/banner_message_text`

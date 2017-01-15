@@ -6,7 +6,7 @@
 audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     never_count=0
-    finger_bin=`which finger`
+    finger_bin=`which finger 2> /dev/null`
     if [ "$audit_mode" = 2 ]; then
       check_file="/etc/shadow"
       funct_restore_file $check_file $restore_dir
