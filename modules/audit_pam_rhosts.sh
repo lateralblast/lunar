@@ -24,7 +24,8 @@ audit_pam_rhosts () {
         pam_check=`cat $check_file | grep -v "^#" |grep "pam_rhosts_auth" |head -1 |wc -l`
         if [ "$pam_check" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
-            score=`expr $score -1`
+            total=`expr $total + 1`
+            insecure=`expr $insecure + 1`
             echo "Warning:   Rhost authentication enabled in $check_file [$insecure Warnings]"
             funct_verbose_message "" fix
             funct_verbose_message "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" fix
@@ -62,7 +63,7 @@ audit_pam_rhosts () {
       if [ "$audit_mode" = 2 ]; then
         funct_restore_file $check_file $restore_dir
       else
-        echo "Checking:  Rhost authentication disabled in $check_file [$score]"
+        echo "Checking:  Rhost authentication disabled in $check_file [$secure Passes]"
         pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
         if [ "$pam_check" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then

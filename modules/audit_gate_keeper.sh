@@ -20,7 +20,7 @@ audit_gate_keeper() {
           echo "Warning:   Gatekeeper is not enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Seting:    Gatekeeper to enabled [$score]"
+          echo "Seting:    Gatekeeper to enabled [$secure Passes]"
           echo "$actual_value" > $work_dir/$log_file
           sudo spctl --master-enable
         fi

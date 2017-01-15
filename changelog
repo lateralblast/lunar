@@ -847,3 +847,5 @@
 # Fix for Amazon Linux
 # 5.1.6: Mon 16 Jan 2017 08:16:55 AEDT
 # Bug fixes
+# 5.1.7: Mon 16 Jan 2017 09:18:43 AEDT
+# Cleaned up reporting

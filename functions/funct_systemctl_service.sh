@@ -81,7 +81,7 @@ funct_systemctl_service () {
       if [ "$audit_mode" = 1 ]; then
         total=`expr $total + 1`
         secure=`expr $secure + 1`
-        echo "Notice:    Service $service_name is not installed [$score]"
+        echo "Notice:    Service $service_name is not installed [$secure Passes]"
       fi
     fi
   fi

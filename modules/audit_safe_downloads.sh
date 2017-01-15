@@ -31,7 +31,7 @@ audit_safe_downloads() {
           funct_verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Updating:  Safe Downloads list [$score]"
+          echo "Updating:  Safe Downloads list [$insecure Warnings]"
           sudo /usr/libexec/XProtectUpdater
         fi
       else

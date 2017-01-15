@@ -61,7 +61,7 @@ audit_writable_files () {
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "$check_file" >> $log_file
-            echo "Setting:   File $check_file non world writable [$score]"
+            echo "Setting:   File $check_file to be non world writable [$insecure Warnings]"
             chmod o-w $check_file
           fi
         done

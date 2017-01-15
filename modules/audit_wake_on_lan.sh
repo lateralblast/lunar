@@ -20,7 +20,7 @@ audit_wake_on_lan() {
           echo "Warning:   Wake on Lan is enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Seting:    Wake on Lan to disabled [$score]"
+          echo "Seting:    Wake on Lan to disabled [$insecure Warnings]"
           echo "$actual_value" > $work_dir/$log_file
           pmset -c womp 0
         fi

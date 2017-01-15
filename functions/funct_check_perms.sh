@@ -28,7 +28,7 @@ funct_check_perms () {
   if [ ! -f "$check_file" ] && [ ! -d "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
       secure=`expr $secure + 1`
-      echo "Notice:    File $check_file does not exist [$score]"
+      echo "Notice:    File $check_file does not exist"
     fi
     return
   fi
@@ -58,7 +58,7 @@ funct_check_perms () {
       fi
       file_owner=`ls -l $check_file |awk '{print $3","$4}'`
       echo "$check_file,$file_perms,$file_owner" >> $log_file
-      echo "Setting:   File $check_file to have correct permissions [$score]"
+      echo "Setting:   File $check_file to have correct permissions [$insecure Warnings]"
       chmod $check_perms $check_file
       if [ "$check_owner" != "" ]; then
         chown $check_owner:$check_group $check_file

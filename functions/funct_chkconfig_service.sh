@@ -62,7 +62,7 @@ funct_chkconfig_service () {
         total=`expr $total + 1`
         secure=`expr $secure + 1`
         echo "Checking:  Service $service_name at run level $service_level"
-        echo "Notice:    Service $service_name is not installed [$score]"
+        echo "Notice:    Service $service_name is not installed [$secure Passes]"
       fi
     fi
   fi
@@ -130,7 +130,7 @@ funct_chkconfig_service () {
         total=`expr $total + 1`
         secure=`expr $secure + 1`
         echo "Checking:  Service $service_name at run level $service_level"
-        echo "Notice:    Service $service_name is not installed [$score]"
+        echo "Notice:    Service $service_name is not installed [$secure Passes]"
       fi
     fi
   fi

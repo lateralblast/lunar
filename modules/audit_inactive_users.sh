@@ -39,7 +39,7 @@ audit_inactive_users () {
           if [ "$audit_mode" = 0 ]; then
             echo "Saving:    File $check_file to $work_dir$check_file"
             find $check_file | cpio -pdm $work_dir 2> /dev/null
-            echo "Setting:   Inactive lockout for $user_name [$score]"
+            echo "Setting:   Inactive lockout for $user_name [$secure Passes]"
             usermod -f 35 $user_name
           fi
         else
