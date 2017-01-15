@@ -33,6 +33,9 @@ audit_system_auth () {
       search_string="remember"
       search_value="5"
       audit_system_auth_password_history $auth_string $search_string $search_value
+      auth_string="password"
+      search_string="sha512"
+      audit_system_auth_password_hashing $auth_string $search_string
     else
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
         check_file = "/etc/security/pwquality.conf"
@@ -50,6 +53,9 @@ audit_system_auth () {
         search_string="remember"
         search_value="5"
         audit_system_auth_password_history $auth_string $search_string $search_value
+        auth_string="password"
+        search_string="sha512"
+        audit_system_auth_password_hashing $auth_string $search_string
       else
         funct_rpm_check libpam-cracklib
         if [ "$audit_mode" != 2 ]; then

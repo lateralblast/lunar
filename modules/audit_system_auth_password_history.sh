@@ -9,7 +9,7 @@
 #
 # Refer to Section(s) 6.3.4 Page(s) 141-2 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.3.4 Page(s) 144-5 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 5.3.3 Page(s) 242   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.3.3 Page(s) 242   CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.3 Page(s) 233   CIS Amazon Linux Benchmark v1.2.0
 # Refer to Section(s) 9.3.3 Page(s) 134   CIS SLES 11 Benchmark v1.0.0
 #.
