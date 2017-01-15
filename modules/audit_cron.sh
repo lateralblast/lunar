@@ -4,8 +4,8 @@
 # the system does have maintenance jobs that may include security
 # monitoring that have to run and cron to execute them.
 #
-# Refer to Section(s) 6.1.1 Page(s) 138-9 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 6.1.1 Page(s) 121-2 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.1.1 Page(s) 138-9 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.1.1 Page(s) 121-2 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 9.1.1 Page(s) 114-5 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 5.1.1 Page(s) 192   CIS Amazon Linux Benchmark v2.0.0
 #.

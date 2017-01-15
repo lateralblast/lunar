@@ -6,9 +6,9 @@
 # threat to system security since group permissions are not properly managed.
 #
 # Refer to Section(s) 9.2.11 Page(s) 170-1 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.11 Page(s) 196-7 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.11 Page(s) 173-4 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.2.15 Page(s) 282   CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 9.2.11 Page(s) 196-7 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.11 Page(s) 173-4 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.15 Page(s) 282   CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 13.11  Page(s) 161-2 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 9.11   Page(s) 80    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.11   Page(s) 124-5 CIS Solaris 10 Benchmark v1.1.0

@@ -6,7 +6,7 @@
 # SMTP connections are not accepted in a default configuration.
 #
 # Refer to Section(s) 3.16   Page(s) 69-70 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 2.2.15 Page(s) 115-6 CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 2.2.15 Page(s) 115-6 CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 2.2.15 Page(s) 107-8 CIS Amazon Linux Benchmark v2.0.0
 #.
 

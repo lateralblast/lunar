@@ -15,7 +15,7 @@
 # Locking out userIDs after n unsuccessful consecutive login attempts
 # mitigates brute force password attacks against your systems.
 #
-# Refer to Section(s) 6.3.2 Page(s) 161-2 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.3.2 Page(s) 161-2 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 9.3.2 Page(s) 133-4 CIS SLES 11 Benchmark v1.0.0
 #.
 

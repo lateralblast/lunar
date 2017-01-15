@@ -8,7 +8,7 @@
 # log file, thus rendering the log data worthless.
 #
 # Refer to Section(s) 11.7-8 Page(s) 146-7 CIS Solaris 10 Benchmark v1.1.0
-# Refer to Section(s) 5.1.2  Page(s) 105-6 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 5.1.2  Page(s) 105-6 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
 #.
 
 audit_syslog_perms () {

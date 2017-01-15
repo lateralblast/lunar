@@ -9,9 +9,9 @@
 # in /etc/default/login). All accounts must have passwords or be locked.
 #
 # Refer to Section(s) 9.2.1  Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.1  Page(s) 187-8 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.1  Page(s) 166   CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.2.1  Page(s) 274   CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 9.2.1  Page(s) 187-8 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.1  Page(s) 166   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.1  Page(s) 274   CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 13.1   Page(s) 154   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.2    Page(s) 27    CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.2.15 Page(s) 219   CIS AIX Benchmark v1.1.0

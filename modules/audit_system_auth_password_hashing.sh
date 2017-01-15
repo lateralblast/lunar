@@ -13,7 +13,7 @@
 #
 # Note that these change only apply to accounts configured on the local system.
 #
-# Refer to Section(s) 5.3.4 Page(s) 243   CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 5.3.4 Page(s) 243   CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.4 Page(s) 224   CIS Amazon Linux Benchmark v2.0.0
 #.
 

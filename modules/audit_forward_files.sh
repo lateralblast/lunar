@@ -10,9 +10,9 @@
 # actions.
 #
 # Refer to Section(s) 9.2.19 Page(s) 176-7 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.21 Page(s) 206-7 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.20 Page(s) 180-1 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.2.11 Page(s) 2815  CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 9.2.21 Page(s) 206-7 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.20 Page(s) 180-1 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.11 Page(s) 2815  CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 13.19  Page(s) 167-8 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 9.21   Page(s) 87    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.21   Page(s) 133-4 CIS Solaris 10 Benchmark v1.1.0

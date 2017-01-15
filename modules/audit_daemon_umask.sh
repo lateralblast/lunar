@@ -39,8 +39,8 @@
 # these files need additional permission.
 #
 # Refer to Section(s) 3.1 Page(s) 58-9 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.2 Page(s) 72   CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 3.1 Page(s) 61-2 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 3.2 Page(s) 72   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.1 Page(s) 61-2 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 3.3 Page(s) 9-10 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 5.1 Page(s) 75-6 CIS Solaris 10 Benchmark v5.1.0
 #.

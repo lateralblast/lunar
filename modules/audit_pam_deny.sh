@@ -3,7 +3,7 @@
 # Add pam.deny to pam config files
 #
 # Refer to Section(s) 6.7   Page(s) 23  CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 6.3.3 Page(s) 162 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 6.3.3 Page(s) 162 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
 #.
 
 audit_pam_deny () {

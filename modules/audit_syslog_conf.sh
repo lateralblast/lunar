@@ -22,7 +22,7 @@
 # http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-9F67DB52-F469-451F-B6C8-DAE8D95976E7.html
 #
 # Refer to Section(s) 3.4     Page(s) 10    CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 5.1.1   Page(s) 104-5 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 5.1.1   Page(s) 104-5 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.11.13 Page(s) 39-40 CIS ESX Server 4 Benchmark v1.1.0
 #.
 

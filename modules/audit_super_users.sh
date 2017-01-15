@@ -4,10 +4,10 @@
 # This access must be limited to only the default root account
 # and only from the system console.
 #
-# Refer to Section(s) 9.2.5 Page(s) 190-1  CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.5 Page(s) 190-1  CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.5 Page(s) 165    CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.5 Page(s) 168    CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.2.5 Page(s) 278    CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 9.2.5 Page(s) 168    CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.5 Page(s) 278    CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 13.5  Page(s) 156-7  CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.6   Page(s) 28     CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.2.8 Page(s) 32     CIS AIX Benchmark v1.1.0

@@ -14,8 +14,8 @@
 # GID is shared, which is a security problem.
 #
 # Refer to Section(s) 9.2.15,17 Page(s) 173-5        CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.16,19 Page(s) 204-5        CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.15,17 Page(s) 176-9        CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 9.2.16,19 Page(s) 204-5        CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.15,17 Page(s) 176-9        CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 10.15,17  Page(s) 164-7        CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.2.17    Page(s) 220          CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.16,19   Page(s) 83-4,5-6     CIS Solaris 11.1 Benchmark v1.0.0

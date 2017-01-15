@@ -11,7 +11,7 @@
 # Set the lockout number to the policy in effect at your site.
 #
 # Refer to Section(s) 6.3.3 Page(s) 139-140 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 6.3.3 Page(s) 143-4   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.3.3 Page(s) 143-4   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
 #.
 
 audit_system_auth_unlock_time () {

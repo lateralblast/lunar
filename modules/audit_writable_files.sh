@@ -9,9 +9,9 @@
 # to the system's integrity.
 #
 # Refer to Section(s) 9.1.10   Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.1.10   Page(s) 183-4   CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.1.10   Page(s) 162-3   CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.1.10   Page(s) 269     CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 9.1.10   Page(s) 183-4   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.1.10   Page(s) 162-3   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.1.10   Page(s) 269     CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 12.8     Page(s) 150-1   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 6.1.10   Page(s) 247     CIS Amazon Linux Benchmark v1.0.0
 # Refer to Section(s) 6.4      Page(s) 22      CIS FreeBSD Benchmark v1.0.5

@@ -5,9 +5,9 @@
 # Most security mechanisms require network time to be synchronized.
 #
 # Refer to Section(s) 3.6       Page(s) 62-3   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.6       Page(s) 75-6   CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 3.6       Page(s) 65-6   CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 2.2.1.1-2 Page(s) 98-101 CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 3.6       Page(s) 75-6   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.6       Page(s) 65-6   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.1.1-2 Page(s) 98-101 CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 2.4.5.1   Page(s) 35-6   CIS Apple OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 6.5       Page(s) 55-6   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.9.2     Page(s) 16-7   CIS ESX Server 4 Benchmark v1.1.0

@@ -125,9 +125,9 @@
 #
 #
 # Refer to Section(s) 7.1.1-3   Page(s) 143-146 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 7.1.1-3   Page(s) 166-8   CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 7.1.1-3   Page(s) 147-9   CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 5.4.1.1-4 Page(s) 245-51  CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 7.1.1-3   Page(s) 166-8   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 7.1.1-3   Page(s) 147-9   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.4.1.1-4 Page(s) 245-51  CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 10.1.1-3  Page(s) 136-8   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.3       Page(s) 27      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.1.1-11  Page(s) 17-26   CIS AIX Benchmark v1.1.0

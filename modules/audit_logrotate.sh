@@ -12,8 +12,8 @@
 # through inordinately large log files.
 #
 # Refer to Section(s) 4.3 Page(s) 97    CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 5.3 Page(s) 120-1 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 4.3 Page(s) 208   CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 5.3 Page(s) 120-1 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 4.3 Page(s) 208   CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 8.4 Page(s) 113-4 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 4.3 Page(s) 191   CIS Amazon Linux Benchmark v2.0.0
 #.

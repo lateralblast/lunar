@@ -6,8 +6,8 @@
 # Inactive accounts pose a threat to system security since the users are not
 # logging in to notice failed login attempts or other anomalies.
 #
-# Refer to Section(s) 7.5  Page(s) 171-2   CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 7.5  Page(s) 151-2   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 7.5  Page(s) 171-2   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 7.5  Page(s) 151-2   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 10.5 Page(s) 141     CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 7.6  Page(s) 66-7    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 7.9  Page(s) 109-110 CIS Solaris 10 Benchmark v5.1.0

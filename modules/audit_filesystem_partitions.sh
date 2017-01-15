@@ -3,9 +3,9 @@
 # Check filesystems are on separate partitions
 #
 # Refer to Section(s) 1.1.1,5,7,8,9   Page(s) 14-21     CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.1.2,6-7       Page(s) 26-7,31-2 CIS Red Hat Linux 7 Benchmark v1.0.0
-# Refer to Section(s) 1.1.1,5,7,8,9   Page(s) 15-22     CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 1.1.1,5,7,8,9   Page(s) 18-26     CIS Red Hat Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.1.2,6-7       Page(s) 26-7,31-2 CIS Red Hat Enterprise Linux 7 Benchmark v1.0.0
+# Refer to Section(s) 1.1.1,5,7,8,9   Page(s) 15-22     CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.1.1,5,7,8,9   Page(s) 18-26     CIS Red Hat Enterprise Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1,5,7,8,9     Page(s) 14-21     CIS SLES 11 Benchmark v1.2.0
 # Refer to Section(s) 2.1,5,7,8,9     Page(s) 14-21     CIS SLES 11 Benchmark v1.2.0
 # Refer to Section(s) 1.1.2,6-7,11-13 Page(s) 24-6,35-7 CIS Amazon Linux Benchmark v2.0.0
