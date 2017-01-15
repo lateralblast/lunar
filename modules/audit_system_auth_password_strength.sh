@@ -34,8 +34,8 @@ audit_system_auth_password_strength () {
               echo "Secure:    Password strength settings enabled in $check_file [$secure Passes]"
             fi
           fi
-        done
-      fi
+        fi
+      done
     else
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         funct_restore_file $check_file $restore_dir
