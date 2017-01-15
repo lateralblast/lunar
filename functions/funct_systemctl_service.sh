@@ -10,9 +10,6 @@
 funct_systemctl_service () {
   use_systemctl="no"
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "Amazon" ]; then
-      use_systemctl="yes"
-    fi
     if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" = "16" ]; then
       use_systemctl="yes"
     fi
