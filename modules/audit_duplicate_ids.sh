@@ -11,6 +11,7 @@
 # Although the useradd program will not let you create a duplicate User ID
 # (UID), it is possible for an administrator to manually edit the /etc/passwd
 # file and change the UID field.
+#
 #.
 
 audit_duplicate_ids () {
