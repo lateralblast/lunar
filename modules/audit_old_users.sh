@@ -7,11 +7,6 @@ audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     never_count=0
     finger_bin=`which finger`
-    if [ -f "$finger_bin" ]; then
-      finger_test=0
-    else
-      finger_test=1
-    fi
     if [ "$audit_mode" = 2 ]; then
       check_file="/etc/shadow"
       funct_restore_file $check_file $restore_dir
@@ -21,7 +16,7 @@ audit_old_users () {
         check_file="/etc/shadow"
         shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "\*|\!\!|NP|LK|UP"`
         if [ "$shadow_field" != "" ]; then
-          if [ "$finger_test" = 0 ]; then
+          if [ -f "$finger_bin" ]; then
             login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
           else
             login_status=`last $user_name |awk '{print $1}' |grep "$user_name"`
@@ -31,7 +26,7 @@ audit_old_users () {
               never_count=`expr $never_count + 1`
               total=`expr $total + 1`
               insecure=`expr $insecure + 1`
-              if [ "$finger_test" = 0 ]; then
+              if [ -f "$finger_bin" ]; then
                 echo "Warning:   User $user_name has never logged in and their account is not locked [$insecure Warnings]"
               else
                 echo "Warning:   User $user_name has not logged in recently and their account is not locked [$insecure Warnings]"
