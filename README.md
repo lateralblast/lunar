@@ -29,6 +29,7 @@ Supported Operating Systems:
   - SLES
   - Debian
   - Ubuntu
+  - Amazon Linux
 - Solaris (6,7,8,9,10 and 11)
 - Mac OS X
 - FreeBSD (needs more testing)
