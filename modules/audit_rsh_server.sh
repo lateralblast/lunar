@@ -6,9 +6,9 @@
 # replaced with the more secure SSH package.
 #
 # Refer to Section(s) 2.1.3  Page(s) 48   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 2.1.3  Page(s) 56-7 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 2.1.3  Page(s) 51-2 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 2.2.17 Page(s) 118  CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 2.1.3  Page(s) 56-7 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 2.1.3  Page(s) 51-2 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.17 Page(s) 118  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.1.3  Page(s) 41-2 CIS SLES 11 Benchmark v1.0.0
 #.
 

@@ -80,9 +80,9 @@
 # warning banner for your site.
 #
 # Refer to Section(s) 6.2.1-15 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 6.2.1-15 Page(s) 147-159 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 6.2.1-15 Page(s) 130-141 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 5.2.1-16 Page(s) 218-37  CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 6.2.1-15 Page(s) 147-159 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 6.2.1-15 Page(s) 130-141 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 5.2.1-16 Page(s) 218-37  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 9.2.1-15 Page(s) 121-131 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.4.14.9 Page(s) 57-60   CIS OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 1.2      Page(s) 2-3     CIS FreeBSD Benchmark v1.0.5

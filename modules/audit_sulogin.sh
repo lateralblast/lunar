@@ -9,11 +9,11 @@
 # a password.
 #
 # Refer to Section(s) 1.5.4-5 Page(s) 43-44 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.4.3   Page(s) 60    CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 1.4.3   Page(s) 60    CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 3.2     Page(s) 9     CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 3.4     Page(s) 33-4  CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 1.5.4-5 Page(s) 48-9  CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 1.5.4-5 Page(s) 45-6  CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 1.5.4-5 Page(s) 48-9  CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 1.5.4-5 Page(s) 45-6  CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 1.4.2-3 Page(s) 51-2  CIS Amazon Linux Benchmark v2.0.0
 #.
 

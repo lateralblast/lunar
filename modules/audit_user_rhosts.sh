@@ -7,9 +7,9 @@
 # and could contain information useful to an attacker for those other systems.
 #
 # Refer to Section(s) 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.10 Page(s) 195-6  CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.10 Page(s) 172-3  CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 6.2.14 Page(s) 289    CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 9.2.10 Page(s) 195-6  CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.10 Page(s) 172-3  CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.14 Page(s) 289    CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 13.10  Page(s) 161    CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 7.2    Page(s) 25     CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.5.1  Page(s) 101-2  CIS AIX Benchmark v1.1.0

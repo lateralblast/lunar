@@ -10,9 +10,9 @@
 # being used to run any commands.
 #
 # Refer to Section(s) 7.2   Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 7.2   Page(s) 169     CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 7.2   Page(s) 149-150 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 5.4.2 Page(s) 252     CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 7.2   Page(s) 169     CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 7.2   Page(s) 149-150 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 5.4.2 Page(s) 252     CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 10.2  Page(s) 138-9   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.1   Page(s) 27      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 9.3   Page(s) 73-4    CIS Solaris 11.1 Benchmark v1.0.0

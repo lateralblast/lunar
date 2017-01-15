@@ -2,8 +2,8 @@
 #
 #  TCP SYN Cookie Protection
 #
-# Refer to Section(s) 4.2.8 Page(s) 90-1 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 4.2.8 Page(s) 82-3 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 4.2.8 Page(s) 90-1 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 4.2.8 Page(s) 82-3 CIS RHEL 6 Benchmark v1.2.0
 #.
 
 audit_tcp_syn_cookie () {

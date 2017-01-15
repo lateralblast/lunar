@@ -7,9 +7,9 @@
 # Turn off NFS services
 #
 # Refer to Section(s) 3.8    Page(s) 64-5 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.8    Page(s) 77   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 3.8    Page(s) 67-8 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 2.2.7  Page(s) 107  CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 3.8    Page(s) 77   CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 3.8    Page(s) 67-8 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.7  Page(s) 107  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.7    Page(s) 57-8 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 3.7-11 Page(s) 11-3 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.5  Page(s) 39   CIS AIX Benchmark v1.1.0

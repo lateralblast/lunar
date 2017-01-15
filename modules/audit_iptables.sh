@@ -8,9 +8,9 @@
 # communications in and out of the box to specific IPv4 addresses and ports.
 #
 # Refer to Section(s) 5.7-8 Page(s) 114-8  CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 4.7-8 Page(s) 101-3  CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 4.7-8 Page(s) 92-3   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 3.6.1 Page(s) 153-4  CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 4.7-8 Page(s) 101-3  CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 4.7-8 Page(s) 92-3   CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 3.6.1 Page(s) 153-4  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 3.6.1 Page(s) 139-40 CIS Amazon Linux Benchmark v2.0.0
 
 #.

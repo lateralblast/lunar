@@ -7,9 +7,9 @@
 # communication.
 #
 # Refer to Section(2) 2.1.10 Page(s) 53-54 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 2.1.10 Page(s) 61-2  CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 2.1.10 Page(s) 56    CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 2.1.18 Page(s) 119   CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 2.1.10 Page(s) 61-2  CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 2.1.10 Page(s) 56    CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 2.1.18 Page(s) 119   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.1.5  Page(s) 43    CIS SLES 11 Benchmark v1.0.0
 #.
 

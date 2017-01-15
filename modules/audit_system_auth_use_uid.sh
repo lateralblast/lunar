@@ -8,8 +8,8 @@
 # by any user. By uncommenting the pam_wheel.so statement in /etc/pam.d/su,
 # the su command will only allow users in the wheel group to execute su.
 #
-# Refer to Section(s) 6.5 Page(s) 165-6 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 6.5 Page(s) 145-6 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.5 Page(s) 165-6 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 6.5 Page(s) 145-6 CIS RHEL 6 Benchmark v1.2.0
 #.
 
 audit_system_auth_use_uid () {

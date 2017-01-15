@@ -10,7 +10,7 @@
 # Refer to Section(s) 13.7  Page(s) 158-9 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 9.7   Page(s) 77    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.7   Page(s) 121   CIS Solaris 10 Benchmark v1.1.0
-# Refer to Section(s) 6.2.8 Page(s) 282   CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 6.2.8 Page(s) 282   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.2.8 Page(s) 260   CIS Amazon Linux Benchmark v2.0.0
 #.
 

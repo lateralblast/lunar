@@ -3,8 +3,8 @@
 # Create Warning Banner for GNOME Users
 #
 # Refer to Section(s) 8.3  Page(s) 151   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 8.2  Page(s) 174-5 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 8.3  Page(s) 154-5 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 8.2  Page(s) 174-5 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 8.3  Page(s) 154-5 CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 11.3 Page(s) 143-4 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.3  Page(s) 69-70 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 8.3  Page(s) 113-4 CIS Solaris 10 Benchmark v5.1.0

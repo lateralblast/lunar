@@ -13,9 +13,9 @@
 # called debug.log.
 #
 # Refer to Section(s) 4.1.1-8   Page(s) 71-76   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 5.2.1-8   Page(s) 108-113 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 5.1.1-8   Page(s) 94-9    CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 4.2.1.1-5 Page(s) 192-198 CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 5.2.1-8   Page(s) 108-113 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 5.1.1-8   Page(s) 94-9    CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 4.2.1.1-5 Page(s) 192-198 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 8.2.1-8   Page(s) 106-111 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 5.1       Page(s) 18      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 4.2.1.1-5 Page(s) 176-82  CIS Amazon Linux Benchmark v2.0.0

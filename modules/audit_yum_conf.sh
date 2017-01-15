@@ -4,9 +4,9 @@
 # be installed.
 #
 # Refer to Section(s) 1.2.3 Page(s) 32 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.2.2 Page(s) 50 CIS Red Hat Enterprise Linux 7 Benchmark v1.0.0
-# Refer to Section(s) 1.2.3 Page(s) 34 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 1.1.3 Page(s) 34 CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 1.2.2 Page(s) 50 CIS RHEL 7 Benchmark v1.0.0
+# Refer to Section(s) 1.2.3 Page(s) 34 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 1.1.3 Page(s) 34 CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 1.2.3 Page(s) 46 CIS Amazon Linux Benchmark v2.0.0
 #.
 

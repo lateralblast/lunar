@@ -8,8 +8,8 @@
 # on the system.
 #
 # Refer to Section(s) 9.2.2-4 Page(s) 163-5   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.2-4 Page(s) 188-190 CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.2-4 Page(s) 166-8   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 9.2.2-4 Page(s) 188-190 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.2-4 Page(s) 166-8   CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 13.2-4  Page(s) 154-6   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 9.4     Page(s) 118-9   CIS Solaris 10 Benchmark v1.1.0
 #.

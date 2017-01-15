@@ -5,9 +5,9 @@
 # Running services that are not required can leave potential vectors of attack
 # open.
 #
-# Refer to Section(s) 1.2.4-5      Page(s) 36-7   CIS Red Hat Enterprise Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 1.2.4-5      Page(s) 34-5   CIS Red Hat Enterprise Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 1.2.5,2.2.11 Page(s) 53,122 CIS Red Hat Enterprise Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 1.2.4-5      Page(s) 36-7   CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 1.2.4-5      Page(s) 34-5   CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 1.2.5,2.2.11 Page(s) 53,122 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.16         Page(s) 63-4   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.2.11       Page(s) 103    CIS Amazon Linux Benchmark v2.0.0
 #.

@@ -23,7 +23,7 @@ based on the date (see Examples below).
 Supported Operating Systems:
 
 - Linux
-  - Red Hat
+  - RHEL
   - Centos
   - Scientific Linux
   - SLES
