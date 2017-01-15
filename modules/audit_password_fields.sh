@@ -31,7 +31,7 @@ audit_password_fields () {
       if [ "$os_name" = "AIX" ]; then
         empty_command="pwdck –n ALL"
       else
-        empty_command="cat /etc/shadow |awk -F":" '{print $1":"$2":"}' |grep "::$" |cut -f1 -d":""
+        empty_command="cat /etc/shadow |awk -F':' '{print $1\":\"$2\":\"}' |grep \"::$\" |cut -f1 -d:"
       fi
       for user_name in `$empty_command`; do
         empty_count=1
