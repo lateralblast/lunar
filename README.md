@@ -60,20 +60,14 @@ More Information
 
 For more information refer to wiki:
 
-https://github.com/lateralblast/lunar/wiki
+(Wiki)[https://github.com/lateralblast/lunar/wiki]
 
-Usage:
+(Usage)[https://github.com/lateralblast/lunar/wiki/Usage]
 
-https://github.com/lateralblast/lunar/wiki/usage
+(Ubuntu)[https://github.com/lateralblast/lunar/wiki/Ubuntu]
 
-Ubuntu:
+(Solaris 11)[https://github.com/lateralblast/lunar/wiki/Solaris_11]
 
-https://github.com/lateralblast/lunar/wiki/ubuntu
+(CentOS)[https://github.com/lateralblast/lunar/wiki/CentOS]
 
-Solaris 11:
-
-https://github.com/lateralblast/lunar/wiki/solaris11
-
-CentOS:
-
-https://github.com/lateralblast/lunar/wiki/centos
+(Amazon Linux)[https://github.com/lateralblast/lunar/wiki/Amazon]
