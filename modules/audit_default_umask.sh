@@ -14,13 +14,15 @@
 # readable by users in the same Unix group, while a umask of 022 would make
 # files readable by every user on the system.
 #
-# Refer to Section(s) 7.4  Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 7.4  Page(s) 170-1 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 7.4  Page(s) 150-1 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 10.4 Page(s) 140   CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 8.8  Page(s) 29    CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 7.3  Page(s) 64-5  CIS Solaris 11.1 Benchmark v1.0.0
-# Refer to Section(s) 7.6  Page(s) 106-7 CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 7.4   Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 7.4   Page(s) 170-1 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 7.4   Page(s) 150-1 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.4.4 Page(s) 254-5 CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 10.4  Page(s) 140   CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 8.8   Page(s) 29    CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 7.3   Page(s) 64-5  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 7.6   Page(s) 106-7 CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 5.4.4 Page(s) 233-4 CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_default_umask () {

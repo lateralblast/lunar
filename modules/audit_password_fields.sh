@@ -11,6 +11,7 @@
 # Refer to Section(s) 9.2.1  Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.1  Page(s) 187-8 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.1  Page(s) 166   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.1  Page(s) 274   CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 13.1   Page(s) 154   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.2    Page(s) 27    CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.2.15 Page(s) 219   CIS AIX Benchmark v1.1.0
@@ -20,7 +21,7 @@
 #.
 
 audit_password_fields () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     funct_verbose_message "Password Fields"
     check_file="/etc/shadow"
     empty_count=0
@@ -57,6 +58,28 @@ audit_password_fields () {
         secure=`expr $secure + 1`
         echo "Secure:    No empty password entries"
       fi
+      for check_file in /etc/passwd /etc/shadow; do
+        legacy_check = `cat $check_file |grep '^+:' |head -1 |wc -l`
+        if [ "$legacy_check" != "0" ]; then
+          if [ "$audit_mode" = 1 ]; then
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Legacy field found in $check_file [$insecure Warnings]"
+            funct_verbose_message "" fix
+            funct_verbose_message "cat $check_file |grep -v '^+:' > $temp_file" fix
+            funct_verbose_message "cat $temp_file  > $check_file" fix
+            funct_verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            funct_backup_file $check_file
+            echo "Setting:  Removing legacy entries from $check_file"
+            cat $check_file |grep -v '^+:' > $temp_file
+            cat $temp_file  > $check_file
+          fi
+        else
+          secure=`expr $secure + 1`
+          echo "Secure:    No legacy entries in $check_file"
+        fi
+      done
     else
       funct_restore_file $check_file $restore_dir
     fi

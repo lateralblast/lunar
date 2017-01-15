@@ -20,9 +20,10 @@
 # for everyone else.
 #
 # Refer to Section(s) 9.1.2-9  Page(s) 153-9   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.1.2-9  Page(s) 177-183 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.2-9  Page(s) 157-162 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 12.2-7   Page(s) 146-150 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 9.1.2-9  Page(s) 177-83  CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.2-9  Page(s) 157-62  CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 6.1.2-9  Page(s) 261-8   CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 12.2-7   Page(s) 146-50  CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 6.1.2-9  Page(s) 239-46  CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 6.1      Page(s) 21      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.11.1-3 Page(s) 192-4   CIS AIX Benchmark v1.1.0
