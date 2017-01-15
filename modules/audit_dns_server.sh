@@ -34,11 +34,12 @@ audit_dns_server () {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
+        funct_systemctl_service disable named
         for service_name in dnsmasq named bind9; do
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
         done
-        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
           funct_linux_package uninstall bind
         fi
       fi

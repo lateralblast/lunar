@@ -14,15 +14,12 @@
 
 audit_rsh_server () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-     funct_verbose_message "RSH Server Daemon"
-    	if [ "$os_version" = "7" ]; then
-    		funct_systemctl_service disable rsh.socket
-    		funct_systemctl_service disable rlogin.socket
-    		funct_systemctl_service disable rexec.socket
-    	else
-	      funct_linux_package uninstall rsh-server
-	    fi
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
+      funct_verbose_message "RSH Server Daemon"
+ 		  funct_systemctl_service disable rsh.socket
+      funct_systemctl_service disable rlogin.socket
+    	funct_systemctl_service disable rexec.socket
+      funct_linux_package uninstall rsh-server
     fi
   fi
 }

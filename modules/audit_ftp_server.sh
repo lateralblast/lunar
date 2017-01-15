@@ -23,7 +23,8 @@ audit_ftp_server () {
       fi
     fi
     if [ "$os_name" = "Linux" ];then
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+      funct_systemctl_service disable vsftpd
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
         funct_linux_package uninstall vsftpd
       fi
     fi

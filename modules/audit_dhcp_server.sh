@@ -16,14 +16,17 @@
 #.
 
 audit_dhcp_server () {
-  if [ "$os_name" = "SunOS" ]; then
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "DHCP Server"
-      service_name="svc:/network/dhcp-server:default"
-      funct_service $service_name disabled
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    funct_verbose_message "DHCP Server"
+    if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+        service_name="svc:/network/dhcp-server:default"
+        funct_service $service_name disabled
+      fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+      funct_systemctl_service disable dhcpd
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
         funct_linux_package uninstall dhcp
       fi
     fi

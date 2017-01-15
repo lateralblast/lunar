@@ -15,13 +15,10 @@
 
 audit_talk_server () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-     funct_verbose_message "Talk Server Daemon"
-    	if [ "$os_version" = "7" ]; then
-    		funct_systemctl_service disable ntalk
-    	else
-	      funct_linux_package uninstall talk-server
-	    fi
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
+      funct_verbose_message "Talk Server Daemon"
+ 		  funct_systemctl_service disable ntalk
+      funct_linux_package uninstall talk-server
     fi
   fi
 }

@@ -36,6 +36,7 @@ audit_samba () {
     if [ "$os_name" = "Linux" ]; then
       funct_verbose_message "Samba Daemons"
       service_name="smb"
+      funct_systemctl_service disable $service_name
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
       if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then

@@ -56,6 +56,7 @@ audit_apache () {
     fi
     if [ "$os_name" = "Linux" ]; then
       for service_name in httpd apache apache2 tomcat5 squid prixovy; do
+        funct_systemctl_service disable $service_name
         funct_chkconfig_service $service_name 3 off
         funct_chkconfig_service $service_name 5 off
       done

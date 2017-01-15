@@ -94,13 +94,15 @@ audit_snmp () {
         funct_rpm_check net-snmp
         if [ "$rpm_check" = "net-snmp" ]; then
           service_name="snmpd"
+          funct_systemctl_service disable $service_name
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
           service_name="snmptrapd"
+          funct_systemctl_service disable $service_name
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
           funct_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
-          if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+          if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
             funct_linux_package uninstall net-snmp
           fi
         fi

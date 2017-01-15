@@ -19,21 +19,25 @@ audit_email_daemons () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "Cyrus IMAP Daemon"
     service_name="cyrus"
+    funct_systemctl_service disable $service_name
     funct_chkconfig_service $service_name 3 off
     funct_chkconfig_service $service_name 3 off
     funct_verbose_message "IMAP Daemon"
     service_name="imapd"
+    funct_systemctl_service disable $service_name
     funct_chkconfig_service $service_name 3 off
     funct_chkconfig_service $service_name 3 off
     funct_verbose_message "Qpopper POP Daemon"
     service_name="qpopper"
+    funct_systemctl_service disable $service_name
     funct_chkconfig_service $service_name 3 off
     funct_chkconfig_service $service_name 3 off
     funct_verbose_message "Dovecot IMAP and POP3 Services"
     service_name="dovecot"
+    funct_systemctl_service disable $service_name
     funct_chkconfig_service $service_name 3 off
     funct_chkconfig_service $service_name 3 off
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazone" ]; then
       funct_linux_package uninstall dovecot
     fi
   fi

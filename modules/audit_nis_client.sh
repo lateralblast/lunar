@@ -26,6 +26,7 @@ audit_nis_client () {
     if [ "$os_name" = "Linux" ]; then
       funct_verbose_message "NIS Client Daemons"
       service_name="ypbind"
+      funct_systemctl_service disable $service_name
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
       if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then

@@ -36,7 +36,7 @@ audit_syslog_server () {
     if [ "$os_name" = "Linux" ]; then
       if [ "$install_rsyslog" = "yes" ]; then
         funct_verbose_message="Rsyslog Daemon"
-        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ]; then
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Amazon" ]; then
           if [ "$os_version" > 4 ]; then
             service_name="syslog"
             funct_chkconfig_service $service_name 3 off
@@ -50,6 +50,7 @@ audit_syslog_server () {
             funct_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
             funct_file_value $check_file "" tab "" hash
             funct_linux_package install $service_name
+            funct_systemctl_service enable $service_name
             funct_chkconfig_service $service_name 3 on
             funct_chkconfig_service $service_name 5 on
             funct_file_perms $check_file 0600 root root

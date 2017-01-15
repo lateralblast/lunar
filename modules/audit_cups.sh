@@ -34,6 +34,7 @@ audit_cups () {
       funct_check_perms /etc/cups/client.conf 0644 root lp
       funct_file_value /etc/cups/cupsd.conf User space lp hash
       funct_file_value /etc/cups/cupsd.conf Group space sys hash
+      funct_systemctl_service disable cups
     fi
   fi
 }

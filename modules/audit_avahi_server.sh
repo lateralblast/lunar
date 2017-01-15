@@ -22,5 +22,6 @@ audit_avahi_server () {
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
     done
+    funct_systemctl_service disable avahi-daemon
   fi
 }

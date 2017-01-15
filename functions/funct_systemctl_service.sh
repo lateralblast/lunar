@@ -8,15 +8,27 @@
 #.
 
 funct_systemctl_service () {
+  use_systemctl="no"
   if [ "$os_name" = "Linux" ]; then
+    if [ "$os_vendor" = "Amazon" ]; then
+      use_systemctl="yes"
+    fi
+    if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" = "16" ]; then
+      use_systemctl="yes"
+    fi
+    if [ "$os_vendor" = "Centos" ]|| [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
+      use_systemctl="yes"
+    fi
+  fi
+  if [ "$os_name" = "Linux" ] && [ "$use_systemctl" = "yes" ]; then
     correct_status=$1
     service_name=$2
     if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ]; then
-      $service_switch = "enable"
-      $correct_status = "enabled"
+      $service_switch="enable"
+      $correct_status="enabled"
     else
-      $service_switch = "disable"
-      $correct_status = "disabled"
+      $service_switch="disable"
+      $correct_status="disabled"
     fi
     log_file="systemctl.log"
     actual_status=`systemctl is-enabled $service_name`
@@ -59,9 +71,9 @@ funct_systemctl_service () {
             if [ "$check_status" != "$actual_status" ]; then
               echo "Restoring: Service $service_name at run level $service_level to $check_status"
               if [ "$check_status" = "enable" ] || [ "$check_status" = "enabled" ]; then
-                $service_switch = "enable"
+                $service_switch="enable"
               else
-                $service_switch = "disable"
+                $service_switch="disable"
               fi
               systemctl $service_name $service_switch
             fi

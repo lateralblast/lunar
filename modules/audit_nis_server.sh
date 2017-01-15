@@ -41,9 +41,10 @@ audit_nis_server () {
     if [ "$os_name" = "Linux" ]; then
       funct_verbose_message "NIS Server Daemons"
       for service_name in yppasswdd ypserv ypxfrd; do
+        funct_systemctl_service disable $service_name
         funct_chkconfig_service $service_name 3 off
         funct_chkconfig_service $service_name 5 off
-        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
           funct_linux_package uninstall $service_name
         fi
       done

@@ -36,12 +36,9 @@ audit_tftp_server () {
     funct_chkconfig_service tftp 5 off
     funct_check_perms /tftpboot 0744 root root
     funct_check_perms /var/tftpboot 0744 root root
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      if [ "$os_version" = "7" ]; then
-        funct_systemctl_service disable tftp.socket
-      else
-        funct_linux_package uninstall tftp-server
-      fi
+    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
+      funct_systemctl_service disable tftp.socket
+      funct_linux_package uninstall tftp-server
     fi
   fi
 }
