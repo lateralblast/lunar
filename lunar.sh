@@ -106,7 +106,7 @@ company_name="Lateral Blast Pty Ltd"
 
 print_usage () {
   echo ""
-  echo "Usage: $0 [-a|c|l|h|V] [-u]"
+  echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|c|V] -[u]"
   echo ""
   echo "-a: Run in audit mode (no changes made to system)"
   echo "-A: Run in audit mode (no changes made to system)"
@@ -405,19 +405,23 @@ print_previous () {
 #.
 
 print_changes () {
-  for saved_file in `find $base_dir -type f -print`; do
-    check_file=`echo $saved_file |cut -f 5- -d"/"`
-    top_dir=`echo $saved_file |cut -f 1-4 -d"/"`
-    echo "Directory: $top_dir"
-    log_test=`echo "$check_file" |grep "log$"`
-    if [ `expr "$log_test" : "[A-z]"` = 1 ]; then
-      echo "Original system parameters:"
-      cat $saved_file |sed "s/,/ /g"
-    else
-      echo "Changes to /$check_file:"
-      diff $saved_file /$check_file
-    fi
-  done
+  if [ -f "$base_dir" ]; then
+    for saved_file in `find $base_dir -type f -print`; do
+      check_file=`echo $saved_file |cut -f 5- -d"/"`
+      top_dir=`echo $saved_file |cut -f 1-4 -d"/"`
+      echo "Directory: $top_dir"
+      log_test=`echo "$check_file" |grep "log$"`
+      if [ `expr "$log_test" : "[A-z]"` = 1 ]; then
+        echo "Original system parameters:"
+        cat $saved_file |sed "s/,/ /g"
+      else
+        echo "Changes to /$check_file:"
+        diff $saved_file /$check_file
+      fi
+    done
+  else
+    echo "No changes made recently"
+  fi
 }
 
 # funct_audit_system () {
