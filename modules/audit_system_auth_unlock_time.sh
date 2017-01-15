@@ -46,12 +46,12 @@ audit_system_auth_unlock_time () {
               echo "Secure:    Lockout time for failed password attempts enabled in $check_file [$secure Passes]"
             fi
           fi
+        else
+          for check_file in /etc/pam.d/system-auth /etc/pam.d/common-auth; do
+            funct_restore_file $check_file $restore_dir
+          done
         fi
-      done
-    else
-      for check_file in /etc/pam.d/system-auth /etc/pam.d/common-auth; do
-        funct_restore_file $check_file $restore_dir
-      done
-    fi
+      fi
+    done
   fi
 }
