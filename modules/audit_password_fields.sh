@@ -59,7 +59,7 @@ audit_password_fields () {
         echo "Secure:    No empty password entries"
       fi
       for check_file in /etc/passwd /etc/shadow; do
-        legacy_check = `cat $check_file |grep '^+:' |head -1 |wc -l`
+        legacy_check=`cat $check_file |grep '^+:' |head -1 |wc -l`
         if [ "$legacy_check" != "0" ]; then
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`

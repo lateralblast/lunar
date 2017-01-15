@@ -48,9 +48,9 @@ audit_sulogin () {
       fi
     fi
     if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
-      check_file = "/usr/lib/systemd/system/rescue.service"
+      check_file="/usr/lib/systemd/system/rescue.service"
       funct_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
-      check_file = "/usr/lib/systemd/system/emergency.service"
+      check_file="/usr/lib/systemd/system/emergency.service"
       funct_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
     fi
     if [ "$os_name" = "Linux" ]; then

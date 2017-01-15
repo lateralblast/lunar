@@ -18,7 +18,7 @@ audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "PAM Authentication"
     if [ "$os_vendor" = "Amazon" ] && [ "$os_version" = "2016" ]; then
-      check_file = "/etc/security/pwquality.conf"
+      check_file="/etc/security/pwquality.conf"
       funct_file_value $check_file minlen eq 14 hash  
       funct_file_value $check_file dcredit eq -1 hash  
       funct_file_value $check_file ocredit eq -1 hash  
@@ -38,7 +38,7 @@ audit_system_auth () {
       audit_system_auth_password_hashing $auth_string $search_string
     else
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
-        check_file = "/etc/security/pwquality.conf"
+        check_file="/etc/security/pwquality.conf"
         funct_file_value $check_file minlen eq 14 hash  
         funct_file_value $check_file dcredit eq -1 hash  
         funct_file_value $check_file ocredit eq -1 hash  

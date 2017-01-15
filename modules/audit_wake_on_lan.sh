@@ -32,7 +32,7 @@ audit_wake_on_lan() {
         fi
       fi
     else
-      restore_file = $retore_dir/$log_file
+      restore_file=$retore_dir/$log_file
       if [ -f "$restore_file" ]; then
         $restore_value=`cat $restore_file`
         if [ "$restore_value" != "$actual_value" ]; then
