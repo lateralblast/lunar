@@ -9,6 +9,7 @@
 # Refer to Section(s) 2.2.3 Page(s) 24-5  CIS Solaris 10 Benchmrk v5.1.0
 # Refer to Section(s) 2.1.5 Page(s) 58    CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.5 Page(s) 53    CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 2.3.1 Page(s) 123   CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 5.1.2 Page(s) 41    CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.3.1 Page(s) 110-1 CIS Amazon Linux Benchmark v2.0.0
 #.
@@ -27,7 +28,7 @@ audit_nis_client () {
       service_name="ypbind"
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
         funct_linux_package uninstall ypbind
       fi
     fi

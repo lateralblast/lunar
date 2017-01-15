@@ -4,11 +4,12 @@
 # Install AIDE to make use of the file integrity features to monitor critical
 # files for changes that could affect the security of the system.
 #
-# Refer to Section(s) 1.3.1-2 Page(s) 34-5  CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 1.3.1-2 Page(s) 39-40 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 1.3.1-2 Page(s) 36-7  CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 8.3.1-2 Page(s) 112-3 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 1.3.1-2 Page(s) 47-9  CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 1.3.1-2       Page(s) 34-5    CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.3.1-2       Page(s) 39-40   CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.3.1-2       Page(s) 36-7    CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 1.3.1-2,1.5.4 Page(s) 54-6,66 CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 8.3.1-2       Page(s) 112-3   CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 1.3.1-2       Page(s) 47-9    CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_aide() {

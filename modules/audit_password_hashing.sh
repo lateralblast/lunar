@@ -9,6 +9,8 @@
 # Refer to Section(s) 6.3.1 Page(s) 138-9 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.3.4 Page(s) 162-3 CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 6.3.1 Page(s) 141-2 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 5.3.4 Page(s) 234-5 CIS Red Hat Linux 7 Benchmark v1.2.0
+# Refer to Section(s) 5.3.4 Page(s) 224-5 CIS Amazon Linux Benchmark v1.2.0
 #.
 
 audit_password_hashing () {

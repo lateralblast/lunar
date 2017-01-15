@@ -19,10 +19,11 @@
 # Refer to Section(s) 2.11.11,2.12.12 Page(s) 198,216 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 8.1.1           Page(s) 172-3   CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 8.1             Page(s) 152-3   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 1.7.1.4-6       Page(s) 84-8    CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 11.1            Page(s) 142-3   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 8.1             Page(s) 68-9    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 8.1             Page(s) 111-2   CIS Solaris 10 Benchmark v5.1.0
-# Refer to Section(s) 1.7.1.4-6       Page(s) 74-76   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 1.7.1.4-6       Page(s) 74-6    CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_security_banner () {

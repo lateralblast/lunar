@@ -22,4 +22,12 @@ audit_cron () {
       funct_chkconfig_service $service_name 5 on
     fi
   fi
+  if [ "$os_vendor" = "Amazon" ]
+    funct_systemctl_service disable crond
+  fi
+  if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Centos" ]; then
+    if [ "$os_version" = "7" ]; then
+      funct_systemctl_service disable crond
+    fi
+  fi
 }

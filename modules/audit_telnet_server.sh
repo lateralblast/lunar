@@ -18,7 +18,11 @@ audit_telnet_server () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       funct_verbose_message "Telnet Server Daemon"
-      funct_linux_package uninstall telnet-server
+      if [ "$os_version" = "7" ]; then
+      	funct_systemctl_service disable telnet.socket
+      else
+	      funct_linux_package uninstall telnet-server
+	    fi
     fi
   fi
 }

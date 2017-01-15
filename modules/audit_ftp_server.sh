@@ -6,9 +6,11 @@
 # FTP does not protect the confidentiality of data or authentication
 # credentials. It is recommended sftp be used if file transfer is required.
 #
-# Refer to Section(s) 3.10 Page(s) 66   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.10 Page(s) 78-9 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 3.10 Page(s) 68-9 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 3.10  Page(s) 66   CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.10  Page(s) 78-9 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.10  Page(s) 68-9 CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.9 Page(s) 109  CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 2.2.9 Page(s) 101  CIS Amazon Linux Benchmark v1.0.0
 #.
 
 audit_ftp_server () {

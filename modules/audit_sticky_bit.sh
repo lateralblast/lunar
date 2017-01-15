@@ -12,6 +12,7 @@
 # on a given directory.
 #
 # Refer to Section(s) 1.17   Page(s) 26    CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.1.21 Page(s) 46    CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 1.1.17 Page(s) 28    CIS Red Hat Linux 5 Benchmark v2.1.0
 # Refer to Section(s) 1.1.17 Page(s) 27    CIS Red Hat Linux 6 Benchmark v1.2.0
 # Refer to Section(s) 2.17   Page(s) 26    CIS SLES 11 Benchmark v1.2.0

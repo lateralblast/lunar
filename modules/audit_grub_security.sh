@@ -15,6 +15,7 @@
 # Note that you can still boot into the default OS selection without a password.
 #
 # Refer to Section(s) 1.5.3 Page(s) 47-8 CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 1.4.1 Page(s) 57   CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 3.1   Page(s) 31-2 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.4.1 Page(s) 50   CIS Amazon Linux Benchmark v2.0.0
 #.

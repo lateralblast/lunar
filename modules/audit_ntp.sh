@@ -4,13 +4,14 @@
 # between computer systems.
 # Most security mechanisms require network time to be synchronized.
 #
-# Refer to Section(s) 3.6       Page(s) 62-3 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.6       Page(s) 75-6 CIS Red Hat Linux 5 Benchmark v2.1.0
-# Refer to Section(s) 3.6       Page(s) 65-6 CIS Red Hat Linux 6 Benchmark v1.2.0
-# Refer to Section(s) 2.4.5.1   Page(s) 35-6 CIS Apple OS X 10.5 Benchmark v1.1.0
-# Refer to Section(s) 6.5       Page(s) 55-6 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 1.9.2     Page(s) 16-7 CIS ESX Server 4 Benchmark v1.1.0
-# Refer to Section(s) 2.2.1.1-2 Page(s) 90-2 CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 3.6       Page(s) 62-3   CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.6       Page(s) 75-6   CIS Red Hat Linux 5 Benchmark v2.1.0
+# Refer to Section(s) 3.6       Page(s) 65-6   CIS Red Hat Linux 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.1.1-2 Page(s) 98-101 CIS Red Hat Linux 7 Benchmark v2.1.0
+# Refer to Section(s) 2.4.5.1   Page(s) 35-6   CIS Apple OS X 10.5 Benchmark v1.1.0
+# Refer to Section(s) 6.5       Page(s) 55-6   CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 1.9.2     Page(s) 16-7   CIS ESX Server 4 Benchmark v1.1.0
+# Refer to Section(s) 2.2.1.1-2 Page(s) 90-2   CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_ntp () {
@@ -41,6 +42,20 @@ audit_ntp () {
       total=`expr $total + 1`
       log_file="ntp.log"
       funct_linux_package check ntp
+      if [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
+        funct_linux_package check chrony 
+        check_file="/etc/sysconfig/chronyd"
+        funct_file_value $check_file OPTIONS eq '"-u chrony"' hash
+        check_file="/usr/lib/systemd/system/ntpd.service"
+        funct_file_value $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
+      fi
+      if [ "$os_vendor" = "Amazon" ]; then
+        funct_linux_package check chrony
+        check_file="/etc/sysconfig/chronyd"
+        funct_file_value $check_file OPTIONS eq '"-u chrony"' hash
+        check_file="/usr/lib/systemd/system/ntpd.service"
+        funct_file_value $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
+      fi
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  NTP is enabled"
       fi
@@ -70,7 +85,7 @@ audit_ntp () {
       funct_chkconfig_service $service_name 5 on
       funct_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
       funct_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
-      funct_file_value $check_file OPTIONS eq "-u ntp:ntp -p /var/run/ntpd.pid" hash
+      funct_file_value $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
     fi
     for server_number in `seq 0 3`; do
       ntp_server="$server_number.$country_suffix.pool.ntp.org"

@@ -9,6 +9,7 @@
 # a password.
 #
 # Refer to Section(s) 1.5.4-5 Page(s) 43-44 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.4.3   Page(s) 60    CIS Red Hat Linux 7 Benchmark v2.1.0
 # Refer to Section(s) 3.2     Page(s) 9     CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 3.4     Page(s) 33-4  CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.5.4-5 Page(s) 48-9  CIS Red Hat Linux 5 Benchmark v2.1.0
@@ -45,6 +46,12 @@ audit_sulogin () {
           echo "Secure:    Single user login requires password [$secure Passes]"
         fi
       fi
+    fi
+    if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
+      check_file = "/usr/lib/systemd/system/rescue.service"
+      funct_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
+      check_file = "/usr/lib/systemd/system/emergency.service"
+      funct_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/inittab"
