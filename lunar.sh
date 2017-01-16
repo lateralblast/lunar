@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.1.7
+# Version:      5.1.8
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -336,7 +336,7 @@ check_environment () {
       echo ""
     fi
     for file_name in `ls $modules_dir/*.sh`; do
-      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         . $file_name
       else
         if [ "$file_name" = "modules/audit_ftp_users.sh" ]; then

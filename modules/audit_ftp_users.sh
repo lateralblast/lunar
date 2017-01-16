@@ -22,7 +22,7 @@ audit_ftp_users () {
     if [ "$os_name" = "AIX" ]; then
       $check_file=$1
       total=`expr $total + 1`
-      for  $user_name in `lsuser -c ALL | grep -v ^#name |grep -v root | cut -f1 -d:`; do
+      for user_name in `lsuser -c ALL | grep -v ^#name |grep -v root | cut -f1 -d:`; do
         if [ `lsuser -f $user_name | grep id | cut -f2 -d=` -lt 200 ]; then
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
