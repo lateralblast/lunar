@@ -318,7 +318,7 @@ check_environment () {
       echo ""
     fi
     for file_name in `ls $functions_dir/*.sh`; do
-      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         . $file_name
       else
         source $file_name
@@ -361,7 +361,7 @@ check_environment () {
       echo ""
     fi
     for file_name in `ls $private_dir/*.sh`; do
-      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         . $file_name
       else
         source $file_name
