@@ -853,3 +853,5 @@
 # Fixed code to use . rather than source on Ubuntu and Debian (sh is actually bash)
 # 5.1.9: Tue 17 Jan 2017 20:13:43 AEDT
 # Updated Linux package handling code
+# 5.2.0: Wed 18 Jan 2017 08:39:55 AEDT
+# Initial code for AWS Foundation Security audit

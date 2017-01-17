@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.1.9
+# Version:      5.2.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -424,7 +424,47 @@ print_changes () {
   fi
 }
 
-# funct_audit_system () {
+
+# check_aws
+#
+# Check AWS CLI etc is installed
+#.
+
+check_aws () {
+  aws_bin=`which aws 2> /dev/null`
+  if [ -f "$aws_bin" ]; then
+    aws_creds="$HOME/.aws/credentials"
+    if [ -f "$aws_creds" ]; then
+      if [ "$os_name" = "Darwin" ]; then
+        base_d="base64 -D"
+      else
+        base_d="base64 -d"
+      fi
+    else
+      echo "AWS credentials file does not exit"
+      exit
+    fi
+  else
+    echo "AWS CLI is not installed"
+    exit
+  fi
+  aws iam generate-credential-report 2>&1 > /dev/null
+}
+
+# funct_audit_aws
+#
+# Audit AWS
+#.
+
+funct_audit_aws () {
+  audit_mode=$1
+  check_environment
+  check_aws
+  funct_audit_aws_all
+  print_results
+}
+
+# funct_audit_system
 #
 # Audit System
 #.
@@ -482,6 +522,9 @@ funct_audit_select () {
   audit_mode=$1
   function=$2
   check_environment
+  if [ "`echo $function |grep aws`" ]; then
+    check_aws
+  fi
   if [ "`expr $function : audit_`" != "6" ]; then
     function="audit_$function"
   fi
@@ -552,7 +595,7 @@ print_results () {
 
 # Handle command line arguments
 
-while getopts abcdlps:u:z:hASVL args; do
+while getopts abcdlps:u:z:hwASWVL args; do
   case $args in
     a)
       if [ "$2" = "-v" ]; then
@@ -610,11 +653,17 @@ while getopts abcdlps:u:z:hASVL args; do
       function="$OPTARG"
       exit
       ;;
+    W)
+      echo ""
+      echo "AWS Foundation Security Tests:"
+      echo ""
+      ls $modules_dir | grep -v '^full_' |grep aws |sed 's/\.sh//g'
+      ;;
     S)
       echo ""
-      echo "Modules:"
+      echo "UNIX Security Tests:"
       echo ""
-      ls $modules_dir | grep -v '^full_' |sed 's/\.sh//g'
+      ls $modules_dir | grep -v '^full_' |grep -v aws |sed 's/\.sh//g'
       ;;
     A)
       if [ "$2" = "-v" ]; then
