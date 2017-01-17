@@ -849,3 +849,7 @@
 # Bug fixes
 # 5.1.7: Mon 16 Jan 2017 09:18:43 AEDT
 # Cleaned up reporting
+# 5.1.8: Mon 16 Jan 2017 17:15:21 AEDT
+# Fixed code to use . rather than source on Ubuntu and Debian (sh is actually bash)
+# 5.1.9: Tue 17 Jan 2017 20:13:43 AEDT
+# Updated Linux package handling code
