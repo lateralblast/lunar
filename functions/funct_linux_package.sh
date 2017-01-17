@@ -27,14 +27,14 @@ funct_linux_package () {
       fi
       if [ "$package_mode" = "install" ] && [ "$package_name" = "$package_check" ]; then
         secure=`expr $secure + 1`
-        echo "Secure:    Managed Object Browser disabled [$secure Passes]"
+        echo "Secure:    Package $package_check is $package_status [$secure Passes]"
       else
         if [ "$package_mode" = "uninstall" ] && [ "$package_name" != "$package_check" ]; then
           secure=`expr $secure + 1`
-          echo "Secure:    Managed Object Browser disabled [$secure Passes]"
+          echo "Secure:    Package $package_check is $package_status [$secure Passes]"
         else
           insecure=`expr $insecure + 1`
-          echo "Secure:    Managed Object Browser disabled [$insecure Warnings]"
+          echo "Warning:   Package $package_check is not $package_status [$insecure Warnings]"
         fi
       fi
       if [ "$package_mode" = "install" ]; then

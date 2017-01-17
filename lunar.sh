@@ -597,6 +597,19 @@ while getopts abcdlps:u:z:hASVL args; do
       funct_audit_select $audit_mode $function
       exit
       ;;
+    w)
+      if [ "$2" = "-v" ]; then
+        verbose=1
+      fi
+      echo ""
+      echo "Running     In audit mode (no changes will be made to system)"
+      echo "            This requires the AWS CLI to be configured"
+      echo ""
+      audit_mode=1
+      funct_audit_aws $audit_mode
+      function="$OPTARG"
+      exit
+      ;;
     S)
       echo ""
       echo "Modules:"
