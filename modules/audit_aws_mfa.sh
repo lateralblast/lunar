@@ -11,8 +11,12 @@
 # key and have knowledge of a credential.
 #
 # http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+# http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html
+# http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root
 #
-# Refer to Section(s) 1.2 Page(s) 12-4 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.2  Page(s) 12-4 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.13 Page(s) 35-6 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.14 Page(s) 37-8 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_mfa () {
@@ -45,5 +49,25 @@ audit_aws_mfa () {
       fi
     fi
   done
+  total=`expr $total + 1`
+  mfa_check=`aws iam get-account-summary | grep "AccountMFAEnabled" |cut -f1 -d: |sed "s/ //g" |sed "s/,//g"`
+  if [ "$mfa_check" = "1" ]; then
+    secure=`expr $secure + 1`
+    echo "Secure:    The root account has MFA enabled [$secure Passes]"
+    total=`expr $total + 1`
+    mfa_check=`iaws iam list-virtual-mfa-devices |grep "SerialNumber" |grep "root_account" |wc -l`
+    if [ "$mfa_check" = "0" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    The root account doesn't have a virtual MFA [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   The root account doesn't have a hardware MFA [$insecure Warnings]"
+    fi
+  else
+    insecure=`expr $insecure + 1`
+    echo "Warning:   The root account doesn't have MFA enabled [$insecure Warnings]"
+    insecure=`expr $insecure + 1`
+    echo "Warning:   The root account doesn't a hardware MFA [$insecure Warnings]"
+  fi
 }
 
