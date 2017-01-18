@@ -855,3 +855,5 @@
 # Updated Linux package handling code
 # 5.2.0: Wed 18 Jan 2017 08:39:55 AEDT
 # Initial code for AWS Foundation Security audit
+# 5.2.1: Wed 18 Jan 2017 14:47:16 AEDT
+# Added AWS credentials check

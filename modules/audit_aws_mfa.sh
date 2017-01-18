@@ -16,7 +16,6 @@
 #.
 
 audit_aws_mfa () {
-	date_test=`date +%Y-%m`
 	entries=`aws iam get-credential-report --query 'Content' --output text | $base_d | cut -d, -f1,4,8 | sed '1 d' |awk -F '\n' '{print $1}'`
 	for entry in $entries; do
     total=`expr $total + 1`
