@@ -45,6 +45,17 @@ Supported Operating Systems:
 - AIX (needs more testing)
 - ESXi (initial support - some tests)
 
+Supported Services:
+
+- AWS (not complete - in progress)
+
+Requirements:
+
+- AWS 
+  - AWS CLI
+  - AWS Credentials (API Access and Secret Keys)
+  - Read rights to appropriate AWS services, e.g. DescribeTrails
+
 License
 -------
 
