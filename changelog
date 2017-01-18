@@ -867,4 +867,8 @@
 # Added AWS user policy check
 # 5.2.6: Thu 19 Jan 2017 07:34:48 AEDT
 # Added AWS support role check
+# 5.2.7: Thu 19 Jan 2017 09:05:08 AEDT
+# Added AWS access keys check
+# 5.2.8: Thu 19 Jan 2017 10:15:18 AEDT
+# Added AWS full administrative privileges check
 
