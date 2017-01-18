@@ -94,7 +94,7 @@ audit_aws_creds () {
             echo "Warning:   Account $aws_user has not used AWS API credentials in over 90 days consider removing keys [$insecure Warnings]"
           else
             secure=`expr $secure + 1`
-            echo "Secure:    Account $aws_user has used API credentials in the past 90 days [$secure Passes]"
+            echo "Secure:    Account $aws_user has used AWS API credentials in the past 90 days [$secure Passes]"
           fi
           total=`expr $total + 1`
           if [ "`echo "$key1_rot" |grep '[0-9]'`" ]; then
@@ -105,7 +105,7 @@ audit_aws_creds () {
               echo "Warning:   Account $aws_user will not rotate their AWS API credentials in the next 90 days [$insecure Warnings]"
             else
               secure=`expr $secure + 1`
-              echo "Secure:    Account $aws_user has rotated their API credentials in the last 90 days [$secure Passes]"
+              echo "Secure:    Account $aws_user has rotated their AWS API credentials in the last 90 days [$secure Passes]"
             fi
           else
             insecure=`expr $insecure + 1`
@@ -121,7 +121,7 @@ audit_aws_creds () {
             echo "Warning:   Account $aws_user has not used AWS SOA credentials in over 90 days consider removing keys [$insecure Warnings]"
           else
             secure=`expr $secure + 1`
-            echo "Secure:    Account $aws_user has used API SOA credentials in the past 90 days [$secure Passes]"
+            echo "Secure:    Account $aws_user has used AWS SOA credentials in the past 90 days [$secure Passes]"
           fi
           total=`expr $total + 1`
           if [ "`echo $key2_rot |grep '[0-9]'`" ]; then
@@ -132,7 +132,7 @@ audit_aws_creds () {
               echo "Warning:   Account $aws_user will not rotate their AWS SOA credentials in the next 90 days [$insecure Warnings]"
             else
               secure=`expr $secure + 1`
-              echo "Secure:    Account $aws_user has rotated their API SOA credentials in the last 90 days [$secure Passes]"
+              echo "Secure:    Account $aws_user has rotated their AWS SOA credentials in the last 90 days [$secure Passes]"
             fi
           else
             insecure=`expr $insecure + 1`
