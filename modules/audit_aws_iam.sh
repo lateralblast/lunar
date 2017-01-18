@@ -9,10 +9,11 @@
 #
 # http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
 #
-# Refer to Section(s) 1.1 Page(s) 10-1 CIS AWS Foundations Benchmark v1.0.0
+# Refer to Section(s) 1.1 Page(s) 10-1 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_iam () {
+	aws iam generate-credential-report 2>&1 > /dev/null
 	date_test=`date +%Y-%m`
 	last_login=`aws iam get-credential-report --query 'Content' --output text | $base_d | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' |cut -f2 -d, |cut -f1,2 -d- |grep '[0-9]'`
 	total=`expr $total + 1`

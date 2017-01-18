@@ -857,3 +857,8 @@
 # Initial code for AWS Foundation Security audit
 # 5.2.1: Wed 18 Jan 2017 14:47:16 AEDT
 # Added AWS credentials check
+# 5.2.2: Wed 18 Jan 2017 15:49:35 AEDT
+# Added AWS credential rotation check
+# 5.2.3: Wed 18 Jan 2017 18:56:54 AEDT
+# Added AWS password policy check
+

@@ -12,7 +12,7 @@
 #
 # http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
 #
-# Refer to Section(s) 1.2 Page(s) 12-4 CIS AWS Foundations Benchmark v1.0.0
+# Refer to Section(s) 1.2 Page(s) 12-4 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_mfa () {

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.2.2
+# Version:      5.2.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -448,7 +448,6 @@ check_aws () {
     echo "AWS CLI is not installed"
     exit
   fi
-  aws iam generate-credential-report 2>&1 > /dev/null
 }
 
 # funct_audit_aws

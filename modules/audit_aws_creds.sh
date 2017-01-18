@@ -20,11 +20,12 @@
 # Access keys should be rotated to ensure that data cannot be accessed with an
 # old key which might have been lost, cracked, or stolen.
 #
-# Refer to Section(s) 1.3 Page(s) 15-6 CIS AWS Foundations Benchmark v1.0.0
-# Refer to Section(s) 1.4 Page(s) 17-8 CIS AWS Foundations Benchmark v1.0.0
+# Refer to Section(s) 1.3 Page(s) 15-6 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.4 Page(s) 17-8 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_creds () {
+  aws iam generate-credential-report 2>&1 > /dev/null
 	entries=`aws iam get-credential-report --query 'Content' --output text | $base_d | cut -d, -f1,4,5,6,9,10,11,14,15,16 | grep -v "<root_account>" |sed '1 d' |awk -F '\n' '{print $1}'`
 	for entry in $entries; do
     aws_user=`echo "$entry" |cut -d, -f1`
