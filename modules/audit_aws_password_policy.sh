@@ -28,8 +28,8 @@
 audit_aws_password_policy () {
 	policy=`aws iam get-account-password-policy 2> /dev/null`
 	length=`echo "$pass_pol" |wc -l`
-	total=`expr $total + 1`
 	if [ "$length" = "0" ]; then
+    total=`expr $total + 1`
 		insecure=`expr $insecure + 1`
     echo "Warning:   No password policy exists [$insecure Warnings]"
     funct_verbose_message "" fix
