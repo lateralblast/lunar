@@ -861,4 +861,10 @@
 # Added AWS credential rotation check
 # 5.2.3: Wed 18 Jan 2017 18:56:54 AEDT
 # Added AWS password policy check
+# 5.2.4: Wed 18 Jan 2017 20:33:11 AEDT
+# Added AWS root account MFA check
+# 5.2.5: Wed 18 Jan 2017 21:28:14 AEDT
+# Added AWS user policy check
+# 5.2.6: Thu 19 Jan 2017 07:34:48 AEDT
+# Added AWS support role check
 
