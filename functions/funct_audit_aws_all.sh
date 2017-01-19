@@ -15,5 +15,7 @@ funct_audit_aws_all () {
   audit_aws_iam_policies
   audit_aws_password_policy
   audit_aws_support_role
-  audir_aws_logging
+  audit_aws_logging
+  audit_aws_keys
+  audit_aws_config
 }
