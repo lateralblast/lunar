@@ -889,4 +889,6 @@
 # Added initial support for AWS Config check
 # 5.3.7: Thu 19 Jan 2017 23:13:12 AEDT
 # Added AWS CloudTrail S3 Bucket logging check
+# 5.3.8: Thu 19 Jan 2017 23:24:30 AEDT
+# Added AWS CloudTrail KMS Key check
 

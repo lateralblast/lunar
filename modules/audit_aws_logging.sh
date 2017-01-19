@@ -54,11 +54,26 @@
 # to be placed in a separate bucket allows access to log information which can
 # be useful in security and incident response workflows.
 #
+# AWS CloudTrail is a web service that records AWS API calls for an account and
+# makes those logs available to users and resources in accordance with IAM
+# policies. AWS Key Management Service (KMS) is a managed service that helps
+# create and control the encryption keys used to encrypt account data, and uses
+# Hardware Security Modules (HSMs) to protect the security of encryption keys.
+# CloudTrail logs can be configured to leverage server side encryption (SSE) and
+# KMS customer created master keys (CMK) to further protect CloudTrail logs.
+# It is recommended that CloudTrail be configured to use SSE-KMS.
+#
+# Configuring CloudTrail to use SSE-KMS provides additional confidentiality
+# controls on log data as a given user must have S3 read permission on the
+# corresponding log bucket and must be granted decrypt permission by the CMK
+# policy.
+#
 # Refer to Section(s) 2.1 Page(s) 70-1 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.2 Page(s) 72-3 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.3 Page(s) 74-5 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.4 Page(s) 76-7 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.6 Page(s) 81-2 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 2.7 Page(s) 83-4 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_logging () {
@@ -134,10 +149,19 @@ audit_aws_logging () {
     check=`aws cloudtrail get-trail-status --name $bucket| grep LatestcloudwatchLogdDeliveryTime`
     if [ ! "$check" ]; then
       insecure=`expr $insecure + 1`
-      echo "Warning:   CloudTrail $trail dose not have a Last log file delivered timestamp [$insecure Warnings]"
+      echo "Warning:   CloudTrail $trail does not have a Last log file delivered timestamp [$insecure Warnings]"
     else
       secure=`expr $secure + 1`
       echo "Secure:    CloudTrail $trail has a Last log file delivered timestamp [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    check=`aws cloudtrail get-trail-status --name $bucket| grep KmsKeyId`
+    if [ ! "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail $trail does not have a KMS Key ID [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail $trail has a KMS Key ID [$secure Passes]"
     fi
   done
 }
