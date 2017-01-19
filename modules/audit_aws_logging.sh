@@ -14,6 +14,7 @@
 # otherwise unused regions is detected.
 #
 # Refer to Section(s) 2.1 Page(s) 70-1 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 2.2 Page(s) 72-3 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_logging () {
@@ -26,5 +27,14 @@ audit_aws_logging () {
 		secure=`expr $secure + 1`
     echo "Secure:    CloudTrail is not enabled in all regions [$secure Passes]"
 	fi
+  check=`aws cloudtrail describe-trails |grep LogFileValidationEnabled |grep true`
+  total=`expr $total + 1`
+  if [ "$check" ]; then
+    insecure=`expr $insecure + 1`
+    echo "Warning:   CloudTrail log file validation is enabled [$insecure Warnings]"
+  else
+    secure=`expr $secure + 1`
+    echo "Secure:    CloudTrail log file validation is not enabled [$secure Passes]"
+  fi
 }
 
