@@ -39,31 +39,31 @@ audit_aws_logging () {
   check=`aws cloudtrail describe-trails |grep LogFileValidationEnabled |grep true`
   total=`expr $total + 1`
   if [ "$check" ]; then
-    insecure=`expr $insecure + 1`
-    echo "Warning:   CloudTrail log file validation is enabled [$insecure Warnings]"
-  else
     secure=`expr $secure + 1`
-    echo "Secure:    CloudTrail log file validation is not enabled [$secure Passes]"
+    echo "Secure:    CloudTrail log file validation is enabled [$secure Passes]"
+  else
+    insecure=`expr $insecure + 1`
+    echo "Warning:   CloudTrail log file validation is not enabled [$insecure Warnings]"
   fi
   buckets=`aws cloudtrail describe-trails --query 'trailList[*].S3BucketName' --output text`
   for bucket in $buckets; do
     total=`expr $total + 1`
-    grants=`aws s3api get-bucket-acl --bucket $bucket --query 'Grants[?Grantee.URI==`http://acs.amazonaws.com/groups/global/AllUsers`]'`
+    grants=`aws s3api get-bucket-acl --bucket $bucket |grep URI |grep AllUsers`
     if [ "$grants" ]; then
       insecure=`expr $insecure + 1`
-      echo "Warning:   CloudTrail log file bucket $bucket can be viewed by all users [$insecure Warnings]"
+      echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal AllUsers [$insecure Warnings]"
     else
       secure=`expr $secure + 1`
-      echo "Secure:    CloudTrail log file bucket $bucket is not viewable for all users [$secure Passes]"
+      echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AllUsers [$secure Passes]"
     fi
     total=`expr $total + 1`
-    grants=`aws s3api get-bucket-acl --bucket $bucket --query 'Grants[?Grantee.URI==`http://acs.amazonaws.com/groups/global/AuthenticatedUsers`]'`
-    if [ ! "$grants" ]; then
+    grants=`aws s3api get-bucket-acl --bucket $bucket |grep URI |grep AuthenticatedUsers`
+    if [ "$grants" ]; then
       insecure=`expr $insecure + 1`
-      echo "Warning:   CloudTrail log file bucket $bucket is not restricted to authenticated users [$insecure Warnings]"
+      echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal AuthenticatedUsers [$insecure Warnings]"
     else
       secure=`expr $secure + 1`
-      echo "Secure:    CloudTrail log file bucket $bucket is restricted to authenticated users [$secure Passes]"
+      echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AuthenticatedUsers [$secure Passes]"
     fi
   done
 }

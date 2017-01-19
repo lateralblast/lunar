@@ -58,16 +58,16 @@ audit_aws_mfa () {
     mfa_check=`iaws iam list-virtual-mfa-devices |grep "SerialNumber" |grep "root_account" |wc -l`
     if [ "$mfa_check" = "0" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    The root account doesn't have a virtual MFA [$secure Passes]"
+      echo "Secure:    The root account does not have a virtual MFA [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   The root account doesn't have a hardware MFA [$insecure Warnings]"
+      echo "Warning:   The root account does not have a hardware MFA [$insecure Warnings]"
     fi
   else
     insecure=`expr $insecure + 1`
-    echo "Warning:   The root account doesn't have MFA enabled [$insecure Warnings]"
+    echo "Warning:   The root account does not have MFA enabled [$insecure Warnings]"
     insecure=`expr $insecure + 1`
-    echo "Warning:   The root account doesn't a hardware MFA [$insecure Warnings]"
+    echo "Warning:   The root account does not a hardware MFA [$insecure Warnings]"
   fi
 }
 

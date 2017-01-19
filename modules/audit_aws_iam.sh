@@ -36,7 +36,7 @@ audit_aws_iam () {
     funct_verbose_message "" fix
     funct_verbose_message "cd aws" fix
     funct_verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
-    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://IAM-Master-policy.json" fix
+    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://iam-master-policy.json" fix
     funct_verbose_message "" fix
 	fi
 	total=`expr $total + 1`
@@ -50,7 +50,7 @@ audit_aws_iam () {
     funct_verbose_message "" fix
     funct_verbose_message "cd aws" fix
     funct_verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
-    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://IAM-Manager-policy.json" fix
+    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
     funct_verbose_message "" fix
 	fi
 }
