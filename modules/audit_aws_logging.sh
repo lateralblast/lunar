@@ -13,8 +13,17 @@
 # a multi-regions trail exists will ensure that unexpected activity occurring in
 # otherwise unused regions is detected.
 #
+# CloudTrail logs a record of every API call made in your AWS account.
+# These logs file are stored in an S3 bucket. It is recommended that the bucket
+# policy or access control list (ACL) applied to the S3 bucket that CloudTrail
+# logs to prevents public access to the CloudTrail logs.
+#
+# Allowing public access to CloudTrail log content may aid an adversary in
+# identifying weaknesses in the affected account's use or configuration.
+#
 # Refer to Section(s) 2.1 Page(s) 70-1 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.2 Page(s) 72-3 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 2.3 Page(s) 74-5 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_logging () {
@@ -36,5 +45,26 @@ audit_aws_logging () {
     secure=`expr $secure + 1`
     echo "Secure:    CloudTrail log file validation is not enabled [$secure Passes]"
   fi
+  buckets=`aws cloudtrail describe-trails --query 'trailList[*].S3BucketName' --output text`
+  for bucket in $buckets; do
+    total=`expr $total + 1`
+    grants=`aws s3api get-bucket-acl --bucket $bucket --query 'Grants[?Grantee.URI==`http://acs.amazonaws.com/groups/global/AllUsers`]'`
+    if [ "$grants" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail log file bucket $bucket can be viewed by all users [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail log file bucket $bucket is not viewable for all users [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    grants=`aws s3api get-bucket-acl --bucket $bucket --query 'Grants[?Grantee.URI==`http://acs.amazonaws.com/groups/global/AuthenticatedUsers`]'`
+    if [ ! "$grants" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail log file bucket $bucket is not restricted to authenticated users [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail log file bucket $bucket is restricted to authenticated users [$secure Passes]"
+    fi
+  done
 }
 
