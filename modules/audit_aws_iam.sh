@@ -9,7 +9,8 @@
 #
 # http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
 #
-# Refer to Section(s) 1.1 Page(s) 10-1 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.1  Page(s) 10-1  CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.18 Page(s) 46-57 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_iam () {
@@ -23,6 +24,34 @@ audit_aws_iam () {
 	else
 		secure=`expr $secure + 1`
     echo "Secure:    Root account does not appear to be being used frequently [$secure Passes]"
+	fi
+	total=`expr $total + 1`
+	check=`aws iam get-role --role-name $aws_iam_master_role 2> /dev/null`
+	if [ "$check" ]; then 
+		secure=`expr $secure + 1`
+    echo "Secure:    IAM Master role $aws_iam_master_role exists [$secure Passes]"
+	else
+		insecure=`expr $insecure + 1`
+    echo "Warning:   IAM Master role $aws_iam_master_role does not exist [$insecure Warnings]"
+    funct_verbose_message "" fix
+    funct_verbose_message "cd aws" fix
+    funct_verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
+    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://IAM-Master-policy.json" fix
+    funct_verbose_message "" fix
+	fi
+	total=`expr $total + 1`
+	check=`aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null`
+	if [ "$check" ]; then 
+		secure=`expr $secure + 1`
+    echo "Secure:    IAM Manager role $aws_iam_manager_role exists [$secure Passes]"
+	else
+		insecure=`expr $insecure + 1`
+    echo "Warning:   IAM Manager role $aws_iam_manager_role does not exist [$insecure Warnings]"
+    funct_verbose_message "" fix
+    funct_verbose_message "cd aws" fix
+    funct_verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
+    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://IAM-Manager-policy.json" fix
+    funct_verbose_message "" fix
 	fi
 }
 

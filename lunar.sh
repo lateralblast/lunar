@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.3.1
+# Version:      5.3.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -53,6 +53,11 @@
 # audit_mode = 1 : Audit Mode
 # audit_mode = 0 : Lockdown Mode
 # audit_mode = 2 : Restore Mode
+
+# Defaults for AWS
+
+aws_iam_master_role="IAM-Master"
+aws_iam_manager_role="IAM-Manager"
 
 # Set up some global variables
 
