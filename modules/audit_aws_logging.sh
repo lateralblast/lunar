@@ -21,9 +21,32 @@
 # Allowing public access to CloudTrail log content may aid an adversary in
 # identifying weaknesses in the affected account's use or configuration.
 #
+# AWS CloudTrail is a web service that records AWS API calls made in a given AWS
+# account. The recorded information includes the identity of the API caller,
+# the time of the API call, the source IP address of the API caller, the request
+# parameters, and the response elements returned by the AWS service. CloudTrail
+# uses Amazon S3 for log file storage and delivery, so log files are stored
+# durably. In addition to capturing CloudTrail logs within a specified S3 bucket
+# for long term analysis, realtime analysis can be performed by configuring
+# CloudTrail to send logs to CloudWatch Logs. For a trail that is enabled in all
+# regions in an account, CloudTrail sends log files from all those regions to a
+# CloudWatch Logs log group. It is recommended that CloudTrail logs be sent to
+# CloudWatch Logs.
+#
+# Note: The intent of this recommendation is to ensure AWS account activity is
+# being captured, monitored, and appropriately alarmed on. CloudWatch Logs is a
+# native way to accomplish this using AWS services but does not preclude the use
+# of an alternate solution.
+#
+# Sending CloudTrail logs to CloudWatch Logs will facilitate real-time and
+# historic activity logging based on user, API, resource, and IP address, and
+# provides opportunity to establish alarms and notifications for anomalous or
+# sensitivity account activity.
+#
 # Refer to Section(s) 2.1 Page(s) 70-1 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.2 Page(s) 72-3 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.3 Page(s) 74-5 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 2.4 Page(s) 76-7 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_logging () {
@@ -73,6 +96,27 @@ audit_aws_logging () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal * [$secure Passes]"
+    fi
+  done
+  trails=`aws cloudtrail describe-trails --query trailList[].Name --output text`
+  for trail in $trails; do
+    total=`expr $total + 1`
+    check=`aws cloudtrail describe-trails --trail-name-list $trail |grep CloudWatchLogsLogGroupArn`
+    if [ ! "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail $trail does not have a CloudWatch Logs group enabled [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail $trail has a CloudWatch Logs group enabled [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    check=`aws cloudtrail get-trail-status --name $bucket| grep LatestcloudwatchLogdDeliveryTime`
+    if [ ! "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail $trail dose not have a Last log file delivered timestamp [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail $trail has a Last log file delivered timestamp [$secure Passes]"
     fi
   done
 }

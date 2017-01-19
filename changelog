@@ -883,4 +883,6 @@
 # Fixed various AWS bugs
 # 5.3.4: Thu 19 Jan 2017 21:40:00 AEDT
 # Added AWS CloudTrail bucket policy check
+# 5.3.5: Thu 19 Jan 2017 22:14:38 AEDT
+# Added AWS CloudTrail CloudWatch Logs integration check
 
