@@ -893,4 +893,6 @@
 # Added AWS CloudTrail KMS Key check
 # 5.3.9: Fri 20 Jan 2017 08:24:56 AEDT
 # Added AWS Key check
+# 5.4.0: Fri 20 Jan 2017 10:03:02 AEDT
+# Added AWS VPC peering check
 
