@@ -881,4 +881,6 @@
 # Added AWS IAM Master / Manager account check
 # 5.3.3: Thu 19 Jan 2017 17:54:06 AEDT
 # Fixed various AWS bugs
+# 5.3.4: Thu 19 Jan 2017 21:40:00 AEDT
+# Added AWS CloudTrail bucket policy check
 

@@ -65,6 +65,15 @@ audit_aws_logging () {
       secure=`expr $secure + 1`
       echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AuthenticatedUsers [$secure Passes]"
     fi
+    total=`expr $total + 1`
+    grants=`aws s3api get-bucket-policy --bucket $bucket --query Policy |tr "}" "\n" |grep Allow |grep "*"`
+    if [ "$grants" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal * [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal * [$secure Passes]"
+    fi
   done
 }
 
