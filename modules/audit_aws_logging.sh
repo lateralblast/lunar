@@ -43,10 +43,22 @@
 # provides opportunity to establish alarms and notifications for anomalous or
 # sensitivity account activity.
 #
+# S3 Bucket Access Logging generates a log that contains access records for each
+# request made to your S3 bucket. An access log record contains details about
+# the request, such as the request type, the resources specified in the request
+# worked, and the time and date the request was processed. It is recommended
+#that bucket access logging be enabled on the CloudTrail S3 bucket.
+#
+# By enabling S3 bucket logging on target S3 buckets, it is possible to capture
+# all events which may affect objects within an target buckets. Configuring logs
+# to be placed in a separate bucket allows access to log information which can
+# be useful in security and incident response workflows.
+#
 # Refer to Section(s) 2.1 Page(s) 70-1 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.2 Page(s) 72-3 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.3 Page(s) 74-5 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.4 Page(s) 76-7 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 2.6 Page(s) 81-2 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_logging () {
@@ -97,6 +109,15 @@ audit_aws_logging () {
       secure=`expr $secure + 1`
       echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal * [$secure Passes]"
     fi
+    logging=`aws s3api get-bucket-logging --bucket $bucket`
+    if [ ! "$logging" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   CloudTrail log file bucket $bucket does not have access logging enabled [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    CloudTrail log file bucket $bucket has access logging enabled [$secure Passes]"
+    fi
+    logging=`aws s3api get-bucket-logging --bucket $bucket`
   done
   trails=`aws cloudtrail describe-trails --query trailList[].Name --output text`
   for trail in $trails; do

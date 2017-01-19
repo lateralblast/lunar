@@ -885,4 +885,8 @@
 # Added AWS CloudTrail bucket policy check
 # 5.3.5: Thu 19 Jan 2017 22:14:38 AEDT
 # Added AWS CloudTrail CloudWatch Logs integration check
+# 5.3.6: Thu 19 Jan 2017 23:02:54 AEDT
+# Added initial support for AWS Config check
+# 5.3.7: Thu 19 Jan 2017 23:13:12 AEDT
+# Added AWS CloudTrail S3 Bucket logging check
 
