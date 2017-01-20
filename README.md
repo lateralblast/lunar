@@ -27,9 +27,13 @@ based on the date.
 
 Although it can perform a lockdown, as previously stated, I'd recommend you 
 address the warnings via policy, documentation and configuration management.
-This is how I use the tool.
+This is how I use the tool. The AWS Services audit only supports reporting,
+it does not provide lockdown capability.
 
-Supported Operating Systems:
+Supported Operating Systems
+---------------------------
+
+The following Operating Systems are supported:
 
 - Linux
   - RHEL 5,6,7
@@ -45,11 +49,25 @@ Supported Operating Systems:
 - AIX (needs more testing)
 - ESXi (initial support - some tests)
 
-Supported Services:
+Windows support would require the installation of additional software, so I haven't looked into it.
+Having said that, Windows support may come in the future via bash.
 
-- AWS (not complete - in progress)
+Supported Services
+------------------
 
-Requirements:
+The AWS Services audit uses the AWS CLI, and as such requires a user with the
+appropriate rights. It does not currently support the lockdown capability,
+it only supports generating an audit report against the CIS benchmark.
+
+There are a couple of the checks that can only be done or resolved via the GUI.
+An example of this is enabling billing. Refer to the CIS Benchmark for more information.
+
+Where possible I've put suggested fix commands in the verbose audit output.
+Again in some cases, these can only be done by the CLI. Refer to the CIS
+Benchmark for more information.
+
+Requirements
+------------
 
 - AWS 
   - AWS CLI
@@ -82,3 +100,5 @@ For more information refer to wiki:
 [CentOS](https://github.com/lateralblast/lunar/wiki/CentOS)
 
 [Amazon Linux](https://github.com/lateralblast/lunar/wiki/Amazon)
+
+[AWS](https://github.com/lateralblast/lunar/wiki/AWS)
