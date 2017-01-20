@@ -18,4 +18,6 @@ funct_audit_aws_all () {
   audit_aws_logging
   audit_aws_keys
   audit_aws_config
+  audit_aws_sns
+  audit_aws_vpcs
 }
