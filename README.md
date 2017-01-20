@@ -54,7 +54,10 @@ Requirements:
 - AWS 
   - AWS CLI
   - AWS Credentials (API Access and Secret Keys)
-  - Read rights to appropriate AWS services, e.g. DescribeTrails, DescribeConfigurationRecorders
+  - Read rights to appropriate AWS services, e.g. 
+    - CloudTrail:DescribeTrails
+    - Config:DescribeConfigurationRecorders
+    - SNS:ListSubscriptionsByTopic
 
 License
 -------

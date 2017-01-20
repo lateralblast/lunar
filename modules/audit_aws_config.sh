@@ -10,7 +10,7 @@
 # The AWS configuration item history captured by AWS Config enables security
 # analysis, resource change tracking, and compliance auditing.
 #
-# Refer to Section(s) 2.5  Page(s) 79-80 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 2.5 Page(s) 79-80 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_config () {

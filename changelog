@@ -901,4 +901,6 @@
 # Added AWS VPC flow log check
 # 5.4.3: Fri 20 Jan 2017 16:13:34 AEDT
 # Added AWS Security Group check for open SSH / RDP ports
+# 5.4.4: Fri 20 Jan 2017 17:28:52 AEDT
+# Added initial AWS SNS checks
 
