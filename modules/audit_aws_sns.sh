@@ -18,6 +18,7 @@
 
 audit_aws_sns () {
 	topics=`aws sns list-topics --query 'Topics[].TopicArn' --output text`
+  total=`expr $total + 1`
   for topic in $topics; do
     subscribers=`aws sns list-subscriptions-by-topic --topic-arn $topic --output text`
     if [ ! "$subscribers" ]; then
