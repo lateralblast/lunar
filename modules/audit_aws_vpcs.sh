@@ -1,5 +1,19 @@
 # audit_aws_vpcs
 #
+# Security groups provide stateful filtering of ingress/egress network
+# traffic to AWS resources. It is recommended that no security group allows
+# unrestricted ingress access to port 22.
+#
+# Removing unfettered connectivity to remote console services, such as SSH,
+# reduces a server's exposure to risk.
+#
+# Security groups provide stateful filtering of ingress/egress network
+# traffic to AWS resources. It is recommended that no security group
+# allows unrestricted ingress access to port 3389.
+# 
+# Removing unfettered connectivity to remote console services, such as RDP,
+# reduces a server's exposure to risk.
+#
 # VPC Flow Logs is a feature that enables you to capture information about
 # the IP traffic going to and from network interfaces in your VPC.
 # After you've created a flow log, you can view and retrieve its data in
@@ -69,6 +83,7 @@
 # each VPC and whether that is necessary to accomplish the intended purposes
 # for peering the VPCs.
 #
+# Refer to Section(s) 4.2 Page(s) 133-4  CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 4.3 Page(s) 135-7  CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 4.4 Page(s) 138-40 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 4.5 Page(s) 141-2  CIS AWS Foundations Benchmark v1.1.0
@@ -95,6 +110,22 @@ audit_aws_vpcs () {
   fi
   sgs=`aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text`
   for sg in $sgs; do
+    openssh=`aws ec2 describe-security-groups --group-ids $sg --filters "Name=ip-permission.to-port,Values=22" "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text`
+    if [ ! "$openssh" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Security Group $sg does not have SSH open to the world [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Security Group $sg has SSH open to the world [$insecure Warnings]"
+    fi
+    openrdp=`aws ec2 describe-security-groups --group-ids $sg --filters "Name=ip-permission.to-port,Values=3389" "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text`
+    if [ ! "$openrdp" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Security Group $sg does not have RDP open to the world [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Security Group $sg has RDP open to the world [$insecure Warnings]"
+    fi
     inbound=`aws ec2 describe-security-groups --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' |grep "0.0.0.0/0"`
     if [ ! "$inbound" ]; then
       secure=`expr $secure + 1`
