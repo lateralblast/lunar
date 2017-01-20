@@ -8,7 +8,7 @@
 # Monitoring unauthorized API calls will help reveal application errors and may
 # reduce time to detect malicious activity.
 #
-# Refer to Section(s) 3.1 Page(s) 129-30 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 3.1 Page(s) 87-9 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_monitoring () {
