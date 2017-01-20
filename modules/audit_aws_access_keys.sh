@@ -30,6 +30,12 @@ audit_aws_access_keys () {
     if [ "$key1_use" = "true" ] && [ "$key1_last" = "N/A" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   Account $aws_user has key access enabled but has not used their AWS API credentials consider removing keys [$insecure Warnings]"
+      key_ids=`aws iam list-access-keys --user-name $aws_user --query "AccessKeyMetadata[].{AccessKeyId:AccessKeyId, Status:Status}" --output text |grep Active |awk '{print $1}'`
+      for key_id in $key_ids; do
+        funct_verbose_message "" fix
+        funct_verbose_message "aws iam delete-access-key --access-key $key_id --user-name $aws_user" fix
+        funct_verbose_message "" fix
+      done
     else
       secure=`expr $secure + 1`
       echo "Secure:    Account $aws_user has key access enabled and has used their AWS API credentials [$secure Passes]"
