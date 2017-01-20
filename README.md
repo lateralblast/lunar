@@ -55,6 +55,10 @@ Having said that, Windows support may come in the future via bash.
 Supported Services
 ------------------
 
+Supported Services:
+
+- AWS
+
 The AWS Services audit uses the AWS CLI, and as such requires a user with the
 appropriate rights. It does not currently support the lockdown capability,
 it only supports generating an audit report against the CIS benchmark.
