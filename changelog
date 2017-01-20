@@ -897,4 +897,6 @@
 # Added AWS VPC peering check
 # 5.4.1: Fri 20 Jan 2017 13:19:36 AEDT
 # Added Inbound / Outbond check for AWS Security Groups
+# 5.4.2: Fri 20 Jan 2017 14:33:57 AEDT
+# Added AWS VPC flow log check
 
