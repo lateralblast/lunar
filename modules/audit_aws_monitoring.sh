@@ -8,8 +8,19 @@
 # Monitoring unauthorized API calls will help reveal application errors and may
 # reduce time to detect malicious activity.
 #
+# Monitoring for single-factor console logins will increase visibility into
+# accounts that are not protected by MFA.
+#
+# Monitoring for root account logins will provide visibility into the use of a
+# fully privileged account and an opportunity to reduce the use of it.
+#
+# Monitoring changes to IAM policies will help ensure authentication and
+# authorization controls remain intact.
+#
 # Refer to Section(s) 3.1 Page(s) 87-9 CIS AWS Foundations Benchmark v1.1.0
-# Refer to Section(s) 3.2 Page(s) 90-1 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 3.2 Page(s) 90-2 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 3.3 Page(s) 93-6 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 3.4 Page(s) 97-9 CIS AWS Foundations Benchmark v1.1.0
 #.
 
 audit_aws_monitoring () {
@@ -27,9 +38,12 @@ audit_aws_monitoring () {
         funct_verbose_message "" fix
         funct_verbose_message "aws logs put-metric-filter --log-group-name $trail --filter-name unauthorized-api-calls-metric --metric-transformations metricName=unauthorized-api-calls-metric,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }'" fix
         funct_verbose_message "aws logs put-metric-filter --log-group-name $trail --filter-name no_mfa_console_signin_metric --metric-transformations metricName=no_mfa_console_signin_metric,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ ($.eventName = \"ConsoleLogin\") && ($.additionalEventData.MFAUsed != \"Yes\") }'" fix
+        funct_verbose_message "aws logs put-metric-filter --log-group-name $trail --filter-name root_usage_metric --metric-transformations metricName=root_usage_metric,metricNamespace='CISBenchmark',metricValue=1 --filter-pattern '{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }'" fix
         funct_verbose_message "" fix
       else
-        for metric in UnauthorizedOperation AccessDenied ConsoleLogin additionalEventData.MFAUsed; do
+        for metric in UnauthorizedOperation AccessDenied ConsoleLogin additionalEventData.MFAUsed userIdentity.invokedBy AwsServiceEvent DeleteGroupPolicy \
+                      DeleteRolePolicy DeleteUserPolicy PutGroupPolicy PutRolePolicy PutUserPolicy CreatePolicy DeletePolicy CreatePolicyVersion \
+                      DeletePolicyVersion AttachRolePolicy DetachRolePolicy AttachUserPolicy DetachUserPolicy AttachGroupPolicy DetachGroupPolicy; do
           total=`expr $total + 1`
           check=`aws logs describe-metric-filters --log-group-name $trail --query "metricFilters[].filterPattern" --output text |grep "$metric"`
           if [ "$check" ]; then
