@@ -903,4 +903,8 @@
 # Added AWS Security Group check for open SSH / RDP ports
 # 5.4.4: Fri 20 Jan 2017 17:28:52 AEDT
 # Added initial AWS SNS checks
+# 5.4.5: Fri 20 Jan 2017 19:38:09 AEDT
+# Added initial AWS monitoring checks
+# 5.4.6: Fri 20 Jan 2017 20:14:43 AEDT
+# Added AWS alarm and subscriber checks
 
