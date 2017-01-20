@@ -144,6 +144,8 @@ audit_aws_logging () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    CloudTrail $trail has a CloudWatch Logs group enabled [$secure Passes]"
+      log_group=`echo $check |cut -f8 -d:`
+      
     fi
     total=`expr $total + 1`
     check=`aws cloudtrail get-trail-status --name $bucket| grep LatestcloudwatchLogdDeliveryTime`
