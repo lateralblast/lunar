@@ -909,4 +909,6 @@
 # Added AWS alarm and subscriber checks
 # 5.4.7: Fri 20 Jan 2017 20:41:44 AEDT
 # Added AWS IAM alarm and subscriber checks
+# 5.4.8: Fri 20 Jan 2017 22:14:27 AEDT
+# Added AWS CloudTrail, Console, Key, S3, Config, NACL, Security Group, Gateway, Route and VPC alarm and subscriber checks
 
