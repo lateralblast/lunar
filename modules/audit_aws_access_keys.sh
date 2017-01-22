@@ -19,7 +19,7 @@
 
 audit_aws_access_keys () {
   aws iam generate-credential-report 2>&1 > /dev/null
-  entries=`aws iam get-credential-report --query 'Content' --output text | $base_d | cut -d, -f1,4,9,11,14,16 | sed '1 d' |grep -v '<root_account>' |awk -F '\n' '{print $1}'`
+  entries=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,4,9,11,14,16 | sed '1 d' |grep -v '<root_account>' |awk -F '\n' '{print $1}'`
   for entry in $entries; do
     aws_user=`echo "$entry" |cut -d, -f1`
     key1_use=`echo "$entry" |cut -d, -f3`

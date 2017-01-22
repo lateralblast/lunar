@@ -442,9 +442,9 @@ check_aws () {
     aws_creds="$HOME/.aws/credentials"
     if [ -f "$aws_creds" ]; then
       if [ "$os_name" = "Darwin" ]; then
-        base_d="base64 -D"
+        base64_d="base64 -D"
       else
-        base_d="base64 -d"
+        base64_d="base64 -d"
       fi
     else
       echo "AWS credentials file does not exit"
