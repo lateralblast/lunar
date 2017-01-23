@@ -913,4 +913,6 @@
 # Added AWS CloudTrail, Console, Key, S3, Config, NACL, Security Group, Gateway, Route and VPC alarm and subscriber checks
 # 5.4.9: Sat 21 Jan 2017 08:41:04 AEDT
 # Added fix information for AWS Access Keys
+# 5.5.0: Tue 24 Jan 2017 05:20:07 AEDT
+# Cleaned up AWS CloudTrail checks
 
