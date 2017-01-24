@@ -17,6 +17,16 @@
 # groups in order to prevent attaching unauthorized users.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-group.html
+#
+# Identify and remove any unused AWS IAM users, which are not designed for API
+# access, as an extra security measure for protecting your AWS resources against
+# unapproved access.
+#
+# Removing unused IAM users can reduce the risk of unauthorized access to your
+# AWS resources and help you manage the user-based access to the AWS Management
+# Console more efficiently.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-user.html
 #.
 
 audit_aws_iam () {
@@ -59,7 +69,7 @@ audit_aws_iam () {
     funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
     funct_verbose_message "" fix
 	fi
-  groups=`aws iam list-groups --query 'Groups[*].GroupName' --output text`
+  groups=`aws iam list-groups --query 'Groups[].GroupName' --output text`
   for group in $groups; do
     total=`expr $total + 1`
     users=`aws iam get-group --group-name $group --query "Users" --output text`
@@ -69,6 +79,21 @@ audit_aws_iam () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   IAM group $group is empty [$insecure Warnings]"
+    fi
+  done
+  users=`aws iam list-users --query 'Users[].UserName' --output text`
+  for user in $users; do
+    total=`expr $total + 1`
+    check=`aws iam list-access-keys --user-name $user --query "AccessKeyMetadata" --output text`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    IAM user $user is active [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   IAM user $user is not active [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws iam delete-user --user-name $user" fix
+      funct_verbose_message "" fix
     fi
   done
 }

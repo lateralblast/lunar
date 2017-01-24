@@ -939,4 +939,6 @@
 # Added AWS IAM empty group check
 # 5.6.2: Wed 25 Jan 2017 06:27:00 AEDT
 # Added check for expired AWS certificates
+# 5.6.3: Wed 25 Jan 2017 06:40:16 AEDT
+# Added check for inactive AWS IAM accounts
 
