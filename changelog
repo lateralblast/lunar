@@ -921,4 +921,6 @@
 # Added some fix information for SNS check
 # 5.5.3: Tue 24 Jan 2017 17:15:33 AEDT
 # Updated AWS CloudTrail Key fix information
+# 5.5.4: Tue 24 Jan 2017 17:26:25 AEDT
+# Added some fix information for S3 bucket logging
 
