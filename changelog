@@ -927,4 +927,6 @@
 # Added some fix information for AWS Config 
 # 5.5.6: Tue 24 Jan 2017 17:38:19 AEDT
 # Added some fix information for CloudTrail bucket permissions
+# 5.5.7: Tue 24 Jan 2017 19:58:17 AEDT
+# Added initial ability to set AWS region on command line
 

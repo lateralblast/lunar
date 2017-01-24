@@ -77,12 +77,12 @@
 #.
 
 audit_aws_logging () {
-	check=`aws cloudtrail describe-trails |grep IsMultiRegionTrail |grep true`
+	check=`aws cloudtrail describe-trails --region $aws_region |grep IsMultiRegionTrail |grep true`
 	if [ "$check" ]; then
-    trails=`aws cloudtrail describe-trails --query "trailList[].Name" --output text`
+    trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].Name" --output text`
     for trail in $trails; do
       total=`expr $total + 1`
-      check=`aws cloudtrail describe-trails --trail-name-list $trail --query "trailList[].IsMultiRegionTrail" |grep true`
+      check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].IsMultiRegionTrail" |grep true`
       if [ "$check" ]; then
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail $trail is enabled in all regions [$secure Passes]"
@@ -95,7 +95,7 @@ audit_aws_logging () {
 
       fi
       total=`expr $total + 1`
-      check=`aws cloudtrail describe-trails --trail-name-list $trail --query "trailList[].LogFileValidationEnabled" |grep true`
+      check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].LogFileValidationEnabled" |grep true`
       if [ "$check" ]; then
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail $trail log file validation is enabled [$secure Passes]"
@@ -103,14 +103,14 @@ audit_aws_logging () {
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail log file validation is not enabled [$insecure Warnings]"
         funct_verbose_message "" fix
-        funct_verbose_message "aws cloudtrail update-trail --name $trail --enable-log-file-validation" fix
+        funct_verbose_message "aws cloudtrail update-trail --region $aws_region --name $trail --enable-log-file-validation" fix
         funct_verbose_message "" fix
       fi
     done
-    buckets=`aws cloudtrail describe-trails --query 'trailList[*].S3BucketName' --output text`
+    buckets=`aws cloudtrail describe-trails --region $aws_region --query 'trailList[*].S3BucketName' --output text`
     for bucket in $buckets; do
       total=`expr $total + 1`
-      grants=`aws s3api get-bucket-acl --bucket $bucket |grep URI |grep AllUsers`
+      grants=`aws s3api get-bucket-acl --region $aws_region --bucket $bucket |grep URI |grep AllUsers`
       if [ "$grants" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal AllUsers [$insecure Warnings]"
@@ -119,19 +119,19 @@ audit_aws_logging () {
         echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AllUsers [$secure Passes]"
       fi
       total=`expr $total + 1`
-      grants=`aws s3api get-bucket-acl --bucket $bucket |grep URI |grep AuthenticatedUsers`
+      grants=`aws s3api get-bucket-acl --region $aws_region --bucket $bucket |grep URI |grep AuthenticatedUsers`
       if [ "$grants" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal AuthenticatedUsers [$insecure Warnings]"
         funct_verbose_message "" fix
-        funct_verbose_message "aws s3api put-bucket-acl --bucket $bucket --acl private" fix
+        funct_verbose_message "aws s3api put-bucket-acl --region $aws_region --region $aws_region--bucket $bucket --acl private" fix
         funct_verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AuthenticatedUsers [$secure Passes]"
       fi
       total=`expr $total + 1`
-      grants=`aws s3api get-bucket-policy --bucket $bucket --query Policy |tr "}" "\n" |grep Allow |grep "*"`
+      grants=`aws s3api get-bucket-policy --region $aws_region --bucket $bucket --query Policy |tr "}" "\n" |grep Allow |grep "*"`
       if [ "$grants" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal * [$insecure Warnings]"
@@ -139,24 +139,24 @@ audit_aws_logging () {
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal * [$secure Passes]"
       fi
-      logging=`aws s3api get-bucket-logging --bucket $bucket`
+      logging=`aws s3api get-bucket-logging --region $aws_region --bucket $bucket`
       if [ ! "$logging" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket does not have access logging enabled [$insecure Warnings]"
         funct_verbose_message "" fix
-        funct_verbose_message "aws s3api put-bucket-acl --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
-        funct_verbose_message "cd aws ; aws s3api put-bucket-logging --bucket $bucket --bucket-logging-status file://server-access-logging.json"
+        funct_verbose_message "aws s3api put-bucket-acl --region $aws_region --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
+        funct_verbose_message "cd aws ; aws s3api put-bucket-logging --region $aws_region --bucket $bucket --bucket-logging-status file://server-access-logging.json"
         funct_verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket has access logging enabled [$secure Passes]"
       fi
-      logging=`aws s3api get-bucket-logging --bucket $bucket`
+      logging=`aws s3api get-bucket-logging --region $aws_region --bucket $bucket`
     done
-    trails=`aws cloudtrail describe-trails --query trailList[].Name --output text`
+    trails=`aws cloudtrail describe-trails --region $aws_region --query trailList[].Name --output text`
     for trail in $trails; do
       total=`expr $total + 1`
-      check=`aws cloudtrail describe-trails --trail-name-list $trail |grep CloudWatchLogsLogGroupArn`
+      check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail |grep CloudWatchLogsLogGroupArn`
       if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail does not have a CloudWatch Logs group enabled [$insecure Warnings]"
@@ -165,7 +165,7 @@ audit_aws_logging () {
         echo "Secure:    CloudTrail $trail has a CloudWatch Logs group enabled [$secure Passes]"
       fi
       total=`expr $total + 1`
-      check=`aws cloudtrail get-trail-status --name $bucket --query "LatestCloudWatchLogsDeliveryTime" --output text`
+      check=`aws cloudtrail get-trail-status --region $aws_region --name $bucket --query "LatestCloudWatchLogsDeliveryTime" --output text`
       if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail does not have a Last log file delivered timestamp [$insecure Warnings]"
@@ -174,7 +174,7 @@ audit_aws_logging () {
         echo "Secure:    CloudTrail $trail has a last log file delivered timestamp [$secure Passes]"
       fi
       total=`expr $total + 1`
-      check=`aws cloudtrail get-trail-status --name $bucket| grep KmsKeyId`
+      check=`aws cloudtrail get-trail-status --region $aws_region --name $bucket| grep KmsKeyId`
       if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail does not have a KMS Key ID [$insecure Warnings]"

@@ -14,7 +14,8 @@
 #.
 
 audit_aws_config () {
-	check=`aws configservice describe-configuration-recorders`
+  total=`expr $total + 1`
+	check=`aws configservice describe-configuration-recorders --region $aws_region`
   if [ ! "$check" ]; then
     insecure=`expr $insecure + 1`
     echo "Warning:   AWS Configuration Recorder not enabled [$insecure Warnings]"

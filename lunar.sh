@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.5.6
+# Version:      5.5.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -61,6 +61,8 @@ aws_iam_manager_role="iam-manager"
 aws_cloud_trail_name="aws-audit-log"
 sns_protocol="email"
 sns_endpoint="alerts@company.com"
+valid_host_grep="^ami-(ue1|uw1|uw2|ew1|ec1|an1|an2|as1|as2|se1)-(d|t|s|p)-([a-z0-9\-]+)$"
+aws_region=""
 
 # Set up some global variables
 
@@ -456,6 +458,9 @@ check_aws () {
     echo "AWS CLI is not installed"
     exit
   fi
+  if [ ! "$aws_region" ]; then
+    aws_region=`aws configure get region`
+  fi
 }
 
 # funct_audit_aws
@@ -602,7 +607,7 @@ print_results () {
 
 # Handle command line arguments
 
-while getopts abcdlps:u:z:hwASWVL args; do
+while getopts abcdlpr:s:u:z:hwASWVL args; do
   case $args in
     a)
       if [ "$2" = "-v" ]; then
@@ -648,8 +653,15 @@ while getopts abcdlps:u:z:hwASWVL args; do
       exit
       ;;
     w)
-      if [ "$2" = "-v" ]; then
+      if [ "$2" = "-v" ] || [ "$3" = "-v" ]; then
         verbose=1
+      fi
+      if [ "$2" = "-r" ] || [ "$3" = "-r" ]; then
+        if [ "$2" = "-r" ]; then
+          aws_region=$2
+        else
+          aws_region=$3
+        fi
       fi
       echo ""
       echo "Running     In audit mode (no changes will be made to system)"
