@@ -923,4 +923,6 @@
 # Updated AWS CloudTrail Key fix information
 # 5.5.4: Tue 24 Jan 2017 17:26:25 AEDT
 # Added some fix information for S3 bucket logging
+# 5.5.5: Tue 24 Jan 2017 17:29:39 AEDT
+# Added some fix information for AWS Config 
 
