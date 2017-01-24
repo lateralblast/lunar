@@ -937,4 +937,6 @@
 # Added AWS IAM SSH Public Keys check
 # 5.6.1: Tue 24 Jan 2017 22:45:17 AEDT
 # Added AWS IAM empty group check
+# 5.6.2: Wed 25 Jan 2017 06:27:00 AEDT
+# Added check for expired AWS certificates
 
