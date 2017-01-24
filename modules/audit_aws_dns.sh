@@ -32,6 +32,18 @@
 # order to reduce spam and increase your domains trustworthiness.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/Route53/sender-policy-framework-record-present.html
+#
+# Ensure that your AWS Route 53 registered domains are locked to prevent any
+# unauthorized transfers to another domain name registrar. Your domain names
+# must have the Transfer Lock feature enabled. This feature sets the
+# clientTransferProhibited flag which is a registry setting enabled by the
+# registrar to force all transfer requests to be rejected automatically.
+#
+# Enabling transfer locking for your domain names registered with AWS Route 53
+# or transferred to AWS Route 53 will provide an extra protection against domain
+# hijacking.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/Route53/route-53-domain-transfer-lock.html
 #.
 
 audit_aws_dns () {
@@ -59,6 +71,15 @@ audit_aws_dns () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    Domain $domain registration has not expired [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    check=`aws route53domains get-domain-detail --domain-name $domain --query "Status" --output text 2> /dev/null | grep clientTransferProhibited`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Domain $domain has Domain Transfer Lock enabled [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Domain $domain does not have Domain Transfer Lock enabled [$insecure Warnings]" 
     fi
   done
   zones=`aws route53 list-hosted-zones --query "HostedZones[].Id" --output text 2> /dev/null |cut -f3 -d'/'`
