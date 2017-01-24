@@ -123,6 +123,9 @@ audit_aws_logging () {
       if [ "$grants" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal AuthenticatedUsers [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws s3api put-bucket-acl --bucket $bucket --acl private" fix
+        funct_verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AuthenticatedUsers [$secure Passes]"
