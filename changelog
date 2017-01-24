@@ -915,4 +915,6 @@
 # Added fix information for AWS Access Keys
 # 5.5.0: Tue 24 Jan 2017 05:20:07 AEDT
 # Cleaned up AWS CloudTrail checks
+# 5.5.1: Tue 24 Jan 2017 16:22:48 AEDT
+# Added some fix information for VPC checks
 

@@ -105,6 +105,10 @@ audit_aws_vpcs () {
       else
         insecure=`expr $insecure + 1`
         echo "Warning:   VPC peering is being used review VPC: $vpc [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws ec2 delete-route --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" fix
+        funct_verbose_message "aws ec2 create-route --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" fix
+        funct_verbose_message "" fix
       fi
     done
   fi
@@ -117,6 +121,9 @@ audit_aws_vpcs () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Security Group $sg has SSH open to the world [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 revoke-security-group-ingress --group-name $sg --protocol tcp --port 22 --cidr 0.0.0.0/0" fix
+      funct_verbose_message "" fix
     fi
     openrdp=`aws ec2 describe-security-groups --group-ids $sg --filters "Name=ip-permission.to-port,Values=3389" "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text`
     if [ ! "$openrdp" ]; then
@@ -125,6 +132,9 @@ audit_aws_vpcs () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Security Group $sg has RDP open to the world [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 revoke-security-group-ingress --group-name $sg --protocol tcp --port 3389 --cidr 0.0.0.0/0" fix
+      funct_verbose_message "" fix
     fi
     inbound=`aws ec2 describe-security-groups --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' |grep "0.0.0.0/0"`
     if [ ! "$inbound" ]; then
@@ -133,6 +143,9 @@ audit_aws_vpcs () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Security Group $sg has an open inbound rule [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 revoke-security-group-ingress --group-name $sg --protocol tcp --cidr 0.0.0.0/0" fix
+      funct_verbose_message "" fix
     fi
     outbound=`aws ec2 describe-security-groups --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' |grep "0.0.0.0/0"`
     if [ ! "$outbound" ]; then
@@ -141,6 +154,9 @@ audit_aws_vpcs () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Security Group $sg has an open outbound rule [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 revoke-security-group-egress --group-name $sg --protocol tcp --cidr 0.0.0.0/0" fix
+      funct_verbose_message "" fix
     fi
   done
   logs=`aws ec2 describe-flow-logs --query FlowLogs[].FlowLogId --output text`
