@@ -55,7 +55,7 @@ Having said that, Windows support may come in the future via bash.
 Supported Services
 ------------------
 
-Supported Services:
+The following services are supported:
 
 - AWS
 
@@ -69,6 +69,9 @@ An example of this is enabling billing. Refer to the CIS Benchmark for more info
 Where possible I've put suggested fix commands in the verbose audit output.
 Again in some cases, these can only be done by the CLI. Refer to the CIS
 Benchmark for more information.
+
+In addition I've added a recommendations mode that checks AWS against publicly
+available best practice from companies like Cloud Conformity.
 
 Requirements
 ------------
