@@ -22,4 +22,5 @@ funct_audit_aws_all () {
   audit_aws_sns
   audit_aws_vpcs
   audit_aws_certs
+  audit_aws_dns
 }
