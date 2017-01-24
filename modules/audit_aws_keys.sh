@@ -13,6 +13,12 @@
 # that may have been exposed.
 #
 # Refer to Section(s) 2.8 Page(s) 85-6 CIS AWS Foundations Benchmark v1.1.0
+#
+# Removing unnecessary IAM SSH public keys will lower the risk of unauthorized
+# access to your AWS CodeCommit repositories and adhere to AWS IAM security best
+# practices.
+#
+# Refer to: https://www.cloudconformity.com/conformity-rules/IAM/unnecessary-ssh-public-keys.html
 #.
 
 audit_aws_keys () {
@@ -38,5 +44,22 @@ audit_aws_keys () {
     insecure=`expr $insecure + 1`
     echo "Warning:   No Keys are being used [$insecure Warnings]"
   fi
+  users=`aws iam list-users --query 'Users[].UserName' --output text`
+  for user in $users; do
+    total=`expr $total + 1`
+    check=`aws iam list-ssh-public-keys --region $aws_region --user-name $user |grep Active |wc -l`
+    if [ "$check" -gt 1 ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   User $user does has more than one active SSH key [$secure Passes]"
+    else
+      if [ "$check" -eq 0 ]; then
+        secure=`expr $secure + 1`
+        echo "Secure:    User $user does not have any active SSH key [$secure Passes]"
+      else
+        secure=`expr $secure + 1`
+        echo "Secure:    User $user does not have more than one active SSH key [$secure Passes]"
+      fi
+    fi 
+  done
 }
 

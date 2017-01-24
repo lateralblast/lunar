@@ -932,5 +932,7 @@
 # 5.5.8: Tue 24 Jan 2017 21:09:08 AEDT
 # Added additional support for setting AWS region
 # 5.5.9: Tue 24 Jan 2017 21:25:13 AEDT
-# Added initial support for AWS recommendations module
+# Added initial support for AWS recommendations
+# 5.6.0: Tue 24 Jan 2017 22:35:11 AEDT
+# Added AWS IAM SSH Public Keys check
 

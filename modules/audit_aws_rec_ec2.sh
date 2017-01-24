@@ -13,7 +13,7 @@ audit_aws_rec_ec2 () {
   total=`expr $total + 1`
   images=`aws ec2 describe-images --region $aws_region --owners self --query "Images[].ImageId" --output text`
   for image in $images; do
-	  name=`aws ec2 describe-images --region $aws_region --owners self --image-id ami-987843fb --query "Images[].Tags[?Key=='Name'].Value" --output text`
+	  name=`aws ec2 describe-images --region $aws_region --owners self --image-id $image --query "Images[].Tags[?Key=='Name'].Value" --output text`
     if [ ! "$name" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   AWS AMI $image does not have a Name tag [$insecure Warnings]"
