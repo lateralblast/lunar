@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.5.8
+# Version:      5.5.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -476,6 +476,19 @@ funct_audit_aws () {
   print_results
 }
 
+# funct_audit_aws
+#
+# Audit AWS
+#.
+
+funct_audit_aws_rec () {
+  audit_mode=$1
+  check_environment
+  check_aws
+  funct_audit_aws_rec_all
+  print_results
+}
+
 # funct_audit_system
 #
 # Audit System
@@ -607,7 +620,7 @@ print_results () {
 
 # Handle command line arguments
 
-while getopts abcdlpr:s:u:z:hwASWVL args; do
+while getopts abcdlpr:s:u:z:hwASWVLx args; do
   case $args in
     a)
       if [ "$2" = "-v" ]; then
@@ -669,6 +682,26 @@ while getopts abcdlpr:s:u:z:hwASWVL args; do
       echo ""
       audit_mode=1
       funct_audit_aws $audit_mode
+      function="$OPTARG"
+      exit
+      ;;
+    x)
+      if [ "$2" = "-v" ] || [ "$3" = "-v" ]; then
+        verbose=1
+      fi
+      if [ "$2" = "-r" ] || [ "$3" = "-r" ]; then
+        if [ "$2" = "-r" ]; then
+          aws_region=$2
+        else
+          aws_region=$3
+        fi
+      fi
+      echo ""
+      echo "Running     In audit mode (no changes will be made to system)"
+      echo "            This requires the AWS CLI to be configured"
+      echo ""
+      audit_mode=1
+      funct_audit_aws_rec $audit_mode
       function="$OPTARG"
       exit
       ;;

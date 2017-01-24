@@ -931,4 +931,6 @@
 # Added initial ability to set AWS region on command line
 # 5.5.8: Tue 24 Jan 2017 21:09:08 AEDT
 # Added additional support for setting AWS region
+# 5.5.9: Tue 24 Jan 2017 21:25:13 AEDT
+# Added initial support for AWS recommendations module
 
