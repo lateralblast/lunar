@@ -917,4 +917,6 @@
 # Cleaned up AWS CloudTrail checks
 # 5.5.1: Tue 24 Jan 2017 16:22:48 AEDT
 # Added some fix information for VPC checks
+# 5.5.2: Tue 24 Jan 2017 16:47:11 AEDT
+# Added some fix information for SNS check
 

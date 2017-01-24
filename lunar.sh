@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.5.1
+# Version:      5.5.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -59,6 +59,8 @@
 aws_iam_master_role="iam-master"
 aws_iam_manager_role="iam-manager"
 aws_cloud_trail_name="aws-audit-log"
+sns_protocol="email"
+sns_endpoint="alerts@company.com"
 
 # Set up some global variables
 
