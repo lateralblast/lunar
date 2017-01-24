@@ -5,14 +5,26 @@
 # to AWS resource tagging best practices. A naming convention is a well-defined
 # set of rules useful for choosing the name of an AWS resource.
 #
-# Refer to:
-# https://www.cloudconformity.com/conformity-rules/EC2/ami-naming-conventions.html
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/ami-naming-conventions.html
+#
+# Ensure that all the AWS EC2 instances necessary for your application stack are
+# launched from your approved base Amazon Machine Images (AMIs), known as golden
+# AMIs in order to enforce consistency and save time when scaling your
+# application.
+#
+# An approved/golden AMI is a base EC2 machine image that contains a
+# pre-configured OS and a well-defined stack of server software fully configured
+# to run your application. Using golden AMIs to create new EC2 instances within
+# your AWS environment brings major benefits such as fast and stable application
+# deployment and scaling, secure application stack upgrades and versioning.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/approved-golden-amis.html
 #.
 
 audit_aws_rec_ec2 () {
-  total=`expr $total + 1`
   images=`aws ec2 describe-images --region $aws_region --owners self --query "Images[].ImageId" --output text`
   for image in $images; do
+    total=`expr $total + 1`
 	  name=`aws ec2 describe-images --region $aws_region --owners self --image-id $image --query "Images[].Tags[?Key=='Name'].Value" --output text`
     if [ ! "$name" ]; then
       insecure=`expr $insecure + 1`
