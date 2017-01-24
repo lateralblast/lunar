@@ -26,7 +26,8 @@ audit_aws_keys () {
         insecure=`expr $insecure + 1`
         echo "Warning:   Key $key does not have key rotation enabled [$insecure Warnings]"
         funct_verbose_message "" fix
-        funct_verbose_message "aws kms enable-key-rotation --key-id $key" fix
+        funct_verbose_message "aws cloudtrail update-trail --name <trail_name> --kms-id <cloudtrail_kms_key> aws kms put-key-policy --key-id <cloudtrail_kms_key> --policy <cloudtrail_kms_key_policy>" fix
+        funct_verbose_message "aws kms enable-key-rotation --key-id <cloudtrail_kms_key>" fix
         funct_verbose_message "" fix
       else
         secure=`expr $secure + 1`
