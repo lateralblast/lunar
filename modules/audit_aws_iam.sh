@@ -11,6 +11,12 @@
 #
 # Refer to Section(s) 1.1  Page(s) 10-1  CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.18 Page(s) 46-57 CIS AWS Foundations Benchmark v1.1.0
+#
+# Ensure that all the IAM groups within your AWS account are currently used and
+# have at least one user attached. Otherwise, remove any orphaned (unused) IAM
+# groups in order to prevent attaching unauthorized users.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-group.html
 #.
 
 audit_aws_iam () {
@@ -53,5 +59,17 @@ audit_aws_iam () {
     funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
     funct_verbose_message "" fix
 	fi
+  groups=`aws iam list-groups --query 'Groups[*].GroupName' --output text`
+  for group in $groups; do
+    total=`expr $total + 1`
+    users=`aws iam get-group --group-name $group --query "Users" --output text`
+    if [ "$users" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    IAM group $group is not empty [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   IAM group $group is empty [$insecure Warnings]"
+    fi
+  done
 }
 

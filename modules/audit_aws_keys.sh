@@ -18,7 +18,7 @@
 # access to your AWS CodeCommit repositories and adhere to AWS IAM security best
 # practices.
 #
-# Refer to: https://www.cloudconformity.com/conformity-rules/IAM/unnecessary-ssh-public-keys.html
+# Refer to https://www.cloudconformity.com/conformity-rules/IAM/unnecessary-ssh-public-keys.html
 #.
 
 audit_aws_keys () {

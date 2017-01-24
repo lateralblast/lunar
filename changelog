@@ -935,4 +935,6 @@
 # Added initial support for AWS recommendations
 # 5.6.0: Tue 24 Jan 2017 22:35:11 AEDT
 # Added AWS IAM SSH Public Keys check
+# 5.6.1: Tue 24 Jan 2017 22:45:17 AEDT
+# Added AWS IAM empty group check
 
