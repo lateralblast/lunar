@@ -77,6 +77,15 @@ audit_aws_rec_ec2 () {
         echo "Warning:   AWS Instance $instance does not have a valid Name tag [$insecure Warnings]"
       fi
     fi
+    total=`expr $total + 1`
+    check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Termination Protection is enabled for instance $instance [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Termination Protection is not enabled for instance $instance [$insecure Warnings]"
+    fi
   done
   images=`aws ec2 describe-instances --region $aws_region --query 'Reservations[].Instances[].ImageId' --output text`
   for image in $images; do
