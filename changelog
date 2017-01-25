@@ -967,3 +967,6 @@
 # Added check for publicly shared AWS AMIs
 # 5.7.6: Thu 26 Jan 2017 05:42:37 AEDT
 # Added check against recommended Security Group name
+# 5.7.7: Thu 26 Jan 2017 09:09:47 AEDT
+# Split out AWS VPC and SG checks
+
