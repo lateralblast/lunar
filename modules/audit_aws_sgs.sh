@@ -68,6 +68,19 @@
 # of Service (DDoS) attacks.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-dns-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted access
+# (i.e. 0.0.0.0/0) to TCP ports 20 and 21 and restrict access to only those IP
+# addresses that require it in order to implement the principle of least
+# privilege and reduce the possibility of a breach. TCP ports 20 and 21 are used
+# for data transfer and communication by the File Transfer Protocol (FTP)
+# client-server applications
+#
+# Allowing unrestricted FTP access can increase opportunities for malicious
+# activity such as brute-force attacks, FTP bounce attacks, spoofing attacks
+# and packet capture.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-ftp-access.html
 #.
 
 audit_aws_sgs () {
@@ -83,6 +96,7 @@ audit_aws_sgs () {
       funct_aws_open_port_check $sg 3389 tcp RDP
       funct_aws_open_port_check $sg 445 tcp CIFS
       funct_aws_open_port_check $sg 53 tcp DNS
+      funct_aws_open_port_check $sg 20,21 tcp FTP 
     fi
     outbound=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' |grep "0.0.0.0/0"`
     total=`expr $total + 1`
