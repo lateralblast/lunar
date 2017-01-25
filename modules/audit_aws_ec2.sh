@@ -79,6 +79,9 @@ audit_aws_ec2 () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Image $image is publicly shared [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 modify-image-attribute --region $aws_region --image-id $image --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" fix
+      funct_verbose_message "" fix
     fi
   done
 }

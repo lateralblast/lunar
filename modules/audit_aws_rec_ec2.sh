@@ -63,9 +63,46 @@
 # and make sure that your EBS data remains safe.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/ec2-instance-termination-protection.html
+#
+# Ensure that all your EC2 security groups are using appropriate naming
+# conventions for tagging in order to manage them more efficiently and adhere
+# to AWS tagging best practices. A naming convention is a well-defined set of
+# rules useful for choosing the name of an AWS resource.  
+#
+# Naming your AWS resources logically and consistently has several advantages
+# such as providing additional information about the resource location and
+# usage, promoting consistency within the selected environment, distinguishing
+# fast similar resources from one another, avoiding naming collisions, improving
+# clarity in cases of potential ambiguity and enhancing the aesthetic and
+# professional appearance.
+# 
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/security-group-naming-conventions.html
 #.
 
 audit_aws_rec_ec2 () {
+  sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupName' --output text`
+  for sg in $sgs; do
+    if [ ! "$sg" = "default" ]; then
+      total=`expr $total + 1`
+      name=`aws ec2 describe-security-groups --region $aws_region --group-names $sg --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text`
+      if [ ! "$name" ]; then
+        insecure=`expr $insecure + 1`
+        echo "Warning:   AWS Security Group $sg does not have a Name tag [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
+        funct_verbose_message "" fix
+      else
+        check=`echo $name |grep "^sg-$valid_host_grep"`
+        if [ "$check" ]; then
+          secure=`expr $secure + 1`
+          echo "Secure:    AWS Security Group $sg has a valid Name tag [$secure Passes]"
+        else
+          insecure=`expr $insecure + 1`
+          echo "Warning:   AWS Security Group $sg does not have a valid Name tag [$insecure Warnings]"
+        fi
+      fi
+    fi
+  done
   images=`aws ec2 describe-images --region $aws_region --owners self --query "Images[].ImageId" --output text`
   for image in $images; do
     total=`expr $total + 1`
@@ -77,7 +114,7 @@ audit_aws_rec_ec2 () {
       funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
       funct_verbose_message "" fix
     else
-      check=`echo $name |grep "$valid_host_grep"`
+      check=`echo $name |grep "^ami-$valid_host_grep"`
       if [ "$check" ]; then
         secure=`expr $secure + 1`
         echo "Secure:    AWS AMI $image has a valid Name tag [$secure Passes]"
@@ -98,7 +135,7 @@ audit_aws_rec_ec2 () {
       funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $instances --tags Key=Name,Value=<valid_name_tag>" fix
       funct_verbose_message "" fix
     else
-      check=`echo $name |grep "$valid_host_grep"`
+      check=`echo $name |grep "^ec2-$valid_host_grep"`
       if [ "$check" ]; then
         secure=`expr $secure + 1`
         echo "Secure:    AWS Instance $instance has a valid Name tag [$secure Passes]"
