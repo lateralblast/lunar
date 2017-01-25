@@ -949,4 +949,6 @@
 # Added check for AWS Route53 Zone SPF records
 # 5.6.7: Wed 25 Jan 2017 08:40:14 AEDT
 # Added check for AWS Route53 Domain Transfer Lock
+# 5.6.8: Wed 25 Jan 2017 12:52:00 AEDT
+# Added check for AWS instance image ID owner
 
