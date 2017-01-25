@@ -46,13 +46,13 @@ audit_aws_rec_ec2 () {
   images=`aws ec2 describe-instances --region $aws_region --query 'Reservations[].Instances[].ImageId' --output text`
   for image in $images; do
     total=`expr $total + 1`
-    owner=`aws ec2 describe-instances --region $aws_region --image-ids $image --query 'Images[].ImageOwnerAlias' --output text`
-    if [ "$owner" = "self" ] || [ "$owner" = "" ]; then
+    owner=`aws ec2 describe-images --region $aws_region --image-ids $image --query 'Images[].ImageOwnerAlias' --output text`
+    if [ "$owner" = "self" ] || [ ! "$owner" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    AWS AMI $image is not a self produced image [$secure Passes]"
+      echo "Secure:    AWS AMI $image is a self produced image [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   AWS AMI $image does not have a valid Name tag [$insecure Warnings]"
+      echo "Warning:   AWS AMI $image is not have a valid Name tag [$insecure Warnings]"
     fi
   done
 }
