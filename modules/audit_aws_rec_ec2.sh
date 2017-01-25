@@ -33,6 +33,36 @@
 # resources for easy management and billing purposes.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/ec2-instance-naming-conventions.html
+#
+# Ensure that the EC2 instances provisioned outside of the AWS Auto Scaling
+# Groups (ASGs) have Termination Protection safety feature enabled in order
+# to protect your instances from being accidentally terminated.
+#
+# For EC2 instances provisioned manually, once the Termination Protection
+# feature is enabled you will not be able to terminate your EC2 instances
+# using the AWS Management Console, the AWS API or the CLI until the
+# termination protection has been disabled. However, this will not prevent
+# your instances from getting terminated if these have set the Shutdown
+# Behavior flag to 'Terminate' when an OS-level shutdown is performed.
+# To make sure your instances cannot be accidentally terminated, you need
+# to set first the instance Shutdown Behavior value to 'Stop' (which sets
+# the InstanceInitiatedShutdownBehavior attribute value to 'stop') then
+# enable Termination Protection safety precaution (which sets the
+# DisableApiTermination attribute value to true).
+#
+# For EC2 instances provisioned automatically via AWS Cloudformation, once the
+# Termination Protection feature is enabled you will not be able to delete the
+# stack containing the instance until the feature has been disabled (which sets
+# the DisableApiTermination attribute value to false) in your CloudFormation
+# template.
+#
+# By default, the volumes associated with the EC2 instances are deleted when
+# these are terminated (the DeletionOnTermination attribute value is set to
+# true). With Termination Protection feature enabled, you have the guarantee
+# that your instances cannot be terminated (permanently deleted) accidentally
+# and make sure that your EBS data remains safe.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/ec2-instance-termination-protection.html
 #.
 
 audit_aws_rec_ec2 () {
@@ -78,8 +108,9 @@ audit_aws_rec_ec2 () {
       fi
     fi
     total=`expr $total + 1`
-    check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
-    if [ "$check" ]; then
+    term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
+    asg_check=`aws autoscaling describe-auto-scaling-instances --region $aws_region --query 'AutoScalingInstances[].InstanceId' |grep $instance`
+    if [ "$term_check" ] && [ ! "$asg_check" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Termination Protection is enabled for instance $instance [$secure Passes]"
     else
