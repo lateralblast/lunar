@@ -19,13 +19,27 @@
 # deployment and scaling, secure application stack upgrades and versioning.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/approved-golden-amis.html
+#
+# Ensure that all your EC2 instances are using suitable naming conventions for
+# tagging in order to manage them more efficiently and adhere to AWS resource
+# tagging best practices. A naming convention is an established set of rules
+# useful for choosing the name of an AWS resource
+#
+# Naming (tagging) your EC2 instances logically and consistently has several
+# advantages such as providing additional information about the instance
+# location and usage, promoting consistency within the selected environment,
+# distinguishing fast similar resources from one another, improving clarity
+# in cases of potential ambiguity and classifying them accurately as compute
+# resources for easy management and billing purposes.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/ec2-instance-naming-conventions.html
 #.
 
 audit_aws_rec_ec2 () {
   images=`aws ec2 describe-images --region $aws_region --owners self --query "Images[].ImageId" --output text`
   for image in $images; do
     total=`expr $total + 1`
-	  name=`aws ec2 describe-images --region $aws_region --owners self --image-id $image --query "Images[].Tags[?Key=='Name'].Value" --output text`
+	  name=`aws ec2 describe-images --region $aws_region --owners self --image-id $image --query "Images[].Tags[?Key==\\\`Name\\\`].Value" --output text`
     if [ ! "$name" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   AWS AMI $image does not have a Name tag [$insecure Warnings]"
@@ -40,6 +54,27 @@ audit_aws_rec_ec2 () {
       else
         insecure=`expr $insecure + 1`
         echo "Warning:   AWS AMI $image does not have a valid Name tag [$insecure Warnings]"
+      fi
+    fi
+  done
+  instances=`aws ec2 describe-instances --region $aws_region --query "Reservations[].Instances[].InstanceId" --output text`
+  for instance in $instances; do
+    total=`expr $total + 1`
+    name=`aws ec2 describe-instances --region $aws_region --instance-id $instance --query "Reservations[].Instances[].Tags[?Key==\\\`Name\\\`].Value" --output text`
+    if [ ! "$name" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   AWS AMI $image does not have a Name tag [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $instances --tags Key=Name,Value=<valid_name_tag>" fix
+      funct_verbose_message "" fix
+    else
+      check=`echo $name |grep "$valid_host_grep"`
+      if [ "$check" ]; then
+        secure=`expr $secure + 1`
+        echo "Secure:    AWS Instance $instance has a valid Name tag [$secure Passes]"
+      else
+        insecure=`expr $insecure + 1`
+        echo "Warning:   AWS Instance $instance does not have a valid Name tag [$insecure Warnings]"
       fi
     fi
   done

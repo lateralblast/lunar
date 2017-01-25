@@ -957,4 +957,6 @@
 # Added check for AWS instances using the default security group
 # 5.7.1: Wed 25 Jan 2017 18:46:14 AEDT
 # Added check for AWS EC2-Classic instances
+# 5.7.2: Wed 25 Jan 2017 19:34:59 AEDT
+# Added check against recommended instance name
 
