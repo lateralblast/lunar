@@ -969,4 +969,8 @@
 # Added check against recommended Security Group name
 # 5.7.7: Thu 26 Jan 2017 09:09:47 AEDT
 # Split out AWS VPC and SG checks
+# 5.7.8: Thu 26 Jan 2017 09:17:26 AEDT
+# Added check for AWS SGs with open CIFS ports
+# 5.7.9: Thu 26 Jan 2017 09:22:07 AEDT
+# Added check for AWS SGs with open DNS ports
 
