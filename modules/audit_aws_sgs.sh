@@ -1,5 +1,22 @@
 # audit_aws_sgs
 #
+# Check your EC2 security groups for inbound rules that allow unrestricted
+# access (i.e. 0.0.0.0/0) to any uncommon TCP and UDP ports and restrict access
+# to only those IP addresses that require it in order to implement the principle
+# of least privilege and reduce the possibility of a breach. A uncommon port
+# can be any TCP/UDP port that is not included in the common services ports
+# category, i.e. other than the commonly used ports such as 80 (HTTP),
+# 443 (HTTPS), 20/21 (FTP), 22 (SSH), 23 (Telnet), 3389 (RDP), 1521 (Oracle),
+# 3306 (MySQL), 5432 (PostgreSQL), 53 (DNS), 1433 (MSSQL) and
+# 137/138/139/445 (SMB/CIFS).
+#
+# Allowing unrestricted (0.0.0.0/0) inbound/ingress access to uncommon ports can
+# increase opportunities for malicious activity such as hacking, data loss and
+# all multiple types of attacks (brute-force attacks, Denial of Service (DoS)
+# attacks, etc).
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/security-group-ingress-any.html
+#
 # Security groups provide stateful filtering of ingress/egress network
 # traffic to AWS resources. It is recommended that no security group allows
 # unrestricted ingress access to port 22.
@@ -93,10 +110,17 @@ audit_aws_sgs () {
       echo "Secure:    Security Group $sg does not have a open inbound rule [$secure Passes]"
     else
       funct_aws_open_port_check $sg 22 tcp SSH
-      funct_aws_open_port_check $sg 3389 tcp RDP
-      funct_aws_open_port_check $sg 445 tcp CIFS
-      funct_aws_open_port_check $sg 53 tcp DNS
       funct_aws_open_port_check $sg 20,21 tcp FTP 
+      funct_aws_open_port_check $sg 53 tcp DNS
+      funct_aws_open_port_check $sg 80 tcp HTTP 
+      funct_aws_open_port_check $sg 137,138,139 tcp SMB
+      funct_aws_open_port_check $sg 443 tcp HTTPS 
+      funct_aws_open_port_check $sg 445 tcp CIFS
+      funct_aws_open_port_check $sg 1433 tcp MSSQL
+      funct_aws_open_port_check $sg 1521 tcp Oracle
+      funct_aws_open_port_check $sg 3306 tcp MySQL
+      funct_aws_open_port_check $sg 3389 tcp RDP
+      funct_aws_open_port_check $sg 5432 tcp PostgreSQL 
     fi
     outbound=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' |grep "0.0.0.0/0"`
     total=`expr $total + 1`

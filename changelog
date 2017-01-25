@@ -975,4 +975,6 @@
 # Added check for AWS SGs with open DNS ports
 # 5.8.0: Thu 26 Jan 2017 09:51:13 AEDT
 # Added check for AWS SGs with open FTP ports
+# 5.8.1: Thu 26 Jan 2017 10:03:33 AEDT
+# Added check for AWS SGs with various open ports
 
