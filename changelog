@@ -951,4 +951,8 @@
 # Added check for AWS Route53 Domain Transfer Lock
 # 5.6.8: Wed 25 Jan 2017 12:52:00 AEDT
 # Added check for AWS instance image ID owner
+# 5.6.9: Wed 25 Jan 2017 17:47:28 AEDT
+# Added check for number of AWS EIPs consumer
+# 5.7.0: Wed 25 Jan 2017 18:21:39 AEDT
+# Added check for AWS instances using the default security group
 
