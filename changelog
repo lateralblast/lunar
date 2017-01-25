@@ -963,3 +963,5 @@
 # Added check for AWS instance termination protection
 # 5.7.4: Wed 25 Jan 2017 21:20:52 AEDT
 # Added check to see if instances have IAM profiles
+# 5.7.5: Thu 26 Jan 2017 04:41:19 AEDT
+# Added check for publicly shared AWS AMIs
