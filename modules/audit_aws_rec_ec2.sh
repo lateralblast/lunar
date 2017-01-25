@@ -55,14 +55,27 @@ audit_aws_rec_ec2 () {
       echo "Warning:   AWS AMI $image is not have a valid Name tag [$insecure Warnings]"
     fi
   done
+  total=`expr $total + 1`
   max_ips=`aws ec2 describe-account-attributes --region $aws_region --attribute-names max-elastic-ips --query "AccountAttributes[].AttributeValues[].AttributeValue" --output text`
   no_ips=`aws ec2 describe-addresses --region $aws_region --query 'Addresses[].PublicIp' --filters "Name=domain,Values=standard" --output text |wc -l`
   if [ "$max_ips" -ne  "$no_ips" ]; then
+    secure=`expr $secure + 1`
+    echo "Secure:    Number of Elastic IPs consumed is less than limit of $max_ips [$secure Passes]"
+  else
+    insecure=`expr $insecure + 1`
+    echo "Warning:   Number of Elastic IPs consumed has reached limit of $max_ips [$insecure Warnings]"
+  fi
+  instances=`aws ec2 describe-instances --region $aws_region --query 'Reservations[*].Instances[*].InstanceId' --output text`
+  for instance in $instances; do
+    total=`expr $total + 1`
+    vpc_id=`aws ec2 describe-instances --region $aws_region --instance-ids $instance --query 'Reservations[*].Instances[*].VpcId' --output text`
+    if [ "$vpc_id" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Number of Elastic IPs consumed is less than limit of $max_ips [$secure Passes]"
+      echo "Secure:    Instance $instance is an EC2-VPC platform [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Number of Elastic IPs consumed has reached limit of $max_ips [$insecure Warnings]"
-  fi
+      echo "Warning:   Instance $instance is an EC2-Classic platform [$insecure Warnings]"
+    fi 
+  done
 }
 
