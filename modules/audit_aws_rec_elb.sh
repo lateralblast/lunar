@@ -12,6 +12,22 @@
 # avoid breaking open network connections.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-connection-draining-enabled.html
+#
+# By using at least two subnets in different Availability Zones with the
+# Cross-Zone Load Balancing feature enabled, your ELBs can distribute the
+# traffic evenly across all backend instances. To use Cross-Zone Load
+# Balancing at optimal level, Amazon recommends maintaining an equal EC2
+# capacity distribution in each of the AZs registered with the load balancer.
+#
+# Enabling Cross-Zone Load Balancing makes it easier to deploy and manage
+# applications that run across multiple subnets in different Availability Zones.
+# This would also guarantee better fault tolerance and more consistent traffic
+# flow. If one of the availability zones registered with the ELB fails (as
+# result of network outage or power loss), the load balancer with the Cross-Zone
+# Load Balancing activated would act as a traffic guard, stopping any request
+# being sent to the unhealthy zone and routing it to the other zone(s).
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-cross-zone-load-balancing-enabled.html
 #.
 
 audit_aws_rec_elb () {
@@ -28,6 +44,15 @@ audit_aws_rec_elb () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has connection draining [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    check=`aws elb describe-load-balancer-attributes --region $aws_region --load-balancer-name $elb  --query "LoadBalancerAttributes.CrossZoneLoadBalancing" |grep Enabled |grep true`
+    if [ ! "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   ELB $elb does not have cross zone balancing enabled [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    ELB $elb has cross zone balancing enabled [$secure Passes]"
     fi
   done
 }
