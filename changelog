@@ -985,3 +985,5 @@
 # Added check for AWS SGs with open ICMP
 # 5.8.5: Thu 26 Jan 2017 11:51:56 AEDT
 # Added check for AWS SGs with open SMTP
+# 5.8.6: Thu 26 Jan 2017 11:55:15 AEDT
+# Added check for AWS SGs with open Telnet

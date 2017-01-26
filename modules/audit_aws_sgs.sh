@@ -165,6 +165,19 @@
 # (DoS) attacks.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-smtp-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted
+# access (i.e. 0.0.0.0/0) to TCP port 23 and restrict access to only those
+# IP addresses that require it in order to implement the principle of least
+# privilege and reduce the possibility of a breach. TCP port 23 is used by
+# the Telnet server application (telnetd). Telnet is usually used to check
+# whether a client is able to make TCP/IP connections to a particular service.
+#
+# Allowing unrestricted Telnet access can increase opportunities for malicious
+# activity such as IP address spoofing, man-in-the-middle attacks (MITM) and
+# brute-force attacks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-telnet-access.html
 #.
 
 audit_aws_sgs () {
@@ -177,8 +190,9 @@ audit_aws_sgs () {
       echo "Secure:    Security Group $sg does not have a open inbound rule [$secure Passes]"
     else
       funct_aws_open_port_check $sg -1 icmp ICMP
-      funct_aws_open_port_check $sg 22 tcp SSH
       funct_aws_open_port_check $sg 20,21 tcp FTP 
+      funct_aws_open_port_check $sg 22 tcp SSH
+      funct_aws_open_port_check $sg 23 tcp Telnet
       funct_aws_open_port_check $sg 25 tcp SMTP
       funct_aws_open_port_check $sg 53 tcp DNS
       funct_aws_open_port_check $sg 80 tcp HTTP 
