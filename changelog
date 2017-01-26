@@ -977,4 +977,5 @@
 # Added check for AWS SGs with open FTP ports
 # 5.8.1: Thu 26 Jan 2017 10:03:33 AEDT
 # Added check for AWS SGs with various open ports
-
+# 5.8.2: Thu 26 Jan 2017 11:00:34 AEDT
+# Added check for AWS SGs with open MongoDB ports

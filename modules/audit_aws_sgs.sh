@@ -98,6 +98,19 @@
 # and packet capture.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-ftp-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted access
+# (i.e. 0.0.0.0/0) to TCP port 27017 and restrict access to only those IP
+# addresses that require it in order to implement the principle of least
+# privilege and reduce the possibility of a breach. TCP port 27017 is used by
+# the MongoDB Database which is free and open-source cross-platform document-
+# oriented NoSQL database
+#
+# Allowing unrestricted MongoDB Database access can increase opportunities for
+# malicious activity such as hacking, denial-of-service (DoS) attacks and loss
+# of data.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-mongodb-access.html
 #.
 
 audit_aws_sgs () {
@@ -121,6 +134,7 @@ audit_aws_sgs () {
       funct_aws_open_port_check $sg 3306 tcp MySQL
       funct_aws_open_port_check $sg 3389 tcp RDP
       funct_aws_open_port_check $sg 5432 tcp PostgreSQL 
+      funct_aws_open_port_check $sg 27017 tcp MongoDB
     fi
     outbound=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' |grep "0.0.0.0/0"`
     total=`expr $total + 1`
