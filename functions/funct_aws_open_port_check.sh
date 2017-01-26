@@ -11,7 +11,7 @@ funct_aws_open_port_check () {
   protocol=$3
 	service=$4 
   total=`expr $total + 1`
-  open_port=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters "Name=ip-permission.to-port,Values=$port" "Name=ip-permission.cidr,Values=0.0.0.0/0" --output text`
+  open_port=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters "Name=ip-permission.to-port,Values=$port" "Name=ip-permission.cidr,Values=0.0.0.0/0" "Name=ip-permission.protocol,Values=$protocol" --output text`
     if [ ! "$open_port" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Security Group $sg does not have $service on port $port open to the world [$secure Passes]"

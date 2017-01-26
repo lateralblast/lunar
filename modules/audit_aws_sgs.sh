@@ -136,6 +136,22 @@
 # Allowing unrestricted RPC access can increase opportunities for malicious
 # activity such as hacking (backdoor command shell), denial-of-service (DoS)
 # attacks and loss of data.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-rpc-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted
+# access (i.e. 0.0.0.0/0) to any hosts using ICMP and restrict access to only
+# those IP addresses that require it in order to implement the principle of
+# least privilege and reduce the possibility of a breach. Internet Control
+# Message Protocol (ICMP) is an error-reporting protocol that is typically
+# used to troubleshoot TCP/IP networks by generating error messages for any
+# issues with delivering IP packets. Even if ICMP is not a transport protocol,
+# it can be used to exploit network vulnerabilities.
+#
+# Allowing unrestricted ICMP access can increase opportunities for malicious
+# activity such as denial-of-service (DoS) attacks, Smurf and Fraggle attacks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-icmp-access.html
 #.
 
 audit_aws_sgs () {
@@ -147,6 +163,7 @@ audit_aws_sgs () {
       secure=`expr $secure + 1`
       echo "Secure:    Security Group $sg does not have a open inbound rule [$secure Passes]"
     else
+      funct_aws_open_port_check $sg -1 icmp ICMP
       funct_aws_open_port_check $sg 22 tcp SSH
       funct_aws_open_port_check $sg 20,21 tcp FTP 
       funct_aws_open_port_check $sg 53 tcp DNS
