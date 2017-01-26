@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      5.9.0
+# Version:      5.9.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -611,7 +611,7 @@ print_results () {
     echo "Reboot:    $reboot"
   fi
   echo "Tests:     $total"
-  echo "Secure:    $secure"
+  echo "Passes:    $secure"
   echo "Warnings:  $insecure"
   if [ "$audit_mode" = 0 ]; then
     echo "Backup:    $work_dir"

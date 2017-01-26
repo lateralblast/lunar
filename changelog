@@ -995,3 +995,5 @@
 # Added check for AWS ES domains having IP access policy
 # 5.9.0: Thu 26 Jan 2017 14:43:32 AEDT
 # Added check for AWS ES domains having dedicated master nodes
+# 5.9.1: Thu 26 Jan 2017 14:51:13 AEDT
+# Added check for AWS ES domains using General Purpose SSD to be cost effective
