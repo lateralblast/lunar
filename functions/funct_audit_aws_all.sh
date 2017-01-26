@@ -26,4 +26,5 @@ funct_audit_aws_all () {
   audit_aws_dns
   audit_aws_ec2
   audit_aws_es
+  audit_aws_elb
 }

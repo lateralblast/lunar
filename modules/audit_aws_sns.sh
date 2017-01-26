@@ -18,8 +18,8 @@
 
 audit_aws_sns () {
 	topics=`aws sns list-topics --region $aws_region --query 'Topics[].TopicArn' --output text`
-  total=`expr $total + 1`
   for topic in $topics; do
+    total=`expr $total + 1`
     subscribers=`aws sns list-subscriptions-by-topic --region $aws_region --topic-arn $topic --output text`
     if [ ! "$subscribers" ]; then
       insecure=`expr $insecure + 1`
