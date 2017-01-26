@@ -129,7 +129,7 @@ audit_aws_rec_ec2 () {
   # Check Instances have Name tags
   instances=`aws ec2 describe-instances --region $aws_region --query "Reservations[].Instances[].InstanceId" --output text`
   for instance in $instances; do
-    for tag in Name Role Environment Owner
+    for tag in Name Role Environment Owner; do
       total=`expr $total + 1`
       check=`aws ec2 describe-instances --region $aws_region --instance-id $instance --query "Reservations[].Instances[].Tags[?Key==\\\`$tag\\\`].Value" --output text`
       if [ ! "$check" ]; then
@@ -147,8 +147,8 @@ audit_aws_rec_ec2 () {
           insecure=`expr $insecure + 1`
           echo "Warning:   AWS Instance $instance does not have a valid $tag tag [$insecure Warnings]"
         fi
-      done
-    fi
+      fi
+    done
     total=`expr $total + 1`
     term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
     asg_check=`aws autoscaling describe-auto-scaling-instances --region $aws_region --query 'AutoScalingInstances[].InstanceId' |grep $instance`
