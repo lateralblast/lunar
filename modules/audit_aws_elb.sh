@@ -59,6 +59,12 @@
 # section) to update their configuration.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-listener-security.html
+#
+# Check your Elastic Load Balancer (ELB) security layer for at least one valid
+# security group that restrict access only to the ports defined in the load
+# balancer listeners configuration.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-security-group.html
 #.
 
 audit_aws_elb () {
@@ -77,7 +83,7 @@ audit_aws_elb () {
       echo "Secure:    ELB $elb has access logging enabled [$secure Passes]"
     fi
     total=`expr $total + 1`
-    protocol=`aws elb describe-load-balancer-attributes --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].ListenerDescriptions[].Listener.Protcol" --output text`
+    protocol=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].ListenerDescriptions[].Listener.Protcol" --output text`
     if [ "$protocol" = "HTTP" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   ELB $elb is using HTTP [$insecure Warnings]"
@@ -85,6 +91,10 @@ audit_aws_elb () {
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb is not using HTTP [$secure Passes]"
     fi
+    sgs=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].SecurityGroups" --output text`
+    for sg in $sgs; do
+      funct_aws_open_port_check $sg 80 tcp HTTP $elb
+    done
     policies=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb  --query "PolicyDescriptions[].PolicyName" --output text`
     for policy in $policies; do
       for cipher in SSLv2 RC2-CBC-MD5 PSK-AES256-CBC-SHA PSK-3DES-EDE-CBC-SHA KRB5-DES-CBC3-SHA KRB5-DES-CBC3-MD5 \

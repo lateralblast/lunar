@@ -1017,3 +1017,5 @@
 # Added check for AWS ELB using HTTP rather than HTTPS
 # 6.0.1: Fri 27 Jan 2017 08:32:32 AEDT
 # Added check for AWS ELB having at least 2 instances
+# 6.0.2: Fri 27 Jan 2017 08:48:57 AEDT
+# Added check for AWS ELB SGs being open on port 80
