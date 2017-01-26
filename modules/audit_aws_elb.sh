@@ -11,6 +11,19 @@
 # protection plans.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-access-log.html
+#
+# Check your Elastic Load Balancers Secure Socket Layer (SSL) negotiation
+# configuration (security policy) for any cipher suites that demonstrate
+# vulnerabilities or have been rendered insecure by recent exploits.
+#
+# Using insecure and deprecated ciphers for your ELB Predefined Security Policy
+# or Custom Security Policy could make the SSL connection between the client
+# and the load balancer vulnerable to exploits. If your ELB SSL negotiation
+# configuration use outdated cipher suites, we highly recommend that you update
+# it using the information provided in this guide (see Remediation/Resolution
+# section).
+#
+# https://www.cloudconformity.com/conformity-rules/ELB/elb-insecure-ssl-ciphers.html
 #.
 
 audit_aws_elb () {
