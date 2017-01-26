@@ -111,6 +111,20 @@
 # of data.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-mongodb-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted access
+# (0.0.0.0/0) to TCP port 139 and UDP ports 137 and 138 and restrict access to
+# only those IP addresses that require it in order to implement the principle of
+# least privilege and reduce the possibility of a breach. These ports are used
+# for NetBIOS name resolution (i.e. mapping a NetBIOS name to an IP address) by
+# services such as File and Printer Sharing service running on Microsoft Windows
+# Server OS.
+#
+# Allowing unrestricted NetBIOS access can increase opportunities for malicious
+# activity such as man-in-the-middle attacks (MITM), Denial of Service (DoS)
+# attacks or BadTunnel exploits.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-netbios-access.html
 #.
 
 audit_aws_sgs () {
