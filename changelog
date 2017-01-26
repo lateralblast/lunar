@@ -1001,3 +1001,5 @@
 # Added check for AWS ES domains being cross zone aware
 # 5.9.3: Thu 26 Jan 2017 16:03:54 AEDT
 # Added more tag checks for AWS EC2 instances
+# 5.9.4: Thu 26 Jan 2017 20:54:23 AEDT
+# Added check for empty DynamoDB tables to be cost effective
