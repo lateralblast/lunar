@@ -51,6 +51,16 @@ audit_aws_rec_es () {
       funct_verbose_message "aws es update-elasticsearch-domain-config --region $aws_region --domain-name $domain --ebs-options EBSEnabled=true,VolumeType=\"gp2\",VolumeSize=$vol_size" fix
       funct_verbose_message "" fix
     fi
+    # Check that ES domains have cross zone awareness
+    total=`expr $total + 1`
+    check=`aws es describe-elasticsearch-domain --domain-name $domain --query "DomainStatus.ElasticsearchClusterConfig.ZoneAwarenessEnabled" |grep true`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Pass:      Elasticsearch doamin $domain has cross zone awareness [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Elasticsearch domain $domain does not have cross zone awareness [$insecure Warnings]"
+    fi
   done
 }
 

@@ -997,3 +997,5 @@
 # Added check for AWS ES domains having dedicated master nodes
 # 5.9.1: Thu 26 Jan 2017 14:51:13 AEDT
 # Added check for AWS ES domains using General Purpose SSD to be cost effective
+# 5.9.2: Thu 26 Jan 2017 15:25:04 AEDT
+# Added check for AWS ES domains being cross zone aware
