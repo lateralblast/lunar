@@ -152,6 +152,19 @@
 # activity such as denial-of-service (DoS) attacks, Smurf and Fraggle attacks.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-icmp-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted
+# access (i.e. 0.0.0.0/0) to TCP port 25 and restrict access to only those
+# IP addresses that require it in order to implement the principle of least
+# privilege and reduce the possibility of a breach. TCP port 25 is used by
+# SMTP (Simple Mail Transfer Protocol) servers for electronic mail (email)
+# transmission.
+#
+# Allowing unrestricted SMTP access can increase opportunities for malicious
+# activity such as hacking, spamming, Shellshock attacks and Denial-of-Service
+# (DoS) attacks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-smtp-access.html
 #.
 
 audit_aws_sgs () {
@@ -166,6 +179,7 @@ audit_aws_sgs () {
       funct_aws_open_port_check $sg -1 icmp ICMP
       funct_aws_open_port_check $sg 22 tcp SSH
       funct_aws_open_port_check $sg 20,21 tcp FTP 
+      funct_aws_open_port_check $sg 25 tcp SMTP
       funct_aws_open_port_check $sg 53 tcp DNS
       funct_aws_open_port_check $sg 80 tcp HTTP 
       funct_aws_open_port_check $sg 135 tcp RPC 

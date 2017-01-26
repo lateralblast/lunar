@@ -983,3 +983,5 @@
 # Added check for AWS SGs with open RPC ports
 # 5.8.4: Thu 26 Jan 2017 11:48:10 AEDT
 # Added check for AWS SGs with open ICMP
+# 5.8.5: Thu 26 Jan 2017 11:51:56 AEDT
+# Added check for AWS SGs with open SMTP
