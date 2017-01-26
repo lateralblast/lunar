@@ -1011,3 +1011,5 @@
 # Added check for AWS ELB cross zone balancing being enabled
 # 5.9.8: Fri 27 Jan 2017 07:07:37 AEDT
 # Added check for AWS ELB using deprecated ciphers
+# 5.9.9: Fri 27 Jan 2017 07:38:05 AEDT
+# Added check for AWS ELB using deprecated protocols
