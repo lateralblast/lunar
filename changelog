@@ -991,3 +991,5 @@
 # Added check for AWS users with attached policies
 # 5.8.8: Thu 26 Jan 2017 14:02:54 AEDT
 # Added check for AWS ES domains being publicly accessible
+# 5.8.9: Thu 26 Jan 2017 14:27:20 AEDT
+# Added check for AWS ES domains having IP access policy
