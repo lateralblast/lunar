@@ -989,3 +989,5 @@
 # Added check for AWS SGs with open Telnet
 # 5.8.7: Thu 26 Jan 2017 12:20:11 AEDT
 # Added check for AWS users with attached policies
+# 5.8.8: Thu 26 Jan 2017 14:02:54 AEDT
+# Added check for AWS ES domains being publicly accessible
