@@ -39,6 +39,20 @@
 # zero downtime, always register at least two EC2 instances with your ELB.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-minimum-number-of-ec2-instances.html
+#
+# Check and identify any unattached and unused Elastic Block Store (EBS) volumes
+# in your AWS account and remove them in order to lower the cost of your monthly
+# AWS bill.
+#
+# Any Elastic Load Balancer configured in your AWS account is adding charges to
+# your monthly bill, regardless of whether it is active or not. If your ELB have
+# no associated back-end instances, consider registering instances or deleting
+# it. If your ELB has no healthy backend instances, consider troubleshooting the
+# configuration or deleting it. Removing AWS components that aren’t being
+# utilised, like the Elastic Load Balancer, will help you avoid unexpected
+# charges on your bill.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/ELB/unused-elastic-load-balancers.html
 #.
 
 audit_aws_rec_elb () {
@@ -74,6 +88,12 @@ audit_aws_rec_elb () {
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has at least two instances in service [$secure Passes]"
     fi
+    instances=`aws elb describe-instance-health --region $aws_region --load-balancer-name $elb  --query "InstanceStates[].InstanceState" --filter Name=state,Values='OutOfService' --output text`
+    for instance in $instances; do
+      total=`expr $total + 1`
+      insecure=`expr $insecure + 1`
+      echo "Warning:   ELB $elb instance $instance is out of service  [$insecure Warnings]"
+    done
   done
 }
 

@@ -71,7 +71,7 @@ audit_aws_elb () {
 	elbs=`aws elb describe-load-balancers --region $aws_region --query "LoadBalancerDescriptions[].LoadBalancerName" --output text`
   for elb in $elbs; do
     total=`expr $total + 1`
-    check=`aws elb describe-load-balancer-attributes --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].AccessLog" |grep true`
+    check=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].AccessLog" |grep true`
     if [ ! "$check" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   ELB $elb does not have access logging enabled [$insecure Warnings]"

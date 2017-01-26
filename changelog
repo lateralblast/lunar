@@ -1019,3 +1019,5 @@
 # Added check for AWS ELB having at least 2 instances
 # 6.0.2: Fri 27 Jan 2017 08:48:57 AEDT
 # Added check for AWS ELB SGs being open on port 80
+# 6.0.3: Fri 27 Jan 2017 09:22:00 AEDT
+# Added check for out of service AWS ELB instances
