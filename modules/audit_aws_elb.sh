@@ -45,6 +45,20 @@
 # we highly recommend updating it.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-insecure-ssl-protocols.html
+#
+# Check your Elastic Load Balancers (ELBs) listener for secure configurations.
+# Cloud Conformity recommends using HTTPS or SSL protocols to encrypt th
+# communication between the client and your load balancers.
+#
+# When an ELB has no listener configured to use secure protocols like HTTPS or
+# SSL, the front-end connection between the client and the load balancer is
+# vulnerable to eavesdropping and man-in-the-middle (MITM) attacks. The risk
+# becomes even higher when transmitting sensitive private data such as credit
+# card numbers. If your ELBs are not using secure listeners (HTTPS or SSL),
+# apply the information provided in this guide (see Remediation/Resolution
+# section) to update their configuration.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-listener-security.html
 #.
 
 audit_aws_elb () {
@@ -61,6 +75,15 @@ audit_aws_elb () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has access logging enabled [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    protocol=`aws elb describe-load-balancer-attributes --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].ListenerDescriptions[].Listener.Protcol" --output text`
+    if [ "$protocol" = "HTTP" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   ELB $elb is using HTTP [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    ELB $elb is not using HTTP [$secure Passes]"
     fi
     policies=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb  --query "PolicyDescriptions[].PolicyName" --output text`
     for policy in $policies; do
