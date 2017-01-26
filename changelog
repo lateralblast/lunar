@@ -1013,3 +1013,7 @@
 # Added check for AWS ELB using deprecated ciphers
 # 5.9.9: Fri 27 Jan 2017 07:38:05 AEDT
 # Added check for AWS ELB using deprecated protocols
+# 6.0.0: Fri 27 Jan 2017 08:20:44 AEDT
+# Added check for AWS ELB using HTTP rather than HTTPS
+# 6.0.1: Fri 27 Jan 2017 08:32:32 AEDT
+# Added check for AWS ELB having at least 2 instances

@@ -28,6 +28,17 @@
 # being sent to the unhealthy zone and routing it to the other zone(s).
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-cross-zone-load-balancing-enabled.html
+#
+# Ensure that your AWS Elastic Load Balancers have at least two healthy EC2
+# backend instances assigned, in order to provide a better fault-tolerant load
+# balancing configuration.
+#
+# Having just one EC2 instance behind your Elastic Load Balancer (ELB), even if
+# the ELB is associated with an Auto Scaling Group (ASG) that can add instances
+# automatically, increases the risk of downtime. To achieve fault tolerance with
+# zero downtime, always register at least two EC2 instances with your ELB.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-minimum-number-of-ec2-instances.html
 #.
 
 audit_aws_rec_elb () {
@@ -53,6 +64,15 @@ audit_aws_rec_elb () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has cross zone balancing enabled [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    number=`aws elb describe-instance-health --region $aws_region --load-balancer-name $elb  --query "InstanceStates[].State" |grep InService |wc -l`
+    if [ "$number" -lt 2 ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   ELB $elb does not have at least 2 instances in service [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    ELB $elb has at least two instances in service [$secure Passes]"
     fi
   done
 }
