@@ -1009,3 +1009,5 @@
 # Added check for AWS ELB connection draining being enabled
 # 5.9.7: Thu 26 Jan 2017 23:08:23 AEDT
 # Added check for AWS ELB cross zone balancing being enabled
+# 5.9.8: Fri 27 Jan 2017 07:07:37 AEDT
+# Added check for AWS ELB using deprecated ciphers
