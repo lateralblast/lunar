@@ -993,3 +993,5 @@
 # Added check for AWS ES domains being publicly accessible
 # 5.8.9: Thu 26 Jan 2017 14:27:20 AEDT
 # Added check for AWS ES domains having IP access policy
+# 5.9.0: Thu 26 Jan 2017 14:43:32 AEDT
+# Added check for AWS ES domains having dedicated master nodes
