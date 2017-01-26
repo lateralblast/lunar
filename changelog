@@ -999,3 +999,5 @@
 # Added check for AWS ES domains using General Purpose SSD to be cost effective
 # 5.9.2: Thu 26 Jan 2017 15:25:04 AEDT
 # Added check for AWS ES domains being cross zone aware
+# 5.9.3: Thu 26 Jan 2017 16:03:54 AEDT
+# Added more tag checks for AWS EC2 instances

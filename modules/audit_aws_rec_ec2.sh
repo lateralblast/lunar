@@ -80,6 +80,7 @@
 #.
 
 audit_aws_rec_ec2 () {
+  # Check Security Groups have Name tags
   sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupName' --output text`
   for sg in $sgs; do
     if [ ! "$sg" = "default" ]; then
@@ -92,7 +93,7 @@ audit_aws_rec_ec2 () {
         funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
         funct_verbose_message "" fix
       else
-        check=`echo $name |grep "^sg-$valid_host_grep"`
+        check=`echo $name |grep "^sg-$valid_tag_string"`
         if [ "$check" ]; then
           secure=`expr $secure + 1`
           echo "Pass:      AWS Security Group $sg has a valid Name tag [$secure Passes]"
@@ -103,6 +104,7 @@ audit_aws_rec_ec2 () {
       fi
     fi
   done
+  # Check AMIs have Name tags
   images=`aws ec2 describe-images --region $aws_region --owners self --query "Images[].ImageId" --output text`
   for image in $images; do
     total=`expr $total + 1`
@@ -114,7 +116,7 @@ audit_aws_rec_ec2 () {
       funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
       funct_verbose_message "" fix
     else
-      check=`echo $name |grep "^ami-$valid_host_grep"`
+      check=`echo $name |grep "^ami-$valid_tag_string"`
       if [ "$check" ]; then
         secure=`expr $secure + 1`
         echo "Pass:      AWS AMI $image has a valid Name tag [$secure Passes]"
@@ -124,25 +126,28 @@ audit_aws_rec_ec2 () {
       fi
     fi
   done
+  # Check Instances have Name tags
   instances=`aws ec2 describe-instances --region $aws_region --query "Reservations[].Instances[].InstanceId" --output text`
   for instance in $instances; do
-    total=`expr $total + 1`
-    name=`aws ec2 describe-instances --region $aws_region --instance-id $instance --query "Reservations[].Instances[].Tags[?Key==\\\`Name\\\`].Value" --output text`
-    if [ ! "$name" ]; then
-      insecure=`expr $insecure + 1`
-      echo "Warning:   AWS AMI $image does not have a Name tag [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $instances --tags Key=Name,Value=<valid_name_tag>" fix
-      funct_verbose_message "" fix
-    else
-      check=`echo $name |grep "^ec2-$valid_host_grep"`
-      if [ "$check" ]; then
-        secure=`expr $secure + 1`
-        echo "Pass:      AWS Instance $instance has a valid Name tag [$secure Passes]"
-      else
+    for tag in Name Role Environment Owner
+      total=`expr $total + 1`
+      check=`aws ec2 describe-instances --region $aws_region --instance-id $instance --query "Reservations[].Instances[].Tags[?Key==\\\`$tag\\\`].Value" --output text`
+      if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
-        echo "Warning:   AWS Instance $instance does not have a valid Name tag [$insecure Warnings]"
-      fi
+        echo "Warning:   AWS AMI $image does not have a $tag tag [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $instance --tags Key=$tag,Value=<valid_name_tag>" fix
+        funct_verbose_message "" fix
+      else
+        check=`echo $name |grep "^ec2-$valid_tag_string"`
+        if [ "$check" ]; then
+          secure=`expr $secure + 1`
+          echo "Pass:      AWS Instance $instance has a valid $tag tag [$secure Passes]"
+        else
+          insecure=`expr $insecure + 1`
+          echo "Warning:   AWS Instance $instance does not have a valid $tag tag [$insecure Warnings]"
+        fi
+      done
     fi
     total=`expr $total + 1`
     term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
@@ -155,6 +160,7 @@ audit_aws_rec_ec2 () {
       echo "Warning:   Termination Protection is not enabled for instance $instance [$insecure Warnings]"
     fi
   done
+  # Check Instances are from self produced images
   images=`aws ec2 describe-instances --region $aws_region --query 'Reservations[].Instances[].ImageId' --output text`
   for image in $images; do
     total=`expr $total + 1`
@@ -168,6 +174,7 @@ audit_aws_rec_ec2 () {
     fi
   done
   total=`expr $total + 1`
+  # Check number of Elastic IPs that are being used
   max_ips=`aws ec2 describe-account-attributes --region $aws_region --attribute-names max-elastic-ips --query "AccountAttributes[].AttributeValues[].AttributeValue" --output text`
   no_ips=`aws ec2 describe-addresses --region $aws_region --query 'Addresses[].PublicIp' --filters "Name=domain,Values=standard" --output text |wc -l`
   if [ "$max_ips" -ne  "$no_ips" ]; then
@@ -177,6 +184,7 @@ audit_aws_rec_ec2 () {
     insecure=`expr $insecure + 1`
     echo "Warning:   Number of Elastic IPs consumed has reached limit of $max_ips [$insecure Warnings]"
   fi
+  # Check Instances are using EC2-VPC and not EC2-Classic
   instances=`aws ec2 describe-instances --region $aws_region --query 'Reservations[*].Instances[*].InstanceId' --output text`
   for instance in $instances; do
     total=`expr $total + 1`
