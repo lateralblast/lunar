@@ -125,6 +125,17 @@
 # attacks or BadTunnel exploits.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-netbios-access.html
+#
+# Check your EC2 security groups for inbound rules that allow unrestricted access
+# (i.e. 0.0.0.0/0) to TCP port 135 and restrict access to only those IP addresses
+# that require it in order to implement the principle of least privilege and
+# reduce the possibility of a breach. Remote Procedure Call (RPC) port 135 is
+# used for client/server communication by Microsoft Message Queuing (MSMQ) as
+# well as other Microsoft Windows/Windows Server software.
+#
+# Allowing unrestricted RPC access can increase opportunities for malicious
+# activity such as hacking (backdoor command shell), denial-of-service (DoS)
+# attacks and loss of data.
 #.
 
 audit_aws_sgs () {
@@ -140,6 +151,7 @@ audit_aws_sgs () {
       funct_aws_open_port_check $sg 20,21 tcp FTP 
       funct_aws_open_port_check $sg 53 tcp DNS
       funct_aws_open_port_check $sg 80 tcp HTTP 
+      funct_aws_open_port_check $sg 135 tcp RPC 
       funct_aws_open_port_check $sg 137,138,139 tcp SMB
       funct_aws_open_port_check $sg 443 tcp HTTPS 
       funct_aws_open_port_check $sg 445 tcp CIFS

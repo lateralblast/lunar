@@ -979,3 +979,5 @@
 # Added check for AWS SGs with various open ports
 # 5.8.2: Thu 26 Jan 2017 11:00:34 AEDT
 # Added check for AWS SGs with open MongoDB ports
+# 5.8.3: Thu 26 Jan 2017 11:09:27 AEDT
+# Added check for AWS SGs with open RPC ports
