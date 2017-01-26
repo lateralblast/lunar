@@ -27,9 +27,24 @@
 # Console more efficiently.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-user.html
+#
+# Ensure that the existing IAM policies are attached only to groups in order
+# to efficiently assign permissions to all the users within your AWS account.
+#
+# Defining permissions at the IAM group level instead of IAM user level will
+# allow you manage more efficiently the user-based access to your AWS resources.
+# With this new model you can create groups, attach the necessary policies for
+# each group, then assign IAM users to these groups as needed. The model has
+# few valuable advantages such as removing duplication of information and
+# effort as you don't need to define policies for each individual user anymore
+# or switching existing users between groups as they receive different roles
+# in your organization.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/IAM/iam-user-policies.html
 #.
 
 audit_aws_iam () {
+  # Root account should only be used sparingly, admin functions and responsibilities should be delegated
 	aws iam generate-credential-report 2>&1 > /dev/null
 	date_test=`date +%Y-%m`
 	last_login=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' |cut -f2 -d, |cut -f1,2 -d- |grep '[0-9]'`
@@ -41,6 +56,7 @@ audit_aws_iam () {
 		secure=`expr $secure + 1`
     echo "Secure:    Root account does not appear to be being used frequently [$secure Passes]"
 	fi
+  # Check to see if there is an IAM master role
 	total=`expr $total + 1`
 	check=`aws iam get-role --role-name $aws_iam_master_role 2> /dev/null`
 	if [ "$check" ]; then 
@@ -55,6 +71,7 @@ audit_aws_iam () {
     funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://iam-master-policy.json" fix
     funct_verbose_message "" fix
 	fi
+  # Check there is an IAM manager role
 	total=`expr $total + 1`
 	check=`aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null`
 	if [ "$check" ]; then 
@@ -69,6 +86,7 @@ audit_aws_iam () {
     funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
     funct_verbose_message "" fix
 	fi
+  # Check groups have members
   groups=`aws iam list-groups --query 'Groups[].GroupName' --output text`
   for group in $groups; do
     total=`expr $total + 1`
@@ -83,6 +101,7 @@ audit_aws_iam () {
   done
   users=`aws iam list-users --query 'Users[].UserName' --output text`
   for user in $users; do
+    # Check for inactive users
     total=`expr $total + 1`
     check=`aws iam list-access-keys --user-name $user --query "AccessKeyMetadata" --output text`
     if [ "$check" ]; then
@@ -94,6 +113,22 @@ audit_aws_iam () {
       funct_verbose_message "" fix
       funct_verbose_message "aws iam delete-user --user-name $user" fix
       funct_verbose_message "" fix
+    fi
+    # Check users do not have attached policies, they should be members of groups which have those policies
+    policies=`aws iam list-attached-user-policies --user-name $user --query "AttachedPolicies[].PolicyArn" --output text`
+    if [ "$policies" ]; then
+      for policy in $policies; do
+        total=`expr $total + 1`
+        insecure=`expr $insecure + 1`
+        echo "Warning:   IAM user $user has attached policy $policy [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws iam detach-user-policy --user-name $user --policy-arn $policy" fix
+        funct_verbose_message "" fix
+      done
+    else
+      total=`expr $total + 1`
+      secure=`expr $secure + 1`
+      echo "Secure:    IAM user $user does not have attached policies [$secure Passes]"
     fi
   done
 }

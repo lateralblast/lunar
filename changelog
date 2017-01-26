@@ -987,3 +987,5 @@
 # Added check for AWS SGs with open SMTP
 # 5.8.6: Thu 26 Jan 2017 11:55:15 AEDT
 # Added check for AWS SGs with open Telnet
+# 5.8.7: Thu 26 Jan 2017 12:20:11 AEDT
+# Added check for AWS users with attached policies
