@@ -1005,3 +1005,5 @@
 # Added check for empty DynamoDB tables to be cost effective
 # 5.9.5: Thu 26 Jan 2017 21:19:06 AEDT
 # Added check for AWS ELB logging being enabled
+# 5.9.6: Thu 26 Jan 2017 22:54:21 AEDT
+# Added check for AWS ELB connection draining being enabled

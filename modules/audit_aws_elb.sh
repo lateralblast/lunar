@@ -21,6 +21,9 @@ audit_aws_elb () {
     if [ ! "$check" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   ELB $elb does not have access logging enabled [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"AccessLog\\\":{\\\"Enabled\\\":true,\\\"EmitInterval\\\":60,\\\"S3BucketName\\\":\\\"elb-logging-bucket\\\"}}\"" fix
+      funct_verbose_message "" fix
     else
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has access logging enabled [$secure Passes]"
