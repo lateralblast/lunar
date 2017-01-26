@@ -43,6 +43,21 @@
 # this manner is not advised.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/publicly-shared-ami.html
+#
+# With encryption enabled, your EBS volumes can hold very sensitive and critical
+# data. The EBS encryption and decryption is handled transparently and does not
+# require any additional action from you, your server instance, or your
+# application.
+#
+# When dealing with production data that is crucial to your business, it is
+# highly recommended to implement encryption in order to protect it from
+# attackers or unauthorized personnel. With Elastic Block Store encryption
+# enabled, the data stored on the volume, the disk I/O and the snapshots
+# created from the volume are all encrypted. The EBS encryption keys use
+# AES-256 algorithm and are entirely managed and protected by the AWS key
+# management infrastructure, through AWS Key Management Service (AWS KMS).
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-encrypted.html
 #.
 
 audit_aws_ec2 () {
@@ -82,6 +97,18 @@ audit_aws_ec2 () {
       funct_verbose_message "" fix
       funct_verbose_message "aws ec2 modify-image-attribute --region $aws_region --image-id $image --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" fix
       funct_verbose_message "" fix
+    fi
+  done
+  volumes=`aws ec2 describe-volumes --query "Volumes[].VolumeId" --output text`
+  for volume in $volumes; do
+    total=`expr $total + 1`
+    check=`aws ec2 describe-volumes --volume-id vol-09c7933ad01825300 --query "Volumes[].Encrypted" |grep true`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Volume $volume is encrypted [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Volume $volume is not encrypted [$insecure Warnings]"
     fi
   done
 }

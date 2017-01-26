@@ -1021,3 +1021,5 @@
 # Added check for AWS ELB SGs being open on port 80
 # 6.0.3: Fri 27 Jan 2017 09:22:00 AEDT
 # Added check for out of service AWS ELB instances
+# 6.0.4: Fri 27 Jan 2017 09:33:32 AEDT
+# Added check for unencrypted AWS EC2 volumes
