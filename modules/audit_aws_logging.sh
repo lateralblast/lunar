@@ -74,6 +74,17 @@
 # Refer to Section(s) 2.4 Page(s) 76-7 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.6 Page(s) 81-2 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.7 Page(s) 83-4 CIS AWS Foundations Benchmark v1.1.0
+#
+# Ensure that your AWS CloudTrail logging bucket use Multi-Factor Authentication
+# (MFA) Delete feature in order to prevent the deletion of any versioned log
+# files.
+#
+# Using an MFA-protected bucket for AWS CloudTrail will enable the ultimate
+# layer of protection to ensure that your versioned log files cannot be
+# accidentally deleted or intentionally deleted in case your access
+# credentials are compromised.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-bucket-mfa-delete-enabled.html
 #.
 
 audit_aws_logging () {
