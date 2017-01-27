@@ -85,6 +85,42 @@
 # credentials are compromised.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-bucket-mfa-delete-enabled.html
+#
+# Ensure that CloudTrail is enabled for all AWS regions in order to increase
+# the visibility of the API activity in your AWS account for security and
+# management purposes.
+#
+# Enabling global monitoring for your existing trails will help you to better
+# manage your AWS account and maintain the security of you infrastructure.
+#
+# Applying your trail to all AWS regions has multiple advantages, such as
+# receiving storing log files from all regions in a single S3 bucket and a
+# single CloudWatch Logs group. It also enables managing trail configuration
+# for all regions from one location and recording of API calls in regions that
+# are not used to detect any unusual activity.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-enabled.html
+#
+# Check for any AWS CloudTrail logging buckets that are publicly accessible,
+# in order to determine if your AWS account could be at risk.
+#
+# Using an overly permissive or insecure set of permissions for your CloudTrail
+# logging S3 buckets could provide malicious users access to your AWS account
+# log data which can increase exponentially the risk of unauthorized access.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-bucket-publicly-accessible.html
+#
+# Ensure that any S3 buckets used by AWS CloudTrail have Server Access Logging
+# feature enabled in order to track requests for accessing the buckets and
+# necessary for security audits.
+#
+# Since CloudTrail buckets contain sensitive information, these should be
+# protected from unauthorized viewing. With S3 Server Access Logging enabled
+# for your CloudTrail buckets you can track any requests made to access the
+# buckets or even limit who can alter or delete the access logs to prevent a
+# user from covering their tracks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-s3-bucket-logging-enabled.html
 #.
 
 audit_aws_logging () {
