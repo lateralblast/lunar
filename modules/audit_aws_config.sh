@@ -39,7 +39,7 @@ audit_aws_config () {
     echo "Secure:    AWS Configuration Recorder enabled [$secure Passes]"
   fi
   total=`expr $total + 1`
-  check=`aws configservice --region $aws_region --get-status |grep FAILED`
+  check=`aws configservice --region $aws_region get-status |grep FAILED`
   if [ "$check" ]; then
     insecure=`expr $insecure + 1`
     echo "Warning:   AWS Config not enabled [$insecure Warnings]"
