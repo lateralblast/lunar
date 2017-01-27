@@ -111,6 +111,7 @@ audit_aws_logging () {
     done
     buckets=`aws cloudtrail describe-trails --region $aws_region --query 'trailList[*].S3BucketName' --output text`
     # Check that CloudTrail buckets don't grant access to users it shouldn't
+    # Check that CloudTrail bucket versioning is enable
     for bucket in $buckets; do
       total=`expr $total + 1`
       grants=`aws s3api get-bucket-acl --region $aws_region --bucket $bucket |grep URI |grep AllUsers`
@@ -153,6 +154,15 @@ audit_aws_logging () {
       else
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket has access logging enabled [$secure Passes]"
+      fi
+      total=`expr $total + 1`
+      check=`aws s3api get-bucket-versioning --bucket $bucket |grep Enabled`
+      if [ "$check" ]; then
+        secure=`expr $secure + 1`
+        echo "Secure:    CloudTrail log bucket $bucket has versioning enabled [$secure Passes]"
+      else
+        insecure=`expr $insecure + 1`
+        echo "Warning:   CloudTrail bucket $bucket does not have versioning enabled [$insecure Warnings]"
       fi
     done
     trails=`aws cloudtrail describe-trails --region $aws_region --query trailList[].Name --output text`
