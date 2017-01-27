@@ -68,6 +68,7 @@
 #.
 
 audit_aws_elb () {
+  # Ensure ELBs have logging enabled
 	elbs=`aws elb describe-load-balancers --region $aws_region --query "LoadBalancerDescriptions[].LoadBalancerName" --output text`
   for elb in $elbs; do
     total=`expr $total + 1`
@@ -82,6 +83,7 @@ audit_aws_elb () {
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has access logging enabled [$secure Passes]"
     fi
+    # Ensure ELBs are not using HTTP
     total=`expr $total + 1`
     protocol=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].ListenerDescriptions[].Listener.Protcol" --output text`
     if [ "$protocol" = "HTTP" ]; then
@@ -91,10 +93,12 @@ audit_aws_elb () {
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb is not using HTTP [$secure Passes]"
     fi
+    # Ensure ELB SGs do not have port 80 open to the world
     sgs=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].SecurityGroups" --output text`
     for sg in $sgs; do
       funct_aws_open_port_check $sg 80 tcp HTTP $elb
     done
+    # Ensure no deprecated ciphers of protocols are being used
     policies=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb  --query "PolicyDescriptions[].PolicyName" --output text`
     for policy in $policies; do
       for cipher in SSLv2 RC2-CBC-MD5 PSK-AES256-CBC-SHA PSK-3DES-EDE-CBC-SHA KRB5-DES-CBC3-SHA KRB5-DES-CBC3-MD5 \

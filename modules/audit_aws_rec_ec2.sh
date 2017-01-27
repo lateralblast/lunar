@@ -77,9 +77,37 @@
 # professional appearance.
 # 
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/security-group-naming-conventions.html
+#
+# Ensure that your EC2 instances are using General Purpose SSD (gp2) EBS volumes
+# instead of Provisioned IOPS SSD (io1) volumes for cost-effective storage that
+# fits a broad range of workloads. Unless you are running mission-critical
+# applications that need more than 10000 IOPS or 160 MiB/s of throughput per
+# volume.
+#
+# Using General Purpose SSD (gp2) volumes instead of Provisioned IOPS SSD (io1)
+# volumes represents a good strategy to cut down on EBS costs because for
+# gp2-type volumes you only pay for the storage compared to io1 volumes where
+# you pay for both storage and IOPS. Converting existing io1 resources to gp2
+# is often possible by configuring larger storage which gives higher baseline
+# performance of IOPS for a lower cost.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/general-purpose-ssd-volume.html
 #.
 
 audit_aws_rec_ec2 () {
+  # Check that EC2 volumes are using cost effective storage
+  volumes=`aws ec2 describe-volumes --region $aws_region --query 'Volumes[].VolumeId' --output text`
+  for volume in $volumes; do
+    total=`expr $total + 1`
+    check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].VolumeType' |grep "gp2"`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Pass:      EC2 volume $volume is using General Purpose SSD [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   EC2 volume $volume is not using General Purpose SSD [$insecure Warnings]"
+    fi
+  done
   # Check Security Groups have Name tags
   sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupName' --output text`
   for sg in $sgs; do
