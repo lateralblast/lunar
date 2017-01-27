@@ -33,7 +33,7 @@ audit_aws_es () {
   domains=`aws es list-domain-names --region $aws_region --query "DomainNames[].DomainName" --output text`
   for domain in $domains; do
     total=`expr $total + 1`
-    check=`aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text |grep "{\"AWS\":\"\*\"}"`
+    check=`aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text |grep Principle | grep "{\"AWS\":\"\*\"}"`
     if [ ! "$check" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Elasticsearch doamin $domain is not publicly accessible [$secure Passes]"

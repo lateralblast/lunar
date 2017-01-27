@@ -16,5 +16,6 @@ funct_audit_aws_rec_all () {
   audit_aws_rec_es
   audit_aws_rec_dynamodb
   audit_aws_rec_elb
+  audit_aws_rec_vpcs
 }
 

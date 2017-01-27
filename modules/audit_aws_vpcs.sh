@@ -73,9 +73,34 @@
 # Refer to Section(s) 4.3 Page(s) 135-7  CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 4.4 Page(s) 138-40 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 4.5 Page(s) 141-2  CIS AWS Foundations Benchmark v1.1.0
+#
+# Identify any fully accessible VPC endpoints and update their access policy in
+# order to stop any unsigned requests made to the supported services and
+# resources.
+#
+# When the Principal element value is set to "*" within the access policy, the
+# VPC endpoint allows full access to any IAM user or service within the VPC
+# using credentials from any AWS accounts. Allowing access in this manner is
+# considered bad practice and can lead to security issues.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/VPC/endpoint-exposed.html
 #.
 
 audit_aws_vpcs () {
+  # Check for exposed VPC endpoints
+  total=`expr $total + 1`
+  endpoints=`aws ec2 describe-vpc-endpoints --region $aws_region --query 'VpcEndpoints[*].VpcEndpointId' --output text`
+  for enpoint in $endpoints; do
+    check=`aws ec2 describe-vpc-endpoints --region $aws_region --vpc-endpoint-ids $enpoint --query 'VpcEndpoints[].PolicyDocument' |grep Principal |egrep "\*|{\"AWS\":\"\*\"}"`
+    if [ "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   VPC $vpc has en exposed enpoint [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    VPC $vpc does not have an exposed endpoint [$secure Passes]"
+    fi
+  done
+  # Check for VPC peering
 	peers=`aws ec2 describe-vpc-peering-connections --region $aws_region --query VpcPeeringConnections --output text`
   total=`expr $total + 1`
   if [ ! "$peers" ]; then
@@ -98,6 +123,7 @@ audit_aws_vpcs () {
       fi
     done
   fi
+  # Check for VPC flow logging
   logs=`aws ec2 describe-flow-logs --region $aws_region --query FlowLogs[].FlowLogId --output text`
   if [ "$logs" ]; then
     vpcs=`aws ec2 describe-vpcs --region $aws_region --query Vpcs[].VpcId --output text`

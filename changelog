@@ -1029,3 +1029,7 @@
 # Added check for AWS EC2 snapshots older than 30 days
 # 6.0.7: Fri 27 Jan 2017 19:13:08 AEDT
 # Added check for AWC EC2 unattached volumes to be cost effective
+# 6.0.8: Fri 27 Jan 2017 19:37:26 AEDT
+# Added check for AWC VPC exposed endpoints
+# 6.0.9: Fri 27 Jan 2017 21:42:09 AEDT
+# Added check for AWS VPC names
