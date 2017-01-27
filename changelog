@@ -1023,3 +1023,5 @@
 # Added check for out of service AWS ELB instances
 # 6.0.4: Fri 27 Jan 2017 09:33:32 AEDT
 # Added check for unencrypted AWS EC2 volumes
+# 6.0.5: Fri 27 Jan 2017 13:19:21 AEDT
+# Added check for AWS EC2 volume names

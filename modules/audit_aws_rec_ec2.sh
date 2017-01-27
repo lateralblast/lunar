@@ -78,6 +78,20 @@
 # 
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/security-group-naming-conventions.html
 #
+# Ensure that all your AWS EBS volumes are using proper naming conventions for
+# tagging in order to manage them more efficiently and adhere to AWS resource
+# tagging best practices. A naming convention is a well-defined set of rules
+# useful for choosing the name of an AWS resource.
+#
+# Naming (tagging) your AWS EBS volumes logically and consistently has several
+# advantages such as providing additional information about the volume location
+# and usage, promoting consistency within the selected environment,
+# distinguishing fast similar resources from one another, avoiding naming
+# collisions, improving clarity in cases of potential ambiguity and enhancing
+# the aesthetic and professional appearance.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-naming-conventions.html
+#
 # Ensure that your EC2 instances are using General Purpose SSD (gp2) EBS volumes
 # instead of Provisioned IOPS SSD (io1) volumes for cost-effective storage that
 # fits a broad range of workloads. Unless you are running mission-critical
@@ -129,6 +143,28 @@ audit_aws_rec_ec2 () {
           insecure=`expr $insecure + 1`
           echo "Warning:   AWS Security Group $sg does not have a valid Name tag [$insecure Warnings]"
         fi
+      fi
+    fi
+  done
+  # Check Volumes have Name tags
+  volumes=`aws ec2 describe-volumes --region $aws_region --query "Volumes[].VolumeId" --output text`
+  for volume in $volumes; do
+    total=`expr $total + 1`
+    name=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query "Volumes[].Tags[?Key==\\\`Name\\\`].Value" --output text`
+    if [ ! "$name" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   AWS EC2 volume $volume does not have a Name tag [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $volume --tags Key=Name,Value=<valid_name_tag>" fix
+      funct_verbose_message "" fix
+    else
+      check=`echo $name |grep "^ami-$valid_tag_string"`
+      if [ "$check" ]; then
+        secure=`expr $secure + 1`
+        echo "Pass:      AWS EC2 volume $olume has a valid Name tag [$secure Passes]"
+      else
+        insecure=`expr $insecure + 1`
+        echo "Warning:   AWS EC2 volume $volume does not have a valid Name tag [$insecure Warnings]"
       fi
     fi
   done
