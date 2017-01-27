@@ -79,6 +79,7 @@
 audit_aws_logging () {
 	check=`aws cloudtrail describe-trails --region $aws_region |grep IsMultiRegionTrail |grep true`
 	if [ "$check" ]; then
+    # Check CloudTrail has MultiRegion enabled
     trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].Name" --output text`
     for trail in $trails; do
       total=`expr $total + 1`
@@ -94,6 +95,7 @@ audit_aws_logging () {
         funct_verbose_message "" fix
 
       fi
+      # Check log file validation is enabled
       total=`expr $total + 1`
       check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].LogFileValidationEnabled" |grep true`
       if [ "$check" ]; then
@@ -108,6 +110,7 @@ audit_aws_logging () {
       fi
     done
     buckets=`aws cloudtrail describe-trails --region $aws_region --query 'trailList[*].S3BucketName' --output text`
+    # Check that CloudTrail buckets don't grant access to users it shouldn't
     for bucket in $buckets; do
       total=`expr $total + 1`
       grants=`aws s3api get-bucket-acl --region $aws_region --bucket $bucket |grep URI |grep AllUsers`
@@ -155,6 +158,7 @@ audit_aws_logging () {
     done
     trails=`aws cloudtrail describe-trails --region $aws_region --query trailList[].Name --output text`
     for trail in $trails; do
+      # Check CloudTrail has a CloudWatch Logs group enabled
       total=`expr $total + 1`
       check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail |grep CloudWatchLogsLogGroupArn`
       if [ ! "$check" ]; then
@@ -164,6 +168,7 @@ audit_aws_logging () {
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail $trail has a CloudWatch Logs group enabled [$secure Passes]"
       fi
+      # Check CloudTrail bucket is receiving logs
       total=`expr $total + 1`
       check=`aws cloudtrail get-trail-status --region $aws_region --name $bucket --query "LatestCloudWatchLogsDeliveryTime" --output text`
       if [ ! "$check" ]; then
@@ -173,6 +178,7 @@ audit_aws_logging () {
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail $trail has a last log file delivered timestamp [$secure Passes]"
       fi
+      # Check CloudTrail has key enabled for bucket
       total=`expr $total + 1`
       check=`aws cloudtrail get-trail-status --region $aws_region --name $bucket| grep KmsKeyId`
       if [ ! "$check" ]; then
