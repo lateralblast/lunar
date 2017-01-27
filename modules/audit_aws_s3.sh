@@ -26,6 +26,17 @@
 # in order to protect them against unauthorized user access.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/S3/s3-bucket-logging-enabled.html
+#
+# Ensure there aren't any publicly accessible S3 buckets available in your AWS
+# account in order to protect your S3 data from loss and unauthorized access.
+# A publicly accessible S3 bucket allows FULL_CONTROL access to everyone
+# (i.e. anonymous users) to LIST (READ) the objects within the bucket,
+# UPLOAD/DELETE (WRITE) objects, VIEW (READ_ACP) object permissions and
+# EDIT (WRITE_ACP) object permissions. Cloud Conformity strongly recommends
+# against using all these permissions for the “Everyone” ACL predefined group
+# in production.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/S3/s3-bucket-public-full-control-access.html
 #.
 
 audit_aws_s3 () {
@@ -42,6 +53,7 @@ audit_aws_s3 () {
         echo "Secure:    Bucket $bucket does not grant access to Principal $user [$secure Passes]"
       fi
     done
+    total=`expr $total + 1`
     logging=`aws s3api get-bucket-logging --region $aws_region --bucket $bucket`
     if [ ! "$logging" ]; then
       insecure=`expr $insecure + 1`
@@ -53,6 +65,15 @@ audit_aws_s3 () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    Bucket $bucket has access logging enabled [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    check=`aws s3api get-bucket-versioning --bucket $bucket |grep Enabled`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Bucket $bucket has versioning enabled [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Bucket $bucket does not have versioning enabled [$insecure Warnings]"
     fi
   done
 }
