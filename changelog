@@ -1037,3 +1037,5 @@
 # Added check for AWS VPC / VPN redundancy
 # 6.1.1: Sat 28 Jan 2017 09:00:59 AEDT
 # Added check for AWS S3 bucket grants
+# 6.1.2: Sat 28 Jan 2017 09:05:50 AEDT
+# Added check for AWS S3 bucket logging

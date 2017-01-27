@@ -16,6 +16,16 @@
 # service.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/S3/s3-bucket-authenticated-users-full-control-access.html
+#
+# Ensure that AWS S3 Server Access Logging feature is enabled in order to record
+# access requests useful for security audits. By default, server access logging
+# is not enabled for S3 buckets.
+#
+# With Server Access Logging feature enabled for your S3 buckets you can track
+# any requests made to access the buckets and use the log data to take measures
+# in order to protect them against unauthorized user access.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/S3/s3-bucket-logging-enabled.html
 #.
 
 audit_aws_s3 () {
@@ -32,6 +42,18 @@ audit_aws_s3 () {
         echo "Secure:    Bucket $bucket does not grant access to Principal $user [$secure Passes]"
       fi
     done
+    logging=`aws s3api get-bucket-logging --region $aws_region --bucket $bucket`
+    if [ ! "$logging" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Bucket $bucket does not have access logging enabled [$insecure Warnings]"
+      funct_verbose_message "" fix
+      funct_verbose_message "aws s3api put-bucket-acl --region $aws_region --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
+      funct_verbose_message "cd aws ; aws s3api put-bucket-logging --region $aws_region --bucket $bucket --bucket-logging-status file://server-access-logging.json"
+      funct_verbose_message "" fix
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    Bucket $bucket has access logging enabled [$secure Passes]"
+    fi
   done
 }
 

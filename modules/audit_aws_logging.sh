@@ -154,7 +154,6 @@ audit_aws_logging () {
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket has access logging enabled [$secure Passes]"
       fi
-      logging=`aws s3api get-bucket-logging --region $aws_region --bucket $bucket`
     done
     trails=`aws cloudtrail describe-trails --region $aws_region --query trailList[].Name --output text`
     for trail in $trails; do
