@@ -106,6 +106,20 @@
 # performance of IOPS for a lower cost.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EBS/general-purpose-ssd-volume.html
+#
+# Check for any AWS EBS snapshots older than 30 days available within your AWS
+# account and remove them in order to lower the cost of your monthly bill.
+# The threshold for the retention period is 30 days, which means that all
+# incremental snapshots older than 30 days should be deleted.
+#
+# With an active EBS backup strategy that takes volume snapshots daily or
+# weekly, your data can grow rapidly and add unexpected charges to your bill.
+# Since AWS EBS volumes snapshots are incremental, deleting previous (older)
+# snapshots do not affect the ability to restore the volume data from later
+# snapshots which allows you keep just the necessary backup data and lower
+# your AWS monthly costs.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-volumes-too-old-snapshots.html
 #.
 
 audit_aws_rec_ec2 () {
@@ -120,6 +134,22 @@ audit_aws_rec_ec2 () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   EC2 volume $volume is not using General Purpose SSD [$insecure Warnings]"
+    fi
+  done
+  # Check date of snapshots
+  arn=`aws iam get-user --query "User.Arn" --output text |cut -f5 -d:`
+  snapshots=`aws ec2 describe-snapshots --region $aws_region --owner-ids $arn --filters Name=status,Values=completed --query "Snapshots[].SnapshotId" --output text`
+  for snapshot in $snapshots; do
+    snap_date=`aws ec2 describe-snapshots --region $aws_region --snapshot-id $snapshot --query "Snapshots[].StartTime" --output text --output text |cut -f1 -d.`
+    snap_secs=`date -j -f "%Y-%m-%dT%H:%M:%S" "$snap_date" "+%s"`
+    curr_secs=`date "+%s"`
+    diff_days=`echo "($curr_secs - $snap_secs)/84600" |bc`
+    if [ "$diff_days" -gt 30 ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   EC2 snapshot $snapshot is more than 30 days old [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Pass:      EC2 snapshot $snapshot is less than 30 days old [$secure Passes]"
     fi
   done
   # Check Security Groups have Name tags
