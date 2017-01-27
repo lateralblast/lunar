@@ -13,6 +13,17 @@
 # professional appearance.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/VPC/vpc-naming-conventions.html
+#
+# Ensure that your AWS VPNs have both tunnels always active as a failover
+# strategy in case of an outage or a planned maintenance.
+#
+# Using two active tunnels for your AWS VPN (IPsec) connections will ensure
+# redundancy when one of the tunnels becomes unavailable. A common scenario
+# where a redundant configuration is useful is when a maintenance session is
+# required and you need to keep the traffic flowing between the on-premise
+# network and AWS VPC without any downtime.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/VPC/vpn-tunnel-redundancy.html
 #.
 
 audit_aws_rec_vpcs () {
@@ -38,6 +49,18 @@ audit_aws_rec_vpcs () {
           echo "Warning:   AWS VPC $vpc does not have a valid Name tag [$insecure Warnings]"
         fi
       fi
+    fi
+  done
+  # Check VPN tunnel redundancy 
+  tunnels=`aws ec2 describe-vpn-connections --region $aws_region --query "VpnConnections[].VpnConnectionId" --output text`
+  for tunnel in $tunnels; do
+    check=`aws ec2 describe-vpn-connections --region $aws_region --vpc-connection-ids $tunnel --query "VpnConnections[].VgwTelemetry[].Status" |grep "DOWN"`
+    if [ "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   AWS VPC $vpc does not have VPN tunnel redundancy [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Pass:      AWS VPC $vpc has VPN tunnel redundancy [$secure Passes]"
     fi
   done
 }

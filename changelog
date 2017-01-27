@@ -1033,3 +1033,5 @@
 # Added check for AWC VPC exposed endpoints
 # 6.0.9: Fri 27 Jan 2017 21:42:09 AEDT
 # Added check for AWS VPC names
+# 6.1.0: Sat 28 Jan 2017 08:16:46 AEDT
+# Added check for AWS VPC / VPN redundancy
