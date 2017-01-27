@@ -120,12 +120,37 @@
 # your AWS monthly costs.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-volumes-too-old-snapshots.html
+#
+# Identify any unattached (unused) Elastic Block Store (EBS) volumes available
+# in your AWS account and remove them in order to lower the cost of your monthly
+# AWS bill and reduce the risk of confidential/sensitive data leaving your
+# premise.
+#
+# Any Elastic Block Store volume created in your AWS account is adding charges
+# to your monthly bill, regardless whether is being used or not. If you have
+# EBS volumes (other than root volumes) that are unattached to an EC2 instance
+# or have very low I/O activity, consider deleting them. Removing unattached/
+# orphaned Elastic Block Store volumes will help you avoid unexpected charges
+# on your AWS bill and halt access to any sensitive data available on these
+# volumes.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/unused-ebs-volumes.html
 #.
 
 audit_aws_rec_ec2 () {
-  # Check that EC2 volumes are using cost effective storage
   volumes=`aws ec2 describe-volumes --region $aws_region --query 'Volumes[].VolumeId' --output text`
   for volume in $volumes; do
+    # Check that EC2 volumes are using cost effective storage
+    total=`expr $total + 1`
+    check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].State' --output text`
+    if [ ! "$check" = "available" ]; then
+      secure=`expr $secure + 1`
+      echo "Pass:      EC2 volume $volume is attached to an instance [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   EC2 volume $volume is not attached to an instance [$insecure Warnings]"
+    fi
+    # Check for EC2 volumes that are unattached
     total=`expr $total + 1`
     check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].VolumeType' |grep "gp2"`
     if [ "$check" ]; then

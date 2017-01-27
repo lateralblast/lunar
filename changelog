@@ -1025,3 +1025,7 @@
 # Added check for unencrypted AWS EC2 volumes
 # 6.0.5: Fri 27 Jan 2017 13:19:21 AEDT
 # Added check for AWS EC2 volume names
+# 6.0.6: Fri 27 Jan 2017 18:04:39 AEDT
+# Added check for AWS EC2 snapshots older than 30 days
+# 6.0.7: Fri 27 Jan 2017 19:13:08 AEDT
+# Added check for AWC EC2 unattached volumes to be cost effective
