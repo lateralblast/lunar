@@ -19,6 +19,7 @@ audit_aws_rds () {
   # determine if your AWS Simple Email Service (SES) identities (domains and email addresses) are configured to use DKIM signatures
   dbs=`aws rds describe-db-instances --region $aws_region --query 'DBInstances[].DBInstanceIdentifier' --output text`
   for db in $dbs; do
+    total=`expr $total + 1`
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].AutoMinorVersionUpgrade' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
