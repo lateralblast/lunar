@@ -1045,3 +1045,5 @@
 # Added check for AWS SES and DKIM
 # 6.1.5: Sat 28 Jan 2017 14:45:31 AEDT
 # Added check for AWS RDS auto minor version upgrade
+# 6.1.6: Sat 28 Jan 2017 15:15:43 AEDT
+# Added check for AWS RDS automated backups
