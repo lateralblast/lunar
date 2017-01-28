@@ -23,8 +23,8 @@ audit_aws_ses () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Domain $domain does not have DKIM enabled [$insecure Warnings]"
-      funct_verbose_message "aws ses set-identity-dkim-enabled --region $aws_region --identity $domain --dkim-enabled" fix
       funct_verbose_message "" fix
+      funct_verbose_message "aws ses set-identity-dkim-enabled --region $aws_region --identity $domain --dkim-enabled" fix
       funct_verbose_message "" fix
     fi
   done
