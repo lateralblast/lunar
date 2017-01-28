@@ -1057,3 +1057,5 @@
 # Added check for AWS RDS using KMS key
 # 6.2.1: Sat 28 Jan 2017 21:08:09 AEDT
 # Added check for AWS RDS using General Purpose SSD to be cost effective
+# 6.2.2: Sat 28 Jan 2017 21:26:07 AEDT
+# Added check for AWS RDS instances being on a public facing subnet

@@ -68,6 +68,19 @@
 # you to create, rotate, disable, enable, and audit CMK encryption keys for RDS.
 #
 # https://www.cloudconformity.com/conformity-rules/RDS/rds-encrypted-with-kms-customer-master-keys.html
+#
+# Ensure that no AWS RDS database instances are provisioned inside VPC public
+# subnets in order to protect them from direct exposure to the Internet.
+# Since database instances are not Internet-facing and their management
+# (running software updates, implementing security patches, etc) is done by
+# Amazon, these instances should run only in private subnets.
+#
+# By provisioning your RDS instances within private subnets (logically
+# isolated sections of AWS VPC) you will prevent these resources from receiving
+# inbound traffic from the public Internet, therefore have a stronger guarantee
+# that no malicious requests can reach your database instances.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/RDS/instance-not-in-public-subnet.html
 #.
 
 audit_aws_rds () {
@@ -99,7 +112,7 @@ audit_aws_rds () {
       funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period 7 --apply-immediately" fix
       funct_verbose_message "" fix
     fi
-    # Check if database is encrypted
+    # Check if RDS instance is encrypted
     total=`expr $total + 1`
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].StorageEncrypted' |grep true`
     if [ "$check" ]; then
@@ -119,7 +132,7 @@ audit_aws_rds () {
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db is encrypted with a KMS key [$insecure Warnings]"
     fi
-    # Check if database is publicly accessible
+    # Check if RDS instance is publicly accessible
     total=`expr $total + 1`
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].PubliclyAccessible' |grep true`
     if [ ! "$check" ]; then
@@ -129,11 +142,24 @@ audit_aws_rds () {
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db is publicly accessible [$insecure Warnings]"
     fi
-    # Check if database VPC is publicly accessible
+    # Check if RDS instance VPC is publicly accessible
     total=`expr $total + 1`
     sgs=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[*].VpcSecurityGroups[].VpcSecurityGroupId' --output text`
     for sg in $sgs; do
       funct_aws_open_port_check $sg 3306 tcp MySQL RDS $db
+    done
+    # Check RDS instance is not on a public subnet
+    total=`expr $total + 1`
+    subnets=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].DBSubnetGroup.Subnets[].SubnetIdentifier --output text'`
+    for subnet in $subnets; do
+      check=`aws ec2 describe-route-tables --region $aws_region --filters "Name=association.subnet-id,Values=$subnet" --query 'RouteTables[].Routes[].DestinationCidrBlock' |grep "0.0.0.0/0"`
+      if [ ! "$check" ]; then
+        secure=`expr $secure + 1`
+        echo "Secure:    RDS instance $db is not on a public facing subnet [$secure Passes]"
+      else
+        insecure=`expr $insecure + 1`
+        echo "Warning:   RDS instance $db is ion a public facing subnet [$insecure Warnings]"
+      fi
     done
   done
 }
