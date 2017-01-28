@@ -55,6 +55,19 @@
 # DoS/DDoS attacks.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-publicly-accessible.html
+#
+# Ensure that your RDS database instances are using KMS CMK customer-managed
+# keys rather than AWS managed-keys (default keys used by RDS when there are no
+# customer keys available), in order to have more granular control over your
+# data-at-rest encryption/decryption process.
+#
+# When you create and use your own KMS CMK customer-managed keys to protect RDS
+# database instances, you gain full control over who can use the keys and access
+# the data encrypted on these instances (including any automated backups, Read
+# Replicas and snapshots created from the instances). The AWS KMS service allows
+# you to create, rotate, disable, enable, and audit CMK encryption keys for RDS.
+#
+# https://www.cloudconformity.com/conformity-rules/RDS/rds-encrypted-with-kms-customer-master-keys.html
 #.
 
 audit_aws_rds () {
@@ -95,6 +108,16 @@ audit_aws_rds () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Database $db is not encrypted [$insecure Warnings]"
+    fi
+    # Check if KMS is being used
+    total=`expr $total + 1`
+    key_id=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].KmsKeyId' --output text |cut -f2 -d/`
+    if [ "$key_id" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Database $db is encrypted with a KMS key [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Database $db is encrypted with a KMS key [$insecure Warnings]"
     fi
     # Check if database is publicly accessible
     total=`expr $total + 1`

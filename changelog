@@ -1053,3 +1053,5 @@
 # Added check for AWS RDS having Multi-AZ enabled
 # 6.1.9: Sat 28 Jan 2017 19:32:15 AEDT
 # Added check for AWS RDS Security Groups
+# 6.2.0: Sat 28 Jan 2017 20:39:56 AEDT
+# Added check for AWS RDS using KMS key
