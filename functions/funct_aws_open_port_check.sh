@@ -9,8 +9,9 @@ funct_aws_open_port_check () {
   sg=$1
 	port=$2
   protocol=$3
-	service=$4 
-  elb=$5
+	service=$4
+  app=$5
+  instance=$6
   total=`expr $total + 1`
   open_port=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters "Name=ip-permission.to-port,Values=$port" "Name=ip-permission.cidr,Values=0.0.0.0/0" "Name=ip-permission.protocol,Values=$protocol" --output text`
     if [ ! "$open_port" ]; then
@@ -22,10 +23,10 @@ funct_aws_open_port_check () {
       fi
     else
       insecure=`expr $insecure + 1`
-      if [ "$elb" = "none" ]; then
+      if [ "$app" = "none" ]; then
         echo "Warning:   Security Group $sg has $service on port $port open to the world [$insecure Warnings]"
       else
-        echo "Warning:   ELB $elb with Security Group $sg has $service on port $port open to the world [$insecure Warnings]"
+        echo "Warning:   $app $instance with Security Group $sg has $service on port $port open to the world [$insecure Warnings]"
       fi
       funct_verbose_message "" fix
       funct_verbose_message "aws ec2 revoke-security-group-ingress --region $aws_region --group-name $sg --protocol $protocol --port $port --cidr 0.0.0.0/0" fix

@@ -41,6 +41,20 @@
 # infrastructure through AWS Key Management Service (AWS KMS).
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-encryption-enabled.html
+#
+# Check for any public facing RDS database instances provisioned in your AWS
+# account and restrict unauthorized access in order to minimise security risks.
+# To restrict access to any publicly accessible RDS database instance, you must
+# disable the database Publicly Accessible flag and update the VPC security
+# group associated with the instance.
+#
+# When the VPC security group associated with an RDS instance allows
+# unrestricted access (0.0.0.0/0), everyone and everything on the Internet can
+# establish a connection to your database and this can increase the opportunity
+# for malicious activities such as brute force attacks, SQL injections or
+# DoS/DDoS attacks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-publicly-accessible.html
 #.
 
 audit_aws_rds () {
@@ -48,7 +62,7 @@ audit_aws_rds () {
   for db in $dbs; do
     # Check if auto minor version upgrades are enabled
     total=`expr $total + 1`
-    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].AutoMinorVersionUpgrade' |grep true`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].AutoMinorVersionUpgrade' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Database $db has auto minor version upgrades enabled [$secure Passes]"
@@ -61,7 +75,7 @@ audit_aws_rds () {
     fi
     # Check if automated backups are enabled
     total=`expr $total + 1`
-    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].BackupRetentionPeriod' --output text`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].BackupRetentionPeriod' --output text`
     if [ ! "$check" -eq "0" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Database $db has automated backups enabled [$secure Passes]"
@@ -74,7 +88,7 @@ audit_aws_rds () {
     fi
     # Check if database is encrypted
     total=`expr $total + 1`
-    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].StorageEncrypted' |grep true`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].StorageEncrypted' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Database $db is encrypted [$secure Passes]"
@@ -82,5 +96,21 @@ audit_aws_rds () {
       insecure=`expr $insecure + 1`
       echo "Warning:   Database $db is not encrypted [$insecure Warnings]"
     fi
+    # Check if database is publicly accessible
+    total=`expr $total + 1`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].PubliclyAccessible' |grep true`
+    if [ ! "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Database $db is not publicly accessible [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Database $db is publicly accessible [$insecure Warnings]"
+    fi
+    # Check if database VPC is publicly accessible
+    total=`expr $total + 1`
+    sgs=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[*].VpcSecurityGroups[].VpcSecurityGroupId' --output text`
+    for sg in $sgs; do
+      funct_aws_open_port_check $sg 3306 tcp MySQL RDS $db
+    done
   done
 }

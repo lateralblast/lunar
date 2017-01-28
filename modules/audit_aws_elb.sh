@@ -38,7 +38,7 @@
 # using Obsolete and Weakened eNcryption), which targets a specific weakness in
 # the OpenSSL implementation of SSLv2 protocol and POODLE (Padding Oracle On
 # Downgraded Legacy Encryption).
-# 
+#
 # This vulnerability allows an attacker to read information encrypted with SSLv3
 # protocol in plain text, using a man-in-the-middle attack. If your existent ELB
 # SSL negotiation configuration use Protocol-SSLv2 and/or Protocol-SSLv3,
@@ -96,7 +96,7 @@ audit_aws_elb () {
     # Ensure ELB SGs do not have port 80 open to the world
     sgs=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].SecurityGroups" --output text`
     for sg in $sgs; do
-      funct_aws_open_port_check $sg 80 tcp HTTP $elb
+      funct_aws_open_port_check $sg 80 tcp HTTP ELB $elb
     done
     # Ensure no deprecated ciphers of protocols are being used
     policies=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb  --query "PolicyDescriptions[].PolicyName" --output text`
@@ -119,4 +119,3 @@ audit_aws_elb () {
     done
   done
 }
-

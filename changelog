@@ -1051,3 +1051,5 @@
 # Added check for AWS RDS encryption
 # 6.1.8: Sat 28 Jan 2017 17:06:52 AEDT
 # Added check for AWS RDS having Multi-AZ enabled
+# 6.1.9: Sat 28 Jan 2017 19:32:15 AEDT
+# Added check for AWS RDS Security Groups

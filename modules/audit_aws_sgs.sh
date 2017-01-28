@@ -27,7 +27,7 @@
 # Security groups provide stateful filtering of ingress/egress network
 # traffic to AWS resources. It is recommended that no security group
 # allows unrestricted ingress access to port 3389.
-# 
+#
 # Removing unfettered connectivity to remote console services, such as RDP,
 # reduces a server's exposure to risk.
 #
@@ -189,23 +189,23 @@ audit_aws_sgs () {
       secure=`expr $secure + 1`
       echo "Secure:    Security Group $sg does not have a open inbound rule [$secure Passes]"
     else
-      funct_aws_open_port_check $sg -1 icmp ICMP none
-      funct_aws_open_port_check $sg 20,21 tcp FTP none 
-      funct_aws_open_port_check $sg 22 tcp SSH none
-      funct_aws_open_port_check $sg 23 tcp Telnet none
-      funct_aws_open_port_check $sg 25 tcp SMTP none
-      funct_aws_open_port_check $sg 53 tcp DNS none
-      funct_aws_open_port_check $sg 80 tcp HTTP none
-      funct_aws_open_port_check $sg 135 tcp RPC none
-      funct_aws_open_port_check $sg 137,138,139 tcp SMB none
-      funct_aws_open_port_check $sg 443 tcp HTTPS none 
-      funct_aws_open_port_check $sg 445 tcp CIFS none
-      funct_aws_open_port_check $sg 1433 tcp MSSQL none
-      funct_aws_open_port_check $sg 1521 tcp Oracle none
-      funct_aws_open_port_check $sg 3306 tcp MySQL none
-      funct_aws_open_port_check $sg 3389 tcp RDP none
-      funct_aws_open_port_check $sg 5432 tcp PostgreSQL none 
-      funct_aws_open_port_check $sg 27017 tcp MongoDB none
+      funct_aws_open_port_check $sg -1 icmp ICMP none none
+      funct_aws_open_port_check $sg 20,21 tcp FTP none none
+      funct_aws_open_port_check $sg 22 tcp SSH none none
+      funct_aws_open_port_check $sg 23 tcp Telnet none none
+      funct_aws_open_port_check $sg 25 tcp SMTP none none
+      funct_aws_open_port_check $sg 53 tcp DNS none none
+      funct_aws_open_port_check $sg 80 tcp HTTP none none
+      funct_aws_open_port_check $sg 135 tcp RPC none none
+      funct_aws_open_port_check $sg 137,138,139 tcp SMB none none
+      funct_aws_open_port_check $sg 443 tcp HTTPS none none
+      funct_aws_open_port_check $sg 445 tcp CIFS none none
+      funct_aws_open_port_check $sg 1433 tcp MSSQL none none
+      funct_aws_open_port_check $sg 1521 tcp Oracle none none
+      funct_aws_open_port_check $sg 3306 tcp MySQL none none
+      funct_aws_open_port_check $sg 3389 tcp RDP none none
+      funct_aws_open_port_check $sg 5432 tcp PostgreSQL none none
+      funct_aws_open_port_check $sg 27017 tcp MongoDB none none
     fi
     outbound=`aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' |grep "0.0.0.0/0"`
     total=`expr $total + 1`
@@ -221,4 +221,3 @@ audit_aws_sgs () {
     fi
   done
 }
-
