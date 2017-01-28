@@ -81,6 +81,19 @@
 # that no malicious requests can reach your database instances.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/instance-not-in-public-subnet.html
+#
+# Ensure that your Amazon RDS production databases are not using 'awsuser' as
+# master username, regardless of the RDS database engine type used, instead a
+# unique alphanumeric string must be defined as the login ID for the master
+# user.
+#
+# Since "awsuser" is the Amazon's example (default) for the RDS database master
+# username, many AWS customers will use this username for their RDS databases
+# in production, therefore malicious users can use this information to their
+# advantage and frequently try to use "awsuser" for the master username during
+# brute-force attacks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-master-username.html
 #.
 
 audit_aws_rds () {
@@ -161,5 +174,15 @@ audit_aws_rds () {
         echo "Warning:   RDS instance $db is ion a public facing subnet [$insecure Warnings]"
       fi
     done
+    # Check that your Amazon RDS production databases are not using 'awsuser' as master 
+    total=`expr $total + 1`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].MasterUsername' |grep "awsuser"`
+    if [ ! "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    RDS instance $db is not using awsuser as master username [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   RDS instance $db is using awsuser as master username [$insecure Warnings]"
+    fi
   done
 }
