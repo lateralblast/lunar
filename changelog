@@ -1055,3 +1055,5 @@
 # Added check for AWS RDS Security Groups
 # 6.2.0: Sat 28 Jan 2017 20:39:56 AEDT
 # Added check for AWS RDS using KMS key
+# 6.2.1: Sat 28 Jan 2017 21:08:09 AEDT
+# Added check for AWS RDS using General Purpose SSD to be cost effective

@@ -78,10 +78,10 @@ audit_aws_rds () {
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].AutoMinorVersionUpgrade' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db has auto minor version upgrades enabled [$secure Passes]"
+      echo "Secure:    RDS instance $db has auto minor version upgrades enabled [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Database $db does not have auto minor upgrades enabled [$insecure Warnings]"
+      echo "Warning:   RDS instance $db does not have auto minor upgrades enabled [$insecure Warnings]"
       funct_verbose_message "" fix
       funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --auto-minor-version-upgrade --apply-immediately" fix
       funct_verbose_message "" fix
@@ -91,10 +91,10 @@ audit_aws_rds () {
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].BackupRetentionPeriod' --output text`
     if [ ! "$check" -eq "0" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db has automated backups enabled [$secure Passes]"
+      echo "Secure:    RDS instance $db has automated backups enabled [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Database $db does not have automated backups enabled [$insecure Warnings]"
+      echo "Warning:   RDS instance $db does not have automated backups enabled [$insecure Warnings]"
       funct_verbose_message "" fix
       funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period 7 --apply-immediately" fix
       funct_verbose_message "" fix
@@ -104,30 +104,30 @@ audit_aws_rds () {
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].StorageEncrypted' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db is encrypted [$secure Passes]"
+      echo "Secure:    RDS instance $db is encrypted [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Database $db is not encrypted [$insecure Warnings]"
+      echo "Warning:   RDS instance $db is not encrypted [$insecure Warnings]"
     fi
     # Check if KMS is being used
     total=`expr $total + 1`
     key_id=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].KmsKeyId' --output text |cut -f2 -d/`
     if [ "$key_id" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db is encrypted with a KMS key [$secure Passes]"
+      echo "Secure:    RDS instance $db is encrypted with a KMS key [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Database $db is encrypted with a KMS key [$insecure Warnings]"
+      echo "Warning:   RDS instance $db is encrypted with a KMS key [$insecure Warnings]"
     fi
     # Check if database is publicly accessible
     total=`expr $total + 1`
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].PubliclyAccessible' |grep true`
     if [ ! "$check" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db is not publicly accessible [$secure Passes]"
+      echo "Secure:    RDS instance $db is not publicly accessible [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Database $db is publicly accessible [$insecure Warnings]"
+      echo "Warning:   RDS instance $db is publicly accessible [$insecure Warnings]"
     fi
     # Check if database VPC is publicly accessible
     total=`expr $total + 1`
