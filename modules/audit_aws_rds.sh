@@ -26,6 +26,21 @@
 # instance database such as changing the structure of a table.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-automated-backups-enabled.html
+#
+# Ensure that your RDS database instances are encrypted to fulfill compliance
+# requirements for data-at-rest encryption. The RDS data encryption and
+# decryption is handled transparently and does not require any additional action
+# from you or your application.
+#
+# When dealing with production databases that hold sensitive and critical data,
+# it is highly recommended to implement encryption in order to protect your data
+# from unauthorized access. With RDS encryption enabled, the data stored on the
+# instance underlying storage, the automated backups, Read Replicas, and
+# snapshots, become all encrypted. The RDS encryption keys implement AES-256
+# algorithm and are entirely managed and protected by the AWS key management
+# infrastructure through AWS Key Management Service (AWS KMS).
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-encryption-enabled.html
 #.
 
 audit_aws_rds () {
@@ -36,7 +51,7 @@ audit_aws_rds () {
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].AutoMinorVersionUpgrade' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db has auto minor version upgrades enabled [$secure Passes]" 
+      echo "Secure:    Database $db has auto minor version upgrades enabled [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Database $db does not have auto minor upgrades enabled [$insecure Warnings]"
@@ -49,7 +64,7 @@ audit_aws_rds () {
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].BackupRetentionPeriod' --output text`
     if [ ! "$check" -eq "0" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Database $db has automated backups enabled [$secure Passes]" 
+      echo "Secure:    Database $db has automated backups enabled [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Database $db does not have automated backups enabled [$insecure Warnings]"
@@ -57,6 +72,15 @@ audit_aws_rds () {
       funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period 7 --apply-immediately" fix
       funct_verbose_message "" fix
     fi
+    # Check if database is encrypted
+    total=`expr $total + 1`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].StorageEncrypted' |grep true`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Database $db is encrypted [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Database $db is not encrypted [$insecure Warnings]"
+    fi
   done
 }
-

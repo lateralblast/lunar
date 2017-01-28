@@ -924,7 +924,7 @@
 # 5.5.4: Tue 24 Jan 2017 17:26:25 AEDT
 # Added some fix information for S3 bucket logging
 # 5.5.5: Tue 24 Jan 2017 17:29:39 AEDT
-# Added some fix information for AWS Config 
+# Added some fix information for AWS Config
 # 5.5.6: Tue 24 Jan 2017 17:38:19 AEDT
 # Added some fix information for CloudTrail bucket permissions
 # 5.5.7: Tue 24 Jan 2017 19:58:17 AEDT
@@ -1047,3 +1047,5 @@
 # Added check for AWS RDS auto minor version upgrade
 # 6.1.6: Sat 28 Jan 2017 15:15:43 AEDT
 # Added check for AWS RDS automated backups
+# 6.1.7: Sat 28 Jan 2017 16:51:40 AEDT
+# Added check for AWS RDS encryption
