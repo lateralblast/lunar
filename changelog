@@ -1043,3 +1043,5 @@
 # Added check for AWS S3 bucket versioning
 # 6.1.4: Sat 28 Jan 2017 14:06:32 AEDT
 # Added check for AWS SES and DKIM
+# 6.1.5: Sat 28 Jan 2017 14:45:31 AEDT
+# Added check for AWS RDS auto minor version upgrade
