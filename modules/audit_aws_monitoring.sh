@@ -180,6 +180,106 @@
 # avoid unexpected charges on your AWS bill.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/ec2-instance-changes-alarm.html
+#
+# Ensure there is a CloudWatch alarm created and configured in your AWS account
+# that is triggered each time an IAM policy configuration change is made. This
+# CloudWatch alarm must fire every time an API call is performed to create,
+# update, attach, detach or delete an AWS IAM policy.
+#
+# Using CloudWatch alarms to detect AWS IAM authorization (policy) configuration
+# changes will help you maintain the necessary access permissions for each IAM
+# user, role and group created in your AWS account in order to prevent any
+# accidental or intentional changes that may lead to unauthorized access.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/iam-policy-changes-alarm.html
+#
+# Ensure there is an Amazon CloudWatch alarm set up in your AWS account that is
+# triggered each time a VPC Internet Gateway or a VPC VPN Customer Gateway
+# configuration change is made. This CloudWatch alarm must fire every time an
+# AWS API call is performed to create, update or delete a VPC Customer/Internet
+# Gateway.
+#
+# Using Amazon CloudWatch alarms to detect configuration changes involving your
+# AWS VPC Customer/Internet Gateway(s) will help you prevent any unexpected
+# modifications that may lead to unrestricted network access, loss of connection
+# between your AWS VPC and Internet or loss of VPN connection between your VPC
+# and the on-premise datacenter(s) linked.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/internet-gateway-changes-alarm.html
+#
+# Ensure there is a CloudWatch alarm set up in your AWS account that is
+# triggered each time a Network Access Control List (NACL) configuration change
+# is made. This CloudWatch alarm must fire every time an AWS API call is
+# performed to create, update or delete a Network ACL.
+#
+# The Network ACLs provide an additional layer of defense for your Virtual
+# Private Clouds (VPCs). Using CloudWatch alarms to detect any configuration
+# changes involving Network ACLs will help you prevent unexpected inbound and/or
+# outbound rule modifications that may lead to unrestricted access and increase
+# the opportunities for Distributed Denial of Service (DDoS) attacks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/network-acl-changes-alarm.html
+#
+# Ensure there is an Amazon CloudWatch alarm created and configured in your AWS
+# account to fire each time Root Account is used. This CloudWatch alarm must be
+# triggered every time AWS Root Account is used.
+#
+# The AWS root account is the account that is created when signing up with
+# Amazon Web Services. We strongly recommend that you do not use the root
+# user for your everyday tasks, or even the administrative ones. Using Amazon
+# CloudWatch alarms to detect AWS Root Account usage will help you monitor AWS
+# (root) account activities that may lead to unauthorised access or other
+# security breaches.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/root-account-usage-alarm.html
+#
+# Ensure there is an Amazon CloudWatch alarm created and configured in your AWS
+# account to fire each time a Route Tables configuration change is made. This
+# CloudWatch alarm must be triggered every time an AWS API call is performed to
+# create, replace, delete, or disassociate a Route Table.
+#
+# Using Amazon CloudWatch alarms to detect environment configuration changes
+# involving your Route Tables will help you prevent any accidental or
+# intentional modifications that may lead to uncontrolled network traffic.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/route-table-changes-alarm.html
+#
+# Ensure there is an Amazon CloudWatch alarm created and configured in your AWS
+# account to fire each time a S3 bucket configuration change is made. This
+# CloudWatch alarm must be triggered every time an AWS API call is performed to
+# create, update or delete a bucket policy, ACL, CORS, replication, or
+# lifecycle.
+#
+# Using Amazon CloudWatch alarms to detect environment configuration changes
+# involving your S3 buckets will help you prevent any accidental or intentional
+# modifications that may lead to unauthorized data access or other security
+# breaches.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/s3-bucket-changes-alarm.html
+#
+# Ensure there is a CloudWatch alarm set up in your AWS account that is
+# triggered each time a security group configuration change is made. This
+# CloudWatch alarm must fire every time an AWS API call is performed to create,
+# update or delete a security group.
+#
+# Using CloudWatch alarms to detect any configuration changes involving AWS
+# security groups will help you prevent unexpected inbound and/or outbound
+# rule modifications that may lead to unrestricted or unauthorized access.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/securitygroup-changes-alarm.html
+#
+# Ensure there is an Amazon CloudWatch alarm created and configured in your
+# AWS account to fire each time a Virtual Private Cloud (VPC) environment
+# configuration change is made. This CloudWatch alarm must be triggered every
+# time an AWS API call is performed to create, update or delete a VPC, a VPC
+# peering connection or a VPC connection to classic EC2 instances.
+#
+# Using Amazon CloudWatch alarms to detect environment configuration changes
+# involving your AWS Virtual Private Clouds will help you prevent any
+# accidental or intentional modifications that may lead to unauthorized
+# network access or other security breaches.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/vpc-changes-alarm.html
 #.
 
 audit_aws_monitoring () {
