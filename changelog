@@ -1077,3 +1077,5 @@
 # Added check for AWS SNS topic being publicly accessible
 # 6.3.1: Sun 29 Jan 2017 20:02:57 AEDT
 # Added check for AWS Cloud Formation stacks using SNS
+# 6.3.2: Sun 29 Jan 2017 20:30:55 AEDT
+# Added check for AWS Cloud Formation stacks having policies

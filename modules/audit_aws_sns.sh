@@ -27,36 +27,9 @@
 # applied during the testing stage.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/SNS/sns-topic-exposed.html
-#
-# Ensure all your AWS CloudFormation stacks are using Simple Notification
-# Service (AWS SNS) in order to receive notifications when an event occurs.
-# Monitoring stack events such as create - which triggers the provisioning
-# process based on a defined CloudFormation template, update – which updates
-# the stack configuration or delete – which terminates the stack by removing
-# its collection of AWS resources, will enable you to respond fast to any
-# unauthorized action that could alter your AWS environment.
-#
-# With SNS integration you can increase the visibility of your AWS
-# CloudFormation stack activity, beneficial for security and management
-# purposes.
-#
-# Refer to https://www.cloudconformity.com/conformity-rules/CloudFormation/cloudformation-stack-notification.html
 #.
 
 audit_aws_sns () {
-  # Check Cloud Formation stacks are using SNS
-  stacks=`aws cloudformation list-stacks --region $aws_region --query 'StackSummaries[].StackId' --output text` 
-  for stack in $stacks; do 
-    total=`expr $total + 1`
-    check=`aws cloudformation describe-stacks --region $aws_region --stack-name $stack --query 'Stack[].NotificationARNs' --output text`
-    if [ "$check" ]; then
-      secure=`expr $secure + 1`
-      echo "Secure:    SNS topic exists for CloudFormation stack $stack [$secure Passes]"
-    else
-      insecure=`expr $insecure + 1`
-      echo "Warning:   SNS topic does not exist for CloudFormation stack $stack [$insecure Warnings]"
-    fi
-  done
 	topics=`aws sns list-topics --region $aws_region --query 'Topics[].TopicArn' --output text`
   for topic in $topics; do
     # Check SNS topics have subscribers

@@ -30,4 +30,5 @@ funct_audit_aws_all () {
   audit_aws_s3
   audit_aws_ses
   audit_aws_rds
+  audit_aws_cf
 }
