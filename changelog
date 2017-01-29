@@ -1071,3 +1071,5 @@
 # Added check for AWS EC2 EBS volume snapshots being taken
 # 6.2.8: Sun 29 Jan 2017 17:16:24 AEDT
 # Added check for AWS CloudTrail recording global events
+# 6.2.9:  2 files changed, 39 insertions(+), 1 deletion(-)
+# Added check for AWS inactive KMS keys

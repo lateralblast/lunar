@@ -19,6 +19,28 @@
 # practices.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unnecessary-ssh-public-keys.html
+#
+# Once enabled, the KMS Key Rotation will allow you to set an yearly rotation
+# schedule for your CMK so when a customer master key is required to encrypt
+# your new data, the KMS service can automatically use the latest version of
+# the HSA backing key (AWS hardened security appliance key) to perform the
+# encryption.
+#
+# Enabling this feature would significantly reduce the chance that a compromised
+# customer master key (CMK) could be used without your knowledge to access
+# certain AWS resources.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/KMS/key-rotation-enabled.html
+#
+# Check for any disabled KMS Customer Master Keys in your AWS account and remove
+# them in order to lower the cost of your monthly AWS bill.
+#
+# As of April 2016, each Customer Master Key that you create in AWS KMS costs
+# $1 / month, regardless whether is being used or not. Since the KMS disabled
+# keys are also charged, it is recommended to delete these keys in order to
+# avoid any unexpected charges on your bill.
+#
+# https://www.cloudconformity.com/conformity-rules/KMS/unused-customer-master-key.html
 #.
 
 audit_aws_keys () {
@@ -26,6 +48,20 @@ audit_aws_keys () {
   total=`expr $total + 1`
   if [ "$keys" ]; then
   	for key in $keys; do
+      # Check key is enabled
+      total=`expr $total + 1`
+      check=`aws kms get-key-rotation-status --key-id $key --query 'KeyMetadata' |grep Enabled |grep true`
+      if [ ! "$check" ]; then
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Key $key is not enabled [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws kms schedule-key-deletion --key-id $key --pending-window-in-days $aws_days_to_key_deletion" fix
+        funct_verbose_message "" fix
+      else
+        secure=`expr $secure + 1`
+        echo "Secure:    Key $key is enabled [$secure Passes]"
+      fi
+      # Check that key rotation is enabled
       total=`expr $total + 1`
       check=`aws kms get-key-rotation-status --key-id $key |grep KeyRotationEnabled |grep true`
       if [ ! "$check" ]; then
@@ -44,6 +80,7 @@ audit_aws_keys () {
     insecure=`expr $insecure + 1`
     echo "Warning:   No Keys are being used [$insecure Warnings]"
   fi
+  # Check for SSH keys
   users=`aws iam list-users --query 'Users[].UserName' --output text`
   for user in $users; do
     total=`expr $total + 1`

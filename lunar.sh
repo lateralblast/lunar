@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      6.2.8
+# Version:      6.2.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -66,6 +66,7 @@ aws_region=""
 aws_rds_min_retention="7"
 aws_ec2_min_retention="7"
 aws_ec2_max_retention="30"
+aws_days_to_key_deletion="7"
 
 # Set up some global variables
 
