@@ -27,6 +27,21 @@
 # find vulnerabilities within your website/web application.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudFront/cloudfront-logging-enabled.html
+#
+# Ensure that your AWS Cloudfront Content Delivery Network distributions are
+# not using insecure SSL protocols (i.e. SSLv3) for HTTPS communication between
+# CloudFront edge locations and your custom origins. Cloud Conformity strongly
+# recommends using TLSv1.0 or later (ideally use only TLSv1.2 if you origins
+# support it) and avoid using the SSLv3 protocol.
+#
+# Using insecure and deprecated SSL protocols for your Cloudfront distributions
+# could make the connection between the Cloudfront CDN and the origin server
+# vulnerable to exploits such as POODLE (Padding Oracle on Downgraded Legacy
+# Encryption) which allows an attacker to eavesdrop your Cloudfront traffic
+# over a secure channel (encrypted with the SSLv3 protocol) by implementing
+# a man-in-the-middle tactic.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudFront/cloudfront-insecure-origin-ssl-protocols.html
 #.
 
 audit_aws_cdn () {
@@ -52,6 +67,16 @@ audit_aws_cdn () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Cloudfront $cdn does not have logging enabled [$insecure Warnings]"
+    fi
+    # check SSL protocol verions being used
+    total=`expr $total + 1`
+    check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' |egrep "SSLv3|SSLv2"`
+    if [ ! "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Cloudfront $cdn is not using a deprecated version of SSL [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Cloudfront $cdn is using a deprecated verions of SSL [$insecure Warnings]"
     fi
   done
 }
