@@ -26,6 +26,21 @@
 # baseline performance of IOPS for a lower cost.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/general-purpose-ssd-storage-type.html
+#
+# Ensure that your AWS RDS Reserved Instances (RIs) are renewed before
+# expiration in order to get the appropriate discount (based on the commitment
+# term) on the hourly charge for these instances. The renewal process consists
+# of purchasing another RDS Reserved Instance so that Amazon can keep charging
+# you based on the chosen reservation term. The default threshold for the number
+# of days before expiration when the conformity rule checkup is performed is 7
+# (seven).
+#
+# With Reserved Instances (RIs) you can optimize your Amazon RDS costs based on
+# your expected usage. Since RDS RIs are not renewed automatically, purchasing
+# another reserved database instances on time will guarantee that these
+# instances will be also billed at a discounted hourly rate.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/RDS/reserved-instance-expiration.html
 #.
 
 audit_aws_rec_rds () {
@@ -53,6 +68,24 @@ audit_aws_rec_rds () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db is not using General Purpose SSD [$secure Passes] [$insecure Warnings]"
+    fi
+  done
+  # Ensure that your AWS RDS Reserved Instances (RIs) are renewed before expiration
+  dbs=`aws rds describe-reserved-db-instances --region $aws_region --query 'ReservedDBInstances[].ReservedDBInstanceId' --output text`
+  for db in $dbs; do
+    start_date=`aws rds describe-reserved-db-instances --region $aws_region --reserved-db-instance-id $db --query 'ReservedDBInstances[].StartTime' --output text |cut -f1 -d.`
+    dur_secs=`aws rds describe-reserved-db-instances --region $aws_region --reserved-db-instance-id $db --query 'ReservedDBInstances[].StartTime' --output text`
+    curr_secs=`date "+%s"`
+    start_secs=`date -j -f "%Y-%m-%dT%H:%M:%SS" "$start_date" "+%s"`
+    exp_secs=`echo "($start_secs + $dur_secs)" |bc`
+    test_secs=`echo "(7 * 84600)" |bc`
+    left_secs=`echo "($exp_sec - $curr_secs)" |bc`
+    if [ "$left_secs" -lt "$test_secs" ]; then
+      secure=`expr $secure + 1`
+      echo "Pass:      Reserved RDS instance $db has more than 7 days remaining [$secure Passes] [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Reserved RDS instance $db has less than 7 days remaining [$secure Passes] [$insecure Warnings]"
     fi
   done
 }

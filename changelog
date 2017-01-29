@@ -1061,3 +1061,5 @@
 # Added check for AWS RDS instances being on a public facing subnet
 # 6.2.3: Sat 28 Jan 2017 21:45:29 AEDT
 # Added check for AWS RDS instances using default master username
+# 6.2.4: Sun 29 Jan 2017 11:40:24 AEDT
+# Added check for AWS RDS registered instances expiring
