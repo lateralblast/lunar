@@ -5,6 +5,7 @@
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted-with-kms-customer-master-keys.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-in-vpc.html
+# Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-parameter-groups-require-ssl.html
 #.
 
 audit_aws_redshift () {
@@ -66,5 +67,18 @@ audit_aws_redshift () {
       insecure=`expr $insecure + 1`
       echo "Warning:   Redshift instance $db may be using the EC2-Classic platform [$insecure Warnings]"
     fi
+    # Check that parameter groups require SSL
+    groups=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].ClusterParameterGroups[].ParameterGroupName[]' --output text`
+    for group in $groups; do
+      total=`expr $total + 1`
+      check=`aws redshift describe-cluster-parameters --region $aws_region --parameter-group-name $group --query 'Parameters[].Description' |grep -i ssl`
+      if [ "$check" ]; then
+        secure=`expr $secure + 1`
+        echo "Secure:    Redshift instance $db parameter group $group is using SSL [$secure Passes]"
+      else
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Redshift instance $db parameter group $group is not using SSL [$insecure Warnings]"
+      fi
+    done
   done
 }
