@@ -42,6 +42,22 @@
 # a man-in-the-middle tactic.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudFront/cloudfront-insecure-origin-ssl-protocols.html
+#
+# Ensure that the communication between your AWS CloudFront distributions and
+# their custom origins is encrypted using HTTPS in order to secure the delivery
+# of your web content and fulfill compliance requirements for data in transit
+# encryption.
+#
+# Using HTTPS for your AWS Cloudfront distributions can offer you the guarantee
+# that the encrypted traffic between the edge servers and the custom origin
+# cannot be unsealed by malicious users in case they are able to capture
+# packets sent across Cloudfront Content Distribution Network (CDN).
+#
+# Note: This rule does not apply if you have an AWS S3 bucket configured as
+# website endpoint because the S3 service does not support HTTPS connections
+# in this particular configuration.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudFront/cloudfront-traffic-to-origin-unencrypted.html
 #.
 
 audit_aws_cdn () {
