@@ -1097,3 +1097,5 @@
 # Added check for AWS CloudWatch alarm for EC2 instance size changes
 # 6.4.1: Mon 30 Jan 2017 08:13:20 AEDT
 # Added check for AWS Redshift upgrades being enabled
+# 6.4.2: Mon 30 Jan 2017 08:36:14 AEDT
+# Added check for AWS Redshift logging being enabled

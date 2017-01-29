@@ -20,7 +20,7 @@ audit_aws_rds () {
       echo "Secure:    RDS instance $db has auto minor version upgrades enabled [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   RDS instance $db does not have auto minor upgrades enabled [$insecure Warnings]"
+      echo "Warning:   RDS instance $db does not have auto minor version upgrades enabled [$insecure Warnings]"
       funct_verbose_message "" fix
       funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --auto-minor-version-upgrade --apply-immediately" fix
       funct_verbose_message "" fix
