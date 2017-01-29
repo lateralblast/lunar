@@ -14,6 +14,19 @@
 # receive information published to SNS topics.
 #
 # Refer to Section(s) 3.15 Page(s) 129-30 CIS AWS Foundations Benchmark v1.1.0
+#
+# Identify any publicly accessible SNS topics and implement the necessary
+# permissions in order to protect them against attackers or unauthorized
+# personnel.
+#
+# Setting accidentally (or intentionally) overly permissive policies for your
+# SNS topics can allow unauthorized users to receive/publish messages and
+# subscribe to the exposed topics. One common scenario is when a root user
+# grants permissions for an SNS topic to the "Everyone" grantee while testing
+# the notification system and forgets about the insecure set of permissions
+# applied during the testing stage.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/SNS/sns-topic-exposed.html
 #.
 
 audit_aws_sns () {
@@ -27,6 +40,15 @@ audit_aws_sns () {
     else
       secure=`expr $secure + 1`
       echo "Secure:    SNS topic has subscribers, review subscribers [$secure Passes]"
+    fi
+    total=`expr $total + 1`
+    check=`aws sns get-topic-attributes --region $aws_region --topic-arn $topic --query 'Attributes.Policy'  |egrep "\*|{\"AWS\":\"\*\"}"`
+    if [ "$check" ]; then
+      insecure=`expr $insecure + 1`
+      echo "Warning:   SNS topic $topic is publicly accessible [$insecure Warnings]"
+    else
+      secure=`expr $secure + 1`
+      echo "Secure:    SNS topic is not publicly accessible [$secure Passes]"
     fi
   done
 }
