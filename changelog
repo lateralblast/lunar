@@ -1091,3 +1091,5 @@
 # Added check for AWS Cloudfront using deprecate SSL version
 # 6.3.8: Sun 29 Jan 2017 21:43:31 AEDT
 # Added check for AWS Cloudfront using HTTP only
+# 6.3.9: Sun 29 Jan 2017 22:08:20 AEDT
+# Added check for AWS CloudWatch alarm for EC2 instance changes
