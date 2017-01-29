@@ -134,6 +134,31 @@
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-global-services-enabled.html
 #
+# Ensure AWS CloudTrail events are being monitored with CloudWatch Logs for
+# management and security purposes. This enables you to respond quickly to
+# critical operational events detected with CloudTrail events and captured by
+# CloudWatch logs.
+#
+# With CloudTrail - CloudWatch integration enabled you will be able to manage
+# better your AWS infrastructure. For example, you can receive an SNS
+# notification whenever an authorization failure occurs for your AWS account
+# so you can have finer control over the account user access.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-integrated-with-cloudwatch.html
+#
+# Ensure that your trails have file integrity validation feature enabled in
+# order to check the log files and detect whether these were modified or
+# deleted after CloudTrail agent delivered them to the S3 bucket.
+#
+# Enabling this feature will allow you to validate the integrity of your
+# CloudTrail log files and determine if the files were changed once delivered
+# to the specified S3 bucket - the expectation is that the log files should
+# remain unchanged. The log file integrity validation use industry standard
+# algorithms such as SHA-256 for hashing and SHA-256 RSA for digital signing
+# which makes impossible to change files without detection.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-log-file-integrity-validation.html
+#
 # Check for any AWS CloudTrail logging buckets that are publicly accessible,
 # in order to determine if your AWS account could be at risk.
 #
@@ -154,6 +179,21 @@
 # user from covering their tracks.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-s3-bucket-logging-enabled.html
+#
+# Ensure that only one trail within a CloudTrail multi-region logging
+# configuration has Include Global Services feature enabled in order to avoid
+# duplicate log events being recorded for the AWS global services such as IAM,
+# STS or Cloudfront.
+#
+# When you have multiple single region trails created in your AWS account, the
+# events recorded for certain global services such as Identity and Access
+# Management (IAM) are duplicated in the logs as each region trail writes the
+# same IAM events to the CloudTrail aggregated log. In order to prevent this
+# duplication, the Include Global Services feature must be enabled for one
+# trail only and disabled for all other trails from other regions that write
+# to the same CloudTrail log.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-global-services-logging-duplicated.html
 #.
 
 audit_aws_logging () {
