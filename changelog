@@ -1065,3 +1065,5 @@
 # Added check for AWS RDS registered instances expiring
 # 6.2.5: Sun 29 Jan 2017 11:54:14 AEDT
 # Added check for AWS RDS backup retention period
+# 6.2.6: Sun 29 Jan 2017 12:44:23 AEDT
+# Added check for AWS EC2 EBS volumes having KMS keys

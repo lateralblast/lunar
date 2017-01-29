@@ -58,6 +58,19 @@
 # management infrastructure, through AWS Key Management Service (AWS KMS).
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-encrypted.html
+#
+# Ensure that your EBS volumes are using KMS CMK customer-managed keys instead
+# of AWS managed-keys (default key used for volume encryption) in order to have
+# more granular control over your data encryption and decryption process. Once
+# implemented, the KMS CMK customer-managed keys will be used to encrypt and
+# decrypt EBS data at rest, volume snapshots and disk I/O.
+#
+# When you create and use your own CMK customer-managed keys with EBS volumes,
+# you gain full control over who can use the keys and access the data encrypted
+# on these volumes. KMS CMK service allows you to create, rotate, disable,
+# enable, and audit encryption keys.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-encrypted-with-kms-customer-master-keys.html
 #.
 
 audit_aws_ec2 () {
@@ -105,10 +118,20 @@ audit_aws_ec2 () {
     check=`aws ec2 describe-volumes --volume-id vol-09c7933ad01825300 --query "Volumes[].Encrypted" |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
-      echo "Secure:    Volume $volume is encrypted [$secure Passes]"
+      echo "Secure:    EBS Volume $volume is encrypted [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   Volume $volume is not encrypted [$insecure Warnings]"
+      echo "Warning:   EBS Volume $volume is not encrypted [$insecure Warnings]"
+    fi
+    # Check if KMS is being used
+    total=`expr $total + 1`
+    key_id=`aws ec2 describe-volumes --region $aws_region --volume-ids $volume --query 'Volumes[].KmsKeyId' --output text |cut -f2 -d/`
+    if [ "$key_id" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    EBS Volume $volume is encrypted with a KMS key [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   EBS Volume $volume is encrypted with a KMS key [$insecure Warnings]"
     fi
   done
 }
