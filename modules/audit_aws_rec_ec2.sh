@@ -135,6 +135,20 @@
 # volumes.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/EBS/unused-ebs-volumes.html
+#
+# Ensure that your EBS volumes (available or in-use) have recent snapshots
+# (taken weekly) available for point-in-time recovery for a better, more
+# reliable data backup strategy. The threshold for the time frame between the
+# volume snapshots is 7 days, meaning there should be a snapshot taken at
+# least every 7 days.
+#
+# Creating point-in-time EBS snapshots periodically will allow you to handle
+# efficiently your data recovery process in the event of a failure, to save
+# your data before shutting down an EC2 instance, to back up data for
+# geographical expansion and to maintain your disaster recovery stack up to
+# date.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/EBS/ebs-volumes-recent-snapshots.html
 #.
 
 audit_aws_rec_ec2 () {
@@ -164,19 +178,32 @@ audit_aws_rec_ec2 () {
   # Check date of snapshots
   arn=`aws iam get-user --query "User.Arn" --output text |cut -f5 -d:`
   snapshots=`aws ec2 describe-snapshots --region $aws_region --owner-ids $arn --filters Name=status,Values=completed --query "Snapshots[].SnapshotId" --output text`
+  counter=0
   for snapshot in $snapshots; do
+    total=`expr $total + 1`
     snap_date=`aws ec2 describe-snapshots --region $aws_region --snapshot-id $snapshot --query "Snapshots[].StartTime" --output text --output text |cut -f1 -d.`
     snap_secs=`date -j -f "%Y-%m-%dT%H:%M:%S" "$snap_date" "+%s"`
     curr_secs=`date "+%s"`
     diff_days=`echo "($curr_secs - $snap_secs)/84600" |bc`
-    if [ "$diff_days" -gt 30 ]; then
+    if [ "$diff_days" -gt "$aws_ec2_max_retention" ]; then
       insecure=`expr $insecure + 1`
-      echo "Warning:   EC2 snapshot $snapshot is more than 30 days old [$insecure Warnings]"
+      echo "Warning:   EC2 snapshot $snapshot is more than $aws_ec2_max_retention days old [$insecure Warnings]"
     else
       secure=`expr $secure + 1`
-      echo "Pass:      EC2 snapshot $snapshot is less than 30 days old [$secure Passes]"
+      echo "Pass:      EC2 snapshot $snapshot is less than $aws_ec2_max_retention days old [$secure Passes]"
+    fi
+    if [ "$diff_days" -gt "$aws_ec2_min_retention" ]; then
+      counter=`expr $counter + 1`
     fi
   done
+  total=`expr $total + 1`
+  if [ "$counter" -gt 0 ]; then
+    secure=`expr $secure + 1`
+    echo "Pass:      There are EC2 snapshots more than $aws_ec2_min_retention days old [$secure Passes]"
+  else
+    insecure=`expr $insecure + 1`
+    echo "Warning:   There are no EC2 snapshots more than $aws_ec2_min_retention days old [$insecure Warnings]"
+  fi
   # Check Security Groups have Name tags
   sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupName' --output text`
   for sg in $sgs; do

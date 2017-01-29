@@ -122,7 +122,7 @@ audit_aws_rds () {
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db does not have automated backups enabled [$insecure Warnings]"
       funct_verbose_message "" fix
-      funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period $aws_rds_retention --apply-immediately" fix
+      funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period $aws_rds_min_retention --apply-immediately" fix
       funct_verbose_message "" fix
     fi
     # Check if RDS instance is encrypted

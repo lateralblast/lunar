@@ -1067,3 +1067,5 @@
 # Added check for AWS RDS backup retention period
 # 6.2.6: Sun 29 Jan 2017 12:44:23 AEDT
 # Added check for AWS EC2 EBS volumes having KMS keys
+# 6.2.7: Sun 29 Jan 2017 15:31:20 AEDT
+# Added check for AWS EC2 EBS volume snapshots being taken

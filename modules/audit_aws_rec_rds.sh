@@ -83,12 +83,12 @@ audit_aws_rec_rds () {
     # Check backup retention period is at least 7 days
     total=`expr $total + 1`
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].BackupRetentionPeriod' --output text`
-    if [ ! "$check" -lt "$aws_rds_retention" ]; then
+    if [ ! "$check" -lt "$aws_rds_min_retention" ]; then
       secure=`expr $secure + 1`
-      echo "Pass:      RDS instance $db has a retention period greater than $aws_rds_retention [$secure Passes] [$secure Passes]"
+      echo "Pass:      RDS instance $db has a retention period greater than $aws_rds_min_retention [$secure Passes] [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
-      echo "Warning:   RDS instance $db has a retention period less than $aws_rds_retention [$secure Passes] [$insecure Warnings]"
+      echo "Warning:   RDS instance $db has a retention period less than $aws_rds_min_retention [$secure Passes] [$insecure Warnings]"
     fi
   done
   # Ensure that your AWS RDS Reserved Instances (RIs) are renewed before expiration

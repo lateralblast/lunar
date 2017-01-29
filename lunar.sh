@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      6.2.6
+# Version:      6.2.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -63,7 +63,9 @@ sns_protocol="email"
 sns_endpoint="alerts@company.com"
 valid_tag_string="(ue1|uw1|uw2|ew1|ec1|an1|an2|as1|as2|se1)-(d|t|s|p)-([a-z0-9\-]+)$"
 aws_region=""
-aws_rds_retention="7"
+aws_rds_min_retention="7"
+aws_ec2_min_retention="7"
+aws_ec2_max_retention="30"
 
 # Set up some global variables
 
