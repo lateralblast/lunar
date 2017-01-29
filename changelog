@@ -1103,3 +1103,5 @@
 # Added check for AWS Redshift encryption being enabled
 # 6.4.4: Mon 30 Jan 2017 08:50:04 AEDT
 # Added check for AWS Redshift using KMS keys
+# 6.4.5: Mon 30 Jan 2017 09:12:42 AEDT
+# Added check for AWS Redshift using EC2-VPC domains rather than EC2-Classic

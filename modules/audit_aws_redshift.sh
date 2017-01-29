@@ -4,6 +4,7 @@
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-audit-logging-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted-with-kms-customer-master-keys.html
+# Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-in-vpc.html
 #.
 
 audit_aws_redshift () {
@@ -47,13 +48,23 @@ audit_aws_redshift () {
     fi
     # Check if KMS keys are being used
     total=`expr $total + 1`
-    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query -query 'Clusters[].[Encrypted,KmsKeyId]' |grep true`
+    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].[Encrypted,KmsKeyId]' |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Redshift instance $db is using KMS keys [$secure Passes]"
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Redshift instance $db is not using KMS keys [$insecure Warnings]"
+    fi
+    # Check if EC2-VPC platform is being used rather than EC2-Classic
+    total=`expr $total + 1`
+    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].VpcId' --output text`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Redshift instance $db is using the EC2-VPC platform [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Redshift instance $db may be using the EC2-Classic platform [$insecure Warnings]"
     fi
   done
 }
