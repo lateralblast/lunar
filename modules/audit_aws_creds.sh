@@ -1,25 +1,5 @@
 # audit_aws_creds
 #
-# AWS IAM users can access AWS resources using different types of credentials,
-# such as passwords or access keys. It is recommended that all credentials
-# that have been unused in 90 or greater days be removed or deactivated.
-#
-# Disabling or removing unnecessary credentials will reduce the window of
-# opportunity for credentials associated with a compromised or abandoned
-# account to be used.
-#
-# Access keys consist of an access key ID and secret access key, which are used
-# to sign programmatic requests that you make to AWS. AWS users need their own
-# access keys to make programmatic calls to AWS from the AWS Command Line
-# Interface (AWS CLI), Tools for Windows PowerShell, the AWS SDKs, or direct
-# HTTP calls using the APIs for individual AWS services. It is recommended that
-# all access keys be regularly rotated.
-#
-# Rotating access keys will reduce the window of opportunity for an access key
-# that is associated with a compromised or terminated account to be used.
-# Access keys should be rotated to ensure that data cannot be accessed with an
-# old key which might have been lost, cracked, or stolen.
-#
 # Refer to Section(s) 1.3  Page(s) 15-6 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.4  Page(s) 17-8 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.12 Page(s) 33-4 CIS AWS Foundations Benchmark v1.1.0

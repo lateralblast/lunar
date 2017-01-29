@@ -1,56 +1,8 @@
 # audit_aws_rec_rds
 #
-# Ensure that your RDS instances are using Multi-AZ deployment configurations
-# for high availability and automatic failover support fully managed by AWS.
-#
-# When Multi-AZ is enabled, AWS automatically provision and maintain a
-# synchronous database standby replica on a dedicated hardware in a different
-# datacenter (known as Availability Zone). AWS RDS will automatically switch
-# from the primary instance to the available standby replica in the event of a
-# failure such as an Availability Zone outage, an internal hardware or network
-# outage, a software failure or in case of planned interruptions such as
-# software patching or changing the RDS instance type.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-multi-az.html
-#
-# Ensure that your RDS instances are using General Purpose SSDs instead of
-# Provisioned IOPS SSDs for cost-effective storage that fits a broad range of
-# database workloads. Unless you are running mission-critical applications that
-# require more than 10000 IOPS or 160 MiB/s of throughput per database
-#
-# Using General Purpose (GP) SSD database storage instead of Provisioned IOPS
-# (PIOPS) SSD storage represents a good strategy to cut down on AWS RDS costs
-# because for GP SSDs you only pay for the storage compared to PIOPS SSDs where
-# you pay for both storage and IOPS. Converting existing PIOPS-based databases
-# to GP is often possible by configuring larger storage which gives higher
-# baseline performance of IOPS for a lower cost.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/general-purpose-ssd-storage-type.html
-#
-# Ensure that your AWS RDS Reserved Instances (RIs) are renewed before
-# expiration in order to get the appropriate discount (based on the commitment
-# term) on the hourly charge for these instances. The renewal process consists
-# of purchasing another RDS Reserved Instance so that Amazon can keep charging
-# you based on the chosen reservation term. The default threshold for the number
-# of days before expiration when the conformity rule checkup is performed is 7
-# (seven).
-#
-# With Reserved Instances (RIs) you can optimize your Amazon RDS costs based on
-# your expected usage. Since RDS RIs are not renewed automatically, purchasing
-# another reserved database instances on time will guarantee that these
-# instances will be also billed at a discounted hourly rate.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/reserved-instance-expiration.html
-#
-# Ensure that your RDS database instances have set a minimum backup retention
-# period in order to achieve the compliance requirements. 
-# 
-# Having a minimum retention period set for RDS database instances will enforce
-# your backup strategy to follow the best practices as specified in the
-# compliance regulations. Retaining point-in-time RDS snapshots for a longer
-# period of time will allow you to handle more efficiently your data restoration
-# process in the event of failure.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-sufficient-backup-retention-period.html
 #.
 

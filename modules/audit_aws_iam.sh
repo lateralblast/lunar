@@ -1,45 +1,10 @@
 # audit_aws_iam
 #
-# The "root" account has unrestricted access to all resources in the AWS account.
-# It is highly recommended that the use of this account be avoided.
-# 
-# The "root" account has unrestricted access to all resources in the AWS account.
-# It is highly recommended that the use of this account be avoided.
-# Ensure a log metric filter and alarm exist for usage of "root" account.
-#
-# http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
-#
+# Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
 # Refer to Section(s) 1.1  Page(s) 10-1  CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.18 Page(s) 46-57 CIS AWS Foundations Benchmark v1.1.0
-#
-# Ensure that all the IAM groups within your AWS account are currently used and
-# have at least one user attached. Otherwise, remove any orphaned (unused) IAM
-# groups in order to prevent attaching unauthorized users.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-group.html
-#
-# Identify and remove any unused AWS IAM users, which are not designed for API
-# access, as an extra security measure for protecting your AWS resources against
-# unapproved access.
-#
-# Removing unused IAM users can reduce the risk of unauthorized access to your
-# AWS resources and help you manage the user-based access to the AWS Management
-# Console more efficiently.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-user.html
-#
-# Ensure that the existing IAM policies are attached only to groups in order
-# to efficiently assign permissions to all the users within your AWS account.
-#
-# Defining permissions at the IAM group level instead of IAM user level will
-# allow you manage more efficiently the user-based access to your AWS resources.
-# With this new model you can create groups, attach the necessary policies for
-# each group, then assign IAM users to these groups as needed. The model has
-# few valuable advantages such as removing duplication of information and
-# effort as you don't need to define policies for each individual user anymore
-# or switching existing users between groups as they receive different roles
-# in your organization.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/iam-user-policies.html
 #.
 

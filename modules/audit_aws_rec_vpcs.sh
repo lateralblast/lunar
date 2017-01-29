@@ -1,28 +1,6 @@
 # audit_aws_rec_vpcs
 #
-# Ensure that your AWS Virtual Private Clouds (VPCs) are using appropriate
-# naming conventions for tagging in order to manage them more efficiently and
-# adhere to AWS resource tagging best practices. A naming convention is a
-# well-defined set of rules useful for choosing the name of an AWS resource.
-#
-# Naming (tagging) your AWS VPCs consistently has several advantages such as
-# providing additional information about the VPC location and usage, promoting
-# consistency within the selected AWS region, distinguishing fast similar
-# resource stacks from one another, avoiding naming collisions, improving
-# clarity in cases of potential ambiguity and enhancing the aesthetic and
-# professional appearance.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/VPC/vpc-naming-conventions.html
-#
-# Ensure that your AWS VPNs have both tunnels always active as a failover
-# strategy in case of an outage or a planned maintenance.
-#
-# Using two active tunnels for your AWS VPN (IPsec) connections will ensure
-# redundancy when one of the tunnels becomes unavailable. A common scenario
-# where a redundant configuration is useful is when a maintenance session is
-# required and you need to keep the traffic flowing between the on-premise
-# network and AWS VPC without any downtime.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/VPC/vpn-tunnel-redundancy.html
 #.
 

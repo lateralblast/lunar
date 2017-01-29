@@ -1,19 +1,8 @@
 # audit_aws_mfa
 #
-# Multi-Factor Authentication (MFA) adds an extra layer of protection on top
-# of a user name and password. With MFA enabled, when a user signs in to an
-# AWS website, they will be prompted for their user name and password as well
-# as for an authentication code from their AWS MFA device. It is recommended
-# that MFA be enabled for all accounts that have a console password.
-# 
-# Enabling MFA provides increased security for console access as it requires
-# the authenticating principal to possess a device that emits a time-sensitive
-# key and have knowledge of a credential.
-#
-# http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
-# http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html
-# http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root
-#
+# Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+# Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html
+# Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root
 # Refer to Section(s) 1.2  Page(s) 12-4 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.13 Page(s) 35-6 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.14 Page(s) 37-8 CIS AWS Foundations Benchmark v1.1.0

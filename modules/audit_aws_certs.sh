@@ -1,13 +1,5 @@
 # audit_aws_certs
 #
-# Ensure that all the expired SSL/TLS certificates stored in AWS IAM are
-# removed in order to follow IAM security best practices.
-#
-# Removing expired SSL/TLS certificates eliminates the risk that an
-# invalid certificate will be deployed accidentally to a resource such as AWS
-# Elastic Load Balancer (ELB), which will trigger font-end errors and damage
-# the credibility of the application/website behind the ELB.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/expired-ssl-tls-certificate.html
 #.
 

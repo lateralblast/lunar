@@ -1,18 +1,5 @@
 # audit_aws_rec_ec
 #
-# Ensure that your AWS ElastiCache Reserved Cache Nodes are renewed before
-# expiration in order to get a significant discount (up to 70% when used in
-# steady state) on the hourly charges. The renewal process consists of
-# purchasing another ElastiCache Reserved Cache Node so that Amazon can keep
-# charging you based on the chosen reservation term. The default threshold
-# for the number of days before expiration when the conformity rule checkup
-# is performed is 7 (seven).
-#
-# With Reserved Cache Nodes (RCNs) you can optimize your Amazon ElastiCache
-# costs based on your expected usage. Since RCNs are not renewed automatically,
-# purchasing another reserved ElastiCache nodes before expiration will guarantee
-# their billing at a discounted hourly rate.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/ElastiCache/reserved-cache-nodes-expiration.html
 #.
 

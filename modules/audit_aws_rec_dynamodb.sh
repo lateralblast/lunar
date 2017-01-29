@@ -1,13 +1,5 @@
 # audit_aws_rec_dynamodb
 #
-# Identify any unused Amazon DynamoDB tables available within your AWS account
-# and remove them to help lower the cost of your monthly AWS bill. A DynamoDB
-# table is considered unused if it’s ItemCount parameter, which describes the
-# number of items in the table, is equal to 0 (zero).
-#
-# You are being charged for AWS DynamoDB Read & Write capacity, regardless
-# whether or not you use the provisioned capacity units for your tables. 
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/DynamoDB/unused-dynamodb-tables.html
 #.
 

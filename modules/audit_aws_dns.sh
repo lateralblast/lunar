@@ -1,48 +1,8 @@
 # audit_aws_dns
 #
-# Ensure that AWS Route 53 Auto Renew feature is enabled to automatically renew
-# your domain names as the expiration date approaches. The automatic renewal
-# registration fee will be charged to your AWS account and you will get an email
-# with the renewal confirmation once the registration is processed.
-#
-# Enabling automatic renewal for your domains registered with AWS or transferred
-# to AWS will guarantee you full control over domain names registration.
-# When your domains are automatically renewed before their expiration date,
-# the risk of losing them is practically zero.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/Route53/route-53-domain-auto-renew.html
-#
-# Identify and restore any expired domain names registered with AWS Route 53.
-# The restoration fee will be charged to your AWS account and you will get a 
-# confirmation email once the registration process is completed.
-#
-# When the expired domain names are not restored promptly, they will become
-# available for others to register. Restoring on time your Route 53 expired
-# domains will allow you to reestablish full control over their registration.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/Route53/route-53-domain-expired.html
-# 
-# Ensure your AWS Route 53 hosted zones have a TXT DNS record that contains a
-# corresponding Sender Policy Framework (SPF) value set for each MX record
-# available. The SPF record enables your Route 53 registered domains to publicly
-# state which mail servers are authorized to send emails on its behalf.
-#
-# Implementing SPF (Sender Policy Framework) records for your AWS Route 53
-# domain names will help you detect and stop email address spoofing in
-# order to reduce spam and increase your domains trustworthiness.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/Route53/sender-policy-framework-record-present.html
-#
-# Ensure that your AWS Route 53 registered domains are locked to prevent any
-# unauthorized transfers to another domain name registrar. Your domain names
-# must have the Transfer Lock feature enabled. This feature sets the
-# clientTransferProhibited flag which is a registry setting enabled by the
-# registrar to force all transfer requests to be rejected automatically.
-#
-# Enabling transfer locking for your domain names registered with AWS Route 53
-# or transferred to AWS Route 53 will provide an extra protection against domain
-# hijacking.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/Route53/route-53-domain-transfer-lock.html
 #.
 

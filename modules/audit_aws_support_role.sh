@@ -1,15 +1,5 @@
 # audit_aws_support_role
 #
-# AWS provides a support center that can be used for incident notification and
-# response, as well as technical support and customer services. Create an IAM
-# Role to allow authorized users to manage incidents with AWS Support.
-#
-# By implementing least privilege for access control, an IAM Role will require
-# an appropriate IAM Policy to allow Support Center Access in order to manage
-# Incidents with AWS Support.
-#
-# 
-# 
 # Refer to Section(s) 1.22 Page(s) 64-5 CIS AWS Foundations Benchmark v1.1.0
 #.
 

@@ -1,69 +1,10 @@
 # audit_aws_elb
 #
-# Ensure ELB SSL policies do not have deprecated ciphers and protocols
-#
 # Refer to http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-policy-table.html
-#
-# Ensure that your AWS Elastic Load Balancers use access logging to analyze
-# traffic patterns and identify and troubleshoot security issues.
-#
-# Enabling this feature will allow your ELB to record and save information about
-# each TCP and HTTP request made for your backend instances. The access logging
-# data can be extremely useful for security audits and troubleshooting sessions.
-# For example your ELB logging data can be used to analyze traffic patterns in
-# order to detect different types of attacks and help implementing custom
-# protection plans.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-access-log.html
-#
-# Check your Elastic Load Balancers Secure Socket Layer (SSL) negotiation
-# configuration (security policy) for any cipher suites that demonstrate
-# vulnerabilities or have been rendered insecure by recent exploits.
-#
-# Using insecure and deprecated ciphers for your ELB Predefined Security Policy
-# or Custom Security Policy could make the SSL connection between the client
-# and the load balancer vulnerable to exploits. If your ELB SSL negotiation
-# configuration use outdated cipher suites, we highly recommend that you update
-# it using the information provided in this guide (see Remediation/Resolution
-# section).
-#
-# https://www.cloudconformity.com/conformity-rules/ELB/elb-insecure-ssl-ciphers.html
-#
-# Check your Elastic Load Balancers Secure Sockets Layer (SSL) negotiation
-# configuration for SSLv2 and SSLv3 insecure / deprecated SSL protocols.
-#
-# Using insecure and deprecated protocols for your ELB Predefined Security
-# Policy or Custom Security Policy could make the connection between the client
-# and the load balancer vulnerable to exploits such as DROWN (Decrypting RSA
-# using Obsolete and Weakened eNcryption), which targets a specific weakness in
-# the OpenSSL implementation of SSLv2 protocol and POODLE (Padding Oracle On
-# Downgraded Legacy Encryption).
-#
-# This vulnerability allows an attacker to read information encrypted with SSLv3
-# protocol in plain text, using a man-in-the-middle attack. If your existent ELB
-# SSL negotiation configuration use Protocol-SSLv2 and/or Protocol-SSLv3,
-# we highly recommend updating it.
-#
+# Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-insecure-ssl-ciphers.html
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-insecure-ssl-protocols.html
-#
-# Check your Elastic Load Balancers (ELBs) listener for secure configurations.
-# Cloud Conformity recommends using HTTPS or SSL protocols to encrypt th
-# communication between the client and your load balancers.
-#
-# When an ELB has no listener configured to use secure protocols like HTTPS or
-# SSL, the front-end connection between the client and the load balancer is
-# vulnerable to eavesdropping and man-in-the-middle (MITM) attacks. The risk
-# becomes even higher when transmitting sensitive private data such as credit
-# card numbers. If your ELBs are not using secure listeners (HTTPS or SSL),
-# apply the information provided in this guide (see Remediation/Resolution
-# section) to update their configuration.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-listener-security.html
-#
-# Check your Elastic Load Balancer (ELB) security layer for at least one valid
-# security group that restrict access only to the ports defined in the load
-# balancer listeners configuration.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-security-group.html
 #.
 

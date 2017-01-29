@@ -1,21 +1,5 @@
 # audit_aws_password_policy
 #
-# Password policies are, in part, used to enforce password complexity
-# requirements. IAM password policies can be used to ensure password
-# are comprised of different character sets. It is recommended that
-# the password policy require at least one uppercase letter.
-#
-# Setting a password complexity policy increases account resiliency
-# against brute force login attempts.
-#
-# The policies should be set as follows:
-# RequireUppercaseCharacters true
-# RequireLowercaseCharacters true
-# RequireSymbols true
-# MinimumPasswordLength 14
-# PasswordReusePrevention 24
-# MaxPasswordAge 90
-#
 # Refer to Section(s) 1.5 Page(s)  19-20 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.6 Page(s)  21-22 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.7 Page(s)  23-24 CIS AWS Foundations Benchmark v1.1.0

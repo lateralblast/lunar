@@ -1,15 +1,5 @@
 # audit_aws_ec
 #
-# Ensure that your ElastiCache Redis Cache clusters are using a Multi-AZ
-# deployment configuration to enhance High Availability (HA) through
-# automatic failover to a read replica in case of a primary cache node
-# failure.
-#
-# Enabling the Multi-AZ Automatic Failover feature for your Redis Cache
-# clusters will improve the fault tolerance in case the read/write primary
-# node becomes unreachable due to loss of network connectivity, loss of
-# availability in the primary’s AZ, etc.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/ElastiCache/elasticache-multi-az.html
 #.
 

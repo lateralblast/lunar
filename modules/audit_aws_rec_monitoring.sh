@@ -1,14 +1,5 @@
 # audit_aws_rec_monitoring
 #
-# Ensure there is an Amazon CloudWatch alarm set up in your AWS account that is
-# triggered each time an EC2 large instance is created. This CloudWatch alarm
-# must fire and send email notifications every time an AWS API call is made to
-# provision a 4xlarge or 8xlarge EC2 instance.
-#
-# Using Amazon CloudWatch alarms to detect EC2 large instance launches will help
-# you manage better your heavy compute resources and avoid any unexpected
-# charges on your AWS bill.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/ec2-large-instance-changes-alarm.html
 #.
 

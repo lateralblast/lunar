@@ -1,46 +1,9 @@
 # audit_aws_keys
 #
-# AWS Key Management Service (KMS) allows customers to rotate the backing key
-# which is key material stored within the KMS which is tied to the key ID of
-# the Customer Created customer master key (CMK). It is the backing key that
-# is used to perform cryptographic operations such as encryption and decryption.
-# Automated key rotation currently retains all prior backing keys so that
-# decryption of encrypted data can take place transparently. It is recommended
-# that CMK key rotation be enabled.
-#
-# Rotating encryption keys helps reduce the potential impact of a compromised
-# key as data encrypted with a new key cannot be accessed with a previous key
-# that may have been exposed.
-#
 # Refer to Section(s) 2.8 Page(s) 85-6 CIS AWS Foundations Benchmark v1.1.0
-#
-# Removing unnecessary IAM SSH public keys will lower the risk of unauthorized
-# access to your AWS CodeCommit repositories and adhere to AWS IAM security best
-# practices.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unnecessary-ssh-public-keys.html
-#
-# Once enabled, the KMS Key Rotation will allow you to set an yearly rotation
-# schedule for your CMK so when a customer master key is required to encrypt
-# your new data, the KMS service can automatically use the latest version of
-# the HSA backing key (AWS hardened security appliance key) to perform the
-# encryption.
-#
-# Enabling this feature would significantly reduce the chance that a compromised
-# customer master key (CMK) could be used without your knowledge to access
-# certain AWS resources.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/KMS/key-rotation-enabled.html
-#
-# Check for any disabled KMS Customer Master Keys in your AWS account and remove
-# them in order to lower the cost of your monthly AWS bill.
-#
-# As of April 2016, each Customer Master Key that you create in AWS KMS costs
-# $1 / month, regardless whether is being used or not. Since the KMS disabled
-# keys are also charged, it is recommended to delete these keys in order to
-# avoid any unexpected charges on your bill.
-#
-# https://www.cloudconformity.com/conformity-rules/KMS/unused-customer-master-key.html
+# Refer to https://www.cloudconformity.com/conformity-rules/KMS/unused-customer-master-key.html
 #.
 
 audit_aws_keys () {

@@ -1,26 +1,6 @@
 # audit_aws_rec_es
 #
-# Ensure that your AWS Elasticsearch Service (ES) clusters are using
-# dedicated master nodes to improve their environmental stability by
-# offloading all the management tasks from the cluster data nodes.
-#
-# Using Elasticsearch dedicated master nodes to separate management tasks from
-# index and search requests will improve the clusters ability to manage easily
-# different types of workload and make them more resilient in production.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/Elasticsearch/elasticsearch-dedicated-master-enabled.html
-#
-# Ensure that your Amazon Elasticsearch (ES) clusters are using General Purpose
-# SSD (gp2) data nodes instead of Provisioned IOPS SSD (io1) nodes for cost
-# effective storage that fits a broad range of workloads. 
-#
-# Using General Purpose SSD (gp2) data nodes instead of Provisioned IOPS SSD
-# (io1) nodes represents a good strategy to cut down on Elasticsearch service
-# storage costs because for gp2-type nodes you only pay for the storage compared
-# to io1 nodes where you pay for both storage and I/O operations. Converting
-# existing io1 resources to gp2 is often possible by configuring larger storage
-# which gives higher baseline performance of IOPS for a lower cost.
-#
 # Refer to https://www.cloudconformity.com/conformity-rules/Elasticsearch/general-purpose-ssd-volume.html
 #.
 
