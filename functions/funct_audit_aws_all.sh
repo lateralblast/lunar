@@ -32,4 +32,5 @@ funct_audit_aws_all () {
   audit_aws_rds
   audit_aws_cf
   audit_aws_ec
+  audit_aws_cdn
 }
