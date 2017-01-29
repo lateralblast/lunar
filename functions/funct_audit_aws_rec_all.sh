@@ -18,5 +18,6 @@ funct_audit_aws_rec_all () {
   audit_aws_rec_elb
   audit_aws_rec_vpcs
   audit_aws_rec_rds
+  audit_aws_rec_ec
 }
 

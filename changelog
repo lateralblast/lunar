@@ -1081,3 +1081,5 @@
 # Added check for AWS CloudFormation stacks having policies
 # 6.3.3: Sun 29 Jan 2017 20:49:28 AEDT
 # Added check for AWS ElastiCache having HA enabled
+# 6.3.4: Sun 29 Jan 2017 21:06:57 AEDT
+# Added check for AWS ElastiCache reserved instances expiring

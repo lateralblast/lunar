@@ -95,7 +95,7 @@ audit_aws_rec_rds () {
   dbs=`aws rds describe-reserved-db-instances --region $aws_region --query 'ReservedDBInstances[].ReservedDBInstanceId' --output text`
   for db in $dbs; do
     start_date=`aws rds describe-reserved-db-instances --region $aws_region --reserved-db-instance-id $db --query 'ReservedDBInstances[].StartTime' --output text |cut -f1 -d.`
-    dur_secs=`aws rds describe-reserved-db-instances --region $aws_region --reserved-db-instance-id $db --query 'ReservedDBInstances[].StartTime' --output text`
+    dur_secs=`aws rds describe-reserved-db-instances --region $aws_region --reserved-db-instance-id $db --query 'ReservedDBInstances[].Duration' --output text`
     curr_secs=`date "+%s"`
     start_secs=`date -j -f "%Y-%m-%dT%H:%M:%SS" "$start_date" "+%s"`
     exp_secs=`echo "($start_secs + $dur_secs)" |bc`
