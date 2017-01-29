@@ -68,7 +68,7 @@ audit_aws_cdn () {
       insecure=`expr $insecure + 1`
       echo "Warning:   Cloudfront $cdn does not have logging enabled [$insecure Warnings]"
     fi
-    # check SSL protocol verions being used
+    # check SSL protocol versions being used against deprecated ones
     total=`expr $total + 1`
     check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' |egrep "SSLv3|SSLv2"`
     if [ ! "$check" ]; then
@@ -77,6 +77,16 @@ audit_aws_cdn () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Cloudfront $cdn is using a deprecated verions of SSL [$insecure Warnings]"
+    fi
+    # check if HTTP only being used 
+    total=`expr $total + 1`
+    check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginProtocolPolicy' |egrep "http-only"`
+    if [ ! "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Cloudfront $cdn is not using HTTP only [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Cloudfront $cdn is using HTTP only [$insecure Warnings]"
     fi
   done
 }

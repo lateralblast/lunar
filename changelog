@@ -1089,3 +1089,5 @@
 # Added check for AWS Cloudfront logging being enabled
 # 6.3.7: Sun 29 Jan 2017 21:38:47 AEDT
 # Added check for AWS Cloudfront using deprecate SSL version
+# 6.3.8: Sun 29 Jan 2017 21:43:31 AEDT
+# Added check for AWS Cloudfront using HTTP only
