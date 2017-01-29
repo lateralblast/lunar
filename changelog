@@ -1076,6 +1076,8 @@
 # 6.3.0: Sun 29 Jan 2017 19:03:52 AEDT
 # Added check for AWS SNS topic being publicly accessible
 # 6.3.1: Sun 29 Jan 2017 20:02:57 AEDT
-# Added check for AWS Cloud Formation stacks using SNS
+# Added check for AWS CloudFormation stacks using SNS
 # 6.3.2: Sun 29 Jan 2017 20:30:55 AEDT
-# Added check for AWS Cloud Formation stacks having policies
+# Added check for AWS CloudFormation stacks having policies
+# 6.3.3: Sun 29 Jan 2017 20:49:28 AEDT
+# Added check for AWS ElastiCache having HA enabled
