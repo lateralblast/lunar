@@ -20,5 +20,6 @@ funct_audit_aws_rec_all () {
   audit_aws_rec_rds
   audit_aws_rec_ec
   audit_aws_rec_monitoring
+  audit_aws_rec_redshift
 }
 

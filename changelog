@@ -1109,3 +1109,5 @@
 # Added check for AWS Redshift paramter groups requiring SSL
 # 6.4.7: Mon 30 Jan 2017 09:47:58 AEDT
 # Added check for AWS Redshift being publicly available
+# 6.4.8: Mon 30 Jan 2017 10:11:21 AEDT
+# Added check for AWS Redshift reserved instances about to expire
