@@ -1069,3 +1069,5 @@
 # Added check for AWS EC2 EBS volumes having KMS keys
 # 6.2.7: Sun 29 Jan 2017 15:31:20 AEDT
 # Added check for AWS EC2 EBS volume snapshots being taken
+# 6.2.8: Sun 29 Jan 2017 17:16:24 AEDT
+# Added check for AWS CloudTrail recording global events

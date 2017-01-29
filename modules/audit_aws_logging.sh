@@ -75,6 +75,18 @@
 # Refer to Section(s) 2.6 Page(s) 81-2 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 2.7 Page(s) 83-4 CIS AWS Foundations Benchmark v1.1.0
 #
+# Ensure that any S3 buckets used by AWS CloudTrail have Server Access Logging
+# feature enabled in order to track requests for accessing the buckets and
+# necessary for security audits.
+#
+# Since CloudTrail buckets contain sensitive information, these should be
+# protected from unauthorized viewing. With S3 Server Access Logging enabled
+# for your CloudTrail buckets you can track any requests made to access the
+# buckets or even limit who can alter or delete the access logs to prevent a
+# user from covering their tracks.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-s3-bucket-logging-enabled.html
+#
 # Ensure that your AWS CloudTrail logging bucket use Multi-Factor Authentication
 # (MFA) Delete feature in order to prevent the deletion of any versioned log
 # files.
@@ -85,6 +97,15 @@
 # credentials are compromised.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-bucket-mfa-delete-enabled.html
+#
+# Check for any AWS CloudTrail logging buckets that are publicly accessible,
+# in order to determine if your AWS account could be at risk.
+#
+# Using an overly permissive or insecure set of permissions for your CloudTrail
+# logging S3 buckets could provide malicious users access to your AWS account
+# log data which can increase exponentially the risk of unauthorized access.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-bucket-publicly-accessible.html
 #
 # Ensure that CloudTrail is enabled for all AWS regions in order to increase
 # the visibility of the API activity in your AWS account for security and
@@ -100,6 +121,18 @@
 # are not used to detect any unusual activity.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-enabled.html
+#
+# Ensure that your CloudTrail trails are recording both regional and global
+# events in order to increase the visibility of the API activity in your AWS
+# account for security and management purposes.
+#
+# Turning on API activity monitoring for global services that are not region-
+# specific such as IAM, STS and CloudFront enables you to have full visibility
+# over all your AWS services. Having CloudTrail logging enabled for both AWS
+# regional and global services would help you to demonstrate compliance and
+# troubleshoot operational or security issues within your AWS account.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/CloudTrail/cloudtrail-global-services-enabled.html
 #
 # Check for any AWS CloudTrail logging buckets that are publicly accessible,
 # in order to determine if your AWS account could be at risk.
@@ -124,12 +157,11 @@
 #.
 
 audit_aws_logging () {
-	check=`aws cloudtrail describe-trails --region $aws_region |grep IsMultiRegionTrail |grep true`
-	if [ "$check" ]; then
-    # Check CloudTrail has MultiRegion enabled
-    trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].Name" --output text`
+  trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].Name" --output text`
+	if [ "$trails" ]; then
     for trail in $trails; do
       total=`expr $total + 1`
+      # Check CloudTrail has MultiRegion enabled
       check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].IsMultiRegionTrail" |grep true`
       if [ "$check" ]; then
         secure=`expr $secure + 1`
@@ -140,7 +172,18 @@ audit_aws_logging () {
         funct_verbose_message "" fix
         funct_verbose_message "aws cloudtrail update-trail --name $trail --is-multi-region-trail" fix
         funct_verbose_message "" fix
-
+      fi
+      # Check CloudTrail is recording global events
+      check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].IncludeGlobalServiceEvents" |grep true`
+      if [ "$check" ]; then
+        secure=`expr $secure + 1`
+        echo "Secure:    CloudTrail $trail is recording global events [$secure Passes]"
+      else
+        insecure=`expr $insecure + 1`
+        echo "Warning:   CloudTrail $trail is not recording global events [$insecure Warnings]"
+        funct_verbose_message "" fix
+        funct_verbose_message "aws cloudtrail update-trail --name $trail --include-global-service-events" fix
+        funct_verbose_message "" fix
       fi
       # Check log file validation is enabled
       total=`expr $total + 1`
@@ -155,6 +198,7 @@ audit_aws_logging () {
         funct_verbose_message "aws cloudtrail update-trail --region $aws_region --name $trail --enable-log-file-validation" fix
         funct_verbose_message "" fix
       fi
+      # 
     done
     buckets=`aws cloudtrail describe-trails --region $aws_region --query 'trailList[*].S3BucketName' --output text`
     # Check that CloudTrail buckets don't grant access to users it shouldn't
