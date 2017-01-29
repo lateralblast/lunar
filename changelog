@@ -1083,3 +1083,5 @@
 # Added check for AWS ElastiCache having HA enabled
 # 6.3.4: Sun 29 Jan 2017 21:06:57 AEDT
 # Added check for AWS ElastiCache reserved instances expiring
+# 6.3.5: Sun 29 Jan 2017 21:23:07 AEDT
+# Added check for AWS Cloudfront WAF integration being enabled
