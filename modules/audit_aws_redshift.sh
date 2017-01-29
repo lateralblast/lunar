@@ -3,6 +3,7 @@
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/cluster-allow-version-upgrade.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-audit-logging-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted.html
+# Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted-with-kms-customer-master-keys.html
 #.
 
 audit_aws_redshift () {
@@ -43,6 +44,16 @@ audit_aws_redshift () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Redshift instance $db does not have encryption enabled [$insecure Warnings]"
+    fi
+    # Check if KMS keys are being used
+    total=`expr $total + 1`
+    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query -query 'Clusters[].[Encrypted,KmsKeyId]' |grep true`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Redshift instance $db is using KMS keys [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Redshift instance $db is not using KMS keys [$insecure Warnings]"
     fi
   done
 }
