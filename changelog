@@ -1063,3 +1063,5 @@
 # Added check for AWS RDS instances using default master username
 # 6.2.4: Sun 29 Jan 2017 11:40:24 AEDT
 # Added check for AWS RDS registered instances expiring
+# 6.2.5: Sun 29 Jan 2017 11:54:14 AEDT
+# Added check for AWS RDS backup retention period

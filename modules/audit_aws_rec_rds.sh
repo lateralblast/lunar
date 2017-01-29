@@ -41,6 +41,17 @@
 # instances will be also billed at a discounted hourly rate.
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/reserved-instance-expiration.html
+#
+# Ensure that your RDS database instances have set a minimum backup retention
+# period in order to achieve the compliance requirements. 
+# 
+# Having a minimum retention period set for RDS database instances will enforce
+# your backup strategy to follow the best practices as specified in the
+# compliance regulations. Retaining point-in-time RDS snapshots for a longer
+# period of time will allow you to handle more efficiently your data restoration
+# process in the event of failure.
+#
+# Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-sufficient-backup-retention-period.html
 #.
 
 audit_aws_rec_rds () {
@@ -68,6 +79,16 @@ audit_aws_rec_rds () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db is not using General Purpose SSD [$secure Passes] [$insecure Warnings]"
+    fi
+    # Check backup retention period is at least 7 days
+    total=`expr $total + 1`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].BackupRetentionPeriod' --output text`
+    if [ ! "$check" -lt "$aws_rds_retention" ]; then
+      secure=`expr $secure + 1`
+      echo "Pass:      RDS instance $db has a retention period greater than $aws_rds_retention [$secure Passes] [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   RDS instance $db has a retention period less than $aws_rds_retention [$secure Passes] [$insecure Warnings]"
     fi
   done
   # Ensure that your AWS RDS Reserved Instances (RIs) are renewed before expiration
