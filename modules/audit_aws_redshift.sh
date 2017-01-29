@@ -2,6 +2,7 @@
 #
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/cluster-allow-version-upgrade.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-audit-logging-enabled.html
+# Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted.html
 #.
 
 audit_aws_redshift () {
@@ -22,7 +23,7 @@ audit_aws_redshift () {
     fi
     # Check if audit logging is enabled
     total=`expr $total + 1`
-    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].AllowVersionUpgrade' |grep true`
+    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db |grep true`
     if [ "$check" ]; then
       secure=`expr $secure + 1`
       echo "Secure:    Redshift instance $db has logging enabled [$secure Passes]"
@@ -32,6 +33,16 @@ audit_aws_redshift () {
       funct_verbose_message "" fix
       funct_verbose_message "aws redshift enable-logging --region $aws_region --cluster-identifier $db --bucket-name <aws-redshift-audit-logs>" fix
       funct_verbose_message "" fix
+    fi
+    # Check if encryption is enabled
+    total=`expr $total + 1`
+    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].Encrypted' |grep true`
+    if [ "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Redshift instance $db has encryption enabled [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Redshift instance $db does not have encryption enabled [$insecure Warnings]"
     fi
   done
 }

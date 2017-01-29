@@ -1099,3 +1099,5 @@
 # Added check for AWS Redshift upgrades being enabled
 # 6.4.2: Mon 30 Jan 2017 08:36:14 AEDT
 # Added check for AWS Redshift logging being enabled
+# 6.4.3: Mon 30 Jan 2017 08:44:03 AEDT
+# Added check for AWS Redshift encryption being enabled
