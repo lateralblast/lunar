@@ -1107,3 +1107,5 @@
 # Added check for AWS Redshift using EC2-VPC domains rather than EC2-Classic
 # 6.4.6: Mon 30 Jan 2017 09:34:38 AEDT
 # Added check for AWS Redshift paramter groups requiring SSL
+# 6.4.7: Mon 30 Jan 2017 09:47:58 AEDT
+# Added check for AWS Redshift being publicly available

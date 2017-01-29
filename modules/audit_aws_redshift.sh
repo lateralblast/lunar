@@ -6,6 +6,7 @@
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted-with-kms-customer-master-keys.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-in-vpc.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-parameter-groups-require-ssl.html
+# Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-publicly-accessible.html
 #.
 
 audit_aws_redshift () {
@@ -80,5 +81,15 @@ audit_aws_redshift () {
         echo "Warning:   Redshift instance $db parameter group $group is not using SSL [$insecure Warnings]"
       fi
     done
+    # Check if Redshift is publicly available
+    total=`expr $total + 1`
+    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].PubliclyAccessible' |grep true`
+    if [ ! "$check" ]; then
+      secure=`expr $secure + 1`
+      echo "Secure:    Redshift instance $db is not publicly available [$secure Passes]"
+    else
+      insecure=`expr $insecure + 1`
+      echo "Warning:   Redshift instance $db is publicly available [$insecure Warnings]"
+    fi
   done
 }
