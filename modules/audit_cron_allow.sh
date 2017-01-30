@@ -1,17 +1,5 @@
 # audit_cron_allow
 #
-# The cron.allow and at.allow files are a list of users who are allowed to run
-# the crontab and at commands to submit jobs to be run at scheduled intervals.
-# On many systems, only the system administrator needs the ability to schedule
-# jobs.
-# Note that even though a given user is not listed in cron.allow, cron jobs can
-# still be run as that user. The cron.allow file only controls administrative
-# access to the crontab command for scheduling and modifying cron jobs.
-# Much more effective access controls for the cron system can be obtained by
-# using Role-Based Access Controls (RBAC).
-# Note that if System Accounting is enabled, add the user sys to the cron.allow
-# file in addition to the root account.
-#
 # Refer to Section(s) 6.1.10-1            Page(s) 125-7       CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.1.10-1            Page(s) 128-130     CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 6.1.10-1            Page(s) 145-7       CIS RHEL 5 Benchmark v2.1.0

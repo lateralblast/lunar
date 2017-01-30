@@ -1,17 +1,5 @@
 # audit_power_management
 #
-# Solaris:
-#
-# The settings in /etc/default/power control which users have access to the
-# configuration settings for the system power management and checkpoint and
-# resume features. By setting both values to -, configuration changes are
-# restricted to only the root user.
-#
-# AIX:
-#
-# The recommendation is to disable pmd. This is the power management service
-# that turns the machine off if it has been idle for a specific amount of time.
-#
 # Refer to Section(s) 2.12.5 Page(s) 209-210 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 10.1   Page(s) 91-2    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 10.3   Page(s) 139     CIS Solaris 10 Benchmark v1.1.0

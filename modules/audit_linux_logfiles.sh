@@ -1,8 +1,7 @@
 # audit_linux_logfiles
 #
 # Check permission on log files under Linux. Make sure they are only readable
-# by system accounts. This stops sensitive system information from being
-# disclosed
+# by system accounts. 
 #.
 
 audit_linux_logfiles () {

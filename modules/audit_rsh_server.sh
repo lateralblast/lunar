@@ -1,10 +1,5 @@
 # audit_rsh_server
 #
-# The Berkeley rsh-server (rsh, rlogin, rcp) package contains legacy services
-# that exchange credentials in clear-text.
-# These legacy service contain numerous security exposures and have been
-# replaced with the more secure SSH package.
-#
 # Refer to Section(s) 2.1.3  Page(s) 48   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.3  Page(s) 56-7 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.3  Page(s) 51-2 CIS RHEL 6 Benchmark v1.2.0

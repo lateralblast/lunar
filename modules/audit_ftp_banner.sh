@@ -1,12 +1,6 @@
 
 # audit_ftp_banner
 #
-# The action for this item sets a warning message for FTP users before they
-# log in. Warning messages inform users who are attempting to access the
-# system of their legal status regarding the system. Consult with your
-# organization's legal counsel for the appropriate wording for your
-# specific organization.
-#
 # Refer to Section(s) 2.12.11 Page(s) 215-6 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 8.4     Page(s) 70-1  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 8.4     Page(s) 114   CIS Solaris 10 Benchmark v5.1.0

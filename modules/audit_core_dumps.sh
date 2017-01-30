@@ -1,41 +1,5 @@
 # audit_core_dumps
 #
-# Solaris:
-#
-# Restrict Core Dumps to Protected Directory
-#
-# Although /etc/coreadm.conf isn't strictly needed,
-# creating it and importing it makes it easier to
-# enable or disable changes
-#
-# Example /etc/coreadm.conf
-#
-# COREADM_GLOB_PATTERN=/var/cores/core_%n_%f_%u_%g_%t_%p
-# COREADM_INIT_PATTERN=core
-# COREADM_GLOB_ENABLED=yes
-# COREADM_PROC_ENABLED=no
-# COREADM_GLOB_SETID_ENABLED=yes
-# COREADM_PROC_SETID_ENABLED=no
-# COREADM_GLOB_LOG_ENABLED=yes
-#
-# The action described in this section creates a protected directory to store
-# core dumps and also causes the system to create a log entry whenever a regular
-# process dumps core.
-# Core dumps, particularly those from set-UID and set-GID processes, may contain
-# sensitive data.
-#
-# Linux:
-#
-# A core dump is the memory of an executable program. It is generally used to
-# determine why a program aborted. It can also be used to glean confidential
-# information from a core file. The system provides the ability to set a soft
-# limit for core dumps, but this can be overridden by the user.
-#
-# Setting a hard limit on core dumps prevents users from overriding the soft
-# variable. If core dumps are required, consider setting limits for user groups
-# (see limits.conf(5)). In addition, setting the fs.suid_dumpable variable to 0
-# will prevent setuid programs from dumping core.
-#
 # Refer to Section(s) 1.6.1 Page(s) 44-5 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.6.1 Page(s) 50-1 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.5.1 Page(s) 47   CIS RHEL 6 Benchmark v1.2.0

@@ -1,13 +1,5 @@
 # audit_cde_banner
 #
-# The Common Desktop Environment (CDE) provides a uniform desktop environment
-# for users across diverse Unix platforms.
-# Warning messages inform users who are attempting to login to the system of
-# their legal status regarding the system and must include the name of the
-# organization that owns the system and any monitoring policies that are in
-# place. Consult with your organization's legal counsel for the appropriate
-# wording for your specific organization.
-#
 # Refer to Section(s) 8.2 Page(s) 112-3 CIS Solaris 10 v5.1.0
 #.
 

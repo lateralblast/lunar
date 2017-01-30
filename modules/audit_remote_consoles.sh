@@ -1,13 +1,5 @@
 # audit_remote_consoles
 #
-# The consadm command can be used to select or display alternate console devices.
-# Since the system console has special properties to handle emergency situations,
-# it is important to ensure that the console is in a physically secure location
-# and that unauthorized consoles have not been defined. The "consadm -p" command
-# displays any alternate consoles that have been defined as auxiliary across
-# reboots. If no remote consoles have been defined, there will be no output from
-# this command.
-#
 # Refer to Section(s) 9.1 Page(s) 72  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.1 Page(s) 116 CIS Solaris 10 Benchmark v5.1.0
 #.

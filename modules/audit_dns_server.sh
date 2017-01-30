@@ -1,14 +1,5 @@
 # audit_dns_server
 #
-# The Domain Name System (DNS) is a hierarchical distributed naming system
-# for computers, services, or any resource connected to the Internet or a
-# private network. It associates various information with domain names
-# assigned to each of the participating entities.
-# In general servers will be clients of an upstream DNS server within an
-# organisation so do not need to provide DNS server services themselves.
-# An obvious exception to this is DNS servers themselves and servers that
-# provide boot and install services such as Jumpstart or Kickstart servers.
-#
 # Refer to Section(s) 3.9    Page(s) 65-6 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.2.9  Page(s) 109  CIS Ubuntu Linux 16.04 Benchmark v1.0.0
 # Refer to Section(s) 3.9    Page(s) 77-8 CIS RHEL 5 Benchmark v2.1.0

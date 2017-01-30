@@ -1,7 +1,5 @@
 # audit_bpjava_msvc
 #
-# BPJava Service
-#
 # Turn off bpjava-msvc if not required. It is associated with NetBackup.
 #.
 

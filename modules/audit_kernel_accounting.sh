@@ -1,17 +1,5 @@
 # audit_kernel_accounting
 #
-# Solaris:
-#
-# Kernel-level auditing provides information on commands and system calls that
-# are executed on the local system. The audit trail may be reviewed with the
-# praudit command. Note that enabling kernel-level auditing on Solaris disables
-# the automatic mounting of external devices via the Solaris volume manager
-# daemon (vold).
-# Kernel-level auditing can consume a large amount of disk space and even cause
-# system performance impact, particularly on heavily used machines.
-#
-# OS X:
-#
 # Refer to Section(s) 3.3 Page(s) 38-39 CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section(s) 4.9 Page(s) 73-5  CIS Solaris 10 Benchmark v5.1.0
 #.

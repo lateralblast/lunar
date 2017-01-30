@@ -1,16 +1,5 @@
 # audit_sticky_bit
 #
-# When the so-called sticky bit (set with chmod +t) is set on a directory,
-# then only the owner of a file may remove that file from the directory
-# (as opposed to the usual behavior where anybody with write access to that
-# directory may remove the file).
-# Setting the sticky bit prevents users from overwriting each others files,
-# whether accidentally or maliciously, and is generally appropriate for most
-# world-writable directories (e.g. /tmp). However, consult appropriate vendor
-# documentation before blindly applying the sticky bit to any world writable
-# directories found in order to avoid breaking any application dependencies
-# on a given directory.
-#
 # Refer to Section(s) 1.17   Page(s) 26    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.21 Page(s) 46    CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 1.1.17 Page(s) 28    CIS RHEL 5 Benchmark v2.1.0

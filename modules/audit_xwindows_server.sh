@@ -1,10 +1,5 @@
 # audit_xwindows_server
 #
-# The X Windows system provides a Graphical User Interface (GUI) where users
-# can have multiple windows in which to run programs and various add on.
-# The X Windows system is typically used on desktops where users login,
-# but not on servers where users typically do not login.
-#
 # Refer to Section(s) 3.2 Page(s) 59-60 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.3 Page(s) 72-3  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.2 Page(s) 62-3  CIS RHEL 6 Benchmark v1.2.0

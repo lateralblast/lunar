@@ -1,12 +1,5 @@
 # audit_pam_rhosts
 #
-# Used in conjunction with the BSD-style "r-commands" (rlogin, rsh, rcp),
-# .rhosts files implement a weak form of authentication based on the network
-# address or host name of the remote computer (which can be spoofed by a
-# potential attacker to exploit the local system).
-# Disabling .rhosts support helps prevent users from subverting the system's
-# normal access control mechanisms.
-#
 # Refer to Section(s) 6.8 Page(s) 51-52 CIS Solaris 11.1 Benchmark  v1.0.0
 # Refer to Section(s) 6.4 Page(s) 89    CIS Solaris 10 Benchmark v5.1.0
 #.

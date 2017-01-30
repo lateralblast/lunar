@@ -1,13 +1,5 @@
 # audit_samba
 #
-# Solaris includes the popular open source Samba server for providing file
-# and print services to Windows-based systems. This allows a Solaris system
-# to act as a file or print server on a Windows network, and even act as a
-# Domain Controller (authentication server) to older Windows operating
-# systems. Note that on Solaris releases prior to 11/06 the file
-# /etc/sfw/smb.conf does not exist and the service will not be started by
-# default even on newer releases.
-#
 # Refer to Section(s) 3.13     Page(s) 68    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.13     Page(s) 80    CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.2.12   Page(s) 112   CIS RHEL 7 Benchmark v2.1.0

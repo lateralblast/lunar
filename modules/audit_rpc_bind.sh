@@ -1,16 +1,5 @@
 # audit_rpc_bind
 #
-# The rpcbind utility is a server that converts RPC program numbers into
-# universal addresses. It must be running on the host to be able to make
-# RPC calls on a server on that machine.
-# When an RPC service is started, it tells rpcbind the address at which it is
-# listening, and the RPC program numbers it is prepared to serve. When a client
-# wishes to make an RPC call to a given program number, it first contacts
-# rpcbind on the server machine to determine the address where RPC requests
-# should be sent.
-# The rpcbind utility should be started before any other RPC service. Normally,
-# standard RPC servers are started by port monitors, so rpcbind must be started
-# before port monitors are invoked.
 # Check that rpc bind has tcp wrappers enabled in case it's turned on.
 #
 # Refer to Section(s) 2.2.14 Page(s) 34-5 CIS Solaris 10 Benchmark v5.1.0

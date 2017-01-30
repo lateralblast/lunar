@@ -2,25 +2,6 @@
 #
 # Turn off remote shell services
 #
-# AIX:
-#
-# /etc/security/user - rlogin:
-#
-# Defines whether or not the root user can login remotely.
-# In setting the rlogin attribute to false, this ensures that the root user
-# cannot remotely log into the system. All remote logins as root should be
-# prohibited, instead elevation to root should only be allowed once a user
-# has authenticated locally through their individual user account.
-#
-# System account lockdown:
-#
-# This change disables direct login access for the generic system accounts
-# i.e. daemon, bin, sys, adm, uucp, nobody and lpd.
-# This change disables direct local and remote login to the generic system
-# accounts i.e. daemon, bin, sys, adm, uucp, nobody and lpd. It is recommended
-# that a password is not set on these accounts to ensure that the only access
-# is via su from the root account.
-#
 # Refer to Section(s) 1.2.7,9 Page(s) 31,33 CIS AIX Benchmark v1.1.0
 #.
 

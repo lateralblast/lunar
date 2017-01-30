@@ -1,8 +1,5 @@
 # audit_gate_keeper
 #
-# Disabling this feature mitigates the risk of an attacker remotely waking
-# the system and gaining access.
-#
 # Refer to Section 2.5.1 Page(s) 26-27 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

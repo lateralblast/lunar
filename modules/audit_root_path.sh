@@ -1,12 +1,5 @@
 # audit_root_path
 #
-# The root user can execute any command on the system and could be fooled into
-# executing programs unemotionally if the PATH is not set correctly.
-# Including the current working directory (.) or other writable directory in
-# root's executable path makes it likely that an attacker can gain superuser
-# access by forcing an administrator operating as root to execute a Trojan
-# horse program.
-#
 # Refer to Section(s) 9.2.6   Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.6   Page(s) 191-2   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.6   Page(s) 167     CIS RHEL 6 Benchmark v1.2.0

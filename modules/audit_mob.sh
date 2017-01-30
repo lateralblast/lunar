@@ -1,15 +1,6 @@
 # audit_mob
 #
-# The managed object browser (MOB) provides a way to explore the object model
-# used by the VMkernel to manage the host; it enables configurations to be
-# changed as well. This interface is meant to be used primarily for debugging
-# the vSphere SDK but because there are no access controls it could also be
-# used as a method obtain information about a host being targeted for
-# unauthorized access.
-#
-# Refer to:
-#
-# http://pubs.vmware.com/vsphere-51/index.jsp?topic=%2Fcom.vmware.vsphere.security.doc%2FGUID-0EF83EA7-277C-400B-B697-04BDC9173EA3.html
+# Refer to http://pubs.vmware.com/vsphere-51/index.jsp?topic=%2Fcom.vmware.vsphere.security.doc%2FGUID-0EF83EA7-277C-400B-B697-04BDC9173EA3.html
 #.
 
 audit_mob () {

@@ -1,24 +1,5 @@
 # audit_console_login
 #
-# Privileged access to the system via the root account must be accountable
-# to a particular user. The system console is supposed to be protected from
-# unauthorized access and is the only location where it is considered
-# acceptable # to permit the root account to login directly, in the case of
-# system emergencies. This is the default configuration for Solaris.
-# Use an authorized mechanism such as RBAC, the su command or the freely
-# available sudo package to provide administrative access through unprivileged
-# accounts. These mechanisms provide at least some limited audit trail in the
-# event of problems.
-# Note that in addition to the configuration steps included here, there may be
-# other login services (such as SSH) that require additional configuration to
-# prevent root logins via these services.
-# A more secure practice is to make root a "role" instead of a user account.
-# Role Based Access Control (RBAC) is similar in function to sudo, but provides
-# better logging ability and additional authentication requirements. With root
-# defined as a role, administrators would have to login under their account and
-# provide root credentials to invoke privileged commands. This restriction also
-# includes logging in to the console, except for single user mode.
-#
 # Refer to Section(s) 6.4   Page(s) 142-3 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.4   Page(s) 165   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 6.4   Page(s) 145   CIS RHEL 6 Benchmark v1.2.0

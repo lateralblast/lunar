@@ -1,7 +1,5 @@
 # audit_bootparams
 #
-# Turn off bootparams if not required
-# Required for jumpstart servers
 #.
 
 audit_bootparams () {

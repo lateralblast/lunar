@@ -1,19 +1,5 @@
 # audit_grub_security
 #
-# GRUB is a boot loader for x86/x64 based systems that permits loading an OS
-# image from any location. Oracle x86 systems support the use of a GRUB Menu
-# password for the console.
-# The flexibility that GRUB provides creates a security risk if its
-# configuration is modified by an unauthorized user. The failsafe menu entry
-# needs to be secured in the same environments that require securing the
-# systems firmware to avoid unauthorized removable media boots. Setting the
-# GRUB Menu password helps prevent attackers with physical access to the
-# system console from booting off some external device (such as a CD-ROM or
-# floppy) and subverting the security of the system.
-# The actions described in this section will ensure you cannot get to failsafe
-# or any of the GRUB command line options without first entering the password.
-# Note that you can still boot into the default OS selection without a password.
-#
 # Refer to Section(s) 1.5.3 Page(s) 47-8 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.4.1 Page(s) 57   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 3.1   Page(s) 31-2 CIS SLES 11 Benchmark v1.0.0

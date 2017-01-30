@@ -1,6 +1,5 @@
 # audit_system_auth_password_strength
 #
-# Audit password strength
 #.
 
 audit_system_auth_password_strength () {

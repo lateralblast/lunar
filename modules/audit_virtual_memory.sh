@@ -1,10 +1,5 @@
 # audit_virtual_memory
 #
-# Set the system flag to force randomized virtual memory region placement.
-#
-# Randomly placing virtual memory regions will make it difficult for to write
-# memory page exploits as the memory placement will be consistently shifting.
-#
 # Refer to Section(s) 1.6.3 Page(s) 46   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.6.3 Page(s) 51-2 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.6.3 Page(s) 48-9 CIS RHEL 6 Benchmark v1.2.0

@@ -1,13 +1,5 @@
 # audit_suid_files
 #
-# The owner of a file can set the file's permissions to run with the owner's or
-# group's permissions, even if the user running the program is not the owner or
-# a member of the group. The most common reason for a SUID/SGID program is to
-# enable users to perform functions (such as changing their password) that
-# require root privileges.
-# There are valid reasons for SUID/SGID programs, but it is important to
-# identify and review such programs to ensure they are legitimate.
-#
 # Refer to Section(s) 9.1.13-4 Page(s) 161-2 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.1.13-4 Page(s) 186-7 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.1.13-4 Page(s) 164-5 CIS RHEL 6 Benchmark v1.2.0

@@ -1,20 +1,6 @@
 # audit_software_update
 #
-# Ensure OS X is set to autoupdate
-#
-# Check ESXi is up to date
-#
-# By staying up to date on ESXi patches, vulnerabilities in the hypervisor can
-# be mitigated. An educated attacker can exploit known vulnerabilities when
-# attempting to attain access or elevate privileges on an ESXi host.
-# Employ a process to keep ESXi hosts up to date with patches in accordance
-# with industry-standards and internal guidelines. VMware also publishes
-# Advisories on security patches, and offers a way to subscribe to email alerts
-# for them.
-#
-# Refer to:
-#
-# http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.update_manager.doc/GUID-EF6BEE4C-4583-4A8C-81B9-5B074CA2E272.html
+# Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.update_manager.doc/GUID-EF6BEE4C-4583-4A8C-81B9-5B074CA2E272.html
 #
 # Refer to Page(s) 8 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.

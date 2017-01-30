@@ -1,14 +1,5 @@
 # audit_keychain_lock
 #
-# The keychain is a secure database store for passwords and certificates and
-# is created for each user account on Mac OS X. The system software itself
-# uses keychains for secure storage.
-#
-# While logged in, the keychain does not prompt the user for passwords for
-# various systems and/or programs. This can be exploited by unauthorized users
-# to gain access to password protected programs and/or systems in the absence
-# of the user. Timing out the keychain can reduce the exploitation window.
-#
 # Refer to Section 5.2 Page(s) 49-50 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

@@ -1,12 +1,5 @@
 # audit_cups
 #
-# The Common Unix Print System (CUPS) provides the ability to print to both
-# local and network printers. A system running CUPS can also accept print jobs
-# from remote systems and print them to local printers. It also provides a web
-# based remote administration capability.
-#
-# Printing Services Turn off cups if not required on Linux.
-#
 # Refer to Section(s) 3.4   Page(s) 61   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.4   Page(s) 73-4 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.4   Page(s) 64   CIS RHEL 6 Benchmark v1.2.0

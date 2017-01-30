@@ -1,11 +1,5 @@
 # audit_nisplus
 #
-# NIS+ was designed to be a more secure version of NIS. However,
-# the use of NIS+ has been deprecated by Oracle and customers are
-# encouraged to use LDAP as an alternative naming service.
-# This service is disabled by default unless the NIS+ service has
-# been configured on the system.
-#
 # Refer to Section(s) 2.2.4 Page(s) 25 CIS Solaris 10 Benchmark v5.1.0
 #.
 

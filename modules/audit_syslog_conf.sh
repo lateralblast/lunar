@@ -1,26 +1,7 @@
 # audit_syslog_conf
 #
-# By default, Solaris systems do not capture logging information that is sent
-# to the LOG_AUTH facility.
-# A great deal of important security-related information is sent via the
-# LOG_AUTH facility (e.g., successful and failed su attempts, failed login
-# attempts, root login attempts, etc.).
-#
-# ESXi can be configured to store log files on an in-memory file system.
-# This occurs when the host's "/scratch" directory is linked to "/tmp/scratch".
-# When this is done only a single day's worth of logs are stored at any time,
-# in addition log files will be reinitialized upon each reboot.
-# This presents a security risk as user activity logged on the host is only
-# stored temporarily and will not persistent across reboots.
-# This can also complicate auditing and make it harder to monitor events and
-# diagnose issues.
-# ESXi host logging should always be configured to a persistent datastore.
-#
-# Refer to:
-#
-# http://kb.vmware.com/kb/1033696
-# http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-9F67DB52-F469-451F-B6C8-DAE8D95976E7.html
-#
+# Refer to http://kb.vmware.com/kb/1033696
+# Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-9F67DB52-F469-451F-B6C8-DAE8D95976E7.html
 # Refer to Section(s) 3.4     Page(s) 10    CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 5.1.1   Page(s) 104-5 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.11.13 Page(s) 39-40 CIS ESX Server 4 Benchmark v1.1.0

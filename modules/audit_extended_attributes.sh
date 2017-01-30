@@ -1,12 +1,5 @@
 # audit_extended_attributes
 #
-# Extended attributes are implemented as files in a "shadow" file system that
-# is not generally visible via normal administration commands without special
-# arguments.
-# Attackers or malicious users could "hide" information, exploits, etc.
-# in extended attribute areas. Since extended attributes are rarely used,
-# it is important to find files with extended attributes set.
-#
 # Refer to Section(s) 9.25 Page(s) 90-1  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.25 Page(s) 136-7 CIS Solaris 10 Benchmark v1.1.0
 #.

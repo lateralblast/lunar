@@ -1,8 +1,5 @@
 # audit_writesrv
 #
-# The recommendation is to disable writesrv. This allows users to chat using
-# the system write facility on a terminal.
-#
 # Refer to Section(s) 2.12.6 Page(s) 210-1 CIS AIX Benchmark v1.1.0
 #.
 

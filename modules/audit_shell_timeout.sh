@@ -1,17 +1,6 @@
 # audit_shell_timeout
 #
-# If a user forgets to log out of their SSH session the idle connection will
-# remain indefinitely, increasing the potential for someone to gain privileged
-# access to the host.
-# The ESXiShellInteractiveTimeOut allows you to automatically terminate idle
-# shell sessions.
-#
-# When the ESXi Shell or SSH services are enabled on a host they will run
-# indefinitely.  To avoid having these services left running set the
-# ESXiShellTimeOut.  The ESXiShellTimeOut defines a window of time after
-# which the ESXi Shell and SSH services will automatically be terminated.
-#
-# Refre to: http://pubs.vmware.com/vsphere-55/topic/com.vmware.wssdk.apiref.doc/vim.option.OptionManager.html
+# Refer to: http://pubs.vmware.com/vsphere-55/topic/com.vmware.wssdk.apiref.doc/vim.option.OptionManager.html
 #.
 
 audit_shell_timeout () {

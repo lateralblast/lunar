@@ -1,13 +1,5 @@
 # audit_keyserv
 #
-# The keyserv process is only required for sites that are using
-# Oracle's Secure RPC mechanism. The most common uses for Secure RPC on
-# Solaris machines are NIS+ and "secure NFS", which uses the Secure RPC
-# mechanism to provide higher levels of security than the standard NFS
-# protocols. Do not confuse "secure NFS" with sites that use Kerberos
-# authentication as a mechanism for providing higher levels of NFS security.
-# "Kerberized" NFS does not require the keyserv process to be running.
-#
 # Refer to Section(s) 2.3   Page(s) 16-17 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 2.2.1 Page(s) 23    CIS Solaris 10 Benchmark v5.1.0
 #.

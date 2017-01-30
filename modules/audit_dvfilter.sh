@@ -1,16 +1,7 @@
 # audit_dvfilter
 #
-# f you are not using products that make use of the dvfilter network API
-# (e.g. VMSafe), the host should not be configured to send network information
-# to a VM. If the API is enabled, an attacker might attempt to connect a VM to
-# it, thereby potentially providing access to the network of other VMs on the
-# host. If you are using a product that makes use of this API then verify that
-# the host has been configured correctly.
-#
-# Refer to:
-#
-# http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.ext_solutions.doc/GUID-6013E15D-92CE-4970-953C-ACCB36ADA8AD.html
-# http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-CD0783C9-1734-4B9A-B821-ED17A77B0206.html
+# Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.ext_solutions.doc/GUID-6013E15D-92CE-4970-953C-ACCB36ADA8AD.html
+# Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-CD0783C9-1734-4B9A-B821-ED17A77B0206.html
 #.
 
 audit_dvfilter () {

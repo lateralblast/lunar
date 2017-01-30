@@ -1,11 +1,5 @@
 # audit_nfs
 #
-# The Network File System (NFS) is one of the first and most widely
-# distributed file systems in the UNIX environment. It provides the ability
-# for systems to mount file systems of other servers through the network.
-#
-# Turn off NFS services
-#
 # Refer to Section(s) 3.8    Page(s) 64-5 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.8    Page(s) 77   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.8    Page(s) 67-8 CIS RHEL 6 Benchmark v1.2.0

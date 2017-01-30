@@ -1,18 +1,5 @@
 # audit_system_auth_password_hashing
 #
-# Audit password hashing
-#
-# The commands below change password encryption from md5 to sha512
-# (a much stronger hashing algorithm).
-# All existing accounts will need to perform a password change to
-# upgrade the stored hashes to the new algorithm.
-#
-# The SHA-512 algorithm provides much stronger hashing than MD5,
-# thus providing additional protection to the system by increasing
-# the level of effort for an attacker to successfully determine passwords.
-#
-# Note that these change only apply to accounts configured on the local system.
-#
 # Refer to Section(s) 5.3.4 Page(s) 243   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.4 Page(s) 224   CIS Amazon Linux Benchmark v2.0.0
 #.

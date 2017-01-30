@@ -1,8 +1,5 @@
 # audit_file_vault
 #
-# Encrypting sensitive data minimizes the likelihood of unauthorized users
-# gaining access to it.
-#
 # Refer to Section 2.6.1 Page(s) 28 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

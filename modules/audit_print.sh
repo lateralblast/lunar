@@ -1,14 +1,5 @@
 # audit_print
 #
-# RFC 1179 describes the Berkeley system based line printer protocol.
-# The service is used to control local Berkeley system based print spooling.
-# It listens on port 515 for incoming print jobs.
-# Secure by default limits access to the line printers by only allowing
-# print jobs to be initiated from the local system.
-# If the machine does not have locally attached printers,
-# disable this service.
-# Note that this service is not required for printing to a network printer.
-#
 # Refer to Section(s) 3.14    Page(s) 14-15 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.1-2 Page(s) 34-36 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 2.1.7   Page(s) 22    CIS Solaris 10 Benchmark v5.1.0

@@ -4,10 +4,6 @@
 # Verify System Account Default Passwords
 # Ensure Password Fields are Not Empty
 #
-# An account with an empty password field means that anybody may log in as
-# that user without providing a password at all (assuming that PASSREQ=NO
-# in /etc/default/login). All accounts must have passwords or be locked.
-#
 # Refer to Section(s) 9.2.1  Page(s) 162-3 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.1  Page(s) 187-8 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.1  Page(s) 166   CIS RHEL 6 Benchmark v1.2.0

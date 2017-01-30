@@ -1,8 +1,5 @@
 # audit_sendmail_greeting
 #
-# Make sure sendmail greeting does not expose version or system information.
-# This reduces information that can be obtained remotely and thus reduces
-# vectors of attack.
 #.
 
 audit_sendmail_greeting () {

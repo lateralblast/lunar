@@ -1,9 +1,5 @@
 # audit_dhcpcd
 #
-# The dhcpcd daemon is the DHCP client that receives address and configuration
-# information from the DHCP server. This must be disabled if DHCP is not used
-# to serve IP address to the local system.
-#
 # Refer to Section(s) 1.3.8 Page(s) 43-4 CIS AIX Benchmark v1.1.0
 #.
 

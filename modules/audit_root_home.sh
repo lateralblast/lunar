@@ -1,11 +1,5 @@
 # audit_root_home
 #
-# By default, the Solaris OS root user's home directory is "/".
-# Changing the home directory for the root account provides segregation from
-# the OS distribution and activities performed by the root user. A further
-# benefit is that the root home directory can have more restricted permissions,
-# preventing viewing of the root system account files by non-root users.
-#
 # Refer to Section(s) 7.5 Page(s) 105-6 CIS Solaris 10 Benchmark v5.1.0
 #.
 

@@ -1,10 +1,5 @@
 # audit_process_accounting
 #
-# Enable process accounting at boot time
-# Process accounting logs information about every process that runs to
-# completion on the system, including the amount of CPU time, memory, etc.
-# consumed by each process.
-#
 # Refer to Section(s) 10.1 Page(s) 137-8 CIS Solaris 10 Benchmark v1.1.0
 #.
 

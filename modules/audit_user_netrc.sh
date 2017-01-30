@@ -1,10 +1,5 @@
 # audit_user_netrc
 #
-# While the system administrator can establish secure permissions for users'
-# .netrc files, the users can easily override these.
-# Users' .netrc files may contain unencrypted passwords that may be used to
-# attack other systems.
-#
 # Refer to Section(s) 9.2.9    Page(s) 168-169     CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.9,20 Page(s) 194-5,205-6 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.9    Page(s) 171-2       CIS RHEL 6 Benchmark v1.2.0

@@ -1,11 +1,5 @@
 # audit_nobody_rpc
 #
-# The keyserv process, if enabled, stores user keys that are utilized with
-# Sun's Secure RPC mechanism.
-# The action listed prevents keyserv from using default keys for the nobody
-# user, effectively stopping this user from accessing information via Secure
-# RPC.
-#
 # Refer to Section(s) 6.2 Page(s) 47 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.3 Page(s) 88 CIS Solaris 10 Benchmark v5.1.0
 #.

@@ -1,24 +1,5 @@
 # audit_xinetd
 #
-# Audit xinetd services on Linux. Make sure services that are not required
-# are not running. Leaving unrequired services running can lead to vectors
-# of attack.
-#
-# chargen-dram and chargen-stream are network service that respond with
-# 0 to 512 ASCII characters for each datagram it receives.
-#
-# daytim-dgrem and daytime-stream are network services that respondeswith the
-# server's current date and time.
-#
-# echo-dgram and echo-stream are network services that responde to clients
-# with the data sent to it by the client.
-#
-# tcpmux-server is a network service that allows a client to access other
-# network services running on the server.
-# tcpmux-server can be abused to circumvent the server's host based firewall.
-# Additionally, tcpmux-server can be leveraged by an attacker to effectively
-# port scan the server.
-#
 # Refer to Section(s) 2.1.12-8  Page(s) 54-8  CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.12-8  Page(s) 63-6  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.12-8  Page(s) 57-61 CIS RHEL 6 Benchmark v1.2.0

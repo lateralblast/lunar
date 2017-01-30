@@ -1,14 +1,5 @@
 # audit_avahi_conf
 #
-# The multicast Domain Name System (mDNS) is a zero configuration host name
-# resolution service. It uses essentially the same programming interfaces,
-# packet formats and operating semantics as the unicast Domain Name System
-# (DNS) to resolve host names to IP addresses within small networks that do
-# not include a local name server, but can also be used in conjunction with
-# such servers.
-# It is best to turn off mDNS in a server environment, but if it is used then
-# the services advertised should be restricted.
-#
 # Refer to Section(s) 3.1.3-6 Page(s) 68-72 CIS RHEL 5 Benchmark v2.1.0
 #.
 

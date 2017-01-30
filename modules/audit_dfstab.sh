@@ -1,14 +1,5 @@
 # audit_dfstab
 #
-# The commands in the dfstab file are executed via the /usr/sbin/shareall
-# script at boot time, as well as by administrators executing the shareall
-# command during the uptime of the machine.
-# It seems prudent to use the absolute pathname to the share command to
-# protect against any exploits stemming from an attack on the administrator's
-# PATH environment, etc. However, if an attacker is able to corrupt root's path
-# to this extent, other attacks seem more likely and more damaging to the
-# integrity of the system
-#
 # Refer to Section(s) 10.2 Page(s) 138-9 CIS Solaris 10 Benchmark v1.1.0
 #.
 

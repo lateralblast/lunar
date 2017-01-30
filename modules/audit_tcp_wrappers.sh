@@ -1,43 +1,5 @@
 # audit_tcp_wrappers
 #
-# TCP Wrappers is a host-based access control system that allows administrators
-# to control who has access to various network services based on the IP address
-# of the remote end of the connection. TCP Wrappers also provide logging
-# information via syslog about both successful and unsuccessful connections.
-# Rather than enabling TCP Wrappers for all services with "inetadm -M ...",
-# the administrator has the option of enabling TCP Wrappers for individual
-# services with "inetadm -m <svcname> tcp_wrappers=TRUE", where <svcname> is
-# the name of the specific service that uses TCP Wrappers.
-#
-# TCP Wrappers provides more granular control over which systems can access
-# services which limits the attack vector. The logs show attempted access to
-# services from non-authorized systems, which can help identify unauthorized
-# access attempts.
-#
-# The /etc/hosts.allow file specifies which IP addresses are permitted to
-# connect to the host. It is intended to be used in conjunction with the
-# /etc/hosts.deny file.
-# The /etc/hosts.allow file supports access control by IP and helps ensure
-# that only authorized systems can connect to the server.
-# The /etc/hosts.allow file contains networking information that is used by
-# many applications and therefore must be readable for these applications to
-# operate.
-# It is critical to ensure that the /etc/hosts.allow file is protected from
-# unauthorized write access. Although it is protected by default, the file
-# permissions could be changed either inadvertently or through malicious actions.
-#
-# The /etc/hosts.deny file specifies which IP addresses are not permitted to
-# connect to the host. It is intended to be used in conjunction with the
-# /etc/hosts.allow file.
-# The /etc/hosts.deny file serves as a failsafe so that any host not specified
-# in /etc/hosts.allow is denied access to the server.
-# The /etc/hosts.deny file contains network information that is used by many
-# system applications and therefore must be readable for these applications to
-# operate.
-# It is critical to ensure that the /etc/hosts.deny file is protected from
-# unauthorized write access. Although it is protected by default, the file
-# permissions could be changed either inadvertently or through malicious actions.
-#
 # Refer to Section(s) 5.5.1-5  Page(s) 110-114 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 4.5.1-5  Page(s) 95-8    CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 4.5.1-5  Page(s) 86-9    CIS RHEL 6 Benchmark v1.2.0

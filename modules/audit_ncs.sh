@@ -1,9 +1,5 @@
 # audit_ncs
 #
-# The recommendation is to disable Network Computing System (NCS).
-# It provide tools for designing, implementing, and supporting applications
-# requiring distributed data and distributed computing.
-#
 # Refer to Section(s) 2.12.3 Page(s) 208 CIS AIX Benchmark v1.1.0
 #.
 

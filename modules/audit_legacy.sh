@@ -1,11 +1,5 @@
 # audit_legacy
 #
-# Solaris:
-#
-# Turn off inetd and init.d services on Solaris (legacy for Solaris 10+).
-# Most of these services have now migrated to the new Service Manifest
-# methodology.
-#
 # Refer to Section(s) 2.1-8        Page(s) 4-8        CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.17,24-52 Page(s) 54-5,63-96 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 4.5          Page(s) 38-9       CIS SLES 11 Benchmark v1.0.0

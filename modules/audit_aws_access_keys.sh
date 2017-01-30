@@ -1,18 +1,4 @@
 # audit_aws_access_keys
-#
-# AWS console defaults the checkbox for creating access keys to enabled.
-# This results in many access keys being generated unnecessarily.
-# In addition to unnecessary credentials, it also generates unnecessary
-# management work in auditing and rotating these keys.
-#
-# Requiring that additional steps be taken by the user after their profile has
-# been created will give a stronger indication of intent that access keys are
-# [a] necessary for their work and [b] once the access key is established on an
-# account, that the keys may be in use somewhere in the organization.
-#
-# Note: Even if it is known the user will need access keys, require them to
-# create the keys themselves or put in a support ticket to have the created
-# as a separate step from user creation.
 # 
 # Refer to Section(s) 1.23 Page(s) 66-7 CIS AWS Foundations Benchmark v1.1.0
 #.

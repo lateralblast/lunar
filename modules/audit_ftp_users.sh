@@ -1,16 +1,5 @@
 # audit_ftp_users
 #
-# If FTP is permitted to be used on the system, the file /etc/ftpd/ftpusers is
-# used to specify a list of users who are not allowed to access the system via
-# FTP.
-# FTP is an old and insecure protocol that transfers files and credentials in
-# clear text and is better replaced by using sftp instead. However, if it is
-# permitted for use in your environment, it is important to ensure that the
-# default "system" accounts are not permitted to transfer files via FTP,
-# especially the root account. Consider also adding the names of other
-# privileged or shared accounts that may exist on your system such as user
-# oracle and the account which your Web server process runs under.
-#
 # Refer to Section(s) 2.12.9 Page(s) 213-4 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 6.9    Page(s) 52-3  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.5    Page(s) 89-91 CIS Solaris 10 Benchmark v5.1.0

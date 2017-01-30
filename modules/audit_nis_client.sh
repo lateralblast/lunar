@@ -1,10 +1,5 @@
 # audit_nis_client
 #
-# If the local site is not using the NIS naming service to distribute
-# system and user configuration information, this service may be disabled.
-# This service is disabled by default unless the NIS service has been
-# configured on the system.
-#
 # Refer to Section(s) 2.5   Page(s) 18    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 2.2.3 Page(s) 24-5  CIS Solaris 10 Benchmrk v5.1.0
 # Refer to Section(s) 2.1.5 Page(s) 58    CIS RHEL 5 Benchmark v2.1.0

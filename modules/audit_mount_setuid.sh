@@ -1,14 +1,5 @@
 # audit_mount_setuid
 #
-# If the volume manager (vold) is enabled to permit users to mount external
-# devices, the administrator can force these file systems to be mounted with
-# the nosuid option to prevent users from bringing set-UID programs onto the
-# system via CD-ROMs, floppy disks, USB drives or other removable media.
-# Removable media is one vector by which malicious software can be introduced
-# onto the system. The risk can be mitigated by forcing use of the nosuid
-# option. Note that this setting is included in the default rmmount.conf file
-# for Solaris 8 and later.
-#
 # Refer to Section(s) 1.1.3,13,15   Page(s) 14-25       CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.3,13,15   Page(s) 17-27       CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.1.4,9,16,19 Page(s) 29,34,41,44 CIS RHEL 7 Benchmark v2.1.0

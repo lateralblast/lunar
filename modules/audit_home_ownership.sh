@@ -1,26 +1,5 @@
 # audit_home_ownership
 #
-# *** This code needs a clean up ***
-#
-# Check That Users Are Assigned Home Directories
-# Check That Defined Home Directories Exist
-# Check User Home Directory Ownership
-#
-# The /etc/passwd file defines a home directory that the user is placed in upon
-# login. If there is no defined home directory, the user will be placed in "/"
-# and will not be able to write any files or have local environment variables set.
-# All users must be assigned a home directory in the /etc/passwd file.
-#
-# Users can be defined to have a home directory in /etc/passwd, even if the
-# directory does not actually exist.
-# If the user's home directory does not exist, the user will be placed in "/"
-# and will not be able to write any files or have local environment variables set.
-#
-# The user home directory is space defined for the particular user to set local
-# environment variables and to store personal files.
-# Since the user is accountable for files stored in the user home directory,
-# the user must be the owner of the directory.
-#
 # Refer to Section(s) 9.2.7,12,3 Page(s) 166-7,171-2   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 192-3,197-200 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 170,174-6     CIS RHEL 6 Benchmark v1.2.0

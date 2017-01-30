@@ -2,16 +2,6 @@
 #
 # Modify Network Parameters
 # Checks and sets ndd values
-#
-# Network device drivers have parameters that can be set to provide stronger
-# security settings, depending on environmental needs.
-#
-# The tcp_extra_priv_ports_add parameter adds a non privileged port to the
-# privileged port list.
-# Lock down dtspcd(8) (CDE Subprocess Control Service). This optional service
-# is seldom used. It has historically been associated with malicious scans.
-# Making it a privileged port prevents users from opening up the service on a
-# Solaris machine.
 #.
 
 audit_ndd_value () {

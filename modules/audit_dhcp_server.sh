@@ -1,12 +1,5 @@
 # audit_dhcp_server
 #
-# The Dynamic Host Configuration Protocol (DHCP) is a service that allows
-# machines to be dynamically assigned IP addresses.
-# Unless a server is specifically set up to act as a DHCP server, it is
-# recommended that this service be removed.
-#
-# Turn off dhcp server
-#
 # Refer to Section(s) 3.5   Page(s) 61-2 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.3   Page(s) 74   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.5   Page(s) 64-5 CIS RHEL 6 Benchmark v1.2.0

@@ -1,11 +1,5 @@
 # audit_nis_server
 #
-# These daemons are only required on systems that are acting as an
-# NIS server for the local site. Typically there are only a small
-# number of NIS servers on any given network.
-# These services are disabled by default unless the system has been
-# previously configured to act as a NIS server.
-#
 # Refer to Section(s) 2.1.7  Page(s) 51-52 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.6  Page(s) 58-9  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.6  Page(s) 53-4  CIS RHEL 6 Benchmark v1.2.0

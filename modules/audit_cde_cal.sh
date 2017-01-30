@@ -1,8 +1,5 @@
 # audit_cde_cal () {
 #
-# CDE Calendar Manager is an appointment and resource scheduling tool.
-# Not required unless running CDE applications.
-#
 # Refer to Section(s) 2.1.2 Page(s) 18-9 CIS Solaris 10 v5.1.0
 #.
 

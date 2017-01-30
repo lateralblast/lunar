@@ -15,16 +15,6 @@
 # Maximum Number of Half-open TCP Connections
 # Maximum Number of Incoming Connections
 #
-# The network routing daemon, in.routed, manages network routing tables.
-# If enabled, it periodically supplies copies of the system's routing tables
-# to any directly connected hosts and networks and picks up routes supplied
-# to it from other networks and hosts.
-# Routing Internet Protocol (RIP) is a legacy protocol with a number of
-# security issues (e.g. no authentication, no zoning, and no pruning).
-# Routing (in.routed) is disabled by default in all Solaris 10 systems,
-# if there is a default router defined. If no default gateway is defined
-# during system installation, network routing is enabled.
-#
 # Refer to Section(s) 3.4-17 Page(s) 28-39 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 3.5    Page(s) 64-5  CIS Solaris 10 Benchmark v5.1.0
 #.

@@ -1,7 +1,5 @@
 # audit_bpcd
 #
-# BPC
-#
 # Turn off bpcd
 #.
 

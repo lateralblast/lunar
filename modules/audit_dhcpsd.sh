@@ -1,9 +1,5 @@
 # audit_dhcpscd
 #
-# The dhcpsd daemon is the DHCP server that serves addresses and configuration
-# information to DHCP clients in the network. You must disable this service if
-# the server is not a DHCP server.
-#
 # Refer to Section(s) 1.3.10 Page(s) 45-6 CIS AIX Benchmark v1.1.0
 #.
 

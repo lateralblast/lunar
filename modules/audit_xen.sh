@@ -1,8 +1,5 @@
 # audit_xen
 #
-# Xen is a hypervisor providing services that allow multiple computer
-# operating systems to execute on the same computer hardware concurrently.
-#
 # Turn off Xen services if they are not being used.
 #.
 

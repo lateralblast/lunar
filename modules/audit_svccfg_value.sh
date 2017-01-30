@@ -1,14 +1,5 @@
 # audit_svccfg_value
 #
-# Remote Procedure Calls (RPC) is used by many services within the Solaris 10
-# operating system. Some of these services allow external connections to use
-# the service (e.g. NFS, NIS).
-#
-# RPC-based services are typically deployed to use very weak or non-existent
-# authentication and yet may share very sensitive information. Unless one of
-# the services is required on this machine, it is best to disable RPC-based
-# tools completely. If you are unsure whether or not a particular third-party
-# application requires RPC services, consult with the application vendor.
 #.
 
 audit_svccfg_value () {

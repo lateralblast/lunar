@@ -1,12 +1,5 @@
 # audit_ldap_server
 #
-# The Lightweight Directory Access Protocol (LDAP) was introduced as a
-# replacement for NIS/YP. It is a service that provides a method for looking
-# up information from a central database. The default client/server LDAP
-# application for CentOS is OpenLDAP.
-# If the server will not need to act as an LDAP client or server, it is
-# recommended that the software be disabled.
-#
 # Refer to Section(s) 3.7   Page(s) 63-4 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.7   Page(s) 76   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.7   Page(s) 66-7 CIS RHEL 6 Benchmark v1.2.0

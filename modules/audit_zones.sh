@@ -1,11 +1,5 @@
 # audit_zones
 #
-# Operating system-level virtualization is a server virtualization method
-# where the kernel of an operating system allows for multiple isolated
-# user-space instances, instead of just one. Such instances (often called
-# containers, VEs, VPSs or jails) may look and feel like a real server,
-# from the point of view of its owner.
-#
 # Turn off Zone services if zones are not being used.
 #.
 

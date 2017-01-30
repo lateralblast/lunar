@@ -1,8 +1,5 @@
 # audit_unconfined_daemons
 #
-# Daemons that are not defined in SELinux policy will inherit the security
-# context of their parent process.
-#
 # Refer to Section(s) 1.4.6 Page(s) 40   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.4.6 Page(s) 45-6 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.4.6 Page(s) 43   CIS RHEL 6 Benchmark v1.2.0

@@ -1,8 +1,5 @@
 # audit_pam_gdm_autologin
 #
-# As automatic logins are a known security risk for other than "kiosk" types
-# of systems, GNOME automatic login should be disabled in pam.conf(4).
-#
 # Refer to Section(s) 16.11 Page(s) 54-5 Solaris 11.1 Benchmark v1.0.0
 #.
 

@@ -1,11 +1,5 @@
 # audit_rhosts_files
 #
-# The /.rhosts, /.shosts, and /etc/hosts.equiv files enable a weak form of
-# access control. Attackers will often target these files as part of their
-# exploit scripts. By linking these files to /dev/null, any data that an
-# attacker writes to these files is simply discarded (though an astute
-# attacker can still remove the link prior to writing their malicious data).
-#
 # Refer to Section(s) 1.5.2 Page(s) 102-3 CIS AIX Benchmark v1.1.0
 #.
 

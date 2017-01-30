@@ -1,12 +1,5 @@
 # audit_nis_entries
 #
-# The character + in various files used to be markers for systems to insert
-# data from NIS maps at a certain point in a system configuration file.
-# These entries are no longer required on Solaris systems, but may exist in
-# files that have been imported from other platforms.
-# These entries may provide an avenue for attackers to gain privileged access
-# on the system.
-#
 # Refer to Section(s) 9.2.2-4 Page(s) 163-5   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.2-4 Page(s) 188-190 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.2-4 Page(s) 166-8   CIS RHEL 6 Benchmark v1.2.0

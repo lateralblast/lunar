@@ -1,17 +1,5 @@
 # audit_issue_banner
 #
-# The contents of the /etc/issue file are displayed prior to the login prompt
-# on the system's console and serial devices, and also prior to logins via
-# telnet. /etc/motd is generally displayed after all successful logins, no
-# matter where the user is logging in from, but is thought to be less useful
-# because it only provides notification to the user after the machine has been
-# accessed.
-# Warning messages inform users who are attempting to login to the system of
-# their legal status regarding the system and must include the name of the
-# organization that owns the system and any monitoring policies that are in
-# place. Consult with your organization's legal counsel for the appropriate
-# wording for your specific organization.
-#
 # Refer to Section(s) 8.1-2     Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.1.1-2   Page(s) 172-4   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 8.1-2     Page(s) 152-4   CIS RHEL 6 Benchmark v1.2.0

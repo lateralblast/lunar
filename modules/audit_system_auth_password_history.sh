@@ -1,12 +1,5 @@
 # audit_system_auth_password_history
 #
-# Audit the number of remembered passwords
-#
-# The /etc/security/opasswd file stores the users' old passwords and can be
-# checked to ensure that users are not recycling recent passwords.
-# Forcing users not to reuse their past 5 passwords make it less likely that
-# an attacker will be able to guess the password.
-#
 # Refer to Section(s) 6.3.4 Page(s) 141-2 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.3.4 Page(s) 144-5 CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 5.3.3 Page(s) 242   CIS RHEL 7 Benchmark v2.1.0

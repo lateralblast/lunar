@@ -1,13 +1,5 @@
 # audit_writable_files
 #
-# Unix-based systems support variable settings to control access to files.
-# World writable files are the least secure. See the chmod(2) man page for more
-# information.
-# Data in world-writable files can be modified and compromised by any user on
-# the system. World writable files may also indicate an incorrectly written
-# script or program that could potentially be the cause of a larger compromise
-# to the system's integrity.
-#
 # Refer to Section(s) 9.1.10   Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.1.10   Page(s) 183-4   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.1.10   Page(s) 162-3   CIS RHEL 6 Benchmark v1.2.0

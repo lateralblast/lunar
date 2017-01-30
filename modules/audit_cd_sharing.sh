@@ -1,9 +1,5 @@
 # audit_cd_sharing
 #
-# DVD or CD Sharing allows users to remotely access the system's optical drive.
-# Disabling DVD or CD Sharing minimizes the risk of an attacker using the
-# optical drive as a vector for attack.
-#
 # Refer to Section 2.4.6 Page(s) 22 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

@@ -1,13 +1,5 @@
 # audit_snmp
 #
-# Simple Network Management Protocol (SNMP) is an "Internet-standard protocol
-# for managing devices on IP networks". Devices that typically support SNMP
-# include routers, switches, servers, workstations, printers, modem racks, and
-# more. It is used mostly in network management systems to monitor network-
-# attached devices for conditions that warrant administrative attention.
-# Turn off SNMP if not used. If SNMP is used lock it down. SNMP can reveal
-# configuration information about systems leading to vectors of attack.
-#
 # Refer to Section(s) 3.15        Page(s) 69         CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.15        Page(s) 81-2       CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.15        Page(s) 71-2       CIS RHEL 6 Benchmark v1.2.0

@@ -1,18 +1,5 @@
 # audit_sar_accounting
 #
-# The recommendation is to enable sar performance accounting.
-# This will provide a normal performance baseline which will help identify
-# unusual performance patterns, created through potential attacks via a
-# password cracking program being executed or through a DoS attack etc.
-# System accounting gathers periodic baseline system data, such as CPU
-# utilization and disk I/O. Once a normal baseline for the system has been
-# established, unauthorized activities, such as a password cracking being
-# executed and activity outside of normal usage hours may be detected due
-# to departure from the normal system performance baseline. It is recommended
-# that the collection script is run on an hourly basis, every day, to help to
-# detect any anomalies. It is also important to generate and review the system
-# activity report on a daily basis.
-#
 # Refer to Section(s) 2.12.8 Page(s) 212-3 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 4.8    Page(s) 71-72 CIS Oracle Solaris 10 Benchmark v5.1.0
 #.

@@ -1,9 +1,5 @@
 # audit_super_users
 #
-# Any account with UID 0 has superuser privileges on the system.
-# This access must be limited to only the default root account
-# and only from the system console.
-#
 # Refer to Section(s) 9.2.5 Page(s) 190-1  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.5 Page(s) 165    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.5 Page(s) 168    CIS RHEL 6 Benchmark v1.2.0

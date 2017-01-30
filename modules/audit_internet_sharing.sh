@@ -1,8 +1,5 @@
 # audit_internet_sharing
 #
-# Internet Sharing uses the open source natd process to share an internet
-# connection with other computers and devices on a local network.
-#
 # Refer to Section 2.4.2 Page(s) 17-18 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

@@ -1,16 +1,5 @@
 # audit_ftp_logging
 #
-# Information about FTP sessions will be logged via syslogd (1M),
-# but the system must be configured to capture these messages.
-# If the FTP daemon is installed and enabled, it is recommended that the
-# "debugging" (-d) and connection logging (-l) flags also be enabled to
-# track FTP activity on the system. Note that enabling debugging on the FTP
-# daemon can cause user passwords to appear in clear-text form in the system
-# logs, if users accidentally type their passwords at the username prompt.
-# All of this information is logged by syslogd (1M), but syslogd (1M) must be
-# configured to capture this information to a separate file so it may be more
-# easily reviewed.
-#
 # Refer to Section(s) 4.2 Page(s) 67 CIS Solaris 10 Benchmark v5.1.0
 #.
 

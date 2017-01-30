@@ -1,9 +1,5 @@
 # audit_safe_downloads
 #
-# Apple maintains a list of known malicious software that is used during the
-# safe download check to determine if a file contains malicious software,
-# the list is updated daily by a background process.
-#
 # Refer to Section 2.6.3 Page(s) 29-30 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

@@ -1,19 +1,5 @@
 # audit_sendmail_daemon
 #
-# If sendmail is set to local only mode, users on remote systems cannot
-# connect to the sendmail daemon. This eliminates the possibility of a
-# remote exploit attack against sendmail. Leaving sendmail in local-only
-# mode permits mail to be sent out from the local system.
-# If the local system will not be processing or sending any mail,
-# disable the sendmail service. If you disable sendmail for local use,
-# messages sent to the root account, such as for cron job output or audit
-# daemon warnings, will fail to be delivered properly.
-# Another solution often used is to disable sendmail's local-only mode and
-# to have a cron job process all mail that is queued on the local system and
-# send it to a relay host that is defined in the sendmail.cf file.
-# It is recommended that sendmail be left in localonly mode unless there is
-# a specific requirement to disable it.
-#
 # Refer to Section(s) 3.16  Page(s) 82    CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.16  Page(s) 72-3  CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 3.5   Page(s) 10    CIS FreeBSD Benchmark v1.0.5

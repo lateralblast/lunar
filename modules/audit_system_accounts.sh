@@ -1,14 +1,5 @@
 # audit_system_accounts
 #
-# There are a number of accounts provided with the Solaris OS that are used to
-# manage applications and are not intended to provide an interactive shell.
-# It is important to make sure that accounts that are not being used by regular
-# users are locked to prevent them from logging in or running an interactive
-# shell. By default, Solaris sets the password field for these accounts to an
-# invalid string, but it is also recommended that the shell field in the
-# password file be set to "false." This prevents the account from potentially
-# being used to run any commands.
-#
 # Refer to Section(s) 7.2   Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.2   Page(s) 169     CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 7.2   Page(s) 149-150 CIS RHEL 6 Benchmark v1.2.0

@@ -1,11 +1,5 @@
 # audit_cde_screen_lock
 #
-# The default timeout for keyboard/mouse inactivity is 30 minutes before a
-# password-protected screen saver is invoked by the CDE session manager.
-# Many organizations prefer to set the default timeout value to 10 minutes,
-# though this setting can still be overridden by individual users in their
-# own environment.
-#
 # Refer to Section(s) 6.7 Page(s) 91-2 CIS Solaris 10 Benchmark v5.1.0
 #.
 
