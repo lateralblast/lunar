@@ -1113,3 +1113,5 @@
 # Added check for AWS Redshift reserved instances about to expire
 # 6.4.9: Tue 31 Jan 2017 14:55:55 AEDT
 # Added check for AWS Inspector being used
+# 6.5.0: Tue 31 Jan 2017 16:39:08 AEDT
+# Added check for AWS Inspector assessment recommendation (CVEs)

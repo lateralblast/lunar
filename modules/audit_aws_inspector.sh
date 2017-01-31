@@ -1,7 +1,6 @@
 # audit_aws_inspector
 #
-# Refer to 
-# Refer to 
+# Refer to https://docs.aws.amazon.com/inspector/latest/userguide/inspector_introduction.html
 #.
 
 audit_aws_inspector () {
@@ -35,15 +34,6 @@ audit_aws_inspector () {
         done
       done
     done
-    assessments=`aws inspector list-findings --output text`
-    total=`expr $total + 1`
-    if [ "$assessments" ]; then
-      secure=`expr $secure + 1`
-      echo "Secure:    Inspector has been run recently [$secure Passes]"
-    else
-      insecure=`expr $insecure + 1`
-      echo "Warning:   Inspector has not been run recently [$insecure Warnings]"
-    fi
   else
     total=`expr $total + 1`
     insecure=`expr $insecure + 1`
