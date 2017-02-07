@@ -1133,3 +1133,7 @@
 # Added additional Docker logging tests
 # 6.5.9: Wed  8 Feb 2017 08:46:12 AEDT
 # Added Docker legacy registry check
+# 6.6.0: Wed  8 Feb 2017 08:48:46 AEDT
+# Added Docker liver restore check
+# 6.6.1: Wed  8 Feb 2017 08:54:36 AEDT
+# Added Docker userland proxy test

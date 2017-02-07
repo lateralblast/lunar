@@ -58,6 +58,13 @@
 # Refer to https://the.binbashtheory.com/creating-private-docker-registry-2-0-with-token-authentication-service/
 # Refer to https://blog.docker.com/2015/07/new-tool-v1-registry-docker-trusted-registry-v2-open-source/
 # Refer to http://www.slideshare.net/Docker/docker-registry-v2
+# Refer to Section(s) 2.14 Page(s) 60-1  CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/docker/docker/pull/23213
+# Refer to Section(s) 2.18 Page(s) 67-8  CIS Docker Benchmark 1.13.0
+# Refer to http://windsock.io/the-docker-proxy/
+# Refer to https://github.com/docker/docker/issues/14856
+# Refer to https://github.com/docker/docker/issues/22741
+# Refer to https://docs.docker.com/engine/userguide/networking/default_network/binding/
 #.
 
 audit_docker_daemon () {
@@ -92,8 +99,9 @@ audit_docker_daemon () {
       funct_file_exists /etc/subgid yes
       funct_dockerd_check unused daemon storage-opt
       funct_dockerd_check used daemon authorization-plugin
-      funct_dockerd_check unused daemon disable-legacy-registry
-
+      funct_dockerd_check used daemon disable-legacy-registry
+      funct_dockerd_check used daemon live-restore
+      funct_dockerd_check used daemon userland-proxy false
     fi
   fi
 }
