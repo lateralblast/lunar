@@ -58,6 +58,7 @@ Supported Services
 The following services are supported:
 
 - AWS
+- Docker (Work in progress)
 
 The AWS Services audit uses the AWS CLI, and as such requires a user with the
 appropriate rights. It does not currently support the lockdown capability,
@@ -75,6 +76,15 @@ available best practice from companies like Cloud Conformity.
 
 Requirements
 ------------
+
+For UNIX:
+
+- Ubuntu / Debian
+  - sysv-rc-conf
+  - bc
+  - finger
+
+For AWS:
 
 - AWS 
   - AWS CLI
