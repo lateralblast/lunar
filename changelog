@@ -1131,3 +1131,5 @@
 # Added Docker daemon storage option and authorisation plugin checks
 # 6.5.8: Wed  8 Feb 2017 08:37:12 AEDT
 # Added additional Docker logging tests
+# 6.5.9: Wed  8 Feb 2017 08:46:12 AEDT
+# Added Docker legacy registry check

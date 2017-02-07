@@ -49,6 +49,15 @@
 # Refer to https://docs.docker.com/engine/reference/commandline/daemon/#access- authorization
 # Refer to https://docs.docker.com/engine/extend/authorization/
 # Refer to https://github.com/twistlock/authz
+# Refer to Section(s) 2.13 Page(s) 58    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/commandline/daemon/
+# Refer to https://github.com/docker/docker/issues/8093
+# Refer to https://github.com/docker/docker/issues/9015
+# Refer to https://github.com/docker/docker-registry/issues/612
+# Refer to https://docs.docker.com/registry/spec/api/
+# Refer to https://the.binbashtheory.com/creating-private-docker-registry-2-0-with-token-authentication-service/
+# Refer to https://blog.docker.com/2015/07/new-tool-v1-registry-docker-trusted-registry-v2-open-source/
+# Refer to http://www.slideshare.net/Docker/docker-registry-v2
 #.
 
 audit_docker_daemon () {
@@ -83,6 +92,8 @@ audit_docker_daemon () {
       funct_file_exists /etc/subgid yes
       funct_dockerd_check unused daemon storage-opt
       funct_dockerd_check used daemon authorization-plugin
+      funct_dockerd_check unused daemon disable-legacy-registry
+
     fi
   fi
 }
