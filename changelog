@@ -1127,3 +1127,5 @@
 # Fixed Docker daemon test
 # 6.5.6: Wed  8 Feb 2017 08:17:15 AEDT
 # Added Docker user namespace support test
+# 6.5.7: Wed  8 Feb 2017 08:32:00 AEDT
+# Added Docker daemon storage option and authorisation plugin checks
