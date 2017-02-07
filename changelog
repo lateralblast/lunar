@@ -1143,3 +1143,5 @@
 # Added Docker seccomp profile test
 # 6.6.4: Wed Feb  8 09:23:05 AEDT 2017
 # Added Docker swarm unlock key test
+# 6.6.5: Wed  8 Feb 2017 10:16:35 AEDT
+# Added Docker file permission tests

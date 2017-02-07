@@ -72,6 +72,60 @@
 # Refer to https://github.com/docker/docker/pull/27223
 # Refer to Section(s) 2.23 Page(s) 74-5  CIS Docker Benchmark 1.13.0
 # Refer to https://github.com/mstanleyjones/docker.github.io/blob/af7dfdba8504f9b102fb31a78cd08a06c33a8975/engine/swarm/swarm_manager_locking.md
+# Refer to Section(s) 3.1  Page(s) 77-8   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/admin/systemd/
+# Refer to Section(s) 3.2  Page(s) 79-80  CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/admin/systemd/
+# Refer to Section(s) 3.3  Page(s) 81-2   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/basics/#bind-docker-to-another-hostport-or-a-unix-socket
+# Refer to https://github.com/YungSang/fedora-atomic-packer/blob/master/oem/docker.socket
+# Refer to http://daviddaeschler.com/2014/12/14/centos-7rhel-7-and-docker-containers-on-boot/
+# Refer to Section(s) 3.4 Page(s) 83-4   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/basics/#bind-docker-to-another-hostport-or-a-unix-socket
+# Refer to https://github.com/YungSang/fedora-atomic-packer/blob/master/oem/docker.socket
+# Refer to http://daviddaeschler.com/2014/12/14/centos-7rhel-7-and-docker-containers-on-boot/
+# Refer to Section(s) 3.5  Page(s) 85     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to Section(s) 3.6  Page(s) 86     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to Section(s) 3.7  Page(s) 87-8   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/reference/commandline/cli/#insecure-registries
+# Refer to Section(s) 3.8  Page(s) 89     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/reference/commandline/cli/#insecure-registries
+# Refer to Section(s) 3.9  Page(s) 90     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/articles/https/
+# Refer to Section(s) 3.10 Page(s) 91     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/articles/https/
+# Refer to Section(s) 3.11 Page(s) 92-3   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/articles/https/
+# Refer to Section(s) 3.12 Page(s) 94     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/articles/https/
+# Refer to Section(s) 3.13 Page(s) 95-6   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/articles/https/
+# Refer to Section(s) 3.14 Page(s) 97     CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/articles/certificates/
+# Refer to http://docs.docker.com/articles/https/
+# Refer to Section(s) 3.15 Page(s) 98-9   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/reference/commandline/cli/#daemon-socket-option
+# Refer to https://docs.docker.com/articles/basics/#bind-docker-to-another-hostport-or-a-unix-socket
+# Refer to Section(s) 3.16 Page(s) 100    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/reference/commandline/cli/#daemon-socket-option
+# Refer to https://docs.docker.com/articles/basics/#bind-docker-to-another-hostport-or-a-unix-socket
+# Refer to Section(s) 3.17 Page(s) 101    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/commandline/daemon/#daemon-configuration-file
+# Refer to Section(s) 3.18 Page(s) 102    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/commandline/daemon/#daemon-configuration-file
+# Refer to Section(s) 3.19 Page(s) 103    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/admin/configuring/
+# Refer to Section(s) 3.20 Page(s) 104    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/admin/configuring/
 #.
 
 audit_docker_daemon () {
@@ -86,12 +140,31 @@ audit_docker_daemon () {
       done
       check=`which systemctl`
       if [ "$check" ]; then
-        for docker_service in docker.service docker.socker; do
+        for docker_service in docker.service docker.socket; do
           funct_auditctl_check $docker_service
           docker_file=`systemctl show -p FragmentPath $docker_service 2> /dev/null`
           funct_append_file $check_file "-w $docker_file -k docker" hash
+          funct_check_perms $check_file 0640 root root
         done
       fi
+      for check_file in /etc/docker /etc/docker/certs.d; do
+        funct_check_perms $check_file 0750 root root
+      done
+      if [ -e "/etc/docker/certs.d" ]; then
+        for check_file in `ls /etc/docker/certs.d/`; do
+          funct_check_perms $check_file 440 root root
+        done
+      fi
+      funct_check_perms /var/run/docker.sock 660 root docker
+      for check_file in /etc/default/docker /etc/docker/daemon.json; do
+        funct_check_perms $check_file 640 root root
+      done
+      tlscert_file=""
+      tlscacert_file=""
+      tlskey_file=""
+      for check_file in $tlscert_file $tlscacert_file $tlskey_file; do
+        funct_check_perms $check_file 400 root root
+      done
       funct_dockerd_check unused daemon insecure-registry
       funct_dockerd_check unused daemon storage-driver aufs
       funct_dockerd_check unused info "Storage Driver" aufs
