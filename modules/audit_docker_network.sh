@@ -14,6 +14,7 @@ audit_docker_network () {
     backup_file="network_bridge"
     new_state="false"
     old_state="true"
+    total=`expr $total + 1`
     if [ "$audit_mode" != 2 ]; then
       check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
       if [ ! "$check" ]; then

@@ -67,6 +67,11 @@
 # Refer to https://docs.docker.com/engine/userguide/networking/default_network/binding/
 # Refer to Section(s) 2.20 Page(s) 70-1  CIS Docker Benchmark 1.13.0
 # Refer to https://github.com/docker/docker/pull/26276
+# Refer to Section(s) 2.21 Page(s) 72    CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/docker/docker/issues/26713
+# Refer to https://github.com/docker/docker/pull/27223
+# Refer to Section(s) 2.23 Page(s) 74-5  CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/mstanleyjones/docker.github.io/blob/af7dfdba8504f9b102fb31a78cd08a06c33a8975/engine/swarm/swarm_manager_locking.md
 #.
 
 audit_docker_daemon () {
@@ -105,6 +110,16 @@ audit_docker_daemon () {
       funct_dockerd_check used daemon live-restore
       funct_dockerd_check used daemon userland-proxy false
       funct_dockerd_check used daemon seccomp-profile
+      funct_dockerd_check unused daemon experimental
+      total=`expr $total + 1`
+      check=`docker swarm unlock-key 2> /dev/null`
+      if [ "$check" = "no unlock key is set" ]; then
+        insecure=`expr $insecure + 1`
+        echo "Warning:   Docker swarm unlock is not set [$insecure Warnings]"
+      else
+        secure=`expr $secure + 1`
+        echo "Secure:    Docker swarm unlock key is not set or swarm is not running [$secure Passes]"
+      fi
     fi
   fi
 }
