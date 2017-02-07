@@ -8,7 +8,6 @@ audit_wheel_group () {
     check_file="/etc/group"
     funct_verbose_message "Wheel Group"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Wheel group exists in $check_file"
       total=`expr $total + 1`
       check_value=`cat $check_file |grep '^$wheel_group:'`
       if [ "$check_value" != "$search_string" ]; then

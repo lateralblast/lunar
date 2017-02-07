@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      6.5.0
+# Version:      6.5.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -84,6 +84,7 @@ work_dir="$base_dir/$date_suffix"
 temp_dir="$base_dir/tmp"
 temp_file="$temp_dir/temp_file"
 wheel_group="wheel"
+docker_group="docker"
 reboot=0
 verbose=0
 functions_dir="functions"
@@ -93,6 +94,7 @@ package_uninstall="no"
 country_suffix="au"
 language_suffix="en_US"
 osx_mdns_enable="yes"
+max_super_user_id="100"
 
 # Disable daemons
 
@@ -126,9 +128,10 @@ print_usage () {
   echo "-A: Run in audit mode (for Operating Systems - no changes made to system)"
   echo "    [includes filesystem checks which take some time]"
   echo "-w: Run in audit mode (for AWS - no changes made to system)"
+  echo "-d: Run in audit mode (for Docker - no changes made to system)"
   echo "-x: Run in recommendations mode (for AWS - no changes made to system)"
   echo "-s: Run in selective mode (only run tests you want to)"
-  echo "-d: Print information for a specific test"
+  echo "-R: Print information for a specific test"
   echo "-S: List functions available to selective mode"
   echo "-l: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "-L: Run in lockdown mode (for Operating Systems - changes made to system)"
@@ -200,10 +203,10 @@ check_os_release () {
         os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d'.'`
         os_vendor=`lsb_release -i |awk '{print $3}'`
         linux_dist="debian"
-        if [ ! -f "/usr/sbin/sysv-rc-conf" ]; then
+        if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
           echo "Notice:    The sysv-rc-conf package is required by this script"
 		      while true; do
-      			read -p "Do you wish to install this program?" yn
+      			read -p "Do you wish to install this program? " yn
       			case $yn in
       				[Yy]* ) apt-get install sysv-rc-conf; break;;
       				[Nn]* ) echo "Exiting script"; exit;;
@@ -474,6 +477,18 @@ check_aws () {
 # Audit AWS
 #.
 
+funct_audit_docker () {
+  audit_mode=$1
+  check_environment
+  funct_audit_docker_all
+  print_results
+}
+
+# funct_audit_aws
+#
+# Audit AWS
+#.
+
 funct_audit_aws () {
   audit_mode=$1
   check_environment
@@ -626,7 +641,7 @@ print_results () {
 
 # Handle command line arguments
 
-while getopts abcdlpr:s:u:z:hwASWVLx args; do
+while getopts abcdlpR:r:s:u:z:hwASWVLx args; do
   case $args in
     a)
       if [ "$2" = "-v" ]; then
@@ -688,6 +703,19 @@ while getopts abcdlpr:s:u:z:hwASWVLx args; do
       echo ""
       audit_mode=1
       funct_audit_aws $audit_mode
+      function="$OPTARG"
+      exit
+      ;;
+    d)
+      if [ "$2" = "-v" ] || [ "$3" = "-v" ]; then
+        verbose=1
+      fi
+      echo ""
+      echo "Running     In audit mode (no changes will be made to system)"
+      echo "            This requires Docker to be installed"
+      echo ""
+      audit_mode=1
+      funct_audit_docker $audit_mode
       function="$OPTARG"
       exit
       ;;
@@ -795,7 +823,7 @@ while getopts abcdlpr:s:u:z:hwASWVLx args; do
       print_changes
       exit
       ;;
-    d)
+    R)
       check_environment
       verbose=1
       module=$2

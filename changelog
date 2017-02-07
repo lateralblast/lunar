@@ -1115,3 +1115,5 @@
 # Added check for AWS Inspector being used
 # 6.5.0: Tue 31 Jan 2017 16:39:08 AEDT
 # Added check for AWS Inspector assessment recommendation (CVEs)
+# 6.5.1: Tue  7 Feb 2017 14:34:39 AEDT
+# Added initial support for Docker
