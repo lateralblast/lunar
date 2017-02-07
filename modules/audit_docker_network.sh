@@ -2,7 +2,8 @@
 #
 # Check that Docker does not allow communication between containers
 #
-# Refer to Section(s) 2.1 Page(s) 36-7 CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 2.1 Page(s) 36-7  CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 2.3 Page(s) 39-40 CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/articles/networking
 #.
 
@@ -33,5 +34,6 @@ audit_docker_network () {
       echo "Setting:   Docker network bridge enabled to $old_state"
       /usr/bin/dockerd --icc=$old_state
     fi
+    funct_dockerd_check unused daemon iptables true
   fi
 }
