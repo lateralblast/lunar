@@ -1145,3 +1145,5 @@
 # Added Docker swarm unlock key test
 # 6.6.5: Wed  8 Feb 2017 10:16:35 AEDT
 # Added Docker file permission tests
+# 6.6.6: Wed  8 Feb 2017 10:43:45 AEDT
+# Added Docker container user test

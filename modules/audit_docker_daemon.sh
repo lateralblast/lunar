@@ -184,14 +184,16 @@ audit_docker_daemon () {
       funct_dockerd_check used daemon userland-proxy false
       funct_dockerd_check used daemon seccomp-profile
       funct_dockerd_check unused daemon experimental
-      total=`expr $total + 1`
-      check=`docker swarm unlock-key 2> /dev/null`
-      if [ "$check" = "no unlock key is set" ]; then
-        insecure=`expr $insecure + 1`
-        echo "Warning:   Docker swarm unlock is not set [$insecure Warnings]"
-      else
-        secure=`expr $secure + 1`
-        echo "Secure:    Docker swarm unlock key is not set or swarm is not running [$secure Passes]"
+      if [ "$audit_mode" != 2 ]; then
+        total=`expr $total + 1`
+        check=`docker swarm unlock-key 2> /dev/null`
+        if [ "$check" = "no unlock key is set" ]; then
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Docker swarm unlock is not set [$insecure Warnings]"
+        else
+          secure=`expr $secure + 1`
+          echo "Secure:    Docker swarm unlock key is not set or swarm is not running [$secure Passes]"
+        fi
       fi
     fi
   fi
