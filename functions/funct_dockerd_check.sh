@@ -22,8 +22,13 @@ funct_dockerd_check () {
           echo "Secure:    Docker parameter $param is set to $value [$secure Passes]"
         fi
       else
-        secure=`expr $secure + 1`
-        echo "Secure:    Docker parameter $param is $used [$secure Passes]"
+        if [ "$used" = "used" ] && [ ! "$check" ]; then
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Docker parameter $param is not used [$insecure Warnings]"
+        else
+          secure=`expr $secure + 1`
+          echo "Secure:    Docker parameter $param is $used [$secure Passes]"
+        fi
       fi
     else
       check=`docker info 2> /dev/null |grep "$param"`

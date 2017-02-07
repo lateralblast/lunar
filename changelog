@@ -1123,3 +1123,5 @@
 # Added Docker network bridge test
 # 6.5.4: Wed  8 Feb 2017 07:43:30 AEDT
 # Added more Docker tests and updated SSH TCP forwarding test
+# 6.5.5: Wed  8 Feb 2017 08:09:14 AEDT
+# Fixed Docker daemon test
