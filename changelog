@@ -1119,3 +1119,5 @@
 # Added initial support for Docker
 # 6.5.2: Tue  7 Feb 2017 16:59:27 AEDT
 # Added additional Docker support
+# 6.5.3: Tue  7 Feb 2017 17:37:13 AEDT
+# Added Docker network bridge test

@@ -9,5 +9,6 @@ funct_audit_docker_all () {
   audit_auditd
   audit_docker_users
   audit_docker_daemon
+  audit_docker_network
 }
 

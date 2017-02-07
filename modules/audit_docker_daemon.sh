@@ -32,7 +32,7 @@ audit_docker_daemon () {
       if [ "$check" ]; then
         for docker_service in docker.service docker.socker; do
           funct_auditctl_check $docker_service
-          docker_file=`systemctl show -p FragmentPath $docker_service`
+          docker_file=`systemctl show -p FragmentPath $docker_service 2> /dev/null`
           funct_append_file $check_file "-w $docker_file -k docker" hash
         done
       fi
