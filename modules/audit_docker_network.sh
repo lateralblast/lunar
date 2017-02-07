@@ -2,9 +2,10 @@
 #
 # Check that Docker does not allow communication between containers
 #
-# Refer to Section(s) 2.1 Page(s) 36-7  CIS Docker Benchmark 1.13.0
-# Refer to Section(s) 2.3 Page(s) 39-40 CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 2.1  Page(s) 36-7  CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 2.3  Page(s) 39-40 CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/articles/networking
+# Refer to Section(s) 2.19 Page(s) 69    CIS Docker Benchmark 1.13.0
 #.
 
 audit_docker_network () {
@@ -35,5 +36,6 @@ audit_docker_network () {
       /usr/bin/dockerd --icc=$old_state
     fi
     funct_dockerd_check unused daemon iptables true
+    funct_dockerd_check used daemon opt encrypted
   fi
 }

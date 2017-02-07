@@ -1137,3 +1137,5 @@
 # Added Docker liver restore check
 # 6.6.1: Wed  8 Feb 2017 08:54:36 AEDT
 # Added Docker userland proxy test
+# 6.6.2: Wed  8 Feb 2017 08:57:18 AEDT
+# Added Docker encrypted network traffic check
