@@ -65,6 +65,8 @@
 # Refer to https://github.com/docker/docker/issues/14856
 # Refer to https://github.com/docker/docker/issues/22741
 # Refer to https://docs.docker.com/engine/userguide/networking/default_network/binding/
+# Refer to Section(s) 2.20 Page(s) 70-1  CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/docker/docker/pull/26276
 #.
 
 audit_docker_daemon () {
@@ -102,6 +104,7 @@ audit_docker_daemon () {
       funct_dockerd_check used daemon disable-legacy-registry
       funct_dockerd_check used daemon live-restore
       funct_dockerd_check used daemon userland-proxy false
+      funct_dockerd_check used daemon seccomp-profile
     fi
   fi
 }

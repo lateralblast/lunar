@@ -1139,3 +1139,5 @@
 # Added Docker userland proxy test
 # 6.6.2: Wed  8 Feb 2017 08:57:18 AEDT
 # Added Docker encrypted network traffic check
+# 6.6.3: Wed  8 Feb 2017 08:59:50 AEDT
+# Added Docker seccomp profile test
