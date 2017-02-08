@@ -18,6 +18,23 @@ audit_docker_network () {
       old_state="true"
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
+        OFS=$IFS
+        IFS=$'\n'
+        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: AppArmorProfile={{ .AppArmorProfile }}' 2> /dev/null`
+        for info in $docker_info; do
+          total=`expr $total + 1`
+          docker_id=`echo "$info" |cut -f1 -d:`
+          profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+          echo "Checking:  Docker instance $docker_id does not share the host network namespace"
+          if [ ! "$profile" = "NetworkMode=host" ]; then
+            secure=`expr $secure + 1`
+            echo "Secure:    Docker instance $docker_id does not share the host network namespace [$secure Passes]"
+          else
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Docker instance $docker_id shares the host network namespace [$insecure Warnings]"
+          fi
+        done
+        IFS=$OFS
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
         echo "Checking:  Docker network bridge traffic setting"
         if [ ! "$check" ]; then

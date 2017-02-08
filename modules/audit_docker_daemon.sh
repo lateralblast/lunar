@@ -167,6 +167,7 @@ audit_docker_daemon () {
       done
       funct_dockerd_check unused daemon insecure-registry
       funct_dockerd_check unused daemon storage-driver aufs
+      funct_dockerd_check unused daemon net host
       funct_dockerd_check unused info "Storage Driver" aufs
       funct_dockerd_check used daemon tlsverify
       funct_dockerd_check used daemon tlscacert
