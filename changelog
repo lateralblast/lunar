@@ -1203,3 +1203,5 @@
 # Added Docker socket mount test
 # 6.9.4: Thu  9 Feb 2017 00:18:07 AEDT
 # Added option to list Docker reports
+# 6.9.5: Thu  9 Feb 2017 00:36:30 AEDT
+# Updated GRUB test
