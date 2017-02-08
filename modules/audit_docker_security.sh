@@ -18,6 +18,9 @@
 # Refer to http://www.oreilly.com/webops-perf/free/files/docker-security.pdf
 # Refer to Section(s) 5.4 Page(s) 132   CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/reference/commandline/cli
+# Refer to Section(s) 5.9 Page(s) 141   CIS Docker Benchmark 1.13.0
+# Refer to http://docs.docker.com/articles/networking/#how-docker-networks-a-container
+# Refer to https://github.com/docker/docker/issues/6401
 #.
 
 audit_docker_security () {
