@@ -29,11 +29,11 @@ funct_systemctl_service () {
     fi
     log_file="systemctl.log"
     actual_status=`systemctl is-enabled $service_name 2> /dev/null`
+    if [ "$audit_mode" != 2 ]; then
+      echo "Checking:  Service $service_name is $correct_status"
+    fi
     if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ]; then
       total=`expr $total + 1`
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Service $service_name is $correct_status"
-      fi
       if [ "$actual_status" != "$correct_status" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then

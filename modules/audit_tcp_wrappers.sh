@@ -10,6 +10,7 @@
 # Refer to Section(s) 2.11     Page(s) 22-3    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 2.4      Page(s) 36-7    CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 3.4.1-5  Page(s) 130-4   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 3.4.1-5  Page(s) 139-43  CIS Ubuntu 16.04 Benchmark v2.0.0
 #.
 
 audit_tcp_wrappers () {
@@ -69,34 +70,9 @@ audit_tcp_wrappers () {
     funct_check_perms /etc/hosts.allow 0644 root $group_name
     if [ "$os_name" = "Linux" ]; then
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Amazon" ] ; then
-        package_name="tcp_wrappers"
-        total=`expr $total + 1`
-        log_file="$package_name.log"
-        funct_linux_package check $package_name
-        if [ "$audit_mode" != 2 ]; then
-          echo "Checking:  TCP Wrappers is installed"
-        fi
-        if [ "$package_name" != "tcp_wrappers" ]; then
-          if [ "$audit_mode" = 1 ]; then
-            insecure=`expr $insecure + 1`
-            echo "Warning:   TCP Wrappers is not installed [$insecure Warnings]"
-          fi
-          if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   TCP Wrappers to installed"
-            log_file="$work_dir/$log_file"
-            echo "Installed $package_name" >> $log_file
-            funct_linux_package install $package_name
-          fi
-        else
-          if [ "$audit_mode" = 1 ]; then
-            secure=`expr $secure + 1`
-            echo "Secure:    TCP Wrappers is installed [$secure Passes]"
-          fi
-          if [ "$audit_mode" = 2 ]; then
-            restore_file="$restore_dir/$log_file"
-            funct_linux_package restore $package_name $restore_file
-          fi
-        fi
+        funct_linux_package install tcp_wrappers
+      else
+        funct_linux_package install tcpd
       fi
     fi
   fi

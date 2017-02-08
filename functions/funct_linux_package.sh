@@ -18,6 +18,7 @@ funct_linux_package () {
     log_file="package_log"
     backup_file="$work_dir/$log_file"
     funct_verbose_message "Checking if package is $package_check $package_status"
+    echo "Checking:  Package $package_check is installed"
     total=`expr $total + 1`
     if [ "$audit_mode" != "2" ]; then
       if [ "$linux_dist" = "debian" ]; then

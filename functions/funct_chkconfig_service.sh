@@ -59,9 +59,6 @@ funct_chkconfig_service () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        total=`expr $total + 1`
-        secure=`expr $secure + 1`
-        echo "Checking:  Service $service_name at run level $service_level"
         echo "Notice:    Service $service_name is not installed [$secure Passes]"
       fi
     fi
@@ -127,9 +124,6 @@ funct_chkconfig_service () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        total=`expr $total + 1`
-        secure=`expr $secure + 1`
-        echo "Checking:  Service $service_name at run level $service_level"
         echo "Notice:    Service $service_name is not installed [$secure Passes]"
       fi
     fi
