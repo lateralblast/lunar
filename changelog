@@ -1175,3 +1175,5 @@
 # Added Docker PidMode check
 # 6.8.0: Wed  8 Feb 2017 19:41:46 AEDT
 # Added Docker IpcMode check
+# 6.8.1: Wed  8 Feb 2017 19:57:04 AEDT
+# Added Docker Devices check

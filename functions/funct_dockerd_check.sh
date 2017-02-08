@@ -122,7 +122,7 @@ funct_dockerd_check () {
             docker_id=`echo "$info" |cut -f1 -d:`
             case $used in
               "notequal")
-                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep -v "\[\]"`
                 if [ ! "$value" ]; then
                   if [ "$profile" ]; then
                     secure=`expr $secure + 1`
@@ -142,7 +142,7 @@ funct_dockerd_check () {
                 fi
                 ;;
               "equal")
-                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep -v "\[\]"`
                 if [ ! "$value" ]; then
                   if [ ! "$profile" ]; then
                     secure=`expr $secure + 1`
