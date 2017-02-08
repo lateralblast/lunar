@@ -17,72 +17,75 @@
 
 audit_docker_users () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Docker Users"
-    check_file="/etc/group"
-    if [ "$audit_mode" != 2 ]; then
-      for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
-        last_login=`last -1 $user_name |grep '[a-z]' |awk '{print $1}'`
-        if [ "$last_login" = "wtmp" ]; then
-          lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
-          total=`expr $total + 1`
-          if [ "$lock_test" = "$user_name" ]; then
-            if [ "$audit_mode" = 1 ]; then
-              insecure=`expr $insecure + 1`
-              echo "Warning:   User $user_name in group $docker_group and has not logged in recently and their account is not locked [$insecure Warnings]"
+    docker_bin=`which docker`
+    if [ "$docker_bin" ]; then
+      funct_verbose_message "Docker Users"
+      check_file="/etc/group"
+      if [ "$audit_mode" != 2 ]; then
+        for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
+          last_login=`last -1 $user_name |grep '[a-z]' |awk '{print $1}'`
+          if [ "$last_login" = "wtmp" ]; then
+            lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
+            total=`expr $total + 1`
+            if [ "$lock_test" = "$user_name" ]; then
+              if [ "$audit_mode" = 1 ]; then
+                insecure=`expr $insecure + 1`
+                echo "Warning:   User $user_name in group $docker_group and has not logged in recently and their account is not locked [$insecure Warnings]"
+              fi
+              if [ "$audit_mode" = 0 ]; then
+                funct_backup_file $check_file
+                echo "Setting:   User $user_name to locked"
+                passwd -l $user_name
+              fi
+            else
+              secure=`expr $secure + 1`
+              echo "Secure:    User $user_name in group $docker_group has not logged in recently and their account is locked [$secure Passes]"
             fi
-            if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
-              echo "Setting:   User $user_name to locked"
-              passwd -l $user_name
-            fi
-          else
-            secure=`expr $secure + 1`
-            echo "Secure:    User $user_name in group $docker_group has not logged in recently and their account is locked [$secure Passes]"
           fi
-        fi
-      done
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    if [ "$audit_mode" != 2 ]; then
-      for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
-        user_id=`uid -u $user_name`
-        if [ "$user_id" -gt "$max_super_user_id" ] ; then
-          lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
-          total=`expr $total + 1`
-          if [ "$lock_test" = "$user_name" ]; then
-            if [ "$audit_mode" = 1 ]; then
-              insecure=`expr $insecure + 1`
-              echo "Warning:   User $user_name is in group $docker_group has and ID greater than $max_super_user_id and their account is not locked [$insecure Warnings]"
+        done
+      else
+        funct_restore_file $check_file $restore_dir
+      fi
+      if [ "$audit_mode" != 2 ]; then
+        for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
+          user_id=`uid -u $user_name`
+          if [ "$user_id" -gt "$max_super_user_id" ] ; then
+            lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
+            total=`expr $total + 1`
+            if [ "$lock_test" = "$user_name" ]; then
+              if [ "$audit_mode" = 1 ]; then
+                insecure=`expr $insecure + 1`
+                echo "Warning:   User $user_name is in group $docker_group has and ID greater than $max_super_user_id and their account is not locked [$insecure Warnings]"
+              fi
+              if [ "$audit_mode" = 0 ]; then
+                funct_backup_file $check_file
+                echo "Setting:   User $user_name to locked"
+                passwd -l $user_name
+              fi
+            else
+              secure=`expr $secure + 1`
+              echo "Secure:    User $user_name in group $docker_group has an id less than $max_super_user_id and their account is locked [$secure Passes]"
             fi
-            if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
-              echo "Setting:   User $user_name to locked"
-              passwd -l $user_name
-            fi
-          else
-            secure=`expr $secure + 1`
-            echo "Secure:    User $user_name in group $docker_group has an id less than $max_super_user_id and their account is locked [$secure Passes]"
           fi
-        fi
-      done
-    else
-      funct_restore_file $check_file $restore_dir
-    fi
-    if [ "$audit_mode" != 2 ]; then
-      docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: User={{.Config.User }}'`
-      for user_info in $docker_info; do
-        total=`expr $total + 1`
-        docker_id=`echo "$user_info" |cut -f1 -d:`
-        user_id=`echo "$user_info" |cut -f2 -d: |cut -f2 -d=`
-        if [ "$user_id" ] && [ ! "$user_id" = "root" ]; then
-          secure=`expr $secure + 1`
-          echo "Secure:    Docker instance $docker_id is running as a non root user [$secure Passes]"
-        else
-          insecure=`expr $insecure + 1`
-          echo "Warning:   Docker instance $docker_id is running as root [$insecure Warnings]"
-        fi
-      done
+        done
+      else
+        funct_restore_file $check_file $restore_dir
+      fi
+      if [ "$audit_mode" != 2 ]; then
+        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: User={{.Config.User }}' 2> /dev/null`
+        for user_info in $docker_info; do
+          total=`expr $total + 1`
+          docker_id=`echo "$user_info" |cut -f1 -d:`
+          user_id=`echo "$user_info" |cut -f2 -d: |cut -f2 -d=`
+          if [ "$user_id" ] && [ ! "$user_id" = "root" ]; then
+            secure=`expr $secure + 1`
+            echo "Secure:    Docker instance $docker_id is running as a non root user [$secure Passes]"
+          else
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Docker instance $docker_id is running as root [$insecure Warnings]"
+          fi
+        done
+      fi
     fi
   fi
 }

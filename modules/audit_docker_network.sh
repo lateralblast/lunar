@@ -10,33 +10,36 @@
 
 audit_docker_network () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Docker Network"
-    backup_file="network_bridge"
-    new_state="false"
-    old_state="true"
-    total=`expr $total + 1`
-    if [ "$audit_mode" != 2 ]; then
-      check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
-      if [ ! "$check" ]; then
-        insecure=`expr $insecure + 1`
-        echo "Warning:   Traffic is allowed between containers [$insecure Warnings]"
-        if [ "$audit_mode" = 0 ]; then
-          log_file="$work_dir/$backup_file"
-          echo "$old_state" > $log_file
-          echo "Setting:   Docker network bridge enabled to $new_state"
-          /usr/bin/dockerd --icc=$new_state
+    docker_bin=`which docker`
+    if [ "$docker_bin" ]; then
+      funct_verbose_message "Docker Network"
+      backup_file="network_bridge"
+      new_state="false"
+      old_state="true"
+      total=`expr $total + 1`
+      if [ "$audit_mode" != 2 ]; then
+        check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
+        if [ ! "$check" ]; then
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Traffic is allowed between containers [$insecure Warnings]"
+          if [ "$audit_mode" = 0 ]; then
+            log_file="$work_dir/$backup_file"
+            echo "$old_state" > $log_file
+            echo "Setting:   Docker network bridge enabled to $new_state"
+            /usr/bin/dockerd --icc=$new_state
+          fi
+        else
+          secure=`expr $secure + 1`
+          echo "Secure:    Traffic is not allowed between containers [$secure Passes]"
         fi
       else
-        secure=`expr $secure + 1`
-        echo "Secure:    Traffic is not allowed between containers [$secure Passes]"
+        restore_file="$restore_dir/$backup_file"
+        old_state=`cat $restore_file`
+        echo "Setting:   Docker network bridge enabled to $old_state"
+        /usr/bin/dockerd --icc=$old_state
       fi
-    else
-      restore_file="$restore_dir/$backup_file"
-      old_state=`cat $restore_file`
-      echo "Setting:   Docker network bridge enabled to $old_state"
-      /usr/bin/dockerd --icc=$old_state
+      funct_dockerd_check unused daemon iptables true
+      funct_dockerd_check used daemon opt encrypted
     fi
-    funct_dockerd_check unused daemon iptables true
-    funct_dockerd_check used daemon opt encrypted
   fi
 }

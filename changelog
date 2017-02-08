@@ -1147,3 +1147,5 @@
 # Added Docker file permission tests
 # 6.6.6: Wed  8 Feb 2017 10:43:45 AEDT
 # Added Docker container user test
+# 6.6.7: Wed  8 Feb 2017 11:53:36 AEDT
+# Added Docker Healthcheck test
