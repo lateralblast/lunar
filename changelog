@@ -1171,3 +1171,5 @@
 # Added Docker Ports check and cleaned up code
 # 6.7.8: Wed  8 Feb 2017 19:24:39 AEDT
 # More Docker fixes
+# 6.7.9: Wed  8 Feb 2017 19:38:44 AEDT
+# Added Docker PidMode check
