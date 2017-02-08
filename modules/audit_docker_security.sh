@@ -16,6 +16,8 @@
 # Refer to https://github.com/docker/docker/blob/master/daemon/execdriver/native/template/default_template.go
 # Refer to http://man7.org/linux/man-pages/man7/capabilities.7.html
 # Refer to http://www.oreilly.com/webops-perf/free/files/docker-security.pdf
+# Refer to Section(s) 5.4 Page(s) 132   CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/reference/commandline/cli
 #.
 
 audit_docker_security () {
