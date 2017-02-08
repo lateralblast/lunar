@@ -1155,3 +1155,5 @@
 # Added Docker SELinux test
 # 6.7.0: Wed  8 Feb 2017 14:41:52 AEDT
 # Added Docker capabilities test
+# 6.7.1: Wed  8 Feb 2017 14:48:15 AEDT
+# Added Docker privileged container check

@@ -54,8 +54,22 @@ audit_docker_security () {
             echo "Warning:   Docker instance $docker_id does not have a SELinux profile [$insecure Warnings]"
           fi
         done
+        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Privileged={{ .HostConfig.Privileged }}' 2> /dev/null`
+        for info in $docker_info; do
+          total=`expr $total + 1`
+          docker_id=`echo "$info" |cut -f1 -d:`
+          profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+          echo "Checking:  Docker instance $docker_id is not a privileged container"
+          if [ "$profile" = "false" ]; then
+            secure=`expr $secure + 1`
+            echo "Secure:    Docker instance $docker_id is not a privileged container [$secure Passes]"
+          else
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Docker instance $docker_id is a privileged container [$insecure Warnings]"
+          fi
+        done
+        IFS=$OFS
       fi
-      IFS=$OFS
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
       done
