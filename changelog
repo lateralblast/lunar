@@ -1197,3 +1197,7 @@
 # Added Docker Health test
 # 6.9.1: Wed  8 Feb 2017 23:45:46 AEDT
 # Added Docker default bridge test
+# 6.9.2: Wed  8 Feb 2017 23:49:04 AEDT
+# Added Docker UsernsMode test
+# 6.9.3: Wed  8 Feb 2017 23:59:47 AEDT
+# Added Docker socket mount test

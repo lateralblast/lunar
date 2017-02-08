@@ -69,6 +69,14 @@
 # Refer to Section(s) 5.28 Page(s) 175-6  CIS Docker Benchmark 1.13.0
 # Refer to https://github.com/docker/docker/pull/18697
 # Refer to https://docs.docker.com/engine/reference/commandline/run/
+# Refer to Section(s) 5.30 Page(s) 178    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/commandline/run/#/run
+# Refer to https://events.linuxfoundation.org/sites/events/files/slides/User%20Namespaces%20-%20ContainerCon%202015%20-%2016-9-final_0.pdf
+# Refer to https://github.com/docker/docker/pull/12648
+# Refer to Section(s) 5.31 Page(s) 179    CIS Docker Benchmark 1.13.0
+# Refer to https://raesene.github.io/blog/2016/03/06/The-Dangers-Of-Docker.sock/
+# Refer to https://forums.docker.com/t/docker-in-docker-vs-mounting-var-run-docker-sock/9450/2
+# Refer to https://github.com/docker/docker/issues/21109
 #.
 
 audit_docker_security () {
@@ -84,6 +92,7 @@ audit_docker_security () {
       funct_dockerd_check equal config ReadonlyRootfs "true"
       funct_dockerd_check notequal config PidMode "host"
       funct_dockerd_check notequal config IpcMode "host"
+      funct_dockerd_check notequal config UsernsMode "host"
       funct_dockerd_check equal config Devices ""
       funct_dockerd_check equal config Ulimits "<no value>"
       funct_dockerd_check notequal config Propagation "shared"
@@ -96,6 +105,18 @@ audit_docker_security () {
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
       done
+      if [ "$audit_mode" != 2 ]; then
+        total=`expr $total + 1`
+        check=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock`
+        echo "Checking:  Docker socket mounted inside containers"
+        if [ "$check" ]; then
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Docker socket is mounted inside a container [$insecure Warnings]"
+        else
+          secure=`expr $secure + 1`
+          echo "Secure:    Docker socket is not mounted inside a container [$secure Passes]"
+        fi
+      fi
     fi
   fi
 }
