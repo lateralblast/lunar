@@ -136,8 +136,8 @@ funct_dockerd_check () {
                     secure=`expr $secure + 1`
                     echo "Secure:    Docker instance $docker_id does not have parameter $param set to $value [$secure Passes]"
                   else
-                    secure=`expr $secure + 1`
-                    echo "Secure:    Docker instance $docker_id has parameter $param set [$secure Passes]"
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:    Docker instance $docker_id has parameter $param set to $value [$insecure Warnings]"
                   fi
                 fi
                 ;;
@@ -156,8 +156,8 @@ funct_dockerd_check () {
                     secure=`expr $secure + 1`
                     echo "Secure:    Docker instance $docker_id does not have parameter $param set to $value [$secure Passes]"
                   else
-                    secure=`expr $secure + 1`
-                    echo "Secure:    Docker instance $docker_id does not have parameter $param set [$secure Passes]"
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:   Docker instance $docker_id does not have parameter $param set to $value [$insecure Warnings]"
                   fi
                 fi
                 ;;

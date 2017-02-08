@@ -1169,3 +1169,5 @@
 # Added Docker Memory and CpuShares tests
 # 6.7.7: Wed  8 Feb 2017 19:04:24 AEDT
 # Added Docker Ports check and cleaned up code
+# 6.7.8: Wed  8 Feb 2017 19:24:39 AEDT
+# More Docker fixes

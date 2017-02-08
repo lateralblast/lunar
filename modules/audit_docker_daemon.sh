@@ -207,6 +207,9 @@ audit_docker_daemon () {
         funct_dockerd_check notequal config Memory "0"
         funct_dockerd_check notequal config CpuShares "0"
         funct_dockerd_check notequal config CpuShares "1024"
+        funct_dockerd_check notequal config RestartPolicyName "always"
+        funct_dockerd_check equal config RestartPolicyName "on-failure"
+        funct_dockerd_check equal config MaximumRetryCount "5"
       fi
     fi
   fi
