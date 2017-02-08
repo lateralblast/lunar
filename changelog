@@ -1149,3 +1149,5 @@
 # Added Docker container user test
 # 6.6.7: Wed  8 Feb 2017 11:53:36 AEDT
 # Added Docker Healthcheck test
+# 6.6.8: Wed  8 Feb 2017 12:33:33 AEDT
+# Added Docker AppArmor test
