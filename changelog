@@ -1165,3 +1165,5 @@
 # Initial Docker code cleanup
 # 6.7.5: Wed  8 Feb 2017 17:50:16 AEDT
 # Additional Docker code cleanup
+# 6.7.6: Wed  8 Feb 2017 17:57:59 AEDT
+# Added Docker Memory and CpuShares tests

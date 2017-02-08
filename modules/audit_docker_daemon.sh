@@ -131,6 +131,9 @@
 # Refer to http://docs.docker.com/reference/commandline/cli/#run
 # Refer to https://docs.docker.com/articles/runmetrics/
 # Refer to Section(s) 5.11 Page(s) 144-5  CIS Docker Benchmark 1.13.0
+# Refer to https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/
+# Refer to http://docs.docker.com/reference/commandline/cli/#run
+# Refer to https://docs.docker.com/articles/runmetrics/
 #.
 
 audit_docker_daemon () {
@@ -202,6 +205,8 @@ audit_docker_daemon () {
           echo "Secure:    Docker swarm unlock key is not set or swarm is not running [$secure Passes]"
         fi
         funct_dockerd_check notequal config Memory "0"
+        funct_dockerd_check notequal config CpuShares "0"
+        funct_dockerd_check notequal config CpuShares "1024"
       fi
     fi
   fi
