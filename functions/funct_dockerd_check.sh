@@ -113,6 +113,9 @@ funct_dockerd_check () {
             "Ports")
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .NetworkSettings.$param }}" 2> /dev/null`
               ;;
+            "Propagation")
+              docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}'`
+              ;;
             *)
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
               ;;

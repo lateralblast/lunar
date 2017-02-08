@@ -1179,3 +1179,5 @@
 # Added Docker Devices check
 # 6.8.2: Wed  8 Feb 2017 20:02:58 AEDT
 # Added Docker Ulimits check
+# 6.8.3: Wed  8 Feb 2017 20:15:10 AEDT
+# Added Docker mount propagation check
