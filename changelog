@@ -1191,3 +1191,5 @@
 # Added Docker exec commands with user option check
 # 6.8.8: Wed  8 Feb 2017 22:59:43 AEDT
 # Added Docker CgroupParent test
+# 6.8.9: Wed  8 Feb 2017 23:09:53 AEDT
+# Added Docker SecurityOpt tests

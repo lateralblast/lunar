@@ -55,6 +55,17 @@
 # Refer to Section(s) 5.24 Page(s) 168-9  CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/engine/reference/run/#specifying-custom-cgroups
 # Refer to https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html
+# Refer to Section(s) 2.8  Page(s) 49-50  CIS Docker Benchmark 1.13.0
+# Refer to http://man7.org/linux/man-pages/man7/user_namespaces.7.html
+# Refer to https://docs.docker.com/engine/reference/commandline/daemon/
+# Refer to http://events.linuxfoundation.org/sites/events/files/slides/User%20Namespaces%20-%20ContainerCon%202015%20-%2016-9-final_0.pdf
+# Refer to https://github.com/docker/docker/issues/21050
+# Refer to Section(s) 5.25 Page(s) 170-1  CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/projectatomic/atomic-site/issues/269 
+# Refer to https://github.com/docker/docker/pull/20727
+# Refer to https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
+# Refer to https://lwn.net/Articles/475678/
+# Refer to https://lwn.net/Articles/475362/
 #.
 
 audit_docker_security () {
@@ -63,6 +74,8 @@ audit_docker_security () {
     if [ "$docker_bin" ]; then
       funct_verbose_message "Docker Security"
       funct_dockerd_check notequal config SecurityOpt "<no value>"
+      funct_dockerd_check include config SecurityOpt "userns"
+      funct_dockerd_check include config SecurityOpt "no-new-privileges"
       funct_dockerd_check equal config Privileged "false"
       funct_dockerd_check notequal config AppArmorProfile ""
       funct_dockerd_check equal config ReadonlyRootfs "true"
