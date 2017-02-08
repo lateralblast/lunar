@@ -23,6 +23,7 @@
 # Refer to Section(s) 6.3-7    Page(s) 47-51   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.1.1-11 Page(s) 78-87   CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 5.2.1-16 Page(s) 201-18  CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 5.2.1-16 Page(s) 213-31  CIS Ubuntu 16.04 Benchmark v2.0.0
 # Refer to http://pubs.vmware.com/vsphere-55/index.jsp?topic=%2Fcom.vmware.vsphere.security.doc%2FGUID-12E27BF3-3769-4665-8769-DA76C2BC9FFE.html
 #.
 

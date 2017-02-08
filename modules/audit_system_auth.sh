@@ -4,12 +4,20 @@
 # Refer to Section(s) 6.3.5-6 Page(s) 163-5  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 5.3.1-2 Page(s) 238-41 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.1-2 Page(s) 220-1  CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 5.3.1-4 Page(s) 232-6  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
     funct_verbose_message "PAM Authentication"
+    check=0
     if [ "$os_vendor" = "Amazon" ] && [ "$os_version" = "2016" ]; then
+      check=1
+    fi
+    if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
+      check=1
+    fi
+    if [ "$check" -eq 1 ]; then
       check_file="/etc/security/pwquality.conf"
       funct_file_value $check_file minlen eq 14 hash  
       funct_file_value $check_file dcredit eq -1 hash  

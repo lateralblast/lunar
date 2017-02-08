@@ -26,7 +26,7 @@ audit_system_auth_account_reset () {
               funct_backup_file $check_file
               echo "Setting:   Account reset entry in $check_file"
               cp $check_file $temp_file
-              cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_permit.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
+              cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_tally2.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
               rm $temp_file
             fi
           else
