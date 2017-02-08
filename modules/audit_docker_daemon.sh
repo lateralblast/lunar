@@ -136,14 +136,6 @@
 # Refer to https://docs.docker.com/articles/runmetrics/
 # Refer to Section(s) 5.14 Page(s) 150-1  CIS Docker Benchmark 1.13.0
 # Refer to http://docs.docker.com/reference/commandline/cli/#restart-policies
-# Refer to Section(s) 5.15 Page(s) 152-3  CIS Docker Benchmark 1.13.0
-# Refer to https://docs.docker.com/reference/run/#pid-settings
-# Refer to http://man7.org/linux/man-pages/man7/pid_namespaces.7.html
-# Refer to Section(s) 5.16 Page(s) 154-5  CIS Docker Benchmark 1.13.0
-# Refer to https://docs.docker.com/reference/run/#pid-settings
-# Refer to http://man7.org/linux/man-pages/man7/pid_namespaces.7.html
-# Refer to Section(s) 5.17 Page(s) 156-7  CIS Docker Benchmark 1.13.0
-# Refer to http://docs.docker.com/reference/commandline/cli/#run
 #.
 
 audit_docker_daemon () {
@@ -220,9 +212,6 @@ audit_docker_daemon () {
         funct_dockerd_check notequal config RestartPolicy.Name "always"
         funct_dockerd_check equal config RestartPolicy.Name "on-failure"
         funct_dockerd_check equal config MaximumRetryCount "5"
-        funct_dockerd_check notequal config PidMode "host"
-        funct_dockerd_check notequal config IpcMode "host"
-        funct_dockerd_check equal config Devices ""
       fi
     fi
   fi

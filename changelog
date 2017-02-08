@@ -1177,3 +1177,5 @@
 # Added Docker IpcMode check
 # 6.8.1: Wed  8 Feb 2017 19:57:04 AEDT
 # Added Docker Devices check
+# 6.8.2: Wed  8 Feb 2017 20:02:58 AEDT
+# Added Docker Ulimits check

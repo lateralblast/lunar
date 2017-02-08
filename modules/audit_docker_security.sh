@@ -23,6 +23,17 @@
 # Refer to https://github.com/docker/docker/issues/6401
 # Refer to Section(s) 5.12 Page(s) 146-7 CIS Docker Benchmark 1.13.0
 # Refer to http://docs.docker.com/reference/commandline/cli/#run
+# Refer to Section(s) 5.15 Page(s) 152-3  CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/reference/run/#pid-settings
+# Refer to http://man7.org/linux/man-pages/man7/pid_namespaces.7.html
+# Refer to Section(s) 5.16 Page(s) 154-5  CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/reference/run/#pid-settings
+# Refer to http://man7.org/linux/man-pages/man7/pid_namespaces.7.html
+# Refer to Section(s) 5.17 Page(s) 156-7  CIS Docker Benchmark 1.13.0
+# Refer to http://docs.docker.com/reference/commandline/cli/#run
+# Refer to Section(s) 5.17 Page(s) 158-9  CIS Docker Benchmark 1.13.0
+# Refer to http://docs.docker.com/reference/commandline/cli/#setting-ulimits-in-a-container
+# Refer to http://www.oreilly.com/webops-perf/free/files/docker-security.pdf
 #.
 
 audit_docker_security () {
@@ -35,6 +46,10 @@ audit_docker_security () {
         funct_dockerd_check equal config Privileged "false"
         funct_dockerd_check notequal config AppArmorProfile ""
         funct_dockerd_check equal config ReadonlyRootfs "true"
+        funct_dockerd_check notequal config PidMode "host"
+        funct_dockerd_check notequal config IpcMode "host"
+        funct_dockerd_check equal config Devices ""
+        funct_dockerd_check equal config Ulimits "<no value>"
       fi
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
