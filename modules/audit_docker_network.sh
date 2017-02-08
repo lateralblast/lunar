@@ -9,7 +9,7 @@
 #.
 
 audit_docker_network () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
       funct_verbose_message "Docker Network"
@@ -19,6 +19,7 @@ audit_docker_network () {
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
+        echo "Checking:  Docker network bridge traffic setting"
         if [ ! "$check" ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Traffic is allowed between containers [$insecure Warnings]"

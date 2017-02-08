@@ -1153,3 +1153,5 @@
 # Added Docker AppArmor test
 # 6.6.9: Wed  8 Feb 2017 12:46:13 AEDT
 # Added Docker SELinux test
+# 6.7.0: Wed  8 Feb 2017 14:41:52 AEDT
+# Added Docker capabilities test

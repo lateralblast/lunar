@@ -129,7 +129,7 @@
 #.
 
 audit_docker_daemon () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
       funct_verbose_message "Docker Daemon"
@@ -187,6 +187,7 @@ audit_docker_daemon () {
       if [ "$audit_mode" != 2 ]; then
         total=`expr $total + 1`
         check=`docker swarm unlock-key 2> /dev/null`
+        echo "Checking:  Docker swarm unlock-key is set"
         if [ "$check" = "no unlock key is set" ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Docker swarm unlock is not set [$insecure Warnings]"

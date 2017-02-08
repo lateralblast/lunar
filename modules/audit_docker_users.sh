@@ -16,7 +16,7 @@
 #.
 
 audit_docker_users () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
       funct_verbose_message "Docker Users"
@@ -27,6 +27,7 @@ audit_docker_users () {
           if [ "$last_login" = "wtmp" ]; then
             lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
             total=`expr $total + 1`
+            echo "Checking:  Docker group user $user_name account is locked"
             if [ "$lock_test" = "$user_name" ]; then
               if [ "$audit_mode" = 1 ]; then
                 insecure=`expr $insecure + 1`
@@ -47,11 +48,13 @@ audit_docker_users () {
         funct_restore_file $check_file $restore_dir
       fi
       if [ "$audit_mode" != 2 ]; then
+        echo "Checking:  Docker group users"
         for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
           user_id=`uid -u $user_name`
           if [ "$user_id" -gt "$max_super_user_id" ] ; then
             lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
             total=`expr $total + 1`
+            echo "Checking:  Docker group user $user_name account is locked"
             if [ "$lock_test" = "$user_name" ]; then
               if [ "$audit_mode" = 1 ]; then
                 insecure=`expr $insecure + 1`
@@ -77,6 +80,7 @@ audit_docker_users () {
           total=`expr $total + 1`
           docker_id=`echo "$user_info" |cut -f1 -d:`
           user_id=`echo "$user_info" |cut -f2 -d: |cut -f2 -d=`
+          echo "Checking:  Docker instance $docker_id is is running as a non root user"
           if [ "$user_id" ] && [ ! "$user_id" = "root" ]; then
             secure=`expr $secure + 1`
             echo "Secure:    Docker instance $docker_id is running as a non root user [$secure Passes]"
