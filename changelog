@@ -1187,4 +1187,6 @@
 # Added Docker exec commands with privileged option check
 # 6.8.6: Wed  8 Feb 2017 22:45:04 AEDT
 # Cleaned up Docker tests
+# 6.8.5: Wed  8 Feb 2017 22:56:11 AEDT
+# Added Docker exec commands with user option check
 

@@ -50,6 +50,8 @@
 # Refer to https://github.com/docker/docker/issues/22870
 # Refer to Section(s) 5.22 Page(s) 166    CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/engine/reference/commandline/exec/
+# Refer to Section(s) 5.23 Page(s) 167    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/commandline/exec/
 #.
 
 audit_docker_security () {
@@ -68,6 +70,7 @@ audit_docker_security () {
       funct_dockerd_check notequal config Propagation "shared"
       funct_dockerd_check notequal config UTSMode "shared"
       funct_ausearch_check equal docker exec privileged ""
+      funct_ausearch_check equal docker exec user ""
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
       done
