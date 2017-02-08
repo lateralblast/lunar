@@ -1195,3 +1195,5 @@
 # Added Docker SecurityOpt tests
 # 6.9.0: Wed  8 Feb 2017 23:28:37 AEDT
 # Added Docker Health test
+# 6.9.1: Wed  8 Feb 2017 23:45:46 AEDT
+# Added Docker default bridge test

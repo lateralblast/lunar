@@ -10,6 +10,10 @@
 # Refer to https://github.com/docker/docker/issues/24253
 # Refer to Section(s) 5.13 Page(s) 148-9 CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/articles/networking/#binding-container-ports-to-the-host
+# Refer to Section(s) 5.29 Page(s) 177   CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/nyantec/narwhal
+# Refer to https://arxiv.org/pdf/1501.02967
+# Refer to https://docs.docker.com/engine/userguide/networking/dockernetworks/
 #.
 
 audit_docker_network () {
@@ -24,9 +28,17 @@ audit_docker_network () {
       if [ "$audit_mode" != 2 ]; then
         funct_dockerd_check notequal config NetworkMode "NetworkMode=host"
         funct_dockerd_check notinclude config Ports "0.0.0.0"
-        OFS=$IFS
-        IFS=$'\n'
-        IFS=$OFS
+        total=`expr $total + 1`
+        echo "Checking:  Docker default bridge"
+        check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'docker0'`
+        if [ "$check" ]; then
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Docker is using default bridge docker0 [$insecure Warnings]"
+        else
+          secure=`expr $secure + 1`
+          echo "Secure:    Docker is not using default bridge docker0 [$secure Passes]"
+        fi
+        total=`expr $total + 1`
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
         echo "Checking:  Docker network bridge traffic setting"
         if [ ! "$check" ]; then

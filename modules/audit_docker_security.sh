@@ -66,6 +66,9 @@
 # Refer to https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 # Refer to https://lwn.net/Articles/475678/
 # Refer to https://lwn.net/Articles/475362/
+# Refer to Section(s) 5.28 Page(s) 175-6  CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/docker/docker/pull/18697
+# Refer to https://docs.docker.com/engine/reference/commandline/run/
 #.
 
 audit_docker_security () {
@@ -88,6 +91,8 @@ audit_docker_security () {
       funct_ausearch_check equal docker exec privileged ""
       funct_ausearch_check equal docker exec user ""
       funct_dockerd_check equal config CgroupParent ""
+      funct_dockerd_check notequal config PidsLimit "0"
+      funct_dockerd_check notequal config PidsLimit "-1"
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
       done
