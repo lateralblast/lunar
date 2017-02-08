@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      6.9.3
+# Version:      6.9.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -145,6 +145,14 @@ print_usage () {
   echo "    [Provides more information about the audit taking place]"
   echo ""
   echo "Examples:"
+  echo ""
+  echo "Run AWS CLI audit"
+  echo ""
+  echo "$0 -w"
+  echo ""
+  echo "Run Docker audit"
+  echo ""
+  echo "$0 -d"
   echo ""
   echo "Run in Audit Mode (for Operating Systems)"
   echo ""
@@ -641,7 +649,7 @@ print_results () {
 
 # Handle command line arguments
 
-while getopts abcdlpR:r:s:u:z:hwASWVLx args; do
+while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
   case $args in
     a)
       if [ "$2" = "-v" ]; then
@@ -745,6 +753,12 @@ while getopts abcdlpR:r:s:u:z:hwASWVLx args; do
       echo ""
       ls $modules_dir | grep -v '^full_' |grep aws |sed 's/\.sh//g'
       ;;
+    D)
+      echo ""
+      echo "Docker Security Tests:"
+      echo ""
+      ls $modules_dir | grep -v '^full_' |grep docker |sed 's/\.sh//g'
+      ;;  
     S)
       echo ""
       echo "UNIX Security Tests:"
