@@ -119,12 +119,15 @@ funct_dockerd_check () {
             "Propagation")
               docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}' 2> /dev/null`
               ;;
+            "Health")
+              docker_info=`docker ps --quiet | xargs docker inspect --format '{{ .Id }}: Health={{ .State.Health.Status }}' 2> /dev/null`
+              ;;
             *)
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
               ;;
           esac
           if [ ! "$docker_info" ]; then
-            echo "Notice:    No Docker instances"
+            echo "Notice:    No Docker instances with $param set"
           fi
           for info in $docker_info; do
             total=`expr $total + 1`

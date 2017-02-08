@@ -1193,3 +1193,5 @@
 # Added Docker CgroupParent test
 # 6.8.9: Wed  8 Feb 2017 23:09:53 AEDT
 # Added Docker SecurityOpt tests
+# 6.9.0: Wed  8 Feb 2017 23:28:37 AEDT
+# Added Docker Health test
