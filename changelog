@@ -1159,3 +1159,5 @@
 # Added Docker privileged container check
 # 6.7.2: Wed  8 Feb 2017 15:11:17 AEDT
 # Added Docker host network namespace check
+# 6.7.3: Wed  8 Feb 2017 15:26:33 AEDT
+# Added Docker memory usage limit test

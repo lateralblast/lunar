@@ -126,6 +126,10 @@
 # Refer to https://docs.docker.com/engine/admin/configuring/
 # Refer to Section(s) 3.20 Page(s) 104    CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/engine/admin/configuring/
+# Refer to Section(s) 5.10 Page(s) 142-3  CIS Docker Benchmark 1.13.0
+# Refer to https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/
+# Refer to http://docs.docker.com/reference/commandline/cli/#run
+# Refer to https://docs.docker.com/articles/runmetrics/
 #.
 
 audit_docker_daemon () {
@@ -196,6 +200,23 @@ audit_docker_daemon () {
           secure=`expr $secure + 1`
           echo "Secure:    Docker swarm unlock key is not set or swarm is not running [$secure Passes]"
         fi
+        OFS=$IFS
+        IFS=$'\n'
+        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Memory={{ .HostConfig.Memory }}' 2> /dev/null`
+        for info in $docker_info; do
+          total=`expr $total + 1`
+          docker_id=`echo "$info" |cut -f1 -d:`
+          profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+          echo "Checking:  Docker instance $docker_id memory limit is set"
+          if [ ! "$profile" = "0" ]; then
+            secure=`expr $secure + 1`
+            echo "Secure:    Docker instance $docker_id has an AppArmor profile [$secure Passes]"
+          else
+            insecure=`expr $insecure + 1`
+            echo "Warning:   Docker instance $docker_id does not have an AppArmor profile [$insecure Warnings]"
+          fi
+        done
+        IFS=$OFS
       fi
     fi
   fi
