@@ -34,6 +34,13 @@
 # Refer to Section(s) 5.17 Page(s) 158-9  CIS Docker Benchmark 1.13.0
 # Refer to http://docs.docker.com/reference/commandline/cli/#setting-ulimits-in-a-container
 # Refer to http://www.oreilly.com/webops-perf/free/files/docker-security.pdf
+# Refer to Section(s) 5.19 Page(s) 160-1  CIS Docker Benchmark 1.13.0
+# Refer to https://github.com/docker/docker/pull/17034
+# Refer to https://docs.docker.com/engine/reference/run/
+# Refer to https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt
+# Refer to Section(s) 5.20 Page(s) 162-3  CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/run/
+# Refer to http://man7.org/linux/man-pages/man7/namespaces.7.html
 #.
 
 audit_docker_security () {
@@ -50,6 +57,8 @@ audit_docker_security () {
         funct_dockerd_check notequal config IpcMode "host"
         funct_dockerd_check equal config Devices ""
         funct_dockerd_check equal config Ulimits "<no value>"
+        funct_dockerd_check notequal config Propagation "shared"
+        funct_dockerd_check notequal config UTSMode "shared"
       fi
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param

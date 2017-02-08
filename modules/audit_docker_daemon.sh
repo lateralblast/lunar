@@ -136,10 +136,6 @@
 # Refer to https://docs.docker.com/articles/runmetrics/
 # Refer to Section(s) 5.14 Page(s) 150-1  CIS Docker Benchmark 1.13.0
 # Refer to http://docs.docker.com/reference/commandline/cli/#restart-policies
-# Refer to Section(s) 5.19 Page(s) 160-1  CIS Docker Benchmark 1.13.0
-# Refer to https://github.com/docker/docker/pull/17034
-# Refer to https://docs.docker.com/engine/reference/run/
-# Refer to https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt
 #.
 
 audit_docker_daemon () {
@@ -216,7 +212,6 @@ audit_docker_daemon () {
         funct_dockerd_check notequal config RestartPolicy.Name "always"
         funct_dockerd_check equal config RestartPolicy.Name "on-failure"
         funct_dockerd_check equal config MaximumRetryCount "5"
-        funct_dockerd_check notequal config Propagation "shared"
       fi
     fi
   fi
