@@ -9,6 +9,7 @@
 # Refer to Section(s) 2.11.4-5,17        Page(s) 194-5,202    CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 4.8                Page(s) 71-2         CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 4.1.1.1-3,4.2.1-18 Page(s) 148-75       CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 4.1.1.1-3,4.1.2-18 Page(s) 159-86       CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_system_accounting () {

@@ -7,6 +7,7 @@
 # Refer to Section(s) 8.2.1-8   Page(s) 106-111 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 5.1       Page(s) 18      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 4.2.1.1-5 Page(s) 176-82  CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 4.2.1.1-5 Page(s) 187-93  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_syslog_server () {
