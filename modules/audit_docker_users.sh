@@ -75,20 +75,7 @@ audit_docker_users () {
         funct_restore_file $check_file $restore_dir
       fi
       if [ "$audit_mode" != 2 ]; then
-        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: User={{.Config.User }}' 2> /dev/null`
-        for user_info in $docker_info; do
-          total=`expr $total + 1`
-          docker_id=`echo "$user_info" |cut -f1 -d:`
-          user_id=`echo "$user_info" |cut -f2 -d: |cut -f2 -d=`
-          echo "Checking:  Docker instance $docker_id is is running as a non root user"
-          if [ "$user_id" ] && [ ! "$user_id" = "root" ]; then
-            secure=`expr $secure + 1`
-            echo "Secure:    Docker instance $docker_id is running as a non root user [$secure Passes]"
-          else
-            insecure=`expr $insecure + 1`
-            echo "Warning:   Docker instance $docker_id is running as root [$insecure Warnings]"
-          fi
-        done
+        funct_dockerd_check notequal config User ""
       fi
     fi
   fi

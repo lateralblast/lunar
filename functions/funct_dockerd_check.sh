@@ -103,17 +103,23 @@ funct_dockerd_check () {
         "config")
           OFS=$IFS
           IFS=$'\n'
-          if [ "$param" = "AppArmorProfile" ]; then
-            docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .$param }}" 2> /dev/null`
-          else
-            docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
-          fi
+          case $param in
+            "AppArmorProfile")
+              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .$param }}" 2> /dev/null`
+              ;;
+            "User")
+              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .Config.$param }}" 2> /dev/null`
+              ;;
+            "*")
+              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
+              ;;
+          esac
           for info in $docker_info; do
             total=`expr $total + 1`
             docker_id=`echo "$info" |cut -f1 -d:`
             profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
             if [ "$used" = "notequal" ]; then
-              if [ "$profile" = "$value" ]; then
+              if [ ! "$profile" = "$value" ]; then
                 if [ "$value" ]; then
                   secure=`expr $secure + 1`
                   echo "Secure:    Docker instance $docker_id has $param set to $value [$secure Passes]"
