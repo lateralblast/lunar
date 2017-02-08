@@ -52,6 +52,9 @@
 # Refer to https://docs.docker.com/engine/reference/commandline/exec/
 # Refer to Section(s) 5.23 Page(s) 167    CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/engine/reference/commandline/exec/
+# Refer to Section(s) 5.24 Page(s) 168-9  CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/run/#specifying-custom-cgroups
+# Refer to https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html
 #.
 
 audit_docker_security () {
@@ -71,6 +74,7 @@ audit_docker_security () {
       funct_dockerd_check notequal config UTSMode "shared"
       funct_ausearch_check equal docker exec privileged ""
       funct_ausearch_check equal docker exec user ""
+      funct_dockerd_check equal config CgroupParent ""
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
       done
