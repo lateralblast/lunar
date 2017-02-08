@@ -15,6 +15,11 @@ audit_grub_security () {
 	      funct_check_perms $check_file 0600 root root
 	     done
     fi
+    check_file="/boot/grub/grub.cfg"
+    funct_file_value $check_file "set superusers" eq root hash
+    funct_file_value $check_file "password_pbkdf2" space root hash
+    funct_file_value $check_file "selinux" eq 1 hash
+    funct_file_value $check_file "enforcing" eq 1 hash
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"
 #    grub_check=`cat $check_file |grep "^password --md5" |awk '{print $1}'`

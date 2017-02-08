@@ -8,6 +8,7 @@
 # Refer to Section(s) 1.3.7,18-21 Page(s) 41-2,55-60 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 1.13        Page(s) 43-4       CIS ESX Server 4 Benchmark v1.1.0
 # Refer to Section(s) 2.2.14      Page(s) 106        CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.14      Page(s) 114        CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_snmp () {
@@ -65,38 +66,26 @@ audit_snmp () {
       if [ "$os_name" = "SunOS" ]; then
         funct_verbose_message "SNMP Daemons"
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          service_name="svc:/application/management/seaport:default"
-          funct_service $service_name disabled
-          service_name="svc:/application/management/snmpdx:default"
-          funct_service $service_name disabled
-          service_name="svc:/application/management/dmi:default"
-          funct_service $service_name disabled
-          service_name="svc:/application/management/sma:default"
-          funct_service $service_name disabled
+          for service_name in "svc:/application/management/seaport:default" "svc:/application/management/snmpdx:default" \
+                              "svc:/application/management/dmi:default" "svc:/application/management/sma:default"; do
+            funct_service $service_name disabled
+          done
         else
-          service_name="init.dmi"
-          funct_service $service_name disabled
-          service_name="init.sma"
-          funct_service $service_name disabled
-          service_name="init.snmpdx"
-          funct_service $service_name disabled
+          for service_name in init.dmi init.sma init.snmpdx; do
+            funct_service $service_name disabled
+          done
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
         funct_rpm_check net-snmp
         if [ "$rpm_check" = "net-snmp" ]; then
-          service_name="snmpd"
-          funct_systemctl_service disable $service_name
-          funct_chkconfig_service $service_name 3 off
-          funct_chkconfig_service $service_name 5 off
-          service_name="snmptrapd"
-          funct_systemctl_service disable $service_name
-          funct_chkconfig_service $service_name 3 off
-          funct_chkconfig_service $service_name 5 off
+          for service_name in snmp snmptrapd; do
+            funct_systemctl_service disable $service_name
+            funct_chkconfig_service $service_name 3 off
+            funct_chkconfig_service $service_name 5 off
+          done
           funct_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
-          if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-            funct_linux_package uninstall net-snmp
-          fi
+          funct_linux_package uninstall net-snmp
         fi
       fi
     else

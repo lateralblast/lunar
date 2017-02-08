@@ -6,6 +6,7 @@
 # Refer to Section(s) 2.2.5 Page(s) 105  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.4   Page(s) 54-5 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.2.5 Page(s) 97   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.5 Page(s) 105  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_dhcp_server () {
@@ -19,9 +20,7 @@ audit_dhcp_server () {
     fi
     if [ "$os_name" = "Linux" ]; then
       funct_systemctl_service disable dhcpd
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-        funct_linux_package uninstall dhcp
-      fi
+      funct_linux_package uninstall dhcp
     fi
   fi
 }

@@ -9,7 +9,7 @@ funct_defaults_check () {
     defaults_parameter=$2
     defaults_value=$3
     defaults_type=$4
-    if [ "$defaults_type" == "dict" ]; then
+    if [ "$defaults_type" = "dict" ]; then
       defaults_second_value=$5
       defaults_second_type=$6
     else
@@ -65,10 +65,10 @@ funct_defaults_check () {
                 fi
               else
                 if [ "$defaults_type" = "dict" ]; then
-                  if [ "$defaults_second_type" == "bool" ]; then
+                  if [ "$defaults_second_type" = "bool" ]; then
                     $defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value
                   else
-                    if [ "$defaults_second_type" == "int" ]; then
+                    if [ "$defaults_second_type" = "int" ]; then
                       $defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value
                     fi
                   fi

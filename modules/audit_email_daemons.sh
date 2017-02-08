@@ -4,32 +4,17 @@
 # Refer to Section(s) 2.2.11 Page(s) 111   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 3.12   Page(s) 79-80 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 6.11   Page(s) 60    CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.2.11 Page(s) 111   CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_email_daemons () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Cyrus IMAP Daemon"
-    service_name="cyrus"
-    funct_systemctl_service disable $service_name
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 3 off
-    funct_verbose_message "IMAP Daemon"
-    service_name="imapd"
-    funct_systemctl_service disable $service_name
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 3 off
-    funct_verbose_message "Qpopper POP Daemon"
-    service_name="qpopper"
-    funct_systemctl_service disable $service_name
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 3 off
-    funct_verbose_message "Dovecot IMAP and POP3 Services"
-    service_name="dovecot"
-    funct_systemctl_service disable $service_name
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 3 off
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazone" ]; then
-      funct_linux_package uninstall dovecot
-    fi
+    funct_verbose_message "Mail Daemons"
+    for service_name in cyrus imapd qpopper dovecot; do
+      funct_systemctl_service disable $service_name
+      funct_chkconfig_service $service_name 3 off
+      funct_chkconfig_service $service_name 3 off
+      funct_linux_package uninstall $service_name 
+    done
   fi
 }

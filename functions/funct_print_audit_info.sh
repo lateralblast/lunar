@@ -15,11 +15,11 @@ funct_print_audit_info () {
     if [ -f "$file_name" ] ; then
       echo "# Module: $module"
       while read line ; do
-        if [ "$line" == "# $module" ]; then
+        if [ "$line" = "# $module" ]; then
           comment_text=1
         else
           if [ "$comment_text" = 1 ]; then
-            if [ "$line" == "#." ]; then
+            if [ "$line" = "#." ]; then
               echo ""
               comment_text=0
             fi

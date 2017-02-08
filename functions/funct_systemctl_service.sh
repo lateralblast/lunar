@@ -10,14 +10,14 @@
 funct_systemctl_service () {
   use_systemctl="no"
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" = "16" ]; then
+    if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
       use_systemctl="yes"
     fi
-    if [ "$os_vendor" = "Centos" ]|| [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
+    if [ "$os_vendor" = "Centos" ] || [ "$os_vendor" = "Red" ] && [ "$os_version" -ge 7 ]; then
       use_systemctl="yes"
     fi
   fi
-  if [ "$os_name" = "Linux" ] && [ "$use_systemctl" = "yes" ]; then
+  if [ "$use_systemctl" = "yes" ]; then
     correct_status=$1
     service_name=$2
     if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ]; then
@@ -28,7 +28,7 @@ funct_systemctl_service () {
       correct_status="disabled"
     fi
     log_file="systemctl.log"
-    actual_status=`systemctl is-enabled $service_name`
+    actual_status=`systemctl is-enabled $service_name 2> /dev/null`
     if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ]; then
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
@@ -79,9 +79,7 @@ funct_systemctl_service () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        total=`expr $total + 1`
-        secure=`expr $secure + 1`
-        echo "Notice:    Service $service_name is not installed [$secure Passes]"
+        echo "Notice:    Service $service_name is not installed"
       fi
     fi
   fi

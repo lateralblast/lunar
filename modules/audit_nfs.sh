@@ -8,6 +8,7 @@
 # Refer to Section(s) 3.7-11 Page(s) 11-3 CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.5  Page(s) 39   CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 2.2.7  Page(s) 99   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.7  Page(s) 107  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_nfs () {
@@ -40,7 +41,8 @@ audit_nfs () {
         funct_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
       fi
       if [ "$os_name" = "Linux" ]; then
-        for service_name in nfs nfslock portmap rpc; do
+        for service_name in nfs nfslock portmap rpc nfs-kerner-server rpcbind; do
+          funct_systemctl_service disable $service_name
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
         done

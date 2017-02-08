@@ -7,6 +7,7 @@
 # Refer to Section(s) 2.4.14.4 Page(s) 55    CIS OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 2.2.9    Page(s) 29-30 CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 2.2.12-3 Page(s) 104-5 CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.12-3 Page(s) 112-3 CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_samba () {
@@ -31,9 +32,7 @@ audit_samba () {
       funct_systemctl_service disable $service_name
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-        funct_linux_package uninstall samba
-      fi
+      funct_linux_package uninstall samba
     fi
     for check_dir in /etc /etc/sfw /etc/samba /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
       check_file="$check_dir/smb.conf"

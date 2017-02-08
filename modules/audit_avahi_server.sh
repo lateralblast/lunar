@@ -6,6 +6,7 @@
 # Refer to Section(s) 2.2.3 Page(s) 103  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.2   Page(s) 52-3 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.2.3 Page(s) 95   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.3 Page(s) 103  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_avahi_server () {

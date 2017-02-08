@@ -2,12 +2,13 @@
 #
 # Create Warning Banner for GNOME Users
 #
-# Refer to Section(s) 8.3  Page(s) 151   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 8.2  Page(s) 174-5 CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 8.3  Page(s) 154-5 CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 11.3 Page(s) 143-4 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 8.3  Page(s) 69-70 CIS Solaris 11.1 Benchmark v1.0.0
-# Refer to Section(s) 8.3  Page(s) 113-4 CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 8.3   Page(s) 151   CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 8.2   Page(s) 174-5 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 8.3   Page(s) 154-5 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 11.3  Page(s) 143-4 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 1.7.2 Page(s) 84-5  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 8.3   Page(s) 69-70 CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 8.3   Page(s) 113-4 CIS Solaris 10 Benchmark v5.1.0
 #.
 
 audit_gnome_banner () {
@@ -53,6 +54,19 @@ audit_gnome_banner () {
             funct_restore_file $check_file $restore_dir
           fi
         fi
+      fi
+    fi
+    if [ "$os_name" = "Linux" ]; then
+      check_file="/etc/dconf/profile/gdm"
+      if [ -f "$check_file" ]; then
+        funct_file_value $check_file user-db colon user hash
+        funct_file_value $check_file system-db colon gdm hash
+        funct_file_value $check_file file-db colon /usr/share/gdm/greeter-dconf-defaults hash
+      fi
+      check_file="/etc/dconf/db/gdm.d/01-banner-message"
+      if [ -f "$check_file" ]; then
+        funct_file_value $check_file banner-message-enable eq true hash
+        funct_file_value $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
       fi
     fi
     gconf_bin=`which gconftool-2 2> /dev/null`

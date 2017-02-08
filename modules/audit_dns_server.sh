@@ -9,6 +9,7 @@
 # Refer to Section(s) 3.6    Page(s) 11   CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.14 Page(s) 50-1 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 2.2.8  Page(s) 100  CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.8  Page(s) 108  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_dns_server () {
@@ -25,8 +26,8 @@ audit_dns_server () {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        funct_systemctl_service disable named
         for service_name in dnsmasq named bind9; do
+          funct_systemctl_service disable $service_name
           funct_chkconfig_service $service_name 3 off
           funct_chkconfig_service $service_name 5 off
         done

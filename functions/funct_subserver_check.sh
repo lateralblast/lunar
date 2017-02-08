@@ -4,7 +4,7 @@
 #.
 
 funct_subserver_check() {
-  if [ "$os_name" == "AIX" ]; then
+  if [ "$os_name" = "AIX" ]; then
     service_name=$1
     protocol_name=$2
     correct_value=$3

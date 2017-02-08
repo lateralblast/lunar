@@ -4,7 +4,7 @@
 #.
 
 funct_trust_check() {
-  if [ "$os_name" == "AIX" ]; then
+  if [ "$os_name" = "AIX" ]; then
     parameter_name=$1
     correct_value=$2
     log_file="trustchk_$parameter_name.log"

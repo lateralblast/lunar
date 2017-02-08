@@ -27,19 +27,7 @@ audit_chkconfig () {
       tog-pegasus tux wpa_supplicant zebra ncpfs; do
       funct_chkconfig_service $service_name 3 off
       funct_chkconfig_service $service_name 5 off
+      funct_systemctl_service disable $service_name
     done
-    if [ "$os_vendor" = "Centos" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-      if [ "$os_vendor" = "Amazon" ]; then
-        for service_name in rsyncd; do
-          funct_systemctl_service disable $service_name
-        done
-      else
-        if [ "$os_version" = "7" ]; then
-          for service_name in rsyncd; do
-            funct_systemctl_service disable $service_name
-          done
-        fi
-      fi
-    fi
   fi
 }

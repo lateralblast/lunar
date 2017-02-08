@@ -6,12 +6,12 @@
 # Refer to Section(s) 2.2.6 Page(s) 106  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.6   Page(s) 56-7 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.2.6 Page(s) 98   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.6 Page(s) 106  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_ldap_server () {
   if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ] ; then
-      funct_linux_package uninstall openldap-clients
-    fi
+  	funct_systemctl_service disable slapd
+    funct_linux_package uninstall openldap-clients
   fi
 }

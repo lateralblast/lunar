@@ -10,6 +10,7 @@
 # Refer to Section(s) 2.10      Page(s) 21-2    CIS Solaris 11.1 v1.0.0
 # Refer to Section(s) 2.2.11    Page(s) 30-2    CIS Solaris 10 v5.1.0
 # Refer to Section(s) 2.2.10,13 Page(s) 102,105 CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.10,13 Page(s) 110,113 CIS Ubuntu 16.04 Benchmark v2.0.0
 #.
 
 audit_apache () {
@@ -37,11 +38,8 @@ audit_apache () {
         funct_systemctl_service disable $service_name
         funct_chkconfig_service $service_name 3 off
         funct_chkconfig_service $service_name 5 off
+        funct_linux_package uninstall $service_name 
       done
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-        funct_linux_package uninstall httpd
-        funct_linux_package uninstall squid
-      fi
     fi
     for check_dir in /etc /etc/sfw /etc/apache /etc/apache2 /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
       check_file="$check_dir/httpd.conf"

@@ -4,13 +4,13 @@
 #.
 
 funct_pwpolicy_check() {
-  if [ "$os_name" == "Darwin" ]; then
+  if [ "$os_name" = "Darwin" ]; then
     parameter_name=$1
     correct_value=$2
     log_file="$parameter_name.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Password Policy for \"$parameter_name\" is set to \"$correct_value\""
-      if [ "$managed_node" == "Error" ]; then
+      if [ "$managed_node" = "Error" ]; then
         actual_value=`sudo pwpolicy -n /Local/Default -getglobalpolicy $parameter_name 2>&1 |cut -f2 -d=`
       else
         actual_value=`sudo pwpolicy -n -getglobalpolicy $parameter_name 2>&1 |cut -f2 -d=`
@@ -51,7 +51,7 @@ funct_pwpolicy_check() {
         previous_value=`cat $log_file`
        if [ "$previous_value" != "$actual_value" ]; then
           echo "Restoring: Password Policy for \"$parameter_name\" to \"$previous_value\""
-          if [ "$managed_node" == "Error" ]; then
+          if [ "$managed_node" = "Error" ]; then
             sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$previous_value
           else
             sudo pwpolicy -n -setglobalpolicy $parameter_name=$previous_value

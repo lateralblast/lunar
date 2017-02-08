@@ -7,7 +7,8 @@
 # Refer to Section(s) 3.10  Page(s) 78-9 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.10  Page(s) 68-9 CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 2.2.9 Page(s) 109  CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 2.2.9 Page(s) 101  CIS Amazon Linux Benchmark v1.0.0
+# Refer to Section(s) 2.2.9 Page(s) 101  CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.9 Page(s) 109  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_ftp_server () {
@@ -21,9 +22,7 @@ audit_ftp_server () {
     fi
     if [ "$os_name" = "Linux" ];then
       funct_systemctl_service disable vsftpd
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-        funct_linux_package uninstall vsftpd
-      fi
+      funct_linux_package uninstall vsftpd
     fi
   fi
 }

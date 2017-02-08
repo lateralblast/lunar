@@ -4,7 +4,7 @@
 #.
 
 funct_chsec_check() {
-  if [ "$os_name" == "AIX" ]; then
+  if [ "$os_name" = "AIX" ]; then
     sec_file=$1
     sec_stanza=$2
     parameter_name=$3

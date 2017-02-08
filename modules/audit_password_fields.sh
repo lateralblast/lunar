@@ -13,7 +13,8 @@
 # Refer to Section(s) 2.2.15 Page(s) 219   CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.4    Page(s) 75    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.3    Page(s) 118   CIS Solaris 10 Benchmark v1.1.0
-# Refer to Section(s) 6.2.1  Page(s) 252   CIS Amazon Linux Benchmark v1.0.0
+# Refer to Section(s) 6.2.1  Page(s) 252   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 6.2.1  Page(s) 266   CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_password_fields () {
@@ -25,11 +26,11 @@ audit_password_fields () {
       echo "Checking:  Password fields"
       total=`expr $total + 1`
       if [ "$os_name" = "AIX" ]; then
-        empty_command="pwdck –n ALL"
+        users=`pwdck –n ALL`
       else
-        empty_command="cat /etc/shadow |awk -F':' '{print $1\":\"$2\":\"}' |grep \"::$\" |cut -f1 -d:"
+        users=`cat /etc/shadow |awk -F':' '{print $1":"$2":"}' |grep "::$" |cut -f1 -d:`
       fi
-      for user_name in `$empty_command`; do
+      for user_name in $users; do
         empty_count=1
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`

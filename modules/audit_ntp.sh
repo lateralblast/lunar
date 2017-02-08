@@ -8,6 +8,7 @@
 # Refer to Section(s) 6.5       Page(s) 55-6   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.9.2     Page(s) 16-7   CIS ESX Server 4 Benchmark v1.1.0
 # Refer to Section(s) 2.2.1.1-2 Page(s) 90-2   CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.1.1-3 Page(s) 98-101 CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_ntp () {
@@ -37,16 +38,19 @@ audit_ntp () {
       check_file="/etc/ntp.conf"
       total=`expr $total + 1`
       log_file="ntp.log"
-      funct_linux_package check ntp
-      if [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
-        funct_linux_package check chrony 
-        check_file="/etc/sysconfig/chronyd"
-        funct_file_value $check_file OPTIONS eq '"-u chrony"' hash
-        check_file="/usr/lib/systemd/system/ntpd.service"
-        funct_file_value $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
+      funct_linux_package install ntp
+      do_chrony=0
+      if [ "$os_vendor" = "Red" ] && [ "$os_version" -ge 7 ]; then
+        do_chrony=1
+      fi
+      if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
+        do_chrony=1
       fi
       if [ "$os_vendor" = "Amazon" ]; then
-        funct_linux_package check chrony
+        do_chrony=1
+      fi
+      if [ "$do_chrony" -eq 1 ]; then
+        funct_linux_package install chrony
         check_file="/etc/sysconfig/chronyd"
         funct_file_value $check_file OPTIONS eq '"-u chrony"' hash
         check_file="/usr/lib/systemd/system/ntpd.service"
@@ -83,9 +87,17 @@ audit_ntp () {
       funct_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
       funct_file_value $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
     fi
+    check_file="/etc/ntp.conf"
     for server_number in `seq 0 3`; do
       ntp_server="$server_number.$country_suffix.pool.ntp.org"
       funct_file_value $check_file server space $ntp_server hash
     done
+    if [ "$do_chrony" -eq 1 ]; then
+      check_file="/etc/chrony/chrony.conf"
+      for server_number in `seq 0 3`; do
+        ntp_server="$server_number.$country_suffix.pool.ntp.org"
+        funct_file_value $check_file server space $ntp_server hash
+      done
+    fi
   fi
 }
