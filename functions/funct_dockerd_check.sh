@@ -10,10 +10,18 @@ funct_dockerd_check () {
       type=$2
       param=$3
       value=$4
-      if [ "$value" ]; then
-        echo "Checking:  Docker $type parameter $param is $used and has value $value"
+      if [ "$type" = "config" ]; then
+        if [ "$value" ]; then
+          echo "Checking:  Docker $type parameter $param has value $value"
+        else
+          echo "Checking:  Docker $type parameter $param has no value"
+        fi
       else
-        echo "Checking:  Docker $type parameter $param is $used"
+        if [ "$value" ]; then
+          echo "Checking:  Docker $type parameter $param is $used and has value $value"
+        else
+          echo "Checking:  Docker $type parameter $param is $used"
+        fi
       fi
       case "$type" in
         "daemon")
@@ -87,6 +95,58 @@ funct_dockerd_check () {
               else
                 insecure=`expr $insecure + 1`
                 echo "Warning:   Docker instance $docker_id does not forcibly capability $param [$insecure Warnings]"
+              fi
+            fi
+          done
+          IFS=$OFS
+          ;;
+        "config")
+          OFS=$IFS
+          IFS=$'\n'
+          if [ "$param" = "AppArmorProfile" ]; then
+            docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .$param }}" 2> /dev/null`
+          else
+            docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
+          fi
+          for info in $docker_info; do
+            total=`expr $total + 1`
+            docker_id=`echo "$info" |cut -f1 -d:`
+            profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+            if [ "$used" = "notequal" ]; then
+              if [ "$profile" = "$value" ]; then
+                if [ "$value" ]; then
+                  secure=`expr $secure + 1`
+                  echo "Secure:    Docker instance $docker_id has $param set to $value [$secure Passes]"
+                else
+                  secure=`expr $secure + 1`
+                  echo "Secure:    Docker instance $docker_id has $param set [$secure Passes]"
+                fi
+              else
+                if [ "$value" ]; then
+                  insecure=`expr $insecure + 1`
+                  echo "Warning:   Docker instance $docker_id does not have $param set to $value [$insecure Warnings]"
+                else
+                  insecure=`expr $insecure + 1`
+                  echo "Warning:   Docker instance $docker_id does not have $param set [$insecure Warnings]"
+                fi
+              fi
+            else
+              if [ ! "$profile" = "$value" ]; then
+                if [ "$value" ]; then
+                  secure=`expr $secure + 1`
+                  echo "Secure:    Docker instance $docker_id does not have $param set to $value [$secure Passes]"
+                else
+                  secure=`expr $secure + 1`
+                  echo "Secure:    Docker instance $docker_id does not have $param set [$secure Passes]"
+                fi
+              else
+                if [ "$value" ]; then
+                  insecure=`expr $insecure + 1`
+                  echo "Warning:   Docker instance $docker_id has $param set to $value [$insecure Warnings]"
+                else
+                  insecure=`expr $insecure + 1`
+                  echo "Warning:   Docker instance $docker_id has $param set [$insecure Warnings]"
+                fi
               fi
             fi
           done

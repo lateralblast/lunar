@@ -29,51 +29,9 @@ audit_docker_security () {
     if [ "$docker_bin" ]; then
       funct_verbose_message "Docker Security"
       if [ "$audit_mode" != 2 ]; then
-        OFS=$IFS
-        IFS=$'\n'
-        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: AppArmorProfile={{ .AppArmorProfile }}' 2> /dev/null`
-        for info in $docker_info; do
-          total=`expr $total + 1`
-          docker_id=`echo "$info" |cut -f1 -d:`
-          profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
-          echo "Checking:  Docker instance $docker_id has an AppArmor profile"
-          if [ "$profile" ]; then
-            secure=`expr $secure + 1`
-            echo "Secure:    Docker instance $docker_id has an AppArmor profile [$secure Passes]"
-          else
-            insecure=`expr $insecure + 1`
-            echo "Warning:   Docker instance $docker_id does not have an AppArmor profile [$insecure Warnings]"
-          fi
-        done
-        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: SecurityOpt={{ .HostConfig.SecurityOpt }}' 2> /dev/null`
-        for info in $docker_info; do
-          total=`expr $total + 1`
-          docker_id=`echo "$info" |cut -f1 -d:`
-          profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
-          echo "Checking:  Docker instance $docker_id has an SELinux profile"
-          if [ ! "$profile" = "<no value>" ]; then
-            secure=`expr $secure + 1`
-            echo "Secure:    Docker instance $docker_id has a SELinux profile [$secure Passes]"
-          else
-            insecure=`expr $insecure + 1`
-            echo "Warning:   Docker instance $docker_id does not have a SELinux profile [$insecure Warnings]"
-          fi
-        done
-        docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Privileged={{ .HostConfig.Privileged }}' 2> /dev/null`
-        for info in $docker_info; do
-          total=`expr $total + 1`
-          docker_id=`echo "$info" |cut -f1 -d:`
-          profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
-          echo "Checking:  Docker instance $docker_id is not a privileged container"
-          if [ "$profile" = "false" ]; then
-            secure=`expr $secure + 1`
-            echo "Secure:    Docker instance $docker_id is not a privileged container [$secure Passes]"
-          else
-            insecure=`expr $insecure + 1`
-            echo "Warning:   Docker instance $docker_id is a privileged container [$insecure Warnings]"
-          fi
-        done
-        IFS=$OFS
+        funct_dockerd_check notequal config SecurityOpt "<no value>"
+        funct_dockerd_check equal config Privileged "false"
+        funct_dockerd_check notequal config AppArmorProfile ""
       fi
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param

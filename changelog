@@ -1161,3 +1161,5 @@
 # Added Docker host network namespace check
 # 6.7.3: Wed  8 Feb 2017 15:26:33 AEDT
 # Added Docker memory usage limit test
+# 6.7.4: Wed  8 Feb 2017 17:17:58 AEDT
+# Initial Docker code cleanup
