@@ -1183,3 +1183,8 @@
 # Added Docker mount propagation check
 # 6.8.4: Wed  8 Feb 2017 20:20:25 AEDT
 # Added Docker UTSMode check
+# 6.8.5: Wed  8 Feb 2017 21:58:01 AEDT
+# Added Docker exec commands with privileged option check
+# 6.8.6: Wed  8 Feb 2017 22:45:04 AEDT
+# Cleaned up Docker tests
+

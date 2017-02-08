@@ -41,6 +41,15 @@
 # Refer to Section(s) 5.20 Page(s) 162-3  CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/engine/reference/run/
 # Refer to http://man7.org/linux/man-pages/man7/namespaces.7.html
+# Refer to Section(s) 5.21 Page(s) 164-5  CIS Docker Benchmark 1.13.0
+# Refer to http://blog.scalock.com/new-docker-security-features-and-what-they-mean-seccomp-profiles
+# Refer to https://docs.docker.com/engine/reference/run/
+# Refer to https://github.com/docker/docker/blob/master/profiles/seccomp/default.json
+# Refer to https://docs.docker.com/engine/security/seccomp/
+# Refer to https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt
+# Refer to https://github.com/docker/docker/issues/22870
+# Refer to Section(s) 5.22 Page(s) 166    CIS Docker Benchmark 1.13.0
+# Refer to https://docs.docker.com/engine/reference/commandline/exec/
 #.
 
 audit_docker_security () {
@@ -48,18 +57,17 @@ audit_docker_security () {
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
       funct_verbose_message "Docker Security"
-      if [ "$audit_mode" != 2 ]; then
-        funct_dockerd_check notequal config SecurityOpt "<no value>"
-        funct_dockerd_check equal config Privileged "false"
-        funct_dockerd_check notequal config AppArmorProfile ""
-        funct_dockerd_check equal config ReadonlyRootfs "true"
-        funct_dockerd_check notequal config PidMode "host"
-        funct_dockerd_check notequal config IpcMode "host"
-        funct_dockerd_check equal config Devices ""
-        funct_dockerd_check equal config Ulimits "<no value>"
-        funct_dockerd_check notequal config Propagation "shared"
-        funct_dockerd_check notequal config UTSMode "shared"
-      fi
+      funct_dockerd_check notequal config SecurityOpt "<no value>"
+      funct_dockerd_check equal config Privileged "false"
+      funct_dockerd_check notequal config AppArmorProfile ""
+      funct_dockerd_check equal config ReadonlyRootfs "true"
+      funct_dockerd_check notequal config PidMode "host"
+      funct_dockerd_check notequal config IpcMode "host"
+      funct_dockerd_check equal config Devices ""
+      funct_dockerd_check equal config Ulimits "<no value>"
+      funct_dockerd_check notequal config Propagation "shared"
+      funct_dockerd_check notequal config UTSMode "shared"
+      funct_ausearch_check equal docker exec privileged ""
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         funct_dockerd_check unused kernel $param
       done

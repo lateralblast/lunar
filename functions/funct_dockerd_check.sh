@@ -67,6 +67,9 @@ funct_dockerd_check () {
           OFS=$IFS
           IFS=$'\n'
           docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null`
+          if [ ! "$docker_info" ]; then
+            echo "Notice:    No Docker instances"
+          fi
           for info in $docker_info; do
             total=`expr $total + 1`
             docker_id=`echo "$info" |cut -f1 -d:`
@@ -114,12 +117,15 @@ funct_dockerd_check () {
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .NetworkSettings.$param }}" 2> /dev/null`
               ;;
             "Propagation")
-              docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}'`
+              docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}' 2> /dev/null`
               ;;
             *)
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
               ;;
           esac
+          if [ ! "$docker_info" ]; then
+            echo "Notice:    No Docker instances"
+          fi
           for info in $docker_info; do
             total=`expr $total + 1`
             docker_id=`echo "$info" |cut -f1 -d:`
