@@ -1151,3 +1151,5 @@
 # Added Docker Healthcheck test
 # 6.6.8: Wed  8 Feb 2017 12:33:33 AEDT
 # Added Docker AppArmor test
+# 6.6.9: Wed  8 Feb 2017 12:46:13 AEDT
+# Added Docker SELinux test
