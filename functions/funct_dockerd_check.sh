@@ -110,51 +110,78 @@ funct_dockerd_check () {
             "User")
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .Config.$param }}" 2> /dev/null`
               ;;
-            "*")
+            "Ports")
+              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .NetworkSettings.$param }}" 2> /dev/null`
+              ;;
+            *)
               docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
               ;;
           esac
           for info in $docker_info; do
             total=`expr $total + 1`
             docker_id=`echo "$info" |cut -f1 -d:`
-            profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
-            if [ "$used" = "notequal" ]; then
-              if [ ! "$profile" = "$value" ]; then
-                if [ "$value" ]; then
-                  secure=`expr $secure + 1`
-                  echo "Secure:    Docker instance $docker_id has $param set to $value [$secure Passes]"
+            case $used in
+              "notequal")
+                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+                if [ ! "$value" ]; then
+                  if [ "$profile" ]; then
+                    secure=`expr $secure + 1`
+                    echo "Secure:    Docker instance $docker_id does not have parameter $param set [$secure Passes]"
+                  else
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:   Docker instance $docker_id has parameter $param set [$insecure Warnings]"
+                  fi
                 else
-                  secure=`expr $secure + 1`
-                  echo "Secure:    Docker instance $docker_id has $param set [$secure Passes]"
+                  if [ ! "$profile" = "$value" ]; then
+                    secure=`expr $secure + 1`
+                    echo "Secure:    Docker instance $docker_id does not have parameter $param set to $value [$secure Passes]"
+                  else
+                    secure=`expr $secure + 1`
+                    echo "Secure:    Docker instance $docker_id has parameter $param set [$secure Passes]"
+                  fi
                 fi
-              else
-                if [ "$value" ]; then
-                  insecure=`expr $insecure + 1`
-                  echo "Warning:   Docker instance $docker_id does not have $param set to $value [$insecure Warnings]"
+                ;;
+              "equal")
+                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d=`
+                if [ ! "$value" ]; then
+                  if [ ! "$profile" ]; then
+                    secure=`expr $secure + 1`
+                    echo "Secure:    Docker instance $docker_id does not have parameter $param set [$secure Passes]"
+                  else
+                    insecure=`expr $insecure + 1`
+                    echo "Warning:   Docker instance $docker_id has parameter $param set [$insecure Warnings]"
+                  fi
+                else
+                  if [ "$profile" = "$value" ]; then
+                    secure=`expr $secure + 1`
+                    echo "Secure:    Docker instance $docker_id does not have parameter $param set to $value [$secure Passes]"
+                  else
+                    secure=`expr $secure + 1`
+                    echo "Secure:    Docker instance $docker_id does not have parameter $param set [$secure Passes]"
+                  fi
+                fi
+                ;;
+              "notinclude")
+                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep "$param"`
+                if [ ! "$profile" ]; then
+                  secure=`expr $secure + 1`
+                  echo "Secure:    Docker instance $docker_id parameter $param does not include $value [$secure Passes]"
                 else
                   insecure=`expr $insecure + 1`
-                  echo "Warning:   Docker instance $docker_id does not have $param set [$insecure Warnings]"
+                  echo "Warning:   Docker instance $docker_id parameter $param includes $value [$insecure Warnings]"
                 fi
-              fi
-            else
-              if [ ! "$profile" = "$value" ]; then
-                if [ "$value" ]; then
+                ;; 
+              "include")
+                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep "$param"`
+                if [ "$profile" ]; then
                   secure=`expr $secure + 1`
-                  echo "Secure:    Docker instance $docker_id does not have $param set to $value [$secure Passes]"
-                else
-                  secure=`expr $secure + 1`
-                  echo "Secure:    Docker instance $docker_id does not have $param set [$secure Passes]"
-                fi
-              else
-                if [ "$value" ]; then
-                  insecure=`expr $insecure + 1`
-                  echo "Warning:   Docker instance $docker_id has $param set to $value [$insecure Warnings]"
+                  echo "Secure:    Docker instance $docker_id parameter $param includes $value [$secure Passes]"
                 else
                   insecure=`expr $insecure + 1`
-                  echo "Warning:   Docker instance $docker_id has $param set [$insecure Warnings]"
+                  echo "Warning:   Docker instance $docker_id parameter $param does not include $value [$insecure Warnings]"
                 fi
-              fi
-            fi
+                ;; 
+            esac 
           done
           IFS=$OFS
           ;;
