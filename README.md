@@ -58,7 +58,7 @@ Supported Services
 The following services are supported:
 
 - AWS
-- Docker (Work in progress)
+- Docker
 
 The AWS Services audit uses the AWS CLI, and as such requires a user with the
 appropriate rights. It does not currently support the lockdown capability,
@@ -119,3 +119,5 @@ For more information refer to wiki:
 [Amazon Linux](https://github.com/lateralblast/lunar/wiki/Amazon)
 
 [AWS](https://github.com/lateralblast/lunar/wiki/AWS)
+
+[Docker](https://github.com/lateralblast/lunar/wiki/Docker)
