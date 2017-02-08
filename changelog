@@ -1173,3 +1173,5 @@
 # More Docker fixes
 # 6.7.9: Wed  8 Feb 2017 19:38:44 AEDT
 # Added Docker PidMode check
+# 6.8.0: Wed  8 Feb 2017 19:41:46 AEDT
+# Added Docker IpcMode check
