@@ -9,6 +9,7 @@
 # Refer to Section(s) 9.15,18   Page(s) 82-3,5    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.15,18   Page(s) 128-9,131 CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.2.16,18 Page(s) 269,71    CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 6.2.16,18 Page(s) 283,5     CIS Amazon Linux Benchmark v2.0.0
 #.
 
 audit_duplicate_users () {

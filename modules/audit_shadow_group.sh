@@ -1,6 +1,7 @@
 # audit_shadow_group
 #
-# Refer to Section(s) 13.20 Page(s) 168-9 SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 13.20  Page(s) 168-9 SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 6.2.20 Page(s) 287 SLES 11 Benchmark v1.0.0
 #.
 
 audit_shadow_group () {

@@ -9,6 +9,7 @@
 # Refer to Section(s) 9.12-4     Page(s) 80-1          CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.12-4     Page(s) 126-8         CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.2.7,9    Page(s) 259,61        CIS Amazon Linux Benchmark v1.0.0
+# Refer to Section(s) 6.2.7,9    Page(s) 273,5         CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_home_ownership() {
