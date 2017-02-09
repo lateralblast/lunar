@@ -7,6 +7,7 @@
 # Refer to Section(s) 9.3.4 Page(s) 134-5 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 6.14  Page(s) 57    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.10  Page(s) 95-6  CIS Solaris 10 Benchamrk v5.1.0
+# Refer to Section(s) 5.5   Page(s) 248   CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_console_login () {

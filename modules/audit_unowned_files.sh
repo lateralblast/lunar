@@ -10,6 +10,7 @@
 # Refer to Section(s) 9.24     Page(s) 89-90 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.24     Page(s) 135-6 CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.1.11-2 Page(s) 248-9 CIS Amazon Linux Benchmark v1.0.0
+# Refer to Section(s) 6.1.11-2 Page(s) 262-3 CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_unowned_files () {

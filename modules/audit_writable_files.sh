@@ -10,6 +10,7 @@
 # Refer to Section(s) 2.16.3   Page(s) 233-4   CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 5.1,9.22 Page(s) 45,88   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.22     Page(s) 134     CIS Solaris 10 Benchmark v1.1.0
+# Refer to Section(s) 6.1.10   Page(s) 261     CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_writable_files () {

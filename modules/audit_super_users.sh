@@ -10,6 +10,7 @@
 # Refer to Section(s) 9-5   Page(s) 75-6   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.5   Page(s) 119-20 CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.2.5 Page(s) 256    CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 6.2.5 Page(s) 270    CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_super_users() {

@@ -2,7 +2,7 @@
 #
 # Refer to Section(s) 6.3.3 Page(s) 139-140 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.3.3 Page(s) 143-4   CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 5.3.2 Page(s) 234     CIS Ubuntu 16.04 Benchmark v1.2.0
+# Refer to Section(s) 5.3.2 Page(s) 234     CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_system_auth_unlock_time () {

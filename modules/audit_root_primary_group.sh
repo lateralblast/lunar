@@ -5,8 +5,9 @@
 # Refer to Section(s) 7.3   Page(s) 150     CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 5.4.3 Page(s) 253     CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 10.3  Page(s) 139-140 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 5.4.3 Page(s) 232     CIS Amazon Linux Behchmark v2.0.0
+# Refer to Section(s) 5.4.3 Page(s) 232     CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 7.4   Page(s) 104-5   CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 5.4.3 Page(s) 245     CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_root_primary_group () {

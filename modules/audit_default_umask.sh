@@ -9,6 +9,7 @@
 # Refer to Section(s) 7.3   Page(s) 64-5  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 7.6   Page(s) 106-7 CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 5.4.4 Page(s) 233-4 CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 5.4.4 Page(s) 246-7 CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_default_umask () {
