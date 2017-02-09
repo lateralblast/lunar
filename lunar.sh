@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.0.1
+# Version:      7.0.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -196,6 +196,7 @@ check_os_release () {
   if [ "$os_name" = "Darwin" ]; then
     set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
     os_version=$1.$2
+    os_release=$2
     os_update=$3
     os_vendor="Apple"
   fi

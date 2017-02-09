@@ -1,7 +1,8 @@
 # audit_screen_lock
 #
-# Refer to Section(s) 2.3.1-2 Page(s) 13-14 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(s) 5.5     Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1-2   Page(s) 13-14  CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1-2,4 Page(s) 32-4,7 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.5       Page(s) 51-52  CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_screen_lock () {

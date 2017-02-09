@@ -5,6 +5,7 @@
 # Refer to Section(s) 3.6       Page(s) 65-6   CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 2.2.1.1-2 Page(s) 98-101 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 2.4.5.1   Page(s) 35-6   CIS Apple OS X 10.5 Benchmark v1.1.0
+# Refer to Section(s) 2.2.1-3   Page(s) 26-31  CIS Apple OS X 10.12 Benchmark v1.0.0
 # Refer to Section(s) 6.5       Page(s) 55-6   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.9.2     Page(s) 16-7   CIS ESX Server 4 Benchmark v1.1.0
 # Refer to Section(s) 2.2.1.1-2 Page(s) 90-2   CIS Amazon Linux Benchmark v2.0.0
@@ -27,6 +28,28 @@ audit_ntp () {
       funct_file_value $check_file TIMESYNC eq -YES- hash
       funct_launchctl_check org.ntp.ntpd on
       check_file="/private/etc/ntp.conf"
+      if [ "$os_release" -ge 12 ]; then
+        check_file="/etc/ntp-restrict.conf"
+        funct_file_value $check_file restrict space "lo interface ignore wildcard interface listen lo" hash
+        total=`expr $total + 1`
+        check=`sudo systemsetup -getusingnetworktime |cut -f2 -d: |sed "s/\s+//g"`
+        if [ "$check" = "On" ]; then
+          secure=`expr $secure + 1`
+          echo "Secure:    Date and time set automatically [$secure Passes]"
+        else
+          insecure=`expr $insecure + 1`
+          echo "Warning:   Date and time are not set automatically [$insecure Warnings]"
+        fi
+        total=`expr $total + 1`
+        check=`sudo sudo systemsetup -getnetworktimeserver |cut -f2 -d: |sed "s/\s+//g"`
+        if [ "$check" ]; then
+          secure=`expr $secure + 1`
+          echo "Secure:    NTP Server set to $check [$secure Passes]"
+        else
+          insecure=`expr $insecure + 1`
+          echo "Warning:   No NTP Server set [$insecure Warnings]"
+        fi
+      fi
     fi
     if [ "$os_name" = "VMkernel" ]; then
       service_name="ntpd"
