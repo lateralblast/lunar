@@ -15,9 +15,9 @@ audit_bt_sharing () {
     if [ "$audit_mode" != 2 ]; then
     	if [ "$os_release" -ge 12 ]; then
 	    	total=`expr $total + 1`
-	    	check=`/usr/sbin/system_profiler SPBluetoothDataType | grep -i power |cut -f2 -d: |sed "s/\s+//g"`
+	    	check=`/usr/sbin/system_profiler SPBluetoothDataType | grep -i power |cut -f2 -d: |sed "s/ //g"`
 	    	if [ ! "$check" = "Off" ]; then
-	    		check=`/usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable |cut -f2 -d: |sed "s/\s+//g"`
+	    		check=`/usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable |cut -f2 -d: |sed "s/ //g"`
 	    		if [ "$check" = "Off" ]; then
 		    		secure=`expr $secure + 1`
 		        echo "Secure:    Bluetooth is not discoverable [$secure Passes]"
@@ -30,8 +30,8 @@ audit_bt_sharing () {
 	        echo "Secure:    Bluetooth is turned off [$secure Passes]"
 	    	fi
 	    	total=`expr $total + 1`
-	    	check=`defaults read com.apple.systemuiserver menuExtras | grep Bluetooth.menu`
-	  		if [ "$check" = "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" ]; then
+	    	check=`defaults read com.apple.systemuiserver menuExtras | grep Bluetooth.menu | sed "s/[ ,\",\,]//g"`
+	  		if [ "$check" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
 	    		secure=`expr $secure + 1`
 	        echo "Secure:    Bluetooth status menu is enabled [$secure Passes]"
 	   		else

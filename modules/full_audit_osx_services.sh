@@ -18,8 +18,6 @@ full_audit_osx_services () {
   audit_login_details
   audit_core_limit
   audit_remote_apple_events
-  audit_screen_sharing
-  audit_remote_login
   audit_remote_management
   audit_wake_on_lan
   audit_file_vault

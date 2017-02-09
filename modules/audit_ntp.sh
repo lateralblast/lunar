@@ -31,24 +31,9 @@ audit_ntp () {
       if [ "$os_release" -ge 12 ]; then
         check_file="/etc/ntp-restrict.conf"
         funct_file_value $check_file restrict space "lo interface ignore wildcard interface listen lo" hash
-        total=`expr $total + 1`
-        check=`sudo systemsetup -getusingnetworktime |cut -f2 -d: |sed "s/\s+//g"`
-        if [ "$check" = "On" ]; then
-          secure=`expr $secure + 1`
-          echo "Secure:    Date and time set automatically [$secure Passes]"
-        else
-          insecure=`expr $insecure + 1`
-          echo "Warning:   Date and time are not set automatically [$insecure Warnings]"
-        fi
-        total=`expr $total + 1`
-        check=`sudo sudo systemsetup -getnetworktimeserver |cut -f2 -d: |sed "s/\s+//g"`
-        if [ "$check" ]; then
-          secure=`expr $secure + 1`
-          echo "Secure:    NTP Server set to $check [$secure Passes]"
-        else
-          insecure=`expr $insecure + 1`
-          echo "Warning:   No NTP Server set [$insecure Warnings]"
-        fi
+        funct_systemsetup_check getusingnetworktime on
+        timerserver="$country_suffix.pool.ntp.org"
+        funct_systemsetup_check getnetworktimeserver $timerserver
       fi
     fi
     if [ "$os_name" = "VMkernel" ]; then
@@ -109,18 +94,18 @@ audit_ntp () {
       funct_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
       funct_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
       funct_file_value $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
+      if [ "$do_chrony" -eq 1 ]; then
+        check_file="/etc/chrony/chrony.conf"
+        for server_number in `seq 0 3`; do
+          ntp_server="$server_number.$country_suffix.pool.ntp.org"
+          funct_file_value $check_file server space $ntp_server hash
+        done
+      fi
     fi
     check_file="/etc/ntp.conf"
     for server_number in `seq 0 3`; do
       ntp_server="$server_number.$country_suffix.pool.ntp.org"
       funct_file_value $check_file server space $ntp_server hash
     done
-    if [ "$do_chrony" -eq 1 ]; then
-      check_file="/etc/chrony/chrony.conf"
-      for server_number in `seq 0 3`; do
-        ntp_server="$server_number.$country_suffix.pool.ntp.org"
-        funct_file_value $check_file server space $ntp_server hash
-      done
-    fi
   fi
 }
