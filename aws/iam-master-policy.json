@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateGroup",
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:CreateRole",
+        "iam:CreateUser",
+        "iam:DeleteGroup",
+        "iam:DeletePolicy",
+        "iam:DeletePolicyVersion",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
+        "iam:DeleteUser",
+        "iam:PutRolePolicy",
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:GetUser",
+        "iam:GetUserPolicy",
+        "iam:ListEntitiesForPolicy",
+        "iam:ListGroupPolicies",
+        "iam:ListGroups",
+        "iam:ListGroupsForUser",
+        "iam:ListPolicies",
+        "iam:ListPoliciesGrantingServiceAccess",
+        "iam:ListPolicyVersions",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedGroupPolicies",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListAttachedUserPolicies",
+        "iam:ListRoles",
+        "iam:ListUsers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "iam:AddUserToGroup",
+        "iam:AttachGroupPolicy",
+        "iam:DeleteGroupPolicy",
+        "iam:DeleteUserPolicy",
+        "iam:DetachGroupPolicy",
+        "iam:DetachRolePolicy",
+        "iam:DetachUserPolicy",
+        "iam:PutGroupPolicy",
+        "iam:PutUserPolicy",
+        "iam:RemoveUserFromGroup",
+        "iam:UpdateGroup",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:UpdateUser"
+      ],
+      "Resource": "*"
+    }
+  ] 
+}

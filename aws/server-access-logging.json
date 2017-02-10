@@ -1,0 +1,22 @@
+{
+  "LoggingEnabled": {
+    "TargetBucket": "webapp-service-reports",
+    "TargetPrefix": "access-logs/",
+    "TargetGrants": [
+      {
+        "Grantee": {
+            "Type": "Group",
+            "URI": "http://acs.amazonaws.com/groups/s3/LogDelivery"
+         },
+        "Permission": "WRITE"
+      },
+      {
+        "Grantee": {
+            "Type": "Group",
+            "URI": "http://acs.amazonaws.com/groups/s3/LogDelivery"
+         },
+        "Permission": "READ_ACP"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1234 @@
+# Changes:
+# 0.0.0 Thursday, 25 October 2012  9:40:54 AM EST
+# Initial version
+# 0.0.1 Thursday,  1 November 2012  2:28:41 PM EST
+# Added initial audit code
+# 0.0.2 Fri  2 Nov 2012 13:24:54 EST
+# Created subroutines for updating files and parameters
+# 0.0.3 Thursday,  8 November 2012  9:35:19 PM EST
+# Added restore code
+# 0.0.4 Saturday, 10 November 2012 11:37:22 AM EST
+# Added kernel accounting
+# 1.0.0 Monday, 12 November 2012 10:45:27 AM EST
+# Initial Github Commit
+# 1.0.1 Monday, 12 November 2012  9:52:17 PM EST
+# Formating fixes
+# 1.0.2 Monday, 12 November 2012 10:03:54 PM EST
+# Additional cleanup
+# 1.0.3 Thu 15 Nov 2012 02:37:31 EST
+# Initial Solaris 11 support
+# 1.0.4 Fri 16 Nov 2012 10:57:17 EST
+# Updated Solaris 11 support, Initial re-commit to new repository
+# 1.0.5 Sat 17 Nov 2012 09:55:07 EST
+# Added echo services
+# 1.0.6 Monday, 19 November 2012  8:13:20 AM EST
+# Solaris 10 and 11 support mostly done - some minor additions could be made
+# 1.0.7 Monday, 19 November 2012 11:02:05 AM EST
+# Added initial support for Solaris versions less than 10
+# 1.0.8 Thursday, 20 December 2012  2:46:32 PM EST
+# Fixed problem with inetadm command
+# 1.0.9 Thursday, 20 December 2012  3:47:52 PM EST
+# Added -A and -L switches and moved filesystem searches to it
+# 1.1.0 Thu 20 Dec 2012 17:01:52 EST
+# Cleaned up formating
+# 1.1.1 Fri Dec 21 21:43:39 EST 2012
+# Initial Solaris 9 testing completed
+# 1.1.2 Sat Dec 22 08:13:17 EST 2012
+# Fixed bugs with parameter value checking
+# 1.1.3 Sat Dec 22 08:27:53 EST 2012
+# Fixed bug with home directory check
+# 1.1.4 Sat Dec 22 08:50:38 EST 2012
+# Fixed bug with inetd code
+# 1.1.5 Sat Dec 22 08:54:05 EST 2012
+# Fixed Solaris 9 update version detection
+# 1.1.6 Sat Dec 22 16:45:16 EST 2012
+# Updated documentation
+# 1.1.7 Thu Feb 14 20:46:31 EST 2013
+# Initial Linux support
+# 1.1.8 Fri Feb 15 18:40:48 EST 2013
+# Linux xinetd and chkconfig support added
+# 1.1.9 Sat Feb 16 12:01:05 EST 2013
+# Added sysctl audit for Linux
+# 1.2.0 Sat Feb 16 14:09:03 EST 2013
+# Added ftpd logging checking for Linux
+# 1.2.1 Sat Feb 16 14:22:58 EST 2013
+# Updated file update to support tabs
+# 1.2.2 Sat Feb 16 22:30:05 EST 2013
+# Added pam options for Linux
+# 1.2.3 Sun Feb 17 02:17:04 EST 2013
+# Added code for sendmail greeting
+# 1.2.4 Sun 17 Feb 2013 08:27:32 EST
+# Added code for vsftpd banner
+# 1.2.5 Sun Feb 17 19:55:54 EST 2013
+# Added securetty check for Linux
+# 1.2.6 Sun 17 Feb 2013 20:40:27 EST
+# Added auditd config
+# 1.2.7 Mon Feb 18 03:11:37 EST 2013
+# Added warning banners
+# 1.2.8 Mon Feb 18 04:42:08 EST 2013
+# Added X11 warning messages
+# 1.2.9 Mon Feb 18 09:41:55 EST 2013
+# Added Linux core dumps and rhosts for PAM
+# 1.3.0 Mon Feb 18 13:42:24 EST 2013
+# Added gdm.conf audit
+# 1.3.1 Mon Feb 18 14:38:04 EST 2013
+# Added Linux nodev audit
+# 1.3.2 Mon Feb 18 15:08:26 EST 2013
+# Added Linux FDI audit
+# 1.3.3 Mon Feb 18 17:53:30 EST 2013
+# Added X11 nolisten
+# 1.3.4 Mon Feb 18 20:30:30 EST 2013
+# Improved file octal derivation on Solaris
+# 1.3.5 Tue Feb 19 12:47:55 EST 2013
+# Added file verification for Linux
+# 1.3.6 Tue Feb 19 14:48:33 EST 2013
+# Added password strength testing on Linux
+# 1.3.7 Tue Feb 19 15:09:05 EST 2013
+# Added Cipher directive to SSH config
+# 1.3.8 Tue Feb 19 15:37:52 EST 2013
+# Added logrotate configuration
+# 1.3.9 Tue Feb 19 15:52:20 EST 2013
+# Added module loading and mounting to auditd
+# 1.4.0 Tue Feb 19 17:03:17 EST 2013
+# Added modprobe.conf check
+# 1.4.1 Tue Feb 19 17:25:39 EST 2013
+# Added sendmail local-only mode check
+# 1.4.2 Tue Feb 19 17:32:12 EST 2013
+# Added code to check NTP running as ntp user
+# 1.4.3 Tue Feb 19 21:01:02 EST 2013
+# Added selective function to run individual tests
+# 1.4.4 Tue Feb 19 21:34:30 EST 2013
+# Added selinux
+# 1.4.5 Tue Feb 19 21:46:55 EST 2013
+# Added yum config check
+# 1.4.6 Tue Feb 19 22:59:12 EST 2013
+# Added lockout for failed password attempts
+# 1.4.7 Wed Feb 20 10:13:46 EST 2013
+# Simplified RPM verify routine
+# 1.4.8 Wed Feb 20 10:59:28 EST 2013
+# Added root primary group audit
+# 1.4.9 Wed Feb 20 11:16:28 EST 2013
+# Added system account shell check
+# 1.5.0 Wed Feb 20 15:00:07 EST 2013
+# Added handling for [at,cron].[deny,allow]
+# 1.5.1 Wed Feb 20 16:03:18 EST 2013
+# Fixed file append function
+# 1.5.2 Thu Feb 21 14:00:42 EST 2013
+# Fixed code to update files
+# 1.5.3 Thursday, 21 February 2013  3:29:49 PM EST
+# Improved code to fix cron
+# 1.5.4 Thu Feb 21 16:49:46 EST 2013
+# Added rpm check code
+# 1.5.5 Fri 22 Feb 2013 07:23:16 EST
+# Cleaned up code for selective audit
+# 1.5.6 Fri  3 May 2013 16:25:36 EST
+# Fixed minor bug with for loop
+# 1.5.7 Fri May 24 15:46:54 EST 2013
+# Initial Debian/Ubuntu support
+# 1.5.8 Fri May 24 21:04:33 EST 2013
+# Improved Debian/Ubuntu support
+# 1.5.9 Sat May 25 11:40:50 EST 2013
+# Improved Debian/Ubuntu support
+# 1.6.0 Sat May 25 22:35:36 EST 2013
+# Improved Debian/Ubuntu support
+# 1.6.1 Sun Jun  9 09:05:44 EST 2013
+# Added some file checks
+# 1.6.2 Sun Jun  9 23:18:37 EST 2013
+# Improved documentation
+# 1.6.3 Tue Jun 11 14:25:01 EST 2013
+# Updated documentation and added verbose mode
+# 1.6.4 Wed Jun 12 10:35:31 EST 2013
+# Fixed NTP test and added audit test information
+# 1.6.5 Wed Jun 12 17:13:57 EST 2013
+# Added inital SUSE support
+# 1.6.6 Thu Jun 13 16:50:19 EST 2013
+# Added OS X support
+# 1.6.7 Thu Jun 13 19:09:55 EST 2013
+# Added Cyrus and Qpopper check
+# 1.6.8 Thu Jun 13 19:23:10 EST 2013
+# Added Postfix check
+# 1.6.9 Thu Jun 13 19:52:00 EST 2013
+# support
+# 1.7.0 Wed 21 Aug 2013 15:50:51 EST
+# Added check for root SSH keys
+# 1.7.1 Wed 21 Aug 2013 15:57:47 EST
+# Added check for SYSLOG=YES in /etc/default/login for Solaris
+# 1.7.2 Wed 21 Aug 2013 16:10:15 EST
+# Added DISABLETIME flag to /etc/default/login check for Solaris
+# 1.7.3 Wed 21 Aug 2013 16:16:45 EST
+# Added check for LOG_FROM_REMOTE=NO in /etc/default/syslogd for Solaris
+# 1.7.4 Sun 25 Aug 2013 19:35:39 EST
+# Fixed ssh key check code
+# 1.7.5 Thu 29 Aug 2013 15:12:31 EST
+# Added su wheel group check
+# 1.7.6 Thu 29 Aug 2013 15:33:13 EST
+# Added check for users that have never logged in to make sure accounts are locked
+# 1.7.7 Fri 30 Aug 2013 15:01:51 EST
+# Added default crypto check
+# 1.7.8 Fri 30 Aug 2013 15:16:08 EST
+# Added code to check wheel group users
+# 1.7.9 Fri 30 Aug 2013 15:45:06 EST
+# Added restore function to wheel checks
+# 1.8.0 Sat 31 Aug 2013 15:51:56 EST
+# Added check for PASSREQ = YES in /etc/default/login
+# 1.8.1 Tue  3 Sep 2013 13:54:12 EST
+# Added check for SYSLOG = YES in /etc/default/su
+# 1.8.2 Tue  3 Sep 2013 13:56:58 EST
+# Added check for MINDIGIT = 1 in /etc/default/passwd
+# 1.8.3 Tue  3 Sep 2013 14:55:16 EST
+# Added check for UsePrivilegeSeparation yes in /etc/ssh/sshd_config
+# 1.8.4 Tue  3 Sep 2013 14:58:27 EST
+# Added check for PrintMotd no in /etc/ssh/sshd_config
+# 1.8.5 Tue  3 Sep 2013 15:01:25 EST
+# Added check for LoginGraceTime 120 in /etc/ssh/sshd_config
+# 1.8.6 Tue  3 Sep 2013 16:06:05 EST
+# Added check to make sure shells in /etc/shells exist
+# 1.8.7 Thu 12 Sep 2013 15:51:09 EST
+# Added ability to load modules
+# 1.8.8 Mon Sep 16 05:23:51 EDT 2013
+# Bug fixes
+# 1.8.9 Mon Sep 16 19:38:17 EST 2013
+# Fixed logrotate check
+# 1.9.0 Mon 16 Sep 2013 20:03:12 EST
+# Fixed scoring on root group check
+# 1.9.1 Mon Sep 16 20:07:42 EST 2013
+# Added fix information to root SSH key check
+# 1.9.2 Mon 16 Sep 2013 20:28:54 EST
+# Fixed home directory permissions check
+# 1.9.3 Mon 16 Sep 2013 21:02:02 EST
+# Fix dot file checking
+# 1.9.4 Mon 16 Sep 2013 21:14:17 EST
+# Fixed scoring for root PATH check
+# 1.9.5 Mon 16 Sep 2013 22:23:33 EST
+# Fixed scoring for empty password field testing
+# 1.9.6 Tue 17 Sep 2013 08:46:54 EST
+# Fixed scoring in reserved UID check
+# 1.9.7 Tue 17 Sep 2013 08:54:15 EST
+# Fixed scoring for old user logins test
+# 1.9.8 Tue 17 Sep 2013 10:09:50 EST
+# Improved checking for old user logins
+# 1.9.9 Tue 17 Sep 2013 10:42:36 EST
+# Fixed scoring for System Account audit
+# 2.0.0 Tue 17 Sep 2013 10:58:53 EST
+# Numerous bug fixes
+# 2.0.1 Tue 17 Sep 2013 14:43:54 EST
+# Improved SNMP daemon check on Linux
+# 2.0.2 Wed 18 Sep 2013 13:13:23 EST
+# Added RSA SecurID PAM check
+# 2.0.3 Fri 20 Sep 2013 16:57:09 EST
+# Added better handling for *credit password parameters under Linux
+# 2.0.4 Fri 20 Sep 2013 18:21:21 EST
+# Cleaned up linux PAM audit
+# 2.0.5 Sat 21 Sep 2013 15:32:55 EST
+# Improved linux password history audit
+# 2.0.6 Wed  9 Oct 2013 09:50:53 EST
+# Moved directory check
+# 2.0.7 Wed  9 Oct 2013 09:56:16 EST
+# Fixed id check under Solaris
+# 2.0.8 Wed  9 Oct 2013 10:55:38 EST
+# Fixed call to check_inetd_service
+# 2.0.9 Wed  9 Oct 2013 10:56:44 EST
+# Fixed source on Solaris
+# 2.1.0 Wed  9 Oct 2013 11:19:38 EST
+# Fixed "==" evaluation
+# 2.1.1 Wed  9 Oct 2013 14:16:37 EST
+# Added check for disabled account to system account check
+# 2.1.2 Wed  9 Oct 2013 14:25:31 EST
+# Fixed grep command in audit_shells
+# 2.1.3 Wed  9 Oct 2013 14:28:33 EST
+# Fixed other grep commands
+# 2.1.4 Wed  9 Oct 2013 14:36:39 EST
+# Fixed set command on Solaris
+# 2.1.5 Wed  9 Oct 2013 14:38:56 EST
+# Fixed two SunOS checks
+# 2.1.6 Wed  9 Oct 2013 14:47:08 EST
+# Fixed message for inactive user account check
+# 2.1.7 Wed  9 Oct 2013 16:32:47 EST
+# Fixed scoring on inactive user account check
+# 2.1.8 Thu 10 Oct 2013 08:46:13 EST
+# Fixed console report on Solaris
+# 2.1.9 Thu 10 Oct 2013 09:30:40 EST
+# Fixed output for check that file exists
+# 2.2.0 Thu 10 Oct 2013 09:44:36 EST
+# Fixed scoring for file permissions check
+# 2.2.1 Thu 10 Oct 2013 09:59:41 EST
+# Fixed security banner check scoring
+# 2.2.2 Wed 15 Jan 2014 09:32:48 EST
+# Fixed bug with shadow check on OS X
+# 2.2.3 Wed 15 Jan 2014 11:07:20 EST
+# Minor bug fixes
+# 2.2.4 Thu 20 Feb 2014 14:55:44 EST
+# Split code out to be more manageable
+# 2.2.5 Wed 12 Mar 2014 11:45:34 EST
+# Various typo fixes
+# 2.2.6 Thu 13 Mar 2014 15:39:00 EST
+# Fixed Login Warning for OS X
+# 2.2.7 Thu 13 Mar 2014 15:59:31 EST
+# Fixed Launchctl check for OS X
+# 2.2.8 Thu 13 Mar 2014 16:00:45 EST
+# Added Apple Remote Events code for OS X
+# 2.2.9 Fri 14 Mar 2014 09:33:14 EST
+# Added Internet Sharing code for OS X
+# 2.3.0 Fri 14 Mar 2014 15:55:55 EST
+# Added Account Lockout code for OS X
+# 2.3.1 Mon 17 Mar 2014 06:40:22 EST
+# Added Printer Sharing code for OS X
+# 2.3.2 Mon 17 Mar 2014 07:58:31 EST
+# Added hot corner check to screen lock check for OS X
+@ 2.3.3 Mon 17 Mar 2014 10:37:20 EST
+# Added SSH check for OS X
+# 2.3.4 Mon 17 Mar 2014 11:21:34 EST
+# Added DVD/CDo sharing check for OS X
+# 2.3.5 Mon 17 Mar 2014 15:28:31 EST
+# Added Wake on Lan check for OS X
+# 2.3.6 Mon 17 Mar 2014 16:00:01 EST
+# Added File Vault check for OS X
+# 2.3.7 Mon 17 Mar 2014 17:03:59 EST
+# Added Gatekeeper check for OS X
+# 2.3.8 Tue 18 Mar 2014 09:06:10 EST
+# Added Safe Downloads list check for OS X
+# 2.3.9 Tue 18 Mar 2014 09:07:23 EST
+# Updated CIS reference for firewall settings fo OS X
+# 2.4.0 Tue 18 Mar 2014 09:50:12 EST
+# Added Secure Keyboard Entry check for OS X
+# 2.4.1 Tue 18 Mar 2014 11:59:01 EST
+# Added Secure Empty Trash check for OS X
+# 2.4.2 Tue 18 Mar 2014 12:09:43 EST
+# Cleaned up some defaults checks for OS X
+# 2.4.3 Tue 18 Mar 2014 12:25:29 ES
+# Added OX Security Auditing check
+# 2.4.4 Tue 18 Mar 2014 12:38:16 EST
+# Cleaned up some code
+# 2.4.5 Tue 18 Mar 2014 15:25:02 EST
+# Added code to check system log retention on OS X
+# 2.4.6 Tue 18 Mar 2014 15:44:13 EST
+# Added code to check bonjour advertising on OS X
+# 2.4.7 Tue 18 Mar 2014 16:13:11 EST
+# Added sudo timeout check
+# 2.4.8 Tue 18 Mar 2014 16:33:21 EST
+# Added Keychain Lock time check for OS X
+# 2.4.9 Wed 19 Mar 2014 07:15:21 EST
+# Added user home directory permisions check for OS X
+# 2.5.0 Wed 19 Mar 2014 07:32:50 EST
+# Added autologin check for OS X
+# 2.5.1 Wed 19 Mar 2014 08:22:03 EST
+# Added autologout check for OS X
+# 2.5.2 Wed 19 Mar 2014 08:48:57 EST
+# Added pwpolicy function for OS X
+# 2.5.3 Wed 19 Mar 2014 09:13:10 EST
+# Added password complexity checks for OS X
+# 2.5.4 Wed 19 Mar 2014 09:18:19 EST
+# Added CIS reference to account login details check for OS X
+# 2.5.5 Wed 19 Mar 2014 09:23:03 EST
+# Added password hints check for OS X
+# 2.5.6 Wed 19 Mar 2014 09:24:56 EST
+# Added CIS reference for guest account check for OS X
+# 2.5.7 Wed 19 Mar 2014 09:27:16 EST
+# Added CIS reference for guest file sharing check for OS X
+# 2.5.8 Wed 19 Mar 2014 09:32:40 EST
+# Added file extensions check for OS X
+# 2.5.9 Wed 19 Mar 2014 11:36:56 EST
+# Added Safari Auto-run check for OS X
+# 2.6.0 Wed 19 Mar 2014 11:42:21 EST
+# Fixed bug with launchctl check
+# 2.6.1 Wed 19 Mar 2014 11:44:25 EST
+# Fixed bug with gatekeeper and wake on lan check
+# 2.6.2 Wed 19 Mar 2014 12:05:53 EST
+# Various bug fixes
+# 2.6.3 Wed 19 Mar 2014 12:20:50 EST
+# Improved ability to run script as non root user in audit only mode
+# 2.6.4 Wed 19 Mar 2014 13:24:05 EST
+# More bug fixes
+# 2.6.5 Wed 19 Mar 2014 17:10:44 EST
+# Added swap to nodev check
+# 2.6.6 Thu 20 Mar 2014 13:52:09 EST
+# Added nosuid filesystem mount check for Linux
+# 2.6.7 Thu 20 Mar 2014 14:41:40 EST
+# Fixed system log check
+# 2.6.8 Thu 20 Mar 2014 14:45:20 EST
+# Added aide check for Linux
+# 2.6.7 Thu 20 Mar 2014 16:55:35 EST
+# Moved grouped function files to full_* to better distinguish them
+# 2.6.8 Thu 20 Mar 2014 17:29:21 EST
+# Added support to old users check to use last rather than finger if finger is not available
+# 2.6.9 Thu 20 Mar 2014 22:56:31 EST
+# Updated SELinux check
+# 2.7.0 Fri 21 Mar 2014 10:29:30 EST
+# Added CIS reference to unconfined daemons test
+# 2.7.1 Fri 21 Mar 2014 10:32:24 EST
+# Added permissions check for /etc/grub to SELinux test
+# 2.7.2 Fri 21 Mar 2014 10:38:24 EST
+# Added CIS reference to single user mode test
+# 2.7.3 Fri 21 Mar 2014 10:46:47 EST
+# Added core dumps restriction to Linux and added CIS reference
+# 2.7.4 Fri 21 Mar 2014 10:56:56 EST
+# Added execshield check
+# 2.7.6 Fri 21 Mar 2014 14:02:30 EST
+# Added code to remove telnet-server package on Linux
+# 2.7.7 Fri 21 Mar 2014 14:06:58 EST
+# Added code to remove rsh-server on package Linux
+# 2.7.8 Fri 21 Mar 2014 14:10:30 EST
+# Added code to remove YP/NIS server packages on Linux
+# 2.7.9 Fri 21 Mar 2014 14:13:10 EST
+# Added code to remove tftp-server package on Linux
+# 2.8.0 Fri 21 Mar 2014 14:29:43 EST
+# Added /etc/netboot check for Solaris 11
+# 2.8.1 Fri 21 Mar 2014 14:51:23 EST
+# Added code to remove talk-server package on Linux
+# 2.8.2 Fri 21 Mar 2014 15:14:24 EST
+# Added code to remove xinetd-server package on Linux
+# 2.8.3 Fri 21 Mar 2014 15:16:44 EST
+# Added CIS references for various xinetd based services for Linux
+# 2.8.4 Fri 21 Mar 2014 15:20:21 EST
+# Added CIS reference for daemon umask check
+# 2.8.5 Fri 21 Mar 2014 15:26:05 EST
+# Added code to remove X Windows package on Linux
+# 2.8.6 Fri 21 Mar 2014 15:47:54 EST
+# Fixed bugs with OS vendor determination
+# 2.8.7 Fri 21 Mar 2014 16:01:40 EST
+# Moved Avahi server code to separate module and added CIS reference
+# 2.8.8 Fri 21 Mar 2014 16:10:05 EST
+# Added code to remove dhcp server package on Linux
+# 2.8.9 Fri 21 Mar 2014 16:11:40 EST
+# Added CIS reference for NTP
+# 2.9.0 Fri 21 Mar 2014 16:19:07 EST
+# Added code to remove openldap-servers package on Linux
+# 2.9.1 Fri 21 Mar 2014 16:20:45 EST
+# Added CIS reference for NFS check
+# 2.9.2 Sun 23 Mar 2014 12:32:36 EST
+# Minor bug fixes
+# 2.9.3 Sun 23 Mar 2014 12:38:22 EST
+# Added CIS reference to NIS server check and code to remove package on Linux
+# 2.9.4 Sun 23 Mar 2014 12:46:47 EST
+# Added package uninstall disable/enable variable
+# 2.9.5 Sun 23 Mar 2014 12:53:28 EST
+# Added CIS reference to FTP server check and code to remove package on Linux
+# 2.9.6 Sun 23 Mar 2014 12:59:18 EST
+# Added CIS reference to HTTP server check and code to remove package on Linux
+# 2.9.7 Sun 23 Mar 2014 13:04:24 EST
+# Added CIS reference for Dovecot check and code to remove package on Linux
+# 2.9.8 Sun 23 Mar 2014 13:07:47 EST
+# Added CIS reference to Samba server check and code to remove package on Linux
+# 2.9.9 Sun 23 Mar 2014 13:11:41 EST
+# Added CIS reference to Squid server check and code to remove package on Linux
+# 3.0.0 Sun 23 Mar 2014 13:18:10 EST
+# Added CIS reference to SNMP check and code to remove package on Linux
+# 3.0.1 Sun 23 Mar 2014 13:23:20 EST
+# Added CIS reference to Postfix check and code to check local-only agent mode on Linux
+# 3.0.2 Sun 23 Mar 2014 13:37:30 EST
+# Added code to install and configure rsyslog on Linux
+# 3.0.3 Sun Sun 23 Mar 2014 15:38:27 EST
+# Added CIS references to system accounting check
+# 3.0.4 Sun 23 Mar 2014 15:41:50 EST
+# Added CIS references to logrotate check
+# 3.0.5 Sun 23 Mar 2014 16:01:36 EST
+# Added CIS references to sysctl check
+# 3.0.6 Sun 23 Mar 2014 16:15:53 EST
+# Added CIS references to TCP wrappers check
+# 3.0.7 Mon 24 Mar 2014 09:20:12 EST
+# Added iptables check
+# 3.0.8 Mon 24 Mar 2014 09:22:53 EST
+# Added CIS reference to cron permissions check
+# 3.0.9 Mon 24 Mar 2014 09:35:34 EST
+# Cleaned up crow.allow test and added CIS reference
+# 3.1.0 Mon 24 Mar 2014 09:59:21 EST
+# Added CIS reference to SSH test
+# 3.1.1 Mon 24 Mar 2014 10:02:57 EST
+# Added CIS reference to password hashing algorithm test
+# 3.1.2 Mon 24 Mar 2014 10:10:33 EST
+@ Added CIS reference to password policy test
+# 3.1.3 Mon 24 Mar 2014 10:26:28 EST
+# Added CIS reference for account lockout timeout test
+# 3.1.4 Mon 24 Mar 2014 17:31:53 EST
+# Added CIS reference for password reuse test
+# 3.1.5 Mon 24 Mar 2014 17:36:23 EST
+# Added CIS reference for remote console test
+# 3.1.6 Mon 24 Mar 2014 17:38:52 EST
+# Added CIS reference for pam wheel test
+# 3.1.7 Mon 24 Mar 2014 17:40:29 EST
+# Added CIS reference for password expiry test
+# 3.1.8 Mon 24 Mar 2014 17:45:45 EST
+# Added CIS reference for system account test
+# 3.1.9 Mon 24 Mar 2014 17:47:28 EST
+# Added CIS reference for default root group test
+# 3.2.0 Mon 24 Mar 2014 18:12:53 EST
+# Added CIS reference for user default umask test
+# 3.2.1 Mon 24 Mar 2014 19:36:42 EST
+# Added code to test Gnome login message on Linux
+# 3.2.2 Mon 24 Mar 2014 21:06:01 EST
+# Added CIS reference for world writable files test
+# 3.2.3 Mon 24 Mar 2014 21:09:52 EST
+# Added CIS reference for unowned file check
+# 3.2.4 Mon 24 Mar 2014 21:11:25 EST
+# Added CIS reference for suid system executables test
+# 3.2.5 Mon 24 Mar 2014 21:14:24 EST
+# Added CIS reference for password field test
+# 3.2.6 Mon 24 Mar 2014 21:16:41 EST
+# Added CIS reference for legacy NIS entries test
+# 3.2.7 Mon 24 Mar 2014 21:21:11 EST
+# Added CIS reference for reserved id test
+# 3.2.8 Mon 24 Mar 2014 21:23:46 EST
+# Added CIS reference for root path test
+# 3.2.9 Mon 24 Mar 2014 21:25:58 EST
+# Added CIS reference for user home permissions test
+# 3.3.0 Mon 24 Mar 2014 21:27:52 EST
+# Added CIS reference for user dot files test
+# 3.3.1 Mon 24 Mar 2014 21:29:32 EST
+# Added CIS reference for user .netrc test
+# 3.3.2 Mon 24 Mar 2014 21:35:03 EST
+# Added CIS reference for user .rhosts test
+# 3.3.3 Mon 24 Mar 2014 21:39:43 EST
+# Added CIS reference for group test
+# 3.3.4 Mon 24 Mar 2014 21:45:24 EST
+# Added CIS reference for duplicate ids test
+# 3.3.5 Mon 24 Mar 2014 21:47:39 EST
+# Added CIS reference for duplicate gids test
+# 3.3.6 Mon 24 Mar 2014 21:54:09 EST
+# Added CIS reference for duplicate users test
+# 3.3.7 Tue 25 Mar 2014 06:21:54 EST
+# Added CIS reference for user .forward test
+# 3.3.8 Tue 25 Mar 2014 07:33:44 EST
+# Fixed screen lock test for OS X
+# 3.3.9 Tue 25 Mar 2014 07:53:48 EST
+# Fixed CD sharing test for OS X
+# 3.4.0 Tue 25 Mar 2014 07:58:34 EST
+# Fixed printer sharing test for OS X
+# 3.4.1 Tue 25 Mar 2014 08:09:02 EST
+# Added firmware password test for OS X
+# 3.4.2 Tue 25 Mar 2014 08:29:09 EST
+# Added CIS NTP reference for OS X
+# 3.4.3 Tue 25 Mar 2014 08:42:51 EST
+# Added code to add NTP pool servers to config file
+# 3.4.4 Tue 25 Mar 2014 09:21:15 EST
+# Improved launchctl function to be able to turn off and on services
+# 3.4.5 Tue 25 Mar 2014 10:19:31 EST
+# Added samba config lockdown tests
+# 3.4.6 Tue 25 Mar 2014 10:27:55 EST
+# Added apache config lockdown tests
+# 3.4.7 Tue 25 Mar 2014 10:31:06 EST
+# Added CIS reference for SSH for OS X
+# 3.4.8 Tue 25 Mar 2014 10:51:37 EST
+# Added Xgrid check
+# 3.4.9 Tue 25 Mar 2014 10:57:18 EST
+# Added code to disable mDNS on OS X
+# 3.5.0 Tue 25 Mar 2014 13:47:00 EST
+# Initial FreeBSD support
+# 3.5.1 Tue 25 Mar 2014 13:54:21 EST
+# Added rc.conf and loader.conf support to file functions
+# 3.5.2 Tue 25 Mar 2014 14:02:58 EST
+# Added FreeBSD support and CIS reference to SSH test
+# 3.5.3 Tue 25 Mar 2014 14:14:26 EST
+# Added CIS reference for FreeBSD for TCP Wrappers and added inetd flag test for FreeBSD
+# 3.5.4 Tue 25 Mar 2014 14:29:21 EST
+# Added ipfw code and CIS reference for FreeBSD
+# 3.5.5 Tue 25 Mar 2014 14:42:04 EST
+# Added inet/init code and CIS reference for FreeBSD
+# 3.5.6 Tue 25 Mar 2014 15:32:56 EST
+# Added daemon umask test and CIS reference for FreeBSD
+# 3.5.7 Tue 25 Mar 2014 15:40:44 EST
+# Added syslog and CIS reference for FreeBSD
+# 3.5.8 Tue 25 test Mar 2014 15:59:26 EST
+# Added sendmail test and CIS reference for FreeBSD
+# 3.5.9 Tue 25 Mar 2014 16:04:18 EST
+# Added bind test and CIS reference for FreeBSD
+# 3.6.0 Tue 25 Mar 2014 16:27:15 EST
+# Added NFS test and CIS reference for FreeBSD
+# 3.6.1 Tue 25 Mar 2014 16:32:36 EST
+# Added NIS test and CIS reference for FreeBSD
+# 3.6.2 Tue 25 Mar 2014 16:39:59 EST
+# Added printing test and CIS reference for FreeBSD
+# 3.6.3 Tue 25 Mar 2014 16:50:16 EST
+# Added core dump test and CIS reference for FreeBSD
+# 3.6.4 Tue 25 Mar 2014 17:02:17 EST
+# Added kernel parameters code and CIS reference for FreeBSD
+# 3.6.5 Tue 25 Mar 2014 17:37:52 EST
+# Added syslog logging entry and CIS reference for FreeBSD while fixing bug with Syslog server code
+# 3.6.6 Tue 25 Mar 2014 17:48:07 EST
+# Added system accounting code and CIS reference for FreeBSD
+# 3.6.7 Tue 25 Mar 2014 17:52:12 EST
+# Added TCP/UDP packet logging code and CIS reference for FreeBSD
+# 3.6.8 Tue 25 Mar 2014 21:42:42 EST
+# Added newsyslog and CIS reference for FreeBSD
+# 3.6.9 Tue 25 Mar 2014 21:50:08 EST
+# Added nosuid mount test and CIS reference for FreeBSD
+# 3.7.0 Tue 25 Mar 2014 21:58:55 EST
+# Added passwd and group permissions test and CIS reference for FreeBSD
+# 3.7.1 Tue 25 Mar 2014 22:02:50 EST
+# Added sticky bit test and CIS reference for FreeBSD
+# 3.7.2 Tue 25 Mar 2014 22:05:40 EST
+# Added world writable files test and CIS reference for FreeBSD
+# 3.7.3 Tue 25 Mar 2014 22:09:34 EST
+# Added suid and sgid files test and CIS reference for FreeBSD
+# 3.7.4 Tue 25 Mar 2014 22:15:30 EST
+# Added user homde directory permissions test and CIS reference for FreeBSD
+# 3.7.5 Tue 25 Mar 2014 22:18:28 EST
+# Added unowned files test and CIS reference for FreeBSD
+# 3.7.6 Tue 25 Mar 2014 22:29:47 EST
+# Added initial PAM test and CIS reference for FreeBSD
+# 3.7.7 Tue 25 Mar 2014 22:34:36 EST
+# Added dotfiles test and CIS reference for FreeBSD
+# 3.7.8 Tue 25 Mar 2014 22:47:39 EST
+# Added cron/at test and CIS references for FreeBSD
+# 3.7.9 Tue 25 Mar 2014 22:54:48 EST
+# Added security banner test and CIS references for FreeBSD
+# 3.8.0 Wed 26 Mar 2014 05:57:25 EST
+# Added X11 listen test and CIS reference for FreeBSD
+# 3.8.1 Wed 26 Mar 2014 06:09:12 EST
+# Added system account test and CIS reference for FreeBSD
+# 3.8.2 Wed 26 Mar 2014 07:13:36 EST
+# Added toor account test and CIS reference for FreeBSD
+# 3.8.3 Wed 26 Mar 2014 07:19:10 EST
+# Added uid 0 test and CIS reference for FreeBSD
+# 3.8.4 Wed 26 Mar 2014 07:30:35 EST
+# Added umask test and CIS reference for FreeBSD
+# 3.8.5 Wed 26 Mar 2014 07:36:10 EST
+# Added mesg n test and CIS reference for FreeBSD
+# 3.8.6 Wed 26 Mar 2014 07:45:29 EST
+# Added password algorithm test and CIS reference for FreeBSD
+# 3.8.7 Wed 26 Mar 2014 08:35:24 EST
+# Added serial logins test and CIS reference for FreeBSD
+# 3.8.8 Wed 26 Mar 2014 08:54:37 EST
+# Added single user password test and CIS reference for FreeBSD
+# 3.8.9 Wed 26 Mar 2014 09:20:46 EST
+# Added X wrapper test and CIS reference for FreeBSD
+# 3.9.0 Wed 26 Mar 2014 11:21:34 EST
+# Added initial AIX support
+# 3.9.1 Wed 26 Mar 2014 13:35:49 EST
+# Added password parameter tests and CIS references for AIX
+# 3.9.2 Wed 26 Mar 2014 13:58:21 EST
+# Added login retry limit test and CIS references for AIX
+# 3.9.3 Wed 26 Mar 2014 14:06:37 EST
+# Added rlogin test and CIS reference for AIX
+# 3.9.4 Wed 26 Mar 2014 14:34:31 EST
+# Added code to drive chuser and added su group test and CIS reference for AIX
+# 3.9.5 Wed 26 Mar 2014 16:48:23 EST
+# Added system user rlogin test and CIS reference for AIX
+# 3.9.6 Wed 26 Mar 2014 17:37:12 EST
+# Added code to drive [rm,ls,ch]itab on AIX
+# 3.9.7 Wed 26 Mar 2014 17:41:27 EST
+# Added qdaemon test and CIS reference for AIX
+# 3.9.8 Wed 26 Mar 2014 17:45:23 EST
+# Added lpd and piobe test and CIS reference for AIX
+# 3.9.9 Wed 26 Mar 2014 17:50:30 EST
+# Added dt test and CIS reference for AIX
+# 4.0.0 Wed 26 Mar 2014 17:54:55 EST
+# Added rcnfs test and CIS reference for AIX
+# 4.0.1 Wed 26 Mar 2014 20:36:07 EST
+# Added world writable files test and CIS reference for AIX
+# 4.0.2 Wed 26 Mar 2014 20:45:50 EST
+# Added unowned files test and CIS reference for AIX
+# 4.0.3 Wed 26 Mar 2014 20:53:15 EST
+# Added setuid files test and CIS reference for AIX
+# 4.0.4 Thu 27 Mar 2014 07:41:22 EST
+# Added Trusted Execution handling code for AIX
+# 4.0.5 Thu 27 Mar 2014 07:57:51 EST
+# Added Trusted Execution tests and CIS reference for AIX
+# 4.0.6 Thu 27 Mar 2014 08:12:32 EST
+# Added code to check AIX package is installed
+# 4.0.7 Thu 27 Mar 2014 08:44:18 EST
+# Added root PATH check and CIS reference for AIX
+# 4.0.8 Thu 27 Mar 2014 08:48:48 EST
+# Added duplicate group test and CIS reference for AIX
+# 4.0.9 Thu 27 Mar 2014 08:52:25 EST
+# Added duplicate user test and CIS reference for AIX
+# 4.1.0 Thu 27 Mar 2014 09:01:12 EST
+# Added empty password field test and CIS reference for AIX
+# 4.1.1 Thu 27 Mar 2014 09:09:00 EST
+# Added cron/at allow tests and CIS references for AIX
+# 4.1.2 Thu 27 Mar 2014 09:14:09 EST
+# Added security motd test and CIS reference for AIX
+# 4.1.3 Thu 27 Mar 2014 10:07:11 EST
+# Added FTP banner test and CIS reference for AIX
+# 4.1.4 Thu 27 Mar 2014 10:13:14 EST
+# Added FTP daemon umask test and CIS reference for AIX
+# 4.1.5 Thu 27 Mar 2014 10:35:00 EST
+# Added FTP users test and CIS reference for AIX
+# 4.1.6 Thu 27 Mar 2014 10:55:57 EST
+# Added sar accounting test and CIS reference for AIX
+# 4.1.7 Thu 27 Mar 2014 10:58:32 EST
+# Added mesgn test and CIS reference for AIX
+# 4.1.8 Thu 27 Mar 2014 11:06:00 EST
+# Added writesrv test and CIS reference for AIX
+# 4.1.9 Thu 27 Mar 2014 11:11:56 EST
+# Added power management test and CIS reference for AIX
+# 4.2.0 Thu 27 Mar 2014 11:30:22 EST
+# Added online documentation daemon test and CIS reference for httpdlite on AIX
+# 4.2.1 Thu 27 Mar 2014 15:05:10 EST
+# Added NCS test and CIS reference for AIX
+# 4.2.2 Thu 27 Mar 2014 15:13:04 EST
+# Added i4ls test and CIS reference of AIX
+# 4.2.3 Thu 27 Mar 2014 15:45:39 EST
+# Added serial login test and CIS reference for AIX
+# 4.2.4 Thu 27 Mar 2014 16:06:59 EST
+# Added user home directory tests and CIS references for AIX
+# 4.2.5 Thu 27 Mar 2014 16:16:13 EST
+# Added /var/adm/sa ownership test and CIS reference for AIX
+# 4.2.6 Thu 27 Mar 2014 16:30:53 EST
+# Added snmp and ras permissions test and CIS reference for AIX
+# 4.2.7 Thu 27 Mar 2014 17:11:37 EST
+# Added various file/directory permissions tests and CIS references for AIX
+# 4.2.8 Thu 27 Mar 2014 17:44:09 EST
+# Added Initial TCP Wrappers test and CIS references for AIX
+# 4.2.9 Fri 28 Mar 2014 07:52:02 EST
+# Added code to drive rctcp on AIX
+# 4.3.0 Fri 28 Mar 2014 08:18:59 EST
+# Added sendmail test and CIS reference for AIX
+# 4.3.1 Fri 28 Mar 2014 08:31:37 EST
+# Added snmp test and CIS reference for AIX
+# 4.3.2 Fri 28 Mar 2014 08:37:56 EST
+# Added sendmail disable variable
+# 4.3.3 Fri 28 Mar 2014 08:46:02 EST
+# Added dhcpcd test and CIS reference for AIX
+# 4.3.4 Fri 28 Mar 2014 08:52:12 EST
+# Added dhcprd test and CIS reference for AIX
+# 4.3.5 Fri 28 Mar 2014 08:56:33 EST
+# Added dhcpsd test and CIS reference for AIX
+# 4.3.6 Fri 28 Mar 2014 09:01:46 EST
+# Added autoconf6 test and CIS reference for AIX
+# 4.3.7 Fri 28 Mar 2014 09:14:02 EST
+# Added gated test and CIS reference for AIX
+# 4.3.8 Fri 28 Mar 2014 09:56:38 EST
+# Added mrouted test and CIS reference for AIX
+# 4.3.9 Fri 28 Mar 2014 10:14:12 EST
+# Added named test and CIS reference for AIX
+# 4.3.9 Fri 28 Mar 2014 10:16:12 EST
+# Added routed test and CIS reference for AIX
+# 4.4.0 Fri 28 Mar 2014 10:21:13 EST
+# Added rwhod test and CIS reference for AIX
+# 4.4.1 Fri 28 Mar 2014 10:26:21 EST
+# Added timed test and CIS reference for AIX
+# 4.4.2 Fri 28 Mar 2014 10:29:26 EST
+# Added dpid2 test and CIS reference for AIX
+# 4.4.3 Fri 28 Mar 2014 10:31:32 EST
+# Added hostmibd test and CIS reference for AIX
+# 4.4.4 Fri 28 Mar 2014 10:32:07 EST
+# Added snmpdmibd test and CIS reference for AIX
+# 4.4.5 Fri 28 Mar 2014 10:33:56 EST
+# Added aixmibd test and CIS reference for AIX
+# 4.4.6 Fri 28 Mar 2014 10:51:38 EST
+# Added NPD tests and CIS references for AIX
+# 4.4.7 Fri 28 Mar 2014 10:57:08 EST
+# Added .netrc tests and CIS references for AIX
+# 4.4.8 Fri 28 Mar 2014 10:59:05 EST
+# Added .rhosts tests and CIS references for AIX
+# 4.4.9 Fri 28 Mar 2014 12:43:48 EST
+# Added hosts.equiv tests and CIS references for AIX
+# 4.5.0 Fri 28 Mar 2014 12:54:51 EST
+# Added code to drive no on AIX
+# 4.5.1 Fri 28 Mar 2014 13:33:07 EST
+# Added network kernel tuning parameter test and CIS references for AIX
+# 4.5.2 Fri 28 Mar 2014 14:38:14 EST
+# Added code to drive subserver on AIX
+# 4.5.3 Fri 28 Mar 2014 14:56:37 EST
+# Added legacy services tests and CIS references for AIX
+# 4.5.4 Sat 29 Mar 2014 20:45:37 EST
+# Added numerous CIS references for Solaris tests
+# 4.5.5 Sun 30 Mar 2014 09:07:50 EST
+# Added more CIS references for Solaris tests
+# 4.5.6 Sun 30 Mar 2014 15:47:53 EST
+# Added more CIS references for Linux tests and cleaned up some Linux test conditions
+# 4.5.7 Sun 30 Mar 2014 18:19:19 EST
+# Added kernel-PAE package check
+# 4.5.8 Sun 30 Mar 2014 18:46:32 EST
+# Added various client package tests for Linux
+# 4.5.9 Sun 30 Mar 2014 20:56:34 EST
+# Added code to remove talk client on Linux
+# 4.6.0 Sun 30 Mar 2014 21:03:03 EST
+# Fixed xinetd test for Linux
+# 4.6.1 Sun 30 Mar 2014 21:48:42 EST
+# Added CIS references and updated syslog configuration for Linux
+# 4.6.2 Sun 30 Mar 2014 22:00:49 EST
+# Updated syslog and rsyslog test for Linux
+# 4.6.3 Mon 31 Mar 2014 09:35:36 EST
+# Added pam_deny and pam_ccred tests for Linux
+# 4.6.4 Mon 31 Mar 2014 10:01:27 EST
+# Added inactive user test for Linux
+# 4.6.5 Mon 31 Mar 2014 10:49:09 EST
+# Added more CIS references for Linux
+# 4.6.6 Mon 31 Mar 2014 14:44:00 EST
+# Added noexec tmpfs test for Linux
+# 4.6.7 Mon 31 Mar 2014 21:05:17 EST
+# More CIS references for Linux
+# 4.6.8 Tue  1 Apr 2014 09:48:55 EST
+# Added interactive boot test
+# 4.6.9 Tue  1 Apr 2014 10:13:02 EST
+# Added kernel-pae test and CIS reference for SuSE Linux
+# 4.7.0 Tue  1 Apr 2014 13:45:14 EST
+# Added AppArmour and biosdevname test for SuSE Linux
+# 4.7.1 Tue  1 Apr 2014 14:49:16 EST
+# Added SuSEfirewall2 test
+# 4.7.2 Tue  1 Apr 2014 17:41:27 EST
+# Added shadow group member test for SuSE Linux
+# 4.7.3 Tue  1 Apr 2014 18:31:11 EST
+# Added gdm-autologin PAM check for Solaris 11
+# 4.7.4 Tue  1 Apr 2014 19:50:22 EST
+# Added EEEPROM password test for SPARC
+# 4.7.5 Wed  2 Apr 2014 12:31:55 EST
+# Fixed bugs (thanks to Mark Lane for testing)
+# 4.7.6 Wed  2 Apr 2014 15:13:36 EST
+# More bug fixes
+# 4.7.7 Thu  3 Apr 2014 15:05:09 EST
+# Updated AppArmour test for SuSE Linux
+# 4.7.8 Sat 12 Apr 2014 13:34:49 EST
+# Reference updates
+# 4.7.9 Sat 12 Apr 2014 22:20:43 EST
+# Reference updates
+# 4.8.0 Sun 13 Apr 2014 17:40:02 EST
+# Reference updates and bug fixes
+# 4.8.1 Sun 13 Apr 2014 21:21:48 EST
+# Removed duplicate auto logout module
+# 4.8.2 Fri 25 Apr 2014 12:16:09 EST
+# Fixed some bugs
+# 4.8.3 Sun 27 Apr 2014 16:07:34 EST
+# Fixed audit_system_auth_use_uid
+# 4.8.4: Tue  6 May 2014 12:42:52 EST
+# Minor fixes
+# 4.8.5: Thu  8 May 2014 09:14:24 EST
+# Fixed cron allow test for Solaris 11, Linux and FreeBSD
+# 4.8.6: Wed 14 May 2014 13:29:30 EST
+# Minor updates
+# 4.8.7: Thu 15 May 2014 12:07:13 EST
+# Deleted duplicate root group test
+# 4.8.8: Thu May 29 03:05:01 UTC 2014
+# Bug fixes and inital ESXi support (no tests)
+# 4.8.9: Thu 29 May 2014 16:28:43 EST
+# Improved scoring and added SNMP and Syslog tests for ESX
+# 4.9.0: Fri 30 May 2014 08:53:44 EST
+# Added NTP check for ESXi and made further improvements to scoring
+# 4.9.1: Fri 30 May 2014 11:37:44 EST
+# Added signed kernel module test for ESXi
+# 4.9.2: Fri 30 May 2014 15:23:01 EST
+# Added shell timeout tests for ESXi
+# 4.9.3: Fri 30 May 2014 15:40:43 EST
+# Added Syslog directory test for ESXi
+# 4.9.4: Fri 30 May 2014 16:48:29 EST
+# Added software update test for ESXi
+# 4.9.5: Fri 30 May 2014 18:48:39 EST
+# Added Managed Object Browser test for ESXi
+# 4.9.6: Fri 30 May 2014 20:44:33 EST
+# Added Dvfilter test for ESXi
+# 4.9.7: Sat 31 May 2014 06:54:25 EST
+# Added DCUI, SSH and ESXi Shell tests fo ESXi
+# 4.9.8: Sat 31 May 2014 08:15:56 EST
+# Added Lockdown check for ESXi
+# 4.9.9: Sat 31 May 2014 09:47:48 EST
+# Minor code cleanup
+# 5.0.0: Wed 11 Jun 2014 18:54:58 EST
+# Updated license
+# 5.0.1: Tue 28 Apr 2015 15:05:14 AEST
+# Removed call to audit_root_account as it was split into several audit_root_* subroutines
+# 5.0.2: Sat 14 Jan 2017 12:06:37 AEDT
+# Start adding support for Amazon Linux and added vfat to modprobe check
+# 5.0.3: Sat 14 Jan 2017 16:22:29 AEDT
+# Initial Amazon Linux support
+# 5.0.4: Sat 14 Jan 2017 17:22:34 AEDT
+# Fixed audit select function
+# 5.0.5: Sat 14 Jan 2017 19:34:40 AEDT
+# Fixed code to print module information
+# 5.0.6: Sat 14 Jan 2017 23:48:24 AEDT
+# Code cleanup
+# 5.0.7: Sun 15 Jan 2017 11:11:19 AEDT
+# Updates for Amazon Linux and Centos / RHEL 7
+# 5.0.8: Sun 15 Jan 2017 13:09:27 AEDT
+# More updates for Amazon Linux and Centos / RHEL 7
+# 5.0.9: Sun 15 Jan 2017 13:55:43 AEDT
+# More updates for Amazon Linux and Centos / RHEL 7
+# 5.1.0: Sun 15 Jan 2017 14:17:54 AEDT
+# More updated for Amazon Linux and Centos / RHEL 7
+# 5.1.1: Sun 15 Jan 2017 14:57:17 AEDT
+# Documentation cleanup
+# 5.1.2: Sun 15 Jan 2017 16:09:52 AEDT
+# More updates for Amazon Linux and Centos / RHEL 7
+# 5.1.3: Sun 15 Jan 2017 16:18:28 AEDT
+# Bug fixes
+# 5.1.4: Mon 16 Jan 2017 07:38:08 AEDT
+# Bug fixes
+# 5.1.5: Mon 16 Jan 2017 07:55:34 AEDT
+# Fix for Amazon Linux
+# 5.1.6: Mon 16 Jan 2017 08:16:55 AEDT
+# Bug fixes
+# 5.1.7: Mon 16 Jan 2017 09:18:43 AEDT
+# Cleaned up reporting
+# 5.1.8: Mon 16 Jan 2017 17:15:21 AEDT
+# Fixed code to use . rather than source on Ubuntu and Debian (sh is actually bash)
+# 5.1.9: Tue 17 Jan 2017 20:13:43 AEDT
+# Updated Linux package handling code
+# 5.2.0: Wed 18 Jan 2017 08:39:55 AEDT
+# Initial code for AWS Foundation Security audit
+# 5.2.1: Wed 18 Jan 2017 14:47:16 AEDT
+# Added AWS credentials check
+# 5.2.2: Wed 18 Jan 2017 15:49:35 AEDT
+# Added AWS credential rotation check
+# 5.2.3: Wed 18 Jan 2017 18:56:54 AEDT
+# Added AWS password policy check
+# 5.2.4: Wed 18 Jan 2017 20:33:11 AEDT
+# Added AWS root account MFA check
+# 5.2.5: Wed 18 Jan 2017 21:28:14 AEDT
+# Added AWS user policy check
+# 5.2.6: Thu 19 Jan 2017 07:34:48 AEDT
+# Added AWS support role check
+# 5.2.7: Thu 19 Jan 2017 09:05:08 AEDT
+# Added AWS access keys check
+# 5.2.8: Thu 19 Jan 2017 10:15:18 AEDT
+# Added AWS full administrative privileges check
+# 5.2.9: Thu 19 Jan 2017 10:58:16 AEDT
+# Added AWS CloudTrail MultiRegion check
+# 5.3.0: Thu 19 Jan 2017 11:14:20 AEDT
+# Added AWS CloudTrail LogFileValidation check
+# 5.3.1: Thu 19 Jan 2017 11:47:33 AEDT
+# Added AWS CloudTrail bucket permissions check
+# 5.3.2: Thu 19 Jan 2017 16:59:12 AEDT
+# Added AWS IAM Master / Manager account check
+# 5.3.3: Thu 19 Jan 2017 17:54:06 AEDT
+# Fixed various AWS bugs
+# 5.3.4: Thu 19 Jan 2017 21:40:00 AEDT
+# Added AWS CloudTrail bucket policy check
+# 5.3.5: Thu 19 Jan 2017 22:14:38 AEDT
+# Added AWS CloudTrail CloudWatch Logs integration check
+# 5.3.6: Thu 19 Jan 2017 23:02:54 AEDT
+# Added initial support for AWS Config check
+# 5.3.7: Thu 19 Jan 2017 23:13:12 AEDT
+# Added AWS CloudTrail S3 Bucket logging check
+# 5.3.8: Thu 19 Jan 2017 23:24:30 AEDT
+# Added AWS CloudTrail KMS Key check
+# 5.3.9: Fri 20 Jan 2017 08:24:56 AEDT
+# Added AWS Key check
+# 5.4.0: Fri 20 Jan 2017 10:03:02 AEDT
+# Added AWS VPC peering check
+# 5.4.1: Fri 20 Jan 2017 13:19:36 AEDT
+# Added Inbound / Outbond check for AWS Security Groups
+# 5.4.2: Fri 20 Jan 2017 14:33:57 AEDT
+# Added AWS VPC flow log check
+# 5.4.3: Fri 20 Jan 2017 16:13:34 AEDT
+# Added AWS Security Group check for open SSH / RDP ports
+# 5.4.4: Fri 20 Jan 2017 17:28:52 AEDT
+# Added initial AWS SNS checks
+# 5.4.5: Fri 20 Jan 2017 19:38:09 AEDT
+# Added initial AWS monitoring checks
+# 5.4.6: Fri 20 Jan 2017 20:14:43 AEDT
+# Added AWS alarm and subscriber checks
+# 5.4.7: Fri 20 Jan 2017 20:41:44 AEDT
+# Added AWS IAM alarm and subscriber checks
+# 5.4.8: Fri 20 Jan 2017 22:14:27 AEDT
+# Added AWS CloudTrail, Console, Key, S3, Config, NACL, Security Group, Gateway, Route and VPC alarm and subscriber checks
+# 5.4.9: Sat 21 Jan 2017 08:41:04 AEDT
+# Added fix information for AWS Access Keys
+# 5.5.0: Tue 24 Jan 2017 05:20:07 AEDT
+# Cleaned up AWS CloudTrail checks
+# 5.5.1: Tue 24 Jan 2017 16:22:48 AEDT
+# Added some fix information for VPC checks
+# 5.5.2: Tue 24 Jan 2017 16:47:11 AEDT
+# Added some fix information for SNS check
+# 5.5.3: Tue 24 Jan 2017 17:15:33 AEDT
+# Updated AWS CloudTrail Key fix information
+# 5.5.4: Tue 24 Jan 2017 17:26:25 AEDT
+# Added some fix information for S3 bucket logging
+# 5.5.5: Tue 24 Jan 2017 17:29:39 AEDT
+# Added some fix information for AWS Config
+# 5.5.6: Tue 24 Jan 2017 17:38:19 AEDT
+# Added some fix information for CloudTrail bucket permissions
+# 5.5.7: Tue 24 Jan 2017 19:58:17 AEDT
+# Added initial ability to set AWS region on command line
+# 5.5.8: Tue 24 Jan 2017 21:09:08 AEDT
+# Added additional support for setting AWS region
+# 5.5.9: Tue 24 Jan 2017 21:25:13 AEDT
+# Added initial support for AWS recommendations
+# 5.6.0: Tue 24 Jan 2017 22:35:11 AEDT
+# Added AWS IAM SSH Public Keys check
+# 5.6.1: Tue 24 Jan 2017 22:45:17 AEDT
+# Added AWS IAM empty group check
+# 5.6.2: Wed 25 Jan 2017 06:27:00 AEDT
+# Added check for expired AWS certificates
+# 5.6.3: Wed 25 Jan 2017 06:40:16 AEDT
+# Added check for inactive AWS IAM accounts
+# 5.6.4: Wed 25 Jan 2017 07:19:13 AEDT
+# Added check for AWS Route53 Domain renewals
+# 5.6.5: Wed 25 Jan 2017 07:31:24 AEDT
+# Added check for AWS Route53 Domain expiration
+# 5.6.6: Wed 25 Jan 2017 08:32:35 AEDT
+# Added check for AWS Route53 Zone SPF records
+# 5.6.7: Wed 25 Jan 2017 08:40:14 AEDT
+# Added check for AWS Route53 Domain Transfer Lock
+# 5.6.8: Wed 25 Jan 2017 12:52:00 AEDT
+# Added check for AWS instance image ID owner
+# 5.6.9: Wed 25 Jan 2017 17:47:28 AEDT
+# Added check for number of AWS EIPs consumer
+# 5.7.0: Wed 25 Jan 2017 18:21:39 AEDT
+# Added check for AWS instances using the default security group
+# 5.7.1: Wed 25 Jan 2017 18:46:14 AEDT
+# Added check for AWS EC2-Classic instances
+# 5.7.2: Wed 25 Jan 2017 19:34:59 AEDT
+# Added check against recommended Instance name
+# 5.7.3: Wed 25 Jan 2017 20:49:54 AEDT
+# Added check for AWS instance termination protection
+# 5.7.4: Wed 25 Jan 2017 21:20:52 AEDT
+# Added check to see if instances have IAM profiles
+# 5.7.5: Thu 26 Jan 2017 04:41:19 AEDT
+# Added check for publicly shared AWS AMIs
+# 5.7.6: Thu 26 Jan 2017 05:42:37 AEDT
+# Added check against recommended Security Group name
+# 5.7.7: Thu 26 Jan 2017 09:09:47 AEDT
+# Split out AWS VPC and SG checks
+# 5.7.8: Thu 26 Jan 2017 09:17:26 AEDT
+# Added check for AWS SGs with open CIFS ports
+# 5.7.9: Thu 26 Jan 2017 09:22:07 AEDT
+# Added check for AWS SGs with open DNS ports
+# 5.8.0: Thu 26 Jan 2017 09:51:13 AEDT
+# Added check for AWS SGs with open FTP ports
+# 5.8.1: Thu 26 Jan 2017 10:03:33 AEDT
+# Added check for AWS SGs with various open ports
+# 5.8.2: Thu 26 Jan 2017 11:00:34 AEDT
+# Added check for AWS SGs with open MongoDB ports
+# 5.8.3: Thu 26 Jan 2017 11:09:27 AEDT
+# Added check for AWS SGs with open RPC ports
+# 5.8.4: Thu 26 Jan 2017 11:48:10 AEDT
+# Added check for AWS SGs with open ICMP
+# 5.8.5: Thu 26 Jan 2017 11:51:56 AEDT
+# Added check for AWS SGs with open SMTP
+# 5.8.6: Thu 26 Jan 2017 11:55:15 AEDT
+# Added check for AWS SGs with open Telnet
+# 5.8.7: Thu 26 Jan 2017 12:20:11 AEDT
+# Added check for AWS users with attached policies
+# 5.8.8: Thu 26 Jan 2017 14:02:54 AEDT
+# Added check for AWS ES domains being publicly accessible
+# 5.8.9: Thu 26 Jan 2017 14:27:20 AEDT
+# Added check for AWS ES domains having IP access policy
+# 5.9.0: Thu 26 Jan 2017 14:43:32 AEDT
+# Added check for AWS ES domains having dedicated master nodes
+# 5.9.1: Thu 26 Jan 2017 14:51:13 AEDT
+# Added check for AWS ES domains using General Purpose SSD to be cost effective
+# 5.9.2: Thu 26 Jan 2017 15:25:04 AEDT
+# Added check for AWS ES domains being cross zone aware
+# 5.9.3: Thu 26 Jan 2017 16:03:54 AEDT
+# Added more tag checks for AWS EC2 instances
+# 5.9.4: Thu 26 Jan 2017 20:54:23 AEDT
+# Added check for empty DynamoDB tables to be cost effective
+# 5.9.5: Thu 26 Jan 2017 21:19:06 AEDT
+# Added check for AWS ELB logging being enabled
+# 5.9.6: Thu 26 Jan 2017 22:54:21 AEDT
+# Added check for AWS ELB connection draining being enabled
+# 5.9.7: Thu 26 Jan 2017 23:08:23 AEDT
+# Added check for AWS ELB cross zone balancing being enabled
+# 5.9.8: Fri 27 Jan 2017 07:07:37 AEDT
+# Added check for AWS ELB using deprecated ciphers
+# 5.9.9: Fri 27 Jan 2017 07:38:05 AEDT
+# Added check for AWS ELB using deprecated protocols
+# 6.0.0: Fri 27 Jan 2017 08:20:44 AEDT
+# Added check for AWS ELB using HTTP rather than HTTPS
+# 6.0.1: Fri 27 Jan 2017 08:32:32 AEDT
+# Added check for AWS ELB having at least 2 instances
+# 6.0.2: Fri 27 Jan 2017 08:48:57 AEDT
+# Added check for AWS ELB SGs being open on port 80
+# 6.0.3: Fri 27 Jan 2017 09:22:00 AEDT
+# Added check for out of service AWS ELB instances
+# 6.0.4: Fri 27 Jan 2017 09:33:32 AEDT
+# Added check for unencrypted AWS EC2 volumes
+# 6.0.5: Fri 27 Jan 2017 13:19:21 AEDT
+# Added check for AWS EC2 volume names
+# 6.0.6: Fri 27 Jan 2017 18:04:39 AEDT
+# Added check for AWS EC2 snapshots older than 30 days
+# 6.0.7: Fri 27 Jan 2017 19:13:08 AEDT
+# Added check for AWC EC2 unattached volumes to be cost effective
+# 6.0.8: Fri 27 Jan 2017 19:37:26 AEDT
+# Added check for AWC VPC exposed endpoints
+# 6.0.9: Fri 27 Jan 2017 21:42:09 AEDT
+# Added check for AWS VPC names
+# 6.1.0: Sat 28 Jan 2017 08:16:46 AEDT
+# Added check for AWS VPC / VPN redundancy
+# 6.1.1: Sat 28 Jan 2017 09:00:59 AEDT
+# Added check for AWS S3 bucket grants
+# 6.1.2: Sat 28 Jan 2017 09:05:50 AEDT
+# Added check for AWS S3 bucket logging
+# 6.1.3: Sat 28 Jan 2017 09:13:45 AEDT
+# Added check for AWS S3 bucket versioning
+# 6.1.4: Sat 28 Jan 2017 14:06:32 AEDT
+# Added check for AWS SES and DKIM
+# 6.1.5: Sat 28 Jan 2017 14:45:31 AEDT
+# Added check for AWS RDS auto minor version upgrade
+# 6.1.6: Sat 28 Jan 2017 15:15:43 AEDT
+# Added check for AWS RDS automated backups
+# 6.1.7: Sat 28 Jan 2017 16:51:40 AEDT
+# Added check for AWS RDS encryption
+# 6.1.8: Sat 28 Jan 2017 17:06:52 AEDT
+# Added check for AWS RDS having Multi-AZ enabled
+# 6.1.9: Sat 28 Jan 2017 19:32:15 AEDT
+# Added check for AWS RDS Security Groups
+# 6.2.0: Sat 28 Jan 2017 20:39:56 AEDT
+# Added check for AWS RDS using KMS key
+# 6.2.1: Sat 28 Jan 2017 21:08:09 AEDT
+# Added check for AWS RDS using General Purpose SSD to be cost effective
+# 6.2.2: Sat 28 Jan 2017 21:26:07 AEDT
+# Added check for AWS RDS instances being on a public facing subnet
+# 6.2.3: Sat 28 Jan 2017 21:45:29 AEDT
+# Added check for AWS RDS instances using default master username
+# 6.2.4: Sun 29 Jan 2017 11:40:24 AEDT
+# Added check for AWS RDS registered instances expiring
+# 6.2.5: Sun 29 Jan 2017 11:54:14 AEDT
+# Added check for AWS RDS backup retention period
+# 6.2.6: Sun 29 Jan 2017 12:44:23 AEDT
+# Added check for AWS EC2 EBS volumes having KMS keys
+# 6.2.7: Sun 29 Jan 2017 15:31:20 AEDT
+# Added check for AWS EC2 EBS volume snapshots being taken
+# 6.2.8: Sun 29 Jan 2017 17:16:24 AEDT
+# Added check for AWS CloudTrail recording global events
+# 6.2.9: Sun 29 Jan 2017 19:03:52 AEDT
+# Added check for AWS inactive KMS keys
+# 6.3.0: Sun 29 Jan 2017 19:03:52 AEDT
+# Added check for AWS SNS topic being publicly accessible
+# 6.3.1: Sun 29 Jan 2017 20:02:57 AEDT
+# Added check for AWS CloudFormation stacks using SNS
+# 6.3.2: Sun 29 Jan 2017 20:30:55 AEDT
+# Added check for AWS CloudFormation stacks having policies
+# 6.3.3: Sun 29 Jan 2017 20:49:28 AEDT
+# Added check for AWS ElastiCache having HA enabled
+# 6.3.4: Sun 29 Jan 2017 21:06:57 AEDT
+# Added check for AWS ElastiCache reserved instances expiring
+# 6.3.5: Sun 29 Jan 2017 21:23:07 AEDT
+# Added check for AWS Cloudfront WAF integration being enabled
+# 6.3.6: Sun 29 Jan 2017 21:31:31 AEDT
+# Added check for AWS Cloudfront logging being enabled
+# 6.3.7: Sun 29 Jan 2017 21:38:47 AEDT
+# Added check for AWS Cloudfront using deprecate SSL version
+# 6.3.8: Sun 29 Jan 2017 21:43:31 AEDT
+# Added check for AWS Cloudfront using HTTP only
+# 6.3.9: Sun 29 Jan 2017 22:08:20 AEDT
+# Added check for AWS CloudWatch alarm for EC2 instance changes
+# 6.4.0: Sun 29 Jan 2017 22:22:11 AEDT
+# Added check for AWS CloudWatch alarm for EC2 instance size changes
+# 6.4.1: Mon 30 Jan 2017 08:13:20 AEDT
+# Added check for AWS Redshift upgrades being enabled
+# 6.4.2: Mon 30 Jan 2017 08:36:14 AEDT
+# Added check for AWS Redshift logging being enabled
+# 6.4.3: Mon 30 Jan 2017 08:44:03 AEDT
+# Added check for AWS Redshift encryption being enabled
+# 6.4.4: Mon 30 Jan 2017 08:50:04 AEDT
+# Added check for AWS Redshift using KMS keys
+# 6.4.5: Mon 30 Jan 2017 09:12:42 AEDT
+# Added check for AWS Redshift using EC2-VPC domains rather than EC2-Classic
+# 6.4.6: Mon 30 Jan 2017 09:34:38 AEDT
+# Added check for AWS Redshift paramter groups requiring SSL
+# 6.4.7: Mon 30 Jan 2017 09:47:58 AEDT
+# Added check for AWS Redshift being publicly available
+# 6.4.8: Mon 30 Jan 2017 10:11:21 AEDT
+# Added check for AWS Redshift reserved instances about to expire
+# 6.4.9: Tue 31 Jan 2017 14:55:55 AEDT
+# Added check for AWS Inspector being used
+# 6.5.0: Tue 31 Jan 2017 16:39:08 AEDT
+# Added check for AWS Inspector assessment recommendation (CVEs)
+# 6.5.1: Tue  7 Feb 2017 14:34:39 AEDT
+# Added initial support for Docker
+# 6.5.2: Tue  7 Feb 2017 16:59:27 AEDT
+# Added additional Docker support
+# 6.5.3: Tue  7 Feb 2017 17:37:13 AEDT
+# Added Docker network bridge test
+# 6.5.4: Wed  8 Feb 2017 07:43:30 AEDT
+# Added more Docker tests and updated SSH TCP forwarding test
+# 6.5.5: Wed  8 Feb 2017 08:09:14 AEDT
+# Fixed Docker daemon test
+# 6.5.6: Wed  8 Feb 2017 08:17:15 AEDT
+# Added Docker user namespace support test
+# 6.5.7: Wed  8 Feb 2017 08:32:00 AEDT
+# Added Docker daemon storage option and authorisation plugin checks
+# 6.5.8: Wed  8 Feb 2017 08:37:12 AEDT
+# Added additional Docker logging tests
+# 6.5.9: Wed  8 Feb 2017 08:46:12 AEDT
+# Added Docker legacy registry check
+# 6.6.0: Wed  8 Feb 2017 08:48:46 AEDT
+# Added Docker liver restore check
+# 6.6.1: Wed  8 Feb 2017 08:54:36 AEDT
+# Added Docker userland proxy test
+# 6.6.2: Wed  8 Feb 2017 08:57:18 AEDT
+# Added Docker encrypted network traffic check
+# 6.6.3: Wed  8 Feb 2017 08:59:50 AEDT
+# Added Docker seccomp profile test
+# 6.6.4: Wed Feb  8 09:23:05 AEDT 2017
+# Added Docker swarm unlock key test
+# 6.6.5: Wed  8 Feb 2017 10:16:35 AEDT
+# Added Docker file permission tests
+# 6.6.6: Wed  8 Feb 2017 10:43:45 AEDT
+# Added Docker container user test
+# 6.6.7: Wed  8 Feb 2017 11:53:36 AEDT
+# Added Docker Healthcheck test
+# 6.6.8: Wed  8 Feb 2017 12:33:33 AEDT
+# Added Docker AppArmor test
+# 6.6.9: Wed  8 Feb 2017 12:46:13 AEDT
+# Added Docker SELinux test
+# 6.7.0: Wed  8 Feb 2017 14:41:52 AEDT
+# Added Docker capabilities test
+# 6.7.1: Wed  8 Feb 2017 14:48:15 AEDT
+# Added Docker privileged container check
+# 6.7.2: Wed  8 Feb 2017 15:11:17 AEDT
+# Added Docker host network namespace check
+# 6.7.3: Wed  8 Feb 2017 15:26:33 AEDT
+# Added Docker memory usage limit test
+# 6.7.4: Wed  8 Feb 2017 17:17:58 AEDT
+# Initial Docker code cleanup
+# 6.7.5: Wed  8 Feb 2017 17:50:16 AEDT
+# Additional Docker code cleanup
+# 6.7.6: Wed  8 Feb 2017 17:57:59 AEDT
+# Added Docker Memory and CpuShares tests
+# 6.7.7: Wed  8 Feb 2017 19:04:24 AEDT
+# Added Docker Ports check and cleaned up code
+# 6.7.8: Wed  8 Feb 2017 19:24:39 AEDT
+# More Docker fixes
+# 6.7.9: Wed  8 Feb 2017 19:38:44 AEDT
+# Added Docker PidMode check
+# 6.8.0: Wed  8 Feb 2017 19:41:46 AEDT
+# Added Docker IpcMode check
+# 6.8.1: Wed  8 Feb 2017 19:57:04 AEDT
+# Added Docker Devices check
+# 6.8.2: Wed  8 Feb 2017 20:02:58 AEDT
+# Added Docker Ulimits check
+# 6.8.3: Wed  8 Feb 2017 20:15:10 AEDT
+# Added Docker mount propagation check
+# 6.8.4: Wed  8 Feb 2017 20:20:25 AEDT
+# Added Docker UTSMode check
+# 6.8.5: Wed  8 Feb 2017 21:58:01 AEDT
+# Added Docker exec commands with privileged option check
+# 6.8.6: Wed  8 Feb 2017 22:45:04 AEDT
+# Cleaned up Docker tests
+# 6.8.7: Wed  8 Feb 2017 22:56:11 AEDT
+# Added Docker exec commands with user option check
+# 6.8.8: Wed  8 Feb 2017 22:59:43 AEDT
+# Added Docker CgroupParent test
+# 6.8.9: Wed  8 Feb 2017 23:09:53 AEDT
+# Added Docker SecurityOpt tests
+# 6.9.0: Wed  8 Feb 2017 23:28:37 AEDT
+# Added Docker Health test
+# 6.9.1: Wed  8 Feb 2017 23:45:46 AEDT
+# Added Docker default bridge test
+# 6.9.2: Wed  8 Feb 2017 23:49:04 AEDT
+# Added Docker UsernsMode test
+# 6.9.3: Wed  8 Feb 2017 23:59:47 AEDT
+# Added Docker socket mount test
+# 6.9.4: Thu  9 Feb 2017 00:18:07 AEDT
+# Added option to list Docker reports
+# 6.9.5: Thu  9 Feb 2017 00:36:30 AEDT
+# Updated GRUB test
+# 6.9.6: Thu Feb  9 06:53:33 AEDT 2017
+# Code cleanup and bug fixes
+# 6.9.7: Thu  9 Feb 2017 09:12:03 AEDT
+# Bug fixes and documenation updates
+# 6.9.8: Thu  9 Feb 2017 09:37:36 AEDT
+# Bug fixes and documenation updates
+# 6.9.9: Thu  9 Feb 2017 10:51:58 AEDT
+# Bug fixes and documenation updates
+# 7.0.0: Thu  9 Feb 2017 11:09:01 AEDT
+# Bug fixes and documenation updates
+# 7.0.1: Thu  9 Feb 2017 15:37:09 AEDT
+# Updated documentation
+# 7.0.2: Fri 10 Feb 2017 00:23:29 AEDT
+# Updates for OS X 10.12
+# 7.0.3: Fri 10 Feb 2017 08:25:51 AEDT
+# Bug fixes and documentation updates
+# 7.0.4: Fri 10 Feb 2017 11:52:39 AEDT
+# Code cleanup
+# 7.0.5: Fri 10 Feb 2017 12:28:13 AEDT
+# Added screen sharing test for OS X
+# 7.0.6: Fri 10 Feb 2017 12:50:59 AEDT
+# Added remote login check for OS X
+# 7.0.7: Fri 10 Feb 2017 13:44:56 AEDT
+# Added sleep check for OS X and updated documentation
+# 7.0.8: Fri 10 Feb 2017 14:05:20 AEDT
+# Code cleanup
+
