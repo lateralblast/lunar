@@ -1,6 +1,7 @@
 # audit_file_sharing
 #
-# Refer to Section 2.4.8 Page(s) 23-24 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 2.4.8 Page(s) 23-4 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 2.4.8 Page(s) 46-7 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_file_sharing () {

@@ -6,6 +6,6 @@
 audit_remote_login() {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Remote Login"
-    check_os_systemsetup getremotelogin off
+    check_osx_systemsetup getremotelogin off
   fi
 }
