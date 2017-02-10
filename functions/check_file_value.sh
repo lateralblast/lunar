@@ -22,6 +22,7 @@ check_file_value () {
   comment_value=$5
   position=$6
   search_value=$7
+  sshd_test=`echo "$check_file" |grep "sshd_config"`
   if [ "$comment_value" = "star" ]; then
     comment_value="*"
   else
@@ -81,7 +82,7 @@ check_file_value () {
             reboot=1
             echo "Notice:    Reboot required"
           fi
-          if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
+          if [ "$sshd_test" ]; then
             echo "Notice:    Service restart required for SSH"
           fi
           backup_file $check_file
@@ -94,11 +95,18 @@ check_file_value () {
       fi
     else
       if [ "$separator" = "tab" ]; then
-        check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq`
+        check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq |egrep "$correct_value"`
       else
-        check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq`
+        if [ "$sshd_test" ]; then
+          check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+          if [ ! "$check_value" ]; then
+            check_value=`$cat_command $check_file |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+          fi
+        else
+          check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+        fi
       fi
-      if [ "$check_value" != "$correct_value" ]; then
+      if [ ! "$check_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
           if [ "$check_parameter" != "$parameter_name" ]; then
