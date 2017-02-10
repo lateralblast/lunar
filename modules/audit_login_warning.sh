@@ -5,7 +5,7 @@
 
 audit_login_warning () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Login message warning"
-    funct_defaults_check com.apple.loginwindow LoginwindowText "Authorised users only"
+    verbose_message "Login message warning"
+    check_osx_defaults com.apple.loginwindow LoginwindowText "Authorised users only"
   fi
 }

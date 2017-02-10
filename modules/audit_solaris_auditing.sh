@@ -7,12 +7,12 @@
 audit_solaris_auditing () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
-      funct_verbose_message "Solaris Auditing"
-      funct_command_output getcond
-      funct_command_output getpolicy
-      funct_command_output getnaflags
-      funct_command_output getplugin
-      funct_command_output userattr
+      verbose_message "Solaris Auditing"
+      check_command_output getcond
+      check_command_output getpolicy
+      check_command_output getnaflags
+      check_command_output getplugin
+      check_command_output userattr
       if [ "$audit_mode" != 1 ]; then
         audit -s
       fi

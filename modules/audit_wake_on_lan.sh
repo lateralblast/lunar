@@ -5,7 +5,7 @@
 
 audit_wake_on_lan() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Wake on Lan"
+    verbose_message "Wake on Lan"
     log_file="womp.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Wake on Lan is disabled"

@@ -14,7 +14,7 @@
 
 audit_duplicate_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Duplicate Users"
+    verbose_message "Duplicate Users"
     audit_duplicate_ids 1 users name /etc/passwd
     audit_duplicate_ids 3 users id /etc/passwd
   fi

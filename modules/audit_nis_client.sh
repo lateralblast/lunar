@@ -14,18 +14,18 @@ audit_nis_client () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        funct_verbose_message "NIS Client Daemons"
+        verbose_message "NIS Client Daemons"
         service_name="svc:/network/nis/client"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_verbose_message "NIS Client Daemons"
+      verbose_message "NIS Client Daemons"
       for service_name in ypbind nis; do
-        funct_systemctl_service disable $service_name
-        funct_chkconfig_service $service_name 3 off
-        funct_chkconfig_service $service_name 5 off
-        funct_linux_package uninstall $service_name
+        check_systemctl_service disable $service_name
+        check_chkconfig_service $service_name 3 off
+        check_chkconfig_service $service_name 5 off
+        check_linux_package uninstall $service_name
       done
     fi
   fi

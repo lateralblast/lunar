@@ -17,9 +17,9 @@ audit_aws_keys () {
       if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   Key $key is not enabled [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws kms schedule-key-deletion --key-id $key --pending-window-in-days $aws_days_to_key_deletion" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws kms schedule-key-deletion --key-id $key --pending-window-in-days $aws_days_to_key_deletion" fix
+        verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    Key $key is enabled [$secure Passes]"
@@ -30,10 +30,10 @@ audit_aws_keys () {
       if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   Key $key does not have key rotation enabled [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws cloudtrail update-trail --name <trail_name> --kms-id <cloudtrail_kms_key> aws kms put-key-policy --key-id <cloudtrail_kms_key> --policy <cloudtrail_kms_key_policy>" fix
-        funct_verbose_message "aws kms enable-key-rotation --key-id <cloudtrail_kms_key>" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws cloudtrail update-trail --name <trail_name> --kms-id <cloudtrail_kms_key> aws kms put-key-policy --key-id <cloudtrail_kms_key> --policy <cloudtrail_kms_key_policy>" fix
+        verbose_message "aws kms enable-key-rotation --key-id <cloudtrail_kms_key>" fix
+        verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    Key $key has rotation enabled [$secure Passes]"

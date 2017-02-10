@@ -15,7 +15,7 @@
 
 audit_user_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "User RHosts Files"
+    verbose_message "User RHosts Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User rhosts files"
     fi
@@ -24,7 +24,7 @@ audit_user_rhosts () {
       check_file="$home_dir/.rhosts"
       if [ -f "$check_file" ]; then
         check_fail=1
-        funct_file_exists $check_file no
+        check_file_exists $check_file no
       fi
     done
     if [ "$check_fail" != 1 ]; then

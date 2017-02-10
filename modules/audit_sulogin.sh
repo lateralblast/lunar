@@ -11,7 +11,7 @@
 
 audit_sulogin () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    funct_verbose_message "Single User Mode Requires Password"
+    verbose_message "Single User Mode Requires Password"
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"
@@ -24,13 +24,13 @@ audit_sulogin () {
           fi
           if [ "$audit_mode" = 2 ]; then
             echo "Setting:   Single user mode to require a password"
-            funct_backup_file $check_file
+            backup_file $check_file
             tmp_file="/tmp/ttys_$check_string"
             awk '($4 == "console") { $5 = "insecure" } { print }' $check_file > $tmp_file
             cat $tmp_file > $check_file
           fi
         else
-          funct_restore_file $check_file $restore_dir
+          restore_file $check_file $restore_dir
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -41,9 +41,9 @@ audit_sulogin () {
     fi
     if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
       check_file="/usr/lib/systemd/system/rescue.service"
-      funct_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
+      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
       check_file="/usr/lib/systemd/system/emergency.service"
-      funct_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
+      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/inittab"
@@ -54,15 +54,15 @@ audit_sulogin () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   No Authentication required for single usermode [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" fix
-            funct_verbose_message "cat $temp_file > $check_file" fix
-            funct_verbose_message "rm $temp_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" fix
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Single user mode to require authentication"
-            funct_backup_file $check_file
+            backup_file $check_file
             cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' > $temp_file
             cat $temp_file > $check_file
             rm $temp_file
@@ -73,17 +73,17 @@ audit_sulogin () {
             echo "Secure:    Single usermode requires authentication [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
-            funct_restore_file $check_file $restore_dir
+            restore_file $check_file $restore_dir
           fi
-          funct_check_perms $check_file 0600 root root
+          check_file_perms $check_file 0600 root root
         fi
         check_file="/etc/sysconfig/init"
-        funct_file_value $check_file SINGLE eq "/sbin/sulogin" hash
-        funct_file_value $check_file PROMPT eq no hash
-        funct_check_perms $check_file 0600 root root
+        check_file_value $check_file SINGLE eq "/sbin/sulogin" hash
+        check_file_value $check_file PROMPT eq no hash
+        check_file_perms $check_file 0600 root root
       fi
       check_file="/etc/sysconfig/boot"
-      funct_file_value $check_file PROMPT_FOR_CONFIRM eq no hash
+      check_file_value $check_file PROMPT_FOR_CONFIRM eq no hash
     fi
   fi
 }

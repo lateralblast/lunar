@@ -6,11 +6,11 @@
 audit_pam_gdm_autologin () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
-      funct_verbose_message "Gnome Autologin"
+      verbose_message "Gnome Autologin"
       check_file="/etc/pam.d/gdm-autologin"
       temp_file="$temp_dir/gdm-autologin"
       if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       else
         echo "Checking:  Gnome Autologin is not enabled"
       fi
@@ -21,14 +21,14 @@ audit_pam_gdm_autologin () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Gnome Autologin is enabled [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "cat $check_file |sed 's/^gdm-autologin/#&/g' > $temp_file"
-            funct_verbose_message "cat $temp_file > $check_file" fix
-            funct_verbose_message "rm $temp_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "cat $check_file |sed 's/^gdm-autologin/#&/g' > $temp_file"
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
+            backup_file $check_file
             cat $check_file |sed 's/^gdm-autologin/#&/g' > $temp_file
             cat $temp_file > $check_file
             rm $temp_file

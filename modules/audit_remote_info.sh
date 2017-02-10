@@ -7,22 +7,22 @@
 
 audit_remote_info () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Remote Information Services"
+    verbose_message "Remote Information Services"
     if [ "$os_name" = "AIX" ]; then
-      funct_rctcp_check rwhod off
+      check_rctcp rwhod off
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         service_name="svc:/network/rpc/rstat:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/nfs/rquota:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/rpc/rusers:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/finger:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/rpc/wall:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
     fi
   fi

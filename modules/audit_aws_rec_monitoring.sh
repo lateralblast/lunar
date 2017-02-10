@@ -15,13 +15,13 @@ audit_aws_rec_monitoring () {
       if [ ! "$metrics" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudWatch log group $trail has no metrics [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name ec2_size_changes_metric --metric-transformations metricName=ec2_size_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = RunInstances) && (($.requestParameters.instanceType = *.8xlarge) || ($.requestParameters.instanceType = *.4xlarge)) }'" fix
+        verbose_message "" fix
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name ec2_size_changes_metric --metric-transformations metricName=ec2_size_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = RunInstances) && (($.requestParameters.instanceType = *.8xlarge) || ($.requestParameters.instanceType = *.4xlarge)) }'" fix
         for sns_topic in ec2_size_changes; do
-           funct_verbose_message "aws sns create-topic --region $aws_region --name $sns_topic" fix
-           funct_verbose_message "aws sns subscribe --region $aws_region --topic-arn $sns_topic --protocol $sns_protocol notification-endpoint $sns_endpoints" fix 
+           verbose_message "aws sns create-topic --region $aws_region --name $sns_topic" fix
+           verbose_message "aws sns subscribe --region $aws_region --topic-arn $sns_topic --protocol $sns_protocol notification-endpoint $sns_endpoints" fix 
         done
-        funct_verbose_message "" fix
+        verbose_message "" fix
       else
         for metric in RunInstances instanceType ; do
           total=`expr $total + 1`

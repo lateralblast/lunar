@@ -5,7 +5,7 @@
 
 audit_root_home () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Home Directory Permissions for root Account"
+    verbose_message "Home Directory Permissions for root Account"
     total=`expr $total + 1`
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
@@ -18,11 +18,11 @@ audit_root_home () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Root home directory incorrectly set [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "mkdir -m 700 /root" fix
-            funct_verbose_message "mv -i /.?* /root/" fix
-            funct_verbose_message "passmgmt -m -h /root root" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "mkdir -m 700 /root" fix
+            verbose_message "mv -i /.?* /root/" fix
+            verbose_message "passmgmt -m -h /root root" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "$home_check" >> $log_file
@@ -50,6 +50,6 @@ audit_root_home () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-      funct_check_perms /root 0700 root root
+      check_file_perms /root 0700 root root
   fi
 }

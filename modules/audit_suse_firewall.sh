@@ -6,13 +6,13 @@
 audit_suse_firewall () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "SuSE" ]; then
-      funct_verbose_message "SuSE Firewall"
+      verbose_message "SuSE Firewall"
       service_name="SuSEfirewall2_init"
-      funct_chkconfig_service $service_name 3 on
-      funct_chkconfig_service $service_name 5 on
+      check_chkconfig_service $service_name 3 on
+      check_chkconfig_service $service_name 5 on
       service_name="SuSEfirewall2_setup"
-      funct_chkconfig_service $service_name 3 on
-      funct_chkconfig_service $service_name 5 on
+      check_chkconfig_service $service_name 3 on
+      check_chkconfig_service $service_name 5 on
     fi
   fi
 }

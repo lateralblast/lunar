@@ -15,49 +15,49 @@
 
 audit_password_expiry () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Password Expiration Parameters on Active Accounts"
+    verbose_message "Password Expiration Parameters on Active Accounts"
     if [ "$os_name" = "AIX" ]; then
-      funct_chsec_check /etc/security/user default mindiff 4
-      funct_chsec_check /etc/security/user default minage 1
-      funct_chsec_check /etc/security/user default maxage 13
-      funct_chsec_check /etc/security/user default minlen 8
-      funct_chsec_check /etc/security/user default minalpha 2
-      funct_chsec_check /etc/security/user default minother 2
-      funct_chsec_check /etc/security/user default maxrepeats 2
-      funct_chsec_check /etc/security/user default histexpire 13
-      funct_chsec_check /etc/security/user default histsize 20
-      funct_chsec_check /etc/security/user default maxexpired 2
+      check_chsec /etc/security/user default mindiff 4
+      check_chsec /etc/security/user default minage 1
+      check_chsec /etc/security/user default maxage 13
+      check_chsec /etc/security/user default minlen 8
+      check_chsec /etc/security/user default minalpha 2
+      check_chsec /etc/security/user default minother 2
+      check_chsec /etc/security/user default maxrepeats 2
+      check_chsec /etc/security/user default histexpire 13
+      check_chsec /etc/security/user default histsize 20
+      check_chsec /etc/security/user default maxexpired 2
       if [ "$os_version" > 4 ]; then
         if [ "$os_version" = "5" ]; then
           if [ "$os_update" > 3 ]; then
-            funct_chsec_check /etc/security/login.cfg usw pwd_algorithm ssha256
+            check_chsec /etc/security/login.cfg usw pwd_algorithm ssha256
           fi
         else
-          funct_chsec_check /etc/security/login.cfg usw pwd_algorithm ssha256
+          check_chsec /etc/security/login.cfg usw pwd_algorithm ssha256
         fi
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/default/passwd"
-      funct_file_value $check_file MAXWEEKS eq 13 hash
-      funct_file_value $check_file MINWEEKS eq 1 hash
-      funct_file_value $check_file WARNWEEKS eq 4 hash
+      check_file_value $check_file MAXWEEKS eq 13 hash
+      check_file_value $check_file MINWEEKS eq 1 hash
+      check_file_value $check_file WARNWEEKS eq 4 hash
       check_file="/etc/default/login"
-      funct_file_value $check_file DISABLETIME eq 3600 hash
+      check_file_value $check_file DISABLETIME eq 3600 hash
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/login.defs"
-      funct_file_value $check_file PASS_MAX_DAYS eq 90 hash
-      funct_file_value $check_file PASS_MIN_DAYS eq 7 hash
-      funct_file_value $check_file PASS_WARN_AGE eq 14 hash
-      funct_file_value $check_file PASS_MIN_LEN eq 9 hash
-      funct_check_perms $check_file 0640 root root
+      check_file_value $check_file PASS_MAX_DAYS eq 90 hash
+      check_file_value $check_file PASS_MIN_DAYS eq 7 hash
+      check_file_value $check_file PASS_WARN_AGE eq 14 hash
+      check_file_value $check_file PASS_MIN_LEN eq 9 hash
+      check_file_perms $check_file 0640 root root
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" > 5 ]; then
         check_file="/etc/adduser.conf"
-        funct_file_value $check_file passwdtype eq yes hash
-        funct_file_value $check_file upwexpire eq 91d hash
+        check_file_value $check_file passwdtype eq yes hash
+        check_file_value $check_file upwexpire eq 91d hash
       fi
     fi
   fi

@@ -21,9 +21,9 @@ audit_aws_rds () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db does not have auto minor version upgrades enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --auto-minor-version-upgrade --apply-immediately" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --auto-minor-version-upgrade --apply-immediately" fix
+      verbose_message "" fix
     fi
     # Check if automated backups are enabled
     total=`expr $total + 1`
@@ -34,9 +34,9 @@ audit_aws_rds () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db does not have automated backups enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period $aws_rds_min_retention --apply-immediately" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --backup-retention-period $aws_rds_min_retention --apply-immediately" fix
+      verbose_message "" fix
     fi
     # Check if RDS instance is encrypted
     total=`expr $total + 1`
@@ -72,7 +72,7 @@ audit_aws_rds () {
     total=`expr $total + 1`
     sgs=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[*].VpcSecurityGroups[].VpcSecurityGroupId' --output text`
     for sg in $sgs; do
-      funct_aws_open_port_check $sg 3306 tcp MySQL RDS $db
+      check_aws_open_port $sg 3306 tcp MySQL RDS $db
     done
     # Check RDS instance is not on a public subnet
     total=`expr $total + 1`

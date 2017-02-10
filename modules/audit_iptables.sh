@@ -12,11 +12,11 @@
 
 audit_iptables () {
   if [ "$os_name" = "Linux" ]; then
-    funct_linux_package install iptables
+    check_linux_package install iptables
     for service_name in iptables ip6tables; do
-      funct_systemctl_service enable $service_name
-      funct_chkconfig_service $service_name 3 on
-      funct_chkconfig_service $service_name 5 on
+      check_systemctl_service enable $service_name
+      check_chkconfig_service $service_name 3 on
+      check_chkconfig_service $service_name 5 on
     done
     if [ "$audit_mode" != 2 ]; then
       check=`which iptables`

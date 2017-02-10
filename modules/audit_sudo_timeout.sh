@@ -6,6 +6,6 @@
 audit_sudo_timeout() {
   if [ "$os_name" = "Darwin" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ]; then
     check_file="/etc/sudoers"
-    funct_file_value $check_file "Defaults timestamp_timeout" eq 0 hash after "# Defaults specification"
+    check_file_value $check_file "Defaults timestamp_timeout" eq 0 hash after "# Defaults specification"
   fi
 }

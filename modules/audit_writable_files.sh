@@ -16,7 +16,7 @@
 audit_writable_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$do_fs" = 1 ]; then
-      funct_verbose_message "World Writable Files"
+      verbose_message "World Writable Files"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  For world writable files [This might take a while]"
       fi
@@ -48,9 +48,9 @@ audit_writable_files () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   File $check_file is world writable [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "chmod o-w $check_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "chmod o-w $check_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "$check_file" >> $log_file

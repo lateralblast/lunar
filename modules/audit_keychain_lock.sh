@@ -5,7 +5,7 @@
 
 audit_keychain_lock() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Keychain Lock"
+    verbose_message "Keychain Lock"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Keychain Lock time is set"
       actual_value=`security show-keychain-info 2>&1 |awk '{print $3}'`
@@ -16,14 +16,14 @@ audit_keychain_lock() {
           echo "Warning:   Keychain Lock time is not set [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-          funct_verbose_message "" fix
-          funct_verbose_message "Select Keychain Access" fix
-          funct_verbose_message "Select a keychain" fix
-          funct_verbose_message "Select Edit" fix
-          funct_verbose_message "Select Change Settings for keychain <keychain_name>" fix
-          funct_verbose_message "Authenticate, if requested." fix
-          funct_verbose_message "Change the Lock after # minutes of inactivity setting for the Login Keychain to 15" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "Select Keychain Access" fix
+          verbose_message "Select a keychain" fix
+          verbose_message "Select Edit" fix
+          verbose_message "Select Change Settings for keychain <keychain_name>" fix
+          verbose_message "Authenticate, if requested." fix
+          verbose_message "Change the Lock after # minutes of inactivity setting for the Login Keychain to 15" fix
+          verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -33,14 +33,14 @@ audit_keychain_lock() {
         fi
       fi
     else
-      funct_verbose_message "" fix
-      funct_verbose_message "Select Keychain Access" fix
-      funct_verbose_message "Select a keychain" fix
-      funct_verbose_message "Select Edit" fix
-      funct_verbose_message "Select Change Settings for keychain <keychain_name>" fix
-      funct_verbose_message "Authenticate, if requested." fix
-      funct_verbose_message "Change the Lock after # minutes of inactivity setting for the Login Keychain to 15" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "Select Keychain Access" fix
+      verbose_message "Select a keychain" fix
+      verbose_message "Select Edit" fix
+      verbose_message "Select Change Settings for keychain <keychain_name>" fix
+      verbose_message "Authenticate, if requested." fix
+      verbose_message "Change the Lock after # minutes of inactivity setting for the Login Keychain to 15" fix
+      verbose_message "" fix
     fi
   fi
 }

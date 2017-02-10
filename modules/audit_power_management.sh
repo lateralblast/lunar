@@ -7,15 +7,15 @@
 
 audit_power_management () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Power Management"
+    verbose_message "Power Management"
     if [ "$os_name" = "AIX" ]; then
-      funct_itab_check pmd off
+      check_itab pmd off
     fi
     if [ "$os_name" = "SunOS" ]; then
       total=`expr $total + 1`
       if [ "$os_version" = "10" ]; then
-        funct_file_value /etc/default/power PMCHANGEPERM eq "-" hash
-        funct_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
+        check_file_value /etc/default/power PMCHANGEPERM eq "-" hash
+        check_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
       fi
       if [ "$os_version" = "11" ]; then
         poweradm_test=`poweradm list |grep suspend |awk '{print $2}' |cut -f2 -d"="`
@@ -35,10 +35,10 @@ audit_power_management () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Power suspend enabled [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "poweradm set suspend-enable=false" fix
-            funct_verbose_message "poweradm update" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "poweradm set suspend-enable=false" fix
+            verbose_message "poweradm update" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file="$work_dir/$log_file"
@@ -57,8 +57,8 @@ audit_power_management () {
     fi
     if [ "$os_name" = "Linux" ]; then
       service_name="apmd"
-      funct_chkconfig_service $service_name 3 off
-      funct_chkconfig_service $service_name 5 off
+      check_chkconfig_service $service_name 3 off
+      check_chkconfig_service $service_name 5 off
     fi
   fi
 }

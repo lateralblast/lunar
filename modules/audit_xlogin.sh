@@ -8,26 +8,26 @@
 
 audit_xlogin () {
   if [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "CDE Startup"
-    funct_itab_check dt off
+    verbose_message "CDE Startup"
+    check_itab dt off
   fi
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "XDMCP Listening"
+      verbose_message "XDMCP Listening"
     fi
     if [ "$os_version" = "10" ]; then
       service_name="svc:/application/graphical-login/cde-login"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
       service_name="svc:/application/gdm2-login"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/application/graphical_login/gdm:default"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
     if [ "$os_version" = "10" ]; then
       service_name="dtlogin"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "FreeBSD" ]; then
@@ -42,13 +42,13 @@ audit_xlogin () {
         fi
         if [ "$audit_mode" = 2 ]; then
           echo "Setting:   X wrapper to disabled"
-          funct_backup_file $check_file
+          backup_file $check_file
           tmp_file="/tmp/ttys_$check_string"
           sed -e '/xdm -nodaemon/s/off/on/' $check_file > $tmp_file
           cat $tmp_file > $check_file
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     else
       if [ "$audit_mode" = 1 ]; then
@@ -60,7 +60,7 @@ audit_xlogin () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     check_file="/etc/X11/xdm/Xresources"
     if [ -f "$check_file" ]; then
-      funct_verbose_message "X Security Message"
+      verbose_message "X Security Message"
       total=`expr $total + 1`
      if [ "$audit_mode" != 2 ]; then
        greet_check=`cat $check_file |grep 'private system' |wc -l`
@@ -70,14 +70,14 @@ audit_xlogin () {
          if [ "$audit_mode" = 1 ]; then
            insecure=`expr $insecure + 1`
            echo "Warning:   File $check_file does not have a security message [$insecure Warnings]"
-           funct_verbose_message "" fix
-           funct_verbose_message "cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" > $temp_file" fix
-           funct_verbose_message "cat $temp_file > $check_file" fix
-           funct_verbose_message "rm $temp_file" fix
-           funct_verbose_message "" fix
+           verbose_message "" fix
+           verbose_message "cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" > $temp_file" fix
+           verbose_message "cat $temp_file > $check_file" fix
+           verbose_message "rm $temp_file" fix
+           verbose_message "" fix
          else
            echo "Setting:   Security message in $check_file"
-           funct_backup_file $check_file
+           backup_file $check_file
            cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue="$greet_mesg" > $temp_file
            cat $temp_file > $check_file
            rm $temp_file
@@ -87,12 +87,12 @@ audit_xlogin () {
           echo "Secure:    File $check_file has security message [$secure Passes]"
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
     check_file="/etc/X11/xdm/kdmrc"
     if [ -f "$check_file" ]; then
-      funct_verbose_message "X Security Message"
+      verbose_message "X Security Message"
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
         greet_check= `cat $check_file |grep 'private system' |wc -l`
@@ -102,14 +102,14 @@ audit_xlogin () {
            if [ "$audit_mode" = 1 ]; then
              insecure=`expr $insecure + 1`
              echo "Warning:   File $check_file does not have a security message [$insecure Warnings]"
-             funct_verbose_message "" fix
-             funct_verbose_message "cat $check_file |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"$greet_mesg\" > $temp_file" fix
-             funct_verbose_message "cat $temp_file > $check_file" fix
-             funct_verbose_message "rm $temp_file" fix
-             funct_verbose_message "" fix
+             verbose_message "" fix
+             verbose_message "cat $check_file |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"$greet_mesg\" > $temp_file" fix
+             verbose_message "cat $temp_file > $check_file" fix
+             verbose_message "rm $temp_file" fix
+             verbose_message "" fix
            else
              echo "Setting:   Security message in $check_file"
-             funct_backup_file $check_file
+             backup_file $check_file
              cat $check_file |awk '/GreetString=/ { print "GreetString=" GreetString; next }; { print }' GreetString="$greet_mesg" > $temp_file
              cat $temp_file > $check_file
              rm $temp_file
@@ -119,12 +119,12 @@ audit_xlogin () {
           echo "Secure:    File $check_file has security message [$secure Passes]"
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
     check_file="/etc/X11/xdm/Xservers"
     if [ -f "$check_file" ]; then
-      funct_verbose_message "X Listening"
+      verbose_message "X Listening"
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
         greet_check=`cat $check_file |grep 'nolisten tcp' |wc -l`
@@ -133,15 +133,15 @@ audit_xlogin () {
            if [ "$audit_mode" = 1 ]; then
              insecure=`expr $insecure + 1`
              echo "Warning:   X11 nolisten directive not found in $check_file [$insecure Warnings]"
-             funct_verbose_message "" fix
-             funct_verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
-             funct_verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
-             funct_verbose_message "cat $temp_file > $check_file" fix
-             funct_verbose_message "rm $temp_file" fix
-             funct_verbose_message "" fix
+             verbose_message "" fix
+             verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
+             verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
+             verbose_message "cat $temp_file > $check_file" fix
+             verbose_message "rm $temp_file" fix
+             verbose_message "" fix
            else
              echo "Setting:   Security message in $check_file"
-             funct_backup_file $check_file
+             backup_file $check_file
              cat $check_file |awk '( $1 !~ /^#/ && $3 == "/usr/X11R6/bin/X" ) { $3 = $3 " -nolisten tcp" }; { print }' > $temp_file
              cat $check_file |awk '( $1 !~ /^#/ && $3 == "/usr/bin/X" ) { $3 = $3 " -nolisten tcp" }; { print }' > $temp_file
              cat $temp_file > $check_file
@@ -152,7 +152,7 @@ audit_xlogin () {
           echo "Secure:    X11 nolisten directive found in $check_file [$secure Passes]"
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
   fi

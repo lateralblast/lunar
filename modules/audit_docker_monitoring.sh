@@ -13,8 +13,8 @@ audit_docker_monitoring () {
     if [ "$audit_mode" != 2 ]; then
       docker_bin=`which docker`
       if [ "$docker_bin" ]; then
-        funct_verbose_message "Docker Healthcheck"
-        funct_dockerd_check equal config Health ""
+        verbose_message "Docker Healthcheck"
+        check_dockerd equal config Health ""
         docker_ids=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}' 2> /dev/null`
         for docker_id in $docker_ids; do
           total=`expr $total + 1`

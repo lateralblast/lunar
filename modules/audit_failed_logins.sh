@@ -6,13 +6,13 @@
 audit_failed_logins () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "Failed Login Attempts"
+      verbose_message "Failed Login Attempts"
       check_file="/etc/default/login"
-      funct_file_value $check_file SYSLOG_FAILED_LOGINS eq 0 hash
+      check_file_value $check_file SYSLOG_FAILED_LOGINS eq 0 hash
       check_file="/etc/default/login"
-      funct_file_value $check_file SYSLOG eq YES hash
+      check_file_value $check_file SYSLOG eq YES hash
       check_file="/etc/default/su"
-      funct_file_value $check_file SYSLOG eq YES hash
+      check_file_value $check_file SYSLOG eq YES hash
     fi
   fi
 }

@@ -6,7 +6,7 @@
 
 audit_remote_consoles () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Remote Consoles"
+    verbose_message "Remote Consoles"
     log_file="remoteconsoles.log"
     if [ "$audit_mode" != 2 ]; then
       disable_ttys=0
@@ -18,9 +18,9 @@ audit_remote_consoles () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Console enabled on $console_device [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "consadm -d $console_device" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "consadm -d $console_device" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "$console_device" >> $log_file

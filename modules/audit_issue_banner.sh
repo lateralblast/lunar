@@ -12,9 +12,9 @@
 
 audit_issue_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Security Warning Message"
+    verbose_message "Security Warning Message"
     for check_file in /etc/issue /etc/motd /etc/issue.net; do
-      funct_check_perms $check_file 0644 root root
+      check_file_perms $check_file 0644 root root
       total=`expr $total + 1`
       issue_check=0
       if [ -f "$check_file" ]; then
@@ -29,7 +29,7 @@ audit_issue_banner () {
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Security message in $check_file"
-            funct_backup_file $check_file
+            backup_file $check_file
             echo "" > $check_file
             echo "                            NOTICE TO USERS" >> $check_file
             echo "                            ---------------" >> $check_file
@@ -59,7 +59,7 @@ audit_issue_banner () {
           fi
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     done
   fi

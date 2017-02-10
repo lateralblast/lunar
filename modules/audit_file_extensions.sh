@@ -5,7 +5,7 @@
 
 audit_file_extensions() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "File Extensions"
-    funct_defaults_check NSGlobalDomain AppleShowAllExtensions 1 int
+    verbose_message "File Extensions"
+    check_osx_defaults NSGlobalDomain AppleShowAllExtensions 1 int
   fi
 }

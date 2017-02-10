@@ -6,7 +6,7 @@
 
 audit_netrc_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "User Netrc Files"
+    verbose_message "User Netrc Files"
     audit_dot_files .netrc
   fi
 }

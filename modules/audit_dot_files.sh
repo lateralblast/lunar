@@ -5,7 +5,7 @@
 
 audit_dot_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Dot Files"
+    verbose_message "Dot Files"
     check_file=$1
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  For $check_file files"
@@ -20,10 +20,10 @@ audit_dot_files () {
             total=`expr $total + 1`
             insecure=`expr $insecure + 1`
             echo "Warning:   File $dot_file exists [$insecure Warnings]"
-            funct_verbose_message "mv $dot_file $dot_file.disabled" fix
+            verbose_message "mv $dot_file $dot_file.disabled" fix
           fi
           if [ "$audit_mode" = 0 ];then
-            funct_backup_file $dot_file
+            backup_file $dot_file
           fi
         else
           if [ "$audit_mode" = 1 ];then
@@ -35,7 +35,7 @@ audit_dot_files () {
       done
     else
       for check_file in `cd $restore_dir ; find . -name "$check_file" |sed "s/^\.//g"`; do
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       done
     fi
   fi

@@ -6,15 +6,15 @@
 
 audit_syslog_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Syslog Permissions"
+    verbose_message "Syslog Permissions"
     if [ "$os_name" = "SunOS" ]; then
-      funct_check_perms /var/log/syslog 0600 root sys
+      check_file_perms /var/log/syslog 0600 root sys
     fi
     if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-      funct_check_perms /var/log/secure 0600 root root
-      funct_check_perms /var/log/messages 0600 root root
-      funct_check_perms /var/log/daemon.log 0600 root root
-      funct_check_perms /var/log/unused.log 0600 root root
+      check_file_perms /var/log/secure 0600 root root
+      check_file_perms /var/log/messages 0600 root root
+      check_file_perms /var/log/daemon.log 0600 root root
+      check_file_perms /var/log/unused.log 0600 root root
     fi
   fi
 }

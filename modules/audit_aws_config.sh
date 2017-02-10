@@ -9,9 +9,9 @@ audit_aws_config () {
   if [ ! "$check" ]; then
     insecure=`expr $insecure + 1`
     echo "Warning:   AWS Configuration Recorder not enabled [$insecure Warnings]"
-    funct_verbose_message "" fix
-    funct_verbose_message "aws configservice start-configuration-recorder" fix
-    funct_verbose_message "" fix
+    verbose_message "" fix
+    verbose_message "aws configservice start-configuration-recorder" fix
+    verbose_message "" fix
   else
     secure=`expr $secure + 1`
     echo "Secure:    AWS Configuration Recorder enabled [$secure Passes]"

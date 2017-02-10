@@ -12,10 +12,10 @@ audit_docker_logging () {
   if [ "$os_name" = "Linux" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
-      funct_verbose_message "Docker Logging"
-      funct_dockerd_check unused daemon log-level info
-      funct_dockerd_check used daemon log-driver
-      funct_dockerd_check used daemon log-opt 
+      verbose_message "Docker Logging"
+      check_dockerd unused daemon log-level info
+      check_dockerd used daemon log-driver
+      check_dockerd used daemon log-opt 
     fi
   fi
 }

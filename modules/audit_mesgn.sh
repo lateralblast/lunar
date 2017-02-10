@@ -8,10 +8,10 @@
 
 audit_mesgn () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Default mesg Settings for Users"
+    verbose_message "Default mesg Settings for Users"
     for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/skel/.bashrc \
       /etc/csh.login /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do
-      funct_file_value $check_file mesg space n hash
+      check_file_value $check_file mesg space n hash
     done
   fi
 }

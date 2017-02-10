@@ -9,10 +9,10 @@
 
 audit_inactive_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Inactive User Accounts"
+    verbose_message "Inactive User Accounts"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/usr/sadm/defadduser"
-      funct_file_value $check_file definact eq 35 hash
+      check_file_value $check_file definact eq 35 hash
     fi
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then
@@ -26,9 +26,9 @@ audit_inactive_users () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Inactive lockout not set for $user_name [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "usermod -f 35 $user_name" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "usermod -f 35 $user_name" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Saving:    File $check_file to $work_dir$check_file"
@@ -44,7 +44,7 @@ audit_inactive_users () {
         fi
       done
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

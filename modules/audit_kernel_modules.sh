@@ -5,7 +5,7 @@
 
 audit_kernel_modules () {
   if [ "$os_name" = "VMkernel" ]; then
-    funct_verbose_message "Kernel Module Signing"
+    verbose_message "Kernel Module Signing"
     for module in `esxcli system module list |grep '^[a-z]' |awk '($3 == "true") {print $1}'`; do
       total=`expr $total + 1`
       log_file="kernel_module_$module"
@@ -23,8 +23,8 @@ audit_kernel_modules () {
           if [ "$audit_mode" = "1" ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Kernel module $module is not signed by VMware [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "esxcli system module set -e false -m $module" fix
+            verbose_message "" fix
+            verbose_message "esxcli system module set -e false -m $module" fix
           fi
         else
           if [ "$audit_mode" = "1" ]; then

@@ -13,7 +13,7 @@
 
 audit_forward_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "User Forward Files"
+    verbose_message "User Forward Files"
     audit_dot_files .forward
   fi
 }

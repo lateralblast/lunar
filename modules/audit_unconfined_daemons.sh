@@ -8,7 +8,7 @@
 
 audit_unconfined_daemons () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Unconfined Daemons"
+    verbose_message "Unconfined Daemons"
     daemon_check=`ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'`
     total=`expr $total + 1`
     if [ "$daemon_check" = "" ]; then

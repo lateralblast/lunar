@@ -13,7 +13,7 @@
 
 audit_pam_wheel () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "PAM SU Configuration"
+    verbose_message "PAM SU Configuration"
     check_file="/etc/pam.d/su"
     search_string="use_uid"
     if [ "$audit_mode" != 2 ]; then
@@ -24,14 +24,14 @@ audit_pam_wheel () {
         if [ "$audit_mode" = "1" ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Wheel group membership not required for su in $check_file [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "cp $check_file $temp_file" fix
-          funct_verbose_message "cat $temp_file |awk '( $1==\"#auth\" && $2==\"required\" && $3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",$3,\"\tuse_uid\"; next }; { print }' > $check_file" fix
-          funct_verbose_message "rm $temp_file" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "cp $check_file $temp_file" fix
+          verbose_message "cat $temp_file |awk '( $1==\"#auth\" && $2==\"required\" && $3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",$3,\"\tuse_uid\"; next }; { print }' > $check_file" fix
+          verbose_message "rm $temp_file" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           echo "Setting:   Su to require wheel group membership in PAM in $check_file"
           cp $check_file $temp_file
           cat $temp_file |awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' > $check_file
@@ -44,7 +44,7 @@ audit_pam_wheel () {
         fi
       fi
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

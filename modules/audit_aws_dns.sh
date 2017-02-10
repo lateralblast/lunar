@@ -14,9 +14,9 @@ audit_aws_dns () {
     if [ ! "$check" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   Domain $domain does not auto renew [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws route53domains enable-domain-auto-renew --domain-name $domain" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws route53domains enable-domain-auto-renew --domain-name $domain" fix
+      verbose_message "" fix
 
     else
       secure=`expr $secure + 1`

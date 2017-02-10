@@ -27,9 +27,9 @@ audit_aws_rec_es () {
       insecure=`expr $insecure + 1`
       echo "Warning:   Elasticsearch domain $domain is not using General Purpose SSD [$insecure Warnings]"
       vol_size=`aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.EBSOptions.VolumeSize' --output text`
-      funct_verbose_message "" fix
-      funct_verbose_message "aws es update-elasticsearch-domain-config --region $aws_region --domain-name $domain --ebs-options EBSEnabled=true,VolumeType=\"gp2\",VolumeSize=$vol_size" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws es update-elasticsearch-domain-config --region $aws_region --domain-name $domain --ebs-options EBSEnabled=true,VolumeType=\"gp2\",VolumeSize=$vol_size" fix
+      verbose_message "" fix
     fi
     # Check that ES domains have cross zone awareness
     total=`expr $total + 1`

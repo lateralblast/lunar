@@ -8,7 +8,7 @@
 
 audit_serial_login () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Login on Serial Ports"
+    verbose_message "Login on Serial Ports"
     if [ "$os_name" = "AIX" ]; then
       tty_list=`lsitab –a |grep "on:/usr/sbin/getty" |awk '{print $2}'`
       if [ `expr "$tty_list" : "[A-z]"` != 1 ]; then
@@ -38,9 +38,9 @@ audit_serial_login () {
               total=`expr $total + 1`
               insecure=`expr $insecure + 1`
               echo "Warning:   Serial port logins not disabled on $tty_name [$insecure Warnings]"
-              funct_verbose_message "" fix
-              funct_verbose_message "chitab \"$new_value\"" fix
-              funct_verbose_message "" fix
+              verbose_message "" fix
+              verbose_message "chitab \"$new_value\"" fix
+              verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
               echo "$actual_value" > $log_file
@@ -72,10 +72,10 @@ audit_serial_login () {
             total=`expr $total + 1`
             insecure=`expr $insecure + 1`
             echo "Warning:   Serial port logins not disabled [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "pmadm -d -p zsmon -s ttya" fix
-            funct_verbose_message "pmadm -d -p zsmon -s ttyb" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "pmadm -d -p zsmon -s ttya" fix
+            verbose_message "pmadm -d -p zsmon -s ttyb" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Serial port logins to disabled"
@@ -106,13 +106,13 @@ audit_serial_login () {
           fi
           if [ "$audit_mode" = 2 ]; then
             echo "Setting:   Serial port logins to disabled"
-            funct_backup_file $check_file
+            backup_file $check_file
             tmp_file="/tmp/ttys_$check_string"
             awk '($4 == "dialup") { $5 = "off" } { print }' $check_file > $tmp_file
             cat $tmp_file > $check_file
           fi
         else
-          funct_restore_file $check_file $restore_dir
+          restore_file $check_file $restore_dir
         fi
       else
         if [ "$audit_mode" = 1 ]; then

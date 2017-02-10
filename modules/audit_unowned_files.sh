@@ -15,7 +15,7 @@
 
 audit_unowned_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Unowned Files and Directories"
+    verbose_message "Unowned Files and Directories"
     if [ "$audit_mode" = 1 ]; then
       echo "Checking:  For Un-owned files and directories [This might take a while]"
       if [ "$os_name" = "SunOS" ]; then

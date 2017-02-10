@@ -16,7 +16,7 @@
 
 audit_duplicate_ids () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Duplicate IDs"
+    verbose_message "Duplicate IDs"
     field=$1
     function=$2
     term=$3

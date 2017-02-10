@@ -19,11 +19,11 @@ audit_aide() {
         prelink_check="no"
       fi
       if [ "$prelink_check" = "no" ]; then
-        funct_verbose_message "AIDE"
+        verbose_message "AIDE"
         audit_linux_package install aide
-        audit_append_file /etc/cron.d/aide "0 5 * * * /usr/sbin/aide --check"
+        check_append_file /etc/cron.d/aide "0 5 * * * /usr/sbin/aide --check"
       fi
-      funct_linux_package uninstall prelink
+      check_linux_package uninstall prelink
     fi
   fi
 }

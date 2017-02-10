@@ -14,7 +14,7 @@
 
 audit_home_ownership() {
   if [ "$os_name" = "SunOS" ] || [  "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Ownership of Home Directories"
+    verbose_message "Ownership of Home Directories"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Ownership of home directories"
     fi

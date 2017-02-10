@@ -7,7 +7,7 @@
 
 audit_mount_fdi () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "User Mountable Filesystems"
+    verbose_message "User Mountable Filesystems"
     check_dir="/usr/share/hal/fdi/95userpolicy"
     if [ -e "$check_dir" ]; then
       check_file="$check_dir/floppycdrom.fdi"
@@ -30,24 +30,24 @@ audit_mount_fdi () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   User mountable filesystems enabled [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "echo '<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> <!-- -*- SGML -*- --> >' > $temp_file" fix
-            funct_verbose_message "echo '<deviceinfo version=\"0.2\">' >> $temp_file" fix
-            funct_verbose_message "echo '  <!-- Default policies merged onto computer root object -->' >> $temp_file" fix
-            funct_verbose_message "echo '  <device>' >> $temp_file" fix
-            funct_verbose_message "echo '    <match key=\"info.udi\" string=\"/org/freedesktop/Hal/devices/computer\">' >> $temp_file" fix
-            funct_verbose_message "echo '      <merge key=\"storage.policy.default.mount_option.nodev\" type=\"bool\">true</merge>' >> $temp_file" fix
-            funct_verbose_message "echo '      <merge key=\"storage.policy.default.mount_option.nosuid\" type=\"bool\">true</merge>' >> $temp_file" fix
-            funct_verbose_message "echo '    </match>' >> $temp_file" fix
-            funct_verbose_message "echo '  </device>' >> $temp_file" fix
-            funct_verbose_message "echo '</deviceinfo>' >> $temp_file" fix
-            funct_verbose_message "cat $temp_file > $check_file" fix
-            funct_verbose_message "rm $temp_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "echo '<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> <!-- -*- SGML -*- --> >' > $temp_file" fix
+            verbose_message "echo '<deviceinfo version=\"0.2\">' >> $temp_file" fix
+            verbose_message "echo '  <!-- Default policies merged onto computer root object -->' >> $temp_file" fix
+            verbose_message "echo '  <device>' >> $temp_file" fix
+            verbose_message "echo '    <match key=\"info.udi\" string=\"/org/freedesktop/Hal/devices/computer\">' >> $temp_file" fix
+            verbose_message "echo '      <merge key=\"storage.policy.default.mount_option.nodev\" type=\"bool\">true</merge>' >> $temp_file" fix
+            verbose_message "echo '      <merge key=\"storage.policy.default.mount_option.nosuid\" type=\"bool\">true</merge>' >> $temp_file" fix
+            verbose_message "echo '    </match>' >> $temp_file" fix
+            verbose_message "echo '  </device>' >> $temp_file" fix
+            verbose_message "echo '</deviceinfo>' >> $temp_file" fix
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Disabling user mountable filesystems"
-            funct_backup_file $check_file
+            backup_file $check_file
             echo '<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- --> >' > $temp_file
             echo '<deviceinfo version="0.2">' >> $temp_file
             echo '  <!-- Default policies merged onto computer root object -->' >> $temp_file
@@ -67,11 +67,11 @@ audit_mount_fdi () {
             echo "Secure:    User mountable filesystems disabled [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
-            funct_restore_file $check_file $restore_dir
+            restore_file $check_file $restore_dir
           fi
         fi
       fi
     fi
-    funct_check_perms $check_file 0640 root root
+    check_file_perms $check_file 0640 root root
   fi
 }

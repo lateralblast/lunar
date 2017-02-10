@@ -5,9 +5,9 @@
 
 audit_dcui () {
   if [ "$os_name" = "VMkernel" ]; then
-    funct_verbose_message "DCUI"
-    funct_chkconfig_service DCUI off
-    funct_verbose_message "Lockdown"
+    verbose_message "DCUI"
+    check_chkconfig_service DCUI off
+    verbose_message "Lockdown"
     total=`expr $total + 1`
     backup_file="$work_dir/dvfilter"
     current_value=`vim-cmd -U dcui vimsvc/auth/lockdown_is_enabled`
@@ -21,9 +21,9 @@ audit_dcui () {
         if [ "$audit_mode" = "1" ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Lockdown is disabled [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter" fix
+          verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = "1" ]; then

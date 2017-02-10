@@ -5,7 +5,7 @@
 
 audit_gate_keeper() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Gatekeeper"
+    verbose_message "Gatekeeper"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Gatekeeper is enabled"

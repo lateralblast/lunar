@@ -13,16 +13,16 @@
 
 audit_ftp_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "FTP Daemon"
+    verbose_message "FTP Daemon"
     if [ "$os_anme" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         service_name="svc:/network/ftp:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
     fi
     if [ "$os_name" = "Linux" ];then
-      funct_systemctl_service disable vsftpd
-      funct_linux_package uninstall vsftpd
+      check_systemctl_service disable vsftpd
+      check_linux_package uninstall vsftpd
     fi
   fi
 }

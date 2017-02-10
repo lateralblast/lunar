@@ -6,8 +6,8 @@
 
 audit_login_delay () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Delay between Failed Login Attempts"
+    verbose_message "Delay between Failed Login Attempts"
     check_file="/etc/default/login"
-    funct_file_value $check_file SLEEPTIME eq 4 hash
+    check_file_value $check_file SLEEPTIME eq 4 hash
   fi
 }

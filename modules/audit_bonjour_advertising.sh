@@ -6,11 +6,11 @@
 
 audit_bonjour_advertising() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Bonjour Multicast Advertising"
+    verbose_message "Bonjour Multicast Advertising"
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     temp_file="$temp_dir/mdnsmcast"
     if [ "$audit_mode" = 2 ]; then
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     else
       total=`expr $total + 1`
       echo "Checking:  Bonjour Multicast Advertising is disabled"
@@ -19,14 +19,14 @@ audit_bonjour_advertising() {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Bonjour Multicast Advertising enabled [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file" fix
-          funct_verbose_message "cat $temp_file > $check_file" fix
-          funct_verbose_message "rm $temp_file" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file" fix
+          verbose_message "cat $temp_file > $check_file" fix
+          verbose_message "rm $temp_file" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file
           cat $temp_file > $check_file
           rm $temp_file
@@ -39,8 +39,8 @@ audit_bonjour_advertising() {
       fi
     fi
     if [ "$osx_mdns_enable" != "yes" ]; then
-      funct_launchctl_check com.apple.mDNSResponder off
-      funct_launchctl_check com.apple.mDNSResponderHelper off
+      check_launchctl_service com.apple.mDNSResponder off
+      check_launchctl_service com.apple.mDNSResponderHelper off
     fi
   fi
 }

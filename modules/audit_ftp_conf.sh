@@ -5,7 +5,7 @@
 
 audit_ftp_conf () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "FTP users"
+    verbose_message "FTP users"
     if [ "$os_name" = "AIX" ]; then
       audit_ftp_users /etc/ftpusers
     fi
@@ -13,7 +13,7 @@ audit_ftp_conf () {
       audit_ftp_users /etc/ftpd/ftpusers
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_rpm_check vsftpd
+      check_rpm vsftpd
       if [ "$rpm_check" = "vsftpd" ]; then
         audit_ftp_users /etc/vsftpd/ftpusers
       fi

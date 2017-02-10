@@ -24,10 +24,10 @@ audit_aws_s3 () {
     if [ ! "$logging" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   Bucket $bucket does not have access logging enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws s3api put-bucket-acl --region $aws_region --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
-      funct_verbose_message "cd aws ; aws s3api put-bucket-logging --region $aws_region --bucket $bucket --bucket-logging-status file://server-access-logging.json"
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws s3api put-bucket-acl --region $aws_region --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
+      verbose_message "cd aws ; aws s3api put-bucket-logging --region $aws_region --bucket $bucket --bucket-logging-status file://server-access-logging.json"
+      verbose_message "" fix
     else
       secure=`expr $secure + 1`
       echo "Secure:    Bucket $bucket has access logging enabled [$secure Passes]"

@@ -6,11 +6,11 @@
 
 audit_shadow_group () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Shadow Group"
+    verbose_message "Shadow Group"
     check_file="/etc/group"
     temp_file="$temp_dir/group"
     if [ "$audit_mode" = 2 ]; then
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     else
       echo "Checking:  Shadow group does not contain users"
     fi
@@ -21,14 +21,14 @@ audit_shadow_group () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Shadow group contains members [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
-          funct_verbose_message "cat $temp_file > $check_file" fix
-          funct_verbose_message "rm $temp_file" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
+          verbose_message "cat $temp_file > $check_file" fix
+          verbose_message "rm $temp_file" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           cat $check_file |awk -F':' '( $1 == "shadow" ) {print $1":"$2":"$3":" ; next}; {print}' > $temp_file
           cat $temp_file > $check_file
           rm $temp_file

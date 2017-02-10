@@ -13,7 +13,7 @@
 
 audit_groups_exist () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "User Groups"
+    verbose_message "User Groups"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Groups in passwd file exist in group file"
     fi

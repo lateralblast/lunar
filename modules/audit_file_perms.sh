@@ -6,7 +6,7 @@
 
 audit_file_perms () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "System File Permissions"
+    verbose_message "System File Permissions"
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  File permissions [This may take a while]"
@@ -63,16 +63,16 @@ audit_file_perms () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "System File Permissions"
+    verbose_message "System File Permissions"
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  File permissions [This may take a while]"
       for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
         if [ "$audit_mode" = 1 ]; then
           echo "Warning:   Incorrect permissions on $file_name"
-          funct_verbose_message "" fix
-          funct_verbose_message "yum reinstall $rpm_name" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "yum reinstall $rpm_name" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Correct permissions on $file_name"

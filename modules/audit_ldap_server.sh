@@ -11,7 +11,7 @@
 
 audit_ldap_server () {
   if [ "$os_name" = "Linux" ]; then
-  	funct_systemctl_service disable slapd
-    funct_linux_package uninstall openldap-clients
+  	check_systemctl_service disable slapd
+    check_linux_package uninstall openldap-clients
   fi
 }

@@ -83,27 +83,27 @@ audit_docker_security () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
-      funct_verbose_message "Docker Security"
-      funct_dockerd_check notequal config SecurityOpt "<no value>"
-      funct_dockerd_check include config SecurityOpt "userns"
-      funct_dockerd_check include config SecurityOpt "no-new-privileges"
-      funct_dockerd_check equal config Privileged "false"
-      funct_dockerd_check notequal config AppArmorProfile ""
-      funct_dockerd_check equal config ReadonlyRootfs "true"
-      funct_dockerd_check notequal config PidMode "host"
-      funct_dockerd_check notequal config IpcMode "host"
-      funct_dockerd_check notequal config UsernsMode "host"
-      funct_dockerd_check equal config Devices ""
-      funct_dockerd_check equal config Ulimits "<no value>"
-      funct_dockerd_check notequal config Propagation "shared"
-      funct_dockerd_check notequal config UTSMode "shared"
-      funct_ausearch_check equal docker exec privileged ""
-      funct_ausearch_check equal docker exec user ""
-      funct_dockerd_check equal config CgroupParent ""
-      funct_dockerd_check notequal config PidsLimit "0"
-      funct_dockerd_check notequal config PidsLimit "-1"
+      verbose_message "Docker Security"
+      check_dockerd notequal config SecurityOpt "<no value>"
+      check_dockerd include config SecurityOpt "userns"
+      check_dockerd include config SecurityOpt "no-new-privileges"
+      check_dockerd equal config Privileged "false"
+      check_dockerd notequal config AppArmorProfile ""
+      check_dockerd equal config ReadonlyRootfs "true"
+      check_dockerd notequal config PidMode "host"
+      check_dockerd notequal config IpcMode "host"
+      check_dockerd notequal config UsernsMode "host"
+      check_dockerd equal config Devices ""
+      check_dockerd equal config Ulimits "<no value>"
+      check_dockerd notequal config Propagation "shared"
+      check_dockerd notequal config UTSMode "shared"
+      check_ausearch equal docker exec privileged ""
+      check_ausearch equal docker exec user ""
+      check_dockerd equal config CgroupParent ""
+      check_dockerd notequal config PidsLimit "0"
+      check_dockerd notequal config PidsLimit "-1"
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
-        funct_dockerd_check unused kernel $param
+        check_dockerd unused kernel $param
       done
       if [ "$audit_mode" != 2 ]; then
         total=`expr $total + 1`

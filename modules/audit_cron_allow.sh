@@ -12,13 +12,13 @@
 
 audit_cron_allow () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "At/Cron Authorized Users"
+    verbose_message "At/Cron Authorized Users"
     if [ "$os_name" = "FreeBSD" ]; then
       cron_base_dir="/var/cron"
       at_base_dir="/var/at"
       cron_group="wheel"
       check_file="/etc/crontab"
-      funct_check_perms $check_file 0640 root $cron_group
+      check_file_perms $check_file 0640 root $cron_group
     else
       if [ "$os_name" = "AIX" ]; then
         cron_base_dir="/var/adm/cron"
@@ -37,21 +37,21 @@ audit_cron_allow () {
       fi
     fi
     check_file="$cron_hase_dir/cron.deny"
-    funct_file_exists $check_file no
+    check_file_exists $check_file no
     check_file="$at_base_dir/at.deny"
-    funct_file_exists $check_file no
+    check_file_exists $check_file no
     cron_file="$cron_base_dir/cron.allow"
-    funct_file_exists $cron_file yes
-    funct_check_perms $check_file 0400 root $cron_group
+    check_file_exists $cron_file yes
+    check_file_perms $check_file 0400 root $cron_group
     at_file="$at_base_dir/at.allow"
-    funct_file_exists $at_file yes
-    funct_check_perms $check_file 0400 root $cron_group
+    check_file_exists $at_file yes
+    check_file_perms $check_file 0400 root $cron_group
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
         if [ "`cat $check_file |wc -l`" = "0" ]; then
           dir_name="/var/spool/cron/crontabs"
           if [ -d "$dir_name" ]; then
-            funct_check_perms $dir_name 0770 root $cron_group
+            check_file_perms $dir_name 0770 root $cron_group
             for user_name in `ls $dir_name`; do
               check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
               if [ "$check_id" = "$user_name" ]; then
@@ -90,9 +90,9 @@ audit_cron_allow () {
         done
       fi
     fi
-    funct_check_perms $check_file 0640 root root
+    check_file_perms $check_file 0640 root root
     check_file="/etc/at.allow"
-    funct_file_exists $check_file yes
+    check_file_exists $check_file yes
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ]; then
         if [ "`cat $check_file |wc -l`" = "0" ]; then
@@ -121,13 +121,13 @@ audit_cron_allow () {
         fi
       fi
     fi
-    funct_check_perms $check_file 0640 root root
+    check_file_perms $check_file 0640 root root
     if [ "$os_name" = "Linux" ]; then
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
-        funct_check_perms $dir_name 0700 root root
+        check_file_perms $dir_name 0700 root root
       done
       for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
-        funct_check_perms $check_file 0600 root root
+        check_file_perms $check_file 0600 root root
       done
     fi
   fi

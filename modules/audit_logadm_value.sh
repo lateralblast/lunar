@@ -8,7 +8,7 @@
 audit_logadm_value () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "Debug Level Daemon Logging"
+      verbose_message "Debug Level Daemon Logging"
       log_name=$1
       log_facility=$2
       check_file="/etc/logadm.conf"
@@ -19,15 +19,15 @@ audit_logadm_value () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Logging for $log_name not enabled [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" fix
-          funct_verbose_message "svcadm refresh svc:/system/system-log" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" fix
+          verbose_message "svcadm refresh svc:/system/system-log" fix
+          verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Syslog to capture $log_facility"
           fi
-          funct_backup_file $check_file
+          backup_file $check_file
           if [ "$log_facility" != "none" ]; then
             check_file="/etc/syslog.conf"
             if [ ! -f "$work_dir$check_file" ]; then

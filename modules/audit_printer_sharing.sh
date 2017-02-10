@@ -9,7 +9,7 @@
 
 audit_printer_sharing() {
     if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Printer Sharing"
+    verbose_message "Printer Sharing"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Printer Sharing is disabled"
       printer_test=`system_profiler SPPrintersDataType |grep Shared |awk '{print $2}' |grep 'Yes'`
@@ -20,11 +20,11 @@ audit_printer_sharing() {
           echo "Warning:   Printer sharing is enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-          funct_verbose_message "" fix
-          funct_verbose_message "Open System Preferences" fix
-          funct_verbose_message "Select Sharing" fix
-          funct_verbose_message "Uncheck Printer Sharing" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "Open System Preferences" fix
+          verbose_message "Select Sharing" fix
+          verbose_message "Uncheck Printer Sharing" fix
+          verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -34,11 +34,11 @@ audit_printer_sharing() {
         fi
       fi
     else
-      funct_verbose_message "" fix
-      funct_verbose_message "Open System Preferences" fix
-      funct_verbose_message "Select Sharing" fix
-      funct_verbose_message "Uncheck Printer Sharing" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "Open System Preferences" fix
+      verbose_message "Select Sharing" fix
+      verbose_message "Uncheck Printer Sharing" fix
+      verbose_message "" fix
     fi
   fi
 }

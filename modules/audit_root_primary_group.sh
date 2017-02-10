@@ -12,7 +12,7 @@
 
 audit_root_primary_group () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Root Primary Group"
+    verbose_message "Root Primary Group"
     log_file="root_primary_grooup.log"
     check_file="/etc/group"
     group_check=`grep "^root:" /etc/passwd | cut -f4 -d:`
@@ -23,9 +23,9 @@ audit_root_primary_group () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Group $group_id does not exist in group file [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "usermod -g 0 root" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "usermod -g 0 root" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ];then
           log_file="$work_dir/$log_file"

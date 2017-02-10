@@ -6,9 +6,9 @@
 audit_cde_print () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "CDE Print"
+      verbose_message "CDE Print"
       service_name="svc:/application/cde-printinfo:default"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
 }

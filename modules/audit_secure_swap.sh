@@ -5,7 +5,7 @@
 
 audit_secure_swap () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Secure swap"
-    funct_defaults_check /Library/Preferences/com.apple.virtualMemory UseEncryptedSwap yes bool
+    verbose_message "Secure swap"
+    check_osx_defaults /Library/Preferences/com.apple.virtualMemory UseEncryptedSwap yes bool
   fi
 }

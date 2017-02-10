@@ -9,7 +9,7 @@
 
 audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "PAM Authentication"
+    verbose_message "PAM Authentication"
     check=0
     if [ "$os_vendor" = "Amazon" ] && [ "$os_version" = "2016" ]; then
       check=1
@@ -19,11 +19,11 @@ audit_system_auth () {
     fi
     if [ "$check" -eq 1 ]; then
       check_file="/etc/security/pwquality.conf"
-      funct_file_value $check_file minlen eq 14 hash  
-      funct_file_value $check_file dcredit eq -1 hash  
-      funct_file_value $check_file ocredit eq -1 hash  
-      funct_file_value $check_file ucredit eq -1 hash  
-      funct_file_value $check_file lcredit eq -1 hash  
+      check_file_value $check_file minlen eq 14 hash  
+      check_file_value $check_file dcredit eq -1 hash  
+      check_file_value $check_file ocredit eq -1 hash  
+      check_file_value $check_file ucredit eq -1 hash  
+      check_file_value $check_file lcredit eq -1 hash  
       audit_system_auth_nullok
       auth_string="auth"
       search_string="unlock_time"
@@ -39,11 +39,11 @@ audit_system_auth () {
     else
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
         check_file="/etc/security/pwquality.conf"
-        funct_file_value $check_file minlen eq 14 hash  
-        funct_file_value $check_file dcredit eq -1 hash  
-        funct_file_value $check_file ocredit eq -1 hash  
-        funct_file_value $check_file ucredit eq -1 hash  
-        funct_file_value $check_file lcredit eq -1 hash  
+        check_file_value $check_file minlen eq 14 hash  
+        check_file_value $check_file dcredit eq -1 hash  
+        check_file_value $check_file ocredit eq -1 hash  
+        check_file_value $check_file ucredit eq -1 hash  
+        check_file_value $check_file lcredit eq -1 hash  
         audit_system_auth_nullok
         auth_string="auth"
         search_string="unlock_time"
@@ -57,7 +57,7 @@ audit_system_auth () {
         search_string="sha512"
         audit_system_auth_password_hashing $auth_string $search_string
       else
-        funct_rpm_check libpam-cracklib
+        check_rpm libpam-cracklib
         if [ "$audit_mode" != 2 ]; then
           audit_system_auth_nullok
           auth_string="account"

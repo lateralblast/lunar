@@ -5,15 +5,15 @@
 
 audit_avahi_conf () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Multicast DNS Server"
+    verbose_message "Multicast DNS Server"
     check_file="/etc/avahi/avahi-daemon.conf"
-    funct_file_value $check_file disable-user-service-publishing eq yes hash after "\[publish\]"
-    funct_file_value $check_file disable-publishing eq yes hash after "\[publish\]"
-    funct_file_value $check_file publish-address eq no hash after "\[publish\]"
-    funct_file_value $check_file publish-binfo eq no hash after "\[publish\]"
-    funct_file_value $check_file publish-workstation eq no hash after "\[publish\]"
-    funct_file_value $check_file publish-domain eq no hash after "\[publish\]"
-    funct_file_value $check_file disallow-other-stacks eq yes hash after "\[server\]"
-    funct_file_value $check_file check-response-ttl eq yes hash after "\[server\]"
+    check_file_value $check_file disable-user-service-publishing eq yes hash after "\[publish\]"
+    check_file_value $check_file disable-publishing eq yes hash after "\[publish\]"
+    check_file_value $check_file publish-address eq no hash after "\[publish\]"
+    check_file_value $check_file publish-binfo eq no hash after "\[publish\]"
+    check_file_value $check_file publish-workstation eq no hash after "\[publish\]"
+    check_file_value $check_file publish-domain eq no hash after "\[publish\]"
+    check_file_value $check_file disallow-other-stacks eq yes hash after "\[server\]"
+    check_file_value $check_file check-response-ttl eq yes hash after "\[server\]"
   fi
 }

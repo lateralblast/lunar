@@ -13,8 +13,8 @@ audit_system_auth_password_history () {
   search_value=$3
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/security/opasswd"
-    funct_file_exists $check_file
-    funct_check_perms $check_file 0600 root root
+    check_file_exists $check_file
+    check_file_perms $check_file 0600 root root
     for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
       if [ -f "$check_file" ]; then
         if [ "$audit_mode" != 2 ]; then
@@ -25,12 +25,12 @@ audit_system_auth_password_history () {
             if [ "$audit_mode" = "1" ]; then
               insecure=`expr $insecure + 1`
               echo "Warning:   Password entry $search_string is not set to $search_value in $check_file [$insecure Warnings]"
-              funct_verbose_message "cp $check_file $temp_file" fix
-              funct_verbose_message "cat $temp_file |awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" $search_string=$search_value\"; next };' > $check_file" fix
-              funct_verbose_message "rm $temp_file" fix
+              verbose_message "cp $check_file $temp_file" fix
+              verbose_message "cat $temp_file |awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" $search_string=$search_value\"; next };' > $check_file" fix
+              verbose_message "rm $temp_file" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
+              backup_file $check_file
               echo "Setting:   Password entry in $check_file"
               cp $check_file $temp_file
               cat $temp_file |awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " $search_string=$search_value"; next };' > $check_file
@@ -44,7 +44,7 @@ audit_system_auth_password_history () {
           fi
         else
           for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
-            funct_restore_file $check_file $restore_dir
+            restore_file $check_file $restore_dir
           done 
         fi
       fi

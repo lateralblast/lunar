@@ -11,11 +11,11 @@
 
 audit_avahi_server () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Avahi Server"
+    verbose_message "Avahi Server"
     for service_name in avahi avahi-autoipd avahi-daemon avahi-dnsconfd; do
-      funct_chkconfig_service $service_name 3 off
-      funct_chkconfig_service $service_name 5 off
+      check_chkconfig_service $service_name 3 off
+      check_chkconfig_service $service_name 5 off
     done
-    funct_systemctl_service disable avahi-daemon
+    check_systemctl_service disable avahi-daemon
   fi
 }

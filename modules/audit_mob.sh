@@ -5,7 +5,7 @@
 
 audit_mob () {
   if [ "$os_name" = "VMkernel" ]; then
-    funct_verbose_message "Managed Object Browser"
+    verbose_message "Managed Object Browser"
     total=`expr $total + 1`
     log_file="mob_status"
     backup_file="$work_dir/$log_file"
@@ -27,9 +27,9 @@ audit_mob () {
         if [ "$audit_mode" = "1" ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Managed Object Browser enabled [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "vim-cmd proxysvc/remove_service \"/mob\" \"httpsWithRedirect\"" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "vim-cmd proxysvc/remove_service \"/mob\" \"httpsWithRedirect\"" fix
+          verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = "1" ]; then

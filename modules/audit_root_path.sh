@@ -14,7 +14,7 @@
 
 audit_root_path () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Root PATH Environment Integrity"
+    verbose_message "Root PATH Environment Integrity"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Root PATH"
       if [ "$audit_mode" = 1 ]; then

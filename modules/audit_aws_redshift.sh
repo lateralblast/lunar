@@ -21,9 +21,9 @@ audit_aws_redshift () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Redshift instance $db does not have version upgrades enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws redshift modify-cluster --region $aws_region --cluster-identifier $db --allow-version-upgrade" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws redshift modify-cluster --region $aws_region --cluster-identifier $db --allow-version-upgrade" fix
+      verbose_message "" fix
     fi
     # Check if audit logging is enabled
     total=`expr $total + 1`
@@ -34,9 +34,9 @@ audit_aws_redshift () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   Redshift instance $db does not have logging enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws redshift enable-logging --region $aws_region --cluster-identifier $db --bucket-name <aws-redshift-audit-logs>" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws redshift enable-logging --region $aws_region --cluster-identifier $db --bucket-name <aws-redshift-audit-logs>" fix
+      verbose_message "" fix
     fi
     # Check if encryption is enabled
     total=`expr $total + 1`

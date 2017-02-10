@@ -18,12 +18,12 @@ audit_system_auth_account_reset () {
             if [ "$audit_mode" = "1" ]; then
               insecure=`expr $insecure + 1`
               echo "Warning:   Account reset entry not enabled in $check_file [$insecure Warnings]"
-              funct_verbose_message "cp $check_file $temp_file" fix
-              funct_verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_permit.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
-              funct_verbose_message "rm $temp_file" fix
+              verbose_message "cp $check_file $temp_file" fix
+              verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_permit.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
+              verbose_message "rm $temp_file" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
+              backup_file $check_file
               echo "Setting:   Account reset entry in $check_file"
               cp $check_file $temp_file
               cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_tally2.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
@@ -39,7 +39,7 @@ audit_system_auth_account_reset () {
       done
     else
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do 
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       done 
     fi
   fi

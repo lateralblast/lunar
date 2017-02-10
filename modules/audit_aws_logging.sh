@@ -31,9 +31,9 @@ audit_aws_logging () {
     	else
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail is not enabled in all regions [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws cloudtrail update-trail --name $trail --is-multi-region-trail" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws cloudtrail update-trail --name $trail --is-multi-region-trail" fix
+        verbose_message "" fix
       fi
       # Check CloudTrail is recording global events
       check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].IncludeGlobalServiceEvents" |grep true`
@@ -43,9 +43,9 @@ audit_aws_logging () {
       else
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail is not recording global events [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws cloudtrail update-trail --name $trail --include-global-service-events" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws cloudtrail update-trail --name $trail --include-global-service-events" fix
+        verbose_message "" fix
       fi
       # Check log file validation is enabled
       total=`expr $total + 1`
@@ -56,9 +56,9 @@ audit_aws_logging () {
       else
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail $trail log file validation is not enabled [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws cloudtrail update-trail --region $aws_region --name $trail --enable-log-file-validation" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws cloudtrail update-trail --region $aws_region --name $trail --enable-log-file-validation" fix
+        verbose_message "" fix
       fi
       # 
     done
@@ -80,9 +80,9 @@ audit_aws_logging () {
       if [ "$grants" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket grants access to Principal AuthenticatedUsers [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws s3api put-bucket-acl --region $aws_region --region $aws_region--bucket $bucket --acl private" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws s3api put-bucket-acl --region $aws_region --region $aws_region--bucket $bucket --acl private" fix
+        verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket does not grant access to Principal AuthenticatedUsers [$secure Passes]"
@@ -100,10 +100,10 @@ audit_aws_logging () {
       if [ ! "$logging" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   CloudTrail log file bucket $bucket does not have access logging enabled [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws s3api put-bucket-acl --region $aws_region --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
-        funct_verbose_message "cd aws ; aws s3api put-bucket-logging --region $aws_region --bucket $bucket --bucket-logging-status file://server-access-logging.json"
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws s3api put-bucket-acl --region $aws_region --bucket $bucket --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
+        verbose_message "cd aws ; aws s3api put-bucket-logging --region $aws_region --bucket $bucket --bucket-logging-status file://server-access-logging.json"
+        verbose_message "" fix
       else
         secure=`expr $secure + 1`
         echo "Secure:    CloudTrail log file bucket $bucket has access logging enabled [$secure Passes]"

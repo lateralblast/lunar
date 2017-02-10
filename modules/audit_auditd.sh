@@ -6,7 +6,7 @@
 
 audit_auditd () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Audit Daemon"
-    funct_linux_package install auditd
+    verbose_message "Audit Daemon"
+    check_linux_package install auditd
   fi
 }

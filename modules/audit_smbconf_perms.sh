@@ -5,7 +5,7 @@
 
 audit_smbconf_perms () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "SMB Config Permissions"
-    funct_check_perms /etc/samba/smb.conf 0644 root root
+    verbose_message "SMB Config Permissions"
+    check_file_perms /etc/samba/smb.conf 0644 root root
   fi
 }

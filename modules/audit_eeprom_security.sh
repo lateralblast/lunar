@@ -6,7 +6,7 @@
 
 audit_eeprom_security () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "EEPROM Password"
+    verbose_message "EEPROM Password"
     if [ "$audit_mode" = 2 ]; then
       echo "Restoring: EEPROM password to none"
       eeprom security-mode=none
@@ -20,10 +20,10 @@ audit_eeprom_security () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   EEPROM password is not enabled [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "eeprom security-mode=command" fix
-          funct_verbose_message "eeprom security-#badlogins=0" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "eeprom security-mode=command" fix
+          verbose_message "eeprom security-#badlogins=0" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           eeprom security-mode=command

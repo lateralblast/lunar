@@ -6,8 +6,8 @@
 audit_dhcpcd() {
   if [ "$dhcpcd_disable" = "yes" ]; then
     if [ "$os_name" = "AIX" ]; then
-      funct_verbose_message "DHCP Client Daemon"
-      funct_rctcp_check dhcpcd off
+      verbose_message "DHCP Client Daemon"
+      check_rctcp dhcpcd off
     fi
   fi
 }

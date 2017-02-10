@@ -4,7 +4,7 @@
 
 audit_svccfg_value () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "RPC Port Mapping"
+    verbose_message "RPC Port Mapping"
     service_name=$1
     service_property=$2
     correct_value=$3
@@ -32,9 +32,9 @@ audit_svccfg_value () {
         insecure=`expr $insecure + 1`
         echo "Warning:   Service $service_name $service_property not set to $correct_value [$insecure Warnings]"
         command_line="svccfg -s $service_name setprop $service_property = $correct_value"
-        funct_verbose_message "" fix
-        funct_verbose_message "$command_line" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "$command_line" fix
+        verbose_message "" fix
       else
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   $service_name $service_propery to $correct_value"

@@ -38,10 +38,10 @@ audit_aws_vpcs () {
       else
         insecure=`expr $insecure + 1`
         echo "Warning:   VPC peering is being used review VPC: $vpc [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws ec2 delete-route --region $aws_region --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" fix
-        funct_verbose_message "aws ec2 create-route --region $aws_region --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws ec2 delete-route --region $aws_region --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" fix
+        verbose_message "aws ec2 create-route --region $aws_region --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" fix
+        verbose_message "" fix
       fi
     done
   fi

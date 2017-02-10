@@ -8,12 +8,12 @@
 
 audit_postfix_daemon () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message="Postfix Daemon"
+    verbose_message="Postfix Daemon"
     if [ "$os_vendor" = "SuSE" ]; then
       check_file="/etc/sysconfig/mail"
-      funct_file_value $check_file SMTPD_LISTEN_REMOTE eq no hash
+      check_file_value $check_file SMTPD_LISTEN_REMOTE eq no hash
     fi
     check_file="/etc/postfix/main.cf"
-    funct_file_value $check_file inet_interfaces eq localhost hash
+    check_file_value $check_file inet_interfaces eq localhost hash
   fi
 }

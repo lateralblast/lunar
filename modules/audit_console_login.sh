@@ -12,20 +12,20 @@
 
 audit_console_login () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Root Login to System Console"
+    verbose_message "Root Login to System Console"
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/login"
-      funct_file_value $check_file CONSOLE eq /dev/console hash
+      check_file_value $check_file CONSOLE eq /dev/console hash
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/system/console-login:terma"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
       service_name="svc:/system/console-login:termb"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Root Login to System Console"
+    verbose_message "Root Login to System Console"
     disable_ttys=0
     check_file="/etc/securetty"
     console_list=""
@@ -40,14 +40,14 @@ audit_console_login () {
           total=`expr $total + 1`
           insecure=`expr $insecure + 1`
           echo "Warning:   Consoles enabled on$console_list [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
-          funct_verbose_message "cat $temp_file > $check_file" fix
-          funct_verbose_message "rm $temp_file" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
+          verbose_message "cat $temp_file > $check_file" fix
+          verbose_message "rm $temp_file" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           echo "Setting:   Consoles to disabled on$console_list"
           cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file
           cat $temp_file > $check_file
@@ -61,7 +61,7 @@ audit_console_login () {
         fi
       fi
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

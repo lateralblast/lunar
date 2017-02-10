@@ -11,10 +11,10 @@
 
 audit_cron_perms () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Cron Permissions"
+    verbose_message "Cron Permissions"
     for check_file in /etc/crontab /var/spool/cron /etc/cron.daily /etc/cron.d \
     /etc/cron.weekly /etc/cron.mounthly /etc/cron.hourly /etc/anacrontab; do
-        funct_check_perms $check_file 0700 root root
+        check_file_perms $check_file 0700 root root
     done
   fi
 }

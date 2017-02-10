@@ -11,16 +11,16 @@
 audit_autofs () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "Automount services"
+      verbose_message "Automount services"
       service_name="svc:/system/filesystem/autofs"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Automount services"
+    verbose_message "Automount services"
     service_name="autofs"
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 5 off
-    funct_systemctl_service disable $service_name
+    check_chkconfig_service $service_name 3 off
+    check_chkconfig_service $service_name 5 off
+    check_systemctl_service disable $service_name
   fi
 }

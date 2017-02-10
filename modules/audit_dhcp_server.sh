@@ -11,16 +11,16 @@
 
 audit_dhcp_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "DHCP Server"
+    verbose_message "DHCP Server"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         service_name="svc:/network/dhcp-server:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_systemctl_service disable dhcpd
-      funct_linux_package uninstall dhcp
+      check_systemctl_service disable dhcpd
+      check_linux_package uninstall dhcp
     fi
   fi
 }

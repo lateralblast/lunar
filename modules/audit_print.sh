@@ -7,25 +7,25 @@
 
 audit_print () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Printing Daemons"
+    verbose_message "Printing Daemons"
     if [ "$os_name" = "AIX" ]; then
-      funct_itab_check qdaemon off
-      funct_itab_check lpd off
-      funct_itab_check piobe off
+      check_itab qdaemon off
+      check_itab lpd off
+      check_itab piobe off
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         service_name="svc:/application/print/ipp-listener:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/application/print/rfc1179"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/application/print/server:default"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      funct_file_value $check_file lpd_enable eq NO hash
+      check_file_value $check_file lpd_enable eq NO hash
     fi
   fi
 }

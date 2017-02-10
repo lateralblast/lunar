@@ -14,7 +14,7 @@
 
 audit_security_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Warnings for Standard Login Services"
+    verbose_message "Warnings for Standard Login Services"
     if [ "$os_name" = "AIX" ]; then
       user_name="bin"
       group_name="bin"
@@ -26,14 +26,14 @@ audit_security_banner () {
       echo "Checking:  Security banners"
     fi
     check_file="/etc/motd"
-    funct_file_exists $check_file yes
+    check_file_exists $check_file yes
     if [ -f "$check_file" ]; then
-      funct_check_perms $check_file 0644 $user_name $group_name
+      check_file_perms $check_file 0644 $user_name $group_name
     fi
     check_file="/etc/issue"
-    funct_file_exists $check_file yes
+    check_file_exists $check_file yes
     if [ -f "$check_file" ]; then
-      funct_check_perms $check_file 0644 $user_name $group_name
+      check_file_perms $check_file 0644 $user_name $group_name
     fi
   fi
 }

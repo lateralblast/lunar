@@ -13,12 +13,12 @@
 
 audit_gnome_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Gnome Warning Banner"
+    verbose_message "Gnome Warning Banner"
     if [ "$os_name" = "SunOS" ]; then
       total=`expr $total + 1`
       if [ "$os_version" = "10" ]; then
         check_file="/etc/X11/gdm.conf"
-        funct_file_value $check_file Welcome eq "Authorised users only" hash
+        check_file_value $check_file Welcome eq "Authorised users only" hash
       fi
       if [ "$os_version" = "11" ]; then
         check_file="/etc/gdm/Init/Default"
@@ -29,12 +29,12 @@ audit_gnome_banner () {
               if [ "$audit_mode" = 1 ]; then
                 insecure=`expr $insecure + 1`
                 echo "Warning:   Warning banner not found in $check_file [$insecure Warnings]"
-                funct_verbose_message "" fix
-                funct_verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> $check_file" fix
-                funct_verbose_message "" fix
+                verbose_message "" fix
+                verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> $check_file" fix
+                verbose_message "" fix
               fi
               if [ "$audit_mode" = 0 ]; then
-                funct_backup_file $check_file
+                backup_file $check_file
                 echo "Setting:   Warning banner in $check_file"
                 echo "   --title=\"Security Message\" --filename=/etc/issue" >> $check_file
                 if [ "$os_version" = "10" ]; then
@@ -51,7 +51,7 @@ audit_gnome_banner () {
               fi
             fi
           else
-            funct_restore_file $check_file $restore_dir
+            restore_file $check_file $restore_dir
           fi
         fi
       fi
@@ -59,14 +59,14 @@ audit_gnome_banner () {
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/dconf/profile/gdm"
       if [ -f "$check_file" ]; then
-        funct_file_value $check_file user-db colon user hash
-        funct_file_value $check_file system-db colon gdm hash
-        funct_file_value $check_file file-db colon /usr/share/gdm/greeter-dconf-defaults hash
+        check_file_value $check_file user-db colon user hash
+        check_file_value $check_file system-db colon gdm hash
+        check_file_value $check_file file-db colon /usr/share/gdm/greeter-dconf-defaults hash
       fi
       check_file="/etc/dconf/db/gdm.d/01-banner-message"
       if [ -f "$check_file" ]; then
-        funct_file_value $check_file banner-message-enable eq true hash
-        funct_file_value $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
+        check_file_value $check_file banner-message-enable eq true hash
+        check_file_value $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
       fi
     fi
     gconf_bin=`which gconftool-2 2> /dev/null`
@@ -79,9 +79,9 @@ audit_gnome_banner () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Warning banner not found in $check_file [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"$warning_message\"" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"$warning_message\"" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Warning banner to \"$warning_message\""
@@ -112,9 +112,9 @@ audit_gnome_banner () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Warning banner not found in $check_file [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Warning banner to \"$warning_message\""

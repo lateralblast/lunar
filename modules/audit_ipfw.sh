@@ -5,9 +5,9 @@
 
 audit_ipfw () {
   if [ "$os_name" = "FreeBSD" ]; then
-    funct_verbose_message "IP Firewall"
+    verbose_message "IP Firewall"
     check_file="/etc/rc.conf"
-    funct_file_value $check_file firewall_enable eq YES hash
-    funct_file_value $check_file firewall_type eq client hash
+    check_file_value $check_file firewall_enable eq YES hash
+    check_file_value $check_file firewall_type eq client hash
   fi
 }

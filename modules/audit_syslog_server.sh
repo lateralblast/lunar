@@ -14,34 +14,34 @@ audit_syslog_server () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" < 5 ]; then
-        funct_verbose_message="Syslog Daemon"
+        verbose_message="Syslog Daemon"
         check_file="/etc/syslog.conf"
-        funct_file_value $check_file "daemon.debug" tab "/var/log/daemon.log" hash
+        check_file_value $check_file "daemon.debug" tab "/var/log/daemon.log" hash
         check_file="/var/log/daemon.log"
-        funct_file_exists $check_file yes
+        check_file_exists $check_file yes
         funct_file_perms $check_file 600 root wheel
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
       if [ "$install_rsyslog" = "yes" ]; then
-        funct_verbose_message="Rsyslog Daemon"
+        verbose_message="Rsyslog Daemon"
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Amazon" ]; then
           if [ "$os_version" > 4 ]; then
             service_name="syslog"
-            funct_chkconfig_service $service_name 3 off
-            funct_chkconfig_service $service_name 5 off
+            check_chkconfig_service $service_name 3 off
+            check_chkconfig_service $service_name 5 off
             service_name="rsyslog"
             check_file="/etc/rsyslog.conf"
-            funct_file_value $check_file "auth,user.*" tab "/var/log/messages" hash
-            funct_file_value $check_file "kern.*" tab "/var/log/kern.log" hash
-            funct_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
-            funct_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
-            funct_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
-            funct_file_value $check_file "" tab "" hash
-            funct_linux_package install $service_name
-            funct_systemctl_service enable $service_name
-            funct_chkconfig_service $service_name 3 on
-            funct_chkconfig_service $service_name 5 on
+            check_file_value $check_file "auth,user.*" tab "/var/log/messages" hash
+            check_file_value $check_file "kern.*" tab "/var/log/kern.log" hash
+            check_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
+            check_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
+            check_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
+            check_file_value $check_file "" tab "" hash
+            check_linux_package install $service_name
+            check_systemctl_service enable $service_name
+            check_chkconfig_service $service_name 3 on
+            check_chkconfig_service $service_name 5 on
             funct_file_perms $check_file 0600 root root
             if [ "$audit_mode" != 2 ]; then
                echo "Checking:  Rsyslog is sending message to a remote server"
@@ -51,10 +51,10 @@ audit_syslog_server () {
                   total=`expr $total + 1`
                   insecure=`expr $insecure + 1`
                   echo "Warning:   Rsyslog is not sending messages to a remote server [$insecure Warnings]"
-                  funct_verbose_message "" fix
-                  funct_verbose_message "Add a server entry to $check_file, eg:" fix
-                  funct_verbose_message "*.* @@loghost.example.com" fix
-                  funct_verbose_message "" fix
+                  verbose_message "" fix
+                  verbose_message "Add a server entry to $check_file, eg:" fix
+                  verbose_message "*.* @@loghost.example.com" fix
+                  verbose_message "" fix
                 fi
               else
                 total=`expr $total + 1`

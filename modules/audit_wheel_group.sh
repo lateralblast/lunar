@@ -6,7 +6,7 @@
 audit_wheel_group () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/group"
-    funct_verbose_message "Wheel Group"
+    verbose_message "Wheel Group"
     if [ "$audit_mode" != 2 ]; then
       total=`expr $total + 1`
       check_value=`cat $check_file |grep '^$wheel_group:'`
@@ -16,7 +16,7 @@ audit_wheel_group () {
           echo "Warning:   Wheel group does not exist in $check_file [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           echo "Setting:   Adding $wheel_group group to $check_file"
           groupadd $wheel_group
           usermod -G $wheel_group root
@@ -28,7 +28,7 @@ audit_wheel_group () {
         fi
       fi
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

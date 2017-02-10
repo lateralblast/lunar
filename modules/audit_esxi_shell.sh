@@ -6,7 +6,7 @@
 
 audit_esxi_shell () {
   if [ "$os_name" = "VMkernel" ]; then
-    funct_verbose_message "ESXi Shell"
-    funct_chkconfig_service ESXShell off
+    verbose_message "ESXi Shell"
+    check_chkconfig_service ESXShell off
   fi
 }

@@ -8,44 +8,44 @@
 
 audit_kernel_params () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Kernel Parameters"
+    verbose_message "Kernel Parameters"
     if [ "$os_name" = "AIX" ]; then
-      funct_no_check ipsrcrouteforward 0
-      funct_no_check ipignoreredirects 1
-      funct_no_check clean_partial_conns 1
-      funct_no_check ipsrcroutesend 0
-      funct_no_check ipforwarding 0
-      funct_no_check ipsendredirects 0
-      funct_no_check ip6srcrouteforward 0
-      funct_no_check directed_broadcast 0
-      funct_no_check tcp_pmtu_discover 0
-      funct_no_check bcastping 0
-      funct_no_check icmpaddressmask 0
-      funct_no_check udp_pmtu_discover 0
-      funct_no_check ipsrcrouterecv 0
-      funct_no_check nonlocsrcroute 0
-      funct_no_check tcp_tcpsecure 7
-      funct_no_check sockthresh 60
-      funct_no_check rfc1323 1
-      funct_no_check tcp_sendspace 262144
-      funct_no_check tcp_recvspace 262144
-      funct_no_check tcp_mssdflt 1448
-      funct_no_check portcheck 1
-      funct_no_check nfs_use_reserved_ports 1
+      check_no ipsrcrouteforward 0
+      check_no ipignoreredirects 1
+      check_no clean_partial_conns 1
+      check_no ipsrcroutesend 0
+      check_no ipforwarding 0
+      check_no ipsendredirects 0
+      check_no ip6srcrouteforward 0
+      check_no directed_broadcast 0
+      check_no tcp_pmtu_discover 0
+      check_no bcastping 0
+      check_no icmpaddressmask 0
+      check_no udp_pmtu_discover 0
+      check_no ipsrcrouterecv 0
+      check_no nonlocsrcroute 0
+      check_no tcp_tcpsecure 7
+      check_no sockthresh 60
+      check_no rfc1323 1
+      check_no tcp_sendspace 262144
+      check_no tcp_recvspace 262144
+      check_no tcp_mssdflt 1448
+      check_no portcheck 1
+      check_no nfs_use_reserved_ports 1
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/sysctl.conf"
-      funct_file_value $check_file kern.securelevel eq 1 hash
-      funct_file_value $check_file net.inet.tcp.log_in_vain eq 1 hash
-      funct_file_value $check_file net.inet.udp.log_in_vain eq 1 hash
+      check_file_value $check_file kern.securelevel eq 1 hash
+      check_file_value $check_file net.inet.tcp.log_in_vain eq 1 hash
+      check_file_value $check_file net.inet.udp.log_in_vain eq 1 hash
       if [ "$os_version" > 5 ]; then
-        funct_file_value $check_file security.bsd.see_other_uids 0 hash
-        funct_file_value $check_file security.bsd.see_other_gids 0 hash
+        check_file_value $check_file security.bsd.see_other_uids 0 hash
+        check_file_value $check_file security.bsd.see_other_gids 0 hash
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" != "11" ]; then
-        funct_create_nddscript
+        create_nddscript
         check_file="/etc/init.d/ndd-netconfig"
         rcd_file="/etc/rc2.d/S99ndd-netconfig"
         audit_ndd_value /dev/ip ip_forward_src_routed 0
@@ -90,11 +90,11 @@ audit_kernel_params () {
           icmpaddressmask udp_pmtu_discover ipsrcrouterecv nonlocsrcroute \
           tcp_tcpsecure sockthresh rfc1323 tcp_sendspace tcp_recvspace \
           tcp_mssdflt portcheck nfs_use_reserved_ports; do
-            funct_no_check $parameter_name
+            check_no $parameter_name
           done
         else
           if [ -f "$check_file" ]; then
-            funct_file_exists $check_file no
+            check_file_exists $check_file no
           fi
         fi
       fi

@@ -5,7 +5,7 @@
 
 audit_i4ls() {
   if [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "License Manager"
-    funct_itab_check i4ls off
+    verbose_message "License Manager"
+    check_itab i4ls off
   fi
 }

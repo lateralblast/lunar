@@ -14,19 +14,19 @@
 
 audit_default_umask () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    funct_verbose_message "Default umask for Users"
+    verbose_message "Default umask for Users"
   fi
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/default/login"
-    funct_file_value $check_file UMASK eq 077 hash
+    check_file_value $check_file UMASK eq 077 hash
   fi
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/csh.login \
       /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do
-      funct_file_value $check_file "umask" space 077 hash
+      check_file_value $check_file "umask" space 077 hash
     done
     for check_file in /etc/bashrc /etc/skel/.bashrc /etc/login.defs; do
-      funct_file_value $check_file UMASK eq 077 hash
+      check_file_value $check_file UMASK eq 077 hash
     done
   fi
 }

@@ -5,9 +5,9 @@
 
 audit_login_guest () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Guest login"
-    funct_dscl_check /Users/Guest AuthenticationAuthority ";basic;"
-    funct_dscl_check /Users/Guest passwd "*"
-    funct_dscl_check /Users/Guest UserShell "/sbin/nologin"
+    verbose_message "Guest login"
+    check_dscl /Users/Guest AuthenticationAuthority ";basic;"
+    check_dscl /Users/Guest passwd "*"
+    check_dscl /Users/Guest UserShell "/sbin/nologin"
   fi
 }

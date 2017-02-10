@@ -9,10 +9,10 @@
 
 audit_mount_noexec () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "No-exec on /tmp"
+    verbose_message "No-exec on /tmp"
     check_file="/etc/fstab"
     if [ -e "$check_file" ]; then
-      funct_verbose_message "Temp File Systems mounted with noexec"
+      verbose_message "Temp File Systems mounted with noexec"
       if [ "$audit_mode" != "2" ]; then
         nodev_check=`cat $check_file |grep -v "^#" |grep "tmpfs" |grep -v noexec |head -1 |wc -l`
         total=`expr $total + 1`
@@ -20,15 +20,15 @@ audit_mount_noexec () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Found tmpfs filesystems that should be mounted noexec [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "cat $check_file | awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 \",noexec\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
-            funct_verbose_message "cat $temp_file > $check_file" fix
-            funct_verbose_message "rm $temp_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "cat $check_file | awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 \",noexec\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Setting noexec on tmpfs"
-            funct_backup_file $check_file
+            backup_file $check_file
             cat $check_file | awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 ",noexec" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' > $temp_file
             cat $temp_file > $check_file
             rm $temp_file
@@ -39,11 +39,11 @@ audit_mount_noexec () {
             echo "Secure:    No filesystem that should be mounted with noexec [$secure Passes]"
           fi
           if [ "$audit_mode" = 2 ]; then
-            funct_restore_file $check_file $restore_dir
+            restore_file $check_file $restore_dir
           fi
         fi
       fi
-      funct_check_perms $check_file 0644 root root
+      check_file_perms $check_file 0644 root root
     fi
   fi
 }

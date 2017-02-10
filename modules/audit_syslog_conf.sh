@@ -9,18 +9,18 @@
 
 audit_syslog_conf () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "VMkernel" ]; then
-    funct_verbose_message "Syslog Configuration"
+    verbose_message "Syslog Configuration"
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/syslog.conf"
-      funct_file_value $check_file "authpriv.*" tab "/var/log/secure" hash
-      funct_file_value $check_file "auth.*" tab "/var/log/messages" hash
-      funct_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
-      funct_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
-      funct_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
+      check_file_value $check_file "authpriv.*" tab "/var/log/secure" hash
+      check_file_value $check_file "auth.*" tab "/var/log/messages" hash
+      check_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
+      check_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
+      check_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      funct_file_value $check_file syslogd_flags eq -s hash
+      check_file_value $check_file syslogd_flags eq -s hash
     fi
     if [ "$os_name" = "VMkernel" ]; then
       total=`expr $total + 1`
@@ -40,8 +40,8 @@ audit_syslog_conf () {
             insecure=`expr $insecure + 1`
             echo "Warning:   Syslog log directory is not persistent [$insecure Warnings]"
             if [ "$syslog_logdir" != "" ]; then
-              funct_verbose_message "" fix
-              funct_verbose_message "esxcli system syslog config set --logdir=$syslog_logdir" fix
+              verbose_message "" fix
+              verbose_message "esxcli system syslog config set --logdir=$syslog_logdir" fix
             fi
           fi
         else
@@ -74,14 +74,14 @@ audit_syslog_conf () {
           fi
           if [ "$audit_mode" = "1" ]; then
             insecure=`expr $insecure + 1`
-            funct_verbose_message "" fix
+            verbose_message "" fix
             echo "Warning:   Syslog remote host is not enabled [$insecure Warnings]"
             if [ "$syslog_server" = "" ]; then
-              funct_verbose_message "" fix
-              funct_verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" fix
+              verbose_message "" fix
+              verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" fix
             else
-              funct_verbose_message "" fix
-              funct_verbose_message "esxcli system syslog config set --loghost=$syslog_server" fix
+              verbose_message "" fix
+              verbose_message "esxcli system syslog config set --loghost=$syslog_server" fix
             fi
           fi
         else

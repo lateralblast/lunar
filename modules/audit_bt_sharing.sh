@@ -6,11 +6,11 @@
 
 audit_bt_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Bluetooth services and file sharing"
+    verbose_message "Bluetooth services and file sharing"
     echo "Checking:  Bluetooth services and file sharing"
-    funct_defaults_check /Library/Preferences/com.apple.Bluetooth ControllerPowerState 0 int
-    funct_defaults_check /Library/Preferences/com.apple.Bluetooth PANServices 0 int
-    funct_defaults_check /Library/Preferences/com.apple.Bluetooth BluetoothSystemWakeEnable 0 bool
+    check_osx_defaults /Library/Preferences/com.apple.Bluetooth ControllerPowerState 0 int
+    check_osx_defaults /Library/Preferences/com.apple.Bluetooth PANServices 0 int
+    check_osx_defaults /Library/Preferences/com.apple.Bluetooth BluetoothSystemWakeEnable 0 bool
     backup_file="bluetooth_discover"
     if [ "$audit_mode" != 2 ]; then
     	if [ "$os_release" -ge 12 ]; then

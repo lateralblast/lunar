@@ -6,9 +6,9 @@
 audit_kdm_config () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "Graphics Configuration"
+      verbose_message "Graphics Configuration"
       service_name="svc:/platform/i86pc/kdmconfig:default"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
 }

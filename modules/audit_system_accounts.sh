@@ -14,7 +14,7 @@
 
 audit_system_accounts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    funct_verbose_message "System Accounts that do not have a shell"
+    verbose_message "System Accounts that do not have a shell"
     check_file="/etc/passwd"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  System accounts have valid shells"
@@ -27,17 +27,17 @@ audit_system_accounts () {
             total=`expr $total + 1`
             insecure=`expr $insecure + 1`
             echo "Warning:   System account $user_name has an invalid shell"
-            funct_verbose_message "" fix
+            verbose_message "" fix
             if [ "$os_name" = "FreeBSD" ]; then
-              funct_verbose_message "pw moduser $user_name -s /sbin/nologin" fix
+              verbose_message "pw moduser $user_name -s /sbin/nologin" fix
             else
-              funct_verbose_message "usermod -s /sbin/nologin $user_name" fix
+              verbose_message "usermod -s /sbin/nologin $user_name" fix
             fi
-            funct_verbose_message "" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   System account $user_name to have shell /sbin/nologin"
-            funct_backup_file $check_file
+            backup_file $check_file
             if [ "$os_name" = "FreeBSD" ]; then
               pw moduser $user_name -s /sbin/nologin
             else
@@ -47,7 +47,7 @@ audit_system_accounts () {
         fi
       done
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

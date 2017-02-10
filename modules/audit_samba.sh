@@ -14,32 +14,32 @@ audit_samba () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        funct_verbose_message "Samba Daemons"
+        verbose_message "Samba Daemons"
       fi
       if [ "$os_version" = "10" ]; then
         if [ $os_update -ge 4 ]; then
           service_name="svc:/network/samba"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
         else
           service_name="samba"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
         fi
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_verbose_message "Samba Daemons"
+      verbose_message "Samba Daemons"
       service_name="smb"
-      funct_systemctl_service disable $service_name
-      funct_chkconfig_service $service_name 3 off
-      funct_chkconfig_service $service_name 5 off
-      funct_linux_package uninstall samba
+      check_systemctl_service disable $service_name
+      check_chkconfig_service $service_name 3 off
+      check_chkconfig_service $service_name 5 off
+      check_linux_package uninstall samba
     fi
     for check_dir in /etc /etc/sfw /etc/samba /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
       check_file="$check_dir/smb.conf"
       if [ -f "$check_file" ]; then
-        funct_file_value $check_file "restrict anonymous" eq 2 semicolon after "\[Global\]"
-        funct_file_value $check_file "guest OK" eq no semicolon after "\[Global\]"
-        funct_file_value $check_file "client ntlmv2 auth" eq yes semicolon after "\[Global\]"
+        check_file_value $check_file "restrict anonymous" eq 2 semicolon after "\[Global\]"
+        check_file_value $check_file "guest OK" eq no semicolon after "\[Global\]"
+        check_file_value $check_file "client ntlmv2 auth" eq yes semicolon after "\[Global\]"
       fi
     done
   fi

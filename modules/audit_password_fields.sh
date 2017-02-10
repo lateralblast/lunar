@@ -19,7 +19,7 @@
 
 audit_password_fields () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Password Fields"
+    verbose_message "Password Fields"
     check_file="/etc/shadow"
     empty_count=0
     if [ "$audit_mode" != 2 ]; then
@@ -35,15 +35,15 @@ audit_password_fields () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   No password field for $user_name in $check_file [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "passwd -d $user_name" fix
+          verbose_message "" fix
+          verbose_message "passwd -d $user_name" fix
           if [ "$os_name" = "SunOS" ]; then
-            funct_verbose_message "passwd -N $user_name" fix
+            verbose_message "passwd -N $user_name" fix
           fi
-          funct_verbose_message "" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           echo "Setting:   No password for $user_name"
           passwd -d $user_name
           if [ "$os_name" = "SunOS" ]; then
@@ -61,13 +61,13 @@ audit_password_fields () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Legacy field found in $check_file [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "cat $check_file |grep -v '^+:' > $temp_file" fix
-            funct_verbose_message "cat $temp_file  > $check_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "cat $check_file |grep -v '^+:' > $temp_file" fix
+            verbose_message "cat $temp_file  > $check_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
+            backup_file $check_file
             echo "Setting:  Removing legacy entries from $check_file"
             cat $check_file |grep -v '^+:' > $temp_file
             cat $temp_file  > $check_file
@@ -78,7 +78,7 @@ audit_password_fields () {
         fi
       done
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

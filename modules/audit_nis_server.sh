@@ -14,42 +14,42 @@
 
 audit_nis_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    funct_verbose_message "NIS Server Daemons"
+    verbose_message "NIS Server Daemons"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         service_name="svc:/network/nis/server"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/nis/passwd"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/nis/update"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/nis/xfr"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
       if [ "$os_version" = "11" ]; then
         service_name="svc:/network/nis/server"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
         service_name="svc:/network/nis/domain"
-        funct_service $service_name disabled
+        check_sunos_service $service_name disabled
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_verbose_message "NIS Server Daemons"
+      verbose_message "NIS Server Daemons"
       for service_name in yppasswdd ypserv ypxfrd; do
-        funct_systemctl_service disable $service_name
-        funct_chkconfig_service $service_name 3 off
-        funct_chkconfig_service $service_name 5 off
-        funct_linux_package uninstall $service_name
+        check_systemctl_service disable $service_name
+        check_chkconfig_service $service_name 3 off
+        check_chkconfig_service $service_name 5 off
+        check_linux_package uninstall $service_name
       done
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      funct_file_value $check_file nis_server_enable eq NO hash
-      funct_file_value $check_file nis_ypxfrd_enable eq NO hash
-      funct_file_value $check_file nis_yppasswdd_enable eq NO hash
-      funct_file_value $check_file rpc_ypupdated_enable eq NO hash
-      funct_file_value $check_file nis_client_enable eq NO hash
-      funct_file_value $check_file nis_ypset_enable eq NO hash
+      check_file_value $check_file nis_server_enable eq NO hash
+      check_file_value $check_file nis_ypxfrd_enable eq NO hash
+      check_file_value $check_file nis_yppasswdd_enable eq NO hash
+      check_file_value $check_file rpc_ypupdated_enable eq NO hash
+      check_file_value $check_file nis_client_enable eq NO hash
+      check_file_value $check_file nis_ypset_enable eq NO hash
     fi
   fi
 }

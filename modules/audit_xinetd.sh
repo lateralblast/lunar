@@ -11,7 +11,7 @@ audit_xinetd () {
   if [ "$os_name" = "Linux" ]; then
     check_dir="/etc/xinetd.d"
     if [ -d "$check_dir" ]; then
-      funct_verbose_message "Xinet Services"
+      verbose_message "Xinet Services"
       xinetd_check=`cat $check_dir/* |grep disable |awk '{print $3}' |grep no |head -1 |wc -l`
       if [ "$xinetd_check" = "1" ]; then
         for service_name in amanda amandaidx amidxtape auth chargen-dgram \
@@ -19,11 +19,11 @@ audit_xinetd () {
           echo-dgram echo-stream eklogin ekrb5-telnet gssftp klogin krb5-telnet \
           kshell ktalk ntalk rexec rlogin rsh rsync talk tcpmux-server telnet \
           tftp time-dgram time-stream uucp; do
-          funct_xinetd_service $service_name disable yes
+          check_xinetd_service $service_name disable yes
         done
       else
-        funct_chkconfig_service xinetd 3 off
-        funct_chkconfig_service xinetd 5 off
+        check_chkconfig_service xinetd 3 off
+        check_chkconfig_service xinetd 5 off
       fi
     fi
   fi

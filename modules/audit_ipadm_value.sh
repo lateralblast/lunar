@@ -33,9 +33,9 @@ audit_ipadm_value () {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Value of \"$ipadm_name $ipadm_property\" not set to \"$correct_value\" [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "$command_line" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "$command_line" fix
+          verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Value of \"$ipadm_name $ipadm_property\" to \"$correct_value\""

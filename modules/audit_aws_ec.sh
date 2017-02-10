@@ -15,9 +15,9 @@ audit_aws_ec () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   ElastiCache $cache is not Multi-AZ enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws elasticache modify-replication-group --region $aws_region --replication-group-id $cache --automatic-failover-enabled --apply-immediately" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws elasticache modify-replication-group --region $aws_region --replication-group-id $cache --automatic-failover-enabled --apply-immediately" fix
+      verbose_message "" fix
     fi
   done
 }

@@ -5,7 +5,7 @@
 
 audit_safari_auto_run() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Safari Auto-run"
-    funct_defaults_check com.apple.Safari AutoOpenSafeDownloads 0 int
+    verbose_message "Safari Auto-run"
+    check_osx_defaults com.apple.Safari AutoOpenSafeDownloads 0 int
   fi
 }

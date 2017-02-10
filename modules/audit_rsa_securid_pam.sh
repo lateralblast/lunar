@@ -20,7 +20,7 @@ audit_rsa_securid_pam () {
           check_value=`cat $check_file |grep "$search_string" |awk '{print  $4}'`
         fi
       fi
-      funct_verbose_message "RSA SecurID PAM Agent Configuration"
+      verbose_message "RSA SecurID PAM Agent Configuration"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  RSA SecurID PAM Agent is enabled for sudo"
         total=`expr $total + 1`
@@ -28,20 +28,20 @@ audit_rsa_securid_pam () {
           insecure=`expr $insecure + 1`
           if [ "$audit_mode" = 1 ]; then
             echo "Warning:   RSA SecurID PAM Agent is not enabled for sudo [$insecure Warnings]"
-            funct_verbose_message "" fix
+            verbose_message "" fix
             if [ "$os_name" = "Linux" ]; then
-              funct_verbose_message "cat $check_file |sed 's/^auth/#\&/' > $temp_file" fix
-              funct_verbose_message "cat $temp_file > $check_file" fix
-              funct_verbose_message "echo \"auth\trequired\tpam_securid.so reserve\" >> $check_file" fix
-              funct_verbose_message "rm $temp_file" fix
+              verbose_message "cat $check_file |sed 's/^auth/#\&/' > $temp_file" fix
+              verbose_message "cat $temp_file > $check_file" fix
+              verbose_message "echo \"auth\trequired\tpam_securid.so reserve\" >> $check_file" fix
+              verbose_message "rm $temp_file" fix
             fi
             if [ "$os_name" = "SunOS" ]; then
-              funct_verbose_message "echo \"sudo\tauth\trequired\tpam_securid.so reserve\" >> $check_file" fix
+              verbose_message "echo \"sudo\tauth\trequired\tpam_securid.so reserve\" >> $check_file" fix
             fi
-            funct_verbose_message "" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
+            backup_file $check_file
             echo "Fixing:    Configuring RSA SecurID PAM Agent for sudo"
             if [ "$os_name" = "Linux" ]; then
               cat $check_file |sed 's/^auth/#\&/' > $temp_file
@@ -64,7 +64,7 @@ audit_rsa_securid_pam () {
           fi
         fi
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
   fi

@@ -226,7 +226,7 @@
 # 2.0.7 Wed  9 Oct 2013 09:56:16 EST
 # Fixed id check under Solaris
 # 2.0.8 Wed  9 Oct 2013 10:55:38 EST
-# Fixed call to funct_inetd_service
+# Fixed call to check_inetd_service
 # 2.0.9 Wed  9 Oct 2013 10:56:44 EST
 # Fixed source on Solaris
 # 2.1.0 Wed  9 Oct 2013 11:19:38 EST
@@ -1221,3 +1221,5 @@
 # Updates for OS X 10.12
 # 7.0.3: Fri 10 Feb 2017 08:25:51 AEDT
 # Bug fixes and documentation updates
+# 7.0.4: Fri 10 Feb 2017 11:52:39 AEDT
+# Code cleanup

@@ -7,7 +7,7 @@
 
 audit_reserved_ids () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Reserved IDs"
+    verbose_message "Reserved IDs"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi
@@ -32,7 +32,7 @@ audit_reserved_ids () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Reserved IDs"
+    verbose_message "Reserved IDs"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi

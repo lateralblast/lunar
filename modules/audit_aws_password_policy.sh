@@ -16,23 +16,23 @@ audit_aws_password_policy () {
     total=`expr $total + 1`
 		insecure=`expr $insecure + 1`
     echo "Warning:   No password policy exists [$insecure Warnings]"
-    funct_verbose_message "" fix
-    funct_verbose_message "aws iam update-account-password-policy --require-uppercase-characters" fix
-    funct_verbose_message "aws iam update-account-password-policy --require-lowercase-characters" fix
-    funct_verbose_message "aws iam update-account-password-policy --require-symbols" fix
-    funct_verbose_message "aws iam update-account-password-policy --require-numbers" fix
-    funct_verbose_message "aws iam update-account-password-policy --minimum-password-length 14" fix
-    funct_verbose_message "aws iam update-account-password-policy --password-reuse-prevention 24" fix
-    funct_verbose_message "aws iam update-account-password-policy --max-password-age 90" fix
-    funct_verbose_message "" fix
+    verbose_message "" fix
+    verbose_message "aws iam update-account-password-policy --require-uppercase-characters" fix
+    verbose_message "aws iam update-account-password-policy --require-lowercase-characters" fix
+    verbose_message "aws iam update-account-password-policy --require-symbols" fix
+    verbose_message "aws iam update-account-password-policy --require-numbers" fix
+    verbose_message "aws iam update-account-password-policy --minimum-password-length 14" fix
+    verbose_message "aws iam update-account-password-policy --password-reuse-prevention 24" fix
+    verbose_message "aws iam update-account-password-policy --max-password-age 90" fix
+    verbose_message "" fix
 	else
-    funct_aws_password_policy_check RequireUppercaseCharacters true "--require-uppercase-characters"
-    funct_aws_password_policy_check RequireLowercaseCharacters true "--require-lowercase-characters"
-    funct_aws_password_policy_check RequireSymbols true "--require-symbols"
-    funct_aws_password_policy_check RequireNumbers true "--require-numbers"
-    funct_aws_password_policy_check MinimumPasswordLength 14 "--minimum-password-length 14"
-    funct_aws_password_policy_check PasswordReusePrevention 24 "--password-reuse-prevention 24"
-    funct_aws_password_policy_check MaxPasswordAge 90 "--max-password-age 90"
+    check_aws_password_policy RequireUppercaseCharacters true "--require-uppercase-characters"
+    check_aws_password_policy RequireLowercaseCharacters true "--require-lowercase-characters"
+    check_aws_password_policy RequireSymbols true "--require-symbols"
+    check_aws_password_policy RequireNumbers true "--require-numbers"
+    check_aws_password_policy MinimumPasswordLength 14 "--minimum-password-length 14"
+    check_aws_password_policy PasswordReusePrevention 24 "--password-reuse-prevention 24"
+    check_aws_password_policy MaxPasswordAge 90 "--max-password-age 90"
 	fi
 }
 

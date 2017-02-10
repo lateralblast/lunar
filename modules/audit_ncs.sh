@@ -5,7 +5,7 @@
 
 audit_ncs () {
   if [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "NCS"
-    funct_itab_check ncs off
+    verbose_message "NCS"
+    check_itab ncs off
   fi
 }

@@ -16,12 +16,12 @@ audit_system_auth_nullok () {
             if [ "$audit_mode" = "1" ]; then
               insecure=`expr $insecure + 1`
               echo "Warning:   Found nullok entry in $check_file [$insecure Warnings]"
-              funct_verbose_message "cp $check_file $temp_file" fix
-              funct_verbose_message "cat $temp_file |sed 's/ nullok//' > $check_file" fix
-              funct_verbose_message "rm $temp_file" fix
+              verbose_message "cp $check_file $temp_file" fix
+              verbose_message "cat $temp_file |sed 's/ nullok//' > $check_file" fix
+              verbose_message "rm $temp_file" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
+              backup_file $check_file
               echo "Setting:   Removing nullok entries from $check_file"
               cp $check_file $temp_file
               cat $temp_file |sed 's/ nullok//' > $check_file
@@ -37,7 +37,7 @@ audit_system_auth_nullok () {
       done
     else
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       done 
     fi
   fi

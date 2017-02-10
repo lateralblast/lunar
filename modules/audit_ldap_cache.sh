@@ -6,15 +6,15 @@
 audit_ldap_cache () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "LDAP Client"
+      verbose_message "LDAP Client"
       service_name="svc:/network/ldap/client"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "LDAP Client"
+    verbose_message "LDAP Client"
     service_name="ldap"
-    funct_chkconfig_service $service_name 3 off
-    funct_chkconfig_service $service_name 5 off
+    check_chkconfig_service $service_name 3 off
+    check_chkconfig_service $service_name 5 off
   fi
 }

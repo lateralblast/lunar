@@ -14,9 +14,9 @@ audit_aws_rec_vpcs () {
       if [ ! "$name" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   AWS VPC $vpc does not have a Name tag [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
+        verbose_message "" fix
       else
         check=`echo $name |grep "^vpc-$valid_tag_string"`
         if [ "$check" ]; then

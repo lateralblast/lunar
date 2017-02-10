@@ -5,8 +5,8 @@
 
 audit_guest_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Guest account file sharing"
-    funct_defaults_check /Library/Preferences/com.apple.AppleFileServer guestAccess no bool
-    funct_defaults_check /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess no bool
+    verbose_message "Guest account file sharing"
+    check_osx_defaults /Library/Preferences/com.apple.AppleFileServer guestAccess no bool
+    check_osx_defaults /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess no bool
   fi
 }

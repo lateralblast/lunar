@@ -6,7 +6,7 @@
 audit_ftp_logging () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "FTPD Daemon Logging"
+      verbose_message "FTPD Daemon Logging"
       get_command="svcprop -p inetd_start/exec svc:/network/ftp:default"
       check_value=`$get_command |grep "\-d" | wc -l`
       file_header="ftpd_logging"
@@ -19,9 +19,9 @@ audit_ftp_logging () {
         if [ "$check_value" -eq 0 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   FTP daemon logging not enabled [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "inetadm -m svc:/network/ftp exec=\"/usr/sbin/in.ftpd -a -l -d\"" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "inetadm -m svc:/network/ftp exec=\"/usr/sbin/in.ftpd -a -l -d\"" fix
+          verbose_message "" fix
         else
           secure=`expr $secure + 1`
           echo "Secure:    FTP daemon logging enabled [$secure Passes]"
@@ -47,20 +47,20 @@ audit_ftp_logging () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "FTPD Daemon Message"
-    funct_rpm_check vsftpd
+    verbose_message "FTPD Daemon Message"
+    check_rpm vsftpd
     if [ "$rpm_check" = "vsftpd" ]; then
       check_file="/etc/vsftpd.conf"
       if [ -f "$check_file" ]; then
-        funct_file_value $check_file log_ftp_protocol eq YES hash
-        funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
-        funct_check_perms $check_file 0600 root root
+        check_file_value $check_file log_ftp_protocol eq YES hash
+        check_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
+        check_file_perms $check_file 0600 root root
       fi
       check_file="/etc/vsftpd/vsftpd.conf"
       if [ -f "$check_file" ]; then
-        funct_file_value $check_file log_ftp_protocol eq YES hash
-        funct_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
-        funct_check_perms $check_file 0600 root root
+        check_file_value $check_file log_ftp_protocol eq YES hash
+        check_file_value $check_file ftpd_banner eq "Authorized users only. All activity may be monitored and reported." hash
+        check_file_perms $check_file 0600 root root
       fi
     fi
   fi

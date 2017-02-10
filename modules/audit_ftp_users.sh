@@ -18,9 +18,9 @@ audit_ftp_users () {
             echo "Warning:   User $user_name not in $check_file [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
+            backup_file $check_file
             echo "Setting:   User $user_name to not be allowed ftp access"
-            funct_append_file $check_file $user_name hash
+            check_append_file $check_file $user_name hash
           fi
         else
           if [ "$audit_mode" = 1 ]; then
@@ -30,7 +30,7 @@ audit_ftp_users () {
         fi
       done
       if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then
@@ -48,9 +48,9 @@ audit_ftp_users () {
               echo "Warning:   User $user_name not in $check_file [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
+              backup_file $check_file
               echo "Setting:   User $user_name to not be allowed ftp access"
-              funct_append_file $check_file $user_name hash
+              check_append_file $check_file $user_name hash
             fi
           else
             if [ "$audit_mode" = 1 ]; then
@@ -61,7 +61,7 @@ audit_ftp_users () {
         fi
       done
       if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
@@ -78,9 +78,9 @@ audit_ftp_users () {
               echo "Warning:   User $user_name not in $check_file [$insecure Warnings]"
             fi
             if [ "$audit_mode" = 0 ]; then
-              funct_backup_file $check_file
+              backup_file $check_file
               echo "Setting:   User $user_name to not be allowed ftp access"
-              funct_append_file $check_file $user_name hash
+              check_append_file $check_file $user_name hash
             fi
           else
             if [ "$audit_mode" = 1 ]; then
@@ -91,7 +91,7 @@ audit_ftp_users () {
         fi
       done
       if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
   fi

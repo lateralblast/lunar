@@ -15,7 +15,7 @@
 audit_filesystem_partitions() {
   if [ "$os_name" = "Linux" ]; then
     for filesystem in /tmp /var /var/log /var/log/audit /home; do
-      funct_verbose_message "Filesystem $filesystem is a separate partition"
+      verbose_message "Filesystem $filesystem is a separate partition"
       mount_test=`mount |awk '{print $3}' |grep "^filesystem$"`
       if [ "$mount_test" != "$filesystem" ]; then
         if [ "$audit_mode" != "2" ]; then

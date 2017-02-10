@@ -16,9 +16,9 @@
 audit_super_users() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$os_name" = "AIX" ]; then
-      funct_chuser_check su true sugroups system root
+      check_chuser su true sugroups system root
     else
-      funct_verbose_message "Accounts with UID 0"
+      verbose_message "Accounts with UID 0"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  Super users other than root"
         total=`expr $total + 1`
@@ -27,16 +27,16 @@ audit_super_users() {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   UID 0 for $user_name [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "userdel $user_name" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "userdel $user_name" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             check_file="/etc/shadow"
-            funct_backup_file $check_file
+            backup_file $check_file
             check_file="/etc/passwd"
             backup_file="$work_dir$check_file"
-            funct_backup_file $check_file
+            backup_file $check_file
             echo "Removing:  Account $user_name it UID 0"
             userdel $user_name
           fi
@@ -49,9 +49,9 @@ audit_super_users() {
         fi
       else
         check_file="/etc/shadow"
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
         check_file="/etc/passwd"
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
     fi
   fi

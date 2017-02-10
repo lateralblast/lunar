@@ -9,7 +9,7 @@
 
 audit_chkconfig () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Miscellaneous Services"
+    verbose_message "Miscellaneous Services"
     for service_name in wu-ftpd ftp vsftpd aaeventd\
       tftp acpid amd arptables_jg arpwatch atd netfs irda isdn \
       bluetooth capi conman cpuspeed cryrus-imapd dc_client \
@@ -25,9 +25,9 @@ audit_chkconfig () {
       saslauthd powerd raw rexec rlogin rpasswdd openct\
       ipxmount joystick esound evms fam gpm gssd pcscd\
       tog-pegasus tux wpa_supplicant zebra ncpfs; do
-      funct_chkconfig_service $service_name 3 off
-      funct_chkconfig_service $service_name 5 off
-      funct_systemctl_service disable $service_name
+      check_chkconfig_service $service_name 3 off
+      check_chkconfig_service $service_name 5 off
+      check_systemctl_service disable $service_name
     done
   fi
 }

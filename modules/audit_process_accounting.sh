@@ -5,7 +5,7 @@
 
 audit_process_accounting () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Process Accounting"
+    verbose_message "Process Accounting"
     check_file="/etc/rc3.d/S99acct"
     init_file="/etc/init.d/acct"
     log_file="$work_dir/acct.log"

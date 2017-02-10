@@ -16,7 +16,7 @@
 
 audit_firewall_setting () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Firewall Settings"
-    funct_defaults_check /Library/Preferences/com.apple.alf globalstate 1 int
+    verbose_message "Firewall Settings"
+    check_osx_defaults /Library/Preferences/com.apple.alf globalstate 1 int
   fi
 }

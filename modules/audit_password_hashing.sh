@@ -17,7 +17,7 @@ audit_password_hashing () {
     fi
     if [ "$os_name" = "Linux" ]; then
       if [ -f "/usr/sbin/authconfig" ]; then
-        funct_verbose_message "Password Hashing"
+        verbose_message "Password Hashing"
         if [ "$audit_mode" != 2 ]; then
           log_file="hashing.log"
           echo "Checking:  Password hashing is set to $hashing"
@@ -27,9 +27,9 @@ audit_password_hashing () {
             if [ "$audit_mode" = "1" ]; then
               insecure=`expr $insecure + 1`
               echo "Warning:   Password hashing not set to $hashing [$insecure Warnings]"
-              funct_verbose_message "" fix
-              funct_verbose_message "authconfig --passalgo=$hashing" fix
-              funct_verbose_message "" fix
+              verbose_message "" fix
+              verbose_message "authconfig --passalgo=$hashing" fix
+              verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
               echo "Setting:   Password hashing to $hashing"

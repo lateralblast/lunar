@@ -6,7 +6,7 @@
 audit_core_limit () {
   if [ "$os_name" = "Darwin" ]; then
     total=`expr $total + 1`
-    funct_verbose_message "Core dump limits"
+    verbose_message "Core dump limits"
     log_file="corelimit"
     backup_file="$work_dir/$log_file"
     current_value=`launchctl limit core |awk '{print $3}'`
@@ -15,9 +15,9 @@ audit_core_limit () {
         if [ "$audit_mode" = 0 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Core dumps unlimited [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "launchctl limit core 0" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "launchctl limit core 0" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Setting:   Core dump limits"

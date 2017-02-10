@@ -5,9 +5,9 @@
 
 audit_rhosts_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Rhosts Files"
+    verbose_message "Rhosts Files"
     for check_file in /.rhosts /.shosts /root/.rhosts /root/.shosts /etc/hosts.equiv; do
-      funct_file_exists $check_file no
+      check_file_exists $check_file no
     done
   fi
 }

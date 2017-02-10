@@ -9,7 +9,7 @@
 audit_software_update() {
   if [ "$os_name" = "VMkernel" ]; then
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"
-    funct_verbose_message "Software Update"
+    verbose_message "Software Update"
     current_update=`esxcli software profile get 2>&1 |head -1`
     log_file="softwareupdate.log"
     backup_file="$work_dir/$log_file"
@@ -23,9 +23,9 @@ audit_software_update() {
         if [ "$audit_mode" = 1 ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   Software is not up to date (Current: $current_update Available: $available_update) [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "esxcli software profile install -d $vmware_depot -p $available_update --ok-to-remove" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "esxcli software profile install -d $vmware_depot -p $available_update --ok-to-remove" fix
+          verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -46,14 +46,14 @@ audit_software_update() {
   fi
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_release" -ge 12 ]; then
-      funct_defaults_check /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled 1 int
-      funct_defaults_check /Library/Preferences/com.apple.commerce AutoUpdate 1 bool
-      funct_defaults_check /Library/Preferences/com.apple.SoftwareUpdate ConfigDataInstall 1 bool
-      funct_defaults_check /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 1 bool
-      funct_defaults_check /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired 1 bool
+      check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled 1 int
+      check_osx_defaults /Library/Preferences/com.apple.commerce AutoUpdate 1 bool
+      check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate ConfigDataInstall 1 bool
+      check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 1 bool
+      check_osx_defaults /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired 1 bool
     else
       actual_status=`sudo softwareupdate --schedule |awk '{print $4}'`
-      funct_verbose_message "Software Autoupdate"
+      verbose_message "Software Autoupdate"
       log_file="softwareupdate.log"
       correct_status="on"
       if [ "$audit_mode" != 2 ]; then
@@ -64,9 +64,9 @@ audit_software_update() {
             insecure=`expr $insecure + 1`
             echo "Warning:   Software Update is not $correct_status [$insecure Warnings]"
             command_line="sudo softwareupdate --schedule $correct_status"
-            funct_verbose_message "" fix
-            funct_verbose_message "$command_line" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "$command_line" fix
+            verbose_message "" fix
           else
             if [ "$audit_mode" = 0 ]; then
               log_file="$work_dir/$log_file"

@@ -13,7 +13,7 @@
 audit_sticky_bit () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$do_fs" = 1 ]; then
-      funct_verbose_message "World Writable Directories and Sticky Bits"
+      verbose_message "World Writable Directories and Sticky Bits"
       total=`expr $total + 1`
       if [ "$os_version" = "10" ]; then
         if [ "$audit_mode" != 2 ]; then
@@ -28,9 +28,9 @@ audit_sticky_bit () {
           if [ "$audit_mode" = 1 ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Sticky bit not set on $check_dir [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "chmod +t $check_dir" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "chmod +t $check_dir" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Sticky bit on $check_dir"

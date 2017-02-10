@@ -6,8 +6,8 @@
 audit_dhcprd() {
   if [ "$dhcprd_disable" = "yes" ]; then
     if [ "$os_name" = "AIX" ]; then
-      funct_verbose_message "DHCP Relay Daemon"
-      funct_rctcp_check dhcprd off
+      verbose_message "DHCP Relay Daemon"
+      check_rctcp dhcprd off
     fi
   fi
 }

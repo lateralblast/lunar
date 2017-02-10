@@ -17,9 +17,9 @@ audit_aws_elb () {
     if [ ! "$check" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   ELB $elb does not have access logging enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"AccessLog\\\":{\\\"Enabled\\\":true,\\\"EmitInterval\\\":60,\\\"S3BucketName\\\":\\\"elb-logging-bucket\\\"}}\"" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"AccessLog\\\":{\\\"Enabled\\\":true,\\\"EmitInterval\\\":60,\\\"S3BucketName\\\":\\\"elb-logging-bucket\\\"}}\"" fix
+      verbose_message "" fix
     else
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has access logging enabled [$secure Passes]"
@@ -37,7 +37,7 @@ audit_aws_elb () {
     # Ensure ELB SGs do not have port 80 open to the world
     sgs=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].SecurityGroups" --output text`
     for sg in $sgs; do
-      funct_aws_open_port_check $sg 80 tcp HTTP ELB $elb
+      check_aws_open_port $sg 80 tcp HTTP ELB $elb
     done
     # Ensure no deprecated ciphers of protocols are being used
     policies=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb  --query "PolicyDescriptions[].PolicyName" --output text`

@@ -30,11 +30,11 @@ audit_aws_iam () {
 	else
 		insecure=`expr $insecure + 1`
     echo "Warning:   IAM Master role $aws_iam_master_role does not exist [$insecure Warnings]"
-    funct_verbose_message "" fix
-    funct_verbose_message "cd aws" fix
-    funct_verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
-    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://iam-master-policy.json" fix
-    funct_verbose_message "" fix
+    verbose_message "" fix
+    verbose_message "cd aws" fix
+    verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
+    verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://iam-master-policy.json" fix
+    verbose_message "" fix
 	fi
   # Check there is an IAM manager role
 	total=`expr $total + 1`
@@ -45,11 +45,11 @@ audit_aws_iam () {
 	else
 		insecure=`expr $insecure + 1`
     echo "Warning:   IAM Manager role $aws_iam_manager_role does not exist [$insecure Warnings]"
-    funct_verbose_message "" fix
-    funct_verbose_message "cd aws" fix
-    funct_verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
-    funct_verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
-    funct_verbose_message "" fix
+    verbose_message "" fix
+    verbose_message "cd aws" fix
+    verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
+    verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
+    verbose_message "" fix
 	fi
   # Check groups have members
   groups=`aws iam list-groups --query 'Groups[].GroupName' --output text`
@@ -75,9 +75,9 @@ audit_aws_iam () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   IAM user $user is not active [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws iam delete-user --user-name $user" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws iam delete-user --user-name $user" fix
+      verbose_message "" fix
     fi
     # Check users do not have attached policies, they should be members of groups which have those policies
     policies=`aws iam list-attached-user-policies --user-name $user --query "AttachedPolicies[].PolicyArn" --output text`
@@ -86,9 +86,9 @@ audit_aws_iam () {
         total=`expr $total + 1`
         insecure=`expr $insecure + 1`
         echo "Warning:   IAM user $user has attached policy $policy [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws iam detach-user-policy --user-name $user --policy-arn $policy" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws iam detach-user-policy --user-name $user --policy-arn $policy" fix
+        verbose_message "" fix
       done
     else
       total=`expr $total + 1`

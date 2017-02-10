@@ -12,19 +12,19 @@
 
 audit_selinux () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "SELinux"
+    verbose_message "SELinux"
     check_file="/etc/selinux/config"
-    funct_file_value $check_file SELINUX eq enforcing hash
-    funct_file_value $check_file SELINUXTYPE eq targeted hash
-    funct_check_perms $check_file 0400 root root
+    check_file_value $check_file SELINUX eq enforcing hash
+    check_file_value $check_file SELINUXTYPE eq targeted hash
+    check_file_perms $check_file 0400 root root
     for check_file in /etc/grub.conf /boot/grub/grub.cfg; do
       if [ -e "$check_file" ]; then
-        funct_check_perms $check_file 0400 root root
-        funct_file_value $check_file selinux eq 1 hash
-        funct_file_value $check_file enforcing eq 1 hash
+        check_file_perms $check_file 0400 root root
+        check_file_value $check_file selinux eq 1 hash
+        check_file_value $check_file enforcing eq 1 hash
       fi
     done
-    funct_rpm_check uninstall setroubleshoot
-    funct_rpm_check uninstall mctrans
+    check_rpm uninstall setroubleshoot
+    check_rpm uninstall mctrans
   fi
 }

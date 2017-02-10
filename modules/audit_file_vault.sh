@@ -5,7 +5,7 @@
 
 audit_file_vault() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "File Vault"
+    verbose_message "File Vault"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  File Vault is enabled"
       actual_value=`diskutil cs list`
@@ -16,12 +16,12 @@ audit_file_vault() {
           echo "Warning:   File Vault is not enabled [$insecure Warnings]"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-          funct_verbose_message "" fix
-          funct_verbose_message "Open System Preferences" fix
-          funct_verbose_message "Select Security & Privacy" fix
-          funct_verbose_message "Select FileVault" fix
-          funct_verbose_message "Select Turn on FileVault" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "Open System Preferences" fix
+          verbose_message "Select Security & Privacy" fix
+          verbose_message "Select FileVault" fix
+          verbose_message "Select Turn on FileVault" fix
+          verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -31,12 +31,12 @@ audit_file_vault() {
         fi
       fi
     else
-      funct_verbose_message "" fix
-      funct_verbose_message "Open System Preferences" fix
-      funct_verbose_message "Select Security & Privacy" fix
-      funct_verbose_message "Select FileVault" fix
-      funct_verbose_message "Select Turn on FileVault" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "Open System Preferences" fix
+      verbose_message "Select Security & Privacy" fix
+      verbose_message "Select FileVault" fix
+      verbose_message "Select Turn on FileVault" fix
+      verbose_message "" fix
     fi
   fi
 }

@@ -15,29 +15,29 @@
 audit_dns_server () {
   if [ "$named_disable" = "yes" ]; then
     if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-      funct_verbose_message "DNS Server"
+      verbose_message "DNS Server"
       if [ "$os_name" = "AIX" ]; then
-        funct_rctcp_check named off
+        check_rctcp named off
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
           service_name="svc:/network/dns/server:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
         for service_name in dnsmasq named bind9; do
-          funct_systemctl_service disable $service_name
-          funct_chkconfig_service $service_name 3 off
-          funct_chkconfig_service $service_name 5 off
+          check_systemctl_service disable $service_name
+          check_chkconfig_service $service_name 3 off
+          check_chkconfig_service $service_name 5 off
         done
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-          funct_linux_package uninstall bind
+          check_linux_package uninstall bind
         fi
       fi
       if [ "$os_name" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
-        funct_file_value $check_file named_enable eq NO hash
+        check_file_value $check_file named_enable eq NO hash
       fi
     fi
   fi

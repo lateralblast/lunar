@@ -6,7 +6,7 @@
 audit_login_records () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "Login Records"
+      verbose_message "Login Records"
       audit_logadm_value loginlog none
     fi
   fi

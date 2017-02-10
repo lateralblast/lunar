@@ -9,7 +9,7 @@ audit_create_class () {
   if [ "$os_name" = "SunOS" ]; then
     check_file="/etc/security/audit_class"
     if [ -f "$check_file" ]; then
-      funct_verbose_message "Audit Classes"
+      verbose_message "Audit Classes"
       class_check=`cat $check_file |grep "Security Lockdown"`
       total=`expr $total + 1`
       if [ `expr "$class_check" : "[A-z]"` != 1 ]; then

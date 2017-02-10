@@ -14,9 +14,9 @@ audit_aws_rec_elb () {
     if [ ! "$check" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   ELB $elb does not have connection draining enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"ConnectionDraining\\\":{\\\"Enabled\\\":true, \\\"Timeout\\\":300}}\"" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"ConnectionDraining\\\":{\\\"Enabled\\\":true, \\\"Timeout\\\":300}}\"" fix
+      verbose_message "" fix
     else
       secure=`expr $secure + 1`
       echo "Secure:    ELB $elb has connection draining [$secure Passes]"

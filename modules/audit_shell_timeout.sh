@@ -7,7 +7,7 @@ audit_shell_timeout () {
   if [ "$os_name" = "VMkernel" ]; then
     for test in ESXiShellInteractiveTimeOut ESXiShellTimeOut; do
       timeout="3600"
-      funct_verbose_message "Timeoute value for $test"
+      verbose_message "Timeoute value for $test"
       total=`expr $total + 1`
       backup_file="$work_dir/$test"
       current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /UserVars/$test |cut -f2 -d,`
@@ -21,9 +21,9 @@ audit_shell_timeout () {
           if [ "$audit_mode" = "1" ]; then
             insecure=`expr $insecure + 1`
             echo "Warning:   Timeout value for $test not set to $timeout [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "esxcli system settings advanced set -o /UserVars/$test -i $timeout" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "esxcli system settings advanced set -o /UserVars/$test -i $timeout" fix
+            verbose_message "" fix
           fi
         else
           if [ "$audit_mode" = "1" ]; then

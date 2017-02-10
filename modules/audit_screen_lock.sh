@@ -7,9 +7,9 @@
 
 audit_screen_lock () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Screen lock"
-    funct_defaults_check com.apple.screensaver askForPassword 1 int currentHost
-    funct_defaults_check com.apple.screensaver idleTime 900 int currentHost
+    verbose_message "Screen lock"
+    check_osx_defaults com.apple.screensaver askForPassword 1 int currentHost
+    check_osx_defaults com.apple.screensaver idleTime 900 int currentHost
     if [ "$audit_mode" != 2 ]; then
       if [ -f "~/Library/Preferences/com.apple.dock" ]; then
         echo "Checking:  No screensaver disable hot corners are enabled"
@@ -21,12 +21,12 @@ audit_screen_lock () {
             echo "Warning:   Screensaver disable hot corner is enabled [$insecure Warnings]"
           fi
           if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-            funct_verbose_message "" fix
-            funct_verbose_message "Open System Preferences" fix
-            funct_verbose_message "Mission Control" fix
-            funct_verbose_message "Hot Corners" fix
-            funct_verbose_message "Remove any corners which are set to Disable Screen Saver" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "Open System Preferences" fix
+            verbose_message "Mission Control" fix
+            verbose_message "Hot Corners" fix
+            verbose_message "Remove any corners which are set to Disable Screen Saver" fix
+            verbose_message "" fix
           fi
         else
           if [ "$audit_mode" = 1 ]; then
@@ -43,12 +43,12 @@ audit_screen_lock () {
         fi
       fi
     else
-      funct_verbose_message "" fix
-      funct_verbose_message "Open System Preferences" fix
-      funct_verbose_message "Mission Control" fix
-      funct_verbose_message "Hot Corners" fix
-      funct_verbose_message "Remove any corners which are set to Disable Screen Saver" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "Open System Preferences" fix
+      verbose_message "Mission Control" fix
+      verbose_message "Hot Corners" fix
+      verbose_message "Remove any corners which are set to Disable Screen Saver" fix
+      verbose_message "" fix
     fi
   fi
 }

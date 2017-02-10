@@ -12,24 +12,24 @@
 audit_tftp_server () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "TFTP Server Daemon"
+      verbose_message "TFTP Server Daemon"
       service_name="svc:/network/tftp/udp6:default"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
       service_name="svc:/network/tftp/udp4:default"
-      funct_service $service_name disabled
-      funct_check_perms /tftpboot 0744 root root
-      funct_check_perms /etc/netboot 0744 root root
+      check_sunos_service $service_name disabled
+      check_file_perms /tftpboot 0744 root root
+      check_file_perms /etc/netboot 0744 root root
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "TFTP Server Daemon"
-    funct_chkconfig_service tftp 3 off
-    funct_chkconfig_service tftp 5 off
-    funct_check_perms /tftpboot 0744 root root
-    funct_check_perms /var/tftpboot 0744 root root
+    verbose_message "TFTP Server Daemon"
+    check_chkconfig_service tftp 3 off
+    check_chkconfig_service tftp 5 off
+    check_file_perms /tftpboot 0744 root root
+    check_file_perms /var/tftpboot 0744 root root
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-      funct_systemctl_service disable tftp.socket
-      funct_linux_package uninstall tftp-server
+      check_systemctl_service disable tftp.socket
+      check_linux_package uninstall tftp-server
     fi
   fi
 }

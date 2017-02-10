@@ -20,14 +20,14 @@ audit_docker_network () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
-      funct_verbose_message "Docker Network"
+      verbose_message "Docker Network"
       backup_file="network_bridge"
       new_state="false"
       old_state="true"
       total=`expr $total + 1`
       if [ "$audit_mode" != 2 ]; then
-        funct_dockerd_check notequal config NetworkMode "NetworkMode=host"
-        funct_dockerd_check notinclude config Ports "0.0.0.0"
+        check_dockerd notequal config NetworkMode "NetworkMode=host"
+        check_dockerd notinclude config Ports "0.0.0.0"
         total=`expr $total + 1`
         echo "Checking:  Docker default bridge"
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'docker0'`
@@ -60,8 +60,8 @@ audit_docker_network () {
         echo "Setting:   Docker network bridge enabled to $old_state"
         /usr/bin/dockerd --icc=$old_state
       fi
-      funct_dockerd_check unused daemon iptables true
-      funct_dockerd_check used daemon opt encrypted
+      check_dockerd unused daemon iptables true
+      check_dockerd used daemon opt encrypted
     fi
   fi
 }

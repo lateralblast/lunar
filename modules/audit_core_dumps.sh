@@ -14,7 +14,7 @@
 
 audit_core_dumps () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    funct_verbose_message "Core Dumps"
+    verbose_message "Core Dumps"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" != "6" ]; then
         cores_dir="/var/cores"
@@ -106,7 +106,7 @@ audit_core_dumps () {
           fi
         fi
         if [ "$audit_mode" = 2 ]; then
-          funct_restore_file $check_file $restore_dir
+          restore_file $check_file $restore_dir
           restore_file="$restore_dir$check_file"
           if [ -f "$restore_file" ]; then
             coreadm -u
@@ -115,19 +115,19 @@ audit_core_dumps () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      funct_verbose_message "Core Dumps"
+      verbose_message "Core Dumps"
       for service_name in kdump; do
-        funct_chkconfig_service $service_name 3 off
-        funct_chkconfig_service $service_name 5 off
+        check_chkconfig_service $service_name 3 off
+        check_chkconfig_service $service_name 5 off
       done
       check_file="/etc/security/limits.conf"
-      funct_append_file $check_file "* hard core 0"
+      check_append_file $check_file "* hard core 0"
       check_file="/etc/sysctl.conf"
-      funct_file_value $check_file fs.suid_dumpable eq 0 hash
+      check_file_value $check_file fs.suid_dumpable eq 0 hash
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/sysctl.conf"
-      funct_file_value $check_file kern.coredump eq 0 hash
+      check_file_value $check_file kern.coredump eq 0 hash
     fi
   fi
 }

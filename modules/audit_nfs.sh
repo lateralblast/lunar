@@ -14,53 +14,53 @@
 audit_nfs () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$nfsd_disable" = "yes" ]; then
-      funct_verbose_message "NFS Services"
+      verbose_message "NFS Services"
       if [ "$os_name" = "AIX" ]; then
-        funct_itab_check rcnfs off
+        check_itab rcnfs off
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
           service_name="svc:/network/nfs/mapid:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
           service_name="svc:/network/nfs/status:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
           service_name="svc:/network/nfs/cbd:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
           service_name="svc:/network/nfs/nlockmgr:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
           service_name="svc:/network/nfs/client:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
           service_name="svc:/network/nfs/server:default"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
         fi
         if [ "$os_version" != "11" ]; then
           service_name="nfs.server"
-          funct_service $service_name disabled
+          check_sunos_service $service_name disabled
         fi
         check_file="/etc/system"
-        funct_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
+        check_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
       fi
       if [ "$os_name" = "Linux" ]; then
         for service_name in nfs nfslock portmap rpc nfs-kerner-server rpcbind; do
-          funct_systemctl_service disable $service_name
-          funct_chkconfig_service $service_name 3 off
-          funct_chkconfig_service $service_name 5 off
+          check_systemctl_service disable $service_name
+          check_chkconfig_service $service_name 3 off
+          check_chkconfig_service $service_name 5 off
         done
       fi
       if [ "$os_name" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
-        funct_file_value $check_file nfs_reserved_port_only eq YES hash
-        funct_file_value $check_file weak_mountd_authentication eq NO hash
-        funct_file_value $check_file rpc_lockd_enable eq NO hash
-        funct_file_value $check_file rpc_statd_enable eq NO hash
+        check_file_value $check_file nfs_reserved_port_only eq YES hash
+        check_file_value $check_file weak_mountd_authentication eq NO hash
+        check_file_value $check_file rpc_lockd_enable eq NO hash
+        check_file_value $check_file rpc_statd_enable eq NO hash
         if [ "$os_version" < 5 ]; then
-          funct_file_value $check_file portmap_enable eq NO hash
-          funct_file_value $check_file nfs_server_enable eq NO hash
-          funct_file_value $check_file single_mountd_enable eq NO hash
+          check_file_value $check_file portmap_enable eq NO hash
+          check_file_value $check_file nfs_server_enable eq NO hash
+          check_file_value $check_file single_mountd_enable eq NO hash
         else
-          funct_file_value $check_file rpcbind_enable eq NO hash
-          funct_file_value $check_file nfs_server_enable eq NO hash
-          funct_file_value $check_file mountd_enable eq NO hash
+          check_file_value $check_file rpcbind_enable eq NO hash
+          check_file_value $check_file nfs_server_enable eq NO hash
+          check_file_value $check_file mountd_enable eq NO hash
         fi
       fi
     fi

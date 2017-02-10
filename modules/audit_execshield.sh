@@ -15,16 +15,16 @@
 
 audit_execshield () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "XD/NS Support"
+    verbose_message "XD/NS Support"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       if [ "$os_version" > 4 ]; then
-        funct_linux_package install kernel-PAE
+        check_linux_package install kernel-PAE
         check_file="/etc/sysctl.conf"
-        funct_file_value $check_file kernel.exec-shield eq 1 hash
+        check_file_value $check_file kernel.exec-shield eq 1 hash
       fi
     else
       if [ "$os_vendor" = "SuSE" ]; then
-        funct_linux_package install kernel-pae
+        check_linux_package install kernel-pae
       fi
     fi
   fi

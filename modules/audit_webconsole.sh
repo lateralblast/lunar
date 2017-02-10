@@ -6,9 +6,9 @@
 audit_webconsole () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      funct_verbose_message "Web Console"
+      verbose_message "Web Console"
       service_name="svc:/system/webconsole:console"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
 }

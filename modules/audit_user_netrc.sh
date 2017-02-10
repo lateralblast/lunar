@@ -14,7 +14,7 @@
 
 audit_user_netrc () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "User Netrc Files"
+    verbose_message "User Netrc Files"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User netrc file permissions"
     fi
@@ -23,7 +23,7 @@ audit_user_netrc () {
       check_file="$home_dir/.netrc"
       if [ -f "$check_file" ]; then
         check_fail=1
-        funct_check_perms $check_file 0600
+        check_file_perms $check_file 0600
       fi
     done
     if [ "$check_fail" != 1 ]; then

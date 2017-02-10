@@ -9,15 +9,15 @@
 
 audit_cron () {
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "Cron Daemon"
+    verbose_message "Cron Daemon"
     service_name="crond"
-    funct_chkconfig_service $service_name 3 on
-    funct_chkconfig_service $service_name 5 on
-    funct_systemctl_service enable $service_name
+    check_chkconfig_service $service_name 3 on
+    check_chkconfig_service $service_name 5 on
+    check_systemctl_service enable $service_name
     if [ "$anacron_enable" = "yes" ]; then
       service_name="anacron"
-      funct_chkconfig_service $service_name 3 on
-      funct_chkconfig_service $service_name 5 on
+      check_chkconfig_service $service_name 3 on
+      check_chkconfig_service $service_name 5 on
     fi
   fi
 }

@@ -74,9 +74,9 @@ audit_aws_rec_ec2 () {
       if [ ! "$name" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   AWS Security Group $sg does not have a Name tag [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
+        verbose_message "" fix
       else
         check=`echo $name |grep "^sg-$valid_tag_string"`
         if [ "$check" ]; then
@@ -97,9 +97,9 @@ audit_aws_rec_ec2 () {
     if [ ! "$name" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   AWS EC2 volume $volume does not have a Name tag [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $volume --tags Key=Name,Value=<valid_name_tag>" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws ec2 create-tags --region $aws_region --resources $volume --tags Key=Name,Value=<valid_name_tag>" fix
+      verbose_message "" fix
     else
       check=`echo $name |grep "^ami-$valid_tag_string"`
       if [ "$check" ]; then
@@ -119,9 +119,9 @@ audit_aws_rec_ec2 () {
     if [ ! "$name" ]; then
       insecure=`expr $insecure + 1`
       echo "Warning:   AWS AMI $image does not have a Name tag [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
+      verbose_message "" fix
     else
       check=`echo $name |grep "^ami-$valid_tag_string"`
       if [ "$check" ]; then
@@ -142,9 +142,9 @@ audit_aws_rec_ec2 () {
       if [ ! "$check" ]; then
         insecure=`expr $insecure + 1`
         echo "Warning:   AWS AMI $image does not have a $tag tag [$insecure Warnings]"
-        funct_verbose_message "" fix
-        funct_verbose_message "aws ec2 create-tags --region $aws_region --resources $instance --tags Key=$tag,Value=<valid_name_tag>" fix
-        funct_verbose_message "" fix
+        verbose_message "" fix
+        verbose_message "aws ec2 create-tags --region $aws_region --resources $instance --tags Key=$tag,Value=<valid_name_tag>" fix
+        verbose_message "" fix
       else
         check=`echo $name |grep "^ec2-$valid_tag_string"`
         if [ "$check" ]; then

@@ -5,7 +5,7 @@
 
 audit_login_details () {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Login display details"
-    funct_defaults_check /Library/Preferences/com.apple.loginwindow SHOWFULLNAME yes bool
+    verbose_message "Login display details"
+    check_osx_defaults /Library/Preferences/com.apple.loginwindow SHOWFULLNAME yes bool
   fi
 }

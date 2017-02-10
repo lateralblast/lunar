@@ -17,12 +17,12 @@ audit_system_auth_use_uid () {
         if [ "$audit_mode" = "1" ]; then
           insecure=`expr $insecure + 1`
           echo "Warning:   The use of su is not restricted by sudo in $check_file [$insecure Warnings]"
-          funct_verbose_message "cp $check_file $temp_file" fix
-          funct_verbose_message "cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file" fix
-          funct_verbose_message "rm $temp_file" fix
+          verbose_message "cp $check_file $temp_file" fix
+          verbose_message "cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file" fix
+          verbose_message "rm $temp_file" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          funct_backup_file $check_file
+          backup_file $check_file
           echo "Setting:   The use of su to be restricted by sudo in $check_file"
           cp $check_file $temp_file
           cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file
@@ -35,7 +35,7 @@ audit_system_auth_use_uid () {
         fi
       fi
     else
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     fi
   fi
 }

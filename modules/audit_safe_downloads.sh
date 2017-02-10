@@ -5,7 +5,7 @@
 
 audit_safe_downloads() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Safe Downloads list"
+    verbose_message "Safe Downloads list"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Safe Downloads list has been updated recently"
@@ -16,15 +16,15 @@ audit_safe_downloads() {
           total=`expr $total + 1`
           insecure=`expr $insecure + 1`
           echo "Warning:   Safe Downloads list has not be updated recently [$insecure Warnings]"
-          funct_verbose_message "" fix
-          funct_verbose_message "Open System Preferences" fix
-          funct_verbose_message "Select Security & Privacy" fix
-          funct_verbose_message "Select the General tab" fix
-          funct_verbose_message "Select Advanced" fix
-          funct_verbose_message "Check Automatically update safe downloads list" fix
-          funct_verbose_message "" fix
-          funct_verbose_message "sudo /usr/libexec/XProtectUpdater" fix
-          funct_verbose_message "" fix
+          verbose_message "" fix
+          verbose_message "Open System Preferences" fix
+          verbose_message "Select Security & Privacy" fix
+          verbose_message "Select the General tab" fix
+          verbose_message "Select Advanced" fix
+          verbose_message "Check Automatically update safe downloads list" fix
+          verbose_message "" fix
+          verbose_message "sudo /usr/libexec/XProtectUpdater" fix
+          verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "Updating:  Safe Downloads list [$insecure Warnings]"

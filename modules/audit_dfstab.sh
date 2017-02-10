@@ -5,7 +5,7 @@
 
 audit_dfstab () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "Full Path Names in Exports"
-    funct_replace_value /etc/dfs/dfstab share /usr/bin/share start
+    verbose_message "Full Path Names in Exports"
+    replace_file_value /etc/dfs/dfstab share /usr/bin/share start
   fi
 }

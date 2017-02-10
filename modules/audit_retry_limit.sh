@@ -7,21 +7,21 @@
 
 audit_retry_limit () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
-    funct_verbose_message "Retry Limit for Account Lockout"
+    verbose_message "Retry Limit for Account Lockout"
     if [ "$os_name" = "AIX" ]; then
-      funct_chsec_check /etc/security/login.cfg default logininterval 300
-      funct_chsec_check /etc/security/login.cfg default logindisable 10
-      funct_chsec_check /etc/security/login.cfg default loginreenable 360
-      funct_chsec_check /etc/security/login.cfg usw logintimeout 30
-      funct_chsec_check /etc/security/login.cfg default logindelay 10
-      funct_chsec_check /etc/security/user default loginretries 3
+      check_chsec /etc/security/login.cfg default logininterval 300
+      check_chsec /etc/security/login.cfg default logindisable 10
+      check_chsec /etc/security/login.cfg default loginreenable 360
+      check_chsec /etc/security/login.cfg usw logintimeout 30
+      check_chsec /etc/security/login.cfg default logindelay 10
+      check_chsec /etc/security/user default loginretries 3
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         check_file="/etc/default/login"
-        funct_file_value $check_file RETRIES eq 3 hash
+        check_file_value $check_file RETRIES eq 3 hash
         check_file="/etc/security/policy.conf"
-        funct_file_value $check_file LOCK_AFTER_RETRIES eq YES hash
+        check_file_value $check_file LOCK_AFTER_RETRIES eq YES hash
         if [ "$os_version" = "11" ]; then
           svcadm restart svc:/system/name-service/cache
         fi

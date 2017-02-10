@@ -9,7 +9,7 @@
 audit_xwindows_server () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      funct_verbose_message "X Windows Server"
+      verbose_message "X Windows Server"
       yum groupremove "X Window System"
     fi
   fi

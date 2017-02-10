@@ -18,9 +18,9 @@ audit_aws_rec_rds () {
     else
       insecure=`expr $insecure + 1`
       echo "Warning:   RDS instance $db is not Multi-AZ enabled [$insecure Warnings]"
-      funct_verbose_message "" fix
-      funct_verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --multi-az --apply-immediately" fix
-      funct_verbose_message "" fix
+      verbose_message "" fix
+      verbose_message "aws rds modify-db-instance --region $aws_region --db-instance-identifier $db --multi-az --apply-immediately" fix
+      verbose_message "" fix
     fi
     # Check that EC2 volumes are using cost effective storage
     total=`expr $total + 1`

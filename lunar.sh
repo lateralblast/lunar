@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.0.3
+# Version:      7.0.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -416,6 +416,37 @@ check_environment () {
   fi
 }
 
+# increment_total
+#
+# Increment total count
+#.
+
+increment_total () {
+  total=`expr $total + 1`
+}
+
+# increment_secure
+#
+# Increment secure count
+#.
+
+increment_secure () {
+  message=$1
+  secure=`expr $secure + 1`
+  echo "Secure:    $message [$secure Passes]"
+}
+
+# increment_insecure
+#
+# Increment insecure count
+#.
+
+increment_secure () {
+  message=$1
+  insecure=`expr $insecure + 1`
+  echo "Warning:   $message [$insecure Warnings]"
+}
+
 # print_previous
 #
 # Print previous changes
@@ -426,6 +457,30 @@ print_previous () {
     find $base_dir -type f -print -exec cat -n {} \;
   fi
 }
+
+# verbose_message
+#
+# Print a message if verbose mode enabled
+#.
+
+verbose_message () {
+  if [ "$verbose" = 1 ]; then
+    text=$1
+    style=$2
+    if [ "$style" = "fix" ]; then
+      if [ "$text" = "" ]; then
+        echo ""
+      else
+        echo "[ Fix ]    $text"
+      fi
+    else
+      echo ""
+      echo "# $text"
+      echo ""
+    fi
+  fi
+}
+
 
 # print_changes
 #
@@ -489,7 +544,7 @@ check_aws () {
 funct_audit_docker () {
   audit_mode=$1
   check_environment
-  funct_audit_docker_all
+  audit_docker_all
   print_results
 }
 
@@ -502,7 +557,7 @@ funct_audit_aws () {
   audit_mode=$1
   check_environment
   check_aws
-  funct_audit_aws_all
+  audit_aws_all
   print_results
 }
 
@@ -515,7 +570,7 @@ funct_audit_aws_rec () {
   audit_mode=$1
   check_environment
   check_aws
-  funct_audit_aws_rec_all
+  audit_aws_rec_all
   print_results
 }
 
@@ -555,15 +610,15 @@ funct_audit_system () {
       echo "Setting:   Restore directory to $restore_dir"
     fi
   fi
-  funct_audit_system_all
+  audit_system_all
   if [ "$do_fs" = 1 ]; then
-    funct_audit_search_fs
+    audit_search_fs
   fi
-  #funct_audit_test_subset
+  #audit_test_subset
   if [ `expr "$os_platform" : "sparc"` != 1 ]; then
-    funct_audit_system_x86
+    audit_system_x86
   else
-    funct_audit_system_sparc
+    audit_system_sparc
   fi
   print_results
 }
@@ -583,7 +638,7 @@ funct_audit_select () {
   if [ "`expr $function : audit_`" != "6" ]; then
     function="audit_$function"
   fi
-  funct_print_audit_info $function
+  print_audit_info $function
   $function
   print_results
 }
@@ -842,7 +897,7 @@ while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
       check_environment
       verbose=1
       module=$2
-      funct_print_audit_info $module
+      print_audit_info $module
       ;;
     b)
       echo ""

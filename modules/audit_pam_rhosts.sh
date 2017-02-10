@@ -6,11 +6,11 @@
 
 audit_pam_rhosts () {
   if [ "$os_name" = "SunOS" ]; then
-    funct_verbose_message "PAM RHosts Configuration"
+    verbose_message "PAM RHosts Configuration"
     check_file="/etc/pam.conf"
     total=`expr $total + 1`
     if [ "$audit_mode" = 2 ]; then
-      funct_restore_file $check_file $restore_dir
+      restore_file $check_file $restore_dir
     else
       if [ -f "$check_file" ]; then
         echo "Checking:  Rhost authentication disabled in $check_file"
@@ -20,11 +20,11 @@ audit_pam_rhosts () {
             total=`expr $total + 1`
             insecure=`expr $insecure + 1`
             echo "Warning:   Rhost authentication enabled in $check_file [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" fix
-            funct_verbose_message "cat $temp_file > $check_file" fix
-            funct_verbose_message "rm $temp_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" fix
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
           else
             log_file="$work_dir$check_file"
             if [ ! -f "$log_file" ]; then
@@ -51,10 +51,10 @@ audit_pam_rhosts () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    funct_verbose_message "PAM .rhosts Configuration"
+    verbose_message "PAM .rhosts Configuration"
     for check_file in `ls /etc/pam.d/*`; do
       if [ "$audit_mode" = 2 ]; then
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       else
         echo "Checking:  Rhost authentication disabled in $check_file [$secure Passes]"
         pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
@@ -63,14 +63,14 @@ audit_pam_rhosts () {
             total=`expr $total + 1`
             insecure=`expr $insecure + 1`
             echo "Warning:   Rhost authentication enabled in $check_file [$insecure Warnings]"
-            funct_verbose_message "" fix
-            funct_verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" fix
-            funct_verbose_message "cat $temp_file > $check_file" fix
-            funct_verbose_message "rm $temp_file" fix
-            funct_verbose_message "" fix
+            verbose_message "" fix
+            verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" fix
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            funct_backup_file $check_file
+            backup_file $check_file
             echo "Setting:   Rhost authentication to disabled in $check_file"
             sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file
             cat $temp_file > $check_file

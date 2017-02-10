@@ -5,7 +5,7 @@
 
 audit_account_lockout() {
   if [ "$os_name" = "Darwin" ]; then
-    funct_verbose_message "Account Lockout"
-    funct_pwpolicy_check maxFailedLoginAttempts 3
+    verbose_message "Account Lockout"
+    check_pwpolicy maxFailedLoginAttempts 3
   fi
 }

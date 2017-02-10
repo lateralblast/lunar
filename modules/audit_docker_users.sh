@@ -19,7 +19,7 @@ audit_docker_users () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=`which docker`
     if [ "$docker_bin" ]; then
-      funct_verbose_message "Docker Users"
+      verbose_message "Docker Users"
       check_file="/etc/group"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
@@ -34,7 +34,7 @@ audit_docker_users () {
                 echo "Warning:   User $user_name in group $docker_group and has not logged in recently and their account is not locked [$insecure Warnings]"
               fi
               if [ "$audit_mode" = 0 ]; then
-                funct_backup_file $check_file
+                backup_file $check_file
                 echo "Setting:   User $user_name to locked"
                 passwd -l $user_name
               fi
@@ -45,7 +45,7 @@ audit_docker_users () {
           fi
         done
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  Docker group users"
@@ -61,7 +61,7 @@ audit_docker_users () {
                 echo "Warning:   User $user_name is in group $docker_group has and ID greater than $max_super_user_id and their account is not locked [$insecure Warnings]"
               fi
               if [ "$audit_mode" = 0 ]; then
-                funct_backup_file $check_file
+                backup_file $check_file
                 echo "Setting:   User $user_name to locked"
                 passwd -l $user_name
               fi
@@ -72,10 +72,10 @@ audit_docker_users () {
           fi
         done
       else
-        funct_restore_file $check_file $restore_dir
+        restore_file $check_file $restore_dir
       fi
       if [ "$audit_mode" != 2 ]; then
-        funct_dockerd_check notequal config User ""
+        check_dockerd notequal config User ""
       fi
     fi
   fi

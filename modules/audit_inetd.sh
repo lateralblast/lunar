@@ -6,9 +6,9 @@
 audit_inetd () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      funct_verbose_message "Internet Services"
+      verbose_message "Internet Services"
       service_name="svc:/network/inetd:default"
-      funct_service $service_name disabled
+      check_sunos_service $service_name disabled
     fi
   fi
 }

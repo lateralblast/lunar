@@ -13,9 +13,9 @@
 audit_yum_conf () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      funct_verbose_message "Yum Configuration"
+      verbose_message "Yum Configuration"
       check_file="/etc/yum.conf"
-      funct_file_value $check_file gpgcheck eq 1 hash
+      check_file_value $check_file gpgcheck eq 1 hash
     fi
   fi
 }
