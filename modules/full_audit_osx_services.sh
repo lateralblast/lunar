@@ -13,6 +13,7 @@ full_audit_osx_services () {
   audit_infrared_remote
   audit_setup_file
   audit_screen_lock
+  audit_screen_sharing
   audit_secure_swap
   audit_login_guest
   audit_login_details

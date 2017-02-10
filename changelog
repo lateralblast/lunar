@@ -1223,3 +1223,5 @@
 # Bug fixes and documentation updates
 # 7.0.4: Fri 10 Feb 2017 11:52:39 AEDT
 # Code cleanup
+# 7.0.5: Fri 10 Feb 2017 12:28:13 AEDT
+# Added screen sharing test for OS X
