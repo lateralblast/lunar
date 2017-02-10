@@ -1,12 +1,11 @@
-# audit_screen_sharing
+# audit_remote_login
 #
-# Refer to Section 2.4.3 Page(s) 40 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to http://support.apple.com/kb/ph11151
+# Refer to Section 2.4.5 Page(s) 42-3 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
-audit_screen_sharing() {
+audit_remote_login() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Screen Sharing"
-    check_launchctl_service com.apple.screensharing off
+    verbose_message "Remote Login"
+    check_os_systemsetup getremotelogin off
   fi
 }
