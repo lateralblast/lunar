@@ -19,7 +19,6 @@ audit_daemon_umask () {
         if [ "$umask_check" != "$umask_value" ]; then
           log_file="$work_dir/$log_file"
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Default service file creation mask not set to $umask_value"
             verbose_message "" fix
             verbose_message "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"$umask_value\"" fix
@@ -34,7 +33,6 @@ audit_daemon_umask () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Default service file creation mask set to $umask_value"
           fi
           if [ "$audit_mode" = 2 ]; then

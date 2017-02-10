@@ -37,7 +37,6 @@ audit_xlogin () {
     if [ "$ttys_test" != "on" ]; then
       if [ "$audit_mode" != 2 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "X wrapper is not disabled"
         fi
         if [ "$audit_mode" = 2 ]; then
@@ -52,7 +51,6 @@ audit_xlogin () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        
         increment_secure "X wrapper is disabled"
       fi
     fi
@@ -61,14 +59,12 @@ audit_xlogin () {
     check_file="/etc/X11/xdm/Xresources"
     if [ -f "$check_file" ]; then
       verbose_message "X Security Message"
-      
      if [ "$audit_mode" != 2 ]; then
        greet_check=`cat $check_file |grep 'private system' |wc -l`
        if [ "$greet_check" != 1 ]; then
          echo "Checking:  Checking $check_file for security message"
          greet_mesg="This is a private system --- Authorized use only!"
          if [ "$audit_mode" = 1 ]; then
-           
            increment_insecure "File $check_file does not have a security message"
            verbose_message "" fix
            verbose_message "cat $check_file |awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" > $temp_file" fix
@@ -83,7 +79,6 @@ audit_xlogin () {
            rm $temp_file
            fi
         else
-          
           increment_secure "File $check_file has security message"
         fi
       else
@@ -100,7 +95,6 @@ audit_xlogin () {
         if [ "$greet_check" != 1 ]; then
            echo "Checking:  File $check_file for security message"
            if [ "$audit_mode" = 1 ]; then
-             
              increment_insecure "File $check_file does not have a security message"
              verbose_message "" fix
              verbose_message "cat $check_file |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"$greet_mesg\" > $temp_file" fix
@@ -115,7 +109,6 @@ audit_xlogin () {
              rm $temp_file
            fi
         else
-          
           increment_secure "File $check_file has security message"
         fi
       else
@@ -125,13 +118,11 @@ audit_xlogin () {
     check_file="/etc/X11/xdm/Xservers"
     if [ -f "$check_file" ]; then
       verbose_message "X Listening"
-      
       if [ "$audit_mode" != 2 ]; then
         greet_check=`cat $check_file |grep 'nolisten tcp' |wc -l`
         if [ "$greet_check" != 1 ]; then
            echo "Checking:  For X11 nolisten directive in $check_file"
            if [ "$audit_mode" = 1 ]; then
-             
              increment_insecure "X11 nolisten directive not found in $check_file"
              verbose_message "" fix
              verbose_message "cat $check_file |awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' > $temp_file" fix
@@ -148,7 +139,6 @@ audit_xlogin () {
              rm $temp_file
            fi
         else
-          
           increment_secure "X11 nolisten directive found in $check_file"
         fi
       else

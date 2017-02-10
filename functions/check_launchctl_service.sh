@@ -25,19 +25,10 @@ check_launchctl_service () {
       echo "Checking:  Service $launchctl_service is $required_status"
       if [ "$actual_status" != "$required_status" ]; then
         increment_insecure "Service $launchctl_service is $actual_status"
-        verbose_message "" fix
-        verbose_message "sudo launchctl $change_status -w $launchctl_service.plist" fix
-        verbose_message "" fix
-        if [ "$audit_mode" = 0 ]; then
-          log_file="$work_dir/$log_file"
-          echo "$actual_status" > $log_file
-          echo "Setting:   Service $launchctl_service to $required_status"
-          sudo launchctl $change_status -w $launchctl_service.plist
-        fi
+        log_file="$work_dir/$log_file"
+        lockdown_command "echo \"$actual_status\" > $log_file ; sudo launchctl $change_status -w $launchctl_service.plist" "Service $launchctl_service to $required_status"
       else
-        if [ "$audit_mode" = 1 ]; then
-          increment_secure "Service $launchctl_service is $required_status"
-        fi
+        increment_secure "Service $launchctl_service is $required_status"
       fi
     else
       log_file="$restore_dir/$log_file"

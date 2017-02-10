@@ -8,11 +8,9 @@ audit_wheel_group () {
     check_file="/etc/group"
     verbose_message "Wheel Group"
     if [ "$audit_mode" != 2 ]; then
-      
       check_value=`cat $check_file |grep '^$wheel_group:'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          
           increment_insecure "Wheel group does not exist in $check_file"
         fi
         if [ "$audit_mode" = 0 ]; then
@@ -23,7 +21,6 @@ audit_wheel_group () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          
           increment_secure "Wheel group exists in $check_file"
         fi
       fi

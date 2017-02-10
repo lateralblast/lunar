@@ -21,11 +21,9 @@ audit_password_hashing () {
         if [ "$audit_mode" != 2 ]; then
           log_file="hashing.log"
           echo "Checking:  Password hashing is set to $hashing"
-          
           check_value=`authconfig --test |grep hashing |awk '{print $5}'`
           if [ "$check_value" != "$hashing" ]; then
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "Password hashing not set to $hashing"
               verbose_message "" fix
               verbose_message "authconfig --passalgo=$hashing" fix
@@ -39,7 +37,6 @@ audit_password_hashing () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "Password hashing set to $hashing"
             fi
           fi

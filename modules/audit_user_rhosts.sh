@@ -29,8 +29,6 @@ audit_user_rhosts () {
     done
     if [ "$check_fail" != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
-        
-        
         increment_secure "No user rhosts files exist"
       fi
     fi

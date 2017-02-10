@@ -19,7 +19,6 @@ check_osx_defaults () {
     defaults_write="write"
     backup_file=$defaults_file
     defaults_command="sudo defaults"
-    
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
       if [ "$defaults_host" = "currentHost" ]; then
@@ -39,7 +38,6 @@ check_osx_defaults () {
         fi
       fi
       if [ "$check_value" != "$temp_value" ]; then
-        
         increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\""
         verbose_message "" fix
         verbose_message "$defaults_command write $defaults_file $defaults_parameter $defaults_value" fix
@@ -80,10 +78,7 @@ check_osx_defaults () {
           fi
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
-          
-          increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
-        fi
+        increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
       fi
     else
       restore_file $backup_file $restore_dir

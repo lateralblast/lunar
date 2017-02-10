@@ -14,11 +14,9 @@ audit_system_auth_password_policy () {
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "$check_file" ]; then
           echo "Checking:  Password $search_string is set to $search_value in $check_file"
-          
           check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
           if [ "$check_value" != "$search_value" ]; then
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "Password $search_string is not set to $search_value in $check_file"
               verbose_message "cp $check_file $temp_file" fix
               verbose_message "cat $temp_file |awk '( $1 == \"password\" && $2 == \"requisite\" && $3 == \"pam_cracklib.so\" ) { print $0  \" dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9\"; next }; { print }' > $check_file" fix
@@ -33,7 +31,6 @@ audit_system_auth_password_policy () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "Password $search_string set to $search_value in $check_file"
             fi
           fi

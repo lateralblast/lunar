@@ -23,7 +23,6 @@ audit_syslog_conf () {
       check_file_value $check_file syslogd_flags eq -s hash
     fi
     if [ "$os_name" = "VMkernel" ]; then
-      
       log_file="sysloglogdir"
       backup_file="$work_dir/$log_file"
       current_value=`esxcli system syslog config get |grep 'Local Log Output:' |awk '{print $4}'`
@@ -37,7 +36,6 @@ audit_syslog_conf () {
             fi
           fi
           if [ "$audit_mode" = "1" ]; then
-            
             increment_insecure "Syslog log directory is not persistent"
             if [ "$syslog_logdir" != "" ]; then
               verbose_message "" fix
@@ -46,7 +44,6 @@ audit_syslog_conf () {
           fi
         else
           if [ "$audit_mode" = "1" ]; then
-            
             increment_secure "Syslog log directory is on a persistent datastore"
           fi
         fi
@@ -60,7 +57,6 @@ audit_syslog_conf () {
           fi
         fi
       fi
-      
       log_file="syslogremotehost"
       backup_file="$work_dir/$log_file"
       current_value=`esxcli system syslog config get |grep Remote |awk '{print $3}'`
@@ -73,7 +69,6 @@ audit_syslog_conf () {
             fi
           fi
           if [ "$audit_mode" = "1" ]; then
-            
             verbose_message "" fix
             increment_insecure "Syslog remote host is not enabled"
             if [ "$syslog_server" = "" ]; then
@@ -86,7 +81,6 @@ audit_syslog_conf () {
           fi
         else
           if [ "$audit_mode" = "1" ]; then
-            
             increment_secure "Syslog remote host is enabled"
           fi
         fi

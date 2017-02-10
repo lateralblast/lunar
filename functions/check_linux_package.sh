@@ -19,7 +19,6 @@ check_linux_package () {
     backup_file="$work_dir/$log_file"
     verbose_message "Checking if package is $package_check $package_status"
     echo "Checking:  Package $package_check is installed"
-    
     if [ "$audit_mode" != "2" ]; then
       if [ "$linux_dist" = "debian" ]; then
         package_name=`dpkg -l $package_check 2>&1 |grep $package_check |awk '{print $2}'`
@@ -27,14 +26,11 @@ check_linux_package () {
         package_name=`rpm -qi $package_check |grep '^Name' |awk '{print $3}'`
       fi
       if [ "$package_mode" = "install" ] && [ "$package_name" = "$package_check" ]; then
-        
         increment_secure "Package $package_check is $package_status"
       else
         if [ "$package_mode" = "uninstall" ] && [ "$package_name" != "$package_check" ]; then
-          
           increment_secure "Package $package_check is $package_status"
         else
-          
           increment_insecure "Package $package_check is not $package_status"
         fi
       fi

@@ -13,8 +13,6 @@ audit_safe_downloads() {
       actual_value=`find $update_file -mtime -30`
       if [ "$actual_value" != "$update_file" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "Safe Downloads list has not be updated recently"
           verbose_message "" fix
           verbose_message "Open System Preferences" fix
@@ -32,8 +30,6 @@ audit_safe_downloads() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "Safe Downloads list has been updated recently"
         fi
       fi

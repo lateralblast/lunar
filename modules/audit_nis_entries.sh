@@ -13,12 +13,10 @@ audit_nis_entries () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Legacy NIS '+' entries"
     fi
-    
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if [ "$audit_mode" != 2 ]; then
         for file_entry in `cat $check_file |grep "^+"`; do
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "NIS entry \"$file_entry\" in $check_file"
             verbose_message "" fix
             verbose_message 'sed -e "s/^+/#&/" < $check_file > $temp_file' fix
@@ -42,7 +40,6 @@ audit_nis_entries () {
         done
         if [ "$file_entry" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "No NIS entries in $check_file"
           fi
         fi

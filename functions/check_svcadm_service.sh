@@ -11,52 +11,30 @@ check_svcadm_service () {
     service_name=$1
     correct_status=$2
     service_exists=`svcs -a |grep "$service_name" | awk '{print $3}'`
-    if [ "$service_exists" = "$service_name" ]; then
-      
-      service_status=`svcs -Ho state $service_name`
-      file_header="svcadm"
-      log_file="$work_dir/$file_header.log"
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Service $service_name is $correct_status"
-      fi
-      if [ "$service_status" != "$correct_status" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          
-          increment_insecure "Service $service_name is enabled"
-          verbose_message "" fix
-          verbose_message "inetadm -d $service_name" fix
-          verbose_message "svcadm refresh $service_name" fix
-          verbose_message "" fix
-        else
-          if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Service $service_name to $correct_status"
-            echo "Notice:    Previous state stored in $log_file"
-            echo "$service_name,$service_status" >> $log_file
-            inetadm -d $service_name
+    if [ "$audit_mode" = 2 ]; then
+      restore_file="$restore_dir/$file_header.log"
+      if [ -f "$restore_file" ]; then
+        restore_status=`cat $restore_file |grep "^$service_name" |cut -f2 -d','`
+        if [ `expr "$restore_status" : "[A-z]"` = 1 ]; then
+          if [ "$restore_status" != "$service_status" ]; then
+            restore_status=`echo $restore_status |sed 's/online/enable/g' |sed 's/offline/disable/g'`
+            echo "Restoring: Service $service_name to $restore_status""d"
+            svcadm $restore_status $service_name
             svcadm refresh $service_name
           fi
         fi
-      else
-        if [ "$audit_mode" = 2 ]; then
-          restore_file="$restore_dir/$file_header.log"
-          if [ -f "$restore_file" ]; then
-            restore_status=`cat $restore_file |grep "^$service_name" |cut -f2 -d','`
-            if [ `expr "$restore_status" : "[A-z]"` = 1 ]; then
-              if [ "$restore_status" != "$service_status" ]; then
-                restore_status=`echo $restore_status |sed 's/online/enable/g' |sed 's/offline/disable/g'`
-                echo "Restoring: Service $service_name to $restore_status""d"
-                svcadm $restore_status $service_name
-                svcadm refresh $service_name
-              fi
-            fi
-          fi
+      fi
+    else
+      if [ "$service_exists" = "$service_name" ]; then
+        service_status=`svcs -Ho state $service_name`
+        file_header="svcadm"
+        log_file="$work_dir/$file_header.log"
+        echo "Checking:  Service $service_name is $correct_status"
+        if [ "$service_status" != "$correct_status" ]; then
+          increment_insecure "Service $service_name is enabled"
+          lockdown_command "echo \"$service_name,$service_status\" >> $log_file ; inetadm -d $service_name ; svcadm refresh $service_name" "Service $service_name to $correct_status"
         else
-          if [ "$audit_mode" != 2 ]; then
-            if [ "$audit_mode" = 1 ]; then
-              
-              increment_secure "Service $service_name is already disabled"
-            fi
-          fi
+          increment_secure "Service $service_name is already disabled"
         fi
       fi
     fi

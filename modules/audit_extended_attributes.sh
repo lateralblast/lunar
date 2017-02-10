@@ -13,8 +13,6 @@ audit_extended_attributes () {
         -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
         -o -fstype objfs -o -fstype proc \) -prune \
         -o -xattr -print`; do
-        
-        
         increment_insecure "File $check_file has extended attributes"
       done
     fi

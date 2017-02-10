@@ -6,7 +6,6 @@
 audit_root_home () {
   if [ "$os_name" = "SunOS" ]; then
     verbose_message "Home Directory Permissions for root Account"
-    
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         if [ "$audit_mode" != 2 ]; then
@@ -16,7 +15,6 @@ audit_root_home () {
         log_file="$work_dir/roothome.log"
         if [ "$home_check" != "/root" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Root home directory incorrectly set"
             verbose_message "" fix
             verbose_message "mkdir -m 700 /root" fix
@@ -33,7 +31,6 @@ audit_root_home () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Root home directory correctly set"
           fi
         fi

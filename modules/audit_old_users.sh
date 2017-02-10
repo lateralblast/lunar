@@ -45,8 +45,6 @@ audit_old_users () {
       done
       if [ "$never_count" = 0 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "There are no users who have never logged that do not have their account locked"
         fi
       fi

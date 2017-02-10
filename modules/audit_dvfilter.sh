@@ -7,7 +7,6 @@
 audit_dvfilter () {
   if [ "$os_name" = "VMkernel" ]; then
     verbose_message "Dvfilter"
-    
     backup_file="$work_dir/dvfilter"
     current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /Net/DVFilterBindIpAddress |cut -f2 -d,`
     if [ "$audit_mode" != "2" ]; then
@@ -18,7 +17,6 @@ audit_dvfilter () {
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d
         fi
         if [ "$audit_mode" = "1" ]; then
-          
           increment_insecure "Dvfilter enabled"
           verbose_message "" fix
           verbose_message "esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d" fix
@@ -26,7 +24,6 @@ audit_dvfilter () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          
           increment_secure "Dvfilter disabled"
           echo ""
         fi

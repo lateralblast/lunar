@@ -12,7 +12,6 @@ audit_wheel_sudo () {
           nopasswd_check=`cat $check_file |grep $wheel_group |awk '{print $3}'`
           if [ "$nopasswd_check" = "NOPASSWD" ]; then
             if [ "$audit_mode" = 1 ]; then
-              
               increment_insecure "Group $wheel_group does not require password to escalate privileges"
             fi
             if [ "$audit_mode" = 0 ]; then

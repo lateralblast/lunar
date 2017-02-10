@@ -24,10 +24,8 @@ check_file_perms () {
   if [ "$audit_mode" != 2 ]; then
     echo "Checking:  File permissions on $check_file"
   fi
-  
   if [ ! -f "$check_file" ] && [ ! -d "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      
       echo "Notice:    File $check_file does not exist"
     fi
     return
@@ -66,7 +64,6 @@ check_file_perms () {
     fi
   else
     if [ "$audit_mode" = 1 ]; then
-      
       increment_secure "File $check_file has correct permissions"
     fi
   fi

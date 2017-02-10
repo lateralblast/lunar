@@ -19,7 +19,6 @@ audit_sulogin () {
       if [ "$ttys_test" != "insecure" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Single user mode does not require a password"
           fi
           if [ "$audit_mode" = 2 ]; then
@@ -34,7 +33,6 @@ audit_sulogin () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Single user login requires password"
         fi
       fi
@@ -49,10 +47,8 @@ audit_sulogin () {
       check_file="/etc/inittab"
       if [ -f "$check_file" ]; then
         sulogin_check=`grep -l sulogin $check_file`
-        
         if [ "$sulogin_check" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "No Authentication required for single usermode"
             verbose_message "" fix
             verbose_message "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" fix
@@ -69,7 +65,6 @@ audit_sulogin () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Single usermode requires authentication"
           fi
           if [ "$audit_mode" = 2 ]; then

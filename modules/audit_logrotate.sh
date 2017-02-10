@@ -14,7 +14,6 @@ audit_logrotate () {
       verbose_message "Log Rotate Configuration"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  Logrotate is set up"
-        
         if [ "$os_vendor" = "SuSE" ]; then
           search_string="/var/log/warn /var/log/messages /var/log/allmessages /var/log/localmessages /var/log/firewall /var/log/acpid /var/log/NetworkManager /var/log/mail /var/log/mail.info /var/log/mail.warn /var/log/mail.err /var/log/news/news.crit /var/log/news/news.err /var/log/news/news.notice"
         else
@@ -22,7 +21,6 @@ audit_logrotate () {
         fi
         check_value=`cat $check_file |grep "$search_string" |sed 's/ {//g'`
         if [ "$check_value" != "$search_string" ]; then
-          
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Log rotate is not configured for $search_string"
             verbose_message "" fix
@@ -40,7 +38,6 @@ audit_logrotate () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Log rotate is configured"
           fi
         fi

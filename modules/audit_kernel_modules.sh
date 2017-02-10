@@ -7,7 +7,6 @@ audit_kernel_modules () {
   if [ "$os_name" = "VMkernel" ]; then
     verbose_message "Kernel Module Signing"
     for module in `esxcli system module list |grep '^[a-z]' |awk '($3 == "true") {print $1}'`; do
-      
       log_file="kernel_module_$module"
       backup_file="$work_dir/$log_file"
       current_value=`esxcli system module get -m $module |grep 'Signed Status' |awk -F': ' '{print $2}'`
@@ -21,14 +20,12 @@ audit_kernel_modules () {
             fi
           fi
           if [ "$audit_mode" = "1" ]; then
-            
             increment_insecure "Kernel module $module is not signed by VMware"
             verbose_message "" fix
             verbose_message "esxcli system module set -e false -m $module" fix
           fi
         else
           if [ "$audit_mode" = "1" ]; then
-            
             increment_secure "Kernel module $module is signed by VMware"
           fi
         fi

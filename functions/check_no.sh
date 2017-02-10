@@ -12,26 +12,11 @@ check_no() {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Parameter \"$parameter_name\" is \"$correct_value\""
       if [ "$actual_value" != "$correct_value" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_insecure "Parameter \"$parameter_name\" is not \"$correct_value\""
-          verbose_message "" fix
-          verbose_message "no -p -o $parameter_name=$correct_value" fix
-          verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          log_file="$work_dir/$log_file"
-          echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\""
-          echo "$actual_value" > $log_file
-          no -p -o $parameter_name=$correct_value
-        fi
+        increment_insecure "Parameter \"$parameter_name\" is not \"$correct_value\""
+        log_file="$work_dir/$log_file"
+        lockdown_command "echo \"$actual_value\" > $log_file ; no -p -o $parameter_name=$correct_value" "Parameter \"$parameter_name\" to \"$correct_value\""
       else
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_secure "Parameter \"$parameter_name\" is \"$correct_value\""
-        fi
+        increment_secure "Parameter \"$parameter_name\" is \"$correct_value\""
       fi
     else
       log_file="$restore_dir/$log_file"

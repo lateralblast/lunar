@@ -10,7 +10,6 @@ audit_ndd_value () {
       ndd_name=$1
       ndd_property=$2
       correct_value=$3
-      
       if [ "$ndd_property" = "tcp_extra_priv_ports_add" ]; then
         current_value=`ndd -get $ndd_name tcp_extra_priv_ports |grep "$correct_value"`
       else
@@ -44,7 +43,6 @@ audit_ndd_value () {
       if [ "$current_value" -ne "$correct_value" ]; then
         command_line="ndd -set $ndd_name $ndd_property $correct_value"
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "NDD \"$ndd_name $ndd_property\" not set to \"$correct_value\""
           verbose_message "" fix
           verbose_message "$command_line" fix
@@ -59,7 +57,6 @@ audit_ndd_value () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "NDD \"$ndd_name $ndd_property\" already set to \"$correct_value\""
           fi
         fi

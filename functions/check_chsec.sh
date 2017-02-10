@@ -14,26 +14,11 @@ check_chsec() {
       echo "Checking:  Security Policy for \"$parameter_name\" is set to \"$correct_value\""
       actual_value=`lssec -f $sec_file -s $sec_stanza -a $parameter_name |awk '{print $2}' |cut -f2 -d=`
       if [ "$actual_value" != "$correct_value" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_insecure "Security Policy for \"$parameter_name\" is not set to \"$correct_value\""
-          verbose_message "" fix
-          verbose_message "chsec -f $sec_file -s $sec_stanza -a $parameter_name=$correct_value" fix
-          verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          log_file="$work_dir/$log_file"
-          echo "Setting:   Security Policy for \"$parameter_name\" to \"$correct_value\""
-          echo "chsec -f $sec_file -s $sec_stanza -a $parameter_name=$actual_value" > $log_file
-          chsec -f $sec_file -s $sec_stanza -a $parameter_name=$correct_value
-        fi
+        increment_insecure "Security Policy for \"$parameter_name\" is not set to \"$correct_value\""
+        log_file="$work_dir/$log_file"
+        lockdown_command "echo \"chsec -f $sec_file -s $sec_stanza -a $parameter_name=$actual_value\" > $log_file ; chsec -f $sec_file -s $sec_stanza -a $parameter_name=$correct_value" "Security Policy for \"$parameter_name\" to \"$correct_value\""
       else
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_secure "Password Policy for \"$parameter_name\" is set to \"$correct_value\""
-        fi
+        increment_secure "Password Policy for \"$parameter_name\" is set to \"$correct_value\""
       fi
     else
       log_file="$restore_dir/$log_file"

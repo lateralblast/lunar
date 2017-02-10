@@ -18,11 +18,9 @@ audit_pam_wheel () {
     search_string="use_uid"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Wheel group membership required for su in $check_file"
-      
       check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          
           increment_insecure "Wheel group membership not required for su in $check_file"
           verbose_message "" fix
           verbose_message "cp $check_file $temp_file" fix
@@ -39,7 +37,6 @@ audit_pam_wheel () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          
           increment_secure "Wheel group membership required for su in $check_file"
         fi
       fi

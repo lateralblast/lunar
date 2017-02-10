@@ -6,7 +6,6 @@
 audit_mob () {
   if [ "$os_name" = "VMkernel" ]; then
     verbose_message "Managed Object Browser"
-    
     log_file="mob_status"
     backup_file="$work_dir/$log_file"
     current_value=`vim-cmd proxysvc/service_list |grep "/mob" |awk '{print $3}' |cut -f1 -d, |sed 's/"//g'`
@@ -25,7 +24,6 @@ audit_mob () {
           fi
         fi
         if [ "$audit_mode" = "1" ]; then
-          
           increment_insecure "Managed Object Browser enabled"
           verbose_message "" fix
           verbose_message "vim-cmd proxysvc/remove_service \"/mob\" \"httpsWithRedirect\"" fix
@@ -33,7 +31,6 @@ audit_mob () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          
           increment_secure "Managed Object Browser disabled"
         fi
       fi

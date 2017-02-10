@@ -32,7 +32,6 @@ audit_system_accounting () {
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/audit/audit.rules"
       check_append_file $check_file "-w /var/log/sudo.log -p wa -k actions"
-      
       log_file="sysstat.log"
       check_linux_package check sysstat
       if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
@@ -181,10 +180,8 @@ audit_system_accounting () {
         if [ -f "$check_file" ]; then
           sar_check=`cat $check_file |grep -v "^#" |grep "sa2"`
         fi
-        
         if [ `expr "$sar_check" : "[A-z]"` != 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "System Accounting is not enabled"
             verbose_message "" fix
             verbose_message "echo \"0,20,40 * * * * /usr/lib/sa/sa1\" >> $check_file" fix
@@ -211,7 +208,6 @@ audit_system_accounting () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "System Accounting is already enabled"
           fi
           if [ "$audit_mode" = 2 ]; then

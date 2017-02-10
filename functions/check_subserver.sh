@@ -19,8 +19,6 @@ check_subserver() {
       echo "Checking:   Service \"$service_name\" Protocol \"$protocol_name\" is \"$correct_value\""
       if [ "$actual_value" != "$service_name" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "Service \"$service_name\" Protocol \"$protocol_name\" is not \"$correct_value\""
           if [ "$correct_value" = "off" ]; then
             verbose_message "" fix
@@ -43,11 +41,7 @@ check_subserver() {
           fi
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_secure "Service \"$service_name\" Protocol \"$protocol_name\" is \"$correct_value\""
-        fi
+        increment_secure "Service \"$service_name\" Protocol \"$protocol_name\" is \"$correct_value\""
       fi
     else
       log_file="$restore_dir/$log_file"

@@ -69,7 +69,6 @@ audit_ntp () {
       fi
       if [ "$package_name" != "ntp" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "NTP not enabled"
         fi
         if [ "$audit_mode" = 0 ]; then
@@ -80,7 +79,6 @@ audit_ntp () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "NTP installed"
         fi
         if [ "$audit_mode" = 2 ]; then

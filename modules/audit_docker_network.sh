@@ -24,25 +24,19 @@ audit_docker_network () {
       backup_file="network_bridge"
       new_state="false"
       old_state="true"
-      
       if [ "$audit_mode" != 2 ]; then
         check_dockerd notequal config NetworkMode "NetworkMode=host"
         check_dockerd notinclude config Ports "0.0.0.0"
-        
         echo "Checking:  Docker default bridge"
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'docker0'`
         if [ "$check" ]; then
-          
           increment_insecure "Docker is using default bridge docker0"
         else
-          
           increment_secure "Docker is not using default bridge docker0"
         fi
-        
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
         echo "Checking:  Docker network bridge traffic setting"
         if [ ! "$check" ]; then
-          
           increment_insecure "Traffic is allowed between containers"
           if [ "$audit_mode" = 0 ]; then
             log_file="$work_dir/$backup_file"
@@ -51,7 +45,6 @@ audit_docker_network () {
             /usr/bin/dockerd --icc=$new_state
           fi
         else
-          
           increment_secure "Traffic is not allowed between containers"
         fi
       else

@@ -12,7 +12,6 @@ disable_value () {
   check_file=$1
   parameter_name=$2
   comment_value=$3
-  
   if [ -f "$check_file" ]; then
     if [ "$comment_value" = "star" ]; then
       comment_value="*"
@@ -27,18 +26,10 @@ disable_value () {
       restore_file $check_file $restore_dir
     else
       echo "Checking:  Parameter \"$parameter_name\" in $check_file is disabled"
-    fi
-    if [ "$separator" = "tab" ]; then
-      check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |uniq`
-      if [ "$check_value" != "$parameter_name" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          
+      if [ "$separator" = "tab" ]; then
+        check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |uniq`
+        if [ "$check_value" != "$parameter_name" ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
-          verbose_message "" fix
-          verbose_message "cat $check_file |sed 's/$parameter_name/$comment_value&' > $temp_file" fix
-          verbose_message "cat $temp_file > $check_file" fix
-          verbose_message "" fix
-        else
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
             if [ "$check_file" = "/etc/system" ]; then
@@ -62,12 +53,7 @@ disable_value () {
           fi
         fi
       else
-        if [ "$audit_mode" != 2 ]; then
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_secure "Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file"
-          fi
-        fi
+        increment_secure "Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file"
       fi
     fi
   fi

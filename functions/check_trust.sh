@@ -8,30 +8,15 @@ check_trust() {
     parameter_name=$1
     correct_value=$2
     log_file="trustchk_$parameter_name.log"
+    actual_value=`trustchk -p $parameter_name |cut -f2 -d=`
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Trusted Execution setting for \"$parameter_name\" is set to \"$correct_value\""
-      actual_value=`trustchk -p $parameter_name |cut -f2 -d=`
       if [ "$actual_value" != "$correct_value" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_insecure "Trusted Execution setting for \"$parameter_name\" is not set to \"$correct_value\""
-          verbose_message "" fix
-          verbose_message "trustchk -p $parameter_name=$correct_value" fix
-          verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          log_file="$work_dir/$log_file"
-          echo "Setting:   Trusted Execution setting for \"$parameter_name\" to \"$correct_value\""
-          echo "trustchk-p $parameter_name=$actual_value" > $log_file
-          trustchk -p $parameter_name=$correct_value
-        fi
+        increment_insecure "Trusted Execution setting for \"$parameter_name\" is not set to \"$correct_value\""
+        log_file="$work_dir/$log_file"
+        lockdown_commans "echo \"trustchk-p $parameter_name=$actual_value\" > $log_file ; trustchk -p $parameter_name=$correct_value" "Trusted Execution setting for \"$parameter_name\" to \"$correct_value\""
       else
-        if [ "$audit_mode" = 1 ]; then
-          
-          
-          increment_secure "Password Policy for \"$parameter_name\" is set to \"$correct_value\""
-        fi
+        increment_secure "Password Policy for \"$parameter_name\" is set to \"$correct_value\""
       fi
     else
       log_file="$restore_dir/$log_file"

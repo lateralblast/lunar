@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.0.8
+# Version:      7.0.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -437,6 +437,26 @@ lockdown_command () {
   fi
 }
 
+# restore_command
+#
+# Restore command
+# Check we are running in restore mode run a command
+#.
+
+restore_command () {
+  command=$1
+  message=$2
+  if [ "$audit_mode" = 0 ]; then
+    if [ "$message" ]; then
+      echo "Restoring: $message"
+    fi
+    echo "Executing: $command"
+   `$command`
+  else
+    verbose_message "$command" fix
+  fi
+}
+
 #
 # backup_state
 #
@@ -480,7 +500,9 @@ restore_state () {
 #.
 
 increment_total () {
-  total=`expr $total + 1` 
+  if [ "$audit_mode" != 2 ]; then
+    total=`expr $total + 1` 
+  fi
 }
 
 # increment_secure
@@ -489,10 +511,12 @@ increment_total () {
 #.
 
 increment_secure () {
-  message=$1
-  total=`expr $total + 1` 
-  secure=`expr $secure + 1`
-  echo "Secure:    $message [$secure Passes]"
+  if [ "$audit_mode" != 2 ]; then
+    message=$1
+    total=`expr $total + 1` 
+    secure=`expr $secure + 1`
+    echo "Secure:    $message [$secure Passes]"
+  fi
 }
 
 # increment_insecure
@@ -501,10 +525,12 @@ increment_secure () {
 #.
 
 increment_insecure () {
-  message=$1
-  total=`expr $total + 1` 
-  insecure=`expr $insecure + 1`
-  echo "Warning:   $message [$insecure Warnings]"
+  if [ "$audit_mode" != 2 ]; then
+    message=$1
+    total=`expr $total + 1` 
+    insecure=`expr $insecure + 1`
+    echo "Warning:   $message [$insecure Warnings]"
+  fi
 }
 
 # print_previous

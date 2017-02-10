@@ -16,12 +16,10 @@ audit_root_primary_group () {
     log_file="root_primary_grooup.log"
     check_file="/etc/group"
     group_check=`grep "^root:" /etc/passwd | cut -f4 -d:`
-    
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Primary group for root is root"
       if [ "$group_check" != "0" ];then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Group $group_id does not exist in group file"
           verbose_message "" fix
           verbose_message "usermod -g 0 root" fix
@@ -35,7 +33,6 @@ audit_root_primary_group () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Primary group for root is root"
         fi
       fi

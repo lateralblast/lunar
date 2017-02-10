@@ -18,26 +18,16 @@ check_inetd_service () {
       fi
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  If inetd service $service_name is set to $correct_status"
-        
         if [ "$actual_status" != "" ]; then
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_insecure "Service $service_name does not have $parameter_name set to $correct_status"
+          increment_insecure "Service $service_name does not have $parameter_name set to $correct_status"
+          backup_file $check_file
+          if [ "$correct_status" = "disable" ]; then
+            disable_value $check_file $service_name hash
           else
-            if [ "$audit_mode" = 0 ]; then
-              backup_file $check_file
-              if [ "$correct_status" = "disable" ]; then
-                disable_value $check_file $service_name hash
-              else
-                :
-              fi
-            fi
+            :
           fi
         else
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_secure "Service $service_name is set to $correct_status"
-          fi
+          increment_secure "Service $service_name is set to $correct_status"
         fi
       else
         restore_file $check_file $restore_dir

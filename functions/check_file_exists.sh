@@ -12,14 +12,12 @@ check_file_exists () {
   check_file=$1
   check_exists=$2
   log_file="$work_dir/file.log"
-  
   if [ "$check_exists" = "no" ]; then
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  File $check_file does not exist"
     fi
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        
         increment_insecure "File $check_file exists"
       fi
       if [ "$audit_mode" = 0 ]; then
@@ -30,7 +28,6 @@ check_file_exists () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        
         increment_secure "File $check_file does not exist"
       fi
     fi
@@ -40,7 +37,6 @@ check_file_exists () {
     fi
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        
         increment_insecure "File $check_file does not exist"
       fi
       if [ "$audit_mode" = 0 ]; then
@@ -50,7 +46,6 @@ check_file_exists () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        
         increment_secure "File $check_file exists"
       fi
     fi

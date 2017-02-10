@@ -24,8 +24,6 @@ audit_system_accounts () {
           increment_insecure "System account $user_name has an invalid shell but the account is disabled"
         else
           if [ "$audit_mode" = 1 ]; then
-            
-            
             increment_insecure "System account $user_name has an invalid shell"
             verbose_message "" fix
             if [ "$os_name" = "FreeBSD" ]; then

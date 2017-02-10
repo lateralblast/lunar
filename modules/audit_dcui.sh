@@ -8,7 +8,6 @@ audit_dcui () {
     verbose_message "DCUI"
     check_chkconfig_service DCUI off
     verbose_message "Lockdown"
-    
     backup_file="$work_dir/dvfilter"
     current_value=`vim-cmd -U dcui vimsvc/auth/lockdown_is_enabled`
     if [ "$audit_mode" != "2" ]; then
@@ -27,7 +26,6 @@ audit_dcui () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          
           increment_secure "Lockdown is enabled"
           echo ""
         fi

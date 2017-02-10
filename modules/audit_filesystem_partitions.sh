@@ -18,17 +18,7 @@ audit_filesystem_partitions() {
       verbose_message "Filesystem $filesystem is a separate partition"
       mount_test=`mount |awk '{print $3}' |grep "^filesystem$"`
       if [ "$mount_test" != "$filesystem" ]; then
-        if [ "$audit_mode" != "2" ]; then
-          if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-            
-            increment_insecure "Filesystem $filesystem is not a separate partition"
-          fi
-        else
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_secure "Filesystem $filesystem is a separate filesystem"
-          fi
-        fi
+        increment_secure "Filesystem $filesystem is a separate filesystem"
       fi
     done
   fi

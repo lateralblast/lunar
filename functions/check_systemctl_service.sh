@@ -8,7 +8,23 @@
 #.
 
 check_systemctl_service () {
+  temp_status=$1
+  temp_name=$2
   use_systemctl="no"
+  if [ "$temp_name" = "on" ] || [ "$temp_name" = "off" ]; then
+    correct_status=$temp_name 
+    service_name=$temp_status
+  else
+    correct_status=$temp_status
+    service_name=$temp_name
+  fi
+  if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ] || [ "$correct_status" = "on" ]; then
+    service_switch="enable"
+    correct_status="enabled"
+  else
+    service_switch="disable"
+    correct_status="disabled"
+  fi
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
       use_systemctl="yes"
@@ -18,75 +34,34 @@ check_systemctl_service () {
     fi
   fi
   if [ "$use_systemctl" = "yes" ]; then
-    temp_status=$1
-    temp_name=$2
-    if [ "$temp_name" = "on" ] || [ "$temp_name" = "off" ]; then
-      correct_status=$temp_name 
-      service_name=$temp_status
-    else
-      correct_status=$temp_status
-      service_name=$temp_name
-    fi
-    if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ] || [ "$correct_status" = "on" ]; then
-      service_switch="enable"
-      correct_status="enabled"
-    else
-      service_switch="disable"
-      correct_status="disabled"
-    fi
     log_file="systemctl.log"
     actual_status=`systemctl is-enabled $service_name 2> /dev/null`
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Service $service_name is $correct_status"
-    fi
-    if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ]; then
-      
-      if [ "$actual_status" != "$correct_status" ]; then
-        if [ "$audit_mode" != 2 ]; then
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_insecure "Service $service_name is not $correct_status"
-            command_line="systemctl $service_name $service_switch"
-            verbose_message "" fix
-            verbose_message "$command_line" fix
-            verbose_message "" fix
-          else
-            if [ "$audit_mode" = 0 ]; then
-              log_file="$work_dir/$log_file"
-              echo "$service_name,$actual_status" >> $log_file
-              echo "Setting:   Service $service_name to $correct_status"
-              systemctl $service_name $service_switch
+    if [ "$audit_mode" = 2 ]; then
+      restore_file="$restore_dir/$log_file"
+      if [ -f "$restore_file" ]; then
+        check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
+        if [ "$check_status" = "enabled" ] || [ "$check_status" = "disabled" ]; then
+          if [ "$check_status" != "$actual_status" ]; then
+            echo "Restoring: Service $service_name at run level $service_level to $check_status"
+            if [ "$check_status" = "enable" ] || [ "$check_status" = "enabled" ]; then
+              service_switch="enable"
+            else
+              service_switch="disable"
             fi
-          fi
-        fi
-      else
-        if [ "$audit_mode" != 2 ]; then
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_secure "Service $service_name is $correct_status"
-          fi
-        fi
-      fi
-      if [ "$audit_mode" = 2 ]; then
-        restore_file="$restore_dir/$log_file"
-        if [ -f "$restore_file" ]; then
-          check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
-          if [ "$check_status" = "enabled" ] || [ "$check_status" = "disabled" ]; then
-            if [ "$check_status" != "$actual_status" ]; then
-              echo "Restoring: Service $service_name at run level $service_level to $check_status"
-              if [ "$check_status" = "enable" ] || [ "$check_status" = "enabled" ]; then
-                service_switch="enable"
-              else
-                service_switch="disable"
-              fi
-              systemctl $service_name $service_switch
-            fi
+            systemctl $service_name $service_switch
           fi
         fi
       fi
     else
-      if [ "$audit_mode" = 1 ]; then
-        echo "Notice:    Service $service_name is not installed"
+      echo "Checking:  Service $service_name is $correct_status"
+      if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ]; then
+        if [ "$actual_status" != "$correct_status" ]; then
+          increment_insecure "Service $service_name is not $correct_status"
+          log_file="$work_dir/$log_file"
+          lockdown_command "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_name $service_switch" "Service $service_name to $correct_status"
+        else
+          increment_secure "Service $service_name is $correct_status"
+        fi
       fi
     fi
   fi

@@ -48,8 +48,6 @@ audit_syslog_server () {
               remote_check=`cat $check_file |grep -v '#' |grep '*.* @@' |grep -v localhost |grep '[A-z]' |wc -l`
               if [ "$remote_check" != "1" ]; then
                 if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-                  
-                  
                   increment_insecure "Rsyslog is not sending messages to a remote server"
                   verbose_message "" fix
                   verbose_message "Add a server entry to $check_file, eg:" fix
@@ -57,8 +55,6 @@ audit_syslog_server () {
                   verbose_message "" fix
                 fi
               else
-                
-                
                 increment_secure "Rsyslog is sending messages to a remote server"
               fi
             fi

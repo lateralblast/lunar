@@ -12,10 +12,8 @@ audit_disk_encryption () {
     if [ "$audit_mode" != 2 ]; then
       check=`diskutil cs list | grep -i encryption |grep AES-XTS`
       if [ "$check" ]; then
-        
         increment_secure "Disk encryption is enabled"
       else
-        
         increment_insecure "Disk encryption is not enabled"
       fi
     fi

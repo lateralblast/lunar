@@ -11,8 +11,6 @@ audit_file_vault() {
       actual_value=`diskutil cs list`
       if [ "$actual_value" = "No CoreStorage logical volume groups found" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "File Vault is not enabled"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
@@ -25,8 +23,6 @@ audit_file_vault() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "File Vault is enabled"
         fi
       fi

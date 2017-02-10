@@ -14,12 +14,10 @@ audit_shadow_group () {
     else
       echo "Checking:  Shadow group does not contain users"
     fi
-    
     if [ "$audit_mode" != 2 ]; then
       shadow_check=`cat $check_file |grep -v "^#" |grep ^shadow |cut -f4 -d":" |wc -c`
       if [ "$shadow_check" != 0 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Shadow group contains members"
           verbose_message "" fix
           verbose_message "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
@@ -35,7 +33,6 @@ audit_shadow_group () {
         fi
       else
         if [ "$audit_mode" = 1 ];then
-          
           increment_secure "No members in shadow group"
         fi
       fi

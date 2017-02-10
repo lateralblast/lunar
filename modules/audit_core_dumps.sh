@@ -23,7 +23,6 @@ audit_core_dumps () {
         
         if [ `expr "$cores_check" : "/var/cores"` != 10 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Cores are not restricted to a private directory"
           else
             if [ "$audit_mode" = 0 ]; then
@@ -101,7 +100,6 @@ audit_core_dumps () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Cores are restricted to a private directory"
           fi
         fi

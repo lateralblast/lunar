@@ -19,8 +19,6 @@ audit_ftp_banner () {
           echo "Checking:  FTP warning message"
           if [ "actual_value" != "Authorised" ]; then
             if [ "$audit_mode" = 1 ]; then
-              
-              
               increment_secure "FTP warning message isn't enabled"
               verbose_message "" fix
               verbose_message "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp" fix
@@ -39,8 +37,6 @@ audit_ftp_banner () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              
-              
               increment_secure "FTP warning message enabled"
             fi
           fi

@@ -11,7 +11,6 @@ audit_svccfg_value () {
     current_value=`svccfg -s $service_name listprop $service_property |awk '{print $3}'`
     file_header="svccfg"
     log_file="$work_dir/$file_header.log"
-    
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$file_header.log"
       if [ -f "$restore_file" ]; then
@@ -29,7 +28,6 @@ audit_svccfg_value () {
     fi
     if [ "$current_value" != "$correct_value" ]; then
       if [ "$audit_mode" = 1 ]; then
-        
         increment_insecure "Service $service_name $service_property not set to $correct_value"
         command_line="svccfg -s $service_name setprop $service_property = $correct_value"
         verbose_message "" fix
@@ -45,7 +43,6 @@ audit_svccfg_value () {
     else
       if [ "$audit_mode" != 2 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Service $service_name $service_property already set to $correct_value"
         fi
       fi

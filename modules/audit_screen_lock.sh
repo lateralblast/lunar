@@ -16,8 +16,6 @@ audit_screen_lock () {
         screen_test=`defaults read ~/Library/Preferences/com.apple.dock |grep corner |grep 1 |wc -l`
         if [ "$screen_test" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
-            
             increment_insecure "Screensaver disable hot corner is enabled"
           fi
           if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
@@ -30,15 +28,11 @@ audit_screen_lock () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
-            
             increment_secure "No screensaver disable hot corners enabled"
           fi
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "No screensaver disable hot corners enabled"
         fi
       fi

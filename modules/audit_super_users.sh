@@ -21,11 +21,9 @@ audit_super_users() {
       verbose_message "Accounts with UID 0"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  Super users other than root"
-        
         for user_name in `awk -F: '$3 == "0" { print $1 }' /etc/passwd |grep -v root`; do
           echo "$user_name"
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "UID 0 for $user_name"
             verbose_message "" fix
             verbose_message "userdel $user_name" fix
@@ -43,7 +41,6 @@ audit_super_users() {
         done
         if [ "$user_name" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "No accounts other than root have UID 0"
           fi
         fi

@@ -37,8 +37,6 @@ audit_console_login () {
       done
       if [ "$disable_ttys" = 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "Consoles enabled on$console_list"
           verbose_message "" fix
           verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
@@ -55,8 +53,6 @@ audit_console_login () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "No consoles enabled on tty[0-9]*"
         fi
       fi

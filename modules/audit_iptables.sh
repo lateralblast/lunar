@@ -21,13 +21,10 @@ audit_iptables () {
     if [ "$audit_mode" != 2 ]; then
       check=`which iptables`
       if [ "$check" ]; then
-        
         check=`iptables -L INPUT -v -n |grep "127.0.0.0" |grep "0.0.0.0" |grep DROP`
         if [ ! "$check" ]; then
-          
           increment_insecure "All other devices allow trafic to the loopback network"
         else
-          
           increment_secure "All other devices deny trafic to the loopback network"
         fi
       fi

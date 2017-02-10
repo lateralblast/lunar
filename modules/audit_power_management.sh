@@ -12,7 +12,6 @@ audit_power_management () {
       check_itab pmd off
     fi
     if [ "$os_name" = "SunOS" ]; then
-      
       if [ "$os_version" = "10" ]; then
         check_file_value /etc/default/power PMCHANGEPERM eq "-" hash
         check_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
@@ -33,7 +32,6 @@ audit_power_management () {
         fi
         if [ "$poweradm_test" != "false" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Power suspend enabled"
             verbose_message "" fix
             verbose_message "poweradm set suspend-enable=false" fix
@@ -49,7 +47,6 @@ audit_power_management () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Power suspend disabled"
           fi
         fi

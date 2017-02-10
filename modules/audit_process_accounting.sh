@@ -9,10 +9,8 @@ audit_process_accounting () {
     check_file="/etc/rc3.d/S99acct"
     init_file="/etc/init.d/acct"
     log_file="$work_dir/acct.log"
-    
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        
         increment_insecure "Process accounting not enabled"
       fi
       if [ "$audit_mode" = 0 ]; then
@@ -24,7 +22,6 @@ audit_process_accounting () {
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        
         increment_secure "Process accounting not enabled"
       fi
       if [ "$audit_mode" = 2 ]; then

@@ -19,7 +19,6 @@ audit_home_ownership() {
       echo "Checking:  Ownership of home directories"
     fi
     home_check=0
-    
     if [ "$os_name" = "AIX" ]; then
       if [ "$audit_mode" != 2 ]; then
         lsuser -c ALL | grep -v "^#name" | cut -f1 -d: | while read check_user; do
@@ -33,7 +32,6 @@ audit_home_ownership() {
             home_check=1
             if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
               if [ "$audit_mode" = 1 ];then
-                
                 increment_insecure "User $check_user has no home directory defined"
               fi
             else
@@ -41,13 +39,11 @@ audit_home_ownership() {
                 dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
-                    
                     increment_insecure "Home Directory for $check_user is owned by $dir_owner"
                   fi
                 else
                   if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      
                       increment_insecure "User $check_user has no home directory"
                     fi
                   fi
@@ -58,7 +54,6 @@ audit_home_ownership() {
         done
         if [ "$home_check" = 0 ]; then
           if [ "$audit_mode" = 1 ];then
-            
             increment_secure "No ownership issues with home directories"
           fi
         fi
@@ -78,7 +73,6 @@ audit_home_ownership() {
             home_check=1
             if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
               if [ "$audit_mode" = 1 ];then
-                
                 increment_insecure "User $check_user has no home directory defined"
               fi
             else
@@ -86,13 +80,11 @@ audit_home_ownership() {
                 dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
-                    
                     increment_insecure "Home Directory for $check_user is owned by $dir_owner"
                   fi
                 else
                   if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      
                       increment_insecure "User $check_user has no home directory"
                     fi
                   fi
@@ -103,7 +95,6 @@ audit_home_ownership() {
         done
         if [ "$home_check" = 0 ]; then
           if [ "$audit_mode" = 1 ];then
-            
             increment_secure "No ownership issues with home directories"
           fi
         fi
@@ -125,7 +116,6 @@ audit_home_ownership() {
             home_check=1
             if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
               if [ "$audit_mode" = 1 ];then
-                
                 increment_insecure "User $check_user has no home directory defined"
               fi
             else
@@ -133,13 +123,11 @@ audit_home_ownership() {
                 dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
-                    
                     increment_insecure "Home Directory for $check_user is owned by $dir_owner"
                   fi
                 else
                   if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      
                       increment_insecure "User $check_user has no home directory"
                     fi
                   fi
@@ -150,7 +138,6 @@ audit_home_ownership() {
         done
         if [ "$home_check" = 0 ]; then
           if [ "$audit_mode" = 1 ];then
-            
             increment_secure "No ownership issues with home directories"
           fi
         fi

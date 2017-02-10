@@ -54,7 +54,6 @@ check_command_value () {
   log_file="$work_dir/$command_name.log"
   if [ "$current_value" != "$correct_value" ]; then
     if [ "$audit_mode" = 1 ]; then
-      
       increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\""
       if [ "$command_name" = "routeadm" ]; then
         if [ "$correct_value" = "disabled" ]; then
@@ -89,7 +88,6 @@ check_command_value () {
   else
     if [ "$audit_mode" != 2 ]; then
       if [ "$audit_mode" = 1 ]; then
-        
         if [ "$parameter_name" = "tcp_wrappers" ]; then
           increment_secure "Service $service_name already has \"$parameter_name\" set to \"$correct_value\""
         else

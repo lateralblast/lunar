@@ -11,8 +11,6 @@ audit_remote_management() {
       echo "Checking:  Remote Management is disabled"
       actual_value=`launchctl list |awk '{print $3}' |grep ARDAgent |wc -l`
       if [ "$actual_value" = "1" ]; then
-        
-        
         increment_insecure "Remote Management is enabled"
         verbose_message "" fix
         verbose_message "Open System Preferences" fix
@@ -20,8 +18,6 @@ audit_remote_management() {
         verbose_message "Uncheck Remote Management" fix
         verbose_message "" fix
       else
-        
-        
         increment_secure "Remote Management is disabled"
       fi
     else

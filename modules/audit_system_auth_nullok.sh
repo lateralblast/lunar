@@ -9,12 +9,10 @@ audit_system_auth_nullok () {
       for check_file in etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "$check_file" ]; then
           echo "Checking:  For nullok entry in $check_file"
-          
           check_value=0
           check_value=`cat $check_file |grep -v '^#' |grep 'nullok' |head -1 |wc -l`
           if [ "$check_value" = 1 ]; then
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "Found nullok entry in $check_file"
               verbose_message "cp $check_file $temp_file" fix
               verbose_message "cat $temp_file |sed 's/ nullok//' > $check_file" fix
@@ -29,7 +27,6 @@ audit_system_auth_nullok () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "No nullok entries in $check_file"
             fi
           fi

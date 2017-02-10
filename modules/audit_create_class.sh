@@ -14,7 +14,6 @@ audit_create_class () {
       
       if [ `expr "$class_check" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Audit class not enabled"
         else
           if [ "$audit_mode" = 0 ]; then

@@ -21,7 +21,6 @@ audit_software_update() {
           esxcli software profile install -d $vmware_depot -p $available_update --ok-to-remove
         fi
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Software is not up to date (Current: $current_update Available: $available_update)"
           verbose_message "" fix
           verbose_message "esxcli software profile install -d $vmware_depot -p $available_update --ok-to-remove" fix
@@ -29,7 +28,6 @@ audit_software_update() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Software is up to date"
         fi
       fi
@@ -58,10 +56,8 @@ audit_software_update() {
       correct_status="on"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  If Software Update is enabled"
-        
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Software Update is not $correct_status"
             command_line="sudo softwareupdate --schedule $correct_status"
             verbose_message "" fix
@@ -77,7 +73,6 @@ audit_software_update() {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Software Update is $correct_status"
           fi
         fi

@@ -24,7 +24,6 @@ audit_password_fields () {
     empty_count=0
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Password fields"
-      
       if [ "$os_name" = "AIX" ]; then
         users=`pwdck –n ALL`
       else
@@ -33,7 +32,6 @@ audit_password_fields () {
       for user_name in $users; do
         empty_count=1
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "No password field for $user_name in $check_file"
           verbose_message "" fix
           verbose_message "passwd -d $user_name" fix
@@ -52,7 +50,6 @@ audit_password_fields () {
         fi
       done
       if [ "$empty_count" = 0 ]; then
-        
         increment_secure "No empty password entries"
       fi
       for check_file in /etc/passwd /etc/shadow; do
@@ -73,7 +70,6 @@ audit_password_fields () {
             cat $temp_file  > $check_file
           fi
         else
-          
           increment_secure "No legacy entries in $check_file"
         fi
       done

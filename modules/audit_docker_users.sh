@@ -26,11 +26,9 @@ audit_docker_users () {
           last_login=`last -1 $user_name |grep '[a-z]' |awk '{print $1}'`
           if [ "$last_login" = "wtmp" ]; then
             lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
-            
             echo "Checking:  Docker group user $user_name account is locked"
             if [ "$lock_test" = "$user_name" ]; then
               if [ "$audit_mode" = 1 ]; then
-                
                 increment_insecure "User $user_name in group $docker_group and has not logged in recently and their account is not locked"
               fi
               if [ "$audit_mode" = 0 ]; then
@@ -39,7 +37,6 @@ audit_docker_users () {
                 passwd -l $user_name
               fi
             else
-              
               increment_secure "User $user_name in group $docker_group has not logged in recently and their account is locked"
             fi
           fi
@@ -66,7 +63,6 @@ audit_docker_users () {
                 passwd -l $user_name
               fi
             else
-              
               increment_secure "User $user_name in group $docker_group has an id less than $max_super_user_id and their account is locked"
             fi
           fi

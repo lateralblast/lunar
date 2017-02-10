@@ -21,11 +21,9 @@ audit_system_auth_unlock_time () {
       if [ -f "$check_file" ]; then
         if [ "$audit_mode" != 2 ]; then
           echo "Checking:  Lockout time for failed password attempts enabled in $check_file"
-          
           check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
           if [ "$check_value" != "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "Lockout time for failed password attempts not enabled in $check_file"
               verbose_message "cp $check_file $temp_file" fix
               if [ "$os_check" -eq 0 ]; then
@@ -48,7 +46,6 @@ audit_system_auth_unlock_time () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "Lockout time for failed password attempts enabled in $check_file"
             fi
           fi

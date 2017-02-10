@@ -14,16 +14,13 @@ audit_ftp_logging () {
         echo "Checking:  File $file_header"
       fi
       log_file="$work_dir/$file_header.log"
-      
       if [ "$audit_mode" = 1 ]; then
         if [ "$check_value" -eq 0 ]; then
-          
           increment_insecure "FTP daemon logging not enabled"
           verbose_message "" fix
           verbose_message "inetadm -m svc:/network/ftp exec=\"/usr/sbin/in.ftpd -a -l -d\"" fix
           verbose_message "" fix
         else
-          
           increment_secure "FTP daemon logging enabled"
         fi
       else

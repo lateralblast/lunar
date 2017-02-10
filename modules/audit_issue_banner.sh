@@ -15,7 +15,6 @@ audit_issue_banner () {
     verbose_message "Security Warning Message"
     for check_file in /etc/issue /etc/motd /etc/issue.net; do
       check_file_perms $check_file 0644 root root
-      
       issue_check=0
       if [ -f "$check_file" ]; then
         issue_check=`cat $check_file |grep 'NOTICE TO USERS' |wc -l`
@@ -24,7 +23,6 @@ audit_issue_banner () {
         echo "Checking:  Security message in $check_file"
         if [ "$issue_check" != 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "No security message in $check_file"
           fi
           if [ "$audit_mode" = 0 ]; then
@@ -54,7 +52,6 @@ audit_issue_banner () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Security message in $check_file"
           fi
         fi

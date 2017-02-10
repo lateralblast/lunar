@@ -23,9 +23,7 @@ audit_rsa_securid_pam () {
       verbose_message "RSA SecurID PAM Agent Configuration"
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  RSA SecurID PAM Agent is enabled for sudo"
-        
         if [ "$check_value" != "$search_string" ]; then
-          
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "RSA SecurID PAM Agent is not enabled for sudo"
             verbose_message "" fix
@@ -59,7 +57,6 @@ audit_rsa_securid_pam () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "RSA SecurID PAM Agent is configured for sudo"
           fi
         fi

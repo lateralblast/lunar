@@ -28,8 +28,6 @@ audit_user_netrc () {
     done
     if [ "$check_fail" != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
-        
-        
         increment_secure "No user netrc files exist"
       fi
     fi

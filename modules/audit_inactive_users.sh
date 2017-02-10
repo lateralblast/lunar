@@ -17,14 +17,11 @@ audit_inactive_users () {
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Lockout status for inactive user accounts"
-      
       for user_check in `cat $check_file |grep -v 'nobody4' |grep -v 'root'` ; do
-        
         inactive_check=`echo $user_check |cut -f 7 -d":"`
         user_name=`echo $user_check |cut -f 1 -d":"`
         if [ "$inactive_check" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Inactive lockout not set for $user_name"
             verbose_message "" fix
             verbose_message "usermod -f 35 $user_name" fix
@@ -38,7 +35,6 @@ audit_inactive_users () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Inactive lockout set for $user_name"
           fi
         fi

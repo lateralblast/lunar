@@ -18,8 +18,6 @@ check_rctcp() {
       echo "Checking:  Service \"$service_name\" is \"$correct_value\""
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "Service \"$service_name\" is not \"$correct_value\""
           verbose_message "" fix
           if [ "$correct_value" = "off" ]; then
@@ -57,8 +55,6 @@ check_rctcp() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "Service \"$service_name\" is \"$correct_value\""
         fi
       fi

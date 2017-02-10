@@ -13,8 +13,6 @@ audit_serial_login () {
       tty_list=`lsitab –a |grep "on:/usr/sbin/getty" |awk '{print $2}'`
       if [ `expr "$tty_list" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "Serial port logins disabled"
         fi
         if [ "$audit_mode" = 2 ]; then
@@ -35,8 +33,6 @@ audit_serial_login () {
             actual_value=`lsitab -a |grep "on:/usr/sbin/getty" |grep $tty_name`
             new_value=`echo "$actual_value" |sed 's/on/off/g'`
             if [ "$audit_mode" = 1 ]; then
-              
-              
               increment_insecure "Serial port logins not disabled on $tty_name"
               verbose_message "" fix
               verbose_message "chitab \"$new_value\"" fix
@@ -63,14 +59,10 @@ audit_serial_login () {
         log_file="$work_dir/pmadm.log"
         if [ `expr "$serial_test" : "2"` = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
-            
             increment_secure "Serial port logins disabled"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
-            
             increment_insecure "Serial port logins not disabled"
             verbose_message "" fix
             verbose_message "pmadm -d -p zsmon -s ttya" fix
@@ -101,7 +93,6 @@ audit_serial_login () {
       if [ "$ttys_test" != "off" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Serial port logins not disabled"
           fi
           if [ "$audit_mode" = 2 ]; then
@@ -116,7 +107,6 @@ audit_serial_login () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Serial port logins disabled"
         fi
       fi

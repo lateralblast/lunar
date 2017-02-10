@@ -23,17 +23,10 @@ check_pmset() {
     actual_value=`pmset -g | grep $service |awk '{print $2}' |grep $value`
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Sleep is disabled when powered"
-      
       if [ ! "$actual_value" = "$value" ]; then
-        
         increment_insecure "Service $service is not $state"
-        if [ "$audit_mode" = 0 ]; then
-          echo "Seting:    Wake on Lan to $state"
-          echo "$check" > $work_dir/$log_file
-          pmset -c $service $value
-        fi
+        lockdown_command "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service $service to $state"
       else
-        
         increment_secure "Service $service is $state"
       fi
     else

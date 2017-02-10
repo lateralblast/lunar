@@ -16,8 +16,6 @@ audit_printer_sharing() {
       echo "Checking:  Printer Sharing is disabled"
       printer_test=`system_profiler SPPrintersDataType |grep Shared |awk '{print $2}' |grep 'Yes'`
       if [ "$printer_test" = "Yes" ]; then
-        
-        
         increment_insecure "Printer sharing is enabled"
         verbose_message "" fix
         verbose_message "Open System Preferences" fix
@@ -25,8 +23,6 @@ audit_printer_sharing() {
         verbose_message "Uncheck Printer Sharing" fix
         verbose_message "" fix
       else
-        
-        
         increment_secure "Printer Sharing is disabled"
       fi
     else

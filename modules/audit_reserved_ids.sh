@@ -11,7 +11,6 @@ audit_reserved_ids () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi
-    
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
         found=0
@@ -24,7 +23,6 @@ audit_reserved_ids () {
         if [ "$found" = 0 ]; then
           uuid_check=1
           if [ "$audit_mode" = 1 ];then
-            
             increment_insecure "User $check_user has a reserved UID ($check_uid)"
           fi
         fi
@@ -36,7 +34,6 @@ audit_reserved_ids () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi
-    
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read check_user check_uid; do
         found=0
@@ -51,7 +48,6 @@ audit_reserved_ids () {
         if [ "$found" = 0 ]; then
           uuid_check=1
           if [ "$audit_mode" = 1 ];then
-            
             increment_insecure "User $check_user has a reserved UID ($check_uid)"
           fi
         fi

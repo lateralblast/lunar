@@ -33,8 +33,6 @@ audit_unowned_files () {
         | xargs -I '{}' find '{}' -xdev -nouser -ls"
       fi
       for check_file in `$find_command`; do
-        
-        
         increment_insecure "File $check_file is unowned"
       done
     fi

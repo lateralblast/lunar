@@ -13,8 +13,6 @@ audit_gate_keeper() {
       actual_value=`sudo spctl --status |awk '{print $2}' |sed 's/d$//g'`
       if [ "$actual_value" = "disable" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "Gatekeeper is not enabled"
         fi
         if [ "$audit_mode" = 0 ]; then
@@ -24,8 +22,6 @@ audit_gate_keeper() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "Gatekeeper is enabled"
         fi
       fi

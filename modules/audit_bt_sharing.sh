@@ -14,28 +14,21 @@ audit_bt_sharing () {
     backup_file="bluetooth_discover"
     if [ "$audit_mode" != 2 ]; then
       if [ "$os_release" -ge 12 ]; then
-        
         check=`/usr/sbin/system_profiler SPBluetoothDataType | grep -i power |cut -f2 -d: |sed "s/ //g"`
         if [ ! "$check" = "Off" ]; then
           check=`/usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable |cut -f2 -d: |sed "s/ //g"`
           if [ "$check" = "Off" ]; then
-            
             increment_secure "Bluetooth is not discoverable"
           else
-            
             increment_insecure "Bluetooth is discoverable"
           fi
         else
-          
           increment_secure "Bluetooth is turned off"
         fi
-        
         check=`defaults read com.apple.systemuiserver menuExtras | grep Bluetooth.menu | sed "s/[ ,\",\,]//g"`
         if [ "$check" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
-          
           increment_secure "Bluetooth status menu is enabled"
         else
-          
           increment_insecure "Bluetooth status menu is not enabled"
         fi
       fi

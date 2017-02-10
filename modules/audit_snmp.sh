@@ -16,7 +16,6 @@ audit_snmp () {
     if [ "$snmpd_disable" = "yes" ]; then
       verbose_message "SNMP Daemons and Log Permissions"
       if [ "$os_name" = "VMkernel" ]; then
-        
         log_file="snmpstatus"
         backup_file="$work_dir/$log_file"
         current_value=`esxcli system snmp get |grep Enable |awk '{print $2}'`
@@ -28,7 +27,6 @@ audit_snmp () {
               esxcli system snmp set --enable="false"
             fi
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "SNMP is not enabled"
               verbose_message "" fix
               verbose_message "esxcli system snmp set --enable=\"false\"" fix
@@ -36,7 +34,6 @@ audit_snmp () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "SNMP is disabled"
               echo ""
             fi

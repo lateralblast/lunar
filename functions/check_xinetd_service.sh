@@ -17,42 +17,18 @@ audit_xinetd_service () {
       actual_status=`cat $check_file |grep $parameter_name |awk '{print $3}'`
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  If xinetd service $service_name has $parameter_name set to $correct_status"
-        
         if [ "$actual_status" != "$correct_status" ]; then
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_insecure "Service $service_name does not have $parameter_name set to $correct_status"
-            if [ "$linux_dist" = "debian" ]; then
-              command_line="update-rc.d $service_name $correct_status"
-            else
-              command_line="chkconfig $service_name $correct_status"
-            fi
-            verbose_message "" fix
-            verbose_message "$command_line" fix
-            verbose_message "" fix
+          if [ "$linux_dist" = "debian" ]; then
+            command="update-rc.d $service_name $correct_status"
           else
-            if [ "$audit_mode" = 0 ]; then
-              log_file="$work_dir/$log_file"
-              echo "$parameter_name,$actual_status" >> $log_file
-              echo "Setting:   Parameter $parameter_name for $service_name to $correct_status"
-              backup_file $check_file
-              if [ "$parameter_name" != "disable" ]; then
-                cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file
-                cp $temp_file $check_file
-              else
-                if [ "$linux_dist" = "debian" ]; then
-                  update-rc.d $service_name $correct_status
-                else
-                  chkconfig $service_name $correct_status
-                fi
-              fi
-            fi
+            command="chkconfig $service_name $correct_status"
           fi
+          increment_insecure "Service $service_name does not have $parameter_name set to $correct_status"
+          log_file="$work_dir/$log_file"
+          backup_file $check_file
+          lockdown_command "echo \"$parameter_name,$actual_status\" >> $log_file ; cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command" "Service to $parameter_name"
         else
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_secure "Service $service_name has $parameter_name set to $correct_status"
-          fi
+          increment_secure "Service $service_name has $parameter_name set to $correct_status"
         fi
       else
         restore_file="$restore_dir/$log_file"

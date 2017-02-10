@@ -10,11 +10,9 @@ audit_ftp_users () {
     funct_verbost_message "FTP Users"
     if [ "$os_name" = "AIX" ]; then
       $check_file=$1
-      
       for user_name in `lsuser -c ALL | grep -v ^#name |grep -v root | cut -f1 -d:`; do
         if [ `lsuser -f $user_name | grep id | cut -f2 -d=` -lt 200 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "User $user_name not in $check_file"
           fi
           if [ "$audit_mode" = 0 ]; then
@@ -24,7 +22,6 @@ audit_ftp_users () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "User $user_name in $check_file"
           fi
         fi
@@ -35,7 +32,6 @@ audit_ftp_users () {
     fi
     if [ "$os_name" = "SunOS" ]; then
       check_file=$1
-      
       for user_name in adm bin daemon gdm listen lp noaccess \
         nobody nobody4 nuucp postgres root smmsp svctag \
         sys uucp webserverd; do
@@ -44,7 +40,6 @@ audit_ftp_users () {
           ftpuser_check=`cat $check_file |grep -v '^#' |grep "^$user_name$"`
           if [ `expr "$ftpuser_check" : "[A-z]"` != 1 ]; then
             if [ "$audit_mode" = 1 ]; then
-              
               increment_insecure "User $user_name not in $check_file"
             fi
             if [ "$audit_mode" = 0 ]; then
@@ -54,7 +49,6 @@ audit_ftp_users () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              
               increment_secure "User $user_name in $check_file"
             fi
           fi
@@ -66,7 +60,6 @@ audit_ftp_users () {
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file=$1
-      
       for user_name in root bin daemon adm lp sync shutdown halt mail \
         news uucp operator games nobody; do
         user_check=`cat /etc/passwd |cut -f1 -d":" |grep "^$user_name$"`
@@ -74,7 +67,6 @@ audit_ftp_users () {
           ftpuser_check=`cat $check_file |grep -v '^#' |grep "^$user_name$"`
           if [ `expr "$ftpuser_check" : "[A-z]"` != 1 ]; then
             if [ "$audit_mode" = 1 ]; then
-              
               increment_insecure "User $user_name not in $check_file"
             fi
             if [ "$audit_mode" = 0 ]; then
@@ -84,7 +76,6 @@ audit_ftp_users () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              
               increment_secure "User $user_name in $check_file"
             fi
           fi

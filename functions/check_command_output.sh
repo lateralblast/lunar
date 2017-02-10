@@ -6,7 +6,6 @@
 check_command_output () {
   if [ "$os_name" = "SunOS" ]; then
     command_name=$1
-    
     if [ "$command_name" = "getcond" ]; then
       get_command="auditconfig -getcond |cut -f2 -d'=' |sed 's/ //g'"
     fi
@@ -46,22 +45,14 @@ check_command_output () {
     fi
     log_file="$command_name.log"
     check_value=`$get_command`
-    if [ "$audit_mode" = 1 ]; then
+    if [ "$audit_mode" != 2 ]; then
       if [ "$check_value" != "$correct_value" ]; then
-        
         increment_insecure "Command $command_name does not return correct value"
       else
-        
         increment_secure "Command $command_name returns correct value"
       fi
-    fi
-    if [ "$audit_mode" = 0 ]; then
       log_file="$work_dir/$log_file"
-      if [ "$check_value" != "$test_value" ]; then
-        echo "Setting:   Command $command_name to correct value"
-        $test_command > $log_file
-        $set_command
-      fi
+      lockdown_command "echo \"$restore_command\" > $log_file ; $set_command" "Command $command_name to correct value"
     fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"

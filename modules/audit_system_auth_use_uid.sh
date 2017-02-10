@@ -11,11 +11,9 @@ audit_system_auth_use_uid () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  The use of su is restricted by sudo"
-      
       check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
-          
           increment_insecure "The use of su is not restricted by sudo in $check_file"
           verbose_message "cp $check_file $temp_file" fix
           verbose_message "cat $temp_file |sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' > $check_file" fix
@@ -30,7 +28,6 @@ audit_system_auth_use_uid () {
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          
           increment_secure "The use of su is restricted by sudo in $check_file"
         fi
       fi

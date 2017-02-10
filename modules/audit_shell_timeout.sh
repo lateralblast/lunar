@@ -8,7 +8,6 @@ audit_shell_timeout () {
     for test in ESXiShellInteractiveTimeOut ESXiShellTimeOut; do
       timeout="3600"
       verbose_message "Timeoute value for $test"
-      
       backup_file="$work_dir/$test"
       current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /UserVars/$test |cut -f2 -d,`
       if [ "$audit_mode" != "2" ]; then
@@ -19,7 +18,6 @@ audit_shell_timeout () {
             esxcli system settings advanced set -o /UserVars/$test -i $timeout
           fi
           if [ "$audit_mode" = "1" ]; then
-            
             increment_insecure "Timeout value for $test not set to $timeout"
             verbose_message "" fix
             verbose_message "esxcli system settings advanced set -o /UserVars/$test -i $timeout" fix
@@ -27,7 +25,6 @@ audit_shell_timeout () {
           fi
         else
           if [ "$audit_mode" = "1" ]; then
-            
             increment_secure "Timeout value for $test is set to $timeout"
           fi
         fi

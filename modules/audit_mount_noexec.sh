@@ -15,10 +15,8 @@ audit_mount_noexec () {
       verbose_message "Temp File Systems mounted with noexec"
       if [ "$audit_mode" != "2" ]; then
         nodev_check=`cat $check_file |grep -v "^#" |grep "tmpfs" |grep -v noexec |head -1 |wc -l`
-        
         if [ "$nodev_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "Found tmpfs filesystems that should be mounted noexec"
             verbose_message "" fix
             verbose_message "cat $check_file | awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 \",noexec\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
@@ -35,7 +33,6 @@ audit_mount_noexec () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "No filesystem that should be mounted with noexec"
           fi
           if [ "$audit_mode" = 2 ]; then

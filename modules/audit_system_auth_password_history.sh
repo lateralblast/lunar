@@ -19,11 +19,9 @@ audit_system_auth_password_history () {
       if [ -f "$check_file" ]; then
         if [ "$audit_mode" != 2 ]; then
           echo "Checking:  Password entry $search_string set to $search_value in $check_file"
-          
           check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
           if [ "$check_value" != "$search_value" ]; then
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "Password entry $search_string is not set to $search_value in $check_file"
               verbose_message "cp $check_file $temp_file" fix
               verbose_message "cat $temp_file |awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" $search_string=$search_value\"; next };' > $check_file" fix
@@ -38,7 +36,6 @@ audit_system_auth_password_history () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "Password entry $search_string set to $search_value in $check_file"
             fi
           fi

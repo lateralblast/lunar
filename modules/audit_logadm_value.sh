@@ -14,10 +14,8 @@ audit_logadm_value () {
       check_file="/etc/logadm.conf"
       check_log=`logadm -V |grep -v '^#' |grep "$log_name"`
       log_file="/var/log/$log_name"
-      
       if [ `expr "$check_log" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Logging for $log_name not enabled"
           verbose_message "" fix
           verbose_message "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" fix
@@ -69,7 +67,6 @@ audit_logadm_value () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Logging for $log_name already enabled"
         fi
       fi

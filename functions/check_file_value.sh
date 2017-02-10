@@ -22,7 +22,6 @@ check_file_value () {
   comment_value=$5
   position=$6
   search_value=$7
-  
   if [ "$comment_value" = "star" ]; then
     comment_value="*"
   else
@@ -65,7 +64,6 @@ check_file_value () {
     echo "Checking:  Value of \"$parameter_name\" is set to \"$correct_value\" in $check_file"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        
         increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
         if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
           verbose_message "" fix
@@ -102,7 +100,6 @@ check_file_value () {
       fi
       if [ "$check_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
           if [ "$check_parameter" != "$parameter_name" ]; then
             if [ "$separator_value" = "tab" ]; then
@@ -178,12 +175,7 @@ check_file_value () {
           fi
         fi
       else
-        if [ "$audit_mode" != 2 ]; then
-          if [ "$audit_mode" = 1 ]; then
-            
-            increment_secure "Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file"
-          fi
-        fi
+        increment_secure "Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file"
       fi
     fi
   fi

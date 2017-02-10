@@ -19,10 +19,8 @@ audit_mount_setuid () {
         if [ -f "$check_file" ]; then
           nosuid_check=`cat $check_file |grep -v "^#" |grep "\-o nosuid"`
           log_file="$work_dir/$check_file"
-          
           if [ `expr "$nosuid_check" : "[A-z]"` != 1 ]; then
             if [ "$audit_mode" = 1 ]; then
-              
               increment_insecure "Set-UID not restricted on user mounted devices"
             fi
             if [ "$audit_mode" = 0 ]; then
@@ -32,7 +30,6 @@ audit_mount_setuid () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              
               increment_secure "Set-UID not restricted on user mounted devices"
             fi
             if [ "$audit_mode" = 2 ]; then
@@ -48,10 +45,8 @@ audit_mount_setuid () {
         verbose_message "File Systems mounted with nodev"
         if [ "$audit_mode" != "2" ]; then
           nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3|ext4|swap|tmpfs" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
-          
           if [ "$nodev_check" = 1 ]; then
             if [ "$audit_mode" = 1 ]; then
-              
               increment_insecure "Found filesystems that should be mounted nodev"
               verbose_message "" fix
               verbose_message "cat $check_file | awk '( $3 ~ /^ext[2,3,4]|tmpfs$/ && $2 != \"/\" ) { $4 = $4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",$1,$2,$3,$4,$5,$6 }' > $temp_file" fix
@@ -68,7 +63,6 @@ audit_mount_setuid () {
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              
               increment_secure "No filesystem that should be mounted with nodev"
             fi
             if [ "$audit_mode" = 2 ]; then

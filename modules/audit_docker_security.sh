@@ -106,14 +106,11 @@ audit_docker_security () {
         check_dockerd unused kernel $param
       done
       if [ "$audit_mode" != 2 ]; then
-        
         check=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock`
         echo "Checking:  Docker socket mounted inside containers"
         if [ "$check" ]; then
-          
           increment_insecure "Docker socket is mounted inside a container"
         else
-          
           increment_secure "Docker socket is not mounted inside a container"
         fi
       fi

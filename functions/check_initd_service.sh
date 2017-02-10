@@ -32,28 +32,13 @@ check_initd_service () {
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  If init.d service $service_name is $correct_status"
       fi
-      
       if [ "$actual_status" != "$correct_status" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          
-          increment_insecure "Service $service_name is not $correct_status"
-          verbose_message "" fix
-          verbose_message "mv /etc/init.d/$service_name /etc/init.d/_$service_name" fix
-          verbose_message "/etc/init.d/$service_name stop" fix
-          verbose_message "" fix
+        increment_insecure "Service $service_name is not $correct_status"
+        log_file="$work_dir/$log_file"
+        if [ "$correct_status" = "disabled" ]; then
+          lockdown_command "echo \"$service_name,$actual_status\" >> $log_file ; /etc/init.d/$service_name stop ; mv /etc/init.d/$service_name /etc/init.d/_$service_name" "Service $service_name to $correct_status"
         else
-          if [ "$audit_mode" = 0 ]; then
-            log_file="$work_dir/$log_file"
-            echo "$service_name,$actual_status" >> $log_file
-            echo "Setting:   Service $service_name to $correct_status"
-            if [ "$correct_status" = "disabled" ]; then
-              /etc/init.d/$service_name stop
-              mv /etc/init.d/$service_name /etc/init.d/_$service_name
-            else
-              mv /etc/init.d/_$service_name /etc/init.d/$service_name
-              /etc/init.d/$service_name start
-            fi
-          fi
+          lockdown_command "echo \"$service_name,$actual_status\" >> $log_file ; mv /etc/init.d/_$service_name /etc/init.d/$service_name ; /etc/init.d/$service_name start" "Service $service_name to $correct_status"
         fi
       else
         if [ "$audit_mode" = 2 ]; then
@@ -62,23 +47,15 @@ check_initd_service () {
             check_name=`cat $restore_file |grep $service_name |cut -f1 -d","`
             if [ "$check_name" = "$service_name" ]; then
               check_status=`cat $restore_file |grep "$service_name" |cut -f2 -d","`
-              echo "Restoring: Service $service_name to $check_status"
               if [ "$check_status" = "disabled" ]; then
-                /etc/init.d/$service_name stop
-                mv /etc/init.d/$service_name /etc/init.d/_$service_name
+                restore_command "/etc/init.d/$service_name stop ; mv /etc/init.d/$service_name /etc/init.d/_$service_name" "Service $service_name to $check_status"
               else
-                mv /etc/init.d/_$service_name /etc/init.d/$service_name
-                /etc/init.d/$service_name start
+                restore_command "mv /etc/init.d/_$service_name /etc/init.d/$service_name ; /etc/init.d/$service_name start" "Restoring: Service $service_name to $check_status"
               fi
             fi
           fi
         else
-          if [ "$audit_mode" != 2 ]; then
-            if [ "$audit_mode" = 1 ]; then
-              
-              increment_secure "Service $service_name is $correct_status"
-            fi
-          fi
+          increment_secure "Service $service_name is $correct_status"
         fi
       fi
     fi

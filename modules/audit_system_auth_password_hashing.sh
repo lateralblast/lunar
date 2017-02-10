@@ -12,11 +12,9 @@ audit_system_auth_password_hashing () {
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "$check_file" ]; then
           echo "Checking:  Password minimum strength enabled in $check_file"
-          
           check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
           if [ "$check_value" != "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
-              
               increment_insecure "Password strength settings not enabled in $check_file"
               verbose_message "cp $check_file $temp_file" fix
               verbose_message "cat $temp_file |sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' > $check_file" fix
@@ -31,7 +29,6 @@ audit_system_auth_password_hashing () {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "Password strength settings enabled in $check_file"
             fi
           fi

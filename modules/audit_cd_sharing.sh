@@ -11,8 +11,6 @@ audit_cd_sharing() {
       echo "Checking:  DVD/CD Sharing is disabled"
       share_test=`launchctl list |awk '{print $3}' |grep ODSAgent |wc -l`
       if [ "$share_test" = "1" ]; then
-        
-        
         increment_insecure "DVD/CD sharing is enabled"
         verbose_message "" fix
         verbose_message "Open System Preferences" fix
@@ -20,8 +18,6 @@ audit_cd_sharing() {
         verbose_message "Uncheck DVD or CD Sharing" fix
         verbose_message "" fix
       else
-        
-        
         increment_secure "DVD/CD Sharing is disabled"
       fi
     else

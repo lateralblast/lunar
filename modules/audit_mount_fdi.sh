@@ -25,10 +25,8 @@ audit_mount_fdi () {
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" != "2" ]; then
         fdi_check=`cat $check_file |grep -v "Default policies" |head -1 |wc -l`
-        
         if [ "$fdi_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "User mountable filesystems enabled"
             verbose_message "" fix
             verbose_message "echo '<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> <!-- -*- SGML -*- --> >' > $temp_file" fix
@@ -63,7 +61,6 @@ audit_mount_fdi () {
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "User mountable filesystems disabled"
           fi
           if [ "$audit_mode" = 2 ]; then

@@ -13,12 +13,10 @@ audit_eeprom_security () {
     else
       echo "Checking:  EEPROM password is enabled"
     fi
-    
     if [ "$audit_mode" != 2 ]; then
       eeprom_check=`eeprom security-mode | awk -F= '{ print $2 }'`
       if [ "$gdm_check" = "none" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "EEPROM password is not enabled"
           verbose_message "" fix
           verbose_message "eeprom security-mode=command" fix
@@ -31,7 +29,6 @@ audit_eeprom_security () {
         fi
       else
         if [ "$audit_mode" = 1 ];then
-          
           increment_secure "EEPROM password is enabled"
         fi
       fi

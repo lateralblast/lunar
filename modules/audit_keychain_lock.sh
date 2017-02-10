@@ -11,8 +11,6 @@ audit_keychain_lock() {
       actual_value=`security show-keychain-info 2>&1 |awk '{print $3}'`
       if [ "$actual_value" = "no-timeout" ]; then
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_insecure "Keychain Lock time is not set"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
@@ -27,8 +25,6 @@ audit_keychain_lock() {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
-          
           increment_secure "Keychain Lock time is set"
         fi
       fi

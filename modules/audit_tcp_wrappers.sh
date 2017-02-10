@@ -20,19 +20,15 @@ audit_tcp_wrappers () {
       package_name="netsec.options.tcpwrapper.base"
       check_lslpp $package_name
       if [ "$audit_mode" != 2 ]; then
-        
         if [ "$lslpp_check" != "$package_name" ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "TCP Wrappers not installed"
             verbose_message "" fix
             verbose_message "TCP Wrappers not installed" fix
             verbose_message "Install TCP Wrappers" fix
             verbose_message "" fix
-            
           fi
         else
-          
           increment_secure "TCP Wrappers installed"
         fi
       fi
