@@ -1227,3 +1227,7 @@
 # Added screen sharing test for OS X
 # 7.0.6: Fri 10 Feb 2017 12:50:59 AEDT
 # Added remote login check for OS X
+# 7.0.7: Fri 10 Feb 2017 13:44:56 AEDT
+# Added sleep check for OS X and updated documentation
+# 7.0.8: Fri 10 Feb 2017 14:05:20 AEDT
+# Added disk encryption check for OS X
