@@ -1,22 +1,31 @@
 # audit_nfs
 #
-# Refer to Section(s) 3.8    Page(s) 64-5 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.8    Page(s) 77   CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 3.8    Page(s) 67-8 CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 2.2.7  Page(s) 107  CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 6.7    Page(s) 57-8 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 3.7-11 Page(s) 11-3 CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 1.3.5  Page(s) 39   CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 2.2.7  Page(s) 99   CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 2.2.7  Page(s) 107  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 3.8    Page(s) 64-5  CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.8    Page(s) 77    CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 3.8    Page(s) 67-8  CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.7  Page(s) 107   CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 6.7    Page(s) 57-8  CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 3.7-11 Page(s) 11-3  CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.3.5  Page(s) 39    CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.2.7  Page(s) 99    CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.7  Page(s) 107   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.6    Page(s) 105-6 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_nfs () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "Darwin" ]; then
     if [ "$nfsd_disable" = "yes" ]; then
       verbose_message "NFS Services"
       if [ "$os_name" = "AIX" ]; then
         check_itab rcnfs off
+      fi
+      if [ "$os_name" = "Darwin" ]; then
+        check=`ps -ef |grep nfsd |grep -v grep`
+        if [ "$check" ]; then
+          increment_insecure "NFS daemon enabled"
+        else
+          increment_secure "NFS daemon disabled"
+        fi
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
