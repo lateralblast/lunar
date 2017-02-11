@@ -8,6 +8,8 @@
 audit_asl () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_release" -ge 12 ]; then
+      verbose_message "System Logging"
+      echo "Checking:  System logging"
       check_append_file /etc/asl.conf "> system.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90" hash
       check_append_file /etc/asl.conf "> appfirewall.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90" hash
       check_append_file /etc/asl/com.apple.authd "* file /var/log/authd.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90" hash

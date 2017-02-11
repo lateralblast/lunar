@@ -35,4 +35,5 @@ full_audit_osx_services () {
   audit_java
   audit_asl
   audit_auditd
+  audit_wireless
 }

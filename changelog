@@ -1243,5 +1243,6 @@
 # Added addition system log tests for OS X and updated documentation
 # 7.1.4: Sat 11 Feb 2017 12:50:18 AEDT
 # Added addition system log tests for OS X and updated documentation
-
+# 7.1.5: Sat 11 Feb 2017 12:58:07 AEDT
+# Added wireless check for OS X
 
