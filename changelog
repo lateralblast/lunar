@@ -1257,3 +1257,5 @@
 # Updated OS X keychain check
 # 7.2.1: Sat 11 Feb 2017 17:50:45 AEDT
 # Updated OS X login policy test and documentation
+# 7.2.2: Sat 11 Feb 2017 18:18:10 AEDT
+# Added system preferences check for OS X

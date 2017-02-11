@@ -6,6 +6,7 @@
 audit_login_root () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Root login"
+    echo "Checking Root Login"
     check_dscl /Users/root AuthenticationAuthority "No such key: AuthenticationAuthority"
   fi
 }
