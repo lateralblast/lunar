@@ -1255,3 +1255,5 @@
 # Updated OS X password policy test
 # 7.2.0: Sat 11 Feb 2017 17:39:07 AEDT
 # Updated OS X keychain check
+# 7.2.1: Sat 11 Feb 2017 17:50:45 AEDT
+# Updated OS X login policy test and documentation

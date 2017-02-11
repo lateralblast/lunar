@@ -1,7 +1,7 @@
 # audit_keychain_lock
 #
-# Refer to Section 5.2 Page(s) 49-50 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section 5.4 Page(s) 130-1 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section 5.2   Page(s) 49-50 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 5.4-5 Page(s) 130-3 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_keychain_lock() {
