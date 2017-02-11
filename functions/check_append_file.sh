@@ -25,13 +25,13 @@ check_append_file () {
       increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
       lockdown_command "echo \"$parameter\" >> $check_file"
     else
-      check_value=`cat $check_file |grep -v '^$comment_value' |grep '$parameter'`
+      check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter"`
       if [ "$check_value" != "$parameter" ]; then
         increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
         backup_file $check_file
         lockdown_command "echo \"$parameter\" >> $check_file"
       else
-        increment_insecure "Parameter \"$parameter\" exists in $check_file"
+        increment_secure "Parameter \"$parameter\" exists in $check_file"
       fi
     fi
   fi

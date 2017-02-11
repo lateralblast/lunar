@@ -32,4 +32,6 @@ full_audit_osx_services () {
   audit_auto_logout
   audit_file_extensions
   audit_internet_sharing
+  audit_java
+  audit_asl
 }
