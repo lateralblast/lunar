@@ -1,6 +1,7 @@
 # audit_password_hints
 #
-# Refer to Section 6.1.2 Page(s) 73-74 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 6.1.2 Page(s) 73-4  CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Section 6.1.2 Page(s) 154-5 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_login_details () {

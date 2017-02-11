@@ -1,6 +1,6 @@
 # audit_system_integrity
 #
-# Refer to Section 5.8 Page(s) 138-9 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section 5.18 Page(s) 148-9 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_system_integrity() {

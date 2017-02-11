@@ -11,7 +11,7 @@ check_dscl () {
     dir="/var/db/dslocal/nodes/Default"
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  Parameter \"$param\" is set to \"$value\" in \"$file\""
-      check=`sudo dscl . -read $file $param`
+      check=`sudo dscl . -read $file $param 2> /dev/null`
       if [ "$check" != "$value" ]; then
         increment_insecure "Parameter \"$param\" not set to \"$value\" in \"$file\""
         verbose_message "" fix
