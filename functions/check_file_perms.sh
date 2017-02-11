@@ -24,21 +24,20 @@ check_file_perms () {
   if [ "$audit_mode" != 2 ]; then
     echo "Checking:  File permissions on $check_file"
   fi
-  if [ ! -f "$check_file" ] && [ ! -d "$check_file" ]; then
+  if [ ! -e "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
       echo "Notice:    File $check_file does not exist"
     fi
     return
   fi
   if [ "$check_owner" != "" ]; then
-    check_result=`$find_command $check_file -perm $check_perms -user $check_owner -group $check_group 2> /dev/null`
+    check_result=`find "$check_file" -perm $check_perms -user $check_owner -group $check_group -depth 0 2> /dev/null`
   else
-    check_result=`$find_command $check_file -perm $check_perms 2> /dev/null`
+    check_result=`find "$check_file" -perm $check_perms -depth 0 2> /dev/null`
   fi
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then
     if [ "$audit_mode" = 1 ]; then
-      
       increment_insecure "File $check_file has incorrect permissions"
       verbose_message "" fix
       verbose_message "chmod $check_perms $check_file" fix

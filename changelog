@@ -1245,4 +1245,8 @@
 # Added addition system log tests for OS X and updated documentation
 # 7.1.5: Sat 11 Feb 2017 12:58:07 AEDT
 # Added wireless check for OS X
+# 7.1.6: Sat 11 Feb 2017 13:16:16 AEDT
+# Added NFS daemon check for OS X
+# 7.1.7: Sat 11 Feb 2017 15:44:55 AEDT
+# Added Application permission checks for OS X
 

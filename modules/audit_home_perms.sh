@@ -8,6 +8,7 @@
 # Refer to Section(s) 6.2.8 Page(s) 282   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 6.2.8 Page(s) 260   CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 6.2.8 Page(s) 274   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 5.1.1 Page(s) 107-8 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_home_perms () {
@@ -16,14 +17,15 @@ audit_home_perms () {
     if [ "$audit_mode" != 2 ]; then
       echo "Checking:  User home directory permissions"
     fi
-    check_fail=0
     for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$" |grep "home"`; do
       if [ -d "$home_dir" ]; then
         check_file_perms $home_dir 0700
       fi
     done
     if [ "$os_name" = "Darwin" ]; then
-      check_file_perms /Users 0700
+      for home_dir in `ls /Users`; do
+        check_file_perms /Users/$home_dir 0700
+      done
     fi
   fi
 }
