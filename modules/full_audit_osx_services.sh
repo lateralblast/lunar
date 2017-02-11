@@ -36,4 +36,5 @@ full_audit_osx_services () {
   audit_asl
   audit_auditd
   audit_wireless
+  audit_app_perms
 }

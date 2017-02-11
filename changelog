@@ -1249,4 +1249,5 @@
 # Added NFS daemon check for OS X
 # 7.1.7: Sat 11 Feb 2017 15:44:55 AEDT
 # Added Application permission checks for OS X
-
+# 7.1.8: Sat 11 Feb 2017 16:33:48 AEDT
+# Updated OS password policy test

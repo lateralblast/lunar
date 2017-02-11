@@ -11,6 +11,7 @@
 # Refer to Section(s) 5.1,9.22 Page(s) 45,88   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.22     Page(s) 134     CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.1.10   Page(s) 261     CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 5.1.3-4  Page(s) 110-1   CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_writable_files () {
@@ -46,7 +47,6 @@ audit_writable_files () {
         fi
         for check_file in `$find_command`; do
           if [ "$audit_mode" = 1 ]; then
-            
             increment_insecure "File $check_file is world writable"
             verbose_message "" fix
             verbose_message "chmod o-w $check_file" fix
