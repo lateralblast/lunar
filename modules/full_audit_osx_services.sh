@@ -39,4 +39,5 @@ full_audit_osx_services () {
   audit_app_perms
   audit_login_root
   audit_system_preferences
+  audit_system_integrity
 }

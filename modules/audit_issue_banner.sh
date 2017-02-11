@@ -8,12 +8,18 @@
 # Refer to Section(s) 7.4       Page(s) 25      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.7.1.1-3 Page(s) 68-73   CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 1.7.1.1-6 Page(s) 75-83   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 5.13      Page(s) 143     CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_issue_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Security Warning Message"
-    for check_file in /etc/issue /etc/motd /etc/issue.net; do
+    if [ "$os_name" = "Darwin" ]; then
+      file_list="/etc/issue /etc/motd /etc/issue.net /Library/Security/PolicyBanner.txt"
+    else
+      file_list="/etc/issue /etc/motd /etc/issue.net"
+    fi
+    for check_file in $file_list; do
       check_file_perms $check_file 0644 root root
       issue_check=0
       if [ -f "$check_file" ]; then

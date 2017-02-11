@@ -1259,3 +1259,5 @@
 # Updated OS X login policy test and documentation
 # 7.2.2: Sat 11 Feb 2017 18:18:10 AEDT
 # Added system preferences check for OS X
+# 7.2.3: Sat 11 Feb 2017 20:36:05 AEDT
+# Added System Integrity Protection test for OS X

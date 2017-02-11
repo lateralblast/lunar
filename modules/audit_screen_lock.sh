@@ -1,8 +1,8 @@
 # audit_screen_lock
 #
-# Refer to Section(s) 2.3.1-2       Page(s) 13-14      CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(s) 2.3.1-2,4,5.9 Page(s) 32-4,7,137 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 5.5           Page(s) 51-52      CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1-2          Page(s) 13-14            CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1-2,4,5.9,11 Page(s) 32-4,7,137,140-1 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.5              Page(s) 51-52            CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_screen_lock () {
@@ -10,6 +10,7 @@ audit_screen_lock () {
     verbose_message "Screen lock"
     check_osx_defaults com.apple.screensaver askForPassword 1 int currentHost
     check_osx_defaults com.apple.screensaver idleTime 900 int currentHost
+    check_append_file /etc/pam.d/screensaver "account    required     pam_group.so no_warn group=admin,wheel fail_safe"
     if [ "$audit_mode" != 2 ]; then
       if [ -f "~/Library/Preferences/com.apple.dock" ]; then
         echo "Checking:  No screensaver disable hot corners are enabled"
