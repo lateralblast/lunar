@@ -1,6 +1,7 @@
 # audit_secure_keyboard_entry
 #
-# Refer to Section 2.8 Page(s) 33 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 2.8  Page(s) 33 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 2.10 Page(s) 81 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_secure_keyboard_entry() {

@@ -1235,4 +1235,6 @@
 # Code cleanup
 # 7.1.0: Sat 11 Feb 2017 09:52:05 AEDT
 # Updated SSH support to include sandbox for privilege separation
+# 7.1.1: Sat 11 Feb 2017 11:56:22 AEDT
+# Added Java test for OS X
 
