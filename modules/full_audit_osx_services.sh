@@ -34,4 +34,5 @@ full_audit_osx_services () {
   audit_internet_sharing
   audit_java
   audit_asl
+  audit_auditd
 }

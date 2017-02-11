@@ -2,6 +2,7 @@
 #
 # Refer to Section 3.4-7     Page(s) 39-40 CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section 2.4.14.14 Page(s) 62-3  CIS Apple OS X 10.5 Benchmark v1.1.0
+# Refer to Section 4.1       Page(s) 96-7  CIS Apple OS X 10.5 Benchmark v1.1.0
 #.
 
 audit_bonjour_advertising() {
