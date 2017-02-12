@@ -11,7 +11,6 @@ audit_create_class () {
     if [ -f "$check_file" ]; then
       verbose_message "Audit Classes"
       class_check=`cat $check_file |grep "Security Lockdown"`
-      
       if [ `expr "$class_check" : "[A-z]"` != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Audit class not enabled"

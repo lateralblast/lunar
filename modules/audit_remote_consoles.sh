@@ -10,7 +10,6 @@ audit_remote_consoles () {
     log_file="remoteconsoles.log"
     if [ "$audit_mode" != 2 ]; then
       disable_ttys=0
-      echo "Checking:  Remote consoles"
       log_file="$work_dir/$log_file"
       for console_device in `/usr/sbin/consadm -p`; do
         disable_ttys=1

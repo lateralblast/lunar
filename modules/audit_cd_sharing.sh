@@ -8,7 +8,6 @@ audit_cd_sharing() {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "DVD/CD Sharing"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  DVD/CD Sharing is disabled"
       share_test=`launchctl list |awk '{print $3}' |grep ODSAgent |wc -l`
       if [ "$share_test" = "1" ]; then
         increment_insecure "DVD/CD sharing is enabled"

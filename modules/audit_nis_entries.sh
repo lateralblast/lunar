@@ -10,9 +10,6 @@
 audit_nis_entries () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     verbose_message "NIS Map Entries"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Legacy NIS '+' entries"
-    fi
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if [ "$audit_mode" != 2 ]; then
         for file_entry in `cat $check_file |grep "^+"`; do

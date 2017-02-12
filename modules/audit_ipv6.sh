@@ -8,15 +8,14 @@
 
 audit_ipv6() {
   if [ "$ipv6_disable" = "yes" ]; then
+    verbose_message "IPv6 Autoconf Daemon"
     if [ "$os_name" = "AIX" ]; then
-      verbose_message "IPv6 Autoconf Daemon"
       for service_name in autoconf6 ndpd-host ndpd-router; do
         check_rctcp $service_name off
       done
     fi
     if [ "$os_name" = "Linux" ]; then
       if [ "$disable_ipv6" = "yes" ]; then
-        verbose_message "IPv6"
         check_file="/etc/modprobe.conf"
         check_append_file $check_file "options ipv6 \"disable=1\""
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then

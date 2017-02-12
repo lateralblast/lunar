@@ -18,7 +18,6 @@ audit_dcui () {
            vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter
         fi
         if [ "$audit_mode" = "1" ]; then
-          
           increment_insecure "Lockdown is disabled"
           verbose_message "" fix
           verbose_message "vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter" fix

@@ -16,7 +16,6 @@ audit_root_path () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Root PATH Environment Integrity"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Root PATH"
       if [ "$audit_mode" = 1 ]; then
         if [ "`echo $PATH | grep :: `" != "" ]; then
           increment_insecure "Empty directory in PATH"

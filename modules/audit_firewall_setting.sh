@@ -19,7 +19,7 @@ audit_firewall_setting () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Firewall Settings"
     check_osx_defaults /Library/Preferences/com.apple.alf globalstate 1 int
-    if [ "$os_release" -ge 12 ]; then
+    if [ "$audit_mode" != 2 ]; then
     	check=`/usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode |grep enabled`
       if [ "$check" ]; then
         increment_secure "Firewall stealth mode enabled"

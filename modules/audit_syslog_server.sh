@@ -12,9 +12,9 @@
 
 audit_syslog_server () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+    verbose_message="Syslog Daemon"
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" < 5 ]; then
-        verbose_message="Syslog Daemon"
         check_file="/etc/syslog.conf"
         check_file_value $check_file "daemon.debug" tab "/var/log/daemon.log" hash
         check_file="/var/log/daemon.log"
@@ -24,7 +24,6 @@ audit_syslog_server () {
     fi
     if [ "$os_name" = "Linux" ]; then
       if [ "$install_rsyslog" = "yes" ]; then
-        verbose_message="Rsyslog Daemon"
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Amazon" ]; then
           if [ "$os_version" > 4 ]; then
             service_name="syslog"
@@ -44,7 +43,6 @@ audit_syslog_server () {
             check_chkconfig_service $service_name 5 on
             funct_file_perms $check_file 0600 root root
             if [ "$audit_mode" != 2 ]; then
-               echo "Checking:  Rsyslog is sending message to a remote server"
               remote_check=`cat $check_file |grep -v '#' |grep '*.* @@' |grep -v localhost |grep '[A-z]' |wc -l`
               if [ "$remote_check" != "1" ]; then
                 if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then

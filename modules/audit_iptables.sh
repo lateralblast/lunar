@@ -12,6 +12,7 @@
 
 audit_iptables () {
   if [ "$os_name" = "Linux" ]; then
+    verbose_message "IP Tables"
     check_linux_package install iptables
     for service_name in iptables ip6tables; do
       check_systemctl_service enable $service_name

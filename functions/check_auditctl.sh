@@ -4,8 +4,9 @@
 #.
 
 check_auditctl () {
+  check_file=$1
   if [ "$os_name" = "Linux" ]; then
-    check_file=$1
+    verbose_message "Auditing on file $check_file"
     if [ "$audit_mode" != 2 ]; then
       if [ -e "$check_file" ]; then
         check=`auditctl -l | grep $check_file`

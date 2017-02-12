@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.2.4
+# Version:      7.2.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -544,15 +544,25 @@ print_previous () {
   fi
 }
 
+#
+# setting_message
+#
+# Setting message
+#.
+
+setting_message () {
+  verbose_message $1 setting
+}
+
 # verbose_message
 #
 # Print a message if verbose mode enabled
 #.
 
 verbose_message () {
+  text=$1
+  style=$2
   if [ "$verbose" = 1 ]; then
-    text=$1
-    style=$2
     if [ "$style" = "fix" ]; then
       if [ "$text" = "" ]; then
         echo ""
@@ -560,9 +570,21 @@ verbose_message () {
         echo "[ Fix ]    $text"
       fi
     else
-      echo ""
-      echo "# $text"
-      echo ""
+      echo "$text"
+    fi
+  else
+    if [ ! "$style" ] && [ "$text" ]; then
+      echo "Checking:  $text"
+    else
+      if [ "$style" = "notice" ]; then
+        "Notice:    $text"
+      fi
+      if [ "$style" = "backup" ]; then
+        "Backup:    $text"
+      fi
+      if [ "$style" = "setting" ]; then
+        "Setting:   $text"
+      fi
     fi
   fi
 }

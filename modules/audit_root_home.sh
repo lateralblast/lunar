@@ -8,9 +8,6 @@ audit_root_home () {
     verbose_message "Home Directory Permissions for root Account"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        if [ "$audit_mode" != 2 ]; then
-          echo "Checking:  Root home directory"
-        fi
         home_check=`grep root /etc/passwd | cut -f6 -d:`
         log_file="$work_dir/roothome.log"
         if [ "$home_check" != "/root" ]; then

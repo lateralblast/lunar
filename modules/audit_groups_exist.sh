@@ -14,9 +14,6 @@
 audit_groups_exist () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     verbose_message "User Groups"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Groups in passwd file exist in group file"
-    fi
     check_file="/etc/group"
     group_fail=0
     if [ "$audit_mode" != 2 ]; then
@@ -25,7 +22,6 @@ audit_groups_exist () {
         if [ "$group_exists" = 0 ]; then
           group_fail=1
           if [ "$audit_mode" = 1 ];then
-            
             increment_insecure "Group $group_id does not exist in group file"
           fi
         fi

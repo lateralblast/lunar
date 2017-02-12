@@ -7,14 +7,13 @@ audit_app_perms () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Application Permissions"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Application directory permissions"
+      OFS=$IFS
+      IFS=$'\n'
+      app_dirs=`ls /Applications`
+      for app_dir in $app_dirs; do
+        check_file_perms "/Applications/$app_dir" 0755
+      done
+      IFS=$OFS
     fi
-    OFS=$IFS
-    IFS=$'\n'
-    app_dirs=`ls /Applications`
-    for app_dir in $app_dirs; do
-      check_file_perms "/Applications/$app_dir" 0755
-    done
-    IFS=$OFS
   fi
 }

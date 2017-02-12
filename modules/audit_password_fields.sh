@@ -23,7 +23,6 @@ audit_password_fields () {
     check_file="/etc/shadow"
     empty_count=0
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Password fields"
       if [ "$os_name" = "AIX" ]; then
         users=`pwdck –n ALL`
       else

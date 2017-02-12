@@ -16,7 +16,6 @@ audit_ftp_banner () {
         message_file="/usr/lib/nls/msg/$language_suffix/ftpd.cat"
         actual_value=`dspcat -g $message_file | grep "^9[[:blank:]]" |awk '{print $3}'`
         if [ "$audit_mode" != 2 ]; then
-          echo "Checking:  FTP warning message"
           if [ "actual_value" != "Authorised" ]; then
             if [ "$audit_mode" = 1 ]; then
               increment_secure "FTP warning message isn't enabled"
@@ -28,7 +27,6 @@ audit_ftp_banner () {
               verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              echo "Setting:   FTP warning message"
               backup_file $message_file
               dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp
               sed "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" /tmp/ftpd.tmp > /tmp/ftpd.msg

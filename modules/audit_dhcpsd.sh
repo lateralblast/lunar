@@ -5,8 +5,8 @@
 
 audit_dhcpsd() {
   if [ "$dhcpsd_disable" = "yes" ]; then
-    verbose_message "DHCP Server Daemon"
     if [ "$os_name" = "AIX" ]; then
+      verbose_message "DHCP Server Daemon"
       check_rctcp dhcpsd off
     fi
   fi

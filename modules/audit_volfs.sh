@@ -6,9 +6,7 @@
 
 audit_volfs () {
   if [ "$os_name" = "SunOS" ]; then
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "Volume Management Daemons"
-    fi
+    verbose_message "Volume Management Daemons"
     if [ "$os_version" = "10" ]; then
       service_name="svc:/system/filesystem/volfs"
       check_sunos_service $service_name disabled

@@ -11,8 +11,6 @@ audit_shadow_group () {
     temp_file="$temp_dir/group"
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
-    else
-      echo "Checking:  Shadow group does not contain users"
     fi
     if [ "$audit_mode" != 2 ]; then
       shadow_check=`cat $check_file |grep -v "^#" |grep ^shadow |cut -f4 -d":" |wc -c`

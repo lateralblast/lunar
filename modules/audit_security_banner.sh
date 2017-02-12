@@ -22,9 +22,6 @@ audit_security_banner () {
       user_name="root"
       group_name="root"
     fi
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Security banners"
-    fi
     check_file="/etc/motd"
     check_file_exists $check_file yes
     if [ -f "$check_file" ]; then

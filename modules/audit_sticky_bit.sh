@@ -15,9 +15,6 @@ audit_sticky_bit () {
     if [ "$do_fs" = 1 ]; then
       verbose_message "World Writable Directories and Sticky Bits"
       if [ "$os_version" = "10" ]; then
-        if [ "$audit_mode" != 2 ]; then
-          echo "Checking:  Sticky bits set on world writable directories [This may take a while]"
-        fi
         log_file="$work_dir/sticky_bits"
         for check_dir in `find / \( -fstype nfs -o -fstype cachefs \
           -o -fstype autofs -o -fstype ctfs \

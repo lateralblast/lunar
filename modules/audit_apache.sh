@@ -17,9 +17,6 @@ audit_apache () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     verbose_message "Apache and web based services"
     if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        verbose_message "Apache"
-      fi
       if [ "$os_version" = "10" ]; then
         service_name="svc:/network/http:apache2"
         check_sunos_service $service_name disabled

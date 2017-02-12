@@ -16,7 +16,6 @@ audit_suid_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Set UID/GID Files"
     if [ "$audit_mode" = 1 ]; then
-      echo "Checking:  For files with SUID/SGID set [This might take a while]"
       if [ "$os_name" = "SunOS" ]; then
         find_command="find / \( -fstype nfs -o -fstype cachefs \
         -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \

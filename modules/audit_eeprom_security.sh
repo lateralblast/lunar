@@ -10,8 +10,6 @@ audit_eeprom_security () {
     if [ "$audit_mode" = 2 ]; then
       echo "Restoring: EEPROM password to none"
       eeprom security-mode=none
-    else
-      echo "Checking:  EEPROM password is enabled"
     fi
     if [ "$audit_mode" != 2 ]; then
       eeprom_check=`eeprom security-mode | awk -F= '{ print $2 }'`

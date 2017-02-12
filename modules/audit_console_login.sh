@@ -30,7 +30,6 @@ audit_console_login () {
     check_file="/etc/securetty"
     console_list=""
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Remote consoles"
       for console_device in `cat $check_file |grep '^tty[0-9]'`; do
         disable_ttys=1
         console_list="$console_list $console_device"
@@ -46,7 +45,7 @@ audit_console_login () {
         fi
         if [ "$audit_mode" = 0 ]; then
           backup_file $check_file
-          echo "Setting:   Consoles to disabled on$console_list"
+          setting_message "Consoles to disabled on$console_list" 
           cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file
           cat $temp_file > $check_file
           rm $temp_file

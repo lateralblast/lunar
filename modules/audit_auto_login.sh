@@ -9,7 +9,6 @@ audit_auto_login() {
     verbose_message "Autologin"
     check_osx_defaults /Library/Preferences/.GlobalPreferences com.apple.userspref.DisableAutoLogin yes bool
     if [ ! "$audit_mode" != 2 ]; then
-      echo "Checking:  Autologin"
       check=`defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser`
       if [ "$check" ]; then
         increment_insecure "Autologin enabled"

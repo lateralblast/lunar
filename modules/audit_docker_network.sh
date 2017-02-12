@@ -27,7 +27,6 @@ audit_docker_network () {
       if [ "$audit_mode" != 2 ]; then
         check_dockerd notequal config NetworkMode "NetworkMode=host"
         check_dockerd notinclude config Ports "0.0.0.0"
-        echo "Checking:  Docker default bridge"
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'docker0'`
         if [ "$check" ]; then
           increment_insecure "Docker is using default bridge docker0"
@@ -35,7 +34,6 @@ audit_docker_network () {
           increment_secure "Docker is not using default bridge docker0"
         fi
         check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
-        echo "Checking:  Docker network bridge traffic setting"
         if [ ! "$check" ]; then
           increment_insecure "Traffic is allowed between containers"
           if [ "$audit_mode" = 0 ]; then

@@ -25,7 +25,6 @@ audit_dvfilter () {
       else
         if [ "$audit_mode" = "1" ]; then
           increment_secure "Dvfilter disabled"
-          echo ""
         fi
       fi
     else

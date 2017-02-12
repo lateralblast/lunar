@@ -16,8 +16,8 @@
 #.
 
 audit_ssh_config () {
+  verbose_message "SSH"
   if [ "$os_name" = "VMkernel" ]; then
-    verbose_message "SSH"
     check_chkconfig_service SSH off
   fi
   for check_file in /etc/sshd_config /etc/ssh/sshd_config /usr/local/etc/sshd_config /opt/local/ssh/sshd_config; do

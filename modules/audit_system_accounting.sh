@@ -38,9 +38,6 @@ audit_system_accounting () {
         check_file="/etc/default/sysstat"
         check_file_value $check_file ENABLED eq true hash
       fi
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  System accounting is enabled"
-      fi
       if [ "$package_name" != "sysstat" ]; then
         if [ "$audit_mode" = 1 ]; then
           
@@ -176,7 +173,6 @@ audit_system_accounting () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         cron_file="/var/spool/cron/crontabs/sys"
-        verbose_message "System Accounting"
         if [ -f "$check_file" ]; then
           sar_check=`cat $check_file |grep -v "^#" |grep "sa2"`
         fi

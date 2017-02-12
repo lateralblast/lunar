@@ -38,7 +38,7 @@ audit_ndd_value () {
           fi
         fi
       else
-        echo "Checking:  NDD $ndd_name $ndd_property"
+        verbose_message "NDD $ndd_name $ndd_property"
       fi
       if [ "$current_value" -ne "$correct_value" ]; then
         command_line="ndd -set $ndd_name $ndd_property $correct_value"

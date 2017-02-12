@@ -5,7 +5,6 @@
 
 audit_core_limit () {
   if [ "$os_name" = "Darwin" ]; then
-    
     verbose_message "Core dump limits"
     log_file="corelimit"
     backup_file="$work_dir/$log_file"
@@ -13,7 +12,6 @@ audit_core_limit () {
     if [ "$audit_mode" != 2 ]; then
       if [ "$current_value" != "0" ]; then
         if [ "$audit_mode" = 0 ]; then
-          
           increment_insecure "Core dumps unlimited"
           verbose_message "" fix
           verbose_message "launchctl limit core 0" fix
@@ -26,7 +24,6 @@ audit_core_limit () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          
           increment_secure "Core dump limits exist"
         fi
       fi

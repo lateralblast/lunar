@@ -14,10 +14,6 @@
 audit_user_dotfiles () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     verbose_message "User Dot Files"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  User dot file permissions"
-    fi
-    check_fail=0
     for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$"`; do
       for check_file in $home_dir/.[A-Za-z0-9]*; do
         if [ -f "$check_file" ]; then

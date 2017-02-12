@@ -24,7 +24,7 @@ audit_svccfg_value () {
         fi
       fi
     else
-      echo "Checking:  Service $service_name"
+      verbose_message "Service $service_name"
     fi
     if [ "$current_value" != "$correct_value" ]; then
       if [ "$audit_mode" = 1 ]; then

@@ -9,7 +9,6 @@ audit_gate_keeper() {
     verbose_message "Gatekeeper"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Gatekeeper is enabled"
       actual_value=`sudo spctl --status |awk '{print $2}' |sed 's/d$//g'`
       if [ "$actual_value" = "disable" ]; then
         if [ "$audit_mode" = 1 ]; then

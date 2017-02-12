@@ -7,9 +7,9 @@
 #.
 
 audit_aws_cdn () {
+  verbose_message "Cloudfront"
   aws configure set preview.cloudfront true
   cdns=`aws cloudfront list-distributions --query 'DistributionList.Items[].Id' |grep -v null` 
-  verbose_message "Cloudfront"
   for cdn in $cdns; do 
     # Check Cloudfront is using WAF
     check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.WebACLId' --output text`

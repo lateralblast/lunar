@@ -11,7 +11,6 @@ audit_winbind () {
       check_sunos_service $service_name disabled
     fi
     if [ "$os_name" = "Linux" ]; then
-      verbose_message "Winbind Daemon"
       service_name="winbind"
       check_chkconfig_service $service_name 3 off
       check_chkconfig_service $service_name 5 off

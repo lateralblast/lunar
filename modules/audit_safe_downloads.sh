@@ -8,7 +8,6 @@ audit_safe_downloads() {
     verbose_message "Safe Downloads list"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Safe Downloads list has been updated recently"
       update_file="/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.plist"
       actual_value=`find $update_file -mtime -30`
       if [ "$actual_value" != "$update_file" ]; then

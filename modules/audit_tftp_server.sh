@@ -10,26 +10,27 @@
 #.
 
 audit_tftp_server () {
-  if [ "$os_name" = "SunOS" ]; then
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "TFTP Server Daemon"
-      service_name="svc:/network/tftp/udp6:default"
-      check_sunos_service $service_name disabled
-      service_name="svc:/network/tftp/udp4:default"
-      check_sunos_service $service_name disabled
-      check_file_perms /tftpboot 0744 root root
-      check_file_perms /etc/netboot 0744 root root
-    fi
-  fi
-  if [ "$os_name" = "Linux" ]; then
+  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     verbose_message "TFTP Server Daemon"
-    check_chkconfig_service tftp 3 off
-    check_chkconfig_service tftp 5 off
-    check_file_perms /tftpboot 0744 root root
-    check_file_perms /var/tftpboot 0744 root root
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-      check_systemctl_service disable tftp.socket
-      check_linux_package uninstall tftp-server
+    if [ "$os_name" = "SunOS" ]; then
+      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+        service_name="svc:/network/tftp/udp6:default"
+        check_sunos_service $service_name disabled
+        service_name="svc:/network/tftp/udp4:default"
+        check_sunos_service $service_name disabled
+        check_file_perms /tftpboot 0744 root root
+        check_file_perms /etc/netboot 0744 root root
+      fi
+    fi
+    if [ "$os_name" = "Linux" ]; then
+      check_chkconfig_service tftp 3 off
+      check_chkconfig_service tftp 5 off
+      check_file_perms /tftpboot 0744 root root
+      check_file_perms /var/tftpboot 0744 root root
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
+        check_systemctl_service disable tftp.socket
+        check_linux_package uninstall tftp-server
+      fi
     fi
   fi
 }

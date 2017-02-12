@@ -13,7 +13,6 @@ audit_bonjour_advertising() {
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
     else
-      echo "Checking:  Bonjour Multicast Advertising is disabled"
       multicast_test=`cat $check_file |grep 'NoMulticastAdvertisements' |wc -l`
       if [ "multicast_test" != "1" ]; then
         if [ "$audit_mode" = 1 ]; then

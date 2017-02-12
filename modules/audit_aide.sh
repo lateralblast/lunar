@@ -11,6 +11,7 @@
 
 audit_aide() {
   if [ "$os_name" = "Linux" ]; then
+    verbose_message "AIDE"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
       check_file="/etc/sysconfig/prelink"
       if [ -f "$check_file" ]; then
@@ -19,7 +20,6 @@ audit_aide() {
         prelink_check="no"
       fi
       if [ "$prelink_check" = "no" ]; then
-        verbose_message "AIDE"
         audit_linux_package install aide
         check_append_file /etc/cron.d/aide "0 5 * * * /usr/sbin/aide --check"
       fi

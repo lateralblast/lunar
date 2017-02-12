@@ -12,10 +12,8 @@
 
 audit_samba () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+    verbose_message "Samba Daemons"
     if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        verbose_message "Samba Daemons"
-      fi
       if [ "$os_version" = "10" ]; then
         if [ $os_update -ge 4 ]; then
           service_name="svc:/network/samba"
@@ -27,7 +25,6 @@ audit_samba () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      verbose_message "Samba Daemons"
       service_name="smb"
       check_systemctl_service disable $service_name
       check_chkconfig_service $service_name 3 off

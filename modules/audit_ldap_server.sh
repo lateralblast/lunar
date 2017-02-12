@@ -11,6 +11,7 @@
 
 audit_ldap_server () {
   if [ "$os_name" = "Linux" ]; then
+  	verbose_mesage "LDAP Server"
   	check_systemctl_service disable slapd
     check_linux_package uninstall openldap-clients
   fi

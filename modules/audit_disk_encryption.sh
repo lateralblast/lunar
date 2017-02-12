@@ -8,7 +8,6 @@
 audit_disk_encryption () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Disk Encryption"
-    echo "Checking:  Disk encryption is enabled"
     if [ "$audit_mode" != 2 ]; then
       check=`diskutil cs list | grep -i encryption |grep AES-XTS`
       if [ "$check" ]; then

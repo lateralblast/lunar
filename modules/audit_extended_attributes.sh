@@ -8,7 +8,6 @@ audit_extended_attributes () {
   if [ "$os_name" = "SunOS" ]; then
     verbose_message "Extended Attributes"
     if [ "$audit_mode" = 1 ]; then
-      echo "Checking:  For files and directories with extended attributes [This might take a while]"
       for check_file in `find / \( -fstype nfs -o -fstype cachefs \
         -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
         -o -fstype objfs -o -fstype proc \) -prune \

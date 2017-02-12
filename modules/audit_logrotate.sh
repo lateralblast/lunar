@@ -13,7 +13,6 @@ audit_logrotate () {
     if [ -f "$check_file" ]; then
       verbose_message "Log Rotate Configuration"
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Logrotate is set up"
         if [ "$os_vendor" = "SuSE" ]; then
           search_string="/var/log/warn /var/log/messages /var/log/allmessages /var/log/localmessages /var/log/firewall /var/log/acpid /var/log/NetworkManager /var/log/mail /var/log/mail.info /var/log/mail.warn /var/log/mail.err /var/log/news/news.crit /var/log/news/news.err /var/log/news/news.notice"
         else

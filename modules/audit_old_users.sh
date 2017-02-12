@@ -5,6 +5,7 @@
 
 audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    verbose_message "Old users"
     never_count=0
     finger_bin=`which finger 2> /dev/null`
     if [ "$audit_mode" = 2 ]; then

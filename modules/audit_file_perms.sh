@@ -9,7 +9,6 @@ audit_file_perms () {
     verbose_message "System File Permissions"
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  File permissions [This may take a while]"
       if [ "$os_version" = "11" ]; then
         error=0
         command=`pkg verify |grep file |awk '{print $2}'`

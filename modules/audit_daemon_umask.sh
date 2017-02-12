@@ -9,9 +9,9 @@
 
 audit_daemon_umask () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+    verbose_message "Daemon Umask"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "11" ]; then
-        verbose_message "Daemon Umask"
         umask_check=`svcprop -p umask/umask svc:/system/environment:init`
         umask_value="022"
         log_file="umask.log"
@@ -48,7 +48,6 @@ audit_daemon_umask () {
         fi
       else
         if [ "$os_version" = "7" ] || [ "$os_version" = "6" ]; then
-          verbose_message "Daemon Umask"
           check_file="/etc/init.d/umask.sh"
           check_file_value $check_file umask space 022 hash
           if [ "$audit_mode" = "0" ]; then

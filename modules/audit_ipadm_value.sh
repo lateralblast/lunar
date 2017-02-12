@@ -11,7 +11,6 @@ audit_ipadm_value () {
       correct_value=$3
       current_value=`ipadm show-prop -p $ipadm_name -co current $ipadm_property`
       file_header="ipadm"
-      
       log_file="$work_dir/$file_header.log"
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$file_header.log"
@@ -26,12 +25,11 @@ audit_ipadm_value () {
           fi
         fi
       else
-        echo "Checking:  Value of \"$ipadm_name\" for \"$ipadm_property\" is \"$correct_value\""
+        verbose_message "Value of \"$ipadm_name\" for \"$ipadm_property\" is \"$correct_value\""
       fi
       if [ "$current_value" -ne "$correct_value" ]; then
         command_line="ipadm set-prop -p $ipadm_name=$correct_value $ipadm_property"
         if [ "$audit_mode" = 1 ]; then
-          
           increment_insecure "Value of \"$ipadm_name $ipadm_property\" not set to \"$correct_value\""
           verbose_message "" fix
           verbose_message "$command_line" fix
@@ -46,7 +44,6 @@ audit_ipadm_value () {
       else
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
-            
             increment_secure "Value of \"$ipadm_name $ipadm_property\" already set to \"$correct_value\""
           fi
         fi

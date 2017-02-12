@@ -9,9 +9,6 @@ audit_reserved_ids () {
   if [ "$os_name" = "SunOS" ]; then
     verbose_message "Reserved IDs"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
-    fi
-    if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
         found=0
         for test_user in root daemon bin sys adm lp uucp nuucp smmsp listen \

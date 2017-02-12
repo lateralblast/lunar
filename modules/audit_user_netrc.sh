@@ -15,9 +15,6 @@
 audit_user_netrc () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "User Netrc Files"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  User netrc file permissions"
-    fi
     check_fail=0
     for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$"`; do
       check_file="$home_dir/.netrc"

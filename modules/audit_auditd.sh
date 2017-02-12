@@ -13,9 +13,7 @@ audit_auditd () {
       check_linux_package install auditd
     fi
     if [ "$os_name" = "Darwin" ]; then
-      if [ "$os_release" -ge 12 ]; then
-        check_launchctl_service com.apple.auditd on
-      fi
+      check_launchctl_service com.apple.auditd on
     fi
   fi
 }

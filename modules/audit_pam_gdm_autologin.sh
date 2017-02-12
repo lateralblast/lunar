@@ -11,8 +11,6 @@ audit_pam_gdm_autologin () {
       temp_file="$temp_dir/gdm-autologin"
       if [ "$audit_mode" = 2 ]; then
         restore_file $check_file $restore_dir
-      else
-        echo "Checking:  Gnome Autologin is not enabled"
       fi
       if [ "$audit_mode" != 2 ]; then
         gdm_check=`cat $check_file |grep -v "^#" |grep "^gdm-autologin" |head -1 |wc -l`

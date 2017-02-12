@@ -16,7 +16,6 @@ audit_inactive_users () {
     fi
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Lockout status for inactive user accounts"
       for user_check in `cat $check_file |grep -v 'nobody4' |grep -v 'root'` ; do
         inactive_check=`echo $user_check |cut -f 7 -d":"`
         user_name=`echo $user_check |cut -f 1 -d":"`

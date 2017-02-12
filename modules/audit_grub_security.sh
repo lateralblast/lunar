@@ -9,17 +9,17 @@
 
 audit_grub_security () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+    verbose_message "Grub Menu Security"
     if [ "$os_name" = "Linux" ]; then
-      verbose_message "Grub Menu Security"
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
 	      check_file_perms $check_file 0600 root root
 	     done
+      check_file="/boot/grub/grub.cfg"
+      check_file_value $check_file "set superusers" eq root hash
+      check_file_value $check_file "password_pbkdf2" space root hash
+      check_file_value $check_file "selinux" eq 1 hash
+      check_file_value $check_file "enforcing" eq 1 hash
     fi
-    check_file="/boot/grub/grub.cfg"
-    check_file_value $check_file "set superusers" eq root hash
-    check_file_value $check_file "password_pbkdf2" space root hash
-    check_file_value $check_file "selinux" eq 1 hash
-    check_file_value $check_file "enforcing" eq 1 hash
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"
 #    grub_check=`cat $check_file |grep "^password --md5" |awk '{print $1}'`

@@ -197,7 +197,6 @@ audit_docker_daemon () {
       check_dockerd unused daemon experimental
       if [ "$audit_mode" != 2 ]; then
         check=`docker swarm unlock-key 2> /dev/null`
-        echo "Checking:  Docker swarm unlock-key is set"
         if [ "$check" = "no unlock key is set" ]; then
           increment_insecure "Docker swarm unlock is not set"
         else

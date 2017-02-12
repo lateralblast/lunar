@@ -14,9 +14,6 @@
 audit_home_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
     verbose_message "Home Directory Permissions"
-    if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  User home directory permissions"
-    fi
     for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$" |grep "home"`; do
       if [ -d "$home_dir" ]; then
         check_file_perms $home_dir 0700

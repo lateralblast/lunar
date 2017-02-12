@@ -18,11 +18,7 @@ audit_writable_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$do_fs" = 1 ]; then
       verbose_message "World Writable Files"
-      if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  For world writable files [This might take a while]"
-      fi
       log_file="worldwritable.log"
-      
       if [ "$audit_mode" = 0 ]; then
         log_file="$work_dir/$log_file"
       fi
