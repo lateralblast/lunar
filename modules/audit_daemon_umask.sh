@@ -78,12 +78,12 @@ audit_daemon_umask () {
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       for check_file in `find /etc -type f |xargs grep 'umask' |cut -f1 -d:`; do
-        if -f [ "$check_file" ]; then
+        if [ -f "$check_file" ]; then
           check_file_value $check_file umask space 077 hash
         fi
       done
       for check_file in `find /usr/local/etc -type f |xargs grep 'umask' |cut -f1 -d:`; do
-        if -f [ "$check_file" ]; then
+        if [ -f "$check_file" ]; then
           check_file_value $check_file umask space 077 hash
         fi
       done
