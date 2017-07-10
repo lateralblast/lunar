@@ -40,7 +40,7 @@ audit_aws_ec2 () {
   done
   volumes=`aws ec2 describe-volumes --query "Volumes[].VolumeId" --output text`
   for volume in $volumes; do
-    check=`aws ec2 describe-volumes --volume-id vol-09c7933ad01825300 --query "Volumes[].Encrypted" |grep true`
+    check=`aws ec2 describe-volumes --volume-id $volume --query "Volumes[].Encrypted" |grep true`
     if [ "$check" ]; then
       increment_secure "EBS Volume $volume is encrypted"
     else
