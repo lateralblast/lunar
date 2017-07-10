@@ -35,20 +35,18 @@ audit_aws_elb () {
       check_aws_open_port $sg 80 tcp HTTP ELB $elb
     done
     # Ensure no deprecated ciphers of protocols are being used
-    policies=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb  --query "PolicyDescriptions[].PolicyName" --output text`
-    for policy in $policies; do
-      for cipher in SSLv2 RC2-CBC-MD5 PSK-AES256-CBC-SHA PSK-3DES-EDE-CBC-SHA KRB5-DES-CBC3-SHA KRB5-DES-CBC3-MD5 \
+    list=`aws elb describe-load-balancer-policies --region us-east-1 --load-balancer-name $elb --output text`
+    for cipher in SSLv2 RC2-CBC-MD5 PSK-AES256-CBC-SHA PSK-3DES-EDE-CBC-SHA KRB5-DES-CBC3-SHA KRB5-DES-CBC3-MD5 \
                     PSK-AES128-CBC-SHA PSK-RC4-SHA KRB5-RC4-SHA KRB5-RC4-MD5 KRB5-DES-CBC-SHA KRB5-DES-CBC-MD5 \
                     EXP-EDH-RSA-DES-CBC-SHA EXP-EDH-DSS-DES-CBC-SHA EXP-ADH-DES-CBC-SHA EXP-DES-CBC-SHA \
                     SSLv3 EXP-RC2-CBC-MD5 EXP-KRB5-RC2-CBC-SHA EXP-KRB5-DES-CBC-SHA EXP-KRB5-RC2-CBC-MD5 \
                     EXP-KRB5-DES-CBC-MD5 EXP-ADH-RC4-MD5 EXP-RC4-MD5 EXP-KRB5-RC4-SHA EXP-KRB5-RC4-MD5; do
-        check=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb |grep $cipher |grep true`
+        check=`echo "$list" |grep $cipher |grep true`
         if [ "$check" ]; then
           increment_insecure "ELB $elb is using deprecated cipher $cipher"
         else
           increment_secure "ELB $elb is not using deprecated cipher $cipher"
         fi
-      done
     done
   done
 }
