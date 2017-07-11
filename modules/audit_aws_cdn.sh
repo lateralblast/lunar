@@ -12,28 +12,28 @@ audit_aws_cdn () {
   cdns=`aws cloudfront list-distributions --query 'DistributionList.Items[].Id' |grep -v null` 
   for cdn in $cdns; do 
     # Check Cloudfront is using WAF
-    check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.WebACLId' --output text`
+    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.WebACLId' --output text`
     if [ "$check" ]; then
       increment_secure "Cloudfront $cdn is WAF integration enabled"
     else
       increment_insecure "Cloudfront $cdn is not WAF integration enabled"
     fi
     # Check logging is enabled
-    check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Logging' |grep Enabled |grep true`
+    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Logging' |grep Enabled |grep true`
     if [ "$check" ]; then
       increment_secure "Cloudfront $cdn has logging enabled"
     else
       increment_insecure "Cloudfront $cdn does not have logging enabled"
     fi
     # check SSL protocol versions being used against deprecated ones
-    check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' |egrep "SSLv3|SSLv2"`
+    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' |egrep "SSLv3|SSLv2"`
     if [ ! "$check" ]; then
       increment_secure "Cloudfront $cdn is not using a deprecated version of SSL"
     else
       increment_insecure "Cloudfront $cdn is using a deprecated verions of SSL"
     fi
     # check if HTTP only being used 
-    check=`aws aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginProtocolPolicy' |egrep "http-only"`
+    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginProtocolPolicy' |egrep "http-only"`
     if [ ! "$check" ]; then
       increment_secure "Cloudfront $cdn is not using HTTP only"
     else
