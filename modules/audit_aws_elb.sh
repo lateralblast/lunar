@@ -35,7 +35,7 @@ audit_aws_elb () {
       check_aws_open_port $sg 80 tcp HTTP ELB $elb
     done
     # Ensure no deprecated ciphers of protocols are being used
-    list=`aws elb describe-load-balancer-policies --region us-east-1 --load-balancer-name $elb --output text`
+    list=`aws elb describe-load-balancer-policies --region $aws_region --load-balancer-name $elb --output text`
     for cipher in SSLv2 RC2-CBC-MD5 PSK-AES256-CBC-SHA PSK-3DES-EDE-CBC-SHA KRB5-DES-CBC3-SHA KRB5-DES-CBC3-MD5 \
                     PSK-AES128-CBC-SHA PSK-RC4-SHA KRB5-RC4-SHA KRB5-RC4-MD5 KRB5-DES-CBC-SHA KRB5-DES-CBC-MD5 \
                     EXP-EDH-RSA-DES-CBC-SHA EXP-EDH-DSS-DES-CBC-SHA EXP-ADH-DES-CBC-SHA EXP-DES-CBC-SHA \
