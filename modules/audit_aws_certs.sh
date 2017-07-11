@@ -9,7 +9,7 @@ audit_aws_certs () {
   cur_date=`date "+%Y-%m-%dT%H:%M:%SS"`
   cur_secs=`date -j -f "%Y-%m-%dT%H:%M:%SS" "$cur_date" "+%s"`
   for cert in $certs; do
-  	exp_date=`aws iam get-server-certificate --certificate-name $cert --query "ServerCertificateMetadataList[].Expiration" --output text`
+  	exp_date=`aws iam get-server-certificate --server-certificate-name $cert --query "ServerCertificate.ServerCertificateMetadata.Expiration" --output text`
     exp_secs=`date -j -f "%Y-%m-%dT%H:%M:%SS" "$exp_date" "+%s"`
     if [ "$exp_secs" -lt "$cur_secs" ]; then
       increment_insecure "Certificate $cert has expired"
@@ -18,4 +18,3 @@ audit_aws_certs () {
     fi
   done
 }
-
