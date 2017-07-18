@@ -19,7 +19,7 @@ audit_aws_cdn () {
       increment_insecure "Cloudfront $cdn is not WAF integration enabled"
     fi
     # Check logging is enabled
-    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Logging' |grep Enabled |grep true`
+    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Logging.Enabled' |grep true`
     if [ "$check" ]; then
       increment_secure "Cloudfront $cdn has logging enabled"
     else
