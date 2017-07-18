@@ -23,7 +23,7 @@ audit_aws_ec2 () {
     if [ "$profile" ]; then
       increment_secure "Instances $instance uses an IAM profile"
     else
-      increment_insecure "Warning:   Instance $instance does not us an IAM profile"
+      increment_insecure "Warning:   Instance $instance does not use an IAM profile"
     fi
   done
   images=`aws ec2 describe-images --region $aws_region --owners self --query "Images[].ImageId" --output text`
@@ -33,9 +33,9 @@ audit_aws_ec2 () {
       increment_secure "Image $image is not publicly shared"
     else
       increment_insecure "Image $image is publicly shared"
-      verbose_message "" fix
+      verbose_message "fix" 
       verbose_message "aws ec2 modify-image-attribute --region $aws_region --image-id $image --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" fix
-      verbose_message "" fix
+      verbose_message "fix" 
     fi
   done
   volumes=`aws ec2 describe-volumes --query "Volumes[].VolumeId" --output text`
