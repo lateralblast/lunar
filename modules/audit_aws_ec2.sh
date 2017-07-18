@@ -51,7 +51,7 @@ audit_aws_ec2 () {
     if [ "$key_id" ]; then
       increment_secure "EBS Volume $volume is encrypted with a KMS key"
     else
-      increment_insecure "EBS Volume $volume is encrypted with a KMS key"
+      increment_insecure "EBS Volume $volume is encrypted not with a KMS key"
     fi
   done
 }
