@@ -9,7 +9,7 @@
 audit_aws_cdn () {
   verbose_message "Cloudfront"
   aws configure set preview.cloudfront true
-  cdns=`aws cloudfront list-distributions --query 'DistributionList.Items[].Id' |grep -v null` 
+  cdns=`aws cloudfront list-distributions --query 'DistributionList.Items[].Id' --output text |grep -v null` 
   for cdn in $cdns; do 
     # Check Cloudfront is using WAF
     check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.WebACLId' --output text`
@@ -19,7 +19,7 @@ audit_aws_cdn () {
       increment_insecure "Cloudfront $cdn is not WAF integration enabled"
     fi
     # Check logging is enabled
-    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Logging' |grep Enabled |grep true`
+    check=`aws cloudfront get-distribution --id $cdn --query 'Distribution.DistributionConfig.Logging.Enabled' | grep true`
     if [ "$check" ]; then
       increment_secure "Cloudfront $cdn has logging enabled"
     else
