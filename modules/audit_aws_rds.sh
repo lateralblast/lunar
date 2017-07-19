@@ -45,7 +45,7 @@ audit_aws_rds () {
     if [ "$key_id" ]; then
       increment_secure "RDS instance $db is encrypted with a KMS key"
     else
-      increment_insecure "RDS instance $db is encrypted with a KMS key"
+      increment_insecure "RDS instance $db is not encrypted with a KMS key"
     fi
     # Check if RDS instance is publicly accessible
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].PubliclyAccessible' |grep true`
@@ -60,13 +60,13 @@ audit_aws_rds () {
       check_aws_open_port $sg 3306 tcp MySQL RDS $db
     done
     # Check RDS instance is not on a public subnet
-    subnets=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].DBSubnetGroup.Subnets[].SubnetIdentifier --output text'`
+    subnets=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].DBSubnetGroup.Subnets[].SubnetIdentifier' --output text`
     for subnet in $subnets; do
       check=`aws ec2 describe-route-tables --region $aws_region --filters "Name=association.subnet-id,Values=$subnet" --query 'RouteTables[].Routes[].DestinationCidrBlock' |grep "0.0.0.0/0"`
       if [ ! "$check" ]; then
         increment_secure "RDS instance $db is not on a public facing subnet"
       else
-        increment_insecure "RDS instance $db is ion a public facing subnet"
+        increment_insecure "RDS instance $db is on a public facing subnet"
       fi
     done
     # Check that your Amazon RDS production databases are not using 'awsuser' as master 
