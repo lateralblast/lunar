@@ -65,7 +65,7 @@ audit_aws_redshift () {
       fi
     done
     # Check if Redshift is publicly available
-    check=`aws redshift describe-logging-status --region $aws_region --cluster-identifier $db --query 'Clusters[].PubliclyAccessible' |grep true`
+    check=`aws redshift describe-clusters --region $aws_region --cluster-identifier $db --query 'Clusters[].PubliclyAccessible' |grep true`
     if [ ! "$check" ]; then
       increment_secure "Redshift instance $db is not publicly available"
     else
