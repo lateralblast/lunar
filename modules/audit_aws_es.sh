@@ -10,7 +10,7 @@ audit_aws_es () {
   for domain in $domains; do
     check=`aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text |grep Principle | grep "{\"AWS\":\"\*\"}"`
     if [ ! "$check" ]; then
-      increment_secure "Elasticsearch doamin $domain is not publicly accessible"
+      increment_secure "Elasticsearch domain $domain is not publicly accessible"
     else
       increment_insecure "Elasticsearch domain $domain is publicly accessible"
     fi
