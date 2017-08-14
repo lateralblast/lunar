@@ -23,7 +23,7 @@ audit_aws_elb () {
       increment_secure "ELB $elb has access logging enabled"
     fi
     # Ensure ELBs are not using HTTP
-    protocol=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].ListenerDescriptions[].Listener.Protcol" --output text`
+    protocol=`aws elb describe-load-balancers --region $aws_region --load-balancer-name $elb  --query "LoadBalancerDescriptions[].ListenerDescriptions[].Listener[].Protcol" --output text`
     if [ "$protocol" = "HTTP" ]; then
       increment_insecure "ELB $elb is using HTTP"
     else
