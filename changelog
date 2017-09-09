@@ -1265,3 +1265,5 @@
 # Updated documentation
 # 7.2.5: Sun Feb 12 13:26:29 AEDT 2017
 # Code cleanup
+# 7.2.6: Sat  9 Sep 2017 17:44:38 AEST
+# Cleaned up command line argument handling

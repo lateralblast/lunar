@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.2.5
+# Version:      7.2.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -132,7 +132,9 @@ print_usage () {
   echo "-x: Run in recommendations mode (for AWS - no changes made to system)"
   echo "-s: Run in selective mode (only run tests you want to)"
   echo "-R: Print information for a specific test"
-  echo "-S: List functions available to selective mode"
+  echo "-S: List all UNIX functions available to selective mode"
+  echo "-W: List all AWS functions available to selective mode"
+  echo "-D: List all Docker functions available to selective mode"
   echo "-l: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "-L: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "    [includes filesystem checks which take some time]"
@@ -540,6 +542,9 @@ increment_insecure () {
 
 print_previous () {
   if [ -d "$base_dir" ]; then
+    echo ""
+    echo "Printing previous settings:"
+    echo ""
     find $base_dir -type f -print -exec cat -n {} \;
   fi
 }
@@ -597,6 +602,9 @@ verbose_message () {
 
 print_changes () {
   if [ -f "$base_dir" ]; then
+    echo ""
+    echo "Printing changes:"
+    echo ""
     for saved_file in `find $base_dir -type f -print`; do
       check_file=`echo $saved_file |cut -f 5- -d"/"`
       top_dir=`echo $saved_file |cut -f 1-4 -d"/"`
@@ -811,173 +819,103 @@ print_results () {
   echo ""
 }
 
+#
+# print_tests
+# Print Tests
+# 
+
+print_tests () {
+  test_string="$1"
+  echo ""
+  if [ "$test_string" = "UNIX" ]; then
+    grep_string="-v aws"
+  else
+    grep_string="$test_string"
+  fi
+  echo "$test_string Security Tests:"
+  echo ""
+  ls $modules_dir | grep -v '^full_' |grep -i $grep_string |sed 's/\.sh//g'
+  echo ""
+}
+
 # Handle command line arguments
+
+audit_mode=3
+do_fs=3
+audit_select=0
+verbose=0
+do_select=0
+do_aws=0
+do_aws_rec=0
+do_docker=0
 
 while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
   case $args in
+    r)
+      aws_region="$OPTARG"
+      ;;
+    v)
+      verbose=1
+      ;;
     a)
-      if [ "$2" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running:   In audit mode (no changes will be made to system)"
-      echo "           Filesystem checks will not be done"
-      echo ""
       audit_mode=1
       do_fs=0
-      funct_audit_system $audit_mode
-      exit
       ;;
     s)
-      if [ "$3" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running:   In audit mode (no changes will be made to system)"
-      echo "           Filesystem checks will not be done"
-      echo ""
       audit_mode=1
       do_fs=0
+      do_select=1
       function="$OPTARG"
-      echo "Auditing:  Selecting $function"
-      funct_audit_select $audit_mode $function
-      exit
       ;;
     z)
-      if [ "$3" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running:   In lockdown mode (no changes will be made to system)"
-      echo "           Filesystem checks will not be done"
-      echo ""
       audit_mode=0
       do_fs=0
+      do_select=1
       function="$OPTARG"
-      echo "Auditing:  Selecting $function"
-      funct_audit_select $audit_mode $function
       exit
       ;;
     w)
-      if [ "$2" = "-v" ] || [ "$3" = "-v" ]; then
-        verbose=1
-      fi
-      if [ "$2" = "-r" ] || [ "$3" = "-r" ]; then
-        if [ "$2" = "-r" ]; then
-          aws_region=$2
-        else
-          aws_region=$3
-        fi
-      fi
-      echo ""
-      echo "Running     In audit mode (no changes will be made to system)"
-      echo "            This requires the AWS CLI to be configured"
-      echo ""
       audit_mode=1
-      funct_audit_aws $audit_mode
+      do_aws=1
       function="$OPTARG"
       exit
       ;;
     d)
-      if [ "$2" = "-v" ] || [ "$3" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running     In audit mode (no changes will be made to system)"
-      echo "            This requires Docker to be installed"
-      echo ""
       audit_mode=1
-      funct_audit_docker $audit_mode
+      do_docker=1
       function="$OPTARG"
       exit
       ;;
     x)
-      if [ "$2" = "-v" ] || [ "$3" = "-v" ]; then
-        verbose=1
-      fi
-      if [ "$2" = "-r" ] || [ "$3" = "-r" ]; then
-        if [ "$2" = "-r" ]; then
-          aws_region=$2
-        else
-          aws_region=$3
-        fi
-      fi
-      echo ""
-      echo "Running     In audit mode (no changes will be made to system)"
-      echo "            This requires the AWS CLI to be configured"
-      echo ""
       audit_mode=1
-      funct_audit_aws_rec $audit_mode
+      do_aws_rec=1
       function="$OPTARG"
       exit
       ;;
     W)
-      echo ""
-      echo "AWS Foundation Security Tests:"
-      echo ""
-      ls $modules_dir | grep -v '^full_' |grep aws |sed 's/\.sh//g'
+      print_tests "AWS"
       ;;
     D)
-      echo ""
-      echo "Docker Security Tests:"
-      echo ""
-      ls $modules_dir | grep -v '^full_' |grep docker |sed 's/\.sh//g'
+      print_tests "Docker"
       ;;  
     S)
-      echo ""
-      echo "UNIX Security Tests:"
-      echo ""
-      ls $modules_dir | grep -v '^full_' |grep -v aws |sed 's/\.sh//g'
+      print_tests "UNIX"
       ;;
     A)
-      if [ "$2" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running:   In audit mode (no changes will be made to system)"
-      echo "           Filesystem checks will be done"
-      echo ""
       audit_mode=1
       do_fs=1
-      funct_audit_system $audit_mode
-      exit
       ;;
     l)
-      if [ "$2" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running:   In lockdown mode (changes will be made to system)"
-      echo "           Filesystem checks will not be done"
-      echo ""
       audit_mode=0
       do_fs=0
-      funct_audit_system $audit_mode
-      exit
       ;;
     L)
-      if [ "$2" = "-v" ]; then
-        verbose=1
-      fi
-      echo ""
-      echo "Running:   In lockdown mode (no changes will be made to system)"
-      echo "           Filesystem checks will be done"
-      echo ""
       audit_mode=0
       do_fs=1
-      funct_audit_system $audit_mode
-      exit
       ;;
     u)
-      echo ""
-      echo "Running:   In Restore mode (changes will be made to system)"
-      echo ""
       audit_mode=2
       restore_date="$OPTARG"
-      echo "Setting:   Restore date $restore_date"
-      echo ""
-      funct_audit_system $audit_mode
-      exit
       ;;
     h)
       print_usage
@@ -988,23 +926,17 @@ while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
       exit
       ;;
     p)
-      echo ""
-      echo "Printing previous settings:"
-      echo ""
       print_previous
       exit
       ;;
     c)
-      echo ""
-      echo "Printing changes:"
-      echo ""
       print_changes
       exit
       ;;
     R)
       check_environment
       verbose=1
-      module=$2
+      module="$OPTARG"
       print_audit_info $module
       ;;
     b)
@@ -1020,3 +952,38 @@ while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
       ;;
   esac
 done
+
+if [ "$audit_mode" != 3 ]; then
+  echo ""
+  if [ "$audit_mode" = 2 ]; then
+    echo "Running:   In Restore mode (changes will be made to system)"
+    echo "Setting:   Restore date $restore_date"
+  fi
+  if [ "$audit_mode" = 1 ]; then
+    echo "Running:   In lockdown mode (no changes will be made to system)"
+  fi
+  if [ "$audit_mode" = 0 ]; then
+    echo "Running:   In lockdown mode (changes will be made to system)"
+  fi
+  if [ "$do_fs" = 1 ]; then
+    echo "           Filesystem checks will be done"
+  fi
+  echo ""
+  if [ "$do_select" = 1 ]; then
+    echo "Auditing:  Selecting $function"
+    funct_audit_select $audit_mode $function
+  else
+    if [ "$do_docker" = 1 ]; then
+      funct_audit_docker $audit_mode
+    fi
+    if [ "$do_aws" = 1 ]; then
+      funct_audit_aws $audit_mode
+    fi
+    if [ "$do_aws_rec" = 1 ]; then
+      funct_audit_aws_rec $audit_mode
+    fi
+    funct_audit_system $audit_mode
+  fi
+  exit
+fi
+
