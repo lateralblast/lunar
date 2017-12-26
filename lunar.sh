@@ -295,12 +295,10 @@ check_os_release () {
     echo "OS not supported"
     exit
   fi
-  if [ "$os_name" = "Darwin" ]; then
-    os_platform=`uname -m`
-  else
-    os_platform=`uname -p`
-  fi
-  echo "Platform:  $os_platform"
+  os_platform=`uname -p`
+  os_machine=`uname -m`
+  echo "Processor: $os_platform"
+  echo "Machine:   $os_machine"
   echo "Vendor:    $os_vendor"
   echo "Name:      $os_name"
   echo "Version:   $os_version"
