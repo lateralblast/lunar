@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.2.6
+# Version:      7.2.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -295,7 +295,11 @@ check_os_release () {
     echo "OS not supported"
     exit
   fi
-  os_platform=`uname -p`
+  if [ "$os_name" = "Darwin" ]; then
+    os_platform=`uname -m`
+  else
+    os_platform=`uname -p`
+  fi
   echo "Platform:  $os_platform"
   echo "Vendor:    $os_vendor"
   echo "Name:      $os_name"

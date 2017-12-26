@@ -51,7 +51,11 @@ check_file_perms () {
       if [ "$os_name" = "SunOS" ]; then
         file_perms=`truss -vstat -tstat ls -ld $check_file 2>&1 |grep 'm=' |tail -1 |awk '{print $3}' |cut -f2 -d'=' |cut -c4-7`
       else
-        file_perms=`stat -c %a $check_file`
+        if [ "$os_name" = "Darwin" ]; then
+          file_perms=`stat -f %p $check_file |tail -c 4`
+        else
+          file_perms=`stat -c %a $check_file`
+        fi
       fi
       file_owner=`ls -l $check_file |awk '{print $3","$4}'`
       echo "$check_file,$file_perms,$file_owner" >> $log_file

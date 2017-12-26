@@ -1267,3 +1267,5 @@
 # Code cleanup
 # 7.2.6: Sat  9 Sep 2017 17:44:38 AEST
 # Cleaned up command line argument handling
+# 7.2.7: Wed 27 Dec 2017 07:55:29 AEDT
+# Fixed uname and stat on OS X
