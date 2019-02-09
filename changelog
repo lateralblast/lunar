@@ -1269,3 +1269,5 @@
 # Cleaned up command line argument handling
 # 7.2.7: Wed 27 Dec 2017 07:55:29 AEDT
 # Fixed uname and stat on OS X
+# 7.2.8: Sat  9 Feb 2019 13:09:58 AEDT
+# Fixed a bug with chkconfig on Centos
