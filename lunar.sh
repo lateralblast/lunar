@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.3.0
+# Version:      7.3.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -205,6 +205,10 @@ check_virtual_platform () {
   if [ -f "/.dockerenv" ]; then
     virtual="Docker"
   fi
+  check=`which dmidecode |grep dmidecode |grep -v no`
+  if [ "$check" ]; then
+    virtual=`dmidecode |grep Manufacturer |head -1 |awk '{print $2}' |sed "s/,//g"`
+  fi
   echo "Virtual:   $virtual"
 }
 
@@ -229,7 +233,12 @@ check_os_release () {
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
       os_version=`cat /etc/redhat-release | awk '{print $3}' |cut -f1 -d'.'`
-      os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d'.'`
+      if [ "$os_version" = "Enterprise" ]; then
+        os_version=`cat /etc/redhat-release | awk '{print $7}' |cut -f1 -d'.'`
+        os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d'.'`
+      else
+        os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d'.'`
+      fi
       os_vendor=`cat /etc/redhat-release | awk '{print $1}'`
       linux_dist="redhat"
     else
@@ -782,7 +791,14 @@ funct_audit_select () {
     function="audit_$function"
   fi
   print_audit_info $function
-  $function
+  check=`type $function 2>*1 /dev/null`
+  if [ "$check" ]; then
+    $function
+  else
+    echo "Warning:   Audit function $function does not exist"
+    echo ""
+    exit
+  fi 
   print_results
 }
 

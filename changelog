@@ -1275,3 +1275,5 @@
 # Fixed Java version check and some other bugs
 # 7.3.0: Sun 21 Apr 2019 13:06:51 AEST
 # Added initial code for detecting virtual platform and fixed separate filesystems check
+# 7.3.1: Sun Apr 21 15:48:28 AEST 2019
+# Cleanup and bug fixes
