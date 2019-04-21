@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.2.8
+# Version:      7.2.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -116,11 +116,11 @@ install_rsyslog="no"
 
 company_name="Lateral Blast Pty Ltd"
 
-# print_usage
+# print_help
 #
 # If given a -h or no valid switch print usage information
 
-print_usage () {
+print_help () {
   echo ""
   echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|c|V] -[u]"
   echo ""
@@ -141,10 +141,19 @@ print_usage () {
   echo "-c: Show changes previously made to system"
   echo "-p: Show previously versions of file"
   echo "-u: Undo lockdown (for Operating Systems - changes made to system)"
-  echo "-h: Display usage"
+  echo "-h: Display help"
+  echo "-H: Display usage"
   echo "-V: Display version"
   echo "-v: Verbose mode [used with -a and -A]"
   echo "    [Provides more information about the audit taking place]"
+  echo ""
+}
+
+# print-usage
+#
+# IF given -H print some examples
+
+print_usage () {
   echo ""
   echo "Examples:"
   echo ""
@@ -182,7 +191,6 @@ print_usage () {
   echo ""
   echo "$0 -s audit_shell_services"
   echo ""
-  exit
 }
 
 # check_os_release
@@ -772,7 +780,8 @@ script_version=`cd $start_path ; cat $0 | grep '^# Version' |awk '{print $3}'`
 # If given no command line arguments print usage information
 
 if [ `expr "$args" : "\-"` != 1 ]; then
-  print_usage
+  print_help
+  exit
 fi
 
 # apply_latest_patches
@@ -851,8 +860,8 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
-  case $args in
+while getopts ":abcdlpR:r:s:u:z:hwADSWVLHvx" args; do
+  case ${args} in
     r)
       aws_region="$OPTARG"
       ;;
@@ -920,6 +929,12 @@ while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
       restore_date="$OPTARG"
       ;;
     h)
+      print_help
+      if [ "$verbose" = 1 ]; then
+        print_usage
+      fi
+      ;;
+    H)
       print_usage
       exit
       ;;
@@ -949,7 +964,7 @@ while getopts abcdlpR:r:s:u:z:hwADSWVLx args; do
       exit
       ;;
     *)
-      print_usage
+      print_help
       exit
       ;;
   esac

@@ -1271,3 +1271,5 @@
 # Fixed uname and stat on OS X
 # 7.2.8: Sat  9 Feb 2019 13:09:58 AEDT
 # Fixed a bug with chkconfig on Centos
+# 7.2.9: Sun 21 Apr 2019 11:19:00 AEST
+# Fixed Java version check and some other bugs
