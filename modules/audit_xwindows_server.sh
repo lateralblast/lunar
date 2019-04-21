@@ -12,7 +12,7 @@ audit_xwindows_server () {
       verbose_message "X Windows Server"
       no_rego=`yum grouplist 2>&1 |grep "not registered"`
       if [ ! "$no_rego" ]; then
-        list_check=`yum repolist |grep "X Windows System"`        
+        list_check=`yum grouplist |grep "X Windows System"`        
         if [ "$list_check" ]; then
           increment_insecure "Group 'X Windows System' is installed"
         else
