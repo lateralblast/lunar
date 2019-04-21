@@ -10,7 +10,17 @@ audit_xwindows_server () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       verbose_message "X Windows Server"
-      yum groupremove "X Window System"
+      no_rego=`yum grouplist 2>&1 |grep "not registered"`
+      if [ ! "$no_rego" ]; then
+        list_check=`yum repolist |grep "X Windows System"`        
+        if [ "$list_check" ]; then
+          increment_insecure "Group 'X Windows System' is installed"
+        else
+          increment_secure "Group 'X Windows System' is not installed"
+        fi
+      else
+        echo "Warning:   System not registered with a repository"
+      fi
     fi
   fi
 }
