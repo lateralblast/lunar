@@ -1277,3 +1277,5 @@
 # Added initial code for detecting virtual platform and fixed separate filesystems check
 # 7.3.1: Sun Apr 21 15:48:28 AEST 2019
 # Cleanup and bug fixes
+# 7.3.2: Sun 21 Apr 2019 16:25:36 AEST
+# Fixed bug with sulogin check

@@ -103,7 +103,11 @@ check_file_value () {
             check_value=`$cat_command $check_file |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
           fi
         else
-          check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+          if [ "$search_value" ]; then
+            check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |grep "$search_value"`
+          else
+            check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+          fi
         fi
       fi
       if [ ! "$check_value" ]; then

@@ -15,7 +15,7 @@ audit_sulogin () {
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"
-      ttys_test=`cat $check_file |grep $check_string |awk '{print $5}'`
+      ttys_test=`cat $check_file |grep "$check_string" |awk '{print $5}'`
       if [ "$ttys_test" != "insecure" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
@@ -39,9 +39,9 @@ audit_sulogin () {
     fi
     if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
       check_file="/usr/lib/systemd/system/rescue.service"
-      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
+      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
       check_file="/usr/lib/systemd/system/emergency.service"
-      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash
+      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/inittab"
