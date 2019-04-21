@@ -94,7 +94,8 @@ check_file_value () {
         fi
       fi
     else
-      if [ `echo "$correct_value" |grep "^\-"` ]; then
+      hyphen_check=`echo "$correct_value" |grep "^[\-]"`
+      if [ "$hyphen_check" ]; then
         correct_value="\\$correct_value"
       fi
       if [ "$separator" = "tab" ]; then
