@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.2.9
+# Version:      7.3.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -119,6 +119,7 @@ company_name="Lateral Blast Pty Ltd"
 # print_help
 #
 # If given a -h or no valid switch print usage information
+#.
 
 print_help () {
   echo ""
@@ -152,6 +153,7 @@ print_help () {
 # print-usage
 #
 # IF given -H print some examples
+#.
 
 print_usage () {
   echo ""
@@ -192,6 +194,20 @@ print_usage () {
   echo "$0 -s audit_shell_services"
   echo ""
 }
+
+# check_virtual_platform
+#
+# Check if we are running on a virtual platform
+#.
+
+check_virtual_platform () {
+  virtual="Unknown"
+  if [ -f "/.dockerenv" ]; then
+    virtual="Docker"
+  fi
+  echo "Virtual:   $virtual"
+}
+
 
 # check_os_release
 #
@@ -305,6 +321,7 @@ check_os_release () {
   fi
   os_platform=`uname -p`
   os_machine=`uname -m`
+  check_virtual_platform
   echo "Processor: $os_platform"
   echo "Machine:   $os_machine"
   echo "Vendor:    $os_vendor"
@@ -977,7 +994,7 @@ if [ "$audit_mode" != 3 ]; then
     echo "Setting:   Restore date $restore_date"
   fi
   if [ "$audit_mode" = 1 ]; then
-    echo "Running:   In lockdown mode (no changes will be made to system)"
+    echo "Running:   In audit mode (no changes will be made to system)"
   fi
   if [ "$audit_mode" = 0 ]; then
     echo "Running:   In lockdown mode (changes will be made to system)"

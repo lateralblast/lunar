@@ -1273,3 +1273,5 @@
 # Fixed a bug with chkconfig on Centos
 # 7.2.9: Sun 21 Apr 2019 11:19:00 AEST
 # Fixed Java version check and some other bugs
+# 7.3.0: Sun 21 Apr 2019 13:06:51 AEST
+# Added initial code for detecting virtual platform and fixed separate filesystems check
