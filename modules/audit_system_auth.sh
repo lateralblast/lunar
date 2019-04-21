@@ -20,10 +20,10 @@ audit_system_auth () {
     if [ "$check" -eq 1 ]; then
       check_file="/etc/security/pwquality.conf"
       check_file_value $check_file minlen eq 14 hash  
-      check_file_value $check_file dcredit eq -1 hash  
-      check_file_value $check_file ocredit eq -1 hash  
-      check_file_value $check_file ucredit eq -1 hash  
-      check_file_value $check_file lcredit eq -1 hash  
+      check_file_value $check_file dcredit eq "-1" hash  
+      check_file_value $check_file ocredit eq "-1" hash  
+      check_file_value $check_file ucredit eq "-1" hash  
+      check_file_value $check_file lcredit eq "-1" hash  
       audit_system_auth_nullok
       auth_string="auth"
       search_string="unlock_time"
@@ -40,10 +40,10 @@ audit_system_auth () {
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
         check_file="/etc/security/pwquality.conf"
         check_file_value $check_file minlen eq 14 hash  
-        check_file_value $check_file dcredit eq -1 hash  
-        check_file_value $check_file ocredit eq -1 hash  
-        check_file_value $check_file ucredit eq -1 hash  
-        check_file_value $check_file lcredit eq -1 hash  
+        check_file_value $check_file dcredit eq "-1" hash  
+        check_file_value $check_file ocredit eq "-1" hash  
+        check_file_value $check_file ucredit eq "-1" hash  
+        check_file_value $check_file lcredit eq "-1" hash  
         audit_system_auth_nullok
         auth_string="auth"
         search_string="unlock_time"

@@ -94,6 +94,9 @@ check_file_value () {
         fi
       fi
     else
+      if [ `echo "$correct_value" |grep "^\-"` ]; then
+        correct_value="\\$correct_value"
+      fi
       if [ "$separator" = "tab" ]; then
         check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq |egrep "$correct_value"`
       else
@@ -104,13 +107,17 @@ check_file_value () {
           fi
         else
           if [ "$search_value" ]; then
-            check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |grep "$search_value"`
+            check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$search_value"`
           else
             check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
           fi
         fi
       fi
       if [ ! "$check_value" ]; then
+        slash_check=`echo "$correct_value" |grep "^[\\]"`
+        if [ "$slash_check" ]; then
+          correct_value=`echo "$correct_value" |sed "s/^[\\]//g"`
+        fi
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
           if [ "$check_parameter" != "$parameter_name" ]; then

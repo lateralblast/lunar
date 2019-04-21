@@ -1279,3 +1279,5 @@
 # Cleanup and bug fixes
 # 7.3.2: Sun 21 Apr 2019 16:25:36 AEST
 # Fixed bug with sulogin check
+# 7.3.3: Sun 21 Apr 2019 17:40:10 AEST
+# Fixed bug with file value check and check values starting in hyphens
