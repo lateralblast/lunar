@@ -10,6 +10,8 @@ check_linux_package () {
   if [ "$os_name" = "Linux" ]; then
     package_mode=$1
     package_check=$2
+    group_check=$3
+    package_type="Package"
     if [ "$package_mode" = "install" ]; then
       package_status="installed"
     else
@@ -17,26 +19,34 @@ check_linux_package () {
     fi
     log_file="package_log"
     backup_file="$work_dir/$log_file"
-    verbose_message "Checking if package is $package_check $package_status"
-    echo "Checking:  Package $package_check is installed"
+    verbose_message "Checking if $package_type $package_check is $package_status"
     if [ "$audit_mode" != "2" ]; then
       if [ "$linux_dist" = "debian" ]; then
         package_name=`dpkg -l $package_check 2>&1 |grep $package_check |awk '{print $2}'`
       else
-        package_name=`rpm -qi $package_check |grep '^Name' |awk '{print $3}'`
+        if [ "$group_check" ]; then
+          package_type="Group"
+          package_name=`yum grouplist 2>&1 | grep "$package_check" |sed "s/^   //g"`
+        else
+          package_name=`rpm -qi $package_check |grep '^Name' |awk '{print $3}'`
+        fi
       fi
       if [ "$package_mode" = "install" ] && [ "$package_name" = "$package_check" ]; then
-        increment_secure "Package $package_check is $package_status"
+        increment_secure "$package_type $package_check is $package_status"
       else
-        if [ "$package_mode" = "uninstall" ] && [ "$package_name" != "$package_check" ]; then
-          increment_secure "Package $package_check is $package_status"
+        if [ "$package_mode" = "uninstall" ] && [ "$package_name" != "$package_check" ] || [ "$package_name" = "" ]; then
+          increment_secure "$package_type $package_check is $package_status"
         else
-          increment_insecure "Package $package_check is not $package_status"
+          increment_insecure "$package_type $package_check is not $package_status"
         fi
       fi
       if [ "$package_mode" = "install" ]; then
         if [ "$linux_dist" = "redhat" ]; then
-          package_command="yum -y install $package_check"
+          if [ "$group_check" ]; then
+            package_command="yum -y groupinstall \"$package_check\""
+          else
+            package_command="yum -y install $package_check"
+          fi
         fi
         if [ "$linux_dist" = "suse" ]; then
           package_command="zypper install $package_check"
@@ -50,7 +60,11 @@ check_linux_package () {
       fi
       if [ "$package_mode" = "uninstall" ]; then
         if [ "$linux_dist" = "redhat" ]; then
-          package_command="rpm -e $package_check"
+          if [ "$group_check" ]; then
+            package_command="yum -y groupremove \"$package_check\""
+          else
+            package_command="rpm -e $package_check"
+          fi
         fi
         if [ "$linux_dist" = "suse" ]; then
           package_command="zypper remove $package_check"
@@ -83,7 +97,11 @@ check_linux_package () {
           echo "Restoring: Package $package_action to $package_action"
           if [ "$package_action" = "install" ]; then
             if [ "$linux_dist" = "redhat" ]; then
-              rpm -e $package_check
+              if [ "$group_check" ]; then
+                yum groupremove "$package_check"
+              else
+                rpm -e $package_check
+              fi
             fi
             if [ "$linux_dist" = "debian" ]; then
               apt-get purge $package_check
@@ -93,7 +111,11 @@ check_linux_package () {
             fi
           else
             if [ "$linux_dist" = "redhat" ]; then
-              yum -y install $package_check
+              if [ "$group_check" ]; then
+                yum groupinstall "$package_check"
+              else
+                yum -y install $package_check
+              fi
             fi
             if [ "$linux_dist" = "debian" ]; then
               apt-get install $package_check

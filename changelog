@@ -1283,3 +1283,6 @@
 # Fixed bug with file value check and check values starting in hyphens
 # 7.3.4: Sun 21 Apr 2019 18:16:35 AEST
 # Initial bug fix for X Windows System package group being installed 
+# 7.3.5: Sun 21 Apr 2019 21:11:20 AEST
+# Added group package check
+
