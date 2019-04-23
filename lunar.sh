@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.3.5
+# Version:      7.3.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -790,15 +790,17 @@ funct_audit_select () {
   if [ "`expr $function : audit_`" != "6" ]; then
     function="audit_$function"
   fi
-  print_audit_info $function
-  check=`type $function 2>*1 /dev/null`
-  if [ "$check" ]; then
-    $function
-  else
-    echo "Warning:   Audit function $function does not exist"
-    echo ""
-    exit
-  fi 
+  if [ "$function" != "audit_" ]; then
+    print_audit_info $function
+    check=`type $function 2> /dev/null`
+    if [ "$check" ]; then
+      $function
+    else
+      echo "Warning:   Audit function $function does not exist"
+      echo ""
+      exit
+    fi 
+  fi
   print_results
 }
 

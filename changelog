@@ -1285,4 +1285,6 @@
 # Initial bug fix for X Windows System package group being installed 
 # 7.3.5: Sun 21 Apr 2019 21:11:20 AEST
 # Added group package check
+# 7.3.6: Tue 23 Apr 2019 12:06:07 AEST
+# Fixed bug with module check
 
