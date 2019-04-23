@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.3.9
+# Version:      7.4.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -244,24 +244,24 @@ check_os_release () {
   fi
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
-      os_version=`cat /etc/redhat-release | awk '{print $3}' |cut -f1 -d'.'`
+      os_version=`cat /etc/redhat-release | awk '{print $3}' |cut -f1 -d.`
       if [ "$os_version" = "Enterprise" ]; then
-        os_version=`cat /etc/redhat-release | awk '{print $7}' |cut -f1 -d'.'`
-        os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d'.'`
+        os_version=`cat /etc/redhat-release | awk '{print $7}' |cut -f1 -d.`
+        os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d.`
       else
-        os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d'.'`
+        os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d.`
       fi
       os_vendor=`cat /etc/redhat-release | awk '{print $1}'`
       linux_dist="redhat"
     else
       if [ -f "/etc/debian_version" ]; then
         if [ -f "/etc/lsb-release" ]; then
-          os_version=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d'=' |cut -f1 -d '.'`
-          os_update=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d'=' |cut -f2 -d '.'`
-          os_vendor=`cat /etc/lsb-release |grep "DISTRIB_ID" |cut -f2 -d'='`
+          os_version=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d= |cut -f1 -d.`
+          os_update=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d= |cut -f2 -d.`
+          os_vendor=`cat /etc/lsb-release |grep "DISTRIB_ID" |cut -f2 -d=`
         else
-          os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d'.'`
-          os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d'.'`
+          os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d.`
+          os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d.`
           os_vendor=`lsb_release -i |awk '{print $3}'`
         fi
         linux_dist="debian"
@@ -284,15 +284,15 @@ check_os_release () {
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
-          os_version=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f1 -d "."`
-          os_update=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f2 -d "."`
+          os_version=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f1 -d.`
+          os_update=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f2 -d.`
           os_vendor="SuSE"
           linux_dist="suse"
         else
           if [ -f "/etc/os-release" ]; then
             os_vendor="Amazon"
-            os_version=`cat /etc/os-release |grep '^VERSION_ID' |cut -f2 -d'"' |cut -f1 -d.`
-            os_update=`cat /etc/os-release |grep '^VERSION_ID' |cut -f2 -d'"' |cut -f2 -d.`
+            os_version=`cat /etc/os-release |grep 'CPE_NAME' |cut -f2 -d: |cut -f1 -d.`
+            os_update=`cat /etc/os-release |grep 'CPE_NAME' |cut -f2 -d: |cut -f2 -d.`
           fi
         fi
       fi
@@ -302,18 +302,18 @@ check_os_release () {
     os_vendor="Oracle Solaris"
     os_version=`uname -r |cut -f2 -d"."`
     if [ "$os_version" = "11" ]; then
-      os_update=`cat /etc/release |grep Solaris |awk '{print $3}' |cut -f2 -d'.'`
+      os_update=`cat /etc/release |grep Solaris |awk '{print $3}' |cut -f2 -d.`
     fi
     if [ "$os_version" = "10" ]; then
-      os_update=`cat /etc/release |grep Solaris |awk '{print $5}' |cut -f2 -d'_' |sed 's/[A-z]//g'`
+      os_update=`cat /etc/release |grep Solaris |awk '{print $5}' |cut -f2 -d_ |sed 's/[A-z]//g'`
     fi
     if [ "$os_version" = "9" ]; then
-      os_update=`cat /etc/release |grep Solaris |awk '{print $4}' |cut -f2 -d'_' |sed 's/[A-z]//g'`
+      os_update=`cat /etc/release |grep Solaris |awk '{print $4}' |cut -f2 -d_ |sed 's/[A-z]//g'`
     fi
   fi
   if [ "$os_name" = "FreeBSD" ]; then
-    os_version=`uname -r |cut -f1 -d "."`
-    os_update=`uname -r |cut -f2 -d "."`
+    os_version=`uname -r |cut -f1 -d.`
+    os_update=`uname -r |cut -f2 -d.`
     os_vendor=$os_name
   fi
   if [ "$os_name" = "AIX" ]; then

@@ -15,32 +15,34 @@ audit_pam_wheel () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "PAM SU Configuration"
     check_file="/etc/pam.d/su"
-    search_string="use_uid"
-    if [ "$audit_mode" != 2 ]; then
-      check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
-      if [ "$check_value" != "$search_string" ]; then
-        if [ "$audit_mode" = "1" ]; then
-          increment_insecure "Wheel group membership not required for su in $check_file"
-          verbose_message "" fix
-          verbose_message "cp $check_file $temp_file" fix
-          verbose_message "cat $temp_file |awk '( $1==\"#auth\" && $2==\"required\" && $3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",$3,\"\tuse_uid\"; next }; { print }' > $check_file" fix
-          verbose_message "rm $temp_file" fix
-          verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          backup_file $check_file
-          echo "Setting:   Su to require wheel group membership in PAM in $check_file"
-          cp $check_file $temp_file
-          cat $temp_file |awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' > $check_file
-          rm $temp_file
+    if [ -f "$check_file" ]; then
+      search_string="use_uid"
+      if [ "$audit_mode" != 2 ]; then
+        check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
+        if [ "$check_value" != "$search_string" ]; then
+          if [ "$audit_mode" = "1" ]; then
+            increment_insecure "Wheel group membership not required for su in $check_file"
+            verbose_message "" fix
+            verbose_message "cp $check_file $temp_file" fix
+            verbose_message "cat $temp_file |awk '( $1==\"#auth\" && $2==\"required\" && $3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",$3,\"\tuse_uid\"; next }; { print }' > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            backup_file $check_file
+            echo "Setting:   Su to require wheel group membership in PAM in $check_file"
+            cp $check_file $temp_file
+            cat $temp_file |awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = "1" ]; then
+            increment_secure "Wheel group membership required for su in $check_file"
+          fi
         fi
       else
-        if [ "$audit_mode" = "1" ]; then
-          increment_secure "Wheel group membership required for su in $check_file"
-        fi
+        restore_file $check_file $restore_dir
       fi
-    else
-      restore_file $check_file $restore_dir
     fi
   fi
 }

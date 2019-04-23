@@ -20,7 +20,7 @@ audit_iptables () {
       check_chkconfig_service $service_name 5 on
     done
     if [ "$audit_mode" != 2 ]; then
-      check=`which iptables`
+      check=`which iptables 2> /dev/null`
       if [ "$check" ]; then
         check=`iptables -L INPUT -v -n |grep "127.0.0.0" |grep "0.0.0.0" |grep DROP`
         if [ ! "$check" ]; then
