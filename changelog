@@ -1287,4 +1287,6 @@
 # Added group package check
 # 7.3.6: Tue 23 Apr 2019 12:06:07 AEST
 # Fixed bug with module check
+# 7.3.7: Tue 23 Apr 2019 14:24:39 AEST
+# Made code more portable
 

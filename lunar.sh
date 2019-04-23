@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.3.6
+# Version:      7.3.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -70,6 +70,7 @@ aws_days_to_key_deletion="7"
 
 # Set up some global variables
 
+app_dir=$(dirname $0)
 args=$@
 secure=0
 insecure=0
@@ -87,9 +88,9 @@ wheel_group="wheel"
 docker_group="docker"
 reboot=0
 verbose=0
-functions_dir="functions"
-modules_dir="modules"
-private_dir="private"
+functions_dir="$app_dir/functions"
+modules_dir="$app_dir/modules"
+private_dir="$app_dir/private"
 package_uninstall="no"
 country_suffix="au"
 language_suffix="en_US"
