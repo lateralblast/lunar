@@ -1,0 +1,12 @@
+version: '3'
+services:
+  test-shell:
+    image: "${OS_NAME}:${OS_VERSION}"
+    volumes:
+      - ".:/lunar"
+    command: "/bin/bash" 
+  test-audit:
+    image: "${OS_NAME}:${OS_VERSION}"
+    volumes:
+      - ".:/lunar"
+    command: bash -c "/lunar/lunar.sh -a"

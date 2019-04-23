@@ -1291,4 +1291,6 @@
 # Made code more portable
 # 7.3.8: Tue 23 Apr 2019 15:14:52 AEST
 # More fixes
+# 7.3.9: Tue 23 Apr 2019 18:37:02 AEST
+# Added initial docker test matrix
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.3.8
+# Version:      7.3.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -97,7 +97,11 @@ language_suffix="en_US"
 osx_mdns_enable="yes"
 max_super_user_id="100"
 use_expr="no"
-use_finger="yed"
+use_finger="yes"
+test_os="none"
+test_tag="none"
+do_compose=0
+do_shell=0
 
 # Disable daemons
 
@@ -126,7 +130,7 @@ company_name="Lateral Blast Pty Ltd"
 
 print_help () {
   echo ""
-  echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|c|V] -[u]"
+  echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|c|C|D|V] -[u] -[o] -[t]"
   echo ""
   echo "-a: Run in audit mode (for Operating Systems - no changes made to system)"
   echo "-A: Run in audit mode (for Operating Systems - no changes made to system)"
@@ -142,7 +146,11 @@ print_help () {
   echo "-l: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "-L: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "    [includes filesystem checks which take some time]"
-  echo "-c: Show changes previously made to system"
+  echo "-C: Show changes previously made to system"
+  echo "-c: Run docker-compose testing suite (runs lunar in audit mode without making changes)"
+  echo "-D: Run docker-compose testing suite (drops to shell in order to do more testing)"
+  echo "-o: Set docker OS or container name"
+  echo "-t: Set docker tag"
   echo "-p: Show previously versions of file"
   echo "-u: Undo lockdown (for Operating Systems - changes made to system)"
   echo "-h: Display help"
@@ -207,10 +215,11 @@ check_virtual_platform () {
   virtual="Unknown"
   if [ -f "/.dockerenv" ]; then
     virtual="Docker"
-  fi
-  check=`which dmidecode |grep dmidecode |grep -v no`
-  if [ "$check" ]; then
-    virtual=`dmidecode |grep Manufacturer |head -1 |awk '{print $2}' |sed "s/,//g"`
+  else 
+    check=`which dmidecode |grep dmidecode |grep -v no`
+    if [ "$check" ]; then
+      virtual=`dmidecode |grep Manufacturer |head -1 |awk '{print $2}' |sed "s/,//g"`
+    fi
   fi
   echo "Virtual:   $virtual"
 }
@@ -888,8 +897,22 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts ":abcdlpR:r:s:u:z:hwADSWVLHvx" args; do
+while getopts ":abcdlpCR:o:r:s:t:u:z:hwADSWVLHvx" args; do
   case ${args} in
+    o)
+      test_os="$OPTARG"
+      ;;
+    t)
+      test_tag="$OPTARG"
+      ;;
+    c)
+      do_compose=1
+      do_shell=0
+      ;;
+    D)
+      do_compose=1
+      do_shell=1
+      ;;
     r)
       aws_region="$OPTARG"
       ;;
@@ -923,7 +946,6 @@ while getopts ":abcdlpR:r:s:u:z:hwADSWVLHvx" args; do
       audit_mode=1
       do_docker=1
       function="$OPTARG"
-      exit
       ;;
     x)
       audit_mode=1
@@ -974,7 +996,7 @@ while getopts ":abcdlpR:r:s:u:z:hwADSWVLHvx" args; do
       print_previous
       exit
       ;;
-    c)
+    C)
       print_changes
       exit
       ;;
@@ -997,6 +1019,19 @@ while getopts ":abcdlpR:r:s:u:z:hwADSWVLHvx" args; do
       ;;
   esac
 done
+
+if [ "$do_compose" = 1 ]; then
+  if [ ! "$test_os" = "none" ] && [ ! "$test_tag" = "none" ]; then
+    if [ "$do_shell" = 0 ]; then
+      cd $app_dir ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-audit
+    else
+      cd $app_dir ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-shell
+    fi
+  else
+    echo "OS name or version not given"
+    exit
+  fi
+fi 
 
 if [ "$audit_mode" != 3 ]; then
   echo ""

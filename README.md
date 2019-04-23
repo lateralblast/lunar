@@ -121,3 +121,9 @@ For more information refer to wiki:
 [AWS](https://github.com/lateralblast/lunar/wiki/AWS)
 
 [Docker](https://github.com/lateralblast/lunar/wiki/Docker)
+
+Testing
+-------
+
+Added a simple testing framework for debugging the lunar script itself. 
+This uses docker compose to start a container, mount the lunar directory and run lunar.
