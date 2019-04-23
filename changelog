@@ -1289,4 +1289,6 @@
 # Fixed bug with module check
 # 7.3.7: Tue 23 Apr 2019 14:24:39 AEST
 # Made code more portable
+# 7.3.8: Tue 23 Apr 2019 15:14:52 AEST
+# More fixes
 

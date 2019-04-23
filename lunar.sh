@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.3.7
+# Version:      7.3.8
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -96,6 +96,8 @@ country_suffix="au"
 language_suffix="en_US"
 osx_mdns_enable="yes"
 max_super_user_id="100"
+use_expr="no"
+use_finger="yed"
 
 # Disable daemons
 
@@ -244,9 +246,15 @@ check_os_release () {
       linux_dist="redhat"
     else
       if [ -f "/etc/debian_version" ]; then
-        os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d'.'`
-        os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d'.'`
-        os_vendor=`lsb_release -i |awk '{print $3}'`
+        if [ -f "/etc/lsb-release" ]; then
+          os_version=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d'=' |cut -f1 -d '.'`
+          os_update=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d'=' |cut -f2 -d '.'`
+          os_vendor=`cat /etc/lsb-release |grep "DISTRIB_ID" |cut -f2 -d'='`
+        else
+          os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d'.'`
+          os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d'.'`
+          os_vendor=`lsb_release -i |awk '{print $3}'`
+        fi
         linux_dist="debian"
         if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
           echo "Notice:    The sysv-rc-conf package is required by this script"
@@ -260,26 +268,10 @@ check_os_release () {
     		  done
         fi
         if [ ! -f "/usr/bin/bc" ]; then
-          echo "Notice:    The bc package is required by this script"
-          while true; do
-      			read -p "Do you wish to install this program?" yn
-      			case $yn in
-      				[Yy]* ) apt-get install bc; break;;
-      				[Nn]* ) echo "Exiting script"; exit;;
-      				* ) echo "Please answer yes or no.";;
-      			esac
-    		  done
+          use_expr="yes"
         fi
         if [ ! -f "/usr/bin/finger" ]; then
-          echo "Notice:    The finger package is required by this script"
-    		  while true; do
-    			read -p "Do you wish to install this program?" yn
-    			case $yn in
-    				[Yy]* ) apt-get install finger; break;;
-    				[Nn]* ) echo "Exiting script"; exit;;
-    				* ) echo "Please answer yes or no.";;
-    			esac
-    		  done
+          use_finger="no"
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
