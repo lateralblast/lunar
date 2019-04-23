@@ -1301,3 +1301,5 @@
 # Added file check to securetty test
 # 7.4.3: Tue 23 Apr 2019 22:04:08 AEST
 # Initial Kubernetes support
+# 7.4.4: Wed 24 Apr 2019 07:24:28 AEST
+# Added support of hyphens in parameter names in file value checks

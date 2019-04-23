@@ -94,9 +94,13 @@ check_file_value () {
         fi
       fi
     else
-      hyphen_check=`echo "$correct_value" |grep "^[\-]"`
-      if [ "$hyphen_check" ]; then
+      correct_hyphen=`echo "$correct_value" |grep "^[\-]"`
+      if [ "$correct_hyphen" ]; then
         correct_value="\\$correct_value"
+      fi
+      param_hyphen=`echo "$parameter_name" |grep "^[\-]"`
+      if [ "$param_hyphen" ]; then
+        parameter_name="\\$parameter_name"
       fi
       if [ "$separator" = "tab" ]; then
         check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq |egrep "$correct_value"`
@@ -115,9 +119,13 @@ check_file_value () {
         fi
       fi
       if [ ! "$check_value" ]; then
-        slash_check=`echo "$correct_value" |grep "^[\\]"`
-        if [ "$slash_check" ]; then
+        correct_hyphen=`echo "$correct_value" |grep "^[\\]"`
+        if [ "$correct_hyphen" ]; then
           correct_value=`echo "$correct_value" |sed "s/^[\\]//g"`
+        fi
+        param_hyphen=`echo "$parameter_name" |grep "^[\\]"`
+        if [ "$param_hyphen" ]; then
+          parameter_name=`echo "$parameter_name" |sed "s/^[\\]//g"`
         fi
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
