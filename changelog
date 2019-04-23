@@ -1299,4 +1299,5 @@
 # Improved handling for beta releases of Red Hat Linux
 # 7.4.2: Tue 23 Apr 2019 20:44:23 AEST
 # Added file check to securetty test
-
+# 7.4.3: Tue 23 Apr 2019 22:04:08 AEST
+# Initial Kubernetes support

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.4.2
+# Version:      7.4.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -696,6 +696,18 @@ check_aws () {
   fi
 }
 
+# funct_audit_kubernetes
+#
+# Audit Kubernetes
+#.
+
+funct_audit_kubernetes () {
+  audit_mode=$1
+  check_environment
+  audit_kubernetes_all
+  print_results
+}
+
 # funct_audit_aws
 #
 # Audit AWS
@@ -903,7 +915,7 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts ":abcdlpCRe::o:r:s:t:u:z:hwADSWVLHvx" args; do
+while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvx" args; do
   case ${args} in
     e)
       do_remote=1
@@ -944,24 +956,26 @@ while getopts ":abcdlpCRe::o:r:s:t:u:z:hwADSWVLHvx" args; do
       do_fs=0
       do_select=1
       function="$OPTARG"
-      exit
       ;;
     w)
       audit_mode=1
       do_aws=1
       function="$OPTARG"
-      exit
       ;;
     d)
       audit_mode=1
       do_docker=1
       function="$OPTARG"
       ;;
+    k)
+      audit_mode=1
+      do_kubernetes=1
+      function="$OPTARG"
+      ;;
     x)
       audit_mode=1
       do_aws_rec=1
       function="$OPTARG"
-      exit
       ;;
     W)
       print_tests "AWS"
@@ -1071,15 +1085,27 @@ if [ "$audit_mode" != 3 ]; then
     echo "Auditing:  Selecting $function"
     funct_audit_select $audit_mode $function
   else
+    if [ "$do_kubernetes" = 1 ]; then
+      echo "Auditing:  Kubernetes"
+      funct_audit_kubernetes $audit_mode
+      exit
+    fi
     if [ "$do_docker" = 1 ]; then
+      echo "Auditing:  Docker"
       funct_audit_docker $audit_mode
+      exit
     fi
     if [ "$do_aws" = 1 ]; then
+      echo "Auditing:  AWS"
       funct_audit_aws $audit_mode
+      exit
     fi
     if [ "$do_aws_rec" = 1 ]; then
+      echo "Auditing:  AWS - Recommended Tests"
       funct_audit_aws_rec $audit_mode
+      exit
     fi
+    echo "Auditing:  OS"
     funct_audit_system $audit_mode
   fi
   exit
