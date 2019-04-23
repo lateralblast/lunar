@@ -1295,4 +1295,6 @@
 # Added initial docker test matrix
 # 7.4.0: Tue 23 Apr 2019 19:16:20 AEST
 # More bug fixes
+# 7.4.1: Tue 23 Apr 2019 20:36:25 AEST
+# Improved handling for beta releases of Red Hat Linux
 

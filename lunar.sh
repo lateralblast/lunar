@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.4.0
+# Version:      7.4.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -102,6 +102,7 @@ test_os="none"
 test_tag="none"
 do_compose=0
 do_shell=0
+do_remote=0
 
 # Disable daemons
 
@@ -247,7 +248,12 @@ check_os_release () {
       os_version=`cat /etc/redhat-release | awk '{print $3}' |cut -f1 -d.`
       if [ "$os_version" = "Enterprise" ]; then
         os_version=`cat /etc/redhat-release | awk '{print $7}' |cut -f1 -d.`
-        os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d.`
+        if [ "$os_version" = "Beta" ]; then
+          os_version=`cat /etc/redhat-release | awk '{print $6}' |cut -f1 -d.`
+          os_update=`cat /etc/redhat-release | awk '{print $6}' |cut -f2 -d.`
+        else
+          os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d.`
+        fi
       else
         os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d.`
       fi
@@ -897,8 +903,12 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts ":abcdlpCR:o:r:s:t:u:z:hwADSWVLHvx" args; do
+while getopts ":abcdlpCRe::o:r:s:t:u:z:hwADSWVLHvx" args; do
   case ${args} in
+    e)
+      do_remote=1
+      ext_host="$OPTARG"
+      ;;
     o)
       test_os="$OPTARG"
       ;;
@@ -1019,6 +1029,14 @@ while getopts ":abcdlpCR:o:r:s:t:u:z:hwADSWVLHvx" args; do
       ;;
   esac
 done
+
+if [ "$do_remote" = 1 ]; then
+  echo "Copying $app_dir to $ext_host:/tmp"
+  scp -r $app_dir $ext_host:/tmp
+  echo "Executing lunar in audit mode (no changes will be made) on $ext_host"
+  ssh $ext_host "sudo /tmp/lunar.sh -a"
+  exit
+fi
 
 if [ "$do_compose" = 1 ]; then
   if [ ! "$test_os" = "none" ] && [ ! "$test_tag" = "none" ]; then
