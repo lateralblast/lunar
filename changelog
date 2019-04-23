@@ -1297,4 +1297,6 @@
 # More bug fixes
 # 7.4.1: Tue 23 Apr 2019 20:36:25 AEST
 # Improved handling for beta releases of Red Hat Linux
+# 7.4.2: Tue 23 Apr 2019 20:44:23 AEST
+# Added file check to securetty test
 

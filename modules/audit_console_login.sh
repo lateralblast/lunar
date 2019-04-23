@@ -25,38 +25,40 @@ audit_console_login () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Root Login to System Console"
-    disable_ttys=0
     check_file="/etc/securetty"
-    console_list=""
-    if [ "$audit_mode" != 2 ]; then
-      for console_device in `cat $check_file |grep '^tty[0-9]'`; do
-        disable_ttys=1
-        console_list="$console_list $console_device"
-      done
-      if [ "$disable_ttys" = 1 ]; then
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Consoles enabled on$console_list"
-          verbose_message "" fix
-          verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
-          verbose_message "cat $temp_file > $check_file" fix
-          verbose_message "rm $temp_file" fix
-          verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          backup_file $check_file
-          setting_message "Consoles to disabled on$console_list" 
-          cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file
-          cat $temp_file > $check_file
-          rm $temp_file
+    if [ -f "$check_file" ]; then
+      verbose_message "Root Login to System Console"
+      disable_ttys=0
+      console_list=""
+      if [ "$audit_mode" != 2 ]; then
+        for console_device in `cat $check_file |grep '^tty[0-9]'`; do
+          disable_ttys=1
+          console_list="$console_list $console_device"
+        done
+        if [ "$disable_ttys" = 1 ]; then
+          if [ "$audit_mode" = 1 ]; then
+            increment_insecure "Consoles enabled on$console_list"
+            verbose_message "" fix
+            verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
+            verbose_message "cat $temp_file > $check_file" fix
+            verbose_message "rm $temp_file" fix
+            verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            backup_file $check_file
+            setting_message "Consoles to disabled on$console_list" 
+            cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file
+            cat $temp_file > $check_file
+            rm $temp_file
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            increment_secure "No consoles enabled on tty[0-9]*"
+          fi
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
-          increment_secure "No consoles enabled on tty[0-9]*"
-        fi
+        restore_file $check_file $restore_dir
       fi
-    else
-      restore_file $check_file $restore_dir
     fi
   fi
 }
