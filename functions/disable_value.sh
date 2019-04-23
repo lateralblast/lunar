@@ -27,7 +27,15 @@ disable_value () {
     else
       echo "Checking:  Parameter \"$parameter_name\" in $check_file is disabled"
       if [ "$separator" = "tab" ]; then
+        param_hyphen=`echo "$parameter_name" |grep "^[\-]"`
+        if [ "$param_hyphen" ]; then
+          parameter_name="\\$parameter_name"
+        fi
         check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |uniq`
+        param_hyphen=`echo "$parameter_name" |grep "^[\\]"`
+        if [ "$param_hyphen" ]; then
+          parameter_name=`echo "$parameter_name" |sed "s/^[\\]//g"`
+        fi
         if [ "$check_value" != "$parameter_name" ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
           if [ "$audit_mode" = 0 ]; then
