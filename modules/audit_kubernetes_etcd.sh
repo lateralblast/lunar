@@ -19,11 +19,11 @@ audit_kubernetes_etcd () {
       if [ -f "$check_file" ]; then
         check_file_perms $check_file 0644 root root
         check_file_value is $check_file "--client-cert-auth" eq "true" hash
-        #check_file_value is $check_file "--cert-file" eq "[A-Z,a-z]" hash
-        #check_file_value is $check_file "--key-file" eq "[A-Z,a-z]" hash
+        check_file_value set $check_file "--cert-file" eq "na" hash
+        check_file_value set $check_file "--key-file" eq "na" hash
         check_file_value is $check_file "--peer-client-cert-auth" eq "true" hash
         check_file_value is $check_file "--peer-auto-tls" eq "false" hash
-        #check_file_value is $check_file "--trusted-ca-file" eq "[A-Z,a-z]" hash
+        check_file_value set $check_file "--trusted-ca-file" eq "na" hash
       fi
     fi
   fi

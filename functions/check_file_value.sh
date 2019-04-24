@@ -18,7 +18,7 @@
 #.
 
 check_file_value () {
-  check_value=$1
+  operator=$1
   check_file=$2
   parameter_name=$3
   separator=$4
@@ -27,6 +27,10 @@ check_file_value () {
   position=$7
   search_value=$8
   sshd_test=`echo "$check_file" |grep "sshd_config"`
+  if [ "$operator" = "set" ]; then
+    $correct_value="[A-Z,a-z,0-9]"
+    $operator="is"
+  fi
   if [ "$comment_value" = "star" ]; then
     comment_value="*"
   else
@@ -54,6 +58,11 @@ check_file_value () {
       fi
     fi
   fi
+  if [ "$operator" = "is" ]; then
+    negative="not"
+  else
+    negative="is"
+  fi
   if [ "$id_check" = "0" ] || [ "$os_name" = "VMkernel" ]; then
     cat_command="cat"
     sed_command="sed"
@@ -66,10 +75,10 @@ check_file_value () {
   if [ "$audit_mode" = 2 ]; then
     restore_file $check_file $restore_dir
   else
-    echo "Checking:  Value of \"$parameter_name\" is set to \"$correct_value\" in $check_file"
+    echo "Checking:  Value of \"$parameter_name\" $operator set to \"$correct_value\" in $check_file"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
+        increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in $check_file"
         if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
           verbose_message "" fix
           verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" fix
@@ -122,7 +131,20 @@ check_file_value () {
           fi
         fi
       fi
-      if [ ! "$check_value" ]; then
+      if [ "$operator" = "is" ]; then
+        if [ "$check_value" ]; then
+          test_value=1
+        else
+          test_value=0
+        fi
+      else
+        if [ "$check_value" ]; then
+          test_value=0
+        else
+          test_value=1
+        fi
+      fi
+      if [ "$test_vale" = 0 ]; then
         correct_hyphen=`echo "$correct_value" |grep "^[\\]"`
         if [ "$correct_hyphen" ]; then
           correct_value=`echo "$correct_value" |sed "s/^[\\]//g"`
@@ -132,7 +154,7 @@ check_file_value () {
           parameter_name=`echo "$parameter_name" |sed "s/^[\\]//g"`
         fi
         if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
+          increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in $check_file"
           if [ "$check_parameter" != "$parameter_name" ]; then
             if [ "$separator_value" = "tab" ]; then
               verbose_message "" fix
@@ -207,7 +229,7 @@ check_file_value () {
           fi
         fi
       else
-        increment_secure "Parameter \"$parameter_name\" already set to \"$correct_value\" in $check_file"
+        increment_secure "Parameter \"$parameter_name\" $operator set to \"$correct_value\" in $check_file"
       fi
     fi
   fi

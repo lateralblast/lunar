@@ -1311,3 +1311,5 @@
 # Minor cleanup
 # 7.4.8: Wed 24 Apr 2019 18:27:05 AEST
 # Updated check file value function
+# 7.4.9: Wed 24 Apr 2019 20:39:39 AEST
+# Added additional kubernetes checks
