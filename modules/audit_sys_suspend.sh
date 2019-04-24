@@ -6,6 +6,7 @@
 audit_sys_suspend () {
   if [ "$os_name" = "SunOS" ]; then
     verbose_message "System Suspend"
-    check_file_value /etc/default/sys-suspend PERMS eq "-" hash
+    check_file="/etc/default/sys-suspend"
+    check_file_value $check_file PERMS eq "-" hash
   fi
 }

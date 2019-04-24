@@ -13,8 +13,9 @@ audit_power_management () {
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        check_file_value /etc/default/power PMCHANGEPERM eq "-" hash
-        check_file_value /etc/default/power CPRCHANGEPERM eq "-" hash
+        check_file="/etc/default/power"
+        check_file_value $check_file PMCHANGEPERM eq "-" hash
+        check_file_value $check_file CPRCHANGEPERM eq "-" hash
       fi
       if [ "$os_version" = "11" ]; then
         poweradm_test=`poweradm list |grep suspend |awk '{print $2}' |cut -f2 -d"="`

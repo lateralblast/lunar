@@ -9,6 +9,9 @@
 # seperator       = Character used to seperate parameter name from it's value (eg =)
 # correct_value   = The value we expect to be returned
 # comment_value   = Character used as a comment (can be #, *, etc)
+#                   Needs to be passed as word, e.g. hash, star, bang, semicolon, eq, space, colon
+# position        = E.g. after
+# search_value    = Additional search term to help locate parameter / value
 #
 # If the current_value is not the correct_value then it is fixed if run in lockdown mode
 # A copy of the value is stored in a log file, which can be restored

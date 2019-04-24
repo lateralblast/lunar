@@ -36,7 +36,7 @@ audit_syslog_server () {
             check_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
             check_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
             check_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
-            check_file_value $check_file "" tab "" hash
+            # check_file_value $check_file "" tab "" hash
             check_linux_package install $service_name
             check_systemctl_service enable $service_name
             check_chkconfig_service $service_name 3 on

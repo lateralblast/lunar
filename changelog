@@ -1307,3 +1307,5 @@
 # Added additional kubernetes checks
 # 7.4.6: Wed 24 Apr 2019 12:10:50 AEST
 # Added additional kubernetes checks
+# 7.4.7: Wed 24 Apr 2019 16:38:49 AEST
+# Minor cleanup
