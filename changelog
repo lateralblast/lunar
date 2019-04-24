@@ -1305,3 +1305,5 @@
 # Added support of hyphens in parameter names in file value checks
 # 7.4.5: Wed 24 Apr 2019 08:15:38 AEST
 # Added additional kubernetes checks
+# 7.4.6: Wed 24 Apr 2019 12:10:50 AEST
+# Added additional kubernetes checks
