@@ -12,8 +12,8 @@ audit_cde_screen_lock () {
         mkdir -p $dir_name
       fi
       check_file="$dir_name/sys.resources"
-      check_file_value $check_file "dtsession*saverTimeout" colon " 10" star
-      check_file_value $check_file "dtsession*lockTimeout" colon " 10" star
+      check_file_value is $check_file "dtsession*saverTimeout" colon " 10" star
+      check_file_value is $check_file "dtsession*lockTimeout" colon " 10" star
       check_file_perms $check_file 0444 root sys
     done
   fi

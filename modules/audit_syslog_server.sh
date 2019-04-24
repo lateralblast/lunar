@@ -16,7 +16,7 @@ audit_syslog_server () {
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" < 5 ]; then
         check_file="/etc/syslog.conf"
-        check_file_value $check_file "daemon.debug" tab "/var/log/daemon.log" hash
+        check_file_value is $check_file "daemon.debug" tab "/var/log/daemon.log" hash
         check_file="/var/log/daemon.log"
         check_file_exists $check_file yes
         funct_file_perms $check_file 600 root wheel
@@ -31,12 +31,12 @@ audit_syslog_server () {
             check_chkconfig_service $service_name 5 off
             service_name="rsyslog"
             check_file="/etc/rsyslog.conf"
-            check_file_value $check_file "auth,user.*" tab "/var/log/messages" hash
-            check_file_value $check_file "kern.*" tab "/var/log/kern.log" hash
-            check_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
-            check_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
-            check_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
-            # check_file_value $check_file "" tab "" hash
+            check_file_value is $check_file "auth,user.*" tab "/var/log/messages" hash
+            check_file_value is $check_file "kern.*" tab "/var/log/kern.log" hash
+            check_file_value is $check_file "daemon.*" tab "/var/log/daemon.log" hash
+            check_file_value is $check_file "syslog.*" tab "/var/log/syslog" hash
+            check_file_value is $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
+            # check_file_value is $check_file "" tab "" hash
             check_linux_package install $service_name
             check_systemctl_service enable $service_name
             check_chkconfig_service $service_name 3 on

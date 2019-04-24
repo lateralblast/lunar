@@ -9,7 +9,7 @@ audit_nobody_rpc () {
     if [ "$os_version" = "10" ]; then
       verbose_message "Nobody Access for RPC Encryption Key Storage Service"
       check_file="/etc/default/keyserv"
-      check_file_value $check_file ENABLE_NOBODY_KEYS eq NO hash
+      check_file_value is $check_file ENABLE_NOBODY_KEYS eq NO hash
     fi
   fi
 }

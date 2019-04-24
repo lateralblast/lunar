@@ -43,18 +43,18 @@ audit_tcp_wrappers () {
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      check_file_value $check_file inetd_enable eq YES hash
-      check_file_value $check_file inetd_flags eq "-Wwl -C60" hash
+      check_file_value is $check_file inetd_enable eq YES hash
+      check_file_value is $check_file inetd_flags eq "-Wwl -C60" hash
     fi
     check_file="/etc/hosts.deny"
-    check_file_value $check_file ALL colon " ALL" hash
+    check_file_value is $check_file ALL colon " ALL" hash
     check_file="/etc/hosts.allow"
-    check_file_value $check_file ALL colon " localhost" hash
-    check_file_value $check_file ALL colon " 127.0.0.1" hash
+    check_file_value is $check_file ALL colon " localhost" hash
+    check_file_value is $check_file ALL colon " 127.0.0.1" hash
     if [ ! -f "$check_file" ]; then
       for ip_address in `ifconfig -a |grep 'inet addr' |grep -v ':127.' |awk '{print $2}' |cut -f2 -d":"`; do
         netmask=`ifconfig -a |grep '$ip_address' |awk '{print $3}' |cut -f2 -d":"`
-        check_file_value $check_file ALL colon " $ip_address/$netmask" hash
+        check_file_value is $check_file ALL colon " $ip_address/$netmask" hash
       done
     fi
     if [ "$os_name" = "AIX" ]; then

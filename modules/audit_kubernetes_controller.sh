@@ -17,11 +17,11 @@ audit_kubernetes_controller () {
     if [ "$daemon_check" ]; then
       check_file="/etc/kubernetes/manifests/kube-controller-manager.yaml"
       if [ -f "$check_file" ]; then
-        check_file_value $check_file "--terminated-pod-gc-threshold" eq "10" hash
-        check_file_value $check_file "--use-service-account-credentials" eq "true" hash
-        #check_file_value $check_file "--service-account-private-key-file" eq "[A-Z,a-z]" hash
-        #check_file_value $check_file "--root-ca-file" eq "[A-Z,a-z]" hash
-        #check_file_value $check_file "--feature-gates" eq "RotateKubeletServerCertificate=true" hash yes
+        check_file_value is $check_file "--terminated-pod-gc-threshold" eq "10" hash
+        check_file_value is $check_file "--use-service-account-credentials" eq "true" hash
+        #check_file_value is $check_file "--service-account-private-key-file" eq "[A-Z,a-z]" hash
+        #check_file_value is $check_file "--root-ca-file" eq "[A-Z,a-z]" hash
+        #check_file_value is $check_file "--feature-gates" eq "RotateKubeletServerCertificate=true" hash yes
       fi
     fi
   fi

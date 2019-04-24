@@ -39,9 +39,9 @@ audit_sulogin () {
     fi
     if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
       check_file="/usr/lib/systemd/system/rescue.service"
-      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
+      check_file_value is $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
       check_file="/usr/lib/systemd/system/emergency.service"
-      check_file_value $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
+      check_file_value is $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/inittab"
@@ -73,12 +73,12 @@ audit_sulogin () {
           check_file_perms $check_file 0600 root root
         fi
         check_file="/etc/sysconfig/init"
-        check_file_value $check_file SINGLE eq "/sbin/sulogin" hash
-        check_file_value $check_file PROMPT eq no hash
+        check_file_value is $check_file SINGLE eq "/sbin/sulogin" hash
+        check_file_value is $check_file PROMPT eq no hash
         check_file_perms $check_file 0600 root root
       fi
       check_file="/etc/sysconfig/boot"
-      check_file_value $check_file PROMPT_FOR_CONFIRM eq no hash
+      check_file_value is $check_file PROMPT_FOR_CONFIRM eq no hash
     fi
   fi
 }

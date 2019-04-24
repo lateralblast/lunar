@@ -35,12 +35,12 @@ audit_kernel_params () {
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/sysctl.conf"
-      check_file_value $check_file kern.securelevel eq 1 hash
-      check_file_value $check_file net.inet.tcp.log_in_vain eq 1 hash
-      check_file_value $check_file net.inet.udp.log_in_vain eq 1 hash
+      check_file_value is $check_file kern.securelevel eq 1 hash
+      check_file_value is $check_file net.inet.tcp.log_in_vain eq 1 hash
+      check_file_value is $check_file net.inet.udp.log_in_vain eq 1 hash
       if [ "$os_version" > 5 ]; then
-        check_file_value $check_file security.bsd.see_other_uids 0 hash
-        check_file_value $check_file security.bsd.see_other_gids 0 hash
+        check_file_value is $check_file security.bsd.see_other_uids 0 hash
+        check_file_value is $check_file security.bsd.see_other_gids 0 hash
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then

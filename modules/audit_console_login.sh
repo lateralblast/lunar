@@ -15,7 +15,7 @@ audit_console_login () {
     verbose_message "Root Login to System Console"
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/login"
-      check_file_value $check_file CONSOLE eq /dev/console hash
+      check_file_value is $check_file CONSOLE eq /dev/console hash
     fi
     if [ "$os_version" = "11" ]; then
       service_name="svc:/system/console-login:terma"

@@ -50,14 +50,14 @@ audit_ftp_banner () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         check_file="/etc/ftpd/banner.msg"
-        check_file_value $check_file Authorised space "users only" hash
+        check_file_value is $check_file Authorised space "users only" hash
         if [ "$audit_mode" = 0 ]; then
           check_file_perms $check_file 0444 root root
         fi
       fi
       if [ "$os_version" = "11" ]; then
         check_file="/etc/proftpd.conf"
-        check_file_value $check_file DisplayConnect space /etc/issue hash
+        check_file_value is $check_file DisplayConnect space /etc/issue hash
         if [ "$audit_mode" = 0 ]; then
           svcadm restart ftp
         fi

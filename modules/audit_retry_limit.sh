@@ -19,9 +19,9 @@ audit_retry_limit () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         check_file="/etc/default/login"
-        check_file_value $check_file RETRIES eq 3 hash
+        check_file_value is $check_file RETRIES eq 3 hash
         check_file="/etc/security/policy.conf"
-        check_file_value $check_file LOCK_AFTER_RETRIES eq YES hash
+        check_file_value is $check_file LOCK_AFTER_RETRIES eq YES hash
         if [ "$os_version" = "11" ]; then
           svcadm restart svc:/system/name-service/cache
         fi

@@ -44,12 +44,12 @@ audit_nis_server () {
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      check_file_value $check_file nis_server_enable eq NO hash
-      check_file_value $check_file nis_ypxfrd_enable eq NO hash
-      check_file_value $check_file nis_yppasswdd_enable eq NO hash
-      check_file_value $check_file rpc_ypupdated_enable eq NO hash
-      check_file_value $check_file nis_client_enable eq NO hash
-      check_file_value $check_file nis_ypset_enable eq NO hash
+      check_file_value is $check_file nis_server_enable eq NO hash
+      check_file_value is $check_file nis_ypxfrd_enable eq NO hash
+      check_file_value is $check_file nis_yppasswdd_enable eq NO hash
+      check_file_value is $check_file rpc_ypupdated_enable eq NO hash
+      check_file_value is $check_file nis_client_enable eq NO hash
+      check_file_value is $check_file nis_ypset_enable eq NO hash
     fi
   fi
 }

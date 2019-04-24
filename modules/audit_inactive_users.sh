@@ -12,7 +12,7 @@ audit_inactive_users () {
     verbose_message "Inactive User Accounts"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/usr/sadm/defadduser"
-      check_file_value $check_file definact eq 35 hash
+      check_file_value is $check_file definact eq 35 hash
     fi
     check_file="/etc/shadow"
     if [ "$audit_mode" != 2 ]; then

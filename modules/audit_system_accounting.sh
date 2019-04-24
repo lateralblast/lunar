@@ -27,7 +27,7 @@ audit_system_accounting () {
       check_file="/var/account/acct"
       check_file_exists $check_file yes
       check_file="/etc/rc.conf"
-      check_file_value $check_file accounting_enable eq YES hash
+      check_file_value is $check_file accounting_enable eq YES hash
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/audit/audit.rules"
@@ -36,7 +36,7 @@ audit_system_accounting () {
       check_linux_package check sysstat
       if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         check_file="/etc/default/sysstat"
-        check_file_value $check_file ENABLED eq true hash
+        check_file_value is $check_file ENABLED eq true hash
       fi
       if [ "$package_name" != "sysstat" ]; then
         if [ "$audit_mode" = 1 ]; then

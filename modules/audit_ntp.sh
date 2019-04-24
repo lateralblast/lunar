@@ -17,7 +17,7 @@ audit_ntp () {
     verbose_message "Network Time Protocol"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/inet/ntp.conf"
-      check_file_value $check_file server space pool.ntp.org hash
+      check_file_value is $check_file server space pool.ntp.org hash
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         service_name="svc:/network/ntp4:default"
         check_sunos_service $service_name enabled
@@ -25,12 +25,12 @@ audit_ntp () {
     fi
     if [ "$os_name" = "Darwin" ]; then
       check_file="/private/etc/hostconfig"
-      check_file_value $check_file TIMESYNC eq -YES- hash
+      check_file_value is $check_file TIMESYNC eq -YES- hash
       check_launchctl_service org.ntp.ntpd on
       check_file="/private/etc/ntp.conf"
       if [ "$os_release" -ge 9 ]; then
         check_file="/etc/ntp-restrict.conf"
-        check_file_value $check_file restrict space "lo interface ignore wildcard interface listen lo" hash
+        check_file_value is $check_file restrict space "lo interface ignore wildcard interface listen lo" hash
         check_osx_systemsetup getusingnetworktime on
         timerserver="$country_suffix.pool.ntp.org"
         check_osx_systemsetup getnetworktimeserver $timerserver
@@ -60,9 +60,9 @@ audit_ntp () {
       if [ "$do_chrony" -eq 1 ]; then
         check_linux_package install chrony
         check_file="/etc/sysconfig/chronyd"
-        check_file_value $check_file OPTIONS eq '"-u chrony"' hash
+        check_file_value is $check_file OPTIONS eq '"-u chrony"' hash
         check_file="/usr/lib/systemd/system/ntpd.service"
-        check_file_value $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
+        check_file_value is $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
       fi
       if [ "$audit_mode" != 2 ]; then
         echo "Checking:  NTP is enabled"
@@ -91,19 +91,19 @@ audit_ntp () {
       check_chkconfig_service $service_name 5 on
       check_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
       check_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
-      check_file_value $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
+      check_file_value is $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
       if [ "$do_chrony" -eq 1 ]; then
         check_file="/etc/chrony/chrony.conf"
         for server_number in `seq 0 3`; do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
-          check_file_value $check_file server space $ntp_server hash
+          check_file_value is $check_file server space $ntp_server hash
         done
       fi
     fi
     check_file="/etc/ntp.conf"
     for server_number in `seq 0 3`; do
       ntp_server="$server_number.$country_suffix.pool.ntp.org"
-      check_file_value $check_file server space $ntp_server hash
+      check_file_value is $check_file server space $ntp_server hash
     done
   fi
 }

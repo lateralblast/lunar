@@ -18,13 +18,14 @@
 #.
 
 check_file_value () {
-  check_file=$1
-  parameter_name=$2
-  separator=$3
-  correct_value=$4
-  comment_value=$5
-  position=$6
-  search_value=$7
+  check_value=$1
+  check_file=$2
+  parameter_name=$3
+  separator=$4
+  correct_value=$5
+  comment_value=$6
+  position=$7
+  search_value=$8
   sshd_test=`echo "$check_file" |grep "sshd_config"`
   if [ "$comment_value" = "star" ]; then
     comment_value="*"

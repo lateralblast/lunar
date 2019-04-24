@@ -12,15 +12,15 @@ audit_syslog_conf () {
     verbose_message "Syslog Configuration"
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/syslog.conf"
-      check_file_value $check_file "authpriv.*" tab "/var/log/secure" hash
-      check_file_value $check_file "auth.*" tab "/var/log/messages" hash
-      check_file_value $check_file "daemon.*" tab "/var/log/daemon.log" hash
-      check_file_value $check_file "syslog.*" tab "/var/log/syslog" hash
-      check_file_value $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
+      check_file_value is $check_file "authpriv.*" tab "/var/log/secure" hash
+      check_file_value is $check_file "auth.*" tab "/var/log/messages" hash
+      check_file_value is $check_file "daemon.*" tab "/var/log/daemon.log" hash
+      check_file_value is $check_file "syslog.*" tab "/var/log/syslog" hash
+      check_file_value is $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/rc.conf"
-      check_file_value $check_file syslogd_flags eq -s hash
+      check_file_value is $check_file syslogd_flags eq -s hash
     fi
     if [ "$os_name" = "VMkernel" ]; then
       log_file="sysloglogdir"

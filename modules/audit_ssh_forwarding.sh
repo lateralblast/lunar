@@ -13,6 +13,6 @@ audit_ssh_forwarding () {
     else
       check_file="/etc/ssh/sshd_config"
     fi
-    check_file_value $check_file AllowTcpForwarding space no hash
+    check_file_value is $check_file AllowTcpForwarding space no hash
   fi
 }

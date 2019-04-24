@@ -47,7 +47,7 @@ audit_nfs () {
           check_sunos_service $service_name disabled
         fi
         check_file="/etc/system"
-        check_file_value $check_file "nfssrv:nfs_portmon" eq 1 star
+        check_file_value is $check_file "nfssrv:nfs_portmon" eq 1 star
       fi
       if [ "$os_name" = "Linux" ]; then
         for service_name in nfs nfslock portmap rpc nfs-kerner-server rpcbind; do
@@ -58,18 +58,18 @@ audit_nfs () {
       fi
       if [ "$os_name" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
-        check_file_value $check_file nfs_reserved_port_only eq YES hash
-        check_file_value $check_file weak_mountd_authentication eq NO hash
-        check_file_value $check_file rpc_lockd_enable eq NO hash
-        check_file_value $check_file rpc_statd_enable eq NO hash
+        check_file_value is $check_file nfs_reserved_port_only eq YES hash
+        check_file_value is $check_file weak_mountd_authentication eq NO hash
+        check_file_value is $check_file rpc_lockd_enable eq NO hash
+        check_file_value is $check_file rpc_statd_enable eq NO hash
         if [ "$os_version" < 5 ]; then
-          check_file_value $check_file portmap_enable eq NO hash
-          check_file_value $check_file nfs_server_enable eq NO hash
-          check_file_value $check_file single_mountd_enable eq NO hash
+          check_file_value is $check_file portmap_enable eq NO hash
+          check_file_value is $check_file nfs_server_enable eq NO hash
+          check_file_value is $check_file single_mountd_enable eq NO hash
         else
-          check_file_value $check_file rpcbind_enable eq NO hash
-          check_file_value $check_file nfs_server_enable eq NO hash
-          check_file_value $check_file mountd_enable eq NO hash
+          check_file_value is $check_file rpcbind_enable eq NO hash
+          check_file_value is $check_file nfs_server_enable eq NO hash
+          check_file_value is $check_file mountd_enable eq NO hash
         fi
       fi
     fi

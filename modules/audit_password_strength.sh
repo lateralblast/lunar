@@ -12,19 +12,19 @@ audit_password_strength () {
     verbose_message "Strong Password Creation Policies"
     if  [ "$os_name" = "SunOS" ]; then
       check_file="/etc/default/passwd"
-      check_file_value $check_file PASSLENGTH eq 8 hash
-      check_file_value $check_file NAMECHECK eq YES hash
-      check_file_value $check_file HISTORY eq 10 hash
-      check_file_value $check_file MINDIFF eq 3 hash
-      check_file_value $check_file MINALPHA eq 2 hash
-      check_file_value $check_file MINUPPER eq 1 hash
-      check_file_value $check_file MINLOWER eq 1 hash
-      check_file_value $check_file MINDIGIT eq 1 hash
-      check_file_value $check_file MINNONALPHA eq 1 hash
-      check_file_value $check_file MAXREPEATS eq 0 hash
-      check_file_value $check_file WHITESPACE eq YES hash
-      check_file_value $check_file DICTIONDBDIR eq /var/passwd hash
-      check_file_value $check_file DICTIONLIST eq /usr/share/lib/dict/words hash
+      check_file_value is $check_file PASSLENGTH eq 8 hash
+      check_file_value is $check_file NAMECHECK eq YES hash
+      check_file_value is $check_file HISTORY eq 10 hash
+      check_file_value is $check_file MINDIFF eq 3 hash
+      check_file_value is $check_file MINALPHA eq 2 hash
+      check_file_value is $check_file MINUPPER eq 1 hash
+      check_file_value is $check_file MINLOWER eq 1 hash
+      check_file_value is $check_file MINDIGIT eq 1 hash
+      check_file_value is $check_file MINNONALPHA eq 1 hash
+      check_file_value is $check_file MAXREPEATS eq 0 hash
+      check_file_value is $check_file WHITESPACE eq YES hash
+      check_file_value is $check_file DICTIONDBDIR eq /var/passwd hash
+      check_file_value is $check_file DICTIONLIST eq /usr/share/lib/dict/words hash
     fi
     if [ "$os_name" = "Darwin" ]; then
       check_pwpolicy requiresAlpha 1
@@ -41,7 +41,7 @@ audit_password_strength () {
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/login.conf"
-      check_file_value $check_file passwd_format eq blf hash
+      check_file_value is $check_file passwd_format eq blf hash
     fi
   fi
 }

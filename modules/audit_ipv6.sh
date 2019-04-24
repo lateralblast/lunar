@@ -20,8 +20,8 @@ audit_ipv6() {
         check_append_file $check_file "options ipv6 \"disable=1\""
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
           check_file="/etc/sysconfig/network"
-          check_file_value $check_file NETWORKING_IPV6 eq no hash
-          check_file_value $check_file IPV6INIT eq no hash
+          check_file_value is $check_file NETWORKING_IPV6 eq no hash
+          check_file_value is $check_file IPV6INIT eq no hash
         fi
       fi
     fi

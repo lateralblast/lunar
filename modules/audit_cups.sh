@@ -29,8 +29,8 @@ audit_cups () {
       check_file_perms $check_file 0644 root lp
       check_file="/etc/cups/cupsd.conf"
       check_file_perms $check_file 0600 lp sys
-      check_file_value $check_file User space lp hash
-      check_file_value $check_file Group space sys hash
+      check_file_value is $check_file User space lp hash
+      check_file_value is $check_file Group space sys hash
       check_systemctl_service disable cups
     fi
   fi

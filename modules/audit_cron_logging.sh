@@ -8,7 +8,7 @@ audit_cron_logging () {
     if [ "$os_version" = "10" ]; then
       verbose_message "Cron Logging"
       check_file="/etc/default/cron"
-      check_file_value $check_file CRONLOG eq YES hash
+      check_file_value is $check_file CRONLOG eq YES hash
       check_file="/var/cron/log"
       check_file_perms $check_file 0640 root root
     fi

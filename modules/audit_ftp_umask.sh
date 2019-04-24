@@ -10,16 +10,16 @@ audit_ftp_umask () {
     verbose_message "Default umask for FTP Users"
     if [ "$os_name" = "AIX" ]; then
       check_file="/etc/inetd.conf"
-      check_file_value $check_file /usr/sbin/ftpd space "ftpd -l -u077" hash
+      check_file_value is $check_file /usr/sbin/ftpd space "ftpd -l -u077" hash
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         check_file="/etc/ftpd/ftpaccess"
-        check_file_value $check_file defumask space 077 hash
+        check_file_value is $check_file defumask space 077 hash
       fi
       if [ "$os_version" = "11" ]; then
         check_file="/etc/proftpd.conf"
-        check_file_value $check_file Umask space 027 hash
+        check_file_value is $check_file Umask space 027 hash
       fi
     fi
   fi

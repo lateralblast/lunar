@@ -9,9 +9,9 @@ audit_web_sharing () {
     verbose_message "Web sharing"
     check_launchctl_service org.apache.httpd off
     check_file="/etc/apache2/httpd.conf"
-    check_file_value $check_file ServerTokens space Prod hash
-    check_file_value $check_file ServerSignature space Off hash
-    check_file_value $check_file UserDir space Disabled hash
-    check_file_value $check_file TraceEnable space Off hash
+    check_file_value is $check_file ServerTokens space Prod hash
+    check_file_value is $check_file ServerSignature space Off hash
+    check_file_value is $check_file UserDir space Disabled hash
+    check_file_value is $check_file TraceEnable space Off hash
   fi
 }

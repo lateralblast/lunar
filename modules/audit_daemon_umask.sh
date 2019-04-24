@@ -49,7 +49,7 @@ audit_daemon_umask () {
       else
         if [ "$os_version" = "7" ] || [ "$os_version" = "6" ]; then
           check_file="/etc/init.d/umask.sh"
-          check_file_value $check_file umask space 022 hash
+          check_file_value is $check_file umask space 022 hash
           if [ "$audit_mode" = "0" ]; then
             if [ -f "$check_file" ]; then
               check_file_perms $check_file 0744 root sys
@@ -63,13 +63,13 @@ audit_daemon_umask () {
           fi
         else
           check_file="/etc/default/init"
-          check_file_value $check_file CMASK eq 022 hash
+          check_file_value is $check_file CMASK eq 022 hash
         fi
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/sysconfig/init"
-      check_file_value $check_file umask space 027 hash
+      check_file_value is $check_file umask space 027 hash
       if [ "$audit_mode" = "0" ]; then
         if [ -f "$check_file" ]; then
           check_file_perms $check_file 0755 root root
@@ -79,12 +79,12 @@ audit_daemon_umask () {
     if [ "$os_name" = "FreeBSD" ]; then
       for check_file in `find /etc -type f |xargs grep 'umask' |cut -f1 -d:`; do
         if [ -f "$check_file" ]; then
-          check_file_value $check_file umask space 077 hash
+          check_file_value is $check_file umask space 077 hash
         fi
       done
       for check_file in `find /usr/local/etc -type f |xargs grep 'umask' |cut -f1 -d:`; do
         if [ -f "$check_file" ]; then
-          check_file_value $check_file umask space 077 hash
+          check_file_value is $check_file umask space 077 hash
         fi
       done
     fi

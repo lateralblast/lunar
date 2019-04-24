@@ -121,11 +121,11 @@ audit_core_dumps () {
       check_file="/etc/security/limits.conf"
       check_append_file $check_file "* hard core 0"
       check_file="/etc/sysctl.conf"
-      check_file_value $check_file fs.suid_dumpable eq 0 hash
+      check_file_value is $check_file fs.suid_dumpable eq 0 hash
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/sysctl.conf"
-      check_file_value $check_file kern.coredump eq 0 hash
+      check_file_value is $check_file kern.coredump eq 0 hash
     fi
   fi
 }

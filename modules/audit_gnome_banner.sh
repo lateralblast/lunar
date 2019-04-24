@@ -17,7 +17,7 @@ audit_gnome_banner () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         check_file="/etc/X11/gdm.conf"
-        check_file_value $check_file Welcome eq "Authorised users only" hash
+        check_file_value is $check_file Welcome eq "Authorised users only" hash
       fi
       if [ "$os_version" = "11" ]; then
         check_file="/etc/gdm/Init/Default"
@@ -56,14 +56,14 @@ audit_gnome_banner () {
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/dconf/profile/gdm"
       if [ -f "$check_file" ]; then
-        check_file_value $check_file user-db colon user hash
-        check_file_value $check_file system-db colon gdm hash
-        check_file_value $check_file file-db colon /usr/share/gdm/greeter-dconf-defaults hash
+        check_file_value is $check_file user-db colon user hash
+        check_file_value is $check_file system-db colon gdm hash
+        check_file_value is $check_file file-db colon /usr/share/gdm/greeter-dconf-defaults hash
       fi
       check_file="/etc/dconf/db/gdm.d/01-banner-message"
       if [ -f "$check_file" ]; then
-        check_file_value $check_file banner-message-enable eq true hash
-        check_file_value $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
+        check_file_value is $check_file banner-message-enable eq true hash
+        check_file_value is $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
       fi
     fi
     gconf_bin=`which gconftool-2 2> /dev/null`

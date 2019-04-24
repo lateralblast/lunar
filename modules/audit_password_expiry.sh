@@ -39,25 +39,25 @@ audit_password_expiry () {
     fi
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/default/passwd"
-      check_file_value $check_file MAXWEEKS eq 13 hash
-      check_file_value $check_file MINWEEKS eq 1 hash
-      check_file_value $check_file WARNWEEKS eq 4 hash
+      check_file_value is $check_file MAXWEEKS eq 13 hash
+      check_file_value is $check_file MINWEEKS eq 1 hash
+      check_file_value is $check_file WARNWEEKS eq 4 hash
       check_file="/etc/default/login"
-      check_file_value $check_file DISABLETIME eq 3600 hash
+      check_file_value is $check_file DISABLETIME eq 3600 hash
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/login.defs"
-      check_file_value $check_file PASS_MAX_DAYS eq 90 hash
-      check_file_value $check_file PASS_MIN_DAYS eq 7 hash
-      check_file_value $check_file PASS_WARN_AGE eq 14 hash
-      check_file_value $check_file PASS_MIN_LEN eq 9 hash
+      check_file_value is $check_file PASS_MAX_DAYS eq 90 hash
+      check_file_value is $check_file PASS_MIN_DAYS eq 7 hash
+      check_file_value is $check_file PASS_WARN_AGE eq 14 hash
+      check_file_value is $check_file PASS_MIN_LEN eq 9 hash
       check_file_perms $check_file 0640 root root
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" > 5 ]; then
         check_file="/etc/adduser.conf"
-        check_file_value $check_file passwdtype eq yes hash
-        check_file_value $check_file upwexpire eq 91d hash
+        check_file_value is $check_file passwdtype eq yes hash
+        check_file_value is $check_file upwexpire eq 91d hash
       fi
     fi
   fi

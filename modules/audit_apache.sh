@@ -41,10 +41,10 @@ audit_apache () {
     for check_dir in /etc /etc/sfw /etc/apache /etc/apache2 /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
       check_file="$check_dir/httpd.conf"
       if [ -f "$check_file" ]; then
-        check_file_value $check_file ServerTokens space Prod hash
-        check_file_value $check_file ServerSignature space Off hash
-        check_file_value $check_file UserDir space Off hash
-        check_file_value $check_file TraceEnable space Off hash
+        check_file_value is $check_file ServerTokens space Prod hash
+        check_file_value is $check_file ServerSignature space Off hash
+        check_file_value is $check_file UserDir space Off hash
+        check_file_value is $check_file TraceEnable space Off hash
       fi
     done
   fi

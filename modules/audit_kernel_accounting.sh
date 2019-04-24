@@ -14,7 +14,7 @@ audit_kernel_accounting () {
           verbose_message "Kernel and Process Accounting"
           check_acc=`cat $check_file |grep -v '^*' |grep 'c2audit:audit_load'`
           if [ `expr "$check_acc" : "[A-z]"` != 1 ]; then
-            check_file_value $check_file c2audit colon audit_load star
+            check_file_value is $check_file c2audit colon audit_load star
             if [ "$audit_mode" = 0 ]; then
               log_file="$work_dir/bsmconv.log"
               echo "y" >> $log_file
@@ -28,16 +28,16 @@ audit_kernel_accounting () {
             fi
           fi
           check_file="/etc/security/audit_control"
-          check_file_value $check_file flags colon "lo,ad,cc" hash
-          check_file_value $check_file naflags colon "lo,ad,ex" hash
-          check_file_value $check_file minfree colon 20 hash
+          check_file_value is $check_file flags colon "lo,ad,cc" hash
+          check_file_value is $check_file naflags colon "lo,ad,ex" hash
+          check_file_value is $check_file minfree colon 20 hash
           check_file="/etc/security/audit_user"
-          check_file_value $check_file root colon "lo,ad:no" hash
+          check_file_value is $check_file root colon "lo,ad:no" hash
         fi
       fi
     else
       check_file="/etc/security/audit_control"
-      check_file_value $check_file flags colon "lo,ad,fd,fm,-all" hash
+      check_file_value is $check_file flags colon "lo,ad,fd,fm,-all" hash
     fi
   fi
 }

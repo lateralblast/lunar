@@ -37,7 +37,7 @@ audit_dns_server () {
       fi
       if [ "$os_name" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
-        check_file_value $check_file named_enable eq NO hash
+        check_file_value is $check_file named_enable eq NO hash
       fi
     fi
   fi

@@ -27,7 +27,7 @@ audit_sendmail_daemon() {
         fi
         if [ "$os_version" = "9" ] || [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
           check_file="/etc/default/sendmail"
-          check_file_value $check_file QUEUEINTERVAL eq 15m hash
+          check_file_value is $check_file QUEUEINTERVAL eq 15m hash
           check_append_file $check_file "MODE=" hash
         else
           check_initd_service sendmail disable
@@ -40,22 +40,22 @@ audit_sendmail_daemon() {
         check_chkconfig_service sendmail 3 off
         check_chkconfig_service sendmail 5 off
         check_file="/etc/sysconfig/sendmail"
-        check_file_value $check_file DAEMON eq no hash
-        check_file_value $check_file QUEUE eq 1h hash
+        check_file_value is $check_file DAEMON eq no hash
+        check_file_value is $check_file QUEUE eq 1h hash
       fi
       if [ "$os_name" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
         if [ "$os_version" < 5 ]; then
-          check_file_value $check_file sendmail_enable eq NONE hash
+          check_file_value is $check_file sendmail_enable eq NONE hash
         else
           if [ "$os_version" > 5 ]; then
             if [ "$os_version" = "5" ] && [ "$os_update" = "0" ]; then
-              check_file_value $check_file sendmail_enable eq NONE hash
+              check_file_value is $check_file sendmail_enable eq NONE hash
             else
-              check_file_value $check_file sendmail_enable eq NO hash
-              check_file_value $check_file sendmail_submit_enable eq NO hash
-              check_file_value $check_file sendmail_outbound_enable eq NO hash
-              check_file_value $check_file sendmail_msp_queue_enable eq NO hash
+              check_file_value is $check_file sendmail_enable eq NO hash
+              check_file_value is $check_file sendmail_submit_enable eq NO hash
+              check_file_value is $check_file sendmail_outbound_enable eq NO hash
+              check_file_value is $check_file sendmail_msp_queue_enable eq NO hash
             fi
           fi
         fi

@@ -20,7 +20,7 @@ audit_execshield () {
       if [ "$os_version" > 4 ]; then
         check_linux_package install kernel-PAE
         check_file="/etc/sysctl.conf"
-        check_file_value $check_file kernel.exec-shield eq 1 hash
+        check_file_value is $check_file kernel.exec-shield eq 1 hash
       fi
     else
       if [ "$os_vendor" = "SuSE" ]; then
