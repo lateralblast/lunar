@@ -1313,3 +1313,5 @@
 # Updated check file value function
 # 7.4.9: Wed 24 Apr 2019 20:39:39 AEST
 # Added additional kubernetes checks
+# 7.5.0: Tue 11 Jun 2019 14:58:46 AEST
+# Execshield fix

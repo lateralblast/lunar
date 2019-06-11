@@ -20,7 +20,10 @@ audit_execshield () {
       if [ "$os_version" > 4 ]; then
         check_linux_package install kernel-PAE
         check_file="/etc/sysctl.conf"
+        # Configure kernel shield
         check_file_value is $check_file kernel.exec-shield eq 1 hash
+        # Restrict core dumps
+        check_file_value is $check_file fs.suid.dumpable eq 0 has
       fi
     else
       if [ "$os_vendor" = "SuSE" ]; then

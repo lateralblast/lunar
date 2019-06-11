@@ -38,10 +38,6 @@ audit_sysctl () {
     check_file_value is $check_file net.ipv6.route.flush eq 1 hash
     # Randomise kernel memory placement
     check_file_value is $check_file kernel.randomize_va_space eq 2 hash
-    # Configure kernel shield
-    check_file_value is $check_file kernel.exec-shield eq 1 hash
-    # Restrict core dumps
-    check_file_value is $check_file fs.suid.dumpable eq 0 hash
     check_append_file /etc/security/limits.conf "* hard core 0"
     # Check file permissions
     check_file_perms $check_file 0600 root root
