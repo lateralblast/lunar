@@ -23,7 +23,7 @@ audit_execshield () {
         # Configure kernel shield
         check_file_value is $check_file kernel.exec-shield eq 1 hash
         # Restrict core dumps
-        check_file_value is $check_file fs.suid.dumpable eq 0 has
+        check_file_value is $check_file fs.suid.dumpable eq 0 hash
       fi
     else
       if [ "$os_vendor" = "SuSE" ]; then
