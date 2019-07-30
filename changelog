@@ -1315,3 +1315,5 @@
 # Added additional kubernetes checks
 # 7.5.0: Tue 11 Jun 2019 14:58:46 AEST
 # Execshield fix
+# 7.5.1: Tue 30 Jul 2019 21:54:54 AEST
+# Fixes for Debian

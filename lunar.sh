@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.5.0
+# Version:      7.5.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -266,9 +266,15 @@ check_os_release () {
           os_update=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d= |cut -f2 -d.`
           os_vendor=`cat /etc/lsb-release |grep "DISTRIB_ID" |cut -f2 -d=`
         else
-          os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d.`
-          os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d.`
-          os_vendor=`lsb_release -i |awk '{print $3}'`
+          if [ -f "/etc/debian_version" ]; then
+            os_version=`cat /etc/debian_version |cut -f1 -d.`
+            os_update=`cat /etc/debian_version |cut -f2 -d.`
+            os_vendor="Debian"
+          else
+            os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d.`
+            os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d.`
+            os_vendor=`lsb_release -i |awk '{print $3}'`
+          fi
         fi
         linux_dist="debian"
         if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
