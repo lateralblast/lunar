@@ -278,15 +278,7 @@ check_os_release () {
         fi
         linux_dist="debian"
         if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
-          echo "Notice:    The sysv-rc-conf package is required by this script"
-		      while true; do
-      			read -p "Do you wish to install this program? " yn
-      			case $yn in
-      				[Yy]* ) apt-get install sysv-rc-conf; break;;
-      				[Nn]* ) echo "Exiting script"; exit;;
-      				* ) echo "Please answer yes or no.";;
-      			esac
-    		  done
+          echo "Notice:    The sysv-rc-conf package may be required by this script but is not present"
         fi
         if [ ! -f "/usr/bin/bc" ]; then
           use_expr="yes"
