@@ -1317,3 +1317,5 @@
 # Execshield fix
 # 7.5.1: Tue 30 Jul 2019 21:54:54 AEST
 # Fixes for Debian
+# 7.5.2: Wed 31 Jul 2019 09:48:02 AEST
+# Additional fix for Debian unstable
