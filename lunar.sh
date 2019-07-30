@@ -445,9 +445,6 @@ check_environment () {
   if [ ! -d "$base_dir" ]; then
     mkdir -p $base_dir
     chmod 700 $base_dir
-    if [ "$os_name" != "Darwin" ]; then
-      chown root:root $base_dir
-    fi
   fi
   if [ ! -d "$temp_dir" ]; then
     mkdir -p $temp_dir
