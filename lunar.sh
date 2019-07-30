@@ -373,9 +373,8 @@ check_environment () {
     if [ "$id_check" != "0" ]; then
       if [ "$os_name" != "Darwin" ]; then
         echo ""
-        echo "Stopping: $0 needs to be run as root"
+        echo "Warning: $0 may need root"
         echo ""
-        exit
       fi
     fi
   fi
