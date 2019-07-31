@@ -62,6 +62,7 @@ aws_cloud_trail_name="aws-audit-log"
 sns_protocol="email"
 sns_endpoint="alerts@company.com"
 valid_tag_string="(ue1|uw1|uw2|ew1|ec1|an1|an2|as1|as2|se1)-(d|t|s|p)-([a-z0-9\-]+)$"
+strict_valid_names="y"
 aws_region=""
 aws_rds_min_retention="7"
 aws_ec2_min_retention="7"
@@ -277,7 +278,7 @@ check_os_release () {
           fi
         fi
         linux_dist="debian"
-        if [ `grep "[0-9]" "$os_version"` ]; then 
+        if [ `echo "${os_version}" | grep "[0-9]" ` ]; then 
           if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
             echo "Notice:    The sysv-rc-conf package may be required by this script but is not present"
           fi

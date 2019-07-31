@@ -60,21 +60,23 @@ audit_aws_rec_ec2 () {
     increment_insecure "There are no EC2 snapshots more than $aws_ec2_min_retention days old"
   fi
   # Check Security Groups have Name tags
-  sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupName' --output text`
+  sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupId' --output text`
   for sg in $sgs; do
     if [ ! "$sg" = "default" ]; then
-      name=`aws ec2 describe-security-groups --region $aws_region --group-names $sg --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text`
+      name=`aws ec2 describe-security-groups --region $aws_region --group-id $sg --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text`
       if [ ! "$name" ]; then
         increment_insecure "AWS Security Group $sg does not have a Name tag"
         verbose_message "" fix
         verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
         verbose_message "" fix
       else
-        check=`echo $name |grep "^sg-$valid_tag_string"`
-        if [ "$check" ]; then
-          increment_secure "AWS Security Group $sg has a valid Name tag"
-        else
-          increment_insecure "AWS Security Group $sg does not have a valid Name tag"
+        if [ "${strict_valid_names}" = "y" ]; then
+          check=`echo ${name} |grep "^sg-$valid_tag_string"`
+          if [ "$check" ]; then
+            increment_secure "AWS Security Group $sg has a valid Name tag"
+          else
+            increment_insecure "AWS Security Group $sg does not have a valid Name tag"
+          fi
         fi
       fi
     fi
@@ -89,11 +91,13 @@ audit_aws_rec_ec2 () {
       verbose_message "aws ec2 create-tags --region $aws_region --resources $volume --tags Key=Name,Value=<valid_name_tag>" fix
       verbose_message "" fix
     else
-      check=`echo $name |grep "^ami-$valid_tag_string"`
-      if [ "$check" ]; then
-        increment_secure "AWS EC2 volume $olume has a valid Name tag"
-      else
-        increment_insecure "AWS EC2 volume $volume does not have a valid Name tag"
+      if [ "${strict_valid_names}" = "y" ]; then
+        check=`echo $name |grep "^ami-$valid_tag_string"`
+        if [ "$check" ]; then
+          increment_secure "AWS EC2 volume $olume has a valid Name tag"
+        else
+          increment_insecure "AWS EC2 volume $volume does not have a valid Name tag"
+        fi
       fi
     fi
   done
@@ -107,11 +111,13 @@ audit_aws_rec_ec2 () {
       verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
       verbose_message "" fix
     else
-      check=`echo $name |grep "^ami-$valid_tag_string"`
-      if [ "$check" ]; then
-        increment_secure "AWS AMI $image has a valid Name tag"
-      else
-        increment_insecure "AWS AMI $image does not have a valid Name tag"
+      if [ "${strict_valid_names}" = "y" ]; then
+        check=`echo $name |grep "^ami-$valid_tag_string"`
+        if [ "$check" ]; then
+          increment_secure "AWS AMI $image has a valid Name tag"
+        else
+          increment_insecure "AWS AMI $image does not have a valid Name tag"
+        fi
       fi
     fi
   done
@@ -126,15 +132,17 @@ audit_aws_rec_ec2 () {
         verbose_message "aws ec2 create-tags --region $aws_region --resources $instance --tags Key=$tag,Value=<valid_name_tag>" fix
         verbose_message "" fix
       else
-        check=`echo $name |grep "^ec2-$valid_tag_string"`
-        if [ "$check" ]; then
-          increment_secure "AWS Instance $instance has a valid $tag tag"
-        else
-          increment_insecure "AWS Instance $instance does not have a valid $tag tag"
+        if [ "${strict_valid_names}" = "y" ]; then
+          check=`echo $name |grep "^ec2-$valid_tag_string"`
+          if [ "$check" ]; then
+            increment_secure "AWS Instance $instance has a valid $tag tag"
+          else
+            increment_insecure "AWS Instance $instance does not have a valid $tag tag"
+          fi
         fi
       fi
     done
-    term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
+    term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep -i true`
     asg_check=`aws autoscaling describe-auto-scaling-instances --region $aws_region --query 'AutoScalingInstances[].InstanceId' |grep $instance`
     if [ "$term_check" ] && [ ! "$asg_check" ]; then
       increment_secure "Termination Protection is enabled for instance $instance"
