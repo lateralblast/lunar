@@ -17,11 +17,13 @@ audit_aws_rec_vpcs () {
         verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
         verbose_message "" fix
       else
-        check=`echo $name |grep "^vpc-$valid_tag_string"`
-        if [ "$check" ]; then
-          increment_secure "AWS VPC $vpc has a valid Name tag"
-        else
-          increment_insecure "AWS VPC $vpc does not have a valid Name tag"
+        if [ "${strict_valid_names}" = "y" ]; then
+          check=`echo $name |grep "^vpc-$valid_tag_string"`
+          if [ "$check" ]; then
+            increment_secure "AWS VPC $vpc has a valid Name tag"
+          else
+            increment_insecure "AWS VPC $vpc does not have a valid Name tag"
+          fi
         fi
       fi
     fi

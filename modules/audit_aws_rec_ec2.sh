@@ -70,11 +70,13 @@ audit_aws_rec_ec2 () {
         verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
         verbose_message "" fix
       else
-        check=`echo $name |grep "^sg-$valid_tag_string"`
-        if [ "$check" ]; then
-          increment_secure "AWS Security Group $sg has a valid Name tag"
-        else
-          increment_insecure "AWS Security Group $sg does not have a valid Name tag"
+        if [ "${strict_valid_names}" = "y" ]; then
+          check=`echo ${name} |grep "^sg-$valid_tag_string"`
+          if [ "$check" ]; then
+            increment_secure "AWS Security Group $sg has a valid Name tag"
+          else
+            increment_insecure "AWS Security Group $sg does not have a valid Name tag"
+          fi
         fi
       fi
     fi
@@ -89,11 +91,13 @@ audit_aws_rec_ec2 () {
       verbose_message "aws ec2 create-tags --region $aws_region --resources $volume --tags Key=Name,Value=<valid_name_tag>" fix
       verbose_message "" fix
     else
-      check=`echo $name |grep "^ami-$valid_tag_string"`
-      if [ "$check" ]; then
-        increment_secure "AWS EC2 volume $olume has a valid Name tag"
-      else
-        increment_insecure "AWS EC2 volume $volume does not have a valid Name tag"
+      if [ "${strict_valid_names}" = "y" ]; then
+        check=`echo $name |grep "^ami-$valid_tag_string"`
+        if [ "$check" ]; then
+          increment_secure "AWS EC2 volume $olume has a valid Name tag"
+        else
+          increment_insecure "AWS EC2 volume $volume does not have a valid Name tag"
+        fi
       fi
     fi
   done
@@ -107,11 +111,13 @@ audit_aws_rec_ec2 () {
       verbose_message "aws ec2 create-tags --region $aws_region --resources $image --tags Key=Name,Value=<valid_name_tag>" fix
       verbose_message "" fix
     else
-      check=`echo $name |grep "^ami-$valid_tag_string"`
-      if [ "$check" ]; then
-        increment_secure "AWS AMI $image has a valid Name tag"
-      else
-        increment_insecure "AWS AMI $image does not have a valid Name tag"
+      if [ "${strict_valid_names}" = "y" ]; then
+        check=`echo $name |grep "^ami-$valid_tag_string"`
+        if [ "$check" ]; then
+          increment_secure "AWS AMI $image has a valid Name tag"
+        else
+          increment_insecure "AWS AMI $image does not have a valid Name tag"
+        fi
       fi
     fi
   done
@@ -126,11 +132,13 @@ audit_aws_rec_ec2 () {
         verbose_message "aws ec2 create-tags --region $aws_region --resources $instance --tags Key=$tag,Value=<valid_name_tag>" fix
         verbose_message "" fix
       else
-        check=`echo $name |grep "^ec2-$valid_tag_string"`
-        if [ "$check" ]; then
-          increment_secure "AWS Instance $instance has a valid $tag tag"
-        else
-          increment_insecure "AWS Instance $instance does not have a valid $tag tag"
+        if [ "${strict_valid_names}" = "y" ]; then
+          check=`echo $name |grep "^ec2-$valid_tag_string"`
+          if [ "$check" ]; then
+            increment_secure "AWS Instance $instance has a valid $tag tag"
+          else
+            increment_insecure "AWS Instance $instance does not have a valid $tag tag"
+          fi
         fi
       fi
     done
