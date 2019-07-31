@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.5.2
+# Version:      7.5.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -277,7 +277,7 @@ check_os_release () {
           fi
         fi
         linux_dist="debian"
-        if [ ! "$os_version" = "unstable" ]; then 
+        if [ `grep "[0-9]" "$os_version"` ]; then 
           if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
             echo "Notice:    The sysv-rc-conf package may be required by this script but is not present"
           fi

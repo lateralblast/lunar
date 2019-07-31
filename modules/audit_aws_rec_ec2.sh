@@ -38,7 +38,11 @@ audit_aws_rec_ec2 () {
   counter=0
   for snapshot in $snapshots; do
     snap_date=`aws ec2 describe-snapshots --region $aws_region --snapshot-id $snapshot --query "Snapshots[].StartTime" --output text --output text |cut -f1 -d.`
-    snap_secs=`date -j -f "%Y-%m-%dT%H:%M:%S" "$snap_date" "+%s"`
+    if [ "$os_name" = "Linux" ]; then
+      snap_secs=`date -d "$snap_date" "+%s"`
+    else
+      snap_secs=`date -j -f "%Y-%m-%dT%H:%M:%S" "$snap_date" "+%s"`
+    fi
     curr_secs=`date "+%s"`
     diff_days=`echo "($curr_secs - $snap_secs)/84600" |bc`
     if [ "$diff_days" -gt "$aws_ec2_max_retention" ]; then
