@@ -134,7 +134,7 @@ audit_aws_rec_ec2 () {
         fi
       fi
     done
-    term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep true`
+    term_check=`aws ec2 describe-instance-attribute --region $aws_region --instance-id $instance --attribute disableApiTermination --query "DisableApiTermination" |grep -i true`
     asg_check=`aws autoscaling describe-auto-scaling-instances --region $aws_region --query 'AutoScalingInstances[].InstanceId' |grep $instance`
     if [ "$term_check" ] && [ ! "$asg_check" ]; then
       increment_secure "Termination Protection is enabled for instance $instance"
