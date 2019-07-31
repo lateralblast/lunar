@@ -60,10 +60,10 @@ audit_aws_rec_ec2 () {
     increment_insecure "There are no EC2 snapshots more than $aws_ec2_min_retention days old"
   fi
   # Check Security Groups have Name tags
-  sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupName' --output text`
+  sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupId' --output text`
   for sg in $sgs; do
     if [ ! "$sg" = "default" ]; then
-      name=`aws ec2 describe-security-groups --region $aws_region --group-names $sg --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text`
+      name=`aws ec2 describe-security-groups --region $aws_region --group-id $sg --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text`
       if [ ! "$name" ]; then
         increment_insecure "AWS Security Group $sg does not have a Name tag"
         verbose_message "" fix
