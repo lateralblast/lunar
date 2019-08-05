@@ -16,48 +16,53 @@ audit_aws_rec_ec2 () {
   verbose_message "EC2 Recommendations"
   volumes=`aws ec2 describe-volumes --region $aws_region --query 'Volumes[].VolumeId' --output text`
   for volume in $volumes; do
-    # Check that EC2 volumes are using cost effective storage
-    check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].State' --output text`
-    if [ ! "$check" = "available" ]; then
-      increment_secure "EC2 volume $volume is attached to an instance"
-    else
-      increment_insecure "EC2 volume $volume is not attached to an instance"
+    if [ "${check_volattach}" = "y" ]; then
+      # Check for EC2 volumes that are unattached
+      check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].State' --output text`
+      if [ ! "$check" = "available" ]; then
+        increment_secure "EC2 volume $volume is attached to an instance"
+      else
+        increment_insecure "EC2 volume $volume is not attached to an instance"
+      fi
     fi
-    # Check for EC2 volumes that are unattached
-    check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].VolumeType' |grep "gp2"`
-    if [ "$check" ]; then
-      increment_secure "EC2 volume $volume is using General Purpose SSD"
-    else
-      
-      increment_insecure "EC2 volume $volume is not using General Purpose SSD"
+    if [ "${check_volattach}" = "y" ]; then
+      # Check that EC2 volumes are using cost effective storage
+      check=`aws ec2 describe-volumes --region $aws_region --volume-id $volume --query 'Volumes[].VolumeType' |grep "gp2"`
+      if [ "$check" ]; then
+        increment_secure "EC2 volume $volume is using General Purpose SSD"
+      else
+        increment_insecure "EC2 volume $volume is not using General Purpose SSD"
+      fi
     fi
   done
   # Check date of snapshots
-  arn=`aws iam get-user --query "User.Arn" --output text |cut -f5 -d:`
-  snapshots=`aws ec2 describe-snapshots --region $aws_region --owner-ids $arn --filters Name=status,Values=completed --query "Snapshots[].SnapshotId" --output text`
-  counter=0
-  for snapshot in $snapshots; do
-    snap_date=`aws ec2 describe-snapshots --region $aws_region --snapshot-id $snapshot --query "Snapshots[].StartTime" --output text --output text |cut -f1 -d.`
-    if [ "$os_name" = "Linux" ]; then
-      snap_secs=`date -d "$snap_date" "+%s"`
+  if [ "${check_snapage}" = "y" ]; then
+    arn=`aws iam get-user --query "User.Arn" --output text |cut -f5 -d:`
+    snapshots=`aws ec2 describe-snapshots --region $aws_region --owner-ids $arn --filters Name=status,Values=completed --query "Snapshots[].SnapshotId" --output text`
+    counter=0
+    for snapshot in $snapshots; do
+      snap_date=`aws ec2 describe-snapshots --region $aws_region --snapshot-id $snapshot --query "Snapshots[].StartTime" --output text --output text |cut -f1 -d.`
+      if [ "$os_name" = "Linux" ]; then
+        snap_secs=`date -d "$snap_date" "+%s"`
+      else
+        snap_secs=`date -j -f "%Y-%m-%dT%H:%M:%S" "$snap_date" "+%s"`
+      fi
+      curr_secs=`date "+%s"`
+      diff_days=`echo "($curr_secs - $snap_secs)/84600" |bc`
+      if [ "$diff_days" -gt "$aws_ec2_max_retention" ]; then
+        increment_insecure "EC2 snapshot $snapshot is more than $aws_ec2_max_retention days old"
+      else
+        increment_secure "EC2 snapshot $snapshot is less than $aws_ec2_max_retention days old"
+      fi
+      if [ "$diff_days" -gt "$aws_ec2_min_retention" ]; then
+        counter=`expr $counter + 1`
+      fi
+    done
+    if [ "$counter" -gt 0 ]; then
+      increment_secure "There are EC2 snapshots more than $aws_ec2_min_retention days old"
     else
-      snap_secs=`date -j -f "%Y-%m-%dT%H:%M:%S" "$snap_date" "+%s"`
+      increment_insecure "There are no EC2 snapshots more than $aws_ec2_min_retention days old"
     fi
-    curr_secs=`date "+%s"`
-    diff_days=`echo "($curr_secs - $snap_secs)/84600" |bc`
-    if [ "$diff_days" -gt "$aws_ec2_max_retention" ]; then
-      increment_insecure "EC2 snapshot $snapshot is more than $aws_ec2_max_retention days old"
-    else
-      increment_secure "EC2 snapshot $snapshot is less than $aws_ec2_max_retention days old"
-    fi
-    if [ "$diff_days" -gt "$aws_ec2_min_retention" ]; then
-      counter=`expr $counter + 1`
-    fi
-  done
-  if [ "$counter" -gt 0 ]; then
-    increment_secure "There are EC2 snapshots more than $aws_ec2_min_retention days old"
-  else
-    increment_insecure "There are no EC2 snapshots more than $aws_ec2_min_retention days old"
   fi
   # Check Security Groups have Name tags
   sgs=`aws ec2 describe-security-groups --region $aws_region --query 'SecurityGroups[].GroupId' --output text`

@@ -9,7 +9,6 @@
 audit_aws_rec_rds () {
   verbose_message "RDS Recommendations"
   dbs=`aws rds describe-db-instances --region $aws_region --query 'DBInstances[].DBInstanceIdentifier' --output text`
-  echo -n $dbs
   for db in $dbs; do
     # Check if database is Multi-AZ
     check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].MultiAZ' |grep true`
