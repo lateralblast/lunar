@@ -12,7 +12,7 @@ audit_aws_rec_rds () {
   echo -n $dbs
   for db in $dbs; do
     # Check if database is Multi-AZ
-    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query --query 'DBInstances[].MultiAZ' |grep true`
+    check=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].MultiAZ' |grep true`
     if [ "$check" ]; then
       increment_secure "RDS instance $db is Multi-AZ enabled"
     else
