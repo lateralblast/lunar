@@ -127,7 +127,7 @@ audit_aws_rec_ec2 () {
     for tag in Name Role Environment Owner; do
       check=`aws ec2 describe-instances --region $aws_region --instance-id $instance --query "Reservations[].Instances[].Tags[?Key==\\\`$tag\\\`].Value" --output text`
       if [ ! "$check" ]; then
-        increment_insecure "AWS AMI $image does not have a $tag tag"
+        increment_insecure "AWS Instance $instance does not have a $tag tag"
         verbose_message "" fix
         verbose_message "aws ec2 create-tags --region $aws_region --resources $instance --tags Key=$tag,Value=<valid_name_tag>" fix
         verbose_message "" fix
