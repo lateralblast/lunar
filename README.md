@@ -19,7 +19,11 @@ bash, so I've used functions only from sh.
 
 There is no warranty implied or given with this script. My recommendation
 is to use this script in audit mode only, and address each warning individually
-via policy, documentation and configuration management.
+via policy, documentation and configuration management. 
+
+I am by no means a coder, so there are bound to be bugs and better ways to
+approach things in this script, so a sincere thank you to the people who have 
+provided feedback, updates and patches to fix bugs/features in code.
 
 It can also can perform a lockdown. Unlike some other scripts I have added
 capability to backout changes. Files are backed up using cpio to a directory
