@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.5.3
+# Version:      7.5.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -92,6 +92,7 @@ wheel_group="wheel"
 docker_group="docker"
 reboot=0
 verbose=0
+ansible=0
 functions_dir="$app_dir/functions"
 modules_dir="$app_dir/modules"
 private_dir="$app_dir/private"
@@ -594,6 +595,17 @@ print_previous () {
 }
 
 #
+# handle_output
+#
+# Handle output
+#.
+
+handle_output () {
+  text=$1
+  echo "$1"
+}
+
+#
 # setting_message
 #
 # Setting message
@@ -915,7 +927,7 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvx" args; do
+while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
   case ${args} in
     e)
       do_remote=1
@@ -934,6 +946,9 @@ while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvx" args; do
     D)
       do_compose=1
       do_shell=1
+      ;;
+    n)
+      ansible=1
       ;;
     r)
       aws_region="$OPTARG"

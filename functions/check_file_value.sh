@@ -75,22 +75,26 @@ check_file_value () {
   if [ "$audit_mode" = 2 ]; then
     restore_file $check_file $restore_dir
   else
-    echo "Checking:  Value of \"$parameter_name\" $operator set to \"$correct_value\" in $check_file"
+    string="Value of $parameter_name $operator set to $correct_value in $check_file"
+    verbose_message "Checking:  $string"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
         increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in $check_file"
         if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
+          line="$parameter_name$separator\"$correct_value\""
           verbose_message "" fix
           verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" fix
           verbose_message "" fix
         else
+          line="$parameter_name$separator$correct_value"
           verbose_message "" fix
           verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" fix
           verbose_message "" fix
         fi
       else
         if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
+          string="Parameter $parameter_name to $correct_value in $check_file"
+          verbose_message "Setting:   $string"
           if [ "$check_file" = "/etc/system" ]; then
             reboot=1
             echo "Notice:    Reboot required"
@@ -104,6 +108,15 @@ check_file_value () {
           else
             echo "$parameter_name$separator$correct_value" >> $check_file
           fi
+        fi
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: $string"
+          echo "  lineinfile:"
+          echo "    path: $check_file"
+          echo "    line: $line"
+          echo "    create: yes"
+          echo ""
         fi
       fi
     else

@@ -10,7 +10,23 @@ check_osx_systemsetup () {
       value=$2
       backup_file="systemsetup_$param"
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  Parameter \"$param\" is set to \"$value\""
+        string="Parameter $param is set to $value"
+        verbose_message "Checking:  $string"
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo '  command: sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"'
+          echo "  register: systemsetup_check"
+          echo "  failed_when: systemsetup_check == 1"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+          echo ""
+          echo "- name: Fixing $string"
+          echo "  command: sudo systemsetup -$param $value"
+          echo "  when: systemsetup_check.rc == 0 and ansible_facts['ansible_system'] == 'Darwin'"
+          echo ""
+        fi
         check=`sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"`
         if [ "$check" != "$value" ]; then
           increment_insecure "Parameter \"$param\" not set to \"$value\""

@@ -46,6 +46,23 @@ check_command_output () {
     log_file="$command_name.log"
     check_value=`$get_command`
     if [ "$audit_mode" != 2 ]; then
+      string="Command $command_name returns $correct_value"
+      verbose_message "Chaking:  $string"
+       if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"$get_command |grep '$correct_value'\""
+        echo "  register: lssec_check"
+        echo "  failed_when: lssec_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"$set_command\""
+        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == 'SunOS'"
+        echo ""
+      fi
       if [ "$check_value" != "$correct_value" ]; then
         increment_insecure "Command $command_name does not return correct value"
       else

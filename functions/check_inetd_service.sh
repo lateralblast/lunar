@@ -17,7 +17,18 @@ check_inetd_service () {
         actual_status=`cat $check_file |grep '^$service_name' |awk '{print $1}'`
       fi
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  If inetd service $service_name is set to $correct_status"
+        string="If inetd service $service_name is set to $correct_status"
+        verbose_message "Checking:  $string"
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: $string"
+          echo "  lineinfile:"
+          echo "    path: $check_file"
+          echo "    regexp: ''(.*$service_name.*)'"
+          echo "    replace: '#\1'"
+          echo "  when: ansible_facts['ansible_system'] == 'Linux' or ansible_facts['ansible_system'] == 'SunOS'"
+          echo ""
+        fi
         if [ "$actual_status" != "" ]; then
           increment_insecure "Service $service_name does not have $parameter_name set to $correct_status"
           backup_file $check_file

@@ -33,7 +33,7 @@ audit_system_accounting () {
       check_file="/etc/audit/audit.rules"
       check_append_file $check_file "-w /var/log/sudo.log -p wa -k actions"
       log_file="sysstat.log"
-      check_linux_package check sysstat
+      check_linux_package install sysstat
       if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         check_file="/etc/default/sysstat"
         check_file_value is $check_file ENABLED eq true hash

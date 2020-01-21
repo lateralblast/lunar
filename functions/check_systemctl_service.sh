@@ -53,7 +53,19 @@ check_systemctl_service () {
         fi
       fi
     else
-      echo "Checking:  Service $service_name is $correct_status"
+      string="Service $service_name is $correct_status"
+      verbose_message "Checking:  $string"
+      if [ "$audit_mode" != 2 ]; then
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  service:"
+          echo "    name: $service_name"
+          echo "    enabled: $enabled"
+          echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+          echo ""
+        fi
+      fi
       if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ]; then
         if [ "$actual_status" != "$correct_status" ]; then
           increment_insecure "Service $service_name is not $correct_status"

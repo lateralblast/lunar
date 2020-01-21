@@ -1321,3 +1321,5 @@
 # Additional fix for Debian unstable
 # 7.5.3: Wed 31 Jul 2019 20:36:53 AEST
 # Fixes for date on Linux
+# 7.5.4: Wed 22 Jan 2020 09:33:40 AEDT
+# Bug fixes and initial ansbile output

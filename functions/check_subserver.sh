@@ -16,7 +16,17 @@ check_subserver() {
       actual_value="on"
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:   Service \"$service_name\" Protocol \"$protocol_name\" is \"$correct_value\""
+      string="Service $service_name Protocol $protocol_name is $correct_value"
+      verbose_message "Checking:   $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  service:"
+        echo "    name: $service_name"
+        echo "    enabled: $enabled"
+        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo ""
+      fi
       if [ "$actual_value" != "$service_name" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Service \"$service_name\" Protocol \"$protocol_name\" is not \"$correct_value\""

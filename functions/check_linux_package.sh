@@ -14,13 +14,24 @@ check_linux_package () {
     package_type="Package"
     if [ "$package_mode" = "install" ]; then
       package_status="installed"
+      package_state="present"
     else
       package_status="uninstalled"
+      package_state="absent"
     fi
     log_file="package_log"
     backup_file="$work_dir/$log_file"
-    verbose_message "Checking if $package_type $package_check is $package_status"
     if [ "$audit_mode" != "2" ]; then
+      string="$package_type $package_check is $package_status"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: $string"
+        echo "  package:"
+        echo "    name: $package_name"
+        echo "    state: $package_state"
+        echo ""
+      fi
       if [ "$linux_dist" = "debian" ]; then
         package_name=`dpkg -l $package_check 2>&1 |grep $package_check |awk '{print $2}'`
       else

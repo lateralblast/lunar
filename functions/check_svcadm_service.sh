@@ -29,7 +29,17 @@ check_svcadm_service () {
         service_status=`svcs -Ho state $service_name`
         file_header="svcadm"
         log_file="$work_dir/$file_header.log"
-        echo "Checking:  Service $service_name is $correct_status"
+        string="Service $service_name is $correct_status"
+        verbose_message "Checking:  $string"
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  service:"
+          echo "    name: $service_name"
+          echo "    enabled: $enabled"
+          echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+          echo ""
+        fi
         if [ "$service_status" != "$correct_status" ]; then
           increment_insecure "Service $service_name is enabled"
           lockdown_command "echo \"$service_name,$service_status\" >> $log_file ; inetadm -d $service_name ; svcadm refresh $service_name" "Service $service_name to $correct_status"

@@ -7,6 +7,11 @@ check_rctcp() {
   if [ "$os_name" = "AIX" ]; then
     service_name=$1
     correct_value=$2
+    if [ "$correct_value" = "off" ]; then
+      enabled="disabled"
+    else
+      enabled="enabled"
+    fi
     log_file="$service_name.log"
     actual_value=`lssrc -a |grep '$service_name ' |awk '{print $4}'`
     if [ "$actual_value" = "active" ]; then
@@ -15,7 +20,17 @@ check_rctcp() {
       actual_value="on"
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Service \"$service_name\" is \"$correct_value\""
+      string="Service $service_name is $correct_value"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  service:"
+        echo "    name: $service_name"
+        echo "    enabled: $enabled"
+        echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+        echo ""
+      fi
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Service \"$service_name\" is not \"$correct_value\""

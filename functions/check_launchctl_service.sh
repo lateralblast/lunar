@@ -22,7 +22,23 @@ check_launchctl_service () {
       actual_status="disabled"
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Service $launchctl_service is $required_status"
+      string="Service $launchctl_service is $required_status"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"launchctl list |grep $launchctl_service |awk '{print $3}'\""
+        echo "  register: launchd_check"
+        echo "  failed_when: launchd_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"sudo launchctl $change_status -w $launchctl_service.plist\""
+        echo "  when: launchd_check.rc == 0 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+      fi
       if [ "$actual_status" != "$required_status" ]; then
         increment_insecure "Service $launchctl_service is $actual_status"
         log_file="$work_dir/$log_file"

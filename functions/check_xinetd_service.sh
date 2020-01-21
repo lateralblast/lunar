@@ -16,7 +16,8 @@ audit_xinetd_service () {
     if [ -f "$check_file" ]; then
       actual_status=`cat $check_file |grep $parameter_name |awk '{print $3}'`
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  If xinetd service $service_name has $parameter_name set to $correct_status"
+        string="If xinetd service $service_name has $parameter_name set to $correct_status"
+        verbose_message "Checking:  $string"
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$linux_dist" = "debian" ]; then
             command="update-rc.d $service_name $correct_status"
@@ -27,8 +28,24 @@ audit_xinetd_service () {
           log_file="$work_dir/$log_file"
           backup_file $check_file
           lockdown_command "echo \"$parameter_name,$actual_status\" >> $log_file ; cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command" "Service to $parameter_name"
+          l_command "cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command"
         else
           increment_secure "Service $service_name has $parameter_name set to $correct_status"
+        fi
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  command:  sh -c \"cat $check_file |grep $parameter_name |awk '{print $3}'\""
+          echo "  register: pwpolicy_check"
+          echo "  failed_when: pwpolicy_check == 1"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == 'Linux'"
+          echo ""
+          echo "- name: Fixing $string"
+          echo "  command: sh -c \"$l_command\""
+          echo "  when: pwpolicy_check.rc == 1 and ansible_facts['ansible_system'] == 'Linux'"
+          echo ""
         fi
       else
         restore_file="$restore_dir/$log_file"

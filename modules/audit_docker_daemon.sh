@@ -145,13 +145,13 @@ audit_docker_daemon () {
       verbose_message "Docker Daemon"
       check_file="/etc/audit/audit.rules"
       for docker_file in /usr/bin/docker /var/lib/docker /etc/docker /etc/default/docker /etc/docker/daemon.json /usr/bin/docker-containerd /usr/bin/docker-runc; do
-        check_auditctl $docker_file
+        check_auditctl $docker_file "docker_file"
         check_append_file $check_file "-w $docker_file -k docker" hash
       done
       check=`which systemctl`
       if [ "$check" ]; then
         for docker_service in docker.service docker.socket; do
-          check_auditctl $docker_service
+          check_auditctl $docker_service "docker_service"
           docker_file=`systemctl show -p FragmentPath $docker_service 2> /dev/null`
           check_append_file $check_file "-w $docker_file -k docker" hash
           check_file_perms $check_file 0640 root root

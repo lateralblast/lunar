@@ -13,7 +13,23 @@ check_chuser() {
     user_name=$6
     log_file="$sec_file_$parameter_name_$group_name.log"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Security Policy for \"$parameter_name\" is set to \"$correct_value\""
+      string="Security Policy for $parameter_name is set to $correct_value"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"lssec -f $sec_file -s $sec_stanza -a $parameter_name |awk '{print $2}' |cut -f2 -d=\""
+        echo "  register: lssec_check"
+        echo "  failed_when: lssec_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"chsec -f $sec_file -s $sec_stanza -a $parameter_name=$correct_value\""
+        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == 'AIX'"
+        echo ""
+      fi
       actual_value=`lssec -f $sec_file -s $user_name -a $group_name -a $parameter_name |awk '{print $3}' |cut -f2 -d=`
       if [ "$actual_value" != "$correct_value" ]; then
         increment_insecure "Security Policy for \"$parameter_name\" is not set to \"$correct_value\" for \"$user_name\""

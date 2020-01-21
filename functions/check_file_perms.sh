@@ -22,7 +22,22 @@ check_file_perms () {
     find_command="sudo find"
   fi
   if [ "$audit_mode" != 2 ]; then
-    echo "Checking:  File permissions on $check_file"
+    string="File permissions on $check_file"
+    verbose_message "Checking:  $string"
+    if [ "$ansible" = 1 ]; then
+      echo ""
+      echo "- name: Checking $string"
+      echo "  file:"
+      echo "    path: $check_file"
+      if [ ! "$check_owner" = "" ]; then
+        echo "    owner: $check_owner"
+      fi
+      if [ ! "$check_group" = "" ]; then
+        echo "    group: $check_group"
+      fi
+      echo "    mode: $check_perms"
+      echo ""
+    fi
   fi
   if [ ! -e "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then

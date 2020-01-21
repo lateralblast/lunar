@@ -10,7 +10,23 @@ check_no() {
     log_file="$parameter_name.log"
     actual_value=`no -a |grep '$parameter_name ' |cut -f2 -d= |sed 's/ //g'`
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Parameter \"$parameter_name\" is \"$correct_value\""
+      string="Parameter $parameter_name is $correct_value"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"no -a |grep '$parameter_name ' |cut -f2 -d= |sed 's/ //g' |grep '$correct_value'\""
+        echo "  register: no_check"
+        echo "  failed_when: no_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"no -p -o $parameter_name=$correct_value\""
+        echo "  when: no_check.rc == 1 and ansible_facts['ansible_system'] == 'AIX'"
+        echo ""
+      fi
       if [ "$actual_value" != "$correct_value" ]; then
         increment_insecure "Parameter \"$parameter_name\" is not \"$correct_value\""
         log_file="$work_dir/$log_file"

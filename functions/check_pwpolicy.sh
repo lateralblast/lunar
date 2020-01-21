@@ -9,27 +9,50 @@ check_pwpolicy() {
     correct_value=$2
     log_file="$parameter_name.log"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Password Policy for \"$parameter_name\" is set to \"$correct_value\""
+      string="Password Policy for $parameter_name is set to $correct_value"
+      verbose_message "Checking:  $string"
       if [ "$os_release" -ge 12 ]; then
+        a_command='pwpolicy -getglobalpolicy |tr " " "\\n" |grep "$parameter_name" |cut -f2 -d='
         actual_value=`pwpolicy -getglobalpolicy |tr " " "\n" |grep "$parameter_name" |cut -f2 -d=`
       else
         if [ "$managed_node" = "Error" ]; then
+          a_command='sudo pwpolicy -n /Local/Default -getglobalpolicy $parameter_name 2>&1 |cut -f2 -d='
           actual_value=`sudo pwpolicy -n /Local/Default -getglobalpolicy $parameter_name 2>&1 |cut -f2 -d=`
         else
+          a_command='sudo pwpolicy -n -getglobalpolicy $parameter_name 2>&1 |cut -f2 -d='
           actual_value=`sudo pwpolicy -n -getglobalpolicy $parameter_name 2>&1 |cut -f2 -d=`
         fi
+        actual_value=`$command`
       fi
       if [ "$actual_value" != "$correct_value" ]; then
         increment_insecure "Password Policy for \"$parameter_name\" is not set to \"$correct_value\""
         log_file="$work_dir/$log_file"
         if [ "$os_release" -ge 12 ]; then
+          l_command="sudo pwpolicy -setglobalpolicy $parameter_name=$correct_value"
           lockdown_command "echo \"$actual_value\" > $log_file ; sudo pwpolicy -setglobalpolicy $parameter_name=$correct_value" "Password Policy for \"$parameter_name\" to \"$correct_value\""
         else
           if [ "$managed_node" = "Error" ]; then
+            l_command="sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$correct_value"
             lockdown_command "echo \"$actual_value\" > $log_file ; sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$correct_value" "Password Policy for \"$parameter_name\" to \"$correct_value\""
           else
+            l_command="sudo pwpolicy -n -setglobalpolicy $parameter_name=$correct_value"
             lockdown_command "echo \"$actual_value\" > $log_file ; sudo pwpolicy -n -setglobalpolicy $parameter_name=$correct_value" "Password Policy for \"$parameter_name\" to \"$correct_value\""
           fi
+        fi
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  command:  sh -c \"$a_command\""
+          echo "  register: pwpolicy_check"
+          echo "  failed_when: pwpolicy_check == 1"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+          echo ""
+          echo "- name: Fixing $string"
+          echo "  command: sh -c \"$l_command\""
+          echo "  when: pwpolicy_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+          echo ""
         fi
       else
         if [ "$audit_mode" = 1 ]; then

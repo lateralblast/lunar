@@ -8,7 +8,7 @@ audit_file_sharing () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Apple File Sharing"
     check_launchctl_service com.apple.AppleFileServer off
-    check_defaults /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess no bool
+    check_osx_defaults /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess no bool
     verbose_message "Samba Services"
     check_launchctl_service nmbd off
     check_launchctl_service smbd off

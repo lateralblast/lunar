@@ -30,7 +30,17 @@ check_initd_service () {
         fi
       fi
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  If init.d service $service_name is $correct_status"
+        string="If init.d service $service_name is $correct_status"
+        verbose_message "Checking:  $string"
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  service:"
+          echo "    name: $service_name"
+          echo "    enabled: $enabled"
+          echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+          echo ""
+        fi
       fi
       if [ "$actual_status" != "$correct_status" ]; then
         increment_insecure "Service $service_name is not $correct_status"

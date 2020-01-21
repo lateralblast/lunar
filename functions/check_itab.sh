@@ -15,7 +15,17 @@ check_itab() {
       fi
     fi
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Service \"$service_name\" is not \"$correct_value\""
+      string="Service $service_name is not $correct_value"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  aix_inittab:"
+        echo "    namw: $service_name"
+        echo "    state: $correct_value"
+        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo ""
+      fi
       if [ "$actual_value" != "$correct_value" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Service \"$service_name\" is \"$correct_value\""

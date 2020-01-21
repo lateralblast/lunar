@@ -10,7 +10,23 @@ check_dscl () {
     value=$3
     dir="/var/db/dslocal/nodes/Default"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Parameter \"$param\" is set to \"$value\" in \"$file\""
+      string="Parameter $param is set to $value in $file"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"sudo dscl . -read $file $param 2> /dev/null\""
+        echo "  register: dscl_check"
+        echo "  failed_when: dscl_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"sudo dscl . -create $file $param '$value'\""
+        echo "  when: dscl_check.rc == 0 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+      fi
       check=`sudo dscl . -read $file $param 2> /dev/null`
       if [ "$check" != "$value" ]; then
         increment_insecure "Parameter \"$param\" not set to \"$value\" in \"$file\""

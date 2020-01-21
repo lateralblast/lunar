@@ -14,7 +14,22 @@ check_file_exists () {
   log_file="$work_dir/file.log"
   if [ "$check_exists" = "no" ]; then
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  File $check_file does not exist"
+      string="File $check_file does not exist"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  stat:"
+        echo "    path $check_file"
+        echo "  register: stat_result"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  file:"
+        echo "    path: $check_file"
+        echo "    state: absent"
+        echo "  when: stat_result.exists == True"
+        echo ""
+      fi
     fi
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
@@ -33,7 +48,22 @@ check_file_exists () {
     fi
   else
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  File $check_file exists"
+      string="File $check_file exists"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  stat:"
+        echo "    path $check_file"
+        echo "  register: stat_result"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  file:"
+        echo "    path: $check_file"
+        echo "    state: touch"
+        echo "  when: stat_result.exists == False"
+        echo ""
+      fi
     fi
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then

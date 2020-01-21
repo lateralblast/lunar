@@ -42,6 +42,11 @@ check_chkconfig_service () {
     service_name=$1
     service_level=$2
     correct_status=$3
+    if [ "$correct_status" = "on" ]; then
+      enabled="yes"
+    else
+      enabled="no"
+    fi
     if [ "$linux_dist" = "debian" ]; then
       chk_config="/usr/sbin/sysv-rc-conf"
     else
@@ -70,7 +75,17 @@ check_chkconfig_service () {
       fi
     else
       if [ "$actual_status" = "on" ] || [ "$actual_status" = "off" ]; then
-        echo "Checking:  Service $service_name at run level $service_level is $correct_status"
+        string="$service_name at run level $service_level is $correct_status"
+        verbose_message "Checking:  $string"
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  service:"
+          echo "    name: $service_name"
+          echo "    enabled: $enabled"
+          echo "  when: ansible_facts['ansible_system'] == 'Linux'"
+          echo ""
+        fi
         if [ "$actual_status" != "$correct_status" ]; then
           increment_insecure "Service $service_name at run level $service_level is not $correct_status"
           log_file="$work_dir/$log_file"

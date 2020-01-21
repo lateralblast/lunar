@@ -22,7 +22,23 @@ check_pmset() {
     log_file="pmset_$service.log"
     actual_value=`pmset -g | grep $service |awk '{print $2}' |grep $value`
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Sleep is disabled when powered"
+      string="Sleep is disabled when powered"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"pmset -g | grep $service |awk '{print $2}' |grep $value\""
+        echo "  register: pmset_check"
+        echo "  failed_when: pmset_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"pmset -c $service $value\""
+        echo "  when: pmset_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+      fi
       if [ ! "$actual_value" = "$value" ]; then
         increment_insecure "Service $service is not $state"
         lockdown_command "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service $service to $state"

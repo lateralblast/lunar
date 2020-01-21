@@ -24,7 +24,17 @@ funct_check_pkg () {
         fi
       fi
     else
-      echo "Checking:  Package $pkg_name is installed"
+      string="Package $pkg_name is installed"
+      verbose_message "Checking:  $string"
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  package:"
+        echo "    name: $pkg_name"
+        echo "    state: present"
+        echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+        echo ""
+      fi
       if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then
         increment_secure "Package $pkg_name is already installed"
       else
