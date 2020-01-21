@@ -162,6 +162,8 @@ For more information refer to wiki:
 
 [Usage](https://github.com/lateralblast/lunar/wiki/Usage)
 
+[Ansible](https://github.com/lateralblast/lunar/wiki/Ansible)
+
 [Ubuntu](https://github.com/lateralblast/lunar/wiki/Ubuntu)
 
 [Solaris 11](https://github.com/lateralblast/lunar/wiki/Solaris_11)
