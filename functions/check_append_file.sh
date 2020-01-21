@@ -32,7 +32,7 @@ check_append_file () {
           echo "- name: $string"
           echo "  lineinfile:"
           echo "    path: $check_file"
-          echo "    line: $parameter"
+          echo "    line: '$parameter'"
           echo ""
         fi
         check_value=`cat "$check_file" |grep -v "^$comment_value" |grep '$parameter'`

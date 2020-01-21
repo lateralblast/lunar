@@ -16,7 +16,7 @@ check_chsec() {
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
-        echo "  command: sh -c \"lssec -f $sec_file -s $sec_stanza -a $parameter_name |awk '{print $2}' |cut -f2 -d=\""
+        echo "  command: sh -c \"lssec -f $sec_file -s $sec_stanza -a $parameter_name |awk '{print \$2}' |cut -f2 -d=\""
         echo "  register: lssec_check"
         echo "  failed_when: lssec_check == 1"
         echo "  changed_when: false"

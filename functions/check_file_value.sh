@@ -114,7 +114,7 @@ check_file_value () {
           echo "- name: $string"
           echo "  lineinfile:"
           echo "    path: $check_file"
-          echo "    line: $line"
+          echo "    line: '$line'"
           echo "    create: yes"
           echo ""
         fi

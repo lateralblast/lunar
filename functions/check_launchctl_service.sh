@@ -27,7 +27,7 @@ check_launchctl_service () {
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
-        echo "  command: sh -c \"launchctl list |grep $launchctl_service |awk '{print $3}'\""
+        echo "  command: sh -c \"launchctl list |grep $launchctl_service |awk '{print \$3}'\""
         echo "  register: launchd_check"
         echo "  failed_when: launchd_check == 1"
         echo "  changed_when: false"
@@ -36,7 +36,7 @@ check_launchctl_service () {
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"sudo launchctl $change_status -w $launchctl_service.plist\""
-        echo "  when: launchd_check.rc == 0 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: launchd_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
         echo ""
       fi
       if [ "$actual_status" != "$required_status" ]; then

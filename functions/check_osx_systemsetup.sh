@@ -15,7 +15,7 @@ check_osx_systemsetup () {
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"
-          echo '  command: sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"'
+          echo "  command: sh -c \"sudo systemsetup -$param |cut -f2 -d: |sed 's/ //g' |tr '[:upper:]' '[:lower:]'\""
           echo "  register: systemsetup_check"
           echo "  failed_when: systemsetup_check == 1"
           echo "  changed_when: false"

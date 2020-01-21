@@ -35,7 +35,7 @@ audit_xinetd_service () {
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"
-          echo "  command:  sh -c \"cat $check_file |grep $parameter_name |awk '{print $3}'\""
+          echo "  command:  sh -c \"cat $check_file |grep $parameter_name |awk '{print \$3}'\""
           echo "  register: pwpolicy_check"
           echo "  failed_when: pwpolicy_check == 1"
           echo "  changed_when: false"

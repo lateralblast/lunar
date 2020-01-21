@@ -27,7 +27,7 @@ check_pmset() {
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
-        echo "  command: sh -c \"pmset -g | grep $service |awk '{print $2}' |grep $value\""
+        echo "  command: sh -c \"pmset -g | grep $service |awk '{print \$2}' |grep $value\""
         echo "  register: pmset_check"
         echo "  failed_when: pmset_check == 1"
         echo "  changed_when: false"
