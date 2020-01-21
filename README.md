@@ -82,7 +82,7 @@ available best practice from companies like Cloud Conformity.
 Configuration Management
 ------------------------
 
-The following configuration management output is supporter:
+The following configuration management output is supported:
 
 - Ansible
 
