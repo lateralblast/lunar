@@ -136,11 +136,12 @@ company_name="Lateral Blast Pty Ltd"
 
 print_help () {
   echo ""
-  echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|c|C|D|V] -[u] -[o] -[t]"
+  echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|H|c|C|D|V|n] -[u] -[o] -[t]"
   echo ""
   echo "-a: Run in audit mode (for Operating Systems - no changes made to system)"
   echo "-A: Run in audit mode (for Operating Systems - no changes made to system)"
   echo "    [includes filesystem checks which take some time]"
+  echo "-n: Output ansible code segments"
   echo "-w: Run in audit mode (for AWS - no changes made to system)"
   echo "-d: Run in audit mode (for Docker - no changes made to system)"
   echo "-x: Run in recommendations mode (for AWS - no changes made to system)"
