@@ -33,7 +33,7 @@ audit_kubernetes_apiserver () {
         check_file_value is $check_file "--enable-admission-plugins" eq "SecurityContextDeny" hash # yes
         check_file_value is $check_file "--enable-admission-plugins" eq "NamespaceLifecycle" hash # no
         check_file_value is $check_file "--audit-log-path" eq "/var/log/apiserver/audit.log" hash
-        check_file_value is $check_file "--audit-log-maxage" eq "verbose_message "" hash
+        check_file_value is $check_file "--audit-log-maxage" eq "30" hash
         check_file_value is $check_file "--audit-log-maxbackup" eq "10" hash
         check_file_value is $check_file "--audit-log-maxsize" eq "100" hash
         check_file_value is $check_file "--authorization-mode" eq "Node,RBAC" hash
@@ -50,7 +50,7 @@ audit_kubernetes_apiserver () {
         check_file_value set $check_file "--tls-cert-file" eq "na" hash
         check_file_value set $check_file "--tls-private-key-file" eq "na" hash
         check_file_value set $check_file "--client-ca-file" eq "na" hash
-        check_file_value is $check_file "--tls-cipher-suites" eq "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AE S_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1verbose_message "5,TLS_ECDHE_RSA_WITH_AES_256_GCM _SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1verbose_message "5,TLS_ECDHE_ECDSA_WITH_AES_256_GCM _SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256" hash
+        check_file_value is $check_file "--tls-cipher-suites" eq "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AE S_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM _SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM _SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256" hash
         check_file_value set $check_file "--etcd-cafile" eq "na" hash
         check_file_value is $check_file "--enable-admission-plugins" eq "NodeRestriction" hash # yes
         check_file_value set $check_file "--experimental-encryption-provider-config" eq "na" hash

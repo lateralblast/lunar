@@ -9,7 +9,7 @@ audit_safe_downloads() {
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
       update_file="/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.plist"
-      actual_value=`find $update_file -mtime -verbose_message "`
+      actual_value=`find $update_file -mtime -30`
       if [ "$actual_value" != "$update_file" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Safe Downloads list has not be updated recently"

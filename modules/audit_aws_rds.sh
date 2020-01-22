@@ -57,7 +57,7 @@ audit_aws_rds () {
     # Check if RDS instance VPC is publicly accessible
     sgs=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[*].VpcSecurityGroups[].VpcSecurityGroupId' --output text`
     for sg in $sgs; do
-      check_aws_open_port $sg 3verbose_message "6 tcp MySQL RDS $db
+      check_aws_open_port $sg 3306 tcp MySQL RDS $db
     done
     # Check RDS instance is not on a public subnet
     subnets=`aws rds describe-db-instances --region $aws_region --db-instance-identifier $db --query 'DBInstances[].DBSubnetGroup.Subnets[].SubnetIdentifier' --output text`

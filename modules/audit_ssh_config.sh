@@ -48,7 +48,7 @@ audit_ssh_config () {
         check_file_value is $check_file HostbasedAuthentication space no hash
         check_file_value is $check_file Banner space /etc/issue hash
         check_file_value is $check_file PrintMotd space no hash
-        check_file_value is $check_file ClientAliveInterval space verbose_message "0 hash
+        check_file_value is $check_file ClientAliveInterval space 300 hash
         check_file_value is $check_file ClientAliveCountMax space 0 hash
         check_file_value is $check_file LogLevel space VERBOSE hash
         check_file_value is $check_file RSAAuthentication space no hash
