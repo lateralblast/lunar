@@ -50,7 +50,7 @@ audit_writable_files () {
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "$check_file" >> $log_file
-            echo "Setting:   File $check_file to be non world writable"
+            verbose_message "Setting:   File $check_file to be non world writable"
             chmod o-w $check_file
           fi
         done
@@ -60,7 +60,7 @@ audit_writable_files () {
         if [ -f "$restore_file" ]; then
           for check_file in `cat $restore_file`; do
             if [ -f "$check_file" ]; then
-              echo "Restoring: File $check_file to previous permissions"
+              verbose_message "Restoring: File $check_file to previous permissions"
               chmod o+w $check_file
             fi
           done

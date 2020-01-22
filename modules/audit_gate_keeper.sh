@@ -15,7 +15,7 @@ audit_gate_keeper() {
           increment_insecure "Gatekeeper is not enabled"
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Seting:    Gatekeeper to enabled"
+          verbose_message "Seting:    Gatekeeper to enabled"
           echo "$actual_value" > $work_dir/$log_file
           sudo spctl --master-enable
         fi
@@ -29,7 +29,7 @@ audit_gate_keeper() {
       if [ -f "$restore_file" ]; then
         $restore_value=`cat $restore_file`
         if [ "$restore_value" != "$actual_value" ]; then
-          echo "Restoring: Gatekeeper to $restore_value"
+          verbose_message "Restoring: Gatekeeper to $restore_value"
           sudo spctl --master-$restore_value
         fi
       fi

@@ -24,7 +24,7 @@ audit_mount_setuid () {
               increment_insecure "Set-UID not restricted on user mounted devices"
             fi
             if [ "$audit_mode" = 0 ]; then
-              echo "Setting:   Set-UID restricted on user mounted devices"
+              verbose_message "Setting:   Set-UID restricted on user mounted devices"
               backup_file $check_file
               check_append_file $check_file "mount * hsfs udfs ufs -o nosuid" hash
             fi
@@ -55,7 +55,7 @@ audit_mount_setuid () {
               verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              echo "Setting:   Setting nodev on filesystems"
+              verbose_message "Setting:   Setting nodev on filesystems"
               backup_file $check_file
               cat $check_file | awk '( $3 ~ /^ext[2,3,4]|tmpfs$/ && $2 != "/" ) { $4 = $4 ",nosuid" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' > $temp_file
               cat $temp_file > $check_file

@@ -29,7 +29,7 @@ audit_reserved_ids () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "Reserved IDs"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  Whether reserved UUIDs are assigned to system accounts"
+      verbose_message "Checking:  Whether reserved UUIDs are assigned to system accounts"
     fi
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read check_user check_uid; do

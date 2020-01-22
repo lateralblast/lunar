@@ -19,7 +19,7 @@ audit_mob () {
         if [ "$audit_more" = "0" ]; then
           if [ "$syslog_server" != "" ]; then
             echo "enabled" > $backup_file
-            echo "Setting:   Managed Object Browser to disabled"
+            verbose_message "Setting:   Managed Object Browser to disabled"
             vim-cmd proxysvc/remove_service "/mob" "httpsWithRedirect"
           fi
         fi
@@ -39,7 +39,7 @@ audit_mob () {
       if [ -f "$restore_file" ]; then
         previous_value=`cat $restore_file`
         if [ "$previous_value" = "enabled" ]; then
-          echo "Restoring: Managed Object Browser to enabled"
+          verbose_message "Restoring: Managed Object Browser to enabled"
           vim-cmd proxysvc/add_np_service "/mob" httpsWithRedirect /var/run/vmware/proxy-mob
         fi
       fi

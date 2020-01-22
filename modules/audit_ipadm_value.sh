@@ -19,7 +19,7 @@ audit_ipadm_value () {
           restore_value=`cat $restore_file |grep "$ipadm_property," |cut -f3 -d','`
           if [ `expr "$restore_property" : "[A-z]"` = 1 ]; then
             if [ "$current_value" != "$restore_value" ]; then
-              echo "Restoring: $ipadm_name $ipadm_property to $restore_value"
+              verbose_message "Restoring: $ipadm_name $ipadm_property to $restore_value"
               ipadm set-prop -p $ipadm_name=$restore_value $ipadm_property
             fi
           fi
@@ -36,7 +36,7 @@ audit_ipadm_value () {
           verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Value of \"$ipadm_name $ipadm_property\" to \"$correct_value\""
+            verbose_message "Setting:   Value of \"$ipadm_name $ipadm_property\" to \"$correct_value\""
             echo "$ipadm_name,$ipadm_property,$correct_value" >> $log_file
             `$command_line`
           fi

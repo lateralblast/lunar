@@ -20,7 +20,7 @@ audit_system_auth_password_strength () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Password minimum length in $check_file"
+              verbose_message "Setting:   Password minimum length in $check_file"
               cp $check_file $temp_file
               cat $temp_file |sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' > $check_file
               rm $temp_file

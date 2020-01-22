@@ -28,7 +28,7 @@ check_rctcp() {
         echo "  service:"
         echo "    name: $service_name"
         echo "    enabled: $enabled"
-        echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
         echo ""
       fi
       if [ "$actual_value" != "$correct_value" ]; then
@@ -52,7 +52,7 @@ check_rctcp() {
         fi
         if [ "$audit_mode" = 0 ]; then
           log_file="$work_dir/$log_file"
-          echo "Setting:   Service \"$service_name\" to \"$correct_value\""
+          verbose_message "Setting:   Service \"$service_name\" to \"$correct_value\""
           echo "$actual_value" > $log_file
           if [ "$correct_value" = "off" ]; then
             chrctcp -d $service_name
@@ -78,7 +78,7 @@ check_rctcp() {
       if [ -f "$log_file" ]; then
         previous_value=`cat $log_file`
         if [ "$previous_value" != "$actual_value" ]; then
-          echo "Restoring: Service \"$service_name\" to \"$previous_value\""
+          verbose_message "Restoring: Service \"$service_name\" to \"$previous_value\""
           if [ "$previous_value" = "off" ]; then
             chrctcp -d $service_name
             stopsrc -s $service_name

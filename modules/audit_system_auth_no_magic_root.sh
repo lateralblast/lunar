@@ -21,7 +21,7 @@ audit_system_auth_no_magic_root () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Auth entry in $check_file"
+              verbose_message "Setting:   Auth entry in $check_file"
               cp $check_file $temp_file
               cat $temp_file |awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root"; print $0; next };' > $check_file
               rm $temp_file

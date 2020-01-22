@@ -42,7 +42,7 @@ funct_check_pkg () {
           increment_insecure "Package $pkg_name is not installed"
           pkg_dir="$base_dir/pkg/$pkg_name"
           if [ -d "$pkg_dir" ]; then
-            echo "Installing: $pkg_name"
+            verbose_message "Installing: $pkg_name"
             if [ "$os_version" = "11" ]; then
               pkgadd $pkg_name
             else
@@ -50,7 +50,7 @@ funct_check_pkg () {
               pkg_check=`pkginfo $1`
             fi
             if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then
-              echo "$pkg_name" >> $log_file
+              verbose_message "$pkg_name" >> $log_file
             fi
           fi
         fi

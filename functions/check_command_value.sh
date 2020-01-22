@@ -19,7 +19,7 @@ check_command_value () {
       parameter_name=`cat $restore_file |grep '$parameter_name' |cut -f1 -d','`
       correct_value=`cat $restore_file |grep '$parameter_name' |cut -f2 -d','`
       if [ `expr "$parameter_name" : "[A-z]"` = 1 ]; then
-        echo "Returning $parameter_name to $correct_value"
+        verbose_message "Returning $parameter_name to $correct_value"
         if [ "$command_name" = "routeadm" ]; then
           if [ "$correct_value" = "disabled" ]; then
             set_command="routeadm -d"
@@ -28,7 +28,7 @@ check_command_value () {
           fi
           $set_command $parameter_name
         else
-          $set_command $parameter_name $correct_value
+          $set_command $parameter_name=$correct_value
           if [ `expr "$parameter_name" : "tcp_trace"` = 9 ]; then
             svcadm refresh svc:/network/inetd
           fi
@@ -37,10 +37,11 @@ check_command_value () {
     fi
   else
     if [ "$parameter_name" = "tcp_wrappers" ]; then
-      echo "Checking:  Service $service_name has \"$parameter_name\" set to \"$correct_value\""
+      string="Service $service_name has $parameter_name set to $correct_value"
     else
-      echo "Checking:  Output of $command_name \"$parameter_name\" is \"$correct_value\""
+      string="Output of $command_name $parameter_name is $correct_value"
     fi
+    verbose_message "Checking:  $string"
   fi
   if [ "$command_name" = "inetadm" ]; then
     check_command="inetadm -l $service_name"
@@ -50,6 +51,29 @@ check_command_value () {
   if [ "$command_name" = "routeadm" ]; then
     check_command="routeadm -p $parameter_name"
     current_value=`$check_command |awk '{print $3}' |cut -f2 -d'='`
+    if [ "$correct_value" = "disabled" ]; then
+      set_command="routeadm -d"
+    else
+      set_command="routeadm -e"
+    fi
+    l_command="$set_command $parameter_name"
+  else
+    l_command="$set_command $parameter_name=$correct_value"
+  fi
+  if [ "$ansible" = 1 ]; then
+    echo ""
+    echo "- name: Checking $string"
+    echo "  command: sh -c \"$check_command\""
+    echo "  register: lssec_check"
+    echo "  failed_when: lssec_check == 1"
+    echo "  changed_when: false"
+    echo "  ignore_errors: true"
+    echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+    echo ""
+    echo "- name: Fixing $string"
+    echo "  command: sh -c \"$l_command\""
+    echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == 'AIX'"
+    echo ""
   fi
   log_file="$work_dir/$command_name.log"
   if [ "$current_value" != "$correct_value" ]; then
@@ -71,7 +95,7 @@ check_command_value () {
       fi
     else
       if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   $parameter_name to $correct_value"
+        verbose_message "Setting:   $parameter_name to $correct_value"
         echo "$parameter_name,$current_value" >> $log_file
         if [ "$command_name" = "routeadm" ]; then
           if [ "$correct_value" = "disabled" ]; then

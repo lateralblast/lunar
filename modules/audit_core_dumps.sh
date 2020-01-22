@@ -26,9 +26,9 @@ audit_core_dumps () {
             increment_insecure "Cores are not restricted to a private directory"
           else
             if [ "$audit_mode" = 0 ]; then
-              echo "Setting:   Making sure restricted to a private directory"
+              verbose_message "Setting:   Making sure restricted to a private directory"
               if [ -f "$check_file" ]; then
-                echo "Saving:    File $check_file to $work_dir$check_file"
+                Raate "Saving:    File $check_file to $work_dir$check_file"
                 find $check_file | cpio -pdm $work_dir 2> /dev/null
               else
                 touch $check_file

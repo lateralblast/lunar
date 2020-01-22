@@ -15,7 +15,7 @@ audit_wheel_group () {
         fi
         if [ "$audit_mode" = 0 ]; then
           backup_file $check_file
-          echo "Setting:   Adding $wheel_group group to $check_file"
+          verbose_message "Setting:   Adding $wheel_group group to $check_file"
           groupadd $wheel_group
           usermod -G $wheel_group root
         fi

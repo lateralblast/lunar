@@ -21,7 +21,7 @@ audit_root_home () {
           fi
           if [ "$audit_mode" = 0 ]; then
             echo "$home_check" >> $log_file
-            echo "Setting:   Root home directory correctly"
+            verbose_message "Setting:   Root home directory correctly"
             mkdir -m 700 /root
             mv -i /.?* /root/
             passmgmt -m -h /root root
@@ -35,7 +35,7 @@ audit_root_home () {
           restore_file="$restore_dir/rootgroup.log"
           if [ -f "$restore_file" ]; then
             $home_check=`cat $restore_file`
-            echo "Restoring: Root home directory $home_check"
+            verbose_message "Restoring: Root home directory $home_check"
             mv -i $home_check/.?* /
             passmgmt -m -h $group_check root
           fi

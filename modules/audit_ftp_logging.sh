@@ -12,7 +12,7 @@ audit_ftp_logging () {
         check_value=`$get_command |grep "\-d" | wc -l`
         file_header="ftpd_logging"
         if [ "$audit_mode" != 2 ]; then
-          echo "Checking:  File $file_header"
+          verbose_message "Checking:  File $file_header"
         fi
         log_file="$work_dir/$file_header.log"
         if [ "$audit_mode" = 1 ]; then
@@ -27,7 +27,7 @@ audit_ftp_logging () {
         else
           if [ "$audit_mode" = 0 ]; then
             if [ "$check_value" -eq 0 ]; then
-              echo "Setting:   FTP daemon logging to enabled"
+              verbose_message "Setting:   FTP daemon logging to enabled"
               $get_command > $log_file
               inetadm -m svc:/network/ftp exec="/usr/sbin/in.ftpd -a -l -d"
             fi
@@ -36,7 +36,7 @@ audit_ftp_logging () {
               restore_file="$restore_dir/$file_header.log"
               if [ -f "$restore_file" ]; then
                 exec_string=`cat $restore_file`
-                echo "Restoring: Previous value for FTP daemon to $exec_string"
+                verbose_message "Restoring: Previous value for FTP daemon to $exec_string"
                 inetadm -m svc:/network/ftp exec="$exec_string"
               fi
             fi

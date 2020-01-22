@@ -33,7 +33,7 @@ audit_system_accounts () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   System account $user_name to have shell /sbin/nologin"
+            verbose_message "Setting:   System account $user_name to have shell /sbin/nologin"
             backup_file $check_file
             if [ "$os_name" = "FreeBSD" ]; then
               pw moduser $user_name -s /sbin/nologin

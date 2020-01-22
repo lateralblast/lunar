@@ -24,7 +24,7 @@ audit_solaris_auditing () {
           audit_check=`cat $check_file |grep "audit -n" |cut -f4 -d'/'`
           if [ "$audit_check" != "audit -n" ]; then
             if [ ! -f "$log_file" ]; then
-              echo "Saving:    File $check_file to $work_dir$check_file"
+              verbose_message "Saving:    File $check_file to $work_dir$check_file"
               find $check_file | cpio -pdm $work_dir 2> /dev/null
             fi
             echo "0 * * * * /usr/sbin/audit -n" >> $check_file

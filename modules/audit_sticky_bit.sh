@@ -29,7 +29,7 @@ audit_sticky_bit () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Sticky bit on $check_dir"
+            verbose_message "Setting:   Sticky bit on $check_dir"
             chmod +t $check_dir
             echo "$check_dir" >> $log_file
           fi
@@ -39,7 +39,7 @@ audit_sticky_bit () {
           if [ -f "$restore_file" ]; then
             for check_dir in `cat $restore_file`; do
               if [ -d "$check_dir" ]; then
-                echo "Restoring:  Removing sticky bit from $check_dir"
+                verbose_message "Restoring:  Removing sticky bit from $check_dir"
                 chmod -t $check_dir
               fi
             done

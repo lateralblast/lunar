@@ -42,7 +42,7 @@ check_systemctl_service () {
         check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
         if [ "$check_status" = "enabled" ] || [ "$check_status" = "disabled" ]; then
           if [ "$check_status" != "$actual_status" ]; then
-            echo "Restoring: Service $service_name at run level $service_level to $check_status"
+            verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"
             if [ "$check_status" = "enable" ] || [ "$check_status" = "enabled" ]; then
               service_switch="enable"
             else

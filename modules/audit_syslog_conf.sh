@@ -31,7 +31,7 @@ audit_syslog_conf () {
           if [ "$audit_more" = "0" ]; then
             if [ "$syslog_logdir" != "" ]; then
               echo "$current_value" > $backup_file
-              echo "Setting:   Syslog log directory to a persistent datastore"
+              verbose_message "Setting:   Syslog log directory to a persistent datastore"
               esxcli system syslog config set --logdir="$syslog_logdir"
             fi
           fi
@@ -52,7 +52,7 @@ audit_syslog_conf () {
         if [ -f "$restore_file" ]; then
           previous_value=`cat $restore_file`
           if [ "$previous_value" != "$current_value" ]; then
-            echo "Restoring: Syslog log directory to $previous_value"
+            verbose_message "Restoring: Syslog log directory to $previous_value"
             esxcli system syslog config set --logdir="$previous_value"
           fi
         fi
@@ -89,7 +89,7 @@ audit_syslog_conf () {
         if [ -f "$restore_file" ]; then
           previous_value=`cat $restore_file`
           if [ "$previous_value" != "$current_value" ]; then
-            echo "Restoring: Syslog loghost to $previous_value"
+            verbose_message "Restoring: Syslog loghost to $previous_value"
             esxcli system syslog config set --loghost="$previous_value"
           fi
         fi

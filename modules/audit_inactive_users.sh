@@ -27,9 +27,9 @@ audit_inactive_users () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Saving:    File $check_file to $work_dir$check_file"
+            verbose_message "Saving:    File $check_file to $work_dir$check_file"
             find $check_file | cpio -pdm $work_dir 2> /dev/null
-            echo "Setting:   Inactive lockout for $user_name"
+            verbose_message "Setting:   Inactive lockout for $user_name"
             usermod -f 35 $user_name
           fi
         else

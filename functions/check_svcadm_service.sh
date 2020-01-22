@@ -18,7 +18,7 @@ check_svcadm_service () {
         if [ `expr "$restore_status" : "[A-z]"` = 1 ]; then
           if [ "$restore_status" != "$service_status" ]; then
             restore_status=`echo $restore_status |sed 's/online/enable/g' |sed 's/offline/disable/g'`
-            echo "Restoring: Service $service_name to $restore_status""d"
+            verbose_message "Restoring: Service $service_name to $restore_status""d"
             svcadm $restore_status $service_name
             svcadm refresh $service_name
           fi

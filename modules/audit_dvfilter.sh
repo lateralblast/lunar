@@ -13,7 +13,7 @@ audit_dvfilter () {
       if [ "$current_value" != "0" ]; then
         if [ "$audit_more" = "0" ]; then
           echo "$current_value" > $backup_file
-          echo "Setting:   Dvfilter to disabled"
+          verbose_message "Setting:   Dvfilter to disabled"
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d
         fi
         if [ "$audit_mode" = "1" ]; then
@@ -32,7 +32,7 @@ audit_dvfilter () {
       if [ -f "$restore_file" ]; then
         previous_value=`cat $restore_file`
         if [ "$previous_value" != "$current_value" ]; then
-          echo "Restoring: Dvfilter to $previous_value"
+          verbose_message "Restoring: Dvfilter to $previous_value"
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -i $previous_value
         fi
       fi

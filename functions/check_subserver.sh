@@ -42,7 +42,7 @@ check_subserver() {
         fi
         if [ "$audit_mode" = 0 ]; then
           log_file="$work_dir/$log_file"
-          echo "Setting:   Service \"$service_name\" Protocol \"$protocol_name\" to \"$correct_value\""
+          verbose_message "Setting:   Service \"$service_name\" Protocol \"$protocol_name\" to \"$correct_value\""
           echo "$actual_value" > $log_file
           if [ "$correct_value" = "off" ]; then
             chsubserver -r inetd -C /etc/inetd.conf -d -v '$service_name' -p '$protocol_name'
@@ -58,7 +58,7 @@ check_subserver() {
       if [ -f "$log_file" ]; then
         previous_value=`cat $log_file`
         if [ "$previous_value" != "$actual_value" ]; then
-          echo "Restoring: Service \"$service_name\" Protocol \"$protocol_name\" to \"$previous_value\""
+          verbose_message "Restoring: Service \"$service_name\" Protocol \"$protocol_name\" to \"$previous_value\""
           if [ "$previous_value" = "off" ]; then
             chsubserver -r inetd -C /etc/inetd.conf -d -v '$service_name' -p '$protocol_name'
           else

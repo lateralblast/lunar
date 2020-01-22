@@ -41,7 +41,7 @@ check_osx_systemsetup () {
           now=`sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"`
           old=`cat $restore_file`
           if [ "$now" != "$old" ]; then
-            echo "Setting:   Parameter $param back to $old"
+            verbose_message "Setting:   Parameter $param back to $old"
             sudo systemsetup -$param $old
           fi
         fi

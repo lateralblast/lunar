@@ -55,7 +55,7 @@ audit_system_accounting () {
           verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   System Accounting to enabled"
+          verbose_message "Setting:   System Accounting to enabled"
           log_file="$work_dir/$log_file"
           echo "Installed sysstat" >> $log_file
           check_linux_package install sysstat
@@ -187,7 +187,7 @@ audit_system_accounting () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   System Accounting to enabled"
+            verbose_message "Setting:   System Accounting to enabled"
             if [ ! -f "$log_file" ]; then
               echo "Saving:    File $check_file to $work_dir$check_file"
               find $check_file | cpio -pdm $work_dir 2> /dev/null

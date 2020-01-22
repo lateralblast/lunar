@@ -97,10 +97,10 @@ check_file_value () {
           verbose_message "Setting:   $string"
           if [ "$check_file" = "/etc/system" ]; then
             reboot=1
-            echo "Notice:    Reboot required"
+            verbose_message "Notice:    Reboot required"
           fi
           if [ "$sshd_test" ]; then
-            echo "Notice:    Service restart required for SSH"
+            verbose_message "Notice:    Service restart required for SSH"
           fi
           backup_file $check_file
           if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
@@ -203,13 +203,13 @@ check_file_value () {
             else
               check_parameter=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f1 -d"$separator" |sed 's/ //g' |uniq`
             fi
-            echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
+            verbose_message "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
             if [ "$check_file" = "/etc/system" ]; then
               reboot=1
-              echo "Notice:    Reboot required"
+              verbose_message "Notice:    Reboot required"
             fi
             if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
-              echo "Notice:    Service restart required for SSH"
+              verbose_message "Notice:    Service restart required for SSH"
             fi
             backup_file $check_file
             if [ "$check_parameter" != "$parameter_name" ]; then

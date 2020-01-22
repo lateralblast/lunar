@@ -18,7 +18,7 @@ audit_core_limit () {
           verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Core dump limits"
+          verbose_message "Setting:   Core dump limits"
           echo "$current_value" > $log_file
           launchctl limit core 0
         fi
@@ -32,7 +32,7 @@ audit_core_limit () {
       if [ -f "$restore_file" ]; then
         previous_value=`cat $restore_file`
         if [ "$current_value" != "$previous_value" ]; then
-          echo "Restoring: Core limit to $previous_value"
+          verbose_message "Restoring: Core limit to $previous_value"
           launchctl limit core unlimited
         fi
       fi

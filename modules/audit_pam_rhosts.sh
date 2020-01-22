@@ -25,7 +25,7 @@ audit_pam_rhosts () {
             else
               log_file="$work_dir$check_file"
               if [ ! -f "$log_file" ]; then
-                echo "Saving:    File $check_file to $work_dir$check_file"
+                verbose_message "Saving:    File $check_file to $work_dir$check_file"
                 find $check_file | cpio -pdm $work_dir 2> /dev/null
               fi
               echo "Setting:   Rhost authentication to disabled in $check_file"
@@ -51,7 +51,7 @@ audit_pam_rhosts () {
           if [ "$audit_mode" = 2 ]; then
             restore_file $check_file $restore_dir
           else
-            echo "Checking:  Rhost authentication disabled in $check_file"
+            verbose_message "Checking:  Rhost authentication disabled in $check_file"
             pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
             if [ "$pam_check" = "1" ]; then
               if [ "$audit_mode" = 1 ]; then
@@ -64,7 +64,7 @@ audit_pam_rhosts () {
               fi
               if [ "$audit_mode" = 0 ]; then
                 backup_file $check_file
-                echo "Setting:   Rhost authentication to disabled in $check_file"
+                verbose_message "Setting:   Rhost authentication to disabled in $check_file"
                 sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file
                 cat $temp_file > $check_file
                 rm $temp_file

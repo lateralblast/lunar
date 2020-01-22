@@ -49,7 +49,7 @@ audit_ndd_value () {
           verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   NDD \"$ndd_name $ndd_property\" to \"$correct_value\""
+            verbose_message "Setting:   NDD \"$ndd_name $ndd_property\" to \"$correct_value\""
             echo "$ndd_name,$ndd_property,$correct_value" >> $log_file
             `$command_line`
           fi

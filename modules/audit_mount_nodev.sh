@@ -26,7 +26,7 @@ audit_mount_nodev () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Setting nodev on filesystems"
+            verbose_message "Setting:   Setting nodev on filesystems"
             backup_file $check_file
             cat $check_file | awk '( $3 ~ /^ext[2,3,4]|tmpf$/ && $2 != "/" ) { $4 = $4 ",nodev" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' > $temp_file
             cat $temp_file > $check_file

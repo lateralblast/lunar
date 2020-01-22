@@ -14,7 +14,7 @@ audit_kernel_modules () {
         if [ "$current_value" != "VMware Signed" ]; then
           if [ "$audit_more" = "0" ]; then
             if [ "$syslog_server" != "" ]; then
-              echo "Setting:   Kernel module $module to disabled"
+              verbose_message "Setting:   Kernel module $module to disabled"
               echo "true" > $backup_file
               esxcli system module set -e false -m $module
             fi
@@ -34,7 +34,7 @@ audit_kernel_modules () {
         if [ -f "$restore_file" ]; then
           previous_value=`cat $restore_file`
           if [ "$previous_value" != "$current_value" ]; then
-            echo "Restoring: Kernel module to $previous_value"
+            verbose_message "Restoring: Kernel module to $previous_value"
             esxcli system module set -e $previous_value -m $module
           fi
         fi

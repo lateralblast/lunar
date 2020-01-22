@@ -22,7 +22,7 @@ audit_system_auth_password_hashing () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Password minimum length in $check_file"
+              verbose_message "Setting:   Password minimum length in $check_file"
               cp $check_file $temp_file
               cat $temp_file |sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' > $check_file
               rm $temp_file

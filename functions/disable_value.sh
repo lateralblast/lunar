@@ -25,7 +25,7 @@ disable_value () {
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
     else
-      echo "Checking:  Parameter \"$parameter_name\" in $check_file is disabled"
+      verbose_message "Checking:  Parameter \"$parameter_name\" in $check_file is disabled"
       if [ "$separator" = "tab" ]; then
         param_hyphen=`echo "$parameter_name" |grep "^[\-]"`
         if [ "$param_hyphen" ]; then
@@ -39,13 +39,13 @@ disable_value () {
         if [ "$check_value" != "$parameter_name" ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
+            verbose_message "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
             if [ "$check_file" = "/etc/system" ]; then
               reboot=1
-              echo "Notice:    Reboot required"
+              verbose_message "Notice:    Reboot required"
             fi
             if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
-              echo "Notice:    Service restart required SSH"
+              verbose_message "Notice:    Service restart required SSH"
             fi
             backup_file $check_file
             cat $check_file |sed 's/$parameter_name/$comment_value&' > $temp_file

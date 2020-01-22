@@ -35,9 +35,9 @@ audit_suid_files () {
         file_type=`file $check_file |awk '{print $5}'`
         if [ "$file_type" != "script" ]; then
           elfsign_check=`elfsign verify -e $check_file 2>&1`
-          echo "Result:    $elfsign_check"
+          verbose_message "Result:    $elfsign_check"
         else
-          echo "Result:    Shell script"
+          verbose_message "Result:    Shell script"
         fi
       done
     fi

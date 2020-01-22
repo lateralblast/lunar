@@ -16,9 +16,9 @@ audit_create_class () {
           increment_insecure "Audit class not enabled"
         else
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Audit class to enabled"
+            verbose_message "Setting:   Audit class to enabled"
             if [ ! -f "$work_dir$check_file" ]; then
-              echo "Saving:    File $check_file to $work_dir$check_file"
+              verbose_message "Saving:    File $check_file to $work_dir$check_file"
               find $check_file | cpio -pdm $work_dir 2> /dev/null
             fi
             file_length=`wc -l $check_file |awk '{print $1}' |sed 's/ //g'`

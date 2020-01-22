@@ -24,7 +24,7 @@ audit_system_auth_password_policy () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Password $search_string to $search_value in $check_file"
+              verbose_message "Setting:   Password $search_string to $search_value in $check_file"
               cp $check_file $temp_file
               cat $temp_file |awk '( $1 == "password" && $2 == "requisite" && $3 == "pam_cracklib.so" ) { print $0  " dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9"; next }; { print }' > $check_file
               rm $temp_file

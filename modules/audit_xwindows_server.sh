@@ -14,7 +14,7 @@ audit_xwindows_server () {
       if [ ! "$no_rego" ]; then
         check_linux_package uninstalled "X Windows Server" group
       else
-        echo "Warning:   System not registered with a repository"
+        verbose_message "Warning:   System not registered with a repository"
       fi
     fi
   fi

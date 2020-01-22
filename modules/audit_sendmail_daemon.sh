@@ -68,7 +68,7 @@ audit_sendmail_daemon() {
         search_string="Addr=127.0.0.1"
         restore=0
         if [ "$audit_mode" != 2 ]; then
-          echo "Checking:  Mail transfer agent is running in local-only mode"
+          verbose_message "Checking:  Mail transfer agent is running in local-only mode"
           check_value=`cat $check_file |grep -v '^#' |grep 'O DaemonPortOptions' |awk '{print $3}' |grep '$search_string'`
           if [ "$check_value" = "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
@@ -81,7 +81,7 @@ audit_sendmail_daemon() {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Mail transfer agent to run in local-only mode"
+              verbose_message "Setting:   Mail transfer agent to run in local-only mode"
               cp $check_file $temp_file
               cat $temp_file |awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA"; next} { print }' > $check_file
               rm $temp_file

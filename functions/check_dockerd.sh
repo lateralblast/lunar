@@ -12,15 +12,15 @@ check_dockerd () {
       value=$4
       if [ "$type" = "config" ]; then
         if [ "$value" ]; then
-          echo "Checking:  Docker $type parameter $param has value $value"
+          verbose_message "Checking:  Docker $type parameter $param has value $value"
         else
-          echo "Checking:  Docker $type parameter $param has no value"
+          verbose_message "Checking:  Docker $type parameter $param has no value"
         fi
       else
         if [ "$value" ]; then
-          echo "Checking:  Docker $type parameter $param is $used and has value $value"
+          verbose_message "Checking:  Docker $type parameter $param is $used and has value $value"
         else
-          echo "Checking:  Docker $type parameter $param is $used"
+          verbose_message "Checking:  Docker $type parameter $param is $used"
         fi
       fi
       case "$type" in
@@ -61,7 +61,7 @@ check_dockerd () {
           IFS=$'\n'
           docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null`
           if [ ! "$docker_info" ]; then
-            echo "Notice:    No Docker instances"
+            verbose_message "Notice:    No Docker instances"
           fi
           for info in $docker_info; do
             docker_id=`echo "$info" |cut -f1 -d:`
@@ -112,7 +112,7 @@ check_dockerd () {
               ;;
           esac
           if [ ! "$docker_info" ]; then
-            echo "Notice:    No Docker instances with $param set"
+            verbose_message "Notice:    No Docker instances with $param set"
           fi
           for info in $docker_info; do
             docker_id=`echo "$info" |cut -f1 -d:`

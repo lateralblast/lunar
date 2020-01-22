@@ -23,7 +23,7 @@ audit_logadm_value () {
           verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Syslog to capture $log_facility"
+            verbose_message "Setting:   Syslog to capture $log_facility"
           fi
           backup_file $check_file
           if [ "$log_facility" != "none" ]; then

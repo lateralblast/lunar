@@ -13,21 +13,21 @@ print_audit_info () {
     dir_name=`pwd`
     file_name="$dir_name/modules/$module.sh"
     if [ -f "$file_name" ] ; then
-      echo "# Module: $module"
+      verbose_message "# Module: $module"
       while read line ; do
         if [ "$line" = "# $module" ]; then
           comment_text=1
         else
           if [ "$comment_text" = 1 ]; then
             if [ "$line" = "#." ]; then
-              echo ""
+              verbose_message ""
               comment_text=0
             fi
             if [ "$comment_text" == 1 ]; then
               if [ "$line" == "#" ]; then
-                echo ""
+                verbose_message ""
               else
-                echo "$line"
+                verbose_message "$line"
               fi
             fi
           fi

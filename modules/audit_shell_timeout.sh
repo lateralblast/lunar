@@ -14,7 +14,7 @@ audit_shell_timeout () {
         if [ "$current_value" != "$timeout" ]; then
           if [ "$audit_more" = "0" ]; then
             echo "$current_value" > $backup_file
-            echo "Setting:   Timeout value for $test to $timeout"
+            verbose_message "Setting:   Timeout value for $test to $timeout"
             esxcli system settings advanced set -o /UserVars/$test -i $timeout
           fi
           if [ "$audit_mode" = "1" ]; then
@@ -33,7 +33,7 @@ audit_shell_timeout () {
         if [ -f "$restore_file" ]; then
           previous_value=`cat $restore_file`
           if [ "$previous_value" != "$current_value" ]; then
-            echo "Restoring: Shell timeout to $previous_value"
+            verbose_message "Restoring: Shell timeout to $previous_value"
             esxcli system settings advanced set -o /UserVars/$test -i $previous_value
           fi
         fi

@@ -33,7 +33,7 @@ audit_gnome_banner () {
               fi
               if [ "$audit_mode" = 0 ]; then
                 backup_file $check_file
-                echo "Setting:   Warning banner in $check_file"
+                verbose_message "Setting:   Warning banner in $check_file"
                 echo "   --title=\"Security Message\" --filename=/etc/issue" >> $check_file
                 if [ "$os_version" = "10" ]; then
                   pkgchk -f -n -p $check_file 2> /dev/null
@@ -80,7 +80,7 @@ audit_gnome_banner () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Warning banner to \"$warning_message\""
+            verbose_message "Setting:   Warning banner to \"$warning_message\""
             log_file="$work_dir/$log_file"
             echo "$actual_value" > $log_file
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"$warning_message\"
@@ -95,7 +95,7 @@ audit_gnome_banner () {
         if [ -f "$log_file" ]; then
           restore_value=`cat $log_file`
           if [ "$restore_value" != "$actual_value" ]; then
-            echo "Restoring: Warning banner to $previous_value"
+            verbose_message "Restoring: Warning banner to $previous_value"
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text "$restore_value"
           fi
         fi
@@ -111,7 +111,7 @@ audit_gnome_banner () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Warning banner to \"$warning_message\""
+            verbose_message "Setting:   Warning banner to \"$warning_message\""
             log_file="$work_dir/$log_file"
             echo "$actual_value" > $log_file
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true
@@ -126,7 +126,7 @@ audit_gnome_banner () {
         if [ -f "$log_file" ]; then
           restore_value=`cat $log_file`
           if [ "$restore_value" != "$actual_value" ]; then
-            echo "Restoring: Warning banner to $previous_value"
+            verbose_message "Restoring: Warning banner to $previous_value"
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable "$restore_value"
           fi
         fi

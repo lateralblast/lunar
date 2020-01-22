@@ -21,7 +21,7 @@ audit_serial_login () {
             log_file="$restore_dir/$tty_name"
             if [ -f "$log_file" ]; then
               previous_value=`cat $log_file`
-              echo "Restoring: TTY $tty_name to $previous_value"
+              verbose_message "Restoring: TTY $tty_name to $previous_value"
               chitab "$previous_value $tty_name"
             fi
           done
@@ -46,7 +46,7 @@ audit_serial_login () {
             log_file="$restore_dir/$tty_name"
             if [ -f "$log_file" ]; then
               previous_value=`cat $log_file`
-              echo "Restoring: TTY $tty_name to $previous_value"
+              verbose_message "Restoring: TTY $tty_name to $previous_value"
               chitab "$previous_value $tty_name"
             fi
           fi
@@ -70,7 +70,7 @@ audit_serial_login () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Serial port logins to disabled"
+            verbose_message "Setting:   Serial port logins to disabled"
             echo "ttya,ttyb" >> $log_file
             pmadm -d -p zsmon -s ttya
             pmadm -d -p zsmon -s ttyb
@@ -79,7 +79,7 @@ audit_serial_login () {
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/pmadm.log"
           if [ -f "$restore_file" ]; then
-            echo "Restoring: Serial port logins to enabled"
+            verbose_message "Restoring: Serial port logins to enabled"
             pmadm -e -p zsmon -s ttya
             pmadm -e -p zsmon -s ttyb
           fi
@@ -96,7 +96,7 @@ audit_serial_login () {
             increment_insecure "Serial port logins not disabled"
           fi
           if [ "$audit_mode" = 2 ]; then
-            echo "Setting:   Serial port logins to disabled"
+            verbose_message "Setting:   Serial port logins to disabled"
             backup_file $check_file
             tmp_file="/tmp/ttys_$check_string"
             awk '($4 == "dialup") { $5 = "off" } { print }' $check_file > $tmp_file

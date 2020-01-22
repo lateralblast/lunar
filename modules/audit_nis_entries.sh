@@ -22,7 +22,7 @@ audit_nis_entries () {
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
-            echo "Setting:   File $check_file to have no NIS entries"
+            verbose_message "Setting:   File $check_file to have no NIS entries"
             sed -e "s/^+/#&/" < $check_file > $temp_file
             cat $temp_file > $check_file
             if [ "$os_name" = "SunOS" ]; then

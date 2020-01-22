@@ -50,7 +50,7 @@ check_pmset() {
       if [ -f "$restore_file" ]; then
         $restore_value=`cat $restore_file`
         if [ "$restore_value" != "$actual_value" ]; then
-          echo "Restoring: Wake on lan to enabled"
+          verbose_message "Restoring: Wake on lan to enabled"
           pmset -c $service $restore_value
         fi
       fi

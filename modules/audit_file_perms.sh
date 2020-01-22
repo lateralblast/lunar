@@ -21,7 +21,7 @@ audit_file_perms () {
         fi
         if [ "$audit_mode" = 0 ]; then
           if [ "$os_version" = "10" ]; then
-            echo "Setting:   Correct permissions on $check_file"
+            verbose_message "Setting:   Correct permissions on $check_file"
             log_file="$work_dir/$log_file"
             file_perms=`ls -l $check_file |echo "obase=8;ibase=2;\`awk '{print $1}' |cut -c2-10 |tr 'xrws-' '11110'\`" |/usr/bin/bc`
             file_owner=`ls -l $check_file |awk '{print $3","$4}'`
@@ -52,7 +52,7 @@ audit_file_perms () {
           restore_perms=`echo "$restore_info" |cut -f2 -d","`
           restore_owner=`echo "$restore_info" |cut -f3 -d","`
           restore_group=`echo "$restore_info" |cut -f4 -d","`
-          echo "Restoring: File $check_file to previous permissions"
+          verbose_message "Restoring: File $check_file to previous permissions"
           chmod $restore_perms $check_file
           if [ "$check_owner" != "" ]; then
             chown $restore_owner:$restore_group $check_file
@@ -65,7 +65,7 @@ audit_file_perms () {
     verbose_message "System File Permissions"
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
-      echo "Checking:  File permissions [This may take a while]"
+      verbose_message "Checking:  File permissions [This may take a while]"
       for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Incorrect permissions on $file_name"
@@ -74,7 +74,7 @@ audit_file_perms () {
           verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   Correct permissions on $file_name"
+          verbose_message "Setting:   Correct permissions on $file_name"
           log_file="$work_dir/$log_file"
           file_perms=`stat -c %a $check_file`
           file_owner=`ls -l $check_file |awk '{print $3","$4}'`
@@ -91,7 +91,7 @@ audit_file_perms () {
           restore_perms=`echo "$restore_info" |cut -f2 -d","`
           restore_owner=`echo "$restore_info" |cut -f3 -d","`
           restore_group=`echo "$restore_info" |cut -f4 -d","`
-          echo "Restoring: File $check_file to previous permissions"
+          verbose_message "Restoring: File $check_file to previous permissions"
           chmod $restore_perms $check_file
           if [ "$check_owner" != "" ]; then
             chown $restore_owner:$restore_group $check_file

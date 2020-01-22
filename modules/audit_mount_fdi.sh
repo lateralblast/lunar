@@ -44,7 +44,7 @@ audit_mount_fdi () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Disabling user mountable filesystems"
+            verbose_message "Setting:   Disabling user mountable filesystems"
             backup_file $check_file
             echo '<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- --> >' > $temp_file
             echo '<deviceinfo version="0.2">' >> $temp_file

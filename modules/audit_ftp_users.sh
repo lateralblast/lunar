@@ -17,7 +17,7 @@ audit_ftp_users () {
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
-            echo "Setting:   User $user_name to not be allowed ftp access"
+            verbose_message "Setting:   User $user_name to not be allowed ftp access"
             check_append_file $check_file $user_name hash
           fi
         else
@@ -44,7 +44,7 @@ audit_ftp_users () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   User $user_name to not be allowed ftp access"
+              verbose_message "Setting:   User $user_name to not be allowed ftp access"
               check_append_file $check_file $user_name hash
             fi
           else
@@ -71,7 +71,7 @@ audit_ftp_users () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   User $user_name to not be allowed ftp access"
+              verbose_message "Setting:   User $user_name to not be allowed ftp access"
               check_append_file $check_file $user_name hash
             fi
           else

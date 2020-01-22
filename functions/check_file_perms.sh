@@ -41,7 +41,7 @@ check_file_perms () {
   fi
   if [ ! -e "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      echo "Notice:    File $check_file does not exist"
+      verbose_message "Notice:    File $check_file does not exist"
     fi
     return
   fi
@@ -74,7 +74,7 @@ check_file_perms () {
       fi
       file_owner=`ls -l $check_file |awk '{print $3","$4}'`
       echo "$check_file,$file_perms,$file_owner" >> $log_file
-      echo "Setting:   File $check_file to have correct permissions"
+      verbose_message "Setting:   File $check_file to have correct permissions"
       chmod $check_perms $check_file
       if [ "$check_owner" != "" ]; then
         chown $check_owner:$check_group $check_file
@@ -94,7 +94,7 @@ check_file_perms () {
         restore_perms=`echo "$restore_info" |cut -f2 -d","`
         restore_owner=`echo "$restore_info" |cut -f3 -d","`
         restore_group=`echo "$restore_info" |cut -f4 -d","`
-        echo "Restoring: File $check_file to previous permissions"
+        verbose_message "Restoring: File $check_file to previous permissions"
         chmod $restore_perms $check_file
         if [ "$check_owner" != "" ]; then
           chown $restore_owner:$restore_group $check_file

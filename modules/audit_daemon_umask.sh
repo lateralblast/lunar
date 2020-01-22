@@ -25,7 +25,7 @@ audit_daemon_umask () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Default service file creation mask to $umask_value"
+            verbose_message "Setting:   Default service file creation mask to $umask_value"
             if [ ! -f "$log_file" ]; then
               echo "$umask_check" >> $log_file
             fi
@@ -40,7 +40,7 @@ audit_daemon_umask () {
             if [ -f "$restore_file" ]; then
               restore_value=`cat $restore_file`
               if [ "$restore_value" != "$umask_check" ]; then
-                echo "Restoring:  Default service file creation mask to $restore_vaule"
+                verbose_message "Restoring:  Default service file creation mask to $restore_vaule"
                 svccfg -s svc:/system/environment:init setprop umask/umask = astring:  "$restore_value"
               fi
             fi

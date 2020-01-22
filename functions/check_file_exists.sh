@@ -37,7 +37,7 @@ check_file_exists () {
       fi
       if [ "$audit_mode" = 0 ]; then
         backup_file $check_file
-        echo "Removing:  File $check_file"
+        verbose_message "Removing:  File $check_file"
         echo "$check_file,rm" >> $log_file
         rm $check_file
       fi
@@ -70,7 +70,7 @@ check_file_exists () {
         increment_insecure "File $check_file does not exist"
       fi
       if [ "$audit_mode" = 0 ]; then
-        echo "Creating:  File $check_file"
+        verbose_message "Creating:  File $check_file"
         touch $check_file
         echo "$check_file,touch" >> $log_file
       fi

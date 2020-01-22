@@ -29,7 +29,7 @@ audit_system_auth_password_history () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Password entry in $check_file"
+              verbose_message "Setting:   Password entry in $check_file"
               cp $check_file $temp_file
               cat $temp_file |awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " $search_string=$search_value"; next };' > $check_file
               rm $temp_file

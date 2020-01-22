@@ -14,10 +14,10 @@ audit_process_accounting () {
         increment_insecure "Process accounting not enabled"
       fi
       if [ "$audit_mode" = 0 ]; then
-        echo "Setting:   Process accounting to enabled"
+        verbose_message "Setting:   Process accounting to enabled"
         echo "disabled" > $log_file
         ln -s $init_file $check_file
-        echo "Notice:    Starting Process accounting"
+        verbose_message "Notice:    Starting Process accounting"
         $init_file start 2>&1 > /dev/null
       fi
     else
@@ -28,8 +28,8 @@ audit_process_accounting () {
         log_file="$restore_dir/acct.log"
         if [ -f "$log_file" ]; then
           rm $check_file
-          echo "Restoring: Process accounting to disabled"
-          echo "Notice:    Stoping Process accounting"
+          verbose_message "Restoring: Process accounting to disabled"
+          verbose_message "Notice:    Stoping Process accounting"
           $init_file stop 2>&1 > /dev/null
         fi
       fi

@@ -65,14 +65,14 @@ audit_ntp () {
         check_file_value is $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
       fi
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  NTP is enabled"
+        verbose_message "Checking:  NTP is enabled"
       fi
       if [ "$package_name" != "ntp" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "NTP not enabled"
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   NTP to enabled"
+          verbose_message "Setting:   NTP to enabled"
           log_file="$work_dir/$log_file"
           echo "Installed ntp" >> $log_file
           check_linux_package install ntp

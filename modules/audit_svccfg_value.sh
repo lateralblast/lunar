@@ -18,7 +18,7 @@ audit_svccfg_value () {
         restore_value=`cat $restore_file |grep "$service_name" |cut -f3 -d','`
         if [ `expr "$restore_property" : "[A-z]"` = 1 ]; then
           if [ "$current_value" != "$restore_vale" ]; then
-            echo "Restoring: $service_name $restore_propert to $restore_value"
+            verbose_message "Restoring: $service_name $restore_propert to $restore_value"
             svccfg -s $service_name setprop $restore_property = $restore_value
           fi
         fi
@@ -35,7 +35,7 @@ audit_svccfg_value () {
         verbose_message "" fix
       else
         if [ "$audit_mode" = 0 ]; then
-          echo "Setting:   $service_name $service_propery to $correct_value"
+          verbose_message "Setting:   $service_name $service_propery to $correct_value"
           echo "$service_name,$service_property,$current_value" >> $log_file
           svccfg -s $service_name setprop $service_property = $correct_value
         fi

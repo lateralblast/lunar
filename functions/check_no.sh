@@ -39,7 +39,7 @@ check_no() {
       if [ -f "$log_file" ]; then
         previous_value=`cat $log_file`
         if [ "$previous_value" != "$actual_value" ]; then
-          echo "Restoring: Parameter \"$parameter_name\" to \"$previous_value\""
+          verbose_message "Restoring: Parameter \"$parameter_name\" to \"$previous_value\""
           no -p -o $parameter_name=$previous_value
         fi
       fi

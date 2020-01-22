@@ -41,7 +41,7 @@ audit_password_fields () {
         fi
         if [ "$audit_mode" = 0 ]; then
           backup_file $check_file
-          echo "Setting:   No password for $user_name"
+          verbose_message "Setting:   No password for $user_name"
           passwd -d $user_name
           if [ "$os_name" = "SunOS" ]; then
             passwd -N $user_name

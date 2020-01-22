@@ -22,7 +22,7 @@ audit_sendmail_greeting () {
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
-            echo "Setting:   Sendmail greeting to have no version information"
+            verbose_message "Setting:   Sendmail greeting to have no version information"
             cp $check_file $temp_file
             cat $temp_file |awk '/O SmtpGreetingMessage=/ { print "O SmtpGreetingMessage=Mail Server Ready; $b"; next} { print }' > $check_file
             rm $temp_file
@@ -44,7 +44,7 @@ audit_sendmail_greeting () {
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
-            echo "Setting:   Sendmail to have no help information"
+            verbose_message "Setting:   Sendmail to have no help information"
             cp $check_file $temp_file
             cat $temp_file |sed 's/^O HelpFile=/#O HelpFile=/' > $check_file
             rm $temp_file

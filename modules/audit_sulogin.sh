@@ -22,7 +22,7 @@ audit_sulogin () {
             increment_insecure "Single user mode does not require a password"
           fi
           if [ "$audit_mode" = 2 ]; then
-            echo "Setting:   Single user mode to require a password"
+            verbose_message "Setting:   Single user mode to require a password"
             backup_file $check_file
             tmp_file="/tmp/ttys_$check_string"
             awk '($4 == "console") { $5 = "insecure" } { print }' $check_file > $tmp_file
@@ -57,7 +57,7 @@ audit_sulogin () {
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Single user mode to require authentication"
+            verbose_message "Setting:   Single user mode to require authentication"
             backup_file $check_file
             cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' > $temp_file
             cat $temp_file > $check_file

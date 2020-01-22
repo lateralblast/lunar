@@ -17,7 +17,7 @@ audit_software_update() {
     if [ "$audit_mode" != 2 ]; then
       if [ "$current_update" != "$available_update" ]; then
         if [ "$audit_mode" = 0 ]; then
-          echo "Notice:    Updating software"
+          verbose_message "Notice:    Updating software"
           esxcli software profile install -d $vmware_depot -p $available_update --ok-to-remove
         fi
         if [ "$audit_mode" = 1 ]; then
@@ -36,7 +36,7 @@ audit_software_update() {
       if [ -f "$restore_file" ]; then
         previous_update=`cat $restore_file`
         if [ "$current_update" != "$previous_update" ]; then
-          echo "Restoring: Software to $previous_value"
+          verbose_message "Restoring: Software to $previous_value"
           esxcli software profile install -d $vmware_depot -p $previous_update --ok-to-remove --alow-downgrades
         fi
       fi
@@ -55,7 +55,7 @@ audit_software_update() {
       log_file="softwareupdate.log"
       correct_status="on"
       if [ "$audit_mode" != 2 ]; then
-        echo "Checking:  If Software Update is enabled"
+        verbose_message "Checking:  If Software Update is enabled"
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Software Update is not $correct_status"
@@ -67,7 +67,7 @@ audit_software_update() {
             if [ "$audit_mode" = 0 ]; then
               log_file="$work_dir/$log_file"
               echo "$actual_status" > $log_file
-              echo "Setting:   Software Update schedule to $correct_status"
+              verbose_message "Setting:   Software Update schedule to $correct_status"
               sudo softwareupdate --schedule $correct_status
             fi
           fi
@@ -81,7 +81,7 @@ audit_software_update() {
         if [ -f "$restore_file" ]; then
           previous_status=`cat $restore_file`
           if [ "$previous_status" != "$actual_status" ]; then
-            echo "Restoring:   Software Update to $previous_status"
+            verbose_message "Restoring:   Software Update to $previous_status"
             sudo suftwareupdate --schedule $previous_status
           fi
         fi

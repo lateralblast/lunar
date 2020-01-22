@@ -23,7 +23,7 @@ audit_snmp () {
           if [ "$current_value" = "true" ]; then
             if [ "$audit_more" = "0" ]; then
               echo "$current_value" > $backup_file
-              echo "Setting:   SNMP to disabled"
+              verbose_message "Setting:   SNMP to disabled"
               esxcli system snmp set --enable="false"
             fi
             if [ "$audit_mode" = "1" ]; then
@@ -35,7 +35,7 @@ audit_snmp () {
           else
             if [ "$audit_mode" = "1" ]; then
               increment_secure "SNMP is disabled"
-              echo ""
+              verbose_message ""
             fi
           fi
         else
@@ -43,7 +43,7 @@ audit_snmp () {
          if [ -f "$restore_file" ]; then
             previous_value=`cat $restore_file`
             if [ "$previous_value" != "$current_value" ]; then
-              echo "Restoring: SNMP to $previous_value"
+              verbose_message "Restoring: SNMP to $previous_value"
               esxcli system snmp set --enable="$previous_value"
             fi
           fi

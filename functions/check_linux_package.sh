@@ -105,7 +105,7 @@ check_linux_package () {
         restore_check=`cat $restore_file |grep $package_check |awk '{print $2}'`
         if [ "$restore_check" = "$package_check" ]; then
           package_action=`cat $restore_file |grep $package_check |awk '{print $1}'`
-          echo "Restoring: Package $package_action to $package_action"
+          verbose_message "Restoring: Package $package_action to $package_action"
           if [ "$package_action" = "install" ]; then
             if [ "$linux_dist" = "redhat" ]; then
               if [ "$group_check" ]; then

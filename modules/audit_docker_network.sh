@@ -39,7 +39,7 @@ audit_docker_network () {
           if [ "$audit_mode" = 0 ]; then
             log_file="$work_dir/$backup_file"
             echo "$old_state" > $log_file
-            echo "Setting:   Docker network bridge enabled to $new_state"
+            verbose_message "Setting:   Docker network bridge enabled to $new_state"
             /usr/bin/dockerd --icc=$new_state
           fi
         else
@@ -48,7 +48,7 @@ audit_docker_network () {
       else
         restore_file="$restore_dir/$backup_file"
         old_state=`cat $restore_file`
-        echo "Setting:   Docker network bridge enabled to $old_state"
+        verbose_message "Setting:   Docker network bridge enabled to $old_state"
         /usr/bin/dockerd --icc=$old_state
       fi
       check_dockerd unused daemon iptables true

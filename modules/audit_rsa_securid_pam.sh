@@ -39,7 +39,7 @@ audit_rsa_securid_pam () {
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
-            echo "Fixing:    Configuring RSA SecurID PAM Agent for sudo"
+            verbose_message "Fixing:    Configuring RSA SecurID PAM Agent for sudo"
             if [ "$os_name" = "Linux" ]; then
               cat $check_file |sed 's/^auth/#\&/' > $temp_file
               cat $temp_file > $check_file

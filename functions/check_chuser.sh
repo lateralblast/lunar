@@ -43,7 +43,7 @@ check_chuser() {
       if [ -f "$log_file" ]; then
         previous_value=`cat $log_file |cut -f2 -d=`
         if [ "$previous_value" != "$actual_value" ]; then
-          echo "Restoring: Password Policy for \"$parameter_name\" to \"$previous_value\""
+          verbose_message "Restoring: Password Policy for \"$parameter_name\" to \"$previous_value\""
           cat $log_file |sh
         fi
       fi

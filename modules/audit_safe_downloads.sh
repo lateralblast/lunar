@@ -24,7 +24,7 @@ audit_safe_downloads() {
           verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
-          echo "Updating:  Safe Downloads list"
+          verbose_message "Updating:  Safe Downloads list"
           sudo /usr/libexec/XProtectUpdater
         fi
       else

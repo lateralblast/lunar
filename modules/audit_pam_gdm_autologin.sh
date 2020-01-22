@@ -18,7 +18,7 @@ audit_pam_gdm_autologin () {
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Gnome Autologin is enabled"
             verbose_message "" fix
-            verbose_message "cat $check_file |sed 's/^gdm-autologin/#&/g' > $temp_file"
+            verbose_message "cat $check_file |sed 's/^gdm-autologin/#&/g' > $temp_file" fix
             verbose_message "cat $temp_file > $check_file" fix
             verbose_message "rm $temp_file" fix
             verbose_message "" fix

@@ -15,10 +15,19 @@ check_ausearch () {
       if [ "$exists" ]; then
         if [ "$value" ]; then
           check=`ausearch -k $bin 2> /dev/null | grep $command | grep $mode |grep "$value"`
-          echo "Checking:  Binary $bin has $command commands with option $mode is set to $value"
+          string="Binary $bin has $command commands with option $mode is set to $value"
         else
           check=`ausearch -k $bin 2> /dev/null | grep $command | grep $mode`
-          echo "Checking:  Binary $bin has $command commands with option $mode is set"
+          string="Binary $bin has $command commands with option $mode is set"
+        fi
+        verbose_message "Checking:  $string"
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  file:"
+          echo "    path: $check_file"
+          echo "    mode: $check_perms"
+          echo ""
         fi
         if [ "$funct" = "equal" ]; then
           if [ "$value" ]; then

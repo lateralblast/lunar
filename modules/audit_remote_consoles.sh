@@ -21,7 +21,7 @@ audit_remote_consoles () {
         fi
         if [ "$audit_mode" = 0 ]; then
           echo "$console_device" >> $log_file
-          echo "Setting:   Console disabled on $console_device"
+          verbose_message "Setting:   Console disabled on $console_device"
           consadm -d $console_device
         fi
       done
@@ -34,7 +34,7 @@ audit_remote_consoles () {
       restore_file="$restore_dir$log_file"
       if [ -f "$restore_file" ]; then
         for console_device in `cat $restore_file`; do
-          echo "Restoring: Console to enabled on $console_device"
+          verbose_message "Restoring: Console to enabled on $console_device"
           consadm -a $console_device
         done
       fi

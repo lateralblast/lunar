@@ -20,14 +20,14 @@ check_chkconfig_service () {
         check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
         if [ "$check_status" = "on" ] || [ "$check_status" = "off" ]; then
           if [ "$check_status" != "$actual_status" ]; then
-            echo "Restoring: Service $service_name at run level $service_level to $check_status"
+            verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"
             $chk_config --level $service_level $service_name $check_status
           fi
         fi
       fi
     else
       if [ "$actual_status" = "on" ] || [ "$actual_status" = "off" ]; then
-        echo "Checking:  Service $service_name is $correct_status"
+        verbose_message "Checking:  Service $service_name is $correct_status"
         if [ "$actual_status" != "$correct_status" ]; then
           increment_insecure "Service $service_name is not $correct_status"
           log_file="$work_dir/$log_file"
@@ -68,7 +68,7 @@ check_chkconfig_service () {
         check_status=`cat $restore_file |grep $service_name |grep ",$service_level," |cut -f3 -d","`
         if [ "$check_status" = "on" ] || [ "$check_status" = "off" ]; then
           if [ "$check_status" != "$actual_status" ]; then
-            echo "Restoring: Service $service_name at run level $service_level to $check_status"
+            verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"
             $chk_config --level $service_level $service_name $check_status
           fi
         fi
@@ -83,7 +83,6 @@ check_chkconfig_service () {
           echo "  service:"
           echo "    name: $service_name"
           echo "    enabled: $enabled"
-          echo "  when: ansible_facts['ansible_system'] == 'Linux'"
           echo ""
         fi
         if [ "$actual_status" != "$correct_status" ]; then

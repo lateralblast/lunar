@@ -74,7 +74,7 @@ check_command_output () {
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        echo "Restoring: Previous value for $command_name"
+        verbose_message "Restoring: Previous value for $command_name"
         if [ "$command_name" = "getcond" ]; then
           $restore_command
         else

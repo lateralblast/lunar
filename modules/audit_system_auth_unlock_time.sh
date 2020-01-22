@@ -35,7 +35,7 @@ audit_system_auth_unlock_time () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Password minimum length in $check_file"
+              verbose_message "Setting:   Password minimum length in $check_file"
               cp $check_file $temp_file
               if [ "$os_check" -eq 0 ]; then
                 cat $temp_file |sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 $search_string=$search_value\n/' > $check_file

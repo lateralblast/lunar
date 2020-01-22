@@ -17,7 +17,7 @@ audit_wheel_sudo () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   User $user_name to locked"
+              verbose_message "Setting:   User $user_name to locked"
               passwd -l $user_name
             fi
           fi

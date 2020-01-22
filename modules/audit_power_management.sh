@@ -25,7 +25,7 @@ audit_power_management () {
           if [ -f "$log_file" ]; then
             restore_value=`cat $restore_file`
             if [ "$poweradm_test" != "$restore_value" ]; then
-              echo "Restoring: Power suspend to $restore_value"
+              verbose_message "Restoring: Power suspend to $restore_value"
               poweradm set suspend-enable=$restore_value
               poweradm update
             fi
@@ -41,7 +41,7 @@ audit_power_management () {
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file="$work_dir/$log_file"
-            echo "Setting:   Power suspend to disabled"
+            verbose_message "Setting:   Power suspend to disabled"
             echo "$poweradm_test" > $backup_file
             poweradm set suspend-enable=false
             poweradm update

@@ -29,7 +29,7 @@ audit_password_hashing () {
               verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              echo "Setting:   Password hashing to $hashing"
+              verbose_message "Setting:   Password hashing to $hashing"
               log_file="$work_dir/$log_file"
               echo "$check_value" > $log_file
               authconfig --passalgo=$hashing
@@ -43,7 +43,7 @@ audit_password_hashing () {
           restore_file="$restore_dir/$log_file"
           if [ -f "$restore_file" ]; then
             check_value=`cat $restore_file`
-            echo "Restoring: Password hashing to $check_value"
+            verbose_message "Restoring: Password hashing to $check_value"
             authconfig --passalgo=$check_value
           fi
         fi

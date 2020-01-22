@@ -20,7 +20,7 @@ audit_system_auth_nullok () {
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
-              echo "Setting:   Removing nullok entries from $check_file"
+              verbose_message "Setting:   Removing nullok entries from $check_file"
               cp $check_file $temp_file
               cat $temp_file |sed 's/ nullok//' > $check_file
               rm $temp_file
