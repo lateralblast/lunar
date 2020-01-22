@@ -5,7 +5,7 @@
 
 audit_wheel_su () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-  	verbose_message "Wheel group ownership"
+  	verbose_message "Checking:  Wheel group ownership"
     check_file=`which su 2> /dev/null`
     check_file_perms $check_file 4750 root $wheel_group
   fi

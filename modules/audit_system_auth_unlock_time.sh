@@ -20,7 +20,7 @@ audit_system_auth_unlock_time () {
     for check_file in /etc/pam.d/system-auth /etc/pam.d/common-auth; do
       if [ -f "$check_file" ]; then
         if [ "$audit_mode" != 2 ]; then
-          verbose_message "Lockout time for failed password attempts enabled in $check_file"
+         verbose_message "Lockout time for failed password attempts enabled in $check_file"
           check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
           if [ "$check_value" != "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then

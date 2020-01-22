@@ -8,7 +8,7 @@
 
 audit_serial_login () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Login on Serial Ports"
+   verbose_message "Login on Serial Ports"
     if [ "$os_name" = "AIX" ]; then
       tty_list=`lsitab –a |grep "on:/usr/sbin/getty" |awk '{print $2}'`
       if [ `expr "$tty_list" : "[A-z]"` != 1 ]; then

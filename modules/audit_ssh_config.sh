@@ -2,7 +2,7 @@
 #
 # Refer to Section(s) 6.2.1-15 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.2.1-15 Page(s) 147-159 CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 6.2.1-15 Page(s) 130-141 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.1-15 Page(s) 1verbose_message "-141 CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 5.2.1-16 Page(s) 218-37  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 9.2.1-15 Page(s) 121-131 CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.4.14.9 Page(s) 57-60   CIS OS X 10.5 Benchmark v1.1.0
@@ -23,7 +23,7 @@ audit_ssh_config () {
   for check_file in /etc/sshd_config /etc/ssh/sshd_config /usr/local/etc/sshd_config /opt/local/ssh/sshd_config; do
     if [ -f "$check_file" ]; then
       if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-        verbose_message "SSH Configuration $sshd_file"
+       verbose_message "SSH Configuration $sshd_file"
         if [ "$os_name" = "Darwin" ]; then
           check_file_value is $check_file GSSAPIAuthentication space yes hash
           check_file_value is $check_file GSSAPICleanupCredentials space yes hash
@@ -48,7 +48,7 @@ audit_ssh_config () {
         check_file_value is $check_file HostbasedAuthentication space no hash
         check_file_value is $check_file Banner space /etc/issue hash
         check_file_value is $check_file PrintMotd space no hash
-        check_file_value is $check_file ClientAliveInterval space 300 hash
+        check_file_value is $check_file ClientAliveInterval space verbose_message "0 hash
         check_file_value is $check_file ClientAliveCountMax space 0 hash
         check_file_value is $check_file LogLevel space VERBOSE hash
         check_file_value is $check_file RSAAuthentication space no hash

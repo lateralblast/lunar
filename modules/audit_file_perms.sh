@@ -65,7 +65,7 @@ audit_file_perms () {
     verbose_message "System File Permissions"
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
-      verbose_message "Checking:  File permissions [This may take a while]"
+     verbose_message "File permissions [This may take a while]"
       for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Incorrect permissions on $file_name"

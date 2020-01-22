@@ -54,7 +54,7 @@ check_systemctl_service () {
       fi
     else
       string="Service $service_name is $correct_status"
-      verbose_message "Checking:  $string"
+     verbose_message "$string"
       if [ "$audit_mode" != 2 ]; then
         if [ "$ansible" = 1 ]; then
           echo ""

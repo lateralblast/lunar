@@ -11,7 +11,7 @@
 # Refer to http://docs.docker.com/articles/security/#other-kernel-security-features
 # Refer to http://docs.docker.com/reference/run/#security-configuration
 # Refer to http://docs.fedoraproject.org/en-US/Fedora/13/html/Security-Enhanced_Linux/
-# Refer to Section(s) 5.3  Page(s) 130-1 CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 5.3  Page(s) 1verbose_message "-1 CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/articles/security/#linux-kernel-capabilities
 # Refer to https://github.com/docker/docker/blob/master/daemon/execdriver/native/template/default_template.go
 # Refer to http://man7.org/linux/man-pages/man7/capabilities.7.html
@@ -69,7 +69,7 @@
 # Refer to Section(s) 5.28 Page(s) 175-6  CIS Docker Benchmark 1.13.0
 # Refer to https://github.com/docker/docker/pull/18697
 # Refer to https://docs.docker.com/engine/reference/commandline/run/
-# Refer to Section(s) 5.30 Page(s) 178    CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 5.verbose_message " Page(s) 178    CIS Docker Benchmark 1.13.0
 # Refer to https://docs.docker.com/engine/reference/commandline/run/#/run
 # Refer to https://events.linuxfoundation.org/sites/events/files/slides/User%20Namespaces%20-%20ContainerCon%202015%20-%2016-9-final_0.pdf
 # Refer to https://github.com/docker/docker/pull/12648

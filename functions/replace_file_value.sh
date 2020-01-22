@@ -34,7 +34,7 @@ replace_file_value () {
   fi
   new_check_value="$position$new_check_value"
   if [ "$audit_mode" != 2 ]; then
-    verbose_message "Checking:  File $check_file contains \"$correct_value\" rather than \"$check_value\""
+   verbose_message "File $check_file contains \"$correct_value\" rather than \"$check_value\""
   fi
   if [ -f "$check_file" ]; then
     check_dfs=`cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g"`

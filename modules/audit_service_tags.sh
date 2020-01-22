@@ -7,7 +7,7 @@
 audit_service_tags () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "Service Tags Daemons"
+     verbose_message "Service Tags Daemons"
       service_name="svc:/network/stdiscover:default"
       check_sunos_service $service_name disabled
       service_name="svc:/network/stlisten:default"

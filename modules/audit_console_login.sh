@@ -13,7 +13,7 @@
 audit_console_login () {
   if [ "$os_name" = "SunOS" ]; then
     string="Root Login to System Console"
-    verbose_message "Checking:  $string"
+   verbose_message "$string"
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/login"
       check_file_value is $check_file CONSOLE eq /dev/console hash
@@ -29,7 +29,7 @@ audit_console_login () {
     check_file="/etc/securetty"
     if [ -f "$check_file" ]; then
       string="Root Login to System Console"
-      verbose_message "Checking:  $string"
+     verbose_message "$string"
       disable_ttys=0
       console_list=""
       if [ "$audit_mode" != 2 ]; then

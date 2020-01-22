@@ -11,7 +11,7 @@
 
 audit_sendmail_daemon() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Sendmail Daemon"
+   verbose_message "Sendmail Daemon"
     if [ "$sendmail_disable" = "yes" ]; then
       if [ "$os_name" = "AIX" ]; then
         check_rctcp sendmail off
@@ -68,7 +68,7 @@ audit_sendmail_daemon() {
         search_string="Addr=127.0.0.1"
         restore=0
         if [ "$audit_mode" != 2 ]; then
-          verbose_message "Checking:  Mail transfer agent is running in local-only mode"
+         verbose_message "Mail transfer agent is running in local-only mode"
           check_value=`cat $check_file |grep -v '^#' |grep 'O DaemonPortOptions' |awk '{print $3}' |grep '$search_string'`
           if [ "$check_value" = "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then

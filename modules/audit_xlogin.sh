@@ -8,14 +8,14 @@
 
 audit_xlogin () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "X Windows"
+   verbose_message "X Windows"
     if [ "$os_name" = "AIX" ]; then
       verbose_message "CDE Startup"
       check_itab dt off
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        verbose_message "XDMCP Listening"
+       verbose_message "XDMCP Listening"
       fi
       if [ "$os_version" = "10" ]; then
         service_name="svc:/application/graphical-login/cde-login"
@@ -60,11 +60,11 @@ audit_xlogin () {
     if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/X11/xdm/Xresources"
       if [ -f "$check_file" ]; then
-        verbose_message "X Security Message"
+       verbose_message "X Security Message"
        if [ "$audit_mode" != 2 ]; then
          greet_check=`cat $check_file |grep 'private system' |wc -l`
          if [ "$greet_check" != 1 ]; then
-           verbose_message "Checking:  Checking $check_file for security message"
+          verbose_message "File $check_file for security message"
            greet_mesg="This is a private system --- Authorized use only!"
            if [ "$audit_mode" = 1 ]; then
              increment_insecure "File $check_file does not have a security message"
@@ -89,12 +89,12 @@ audit_xlogin () {
       fi
       check_file="/etc/X11/xdm/kdmrc"
       if [ -f "$check_file" ]; then
-        verbose_message "X Security Message"
+       verbose_message "X Security Message"
         if [ "$audit_mode" != 2 ]; then
           greet_check= `cat $check_file |grep 'private system' |wc -l`
           greet_mesg="This is a private system --- Authorized USE only!"
           if [ "$greet_check" != 1 ]; then
-             verbose_message "Checking:  File $check_file for security message"
+            verbose_message "File $check_file for security message"
              if [ "$audit_mode" = 1 ]; then
                increment_insecure "File $check_file does not have a security message"
                verbose_message "" fix
@@ -118,11 +118,11 @@ audit_xlogin () {
       fi
       check_file="/etc/X11/xdm/Xservers"
       if [ -f "$check_file" ]; then
-        verbose_message "X Listening"
+       verbose_message "X Listening"
         if [ "$audit_mode" != 2 ]; then
           greet_check=`cat $check_file |grep 'nolisten tcp' |wc -l`
           if [ "$greet_check" != 1 ]; then
-             verbose_message "Checking:  For X11 nolisten directive in $check_file"
+            verbose_message "For X11 nolisten directive in $check_file"
              if [ "$audit_mode" = 1 ]; then
                increment_insecure "X11 nolisten directive not found in $check_file"
                verbose_message "" fix

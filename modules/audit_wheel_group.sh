@@ -6,7 +6,7 @@
 audit_wheel_group () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/group"
-    verbose_message "Wheel Group"
+   verbose_message "Wheel Group"
     if [ "$audit_mode" != 2 ]; then
       check_value=`cat $check_file |grep '^$wheel_group:'`
       if [ "$check_value" != "$search_string" ]; then

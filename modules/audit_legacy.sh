@@ -14,7 +14,7 @@ audit_legacy_inet() {
     exec comsat talk finger uucp name xaudio netstat ufsd rexd \
     systat sun-dr uuidgen krb5_prop 100068 100146 100147 100150 \
     100221 100232 100235 kerbd rstatd rusersd sprayd walld \
-    printer shell login telnet ftp tftp 100083 100229 100230 \
+    printer shell login telnet ftp tftp 100083 100229 1002verbose_message " \
     100242 100234 100134 100155 rquotad 100424 100422; do
     check_inetd_service $service_name disabled
   done

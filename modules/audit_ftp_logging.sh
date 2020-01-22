@@ -12,7 +12,7 @@ audit_ftp_logging () {
         check_value=`$get_command |grep "\-d" | wc -l`
         file_header="ftpd_logging"
         if [ "$audit_mode" != 2 ]; then
-          verbose_message "Checking:  File $file_header"
+         verbose_message "File $file_header"
         fi
         log_file="$work_dir/$file_header.log"
         if [ "$audit_mode" = 1 ]; then

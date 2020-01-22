@@ -6,7 +6,7 @@
 audit_uucp () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "Samba Web Configuration Deamon"
+     verbose_message "Samba Web Configuration Deamon"
       service_name="svc:/network/swat:default"
       check_sunos_service $service_name disabled
     fi

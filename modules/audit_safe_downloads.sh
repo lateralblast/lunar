@@ -1,15 +1,15 @@
 # audit_safe_downloads
 #
-# Refer to Section 2.6.3 Page(s) 29-30 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 2.6.3 Page(s) 29-verbose_message " CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_safe_downloads() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Safe Downloads list"
+   verbose_message "Safe Downloads list"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
       update_file="/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.plist"
-      actual_value=`find $update_file -mtime -30`
+      actual_value=`find $update_file -mtime -verbose_message "`
       if [ "$actual_value" != "$update_file" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Safe Downloads list has not be updated recently"

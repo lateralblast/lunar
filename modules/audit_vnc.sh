@@ -5,7 +5,7 @@
 
 audit_vnc () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "VNC Daemons"
+   verbose_message "VNC Daemons"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         service_name="svc:/application/x11/xvnc-inetd:default"

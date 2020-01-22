@@ -2,7 +2,7 @@
 #
 # Refer to Section(s) 9.2.17 Page(s) 202-3 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.17   Page(s) 84-5  CIS Solaris 11.1 Benchmark v1.0.0
-# Refer to Section(s) 9.17   Page(s) 130-1 CIS Solaris 10 Benchmark v1.1.0
+# Refer to Section(s) 9.17   Page(s) 1verbose_message "-1 CIS Solaris 10 Benchmark v1.1.0
 #.
 
 audit_reserved_ids () {
@@ -29,7 +29,7 @@ audit_reserved_ids () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "Reserved IDs"
     if [ "$audit_mode" != 2 ]; then
-      verbose_message "Checking:  Whether reserved UUIDs are assigned to system accounts"
+     verbose_message "Whether reserved UUIDs are assigned to system accounts"
     fi
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read check_user check_uid; do

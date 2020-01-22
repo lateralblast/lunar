@@ -21,7 +21,7 @@ check_rctcp() {
     fi
     if [ "$audit_mode" != 2 ]; then
       string="Service $service_name is $correct_value"
-      verbose_message "Checking:  $string"
+     verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

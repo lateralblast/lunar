@@ -1,10 +1,10 @@
 # audit_modprobe_conf
 #
-# Refer to Section(s) 1.18-24,5.6.1-4    Page(s) 26-30,114-6   CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 1.18-24,5.6.1-4    Page(s) 26-verbose_message ",114-6   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.18-24,4.6.1-4    Page(s) 27-32,90-2    CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 1.1.1.1-8,3.5.1-4  Page(s) 17-25,149-152 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 1.1.1.1-8,3.5.1-4  Page(s) 16-24,144-7   CIS Ubuntu LTS 16.04 Benchmark v1.0.0
-# Refer to Section(s) 2.18-24,7.5.1-4    Page(s) 26-30,80-3    CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.18-24,7.5.1-4    Page(s) 26-verbose_message ",80-3    CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.1.18-24,4.6.1-2  Page(s) 28-33,98-100  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.1.1.1-18,3.5.1-4 Page(s) 16-24,135-8   CIS Amazon Linux Benchmark v2.0.0
 #.

@@ -6,7 +6,7 @@
 
 audit_wake_on_lan() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Wake on Lan"
+   verbose_message "Wake on Lan"
     check_pmset womp off
   fi
 }

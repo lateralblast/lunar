@@ -10,7 +10,7 @@
 audit_routing_daemons () {
   if [ "$routed_disable" = "yes" ]; then
     if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-      verbose_message "Routing Daemons"
+     verbose_message "Routing Daemons"
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
           for service_name in svc:/network/routing/zebra:quagga \

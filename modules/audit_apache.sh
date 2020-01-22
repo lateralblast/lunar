@@ -8,7 +8,7 @@
 # Refer to Section(s) 6.10,13   Page(s) 59,61   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 2.4.14.7  Page(s) 56-7    CIS OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 2.10      Page(s) 21-2    CIS Solaris 11.1 v1.0.0
-# Refer to Section(s) 2.2.11    Page(s) 30-2    CIS Solaris 10 v5.1.0
+# Refer to Section(s) 2.2.11    Page(s) verbose_message "-2    CIS Solaris 10 v5.1.0
 # Refer to Section(s) 2.2.10,13 Page(s) 102,105 CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 2.2.10,13 Page(s) 110,113 CIS Ubuntu 16.04 Benchmark v2.0.0
 #.

@@ -6,7 +6,7 @@
 
 audit_shadow_group () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Shadow Group"
+   verbose_message "Shadow Group"
     check_file="/etc/group"
     temp_file="$temp_dir/group"
     if [ "$audit_mode" = 2 ]; then

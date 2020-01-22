@@ -5,7 +5,7 @@
 
 audit_system_preferences() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "System Preferences"
+   verbose_message "System Preferences"
     if [ ! "$audit_mode" != 2 ]; then
       check=`security authorizationdb read system.preferences 2> /dev/null | grep -A1 shared |grep true`
       if [ "$check" ]; then

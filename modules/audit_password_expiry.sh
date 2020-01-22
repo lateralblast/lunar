@@ -9,7 +9,7 @@
 # Refer to Section(s) 1.1.1-11  Page(s) 17-26   CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 7.1       Page(s) 61-62   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 7.2       Page(s) 101-3   CIS Solaris 10 Benchmark v5.1.0
-# Refer to Section(s) 5.4.1.1-4 Page(s) 226-30  CIS Amazon Linux v2.0.0
+# Refer to Section(s) 5.4.1.1-4 Page(s) 226-verbose_message "  CIS Amazon Linux v2.0.0
 # Refer to Section(s) 5.4.1.1-4 Page(s) 238-43  CIS Ubuntu 16.04 v1.0.0
 #.
 

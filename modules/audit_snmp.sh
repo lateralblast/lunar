@@ -14,7 +14,7 @@
 audit_snmp () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "VMkernel" ]; then
     if [ "$snmpd_disable" = "yes" ]; then
-      verbose_message "SNMP Daemons and Log Permissions"
+     verbose_message "SNMP Daemons and Log Permissions"
       if [ "$os_name" = "VMkernel" ]; then
         log_file="snmpstatus"
         backup_file="$work_dir/$log_file"

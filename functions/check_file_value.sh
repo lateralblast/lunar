@@ -76,7 +76,7 @@ check_file_value () {
     restore_file $check_file $restore_dir
   else
     string="Value of $parameter_name $operator set to $correct_value in $check_file"
-    verbose_message "Checking:  $string"
+   verbose_message "$string"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
         increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in $check_file"

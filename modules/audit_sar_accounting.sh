@@ -6,7 +6,7 @@
 
 audit_sar_accounting() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "SAR Accounting"
+   verbose_message "SAR Accounting"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/var/spool/cron/crontabs/adm"
       check_append_file $check_file "0,20,40 * * * * /usr/lib/sa/sa1"

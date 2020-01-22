@@ -13,7 +13,7 @@ audit_system_auth_password_policy () {
     if [ "$audit_mode" != 2 ]; then
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "$check_file" ]; then
-          verbose_message "Password $search_string is set to $search_value in $check_file"
+         verbose_message "Password $search_string is set to $search_value in $check_file"
           check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk -F '$search_string=' '{print $2}' |awk '{print $1}'`
           if [ "$check_value" != "$search_value" ]; then
             if [ "$audit_mode" = "1" ]; then

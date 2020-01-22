@@ -14,7 +14,7 @@ audit_aws_rec_elb () {
     if [ ! "$check" ]; then
       increment_insecure "ELB $elb does not have connection draining enabled"
       verbose_message "" fix
-      verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"ConnectionDraining\\\":{\\\"Enabled\\\":true, \\\"Timeout\\\":300}}\"" fix
+      verbose_message "aws elb modify-load-balancer-attributes --region $aws_region --load-balancer-name $elb --load-balancer-attributes \"{\\\"ConnectionDraining\\\":{\\\"Enabled\\\":true, \\\"Timeout\\\":verbose_message "0}}\"" fix
       verbose_message "" fix
     else
       increment_secure "ELB $elb has connection draining"

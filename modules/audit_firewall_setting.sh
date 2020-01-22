@@ -11,7 +11,7 @@
 # 1 = on for specific services
 # 2 = on for essential services
 #
-# Refer to Sectioni(s) 2.6.4 Page(s) 30-1 CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Sectioni(s) 2.6.4 Page(s) verbose_message "-1 CIS Apple OS X 10.8  Benchmark v1.0.0
 # Refer to Sectioni(s) 2.6.3 Page(s) 56-7 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 

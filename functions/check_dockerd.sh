@@ -12,15 +12,15 @@ check_dockerd () {
       value=$4
       if [ "$type" = "config" ]; then
         if [ "$value" ]; then
-          verbose_message "Checking:  Docker $type parameter $param has value $value"
+         verbose_message "Docker $type parameter $param has value $value"
         else
-          verbose_message "Checking:  Docker $type parameter $param has no value"
+         verbose_message "Docker $type parameter $param has no value"
         fi
       else
         if [ "$value" ]; then
-          verbose_message "Checking:  Docker $type parameter $param is $used and has value $value"
+         verbose_message "Docker $type parameter $param is $used and has value $value"
         else
-          verbose_message "Checking:  Docker $type parameter $param is $used"
+         verbose_message "Docker $type parameter $param is $used"
         fi
       fi
       case "$type" in

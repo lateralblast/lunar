@@ -14,7 +14,7 @@
 
 audit_security_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Warnings for Standard Login Services"
+   verbose_message "Warnings for Standard Login Services"
     if [ "$os_name" = "AIX" ]; then
       user_name="bin"
       group_name="bin"

@@ -1,6 +1,6 @@
 # audit_aws_sns
 #
-# Refer to Section(s) 3.15 Page(s) 129-30 CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 3.15 Page(s) 129-verbose_message " CIS AWS Foundations Benchmark v1.1.0
 # Refer to https://www.cloudconformity.com/conformity-rules/SNS/sns-topic-exposed.html
 #.
 

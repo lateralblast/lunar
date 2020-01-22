@@ -12,7 +12,7 @@
 
 audit_syslog_server () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    verbose_message="Syslog Daemon"
+    verbose_message="Checking:  Syslog Daemon"
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" < 5 ]; then
         check_file="/etc/syslog.conf"

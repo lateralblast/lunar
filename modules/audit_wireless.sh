@@ -7,7 +7,7 @@
 
 audit_wireless () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Wifi information menu"
+   verbose_message "Wifi information menu"
     check=`defaults read com.apple.systemuiserver menuExtras | grep AirPort.menu | sed "s/[ ,\",\,]//g"`
     if [ "$check" = "/System/Library/CoreServices/MenuExtras/AirPort.menu" ]; then
       increment_secure "Wireless status menu is enabled"

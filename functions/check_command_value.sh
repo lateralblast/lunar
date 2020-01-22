@@ -41,7 +41,7 @@ check_command_value () {
     else
       string="Output of $command_name $parameter_name is $correct_value"
     fi
-    verbose_message "Checking:  $string"
+   verbose_message "$string"
   fi
   if [ "$command_name" = "inetadm" ]; then
     check_command="inetadm -l $service_name"

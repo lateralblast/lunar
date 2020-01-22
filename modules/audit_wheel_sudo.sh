@@ -5,7 +5,7 @@
 
 audit_wheel_sudo () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    verbose_message "CHecking:  Sudoers group settings"
+   verbose_message "Sudoers group settings"
     for check_dir in /etc /usr/local/etc /usr/sfw/etc /opt/csw/etc; do
       check_dir="$check_dir/sudoers.d"
       if [ -d "$check_dir" ]; then
@@ -46,14 +46,14 @@ audit_wheel_sudo () {
           w_groups=`cat $check_file |grep NOPASSWD | grep ALL |grep -v '^#' |awk '{print $1}'`
           for w_group in $w_groups ; do
             if [ "$ansible" = 1 ]; then
-                echo ""
-                echo "- name: Checking NOPASSWD for $w_group in $check_file"
-                echo "  lineinfile:"
-                echo "    path: $check_file"
-                echo "    regexp: ''(.*NOPASSWD.*)'"
-                echo "    replace: '#\1'"
-                echo ""
-              fi
+              echo ""
+              echo "- name: Checking NOPASSWD for $w_group in $check_file"
+              echo "  lineinfile:"
+              echo "    path: $check_file"
+              echo "    regexp: ''(.*NOPASSWD.*)'"
+              echo "    replace: '#\1'"
+              echo ""
+            fi
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "Group $w_group does not require password to escalate privileges"
                verbose_message "" fix
@@ -64,7 +64,7 @@ audit_wheel_sudo () {
               backup_file $check_file
               verbose_message "Setting:   Disabling $w_group NOPASSWD entry"
             fi
-          fi
+          done
         else
           restore_file $check_file $restore_dir
         fi

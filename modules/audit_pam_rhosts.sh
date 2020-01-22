@@ -51,7 +51,7 @@ audit_pam_rhosts () {
           if [ "$audit_mode" = 2 ]; then
             restore_file $check_file $restore_dir
           else
-            verbose_message "Checking:  Rhost authentication disabled in $check_file"
+           verbose_message "Rhost authentication disabled in $check_file"
             pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
             if [ "$pam_check" = "1" ]; then
               if [ "$audit_mode" = 1 ]; then

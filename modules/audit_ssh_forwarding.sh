@@ -7,7 +7,7 @@
 
 audit_ssh_forwarding () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    verbose_message "SSH Forwarding"
+   verbose_message "SSH Forwarding"
     if [ "$os_name" = "Darwin" ]; then
       check_file="/etc/sshd_config"
     else

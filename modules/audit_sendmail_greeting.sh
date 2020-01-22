@@ -6,7 +6,7 @@ audit_sendmail_greeting () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
     if [ -f "$check_file" ]; then
-      verbose_message "Sendmail Greeting"
+     verbose_message "Sendmail Greeting"
       search_string="v/"
       restore=0
       if [ "$audit_mode" != 2 ]; then

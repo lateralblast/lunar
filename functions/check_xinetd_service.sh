@@ -17,7 +17,7 @@ audit_xinetd_service () {
       actual_status=`cat $check_file |grep $parameter_name |awk '{print $3}'`
       if [ "$audit_mode" != 2 ]; then
         string="If xinetd service $service_name has $parameter_name set to $correct_status"
-        verbose_message "Checking:  $string"
+       verbose_message "$string"
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$linux_dist" = "debian" ]; then
             command="update-rc.d $service_name $correct_status"

@@ -14,7 +14,7 @@ check_chuser() {
     log_file="$sec_file_$parameter_name_$group_name.log"
     if [ "$audit_mode" != 2 ]; then
       string="Security Policy for $parameter_name is set to $correct_value"
-      verbose_message "Checking:  $string"
+     verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

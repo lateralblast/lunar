@@ -6,7 +6,7 @@
 audit_svm () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Solaris Volume Manager Daemons"
+     verbose_message "Solaris Volume Manager Daemons"
       service_name="svc:/system/metainit"
       check_sunos_service $service_name disabled
       service_name="svc:/system/mdmonitor"

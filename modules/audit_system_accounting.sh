@@ -14,7 +14,7 @@
 
 audit_system_accounting () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "System Accounting"
+   verbose_message "System Accounting"
     if [ "$os_name" = "AIX" ]; then
       check_dir="/var/adm/sa"
       check_file_perms $check_dir 0755 adm adm

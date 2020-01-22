@@ -32,7 +32,7 @@ audit_kubernetes_kubelet () {
         check_file_value is $check_file "KUBELET_CADVISOR_ARGS" eq "--cadvisor-port=0" hash - contains
         check_file_value is $check_file "KUBELET_CERTIFICATE_ARGS" eq "--rotate-certificates=true" hash
         check_file_value is $check_file "KUBELET_CERTIFICATE_ARGS" eq "--feature-gates=RotateKubeletServerCertificate=true" hash
-        check_file_value is $check_file "--tls-cipher-suites" eq "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AE S_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM _SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM _SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256" hash
+        check_file_value is $check_file "--tls-cipher-suites" eq "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AE S_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1verbose_message "5,TLS_ECDHE_RSA_WITH_AES_256_GCM _SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1verbose_message "5,TLS_ECDHE_ECDSA_WITH_AES_256_GCM _SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256" hash
       fi
     fi
   fi

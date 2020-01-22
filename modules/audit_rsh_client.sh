@@ -11,7 +11,7 @@
 
 audit_rsh_client () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "RSH Client"
+   verbose_message "RSH Client"
     check_linux_package uninstall rsh
   fi
 }

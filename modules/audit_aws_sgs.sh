@@ -35,7 +35,7 @@ audit_aws_sgs () {
       check_aws_open_port $sg 445 tcp CIFS none none
       check_aws_open_port $sg 1433 tcp MSSQL none none
       check_aws_open_port $sg 1521 tcp Oracle none none
-      check_aws_open_port $sg 3306 tcp MySQL none none
+      check_aws_open_port $sg 3verbose_message "6 tcp MySQL none none
       check_aws_open_port $sg 3389 tcp RDP none none
       check_aws_open_port $sg 5432 tcp PostgreSQL none none
       check_aws_open_port $sg 27017 tcp MongoDB none none

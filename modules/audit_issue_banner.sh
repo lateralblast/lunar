@@ -26,7 +26,7 @@ audit_issue_banner () {
         issue_check=`cat $check_file |grep 'NOTICE TO USERS' |wc -l`
       fi
       if [ "$audit_mode" != 2 ]; then
-        verbose_message "Checking:  Security message in $check_file"
+       verbose_message "Security message in $check_file"
         if [ "$issue_check" != 1 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "No security message in $check_file"

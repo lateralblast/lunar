@@ -14,7 +14,7 @@
 
 audit_system_accounts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    verbose_message "System Accounts that do not have a shell"
+   verbose_message "System Accounts that do not have a shell"
     check_file="/etc/passwd"
     if [ "$audit_mode" != 2 ]; then
       for user_name in `cat /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}'`; do

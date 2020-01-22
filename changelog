@@ -1329,4 +1329,5 @@
 # Bug fixes and code cleanup
 # 7.5.7: Wed 22 Jan 2020 20:36:05 AEDT
 # Added more ansible stanzas
-#
+# 7.5.8: Wed 22 Jan 2020 21:43:05 AEDT
+# Bug fixes and code cleanup

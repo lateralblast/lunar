@@ -10,7 +10,7 @@
 audit_rsh_server () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-      verbose_message "RSH Server Daemon"
+     verbose_message "RSH Server Daemon"
       check_systemctl_service disable rsh.socket
       check_systemctl_service disable rlogin.socket
       check_systemctl_service disable rexec.socket

@@ -11,7 +11,7 @@ audit_system_auth_use_uid () {
   if [ -f "$check_file" ]; then
     if [ "$os_name" = "Linux" ]; then
       if [ "$audit_mode" != 2 ]; then
-        verbose_message "The use of su is restricted by sudo"
+       verbose_message "The use of su is restricted by sudo"
         check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
         if [ "$check_value" != "$search_string" ]; then
           if [ "$audit_mode" = "1" ]; then

@@ -11,7 +11,7 @@ check_dscl () {
     dir="/var/db/dslocal/nodes/Default"
     if [ "$audit_mode" != 2 ]; then
       string="Parameter $param is set to $value in $file"
-      verbose_message "Checking:  $string"
+     verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

@@ -9,7 +9,7 @@
 audit_software_update() {
   if [ "$os_name" = "VMkernel" ]; then
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"
-    verbose_message "Software Update"
+   verbose_message "Software Update"
     current_update=`esxcli software profile get 2>&1 |head -1`
     log_file="softwareupdate.log"
     backup_file="$work_dir/$log_file"
@@ -55,7 +55,7 @@ audit_software_update() {
       log_file="softwareupdate.log"
       correct_status="on"
       if [ "$audit_mode" != 2 ]; then
-        verbose_message "Checking:  If Software Update is enabled"
+       verbose_message "If Software Update is enabled"
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Software Update is not $correct_status"

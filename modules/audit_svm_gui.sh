@@ -6,7 +6,7 @@
 audit_svm_gui () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Solaris Volume Manager GUI Daemons"
+     verbose_message "Solaris Volume Manager GUI Daemons"
       service_name="svc:/network/rpc/mdcomm"
       check_sunos_service $service_name disabled
       service_name="svc:/network/rpc/meta"

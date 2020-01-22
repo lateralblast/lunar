@@ -27,7 +27,7 @@ check_chkconfig_service () {
       fi
     else
       if [ "$actual_status" = "on" ] || [ "$actual_status" = "off" ]; then
-        verbose_message "Checking:  Service $service_name is $correct_status"
+       verbose_message "Service $service_name is $correct_status"
         if [ "$actual_status" != "$correct_status" ]; then
           increment_insecure "Service $service_name is not $correct_status"
           log_file="$work_dir/$log_file"
@@ -76,7 +76,7 @@ check_chkconfig_service () {
     else
       if [ "$actual_status" = "on" ] || [ "$actual_status" = "off" ]; then
         string="$service_name at run level $service_level is $correct_status"
-        verbose_message "Checking:  $string"
+       verbose_message "$string"
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"

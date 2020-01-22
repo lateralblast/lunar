@@ -14,7 +14,7 @@
 # Refer to https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html
 # Refer to Section(s) 1.10 Page(s) 28-9  CIS Docker Benchmark 1.13.0
 # Refer to https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html
-# Refer to Section(s) 1.11 Page(s) 30-1  CIS Docker Benchmark 1.13.0
+# Refer to Section(s) 1.11 Page(s) verbose_message "-1  CIS Docker Benchmark 1.13.0
 # Refer to https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html
 # Refer to https://docs.docker.com/engine/reference/commandline/daemon/#daemon-configuration-file
 # Refer to Section(s) 1.12 Page(s) 32-3  CIS Docker Benchmark 1.13.0

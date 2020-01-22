@@ -6,7 +6,7 @@
 audit_wbem () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Web Based Enterprise Management"
+     verbose_message "Web Based Enterprise Management"
       service_name="svc:/application/management/wbem"
       check_sunos_service $service_name disabled
     fi

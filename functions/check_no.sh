@@ -11,7 +11,7 @@ check_no() {
     actual_value=`no -a |grep '$parameter_name ' |cut -f2 -d= |sed 's/ //g'`
     if [ "$audit_mode" != 2 ]; then
       string="Parameter $parameter_name is $correct_value"
-      verbose_message "Checking:  $string"
+     verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

@@ -20,7 +20,7 @@ audit_rsa_securid_pam () {
           check_value=`cat $check_file |grep "$search_string" |awk '{print  $4}'`
         fi
       fi
-      verbose_message "RSA SecurID PAM Agent Configuration"
+     verbose_message "RSA SecurID PAM Agent Configuration"
       if [ "$audit_mode" != 2 ]; then
         if [ "$check_value" != "$search_string" ]; then
           if [ "$audit_mode" = 1 ]; then

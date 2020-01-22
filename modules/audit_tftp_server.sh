@@ -11,7 +11,7 @@
 
 audit_tftp_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "TFTP Server Daemon"
+   verbose_message "TFTP Server Daemon"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         service_name="svc:/network/tftp/udp6:default"

@@ -31,7 +31,7 @@ check_initd_service () {
       fi
       if [ "$audit_mode" != 2 ]; then
         string="If init.d service $service_name is $correct_status"
-        verbose_message "Checking:  $string"
+       verbose_message "$string"
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"

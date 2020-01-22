@@ -11,7 +11,7 @@ check_osx_systemsetup () {
       backup_file="systemsetup_$param"
       if [ "$audit_mode" != 2 ]; then
         string="Parameter $param is set to $value"
-        verbose_message "Checking:  $string"
+       verbose_message "$string"
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"

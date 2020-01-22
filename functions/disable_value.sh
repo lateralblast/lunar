@@ -25,7 +25,7 @@ disable_value () {
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
     else
-      verbose_message "Checking:  Parameter \"$parameter_name\" in $check_file is disabled"
+     verbose_message "Parameter \"$parameter_name\" in $check_file is disabled"
       if [ "$separator" = "tab" ]; then
         param_hyphen=`echo "$parameter_name" |grep "^[\-]"`
         if [ "$param_hyphen" ]; then
