@@ -13,6 +13,14 @@ audit_wheel_users () {
         if [ "$last_login" = "wtmp" ]; then
           lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
           if [ "$lock_test" = "$user_name" ]; then
+            if [ "$ansible" = 1 ]; then
+              echo ""
+              echo "- name: Checking password lock for $user_name"
+              echo "  user:"
+              echo "    name: $user_name"
+              echo "    password_lock: yes"
+              echo ""
+            fi
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "User $user_name has not logged in recently and their account is not locked"
             fi

@@ -7,13 +7,29 @@
 
 audit_bonjour_advertising() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Bonjour Multicast Advertising"
+    string="Bonjour Multicast Advertising"
+    verbose_message "Checking:  $string"
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     temp_file="$temp_dir/mdnsmcast"
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
     else
       multicast_test=`cat $check_file |grep 'NoMulticastAdvertisements' |wc -l`
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command: sh -c \"cat $check_file |grep NoMulticastAdvertisements\""
+        echo "  register: mcast_check"
+        echo "  failed_when: mcast_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file ; cat $temp_file > $check_file\""
+        echo "  when: mcast_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+      fi 
       if [ "multicast_test" != "1" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Bonjour Multicast Advertising enabled"

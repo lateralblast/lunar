@@ -42,6 +42,14 @@ audit_writable_files () {
           -a ! -perm -1000 \) -print"
         fi
         for check_file in `$find_command`; do
+          if [ "$ansible" = 1 ]; then
+            echo ""
+            echo "- name: CHecking write permissions for $check_file"
+            echo "  file:"
+            echo "    path: $check_file"
+            echo "    mode: o-w"
+            echo ""
+          fi
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "File $check_file is world writable"
             verbose_message "" fix

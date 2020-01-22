@@ -12,7 +12,8 @@
 
 audit_console_login () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "Root Login to System Console"
+    string="Root Login to System Console"
+    verbose_message "Checking:  $string"
     if [ "$os_version" = "10" ]; then
       check_file="/etc/default/login"
       check_file_value is $check_file CONSOLE eq /dev/console hash
@@ -27,10 +28,21 @@ audit_console_login () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/securetty"
     if [ -f "$check_file" ]; then
-      verbose_message "Root Login to System Console"
+      string="Root Login to System Console"
+      verbose_message "Checking:  $string"
       disable_ttys=0
       console_list=""
       if [ "$audit_mode" != 2 ]; then
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: $string"
+          echo "  lineinfile:"
+          echo "    path: $check_file"
+          echo "    regexp: '^tty[0-9]"
+          echo "    replace: '#\1'"
+          echo "  when: ansible_facts['ansible_system'] == 'Linux'"
+          echo ""
+        fi
         for console_device in `cat $check_file |grep '^tty[0-9]'`; do
           disable_ttys=1
           console_list="$console_list $console_device"
@@ -39,7 +51,7 @@ audit_console_login () {
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Consoles enabled on$console_list"
             verbose_message "" fix
-            verbose_message "cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
+            verbose_message "cat $check_file |sed 's/^tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
             verbose_message "cat $temp_file > $check_file" fix
             verbose_message "rm $temp_file" fix
             verbose_message "" fix
