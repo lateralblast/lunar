@@ -1333,3 +1333,5 @@
 # Bug fixes and code cleanup
 # 7.5.9: Thu 23 Jan 2020 12:05:26 AEDT
 # Added more ansible stanzas
+# 7.6.0: Thu 23 Jan 2020 15:07:16 AEDT
+# Added more ansible stanzas

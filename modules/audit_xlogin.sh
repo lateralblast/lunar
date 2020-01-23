@@ -38,6 +38,14 @@ audit_xlogin () {
       ttys_test=`cat $check_file |grep $check_string |awk '{print $5}'`
       if [ "$ttys_test" != "on" ]; then
         if [ "$audit_mode" != 2 ]; then
+          if [ "$ansible" = 1 ]; then
+            echo ""
+            echo "- name: Checking X Wrapper is disabled"
+            echo "  lineinfile:"
+            echo "    path: $check_file"
+            echo "    regexp: '/xdm -nodaemon/s/off/on/'"
+            echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+          fi
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "X wrapper is not disabled"
           fi
