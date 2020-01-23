@@ -5,13 +5,29 @@
 
 audit_core_limit () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Core dump limits"
+    string="Core dump limits"
+    verbose_message "$string"
     log_file="corelimit"
     backup_file="$work_dir/$log_file"
     current_value=`launchctl limit core |awk '{print $3}'`
     if [ "$audit_mode" != 2 ]; then
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  command:  sh -c \"launchctl limit core |awk '{print \$3}'\""
+        echo "  register: corelimit_check"
+        echo "  failed_when: corelimit_check == 1"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+        echo "- name: Fixing $string"
+        echo "  command: sh -c \"launchctl limit core 0\""
+        echo "  when: corelimit_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo ""
+      fi
       if [ "$current_value" != "0" ]; then
-        if [ "$audit_mode" = 0 ]; then
+        if [ ! "$audit_mode" = 0 ]; then
           increment_insecure "Core dumps unlimited"
           verbose_message "" fix
           verbose_message "launchctl limit core 0" fix

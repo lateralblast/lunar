@@ -34,13 +34,23 @@ replace_file_value () {
   fi
   new_check_value="$position$new_check_value"
   if [ "$audit_mode" != 2 ]; then
-   verbose_message "File $check_file contains \"$correct_value\" rather than \"$check_value\""
+    string="File $check_file contains $correct_value rather than $check_value"
+    verbose_message "$string"
   fi
   if [ -f "$check_file" ]; then
     check_dfs=`cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g"`
   fi
   if [ "$check_dfs" != 0 ]; then
     if [ "$audit_mode" != 2 ]; then
+      if [ "$ansible" = 1 ]; then
+        echo ""
+        echo "- name: Checking $string"
+        echo "  lineinfile:"
+        echo "    path: $check_file"
+        echo "    regexp: '$new_check_value"
+        echo "    replace: '$new_correct_value"
+        echo ""
+      fi
       increment_insecure "File $check_file contains \"$check_value\" rather than \"$correct_value\""
       backup_file $check_file
       lockdown_command  "sed -e \"s/$new_check_value/$new_correct_value/\" < $check_file > $temp_file ; cp $temp_file $check_file ; rm $temp_file" "Setting:   Share entries in $check_file to be secure"

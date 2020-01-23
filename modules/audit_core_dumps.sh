@@ -20,7 +20,6 @@ audit_core_dumps () {
         cores_dir="/var/cores"
         check_file="/etc/coreadm.conf"
         cores_check=`coreadm |head -1 |awk '{print $5}'`
-        
         if [ `expr "$cores_check" : "/var/cores"` != 10 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Cores are not restricted to a private directory"
