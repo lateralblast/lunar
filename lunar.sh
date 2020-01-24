@@ -124,7 +124,7 @@ named_disable="yes"
 
 install_rsyslog="no"
 
-# This is the company name that will go into the securit message
+# This is the company name that will go into the security message
 # Change it as required
 
 company_name="Lateral Blast Pty Ltd"
