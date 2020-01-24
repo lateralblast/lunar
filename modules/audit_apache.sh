@@ -22,7 +22,7 @@ audit_apache () {
         check_sunos_service $service_name disabled
       fi
       if [ "$os_version" = "11" ]; then
-        service_name="svc:/network/http:apache22"
+        service_name="svc:/network/http:apache2"
         check_sunos_service $service_name disabled
       fi
       if [ "$os_version" = "10" ]; then
