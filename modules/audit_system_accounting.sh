@@ -166,9 +166,11 @@ audit_system_accounting () {
       service_name="sysstat"
       check_chkconfig_service $service_name 3 on
       check_chkconfig_service $service_name 5 on
-      service_bname="auditd"
+      service_name="auditd"
       check_chkconfig_service $service_name 3 on
       check_chkconfig_service $service_name 5 on
+      check_systemctl_service enable sysstat
+      check_systemctl_service enable auditd
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then

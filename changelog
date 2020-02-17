@@ -1335,3 +1335,5 @@
 # Added more ansible stanzas
 # 7.6.0: Thu 23 Jan 2020 15:07:16 AEDT
 # Added more ansible stanzas
+# 7.6.1: Tue 18 Feb 2020 08:09:12 AEDT
+# Fixes and improvements as suggesting in issue 36
