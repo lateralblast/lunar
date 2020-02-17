@@ -44,11 +44,9 @@ audit_ntp () {
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/ntp.conf"
-      
       log_file="ntp.log"
-      check_linux_package install ntp
       do_chrony=0
-      if [ "$os_vendor" = "Red" ] && [ "$os_version" -ge 7 ]; then
+      if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" -ge 7 ]; then
         do_chrony=1
       fi
       if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
@@ -61,49 +59,29 @@ audit_ntp () {
         check_linux_package install chrony
         check_file="/etc/sysconfig/chronyd"
         check_file_value is $check_file OPTIONS eq '"-u chrony"' hash
-        check_file="/usr/lib/systemd/system/ntpd.service"
-        check_file_value is $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
-      fi
-      if [ "$audit_mode" != 2 ]; then
-       verbose_message "NTP is enabled"
-      fi
-      if [ "$package_name" != "ntp" ]; then
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "NTP not enabled"
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          verbose_message "Setting:   NTP to enabled"
-          log_file="$work_dir/$log_file"
-          echo "Installed ntp" >> $log_file
-          check_linux_package install ntp
-        fi
-      else
-        if [ "$audit_mode" = 1 ]; then
-          increment_secure "NTP installed"
-        fi
-        if [ "$audit_mode" = 2 ]; then
-          restore_file="$restore_dir/$log_file"
-          check_linux_package restore ntp $restore_file
-        fi
-      fi
-      service_name="ntp"
-      check_chkconfig_service $service_name 3 on
-      check_chkconfig_service $service_name 5 on
-      check_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
-      check_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
-      check_file_value is $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
-      if [ "$do_chrony" -eq 1 ]; then
         check_file="/etc/chrony/chrony.conf"
+        for server_number in `seq 0 3`; do
+          ntp_server="$server_number.$country_suffix.pool.ntp.org"
+          check_file_value is $check_file server space $ntp_server hash
+        done
+      else
+        check_linux_package install ntp
+        if [ -f "/usr/bin/systemctl" ]; then
+          check_file="/usr/lib/systemd/system/ntpd.service"
+          check_file_value is $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
+        else
+          check_chkconfig_service $service_name 3 on
+          check_chkconfig_service $service_name 5 on
+        fi
+        check_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
+        check_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
+        check_file_value is $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
+        check_file="/etc/ntp.conf"
         for server_number in `seq 0 3`; do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
           check_file_value is $check_file server space $ntp_server hash
         done
       fi
     fi
-    check_file="/etc/ntp.conf"
-    for server_number in `seq 0 3`; do
-      ntp_server="$server_number.$country_suffix.pool.ntp.org"
-      check_file_value is $check_file server space $ntp_server hash
-    done
   fi
 }

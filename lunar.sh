@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.6.1
+# Version:      7.6.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -261,7 +261,12 @@ check_os_release () {
           os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d.`
         fi
       else
-        os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d.`
+        if [ "$os_version" = "release" ]; then
+          os_version=`cat /etc/redhat-release | awk '{print $4}' |cut -f1 -d.`
+          os_update=`cat /etc/redhat-release | awk '{print $4}' |cut -f2 -d.`
+        else
+          os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d.`
+        fi
       fi
       os_vendor=`cat /etc/redhat-release | awk '{print $1}'`
       linux_dist="redhat"
