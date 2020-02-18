@@ -22,7 +22,7 @@ audit_ssh_config () {
   fi
   for check_file in /etc/sshd_config /etc/ssh/sshd_config /usr/local/etc/sshd_config /opt/local/ssh/sshd_config; do
     if [ -f "$check_file" ]; then
-      if [ "$os-name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
+      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
        verbose_message "SSH Configuration $sshd_file"
         if [ "$os_name" = "Darwin" ]; then
           check_file_value is $check_file GSSAPIAuthentication space yes hash
