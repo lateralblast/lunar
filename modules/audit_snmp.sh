@@ -21,7 +21,7 @@ audit_snmp () {
         current_value=`esxcli system snmp get |grep Enable |awk '{print $2}'`
         if [ "$audit_mode" != "2" ]; then
           if [ "$current_value" = "true" ]; then
-            if [ "$audit_more" = "0" ]; then
+            if [ "$audit_mode" = "0" ]; then
               echo "$current_value" > $backup_file
               verbose_message "Setting:   SNMP to disabled"
               esxcli system snmp set --enable="false"
