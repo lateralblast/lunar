@@ -28,7 +28,7 @@ audit_syslog_conf () {
       current_value=`esxcli system syslog config get |grep 'Local Log Output:' |awk '{print $4}'`
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" = "/scratch/log" ]; then
-          if [ "$audit_more" = "0" ]; then
+          if [ "$audit_mode" = "0" ]; then
             if [ "$syslog_logdir" != "" ]; then
               echo "$current_value" > $backup_file
               verbose_message "Setting:   Syslog log directory to a persistent datastore"
@@ -62,7 +62,7 @@ audit_syslog_conf () {
       current_value=`esxcli system syslog config get |grep Remote |awk '{print $3}'`
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" = "<none>" ]; then
-          if [ "$audit_more" = "0" ]; then
+          if [ "$audit_mode" = "0" ]; then
             if [ "$syslog_server" != "" ]; then
               echo "$current_value" > $backup_file
               esxcli system syslog config set --loghost="$syslog_server"

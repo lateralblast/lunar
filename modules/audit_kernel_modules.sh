@@ -12,7 +12,7 @@ audit_kernel_modules () {
       current_value=`esxcli system module get -m $module |grep 'Signed Status' |awk -F': ' '{print $2}'`
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" != "VMware Signed" ]; then
-          if [ "$audit_more" = "0" ]; then
+          if [ "$audit_mode" = "0" ]; then
             if [ "$syslog_server" != "" ]; then
               verbose_message "Setting:   Kernel module $module to disabled"
               echo "true" > $backup_file

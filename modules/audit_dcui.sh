@@ -12,7 +12,7 @@ audit_dcui () {
     current_value=`vim-cmd -U dcui vimsvc/auth/lockdown_is_enabled`
     if [ "$audit_mode" != "2" ]; then
       if [ "$current_value" != "true" ]; then
-        if [ "$audit_more" = "0" ]; then
+        if [ "$audit_mode" = "0" ]; then
           echo "$current_value" > $backup_file
           verbose_message "Setting:   Lockdown to true"
            vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter

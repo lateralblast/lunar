@@ -16,7 +16,7 @@ audit_mob () {
     fi
     if [ "$audit_mode" != "2" ]; then
       if [ "$current_value" != "disabled" ]; then
-        if [ "$audit_more" = "0" ]; then
+        if [ "$audit_mode" = "0" ]; then
           if [ "$syslog_server" != "" ]; then
             echo "enabled" > $backup_file
             verbose_message "Setting:   Managed Object Browser to disabled"

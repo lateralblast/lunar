@@ -12,7 +12,7 @@ audit_shell_timeout () {
       current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /UserVars/$test |cut -f2 -d,`
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" != "$timeout" ]; then
-          if [ "$audit_more" = "0" ]; then
+          if [ "$audit_mode" = "0" ]; then
             echo "$current_value" > $backup_file
             verbose_message "Setting:   Timeout value for $test to $timeout"
             esxcli system settings advanced set -o /UserVars/$test -i $timeout
