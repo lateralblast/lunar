@@ -17,7 +17,7 @@ audit_wheel_group () {
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"
-          echo "  grooup:"
+          echo "  group:"
           echo "    name: $wheel_group"
           echo "  when: ansible_facts['ansible_system'] == 'Linux' or ansible_facts['ansible_system'] == 'SunOS'"
         fi
