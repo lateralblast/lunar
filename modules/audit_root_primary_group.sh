@@ -13,7 +13,7 @@
 audit_root_primary_group () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
    verbose_message "Root Primary Group"
-    log_file="root_primary_grooup.log"
+    log_file="root_primary_group.log"
     check_file="/etc/group"
     group_check=`grep "^root:" /etc/passwd | cut -f4 -d:`
     if [ "$audit_mode" != 2 ]; then
