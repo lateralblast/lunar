@@ -1347,3 +1347,5 @@
 # Added in function to check_file_value to cater for multiple parameters in a line
 # 7.6.6: Sun 03 May 2020 13:13:14 AEST
 # Ansible output tweaks
+# 7.6.7: Sun 03 May 2020 14:34:48 AEST
+@ More ansible output tweaks

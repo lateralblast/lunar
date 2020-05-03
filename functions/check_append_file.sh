@@ -25,6 +25,17 @@ check_append_file () {
     if [ ! -f "$check_file" ]; then
       increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
       lockdown_command "echo \"$parameter\" >> $check_file"
+      if [ "$parameter" ]; then
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: $string"
+          echo "  lineinfile:"
+          echo "    path: $check_file"
+          echo "    line: '$parameter'"
+          echo "    create: yes"
+          echo ""
+        fi
+      fi
     else
       if [ "$parameter" ]; then
         if [ "$ansible" = 1 ]; then
