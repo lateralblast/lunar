@@ -20,7 +20,7 @@ audit_grub_security () {
       check_file_value is $check_file "selinux" eq 1 hash
       check_file_value is $check_file "enforcing" eq 1 hash
       check_file="/etc/default/grub"
-      check_file_value is $check_file "audit" eq 1 hash
+      check_file_value in $check_file "audit" eq 1 hash
     fi
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"

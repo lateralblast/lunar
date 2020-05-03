@@ -1343,3 +1343,5 @@
 # Fixed bug with filesystem partitions check
 # 7.6.4: Sun  3 May 2020 10:53:34 AEST
 # Formating cleanup
+# 7.6.5: Sun 03 May 2020 12:19:19 AEST
+# Added in function to check_file_value to cater for multiple parameters in a line

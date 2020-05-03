@@ -58,7 +58,7 @@ check_file_value () {
       fi
     fi
   fi
-  if [ "$operator" = "is" ]; then
+  if [ "$operator" = "is" ] || [ "$operator" = "in" ]; then
     negative="not"
   else
     negative="is"
@@ -138,13 +138,21 @@ check_file_value () {
           fi
         else
           if [ "$search_value" ]; then
-            check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$search_value"`
+            if [ "$operator" = "is" ]; then
+              check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$search_value"`
+            else
+              check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |grep "$separator" |uniq |egrep "$search_value"`
+            fi
           else
-            check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+            if [ "$operator" = "is" ]; then
+              check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value"`
+            else
+              check_value=`$cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |grep "$separator" |uniq |egrep "$correct_value"`
+            fi
           fi
         fi
       fi
-      if [ "$operator" = "is" ]; then
+      if [ "$operator" = "is" ] || [ "$operator" = "in" ]; then
         if [ "$check_value" ]; then
           test_value=1
         else
@@ -157,7 +165,7 @@ check_file_value () {
           test_value=1
         fi
       fi
-      if [ "$test_vale" = 0 ]; then
+      if [ "$test_value" = 0 ]; then
         correct_hyphen=`echo "$correct_value" |grep "^[\\]"`
         if [ "$correct_hyphen" ]; then
           correct_value=`echo "$correct_value" |sed "s/^[\\]//g"`
