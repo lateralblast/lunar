@@ -28,7 +28,7 @@ check_linux_package () {
         echo ""
         echo "- name: $string"
         echo "  package:"
-        echo "    name: $package_name"
+        echo "    name: $package_check"
         echo "    state: $package_state"
         echo ""
       fi
