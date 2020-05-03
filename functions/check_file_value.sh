@@ -165,6 +165,20 @@ check_file_value () {
           test_value=1
         fi
       fi
+      if [ "$ansible" = 1 ]; then
+        if [ "$negative" = "not" ];  
+          line="$parameter_name$separator$correct_value"
+        else
+          line="$comment_value$parameter_name$separator$correct_value"
+        fi
+        echo ""
+        echo "- name: $string"
+        echo "  lineinfile:"
+        echo "    path:  $check_file"
+        echo " .  regex: '^$parameter_name'"
+        echo "    line:  '$line'"
+        echo ""
+      fi
       if [ "$test_value" = 0 ]; then
         correct_hyphen=`echo "$correct_value" |grep "^[\\]"`
         if [ "$correct_hyphen" ]; then
