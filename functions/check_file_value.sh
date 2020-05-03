@@ -166,7 +166,7 @@ check_file_value () {
         fi
       fi
       if [ "$ansible" = 1 ]; then
-        if [ "$negative" = "not" ];  
+        if [ "$negative" = "not" ]; then
           line="$parameter_name$separator$correct_value"
         else
           line="$comment_value$parameter_name$separator$correct_value"
