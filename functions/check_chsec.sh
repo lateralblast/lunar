@@ -21,11 +21,11 @@ check_chsec() {
         echo "  failed_when: lssec_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"chsec -f $sec_file -s $sec_stanza -a $parameter_name=$correct_value\""
-        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == 'AIX'"
+        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       actual_value=`lssec -f $sec_file -s $sec_stanza -a $parameter_name |awk '{print $2}' |cut -f2 -d=`

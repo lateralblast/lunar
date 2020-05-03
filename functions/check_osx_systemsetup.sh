@@ -20,11 +20,11 @@ check_osx_systemsetup () {
           echo "  failed_when: systemsetup_check == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
-          echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
           echo ""
           echo "- name: Fixing $string"
           echo "  command: sudo systemsetup -$param $value"
-          echo "  when: systemsetup_check.rc == 0 and ansible_facts['ansible_system'] == 'Darwin'"
+          echo "  when: systemsetup_check.rc == 0 and ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
         check=`sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"`

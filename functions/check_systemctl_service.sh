@@ -62,7 +62,7 @@ check_systemctl_service () {
           echo "  service:"
           echo "    name: $service_name"
           echo "    enabled: $enabled"
-          echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
       fi

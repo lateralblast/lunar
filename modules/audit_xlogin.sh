@@ -44,7 +44,7 @@ audit_xlogin () {
             echo "  lineinfile:"
             echo "    path: $check_file"
             echo "    regexp: '/xdm -nodaemon/s/off/on/'"
-            echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+            echo "  when: ansible_facts['ansible_system'] == '$os_name'"
           fi
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "X wrapper is not disabled"

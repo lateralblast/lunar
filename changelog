@@ -1345,3 +1345,5 @@
 # Formating cleanup
 # 7.6.5: Sun 03 May 2020 12:19:19 AEST
 # Added in function to check_file_value to cater for multiple parameters in a line
+# 7.6.6: Sun 03 May 2020 13:13:14 AEST
+# Ansible output tweaks

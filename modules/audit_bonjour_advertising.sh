@@ -22,11 +22,11 @@ audit_bonjour_advertising() {
         echo "  failed_when: mcast_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file ; cat $temp_file > $check_file\""
-        echo "  when: mcast_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: mcast_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi 
       if [ "multicast_test" != "1" ]; then

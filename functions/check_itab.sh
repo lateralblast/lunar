@@ -23,7 +23,7 @@ check_itab() {
         echo "  aix_inittab:"
         echo "    namw: $service_name"
         echo "    state: $correct_value"
-        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ "$actual_value" != "$correct_value" ]; then

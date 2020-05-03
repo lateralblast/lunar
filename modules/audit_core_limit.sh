@@ -19,11 +19,11 @@ audit_core_limit () {
         echo "  failed_when: corelimit_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"launchctl limit core 0\""
-        echo "  when: corelimit_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: corelimit_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ "$current_value" != "0" ]; then

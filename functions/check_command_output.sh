@@ -56,11 +56,11 @@ check_command_output () {
         echo "  failed_when: lssec_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"$set_command\""
-        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == 'SunOS'"
+        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ "$check_value" != "$correct_value" ]; then

@@ -40,7 +40,7 @@ audit_console_login () {
           echo "    path: $check_file"
           echo "    regexp: '^tty[0-9]"
           echo "    replace: '#\1'"
-          echo "  when: ansible_facts['ansible_system'] == 'Linux'"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
         for console_device in `cat $check_file |grep '^tty[0-9]'`; do

@@ -26,7 +26,7 @@ check_inetd_service () {
           echo "    path: $check_file"
           echo "    regexp: ''(.*$service_name.*)'"
           echo "    replace: '#\1'"
-          echo "  when: ansible_facts['ansible_system'] == 'Linux' or ansible_facts['ansible_system'] == 'SunOS'"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name' or ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
         if [ "$actual_status" != "" ]; then

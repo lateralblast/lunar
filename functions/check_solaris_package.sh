@@ -32,7 +32,7 @@ funct_check_pkg () {
         echo "  package:"
         echo "    name: $pkg_name"
         echo "    state: present"
-        echo "  when: ansible_facts['ansible_system'] == 'SunOS'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then

@@ -32,11 +32,11 @@ check_launchctl_service () {
         echo "  failed_when: launchd_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"sudo launchctl $change_status -w $launchctl_service.plist\""
-        echo "  when: launchd_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: launchd_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ "$actual_status" != "$required_status" ]; then

@@ -110,11 +110,11 @@ check_osx_defaults () {
           echo "  failed_when: defaults_check == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
-          echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
           echo ""
           echo "- name: Fixing $string"
           echo "  command: sh -c \"$command\""
-          echo "  when: defaults_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+          echo "  when: defaults_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
       else

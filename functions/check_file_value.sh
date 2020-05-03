@@ -174,9 +174,9 @@ check_file_value () {
         echo ""
         echo "- name: $string"
         echo "  lineinfile:"
-        echo "    path:  $check_file"
+        echo "    path: $check_file"
         echo " .  regex: '^$parameter_name'"
-        echo "    line:  '$line'"
+        echo "    line: '$line'"
         echo ""
       fi
       if [ "$test_value" = 0 ]; then

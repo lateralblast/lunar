@@ -32,11 +32,11 @@ check_pmset() {
         echo "  failed_when: pmset_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"pmset -c $service $value\""
-        echo "  when: pmset_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: pmset_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ ! "$actual_value" = "$value" ]; then

@@ -12,7 +12,7 @@ audit_grub_security () {
     verbose_message "Grub Menu Security"
     if [ "$os_name" = "Linux" ]; then
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
-	check_file_perms $check_file 0600 root root
+        check_file_perms $check_file 0600 root root
       done
       check_file="/boot/grub/grub.cfg"
       check_file_value is $check_file "set superusers" eq root hash

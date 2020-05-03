@@ -24,7 +24,7 @@ check_subserver() {
         echo "  service:"
         echo "    name: $service_name"
         echo "    enabled: $enabled"
-        echo "  when: ansible_facts['ansible_system'] == 'AIX'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       if [ "$actual_value" != "$service_name" ]; then

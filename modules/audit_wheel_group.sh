@@ -19,7 +19,7 @@ audit_wheel_group () {
           echo "- name: Checking $string"
           echo "  group:"
           echo "    name: $wheel_group"
-          echo "  when: ansible_facts['ansible_system'] == 'Linux' or ansible_facts['ansible_system'] == 'SunOS'"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name' or ansible_facts['ansible_system'] == '$os_name'"
         fi
         if [ "$audit_mode" = 0 ]; then
           backup_file $check_file

@@ -20,11 +20,11 @@ check_dscl () {
         echo "  failed_when: dscl_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
         echo "  command: sh -c \"sudo dscl . -create $file $param '$value'\""
-        echo "  when: dscl_check.rc == 1 and ansible_facts['ansible_system'] == 'Darwin'"
+        echo "  when: dscl_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
       check=`sudo dscl . -read $file $param 2> /dev/null`
