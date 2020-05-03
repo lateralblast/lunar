@@ -7,8 +7,7 @@
 
 audit_bonjour_advertising() {
   if [ "$os_name" = "Darwin" ]; then
-    string="Bonjour Multicast Advertising"
-   verbose_message "$string"
+   verbose_message "Bonjour Multicast Advertising"
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     temp_file="$temp_dir/mdnsmcast"
     if [ "$audit_mode" = 2 ]; then

@@ -5,7 +5,7 @@
 
 audit_writesrv () {
   if [ "$os_name" = "AIX" ]; then
-   verbose_message "Writesrv"
+    verbose_message "Writesrv"
     check_itab writesrv off
   fi
 }

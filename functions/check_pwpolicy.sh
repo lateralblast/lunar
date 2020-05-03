@@ -10,7 +10,7 @@ check_pwpolicy() {
     log_file="$parameter_name.log"
     if [ "$audit_mode" != 2 ]; then
       string="Password Policy for $parameter_name is set to $correct_value"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$os_release" -ge 12 ]; then
         a_command="pwpolicy -getglobalpolicy |tr ' ' '\\\n' |grep $parameter_name |cut -f2 -d="
         actual_value=`pwpolicy -getglobalpolicy |tr " " "\n" |grep "$parameter_name" |cut -f2 -d=`

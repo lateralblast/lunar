@@ -12,13 +12,15 @@ audit_grub_security () {
     verbose_message "Grub Menu Security"
     if [ "$os_name" = "Linux" ]; then
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
-	      check_file_perms $check_file 0600 root root
-	     done
+	check_file_perms $check_file 0600 root root
+      done
       check_file="/boot/grub/grub.cfg"
       check_file_value is $check_file "set superusers" eq root hash
       check_file_value is $check_file "password_pbkdf2" space root hash
       check_file_value is $check_file "selinux" eq 1 hash
       check_file_value is $check_file "enforcing" eq 1 hash
+      check_file="/etc/default/grub"
+      check_file_value is $check_file "audit" eq 1 hash
     fi
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"

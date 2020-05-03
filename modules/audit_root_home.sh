@@ -5,7 +5,7 @@
 
 audit_root_home () {
   if [ "$os_name" = "SunOS" ]; then
-   verbose_message "Home Directory Permissions for root Account"
+    verbose_message "Home Directory Permissions for root Account"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         home_check=`grep root /etc/passwd | cut -f6 -d:`
@@ -44,6 +44,6 @@ audit_root_home () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-      check_file_perms /root 0700 root root
+    check_file_perms /root 0700 root root
   fi
 }

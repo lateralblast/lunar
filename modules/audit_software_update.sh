@@ -9,7 +9,7 @@
 audit_software_update() {
   if [ "$os_name" = "VMkernel" ]; then
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"
-   verbose_message "Software Update"
+    verbose_message "Software Update"
     current_update=`esxcli software profile get 2>&1 |head -1`
     log_file="softwareupdate.log"
     backup_file="$work_dir/$log_file"

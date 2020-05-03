@@ -10,7 +10,7 @@
 
 audit_telnet_client () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "Telnet Client"
+    verbose_message "Telnet Client"
     check_linux_package uninstall telnet
   fi
 }

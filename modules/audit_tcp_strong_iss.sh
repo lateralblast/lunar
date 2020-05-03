@@ -16,7 +16,7 @@
 
 audit_tcp_strong_iss () {
   if [ "$os_name" = "SunOS" ]; then
-   verbose_message "TCP Sequence Number Generation"
+    verbose_message "TCP Sequence Number Generation"
     check_file="/etc/default/inetinit"
     check_file_value is $check_file TCP_STRONG_ISS eq 2 hash
     if [ "$os_version" != "11" ]; then

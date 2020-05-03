@@ -5,7 +5,7 @@
 
 audit_sleep() {
   if [ "$os_name" = "Darwin" ]; then
-   verbose_message "Sleep"
+    verbose_message "Sleep"
     check_pmset sleep off
   fi
 }

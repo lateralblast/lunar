@@ -12,7 +12,7 @@
 
 audit_selinux () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "SELinux"
+    verbose_message "SELinux"
     check_file="/etc/selinux/config"
     check_file_value is $check_file SELINUX eq enforcing hash
     check_file_value is $check_file SELINUXTYPE eq targeted hash

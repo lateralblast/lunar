@@ -12,7 +12,7 @@
 
 audit_samba () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-   verbose_message "Samba Daemons"
+    verbose_message "Samba Daemons"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         if [ $os_update -ge 4 ]; then

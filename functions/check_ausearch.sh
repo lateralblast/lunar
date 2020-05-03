@@ -20,7 +20,7 @@ check_ausearch () {
           check=`ausearch -k $bin 2> /dev/null | grep $command | grep $mode`
           string="Binary $bin has $command commands with option $mode is set"
         fi
-       verbose_message "$string"
+        verbose_message "$string"
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"

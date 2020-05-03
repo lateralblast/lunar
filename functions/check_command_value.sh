@@ -12,7 +12,6 @@ check_command_value () {
   parameter_name=$2
   correct_value=$3
   service_name=$4
-  
   if [ "$audit_mode" = 2 ]; then
     restore_file="$restore_dir/$command_name.log"
     if [ -f "$restore_file" ]; then

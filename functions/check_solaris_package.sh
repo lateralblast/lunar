@@ -25,7 +25,7 @@ funct_check_pkg () {
       fi
     else
       string="Package $pkg_name is installed"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

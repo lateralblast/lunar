@@ -6,7 +6,7 @@
 
 audit_web_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-   verbose_message "Web sharing"
+    verbose_message "Web sharing"
     check_launchctl_service org.apache.httpd off
     check_file="/etc/apache2/httpd.conf"
     check_file_value is $check_file ServerTokens space Prod hash

@@ -9,7 +9,7 @@
 
 audit_virtual_memory () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "Randomised Virtual Memory Region Placement"
+    verbose_message "Randomised Virtual Memory Region Placement"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       if [ "$os_version" > "5" ]; then
         check_file="/etc/sysctl.conf"

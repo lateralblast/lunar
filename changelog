@@ -1341,3 +1341,5 @@
 # Fixes for RedHat/Centos 8.x using chrony by default as suggested in issue 35
 # 7.6.3: Sun  3 May 2020 08:48:13 AEST
 # Fixed bug with filesystem partitions check
+# 7.6.4: Sun  3 May 2020 10:53:34 AEST
+# Formating cleanup

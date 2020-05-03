@@ -5,7 +5,7 @@
 
 audit_wheel_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-   verbose_message "Wheel Users"
+    verbose_message "Wheel Users"
     check_file="/etc/group"
     if [ "$audit_mode" != 2 ]; then
       for user_name in `cat $check_file |grep '^$wheel_group:' |cut -f4 -d: |sed 's/,/ /g'`; do

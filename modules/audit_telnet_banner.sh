@@ -6,7 +6,7 @@
 
 audit_telnet_banner () {
   if [ "$os_name" = "SunOS" ]; then
-   verbose_message "Telnet Banner"
+    verbose_message "Telnet Banner"
     check_file="/etc/default/telnetd"
     check_file_value is $check_file BANNER eq /etc/issue hash
   fi

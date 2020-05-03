@@ -9,7 +9,7 @@
 
 audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "PAM Authentication"
+    verbose_message "PAM Authentication"
     check=0
     if [ "$os_vendor" = "Amazon" ] && [ "$os_version" = "2016" ]; then
       check=1

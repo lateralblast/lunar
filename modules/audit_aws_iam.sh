@@ -11,38 +11,38 @@
 audit_aws_iam () {
   # Root account should only be used sparingly, admin functions and responsibilities should be delegated
   verbose_message "IAM"
-	aws iam generate-credential-report 2>&1 > /dev/null
-	date_test=`date +%Y-%m`
-	last_login=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' |cut -f2 -d, |cut -f1,2 -d- |grep '[0-9]'`
-	if [ "$date_test" = "$last_login" ]; then
+  aws iam generate-credential-report 2>&1 > /dev/null
+  date_test=`date +%Y-%m`
+  last_login=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' |cut -f2 -d, |cut -f1,2 -d- |grep '[0-9]'`
+  if [ "$date_test" = "$last_login" ]; then
     increment_insecure "Root account appears to be being used regularly"
-	else
+  else
     increment_secure "Root account does not appear to be being used frequently"
-	fi
+  fi
   # Check to see if there is an IAM master role
-	check=`aws iam get-role --role-name $aws_iam_master_role 2> /dev/null`
-	if [ "$check" ]; then 
+  check=`aws iam get-role --role-name $aws_iam_master_role 2> /dev/null`
+  if [ "$check" ]; then 
     increment_secure "IAM Master role $aws_iam_master_role exists"
-	else
+  else
     increment_insecure "IAM Master role $aws_iam_master_role does not exist"
     verbose_message "" fix
     verbose_message "cd aws" fix
     verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
     verbose_message "aws iam put-role-policy --role-name $aws_iam_master_role --policy-name $aws_iam_master_role --policy-document file://iam-master-policy.json" fix
     verbose_message "" fix
-	fi
+  fi
   # Check there is an IAM manager role
-	check=`aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null`
-	if [ "$check" ]; then 
+  check=`aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null`
+  if [ "$check" ]; then 
     increment_secure "IAM Manager role $aws_iam_manager_role exists"
-	else
+  else
     increment_insecure "IAM Manager role $aws_iam_manager_role does not exist"
     verbose_message "" fix
     verbose_message "cd aws" fix
     verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
     verbose_message "aws iam put-role-policy --role-name $aws_iam_manager_role --policy-name $aws_iam_manager_role --policy-document file://iam-manager-policy.json" fix
     verbose_message "" fix
-	fi
+  fi
   # Check groups have members
   groups=`aws iam list-groups --query 'Groups[].GroupName' --output text`
   for group in $groups; do

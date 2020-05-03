@@ -7,7 +7,7 @@
 
 audit_tftp_client () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "TFTP Client"
+    verbose_message "TFTP Client"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       check_linux_package uninstall tftp
     fi

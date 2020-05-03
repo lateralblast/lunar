@@ -15,7 +15,7 @@
 
 audit_unowned_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-   verbose_message "Unowned Files and Directories"
+    verbose_message "Unowned Files and Directories"
     if [ "$audit_mode" = 1 ]; then
       if [ "$os_name" = "SunOS" ]; then
         find_command="find / \( -fstype nfs -o -fstype cachefs \

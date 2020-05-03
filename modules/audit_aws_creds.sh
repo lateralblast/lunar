@@ -8,8 +8,8 @@
 audit_aws_creds () {
   verbose_message "Credentials"
   aws iam generate-credential-report 2>&1 > /dev/null
-	entries=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,4,5,6,9,10,11,14,15,16 | sed '1 d' |awk -F '\n' '{print $1}'`
-	for entry in $entries; do
+  entries=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,4,5,6,9,10,11,14,15,16 | sed '1 d' |awk -F '\n' '{print $1}'`
+  for entry in $entries; do
     aws_user=`echo "$entry" |cut -d, -f1`
     aws_pass=`echo "$entry" |cut -d, -f2`
     aws_last=`echo "$entry" |cut -d, -f3`

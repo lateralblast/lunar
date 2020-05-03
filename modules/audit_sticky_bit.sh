@@ -13,7 +13,7 @@
 audit_sticky_bit () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$do_fs" = 1 ]; then
-     verbose_message "World Writable Directories and Sticky Bits"
+      verbose_message "World Writable Directories and Sticky Bits"
       if [ "$os_version" = "10" ]; then
         log_file="$work_dir/sticky_bits"
         for check_dir in `find / \( -fstype nfs -o -fstype cachefs \

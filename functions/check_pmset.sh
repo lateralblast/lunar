@@ -23,7 +23,7 @@ check_pmset() {
     actual_value=`pmset -g | grep $service |awk '{print $2}' |grep $value`
     if [ "$audit_mode" != 2 ]; then
       string="Sleep is disabled when powered"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

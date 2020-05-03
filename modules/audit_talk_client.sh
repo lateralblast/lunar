@@ -11,7 +11,7 @@
 
 audit_talk_client () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "Talk Client"
+    verbose_message "Talk Client"
     check_linux_package uninstall talk
   fi
 }

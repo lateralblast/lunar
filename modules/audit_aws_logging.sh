@@ -21,7 +21,7 @@
 audit_aws_logging () {
   verbose_message "CloudTrail"
   trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].Name" --output text`
-	if [ "$trails" ]; then
+  if [ "$trails" ]; then
     for trail in $trails; do
       # Check CloudTrail has MultiRegion enabled
       check=`aws cloudtrail describe-trails --region $aws_region --trail-name-list $trail --query "trailList[].IsMultiRegionTrail" |grep true`
@@ -65,7 +65,6 @@ audit_aws_logging () {
       else
         increment_secure "CloudTrail log file bucket $bucket does not grant access to Principal AllUsers"
       fi
-      
       grants=`aws s3api get-bucket-acl --region $aws_region --bucket $bucket |grep URI |grep AuthenticatedUsers`
       if [ "$grants" ]; then
         increment_insecure "CloudTrail log file bucket $bucket grants access to Principal AuthenticatedUsers"

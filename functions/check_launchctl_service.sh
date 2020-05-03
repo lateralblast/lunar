@@ -23,7 +23,7 @@ check_launchctl_service () {
     fi
     if [ "$audit_mode" != 2 ]; then
       string="Service $launchctl_service is $required_status"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

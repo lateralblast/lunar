@@ -6,7 +6,7 @@
 
 audit_syslog_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-   verbose_message "Syslog Permissions"
+    verbose_message "Syslog Permissions"
     if [ "$os_name" = "SunOS" ]; then
       check_file_perms /var/log/syslog 0600 root sys
     fi

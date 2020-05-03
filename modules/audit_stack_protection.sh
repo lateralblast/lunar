@@ -13,7 +13,7 @@
 
 audit_stack_protection () {
   if [ "$os_name" = "SunOS" ]; then
-   verbose_message "Stack Protection"
+    verbose_message "Stack Protection"
     check_file="/etc/system"
     check_file_value is $check_file "set noexec_user_stack" eq 1 star
     check_file_value is $check_file "set noexec_user_stack_log" eq 1 star

@@ -11,7 +11,7 @@
 
 audit_sendmail_daemon() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-   verbose_message "Sendmail Daemon"
+    verbose_message "Sendmail Daemon"
     if [ "$sendmail_disable" = "yes" ]; then
       if [ "$os_name" = "AIX" ]; then
         check_rctcp sendmail off

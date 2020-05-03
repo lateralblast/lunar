@@ -11,7 +11,7 @@
 
 audit_sulogin () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-   verbose_message "Single User Mode Requires Password"
+    verbose_message "Single User Mode Requires Password"
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"

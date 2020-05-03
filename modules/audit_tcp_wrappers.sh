@@ -15,7 +15,7 @@
 
 audit_tcp_wrappers () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "AIX" ]; then
-   verbose_message "TCP Wrappers"
+    verbose_message "TCP Wrappers"
     if [ "$os_name" = "AIX" ]; then
       package_name="netsec.options.tcpwrapper.base"
       check_lslpp $package_name

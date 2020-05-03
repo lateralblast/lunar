@@ -4,7 +4,7 @@
 
 audit_svccfg_value () {
   if [ "$os_name" = "SunOS" ]; then
-   verbose_message "RPC Port Mapping"
+    verbose_message "RPC Port Mapping"
     service_name=$1
     service_property=$2
     correct_value=$3

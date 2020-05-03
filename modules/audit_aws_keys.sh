@@ -8,9 +8,9 @@
 
 audit_aws_keys () {
   verbose_message "KMS Keys"
-	keys=`aws kms list-keys --query Keys --output text`
+  keys=`aws kms list-keys --query Keys --output text`
   if [ "$keys" ]; then
-  	for key in $keys; do
+    for key in $keys; do
       # Check key is enabled
       check=`aws kms get-key-rotation-status --key-id $key --query 'KeyMetadata' |grep Enabled |grep true`
       if [ ! "$check" ]; then
@@ -24,7 +24,6 @@ audit_aws_keys () {
       # Check that key rotation is enabled
       check=`aws kms get-key-rotation-status --key-id $key |grep KeyRotationEnabled |grep true`
       if [ ! "$check" ]; then
-        
         increment_insecure "Key $key does not have key rotation enabled"
         verbose_message "" fix
         verbose_message "aws cloudtrail update-trail --name <trail_name> --kms-id <cloudtrail_kms_key> aws kms put-key-policy --key-id <cloudtrail_kms_key> --policy <cloudtrail_kms_key_policy>" fix

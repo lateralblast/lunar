@@ -8,7 +8,7 @@
 #.
 
 audit_aws_all () {
-	audit_aws_iam
+  audit_aws_iam
   audit_aws_mfa
   audit_aws_access_keys
   audit_aws_creds

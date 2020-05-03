@@ -6,7 +6,7 @@
 audit_syslog_auth () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-     verbose_message "SYSLOG AUTH Messages"
+      verbose_message "SYSLOG AUTH Messages"
       audit_logadm_value authlog auth.info
     fi
   fi

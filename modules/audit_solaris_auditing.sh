@@ -7,7 +7,7 @@
 audit_solaris_auditing () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
-     verbose_message "Solaris Auditing"
+      verbose_message "Solaris Auditing"
       check_command_output getcond
       check_command_output getpolicy
       check_command_output getnaflags

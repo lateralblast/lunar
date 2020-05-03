@@ -5,9 +5,9 @@
 
 audit_xen () {
   if [ "$os_name" = "Linux" ]; then
-   verbose_message "Xen Daemons"
+    verbose_message "Xen Daemons"
     for service_name in xend xendomains; do
-	    check_chkconfig_service $service_name 3 off
+      check_chkconfig_service $service_name 3 off
       check_chkconfig_service $service_name 5 off
     done
   fi

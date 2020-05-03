@@ -23,7 +23,7 @@ check_linux_package () {
     backup_file="$work_dir/$log_file"
     if [ "$audit_mode" != "2" ]; then
       string="$package_type $package_check is $package_status"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: $string"

@@ -5,7 +5,7 @@
 
 audit_shells () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-   verbose_message "Shells"
+    verbose_message "Shells"
     check_file="/etc/shells"
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 2 ]; then

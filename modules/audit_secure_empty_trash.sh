@@ -5,7 +5,7 @@
 
 audit_secure_empty_trash() {
   if [ "$os_name" = "Darwin" ]; then
-   verbose_message "Secure Empty Trash"
+    verbose_message "Secure Empty Trash"
     check_osx_defaults com.apple.finder EmptyTrashSecurely 1 int
   fi
 }

@@ -13,7 +13,7 @@ check_trust() {
     l_command="trustchk -p $parameter_name=$correct_value"
     if [ "$audit_mode" != 2 ]; then
       string="Trusted Execution setting for $parameter_name is set to $correct_value"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$actual_value" != "$correct_value" ]; then
         increment_insecure "Trusted Execution setting for \"$parameter_name\" is not set to \"$correct_value\""
         log_file="$work_dir/$log_file"

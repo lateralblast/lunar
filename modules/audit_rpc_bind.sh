@@ -8,7 +8,7 @@
 audit_rpc_bind () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-     verbose_message "RPC Bind"
+      verbose_message "RPC Bind"
       service_name="svc:/network/rpc/bind"
       service_property="config/enable_tcpwrappers"
       correct_value="true"

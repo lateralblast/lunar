@@ -18,7 +18,7 @@ check_inetd_service () {
       fi
       if [ "$audit_mode" != 2 ]; then
         string="If inetd service $service_name is set to $correct_status"
-       verbose_message "$string"
+        verbose_message "$string"
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: $string"

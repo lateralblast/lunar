@@ -12,7 +12,7 @@ check_chsec() {
     log_file="$sec_file_$sec_stanza_$parameter_name.log"
     if [ "$audit_mode" != 2 ]; then
       string="Security Policy for $parameter_name is set to $correct_value"
-     verbose_message "$string"
+      verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

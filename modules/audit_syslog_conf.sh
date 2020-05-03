@@ -9,7 +9,7 @@
 
 audit_syslog_conf () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "VMkernel" ]; then
-   verbose_message "Syslog Configuration"
+    verbose_message "Syslog Configuration"
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/syslog.conf"
       check_file_value is $check_file "authpriv.*" tab "/var/log/secure" hash

@@ -32,7 +32,7 @@
 
 audit_aws_monitoring () {
   verbose_message "CloudWatch"
-	trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text |awk -F':' '{print $7}'`
+  trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text |awk -F':' '{print $7}'`
   if [ "$trails" ]; then
     increment_secure "CloudWatch log groups exits for CloudTrail"
     for trail in $trails; do

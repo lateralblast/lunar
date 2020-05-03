@@ -5,7 +5,7 @@
 
 audit_safe_downloads() {
   if [ "$os_name" = "Darwin" ]; then
-   verbose_message "Safe Downloads list"
+    verbose_message "Safe Downloads list"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
       update_file="/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.plist"

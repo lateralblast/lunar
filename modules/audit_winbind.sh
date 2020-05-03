@@ -5,7 +5,7 @@
 
 audit_winbind () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-   verbose_message "Winbind Daemon"
+    verbose_message "Winbind Daemon"
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
       service_name="svc:/network/winbind:default"
       check_sunos_service $service_name disabled

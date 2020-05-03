@@ -7,7 +7,7 @@
 
 audit_screen_lock () {
   if [ "$os_name" = "Darwin" ]; then
-   verbose_message "Screen lock"
+    verbose_message "Screen lock"
     check_osx_defaults com.apple.screensaver askForPassword 1 int currentHost
     check_osx_defaults com.apple.screensaver idleTime 900 int currentHost
     check_append_file /etc/pam.d/screensaver "account    required     pam_group.so no_warn group=admin,wheel fail_safe"

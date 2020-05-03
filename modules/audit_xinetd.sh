@@ -13,7 +13,7 @@ audit_xinetd () {
     if [ -d "$check_dir" ]; then
       check=`ls -l $check_dir |awk '{print $2}'`
       if [ ! "$check" = "0" ]; then
-       verbose_message "Xinet Services"
+        verbose_message "Xinet Services"
         xinetd_check=`cat $check_dir/* |grep disable |awk '{print $3}' |grep no |head -1 |wc -l`
         if [ "$xinetd_check" = "1" ]; then
           for service_name in amanda amandaidx amidxtape auth chargen-dgram \
