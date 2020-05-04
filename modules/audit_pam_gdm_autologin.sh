@@ -6,13 +6,29 @@
 audit_pam_gdm_autologin () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
-      verbose_message "Gnome Autologin"
+      string="Gnome Autologin"
+      verbose_message "$string"
       check_file="/etc/pam.d/gdm-autologin"
       temp_file="$temp_dir/gdm-autologin"
       if [ "$audit_mode" = 2 ]; then
         restore_file $check_file $restore_dir
       fi
       if [ "$audit_mode" != 2 ]; then
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  command:  sh -c \"cat $check_file |grep -v '^#' |grep '^gdm-autologin' |head -1 |wc -l\""
+          echo "  register: gdm_autologin_check"
+          echo "  failed_when: gdm_autologin_check == 1"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+          echo ""
+          echo "- name: Fixing $string"
+          echo "  command: sh -c \"sed -i 's/^gdm-autologin/#&/g' $check_file\""
+          echo "  when: gdm_autologin_check .rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+          echo ""
+        fi
         gdm_check=`cat $check_file |grep -v "^#" |grep "^gdm-autologin" |head -1 |wc -l`
         if [ "$gdm_check" != 0 ]; then
           if [ "$audit_mode" = 1 ]; then

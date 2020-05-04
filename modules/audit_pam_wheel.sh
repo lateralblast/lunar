@@ -13,12 +13,28 @@
 
 audit_pam_wheel () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "PAM SU Configuration"
+    string="PAM SU Configuration"
+    verbose_message "$string"
     check_file="/etc/pam.d/su"
     if [ -f "$check_file" ]; then
       search_string="use_uid"
       if [ "$audit_mode" != 2 ]; then
         check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
+        if [ "$ansible" = 1 ]; then
+          echo ""
+          echo "- name: Checking $string"
+          echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep '$search_string$' |head -1 |wc -l\""
+          echo "  register: pam_wheel_auth_check"
+          echo "  failed_when: pam_wheel_auth_check == 1"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+          echo ""
+          echo "- name: Fixing $string"
+          echo "  command: sh -c \"sed -i 's/^.*$search_string$/#&/' $check_file\""
+          echo "  when: pam_wheel_auth_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+          echo ""
+        fi
         if [ "$check_value" != "$search_string" ]; then
           if [ "$audit_mode" = "1" ]; then
             increment_insecure "Wheel group membership not required for su in $check_file"

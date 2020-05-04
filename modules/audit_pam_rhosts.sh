@@ -6,7 +6,8 @@
 
 audit_pam_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "PAM RHosts Configuration"
+    string="PAM RHosts Configuration"
+    verbose_message "$string"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/pam.conf"
       if [ "$audit_mode" = 2 ]; then
@@ -14,6 +15,21 @@ audit_pam_rhosts () {
       else
         if [ -f "$check_file" ]; then
           pam_check=`cat $check_file | grep -v "^#" |grep "pam_rhosts_auth" |head -1 |wc -l`
+          if [ "$ansible" = 1 ]; then
+            echo ""
+            echo "- name: Checking $string"
+            echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep 'pam_rhosts_auth' |head -1 |wc -l\""
+            echo "  register: pam_rhosts_auth_check"
+            echo "  failed_when: pam_rhosts_auth_check == 1"
+            echo "  changed_when: false"
+            echo "  ignore_errors: true"
+            echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+            echo ""
+            echo "- name: Fixing $string"
+            echo "  command: sh -c \"sed -i 's/^.*pam_rhosts_auth/#&/' $check_file\""
+            echo "  when: pam_rhosts_auth_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+            echo ""
+          fi
           if [ "$pam_check" = "1" ]; then
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "Rhost authentication enabled in $check_file"
@@ -51,8 +67,22 @@ audit_pam_rhosts () {
           if [ "$audit_mode" = 2 ]; then
             restore_file $check_file $restore_dir
           else
-           verbose_message "Rhost authentication disabled in $check_file"
             pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
+            if [ "$ansible" = 1 ]; then
+              echo ""
+              echo "- name: Checking $string"
+              echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep 'rhosts_auth' |head -1 |wc -l\""
+              echo "  register: pam_rhosts_auth_check"
+              echo "  failed_when: pam_rhosts_auth_check == 1"
+              echo "  changed_when: false"
+              echo "  ignore_errors: true"
+              echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+              echo ""
+              echo "- name: Fixing $string"
+              echo "  command: sh -c \"sed -i 's/^.*rhosts_auth/#&/' $check_file\""
+              echo "  when: pam_rhosts_auth_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+              echo ""
+            fi
             if [ "$pam_check" = "1" ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "Rhost authentication enabled in $check_file"
