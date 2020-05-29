@@ -64,6 +64,7 @@ The following services are supported:
 - AWS
 - Docker
 - Kubernetes (not complete)
+- Apache (not complete)
 
 The AWS Services audit uses the AWS CLI, and as such requires a user with the
 appropriate rights. It does not currently support the lockdown capability,
