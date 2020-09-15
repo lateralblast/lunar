@@ -65,23 +65,32 @@ audit_file_perms () {
     verbose_message "System File Permissions"
     log_file="fileperms.log"
     if [ "$audit_mode" != 2 ]; then
-     verbose_message "File permissions [This may take a while]"
-      for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Incorrect permissions on $file_name"
-          verbose_message "" fix
-          verbose_message "yum reinstall $rpm_name" fix
-          verbose_message "" fix
-        fi
-        if [ "$audit_mode" = 0 ]; then
-          verbose_message "Setting:   Correct permissions on $file_name"
-          log_file="$work_dir/$log_file"
-          file_perms=`stat -c %a $check_file`
-          file_owner=`ls -l $check_file |awk '{print $3","$4}'`
-          echo "$check_file,$file_perms,$file_owner" >> $log_file
-          yum reinstall $rpm_name
-        fi
-      done
+      verbose_message "File permissions [This may take a while]"
+
+      # Check specific to Debian
+      if [ "$os_vendor" = "Ubuntu" ] || [ "$os_vendor" = "Debian" ]; then
+        # TODO
+      fi
+
+      # Check specific to Red Hat/CentOS
+      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+        for check_file in `rpm -Va --nomtime --nosize --nomd5 --nolinkt| awk '{print $2}'`; do
+          if [ "$audit_mode" = 1 ]; then
+            increment_insecure "Incorrect permissions on $file_name"
+            verbose_message "" fix
+            verbose_message "yum reinstall $rpm_name" fix
+            verbose_message "" fix
+          fi
+          if [ "$audit_mode" = 0 ]; then
+            verbose_message "Setting:   Correct permissions on $file_name"
+            log_file="$work_dir/$log_file"
+            file_perms=`stat -c %a $check_file`
+            file_owner=`ls -l $check_file |awk '{print $3","$4}'`
+            echo "$check_file,$file_perms,$file_owner" >> $log_file
+            yum reinstall $rpm_name
+          fi
+        done
+      fi
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
