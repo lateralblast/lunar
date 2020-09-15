@@ -70,6 +70,7 @@ audit_file_perms () {
       # Check specific to Debian
       if [ "$os_vendor" = "Ubuntu" ] || [ "$os_vendor" = "Debian" ]; then
         # TODO
+        echo ""
       fi
 
       # Check specific to Red Hat/CentOS
