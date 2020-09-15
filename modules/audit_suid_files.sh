@@ -22,7 +22,7 @@ audit_suid_files () {
     if [ "$audit_mode" = 1 ]; then
       if [ "$os_name" = "Linux" ]; then
         for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
-          for check_file in `find $file_system -xdev -type f -perm -4000 -print`; do
+          for check_file in `find $file_system -xdev -type f -perm -4000 -print 2> /dev/null`; do
             increment_insecure "File $check_file is SUID/SGID"
             file_type=`file $check_file |awk '{print $5}'`
             if [ "$file_type" != "script" ]; then

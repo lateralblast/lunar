@@ -19,7 +19,7 @@ audit_unowned_files () {
     if [ "$audit_mode" = 1 ]; then
       if [ "$os_name" = "Linux" ]; then
         for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
-          for check_file in `find $file_system -xdev -nouser -ls`; do
+          for check_file in `find $file_system -xdev -nouser -ls 2> /dev/null`; do
             increment_insecure "File $check_file is unowned"
           done
         done

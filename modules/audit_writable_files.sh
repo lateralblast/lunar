@@ -25,7 +25,7 @@ audit_writable_files () {
       if [ "$audit_mode" != 2 ]; then
         if [ "$os_name" = "Linux" ]; then
           for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
-            for check_file in `find $file_system -xdev -type f -perm -0002`; do
+            for check_file in `find $file_system -xdev -type f -perm -0002 2> /dev/null`; do
               if [ "$ansible" = 1 ]; then
                 echo ""
                 echo "- name: CHecking write permissions for $check_file"
