@@ -228,7 +228,7 @@ check_virtual_platform () {
       virtual=`dmidecode |grep Manufacturer |head -1 |awk '{print $2}' |sed "s/,//g"`
     fi
   fi
-  echo "Virtual:   $virtual"
+  echo "Platform:  $virtual"
 }
 
 
