@@ -1353,3 +1353,5 @@
 # More ansible output tweaks
 # 7.6.9: Mon 18 May 2020 19:25:17 AEST
 # More Apache support
+# 7.7.0: Wed 16 Sep 2020 09:08:19 AEST
+# Fix for filesystem searches on Linux
