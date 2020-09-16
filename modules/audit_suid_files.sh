@@ -33,7 +33,7 @@ audit_suid_files () {
             fi
             if [ "$ansible" = 1 ]; then
               echo ""
-              echo "- name: CHecking write permissions for $check_file"
+              echo "- name: Checking write permissions for $check_file"
               echo "  file:"
               echo "    path: $check_file"
               echo "    mode: o-S"
@@ -74,7 +74,7 @@ audit_suid_files () {
           fi
           if [ "$ansible" = 1 ]; then
             echo ""
-            echo "- name: CHecking write permissions for $check_file"
+            echo "- name: Checking write permissions for $check_file"
             echo "  file:"
             echo "    path: $check_file"
             echo "    mode: o-S"

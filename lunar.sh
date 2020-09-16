@@ -74,7 +74,7 @@ aws_days_to_key_deletion="7"
 
 # Set up some global variables
 
-app_dir=$(dirname $0)
+app_dir=$( dirname $0 )
 args=$@
 secure=0
 insecure=0
@@ -84,7 +84,7 @@ syslog_logdir=""
 pkg_company="LTRL"
 pkg_suffix="lunar"
 base_dir="/opt/$pkg_company$pkg_suffix"
-date_suffix=`date +%d_%m_%Y_%H_%M_%S`
+date_suffix=$( date +%d_%m_%Y_%H_%M_%S )
 work_dir="$base_dir/$date_suffix"
 temp_dir="$base_dir/tmp"
 temp_file="$temp_dir/temp_file"
@@ -223,9 +223,9 @@ check_virtual_platform () {
   if [ -f "/.dockerenv" ]; then
     virtual="Docker"
   else 
-    check=`which dmidecode |grep dmidecode |grep -v no`
+    check=$( which dmidecode | grep dmidecode | grep -v no )
     if [ "$check" ]; then
-      virtual=`dmidecode |grep Manufacturer |head -1 |awk '{print $2}' |sed "s/,//g"`
+      virtual=$( dmidecode | grep Manufacturer |head -1 | awk '{print $2}' | sed "s/,//g" )
     fi
   fi
   echo "Platform:  $virtual"
@@ -241,9 +241,9 @@ check_os_release () {
   echo ""
   echo "# SYSTEM INFORMATION:"
   echo ""
-  os_name=`uname`
+  os_name=$( uname )
   if [ "$os_name" = "Darwin" ]; then
-    set -- $(sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}')
+    set -- $( sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}' )
     os_version=$1.$2
     os_release=$2
     os_update=$3
@@ -251,44 +251,44 @@ check_os_release () {
   fi
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
-      os_version=`cat /etc/redhat-release | awk '{print $3}' |cut -f1 -d.`
+      os_version=$( cat /etc/redhat-release | awk '{print $3}' | cut -f1 -d. )
       if [ "$os_version" = "Enterprise" ]; then
-        os_version=`cat /etc/redhat-release | awk '{print $7}' |cut -f1 -d.`
+        os_version=$( cat /etc/redhat-release | awk '{print $7}' | cut -f1 -d. )
         if [ "$os_version" = "Beta" ]; then
-          os_version=`cat /etc/redhat-release | awk '{print $6}' |cut -f1 -d.`
-          os_update=`cat /etc/redhat-release | awk '{print $6}' |cut -f2 -d.`
+          os_version=$( cat /etc/redhat-release | awk '{print $6}' | cut -f1 -d. )
+          os_update=$( cat /etc/redhat-release | awk '{print $6}' | cut -f2 -d. )
         else
-          os_update=`cat /etc/redhat-release | awk '{print $7}' |cut -f2 -d.`
+          os_update=$( cat /etc/redhat-release | awk '{print $7}' | cut -f2 -d. )
         fi
       else
         if [ "$os_version" = "release" ]; then
-          os_version=`cat /etc/redhat-release | awk '{print $4}' |cut -f1 -d.`
-          os_update=`cat /etc/redhat-release | awk '{print $4}' |cut -f2 -d.`
+          os_version=$( cat /etc/redhat-release | awk '{print $4}' | cut -f1 -d. )
+          os_update=$( cat /etc/redhat-release | awk '{print $4}' | cut -f2 -d. )
         else
-          os_update=`cat /etc/redhat-release | awk '{print $3}' |cut -f2 -d.`
+          os_update=$( cat /etc/redhat-release | awk '{print $3}' | cut -f2 -d. )
         fi
       fi
-      os_vendor=`cat /etc/redhat-release | awk '{print $1}'`
+      os_vendor=$( cat /etc/redhat-release | awk '{print $1}' )
       linux_dist="redhat"
     else
       if [ -f "/etc/debian_version" ]; then
         if [ -f "/etc/lsb-release" ]; then
-          os_version=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d= |cut -f1 -d.`
-          os_update=`cat /etc/lsb-release |grep "DISTRIB_RELEASE" |cut -f2 -d= |cut -f2 -d.`
-          os_vendor=`cat /etc/lsb-release |grep "DISTRIB_ID" |cut -f2 -d=`
+          os_version=$( grep "DISTRIB_RELEASE" /etc/lsb-release | cut -f2 -d= | cut -f1 -d. )
+          os_update=$( grep "DISTRIB_RELEASE" /etc/lsb-release | cut -f2 -d= | cut -f2 -d. )
+          os_vendor=$( grep "DISTRIB_ID" /etc/lsb-release | cut -f2 -d= )
         else
           if [ -f "/etc/debian_version" ]; then
-            os_version=`cat /etc/debian_version |cut -f1 -d.`
-            os_update=`cat /etc/debian_version |cut -f2 -d.`
+            os_version=$( cut -f1 -d. /etc/debian_version )
+            os_update=$( cut -f2 -d. /etc/debian_version )
             os_vendor="Debian"
           else
-            os_version=`lsb_release -r |awk '{print $2}' |cut -f1 -d.`
-            os_update=`lsb_release -r |awk '{print $2}' |cut -f2 -d.`
-            os_vendor=`lsb_release -i |awk '{print $3}'`
+            os_version=$( lsb_release -r | awk '{print $2}' | cut -f1 -d. )
+            os_update=$( lsb_release -r | awk '{print $2}' | cut -f2 -d. )
+            os_vendor=$( lsb_release -i | awk '{print $3}' )
           fi
         fi
         linux_dist="debian"
-        if [ `echo "${os_version}" | grep "[0-9]" ` ]; then 
+        if [ $( echo "${os_version}" | grep "[0-9]" ) ]; then 
           if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
             echo "Notice:    The sysv-rc-conf package may be required by this script but is not present"
           fi
@@ -301,15 +301,15 @@ check_os_release () {
         fi
       else
         if [ -f "/etc/SuSE-release" ]; then
-          os_version=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f1 -d.`
-          os_update=`cat /etc/SuSe-release |grep '^VERSION' |awk '{print $3}' |cut -f2 -d.`
+          os_version=$( grep '^VERSION' /etc/SuSe-release | awk '{print $3}' | cut -f1 -d. )
+          os_update=$( grep '^VERSION' /etc/SuSe-release | awk '{print $3}' | cut -f2 -d. )
           os_vendor="SuSE"
           linux_dist="suse"
         else
           if [ -f "/etc/os-release" ]; then
             os_vendor="Amazon"
-            os_version=`cat /etc/os-release |grep 'CPE_NAME' |cut -f2 -d: |cut -f1 -d.`
-            os_update=`cat /etc/os-release |grep 'CPE_NAME' |cut -f2 -d: |cut -f2 -d.`
+            os_version=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f1 -d. )
+            os_update=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f2 -d. )
           fi
         fi
       fi
@@ -317,38 +317,38 @@ check_os_release () {
   fi
   if [ "$os_name" = "SunOS" ]; then
     os_vendor="Oracle Solaris"
-    os_version=`uname -r |cut -f2 -d"."`
+    os_version=$( uname -r |cut -f2 -d"." )
     if [ "$os_version" = "11" ]; then
-      os_update=`cat /etc/release |grep Solaris |awk '{print $3}' |cut -f2 -d.`
+      os_update=$( grep Solaris /etc/release | awk '{print $3}' | cut -f2 -d. )
     fi
     if [ "$os_version" = "10" ]; then
-      os_update=`cat /etc/release |grep Solaris |awk '{print $5}' |cut -f2 -d_ |sed 's/[A-z]//g'`
+      os_update=$( grep Solaris /etc/release | awk '{print $5}' | cut -f2 -d_ | sed 's/[A-z]//g' )
     fi
     if [ "$os_version" = "9" ]; then
-      os_update=`cat /etc/release |grep Solaris |awk '{print $4}' |cut -f2 -d_ |sed 's/[A-z]//g'`
+      os_update=$( grep Solaris /etc/release | awk '{print $4}' | cut -f2 -d_ | sed 's/[A-z]//g' )
     fi
   fi
   if [ "$os_name" = "FreeBSD" ]; then
-    os_version=`uname -r |cut -f1 -d.`
-    os_update=`uname -r |cut -f2 -d.`
+    os_version=$( uname -r | cut -f1 -d. )
+    os_update=$( uname -r | cut -f2 -d. )
     os_vendor=$os_name
   fi
   if [ "$os_name" = "AIX" ]; then
     os_vendor="IBM"
-    os_version=`oslevel |cut -f1 -d.`
-    os_update=`oslevel |cut -f2 -d.`
+    os_version=$( oslevel | cut -f1 -d. )
+    os_update=$( oslevel | cut -f2 -d. )
   fi
   if [ "$os_name" = "VMkernel" ]; then
-    os_version=`uname -r`
-    os_update=`uname -v |awk '{print $4}'`
+    os_version=$( uname -r )
+    os_update=$( uname -v | awk '{print $4}' )
     os_vendor="VMware"
   fi
   if [ "$os_name" != "Linux" ] && [ "$os_name" != "SunOS" ] && [ "$os_name" != "Darwin" ] && [ "$os_name" != "FreeBSD" ] && [ "$os_name" != "AIX" ] && [ "$os_name" != "VMkernel" ]; then
     echo "OS not supported"
     exit
   fi
-  os_platform=`uname -p`
-  os_machine=`uname -m`
+  os_platform=$( uname -p )
+  os_machine=$( uname -m )
   check_virtual_platform
   echo "Processor: $os_platform"
   echo "Machine:   $os_machine"
@@ -369,7 +369,7 @@ check_environment () {
   if [ "$os_name" = "Darwin" ]; then
     echo ""
     echo "Checking:  If node is managed"
-    managed_node=`sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d:`
+    managed_node=$( sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d: )
     if [ "$managed_node" = "Error" ]; then
       echo "Notice:    Node is not managed"
     else
@@ -379,9 +379,9 @@ check_environment () {
   fi
   if [ "$os_name" != "VMkernel" ]; then
     if [ "$os_name" = "SunOS" ]; then
-      id_check=`id |cut -c5`
+      id_check=$( id | cut -c5 )
     else
-      id_check=`id -u`
+      id_check=$( id -u )
     fi
     if [ "$id_check" != "0" ]; then
       if [ "$os_name" != "Darwin" ]; then
@@ -401,7 +401,7 @@ check_environment () {
       echo "Loading Functions"
       echo ""
     fi
-    for file_name in `ls $functions_dir/*.sh`; do
+    for file_name in $( ls $functions_dir/*.sh ); do
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         . $file_name
       else
@@ -419,7 +419,7 @@ check_environment () {
       echo "Loading Modules"
       echo ""
     fi
-    for file_name in `ls $modules_dir/*.sh`; do
+    for file_name in $( ls $modules_dir/*.sh ); do
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         . $file_name
       else
@@ -444,7 +444,7 @@ check_environment () {
     if [ "$verbose" = "1" ]; then
       echo ""
     fi
-    for file_name in `ls $private_dir/*.sh`; do
+    for file_name in $( ls $private_dir/*.sh ); do
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
         . $file_name
       else
@@ -484,7 +484,7 @@ lockdown_command () {
       echo "Setting:   $message"
     fi
     echo "Executing: $command"
-   `$command`
+   $( $command )
   else
     verbose_message "$command" fix
   fi
@@ -504,7 +504,7 @@ restore_command () {
       echo "Restoring: $message"
     fi
     echo "Executing: $command"
-   `$command`
+   $( $command )
   else
     verbose_message "$command" fix
   fi
@@ -538,10 +538,10 @@ restore_state () {
     restore_command=$3
     restore_file="$restore_dir/$restore_name"
     if [ -f "$restore_file" ]; then
-      restore_value=`cat $restore_file`
+      restore_value=$( cat $restore_file )
       if [ "$current_value" != "$restore_value" ]; then
         echo "Executing: $command"
-        `$restore_command`
+        $( $restore_command )
       fi
     fi
   fi
@@ -554,7 +554,7 @@ restore_state () {
 
 increment_total () {
   if [ "$audit_mode" != 2 ]; then
-    total=`expr $total + 1` 
+    total=$( expr $total + 1 )
   fi
 }
 
@@ -566,8 +566,8 @@ increment_total () {
 increment_secure () {
   if [ "$audit_mode" != 2 ]; then
     message=$1
-    total=`expr $total + 1` 
-    secure=`expr $secure + 1`
+    total=$( expr $total + 1 )
+    secure=$( expr $secure + 1 )
     echo "Secure:    $message [$secure Passes]"
   fi
 }
@@ -580,8 +580,8 @@ increment_secure () {
 increment_insecure () {
   if [ "$audit_mode" != 2 ]; then
     message=$1
-    total=`expr $total + 1` 
-    insecure=`expr $insecure + 1`
+    total=$( expr $total + 1 )
+    insecure=$( expr $insecure + 1 )
     echo "Warning:   $message [$insecure Warnings]"
   fi
 }
@@ -667,14 +667,14 @@ print_changes () {
     echo ""
     echo "Printing changes:"
     echo ""
-    for saved_file in `find $base_dir -type f -print`; do
-      check_file=`echo $saved_file |cut -f 5- -d"/"`
-      top_dir=`echo $saved_file |cut -f 1-4 -d"/"`
+    for saved_file in $( find $base_dir -type f -print ); do
+      check_file=$( echo $saved_file | cut -f 5- -d"/" )
+      top_dir=$( echo $saved_file | cut -f 1-4 -d"/" )
       echo "Directory: $top_dir"
-      log_test=`echo "$check_file" |grep "log$"`
-      if [ `expr "$log_test" : "[A-z]"` = 1 ]; then
+      log_test=$( echo "$check_file" |grep "log$" )
+      if [ $( expr "$log_test" : "[A-z]" ) = 1 ]; then
         echo "Original system parameters:"
-        cat $saved_file |sed "s/,/ /g"
+        cat $saved_file | sed "s/,/ /g"
       else
         echo "Changes to /$check_file:"
         diff $saved_file /$check_file
@@ -692,7 +692,7 @@ print_changes () {
 #.
 
 check_aws () {
-  aws_bin=`which aws 2> /dev/null`
+  aws_bin=$( which aws 2> /dev/null )
   if [ -f "$aws_bin" ]; then
     aws_creds="$HOME/.aws/credentials"
     if [ -f "$aws_creds" ]; then
@@ -710,7 +710,7 @@ check_aws () {
     exit
   fi
   if [ ! "$aws_region" ]; then
-    aws_region=`aws configure get region`
+    aws_region=$( aws configure get region )
   fi
 }
 
@@ -805,7 +805,7 @@ funct_audit_system () {
     audit_search_fs
   fi
   #audit_test_subset
-  if [ `expr "$os_platform" : "sparc"` != 1 ]; then
+  if [ $( expr "$os_platform" : "sparc" ) != 1 ]; then
     audit_system_x86
   else
     audit_system_sparc
@@ -822,15 +822,15 @@ funct_audit_select () {
   audit_mode=$1
   function=$2
   check_environment
-  if [ "`echo $function |grep aws`" ]; then
+  if [ "$( echo $function |grep aws )" ]; then
     check_aws
   fi
-  if [ "`expr $function : audit_`" != "6" ]; then
+  if [ "$( expr $function : audit_ )" != "6" ]; then
     function="audit_$function"
   fi
   if [ "$function" != "audit_" ]; then
     print_audit_info $function
-    check=`type $function 2> /dev/null`
+    check=$( type $function 2> /dev/null )
     if [ "$check" ]; then
       $function
     else
@@ -844,15 +844,15 @@ funct_audit_select () {
 
 # Get the path the script starts from
 
-start_path=`pwd`
+start_path=$( pwd )
 
 # Get the version of the script from the script itself
 
-script_version=`cd $start_path ; cat $0 | grep '^# Version' |awk '{print $3}'`
+script_version=$( cd $start_path ; cat $0 | grep '^# Version' | awk '{print $3}' )
 
 # If given no command line arguments print usage information
 
-if [ `expr "$args" : "\-"` != 1 ]; then
+if [ $( expr "$args" : "\-" ) != 1 ]; then
   print_help
   exit
 fi

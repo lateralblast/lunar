@@ -28,7 +28,7 @@ audit_writable_files () {
             for check_file in `find $file_system -xdev -type f -perm -0002 2> /dev/null`; do
               if [ "$ansible" = 1 ]; then
                 echo ""
-                echo "- name: CHecking write permissions for $check_file"
+                echo "- name: Checking write permissions for $check_file"
                 echo "  file:"
                 echo "    path: $check_file"
                 echo "    mode: o-w"
@@ -65,7 +65,7 @@ audit_writable_files () {
           for check_file in `$find_command`; do
             if [ "$ansible" = 1 ]; then
               echo ""
-              echo "- name: CHecking write permissions for $check_file"
+              echo "- name: Checking write permissions for $check_file"
               echo "  file:"
               echo "    path: $check_file"
               echo "    mode: o-w"
