@@ -24,13 +24,6 @@ audit_suid_files () {
         for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
           for check_file in `find $file_system -xdev -type f -perm -4000 -print 2> /dev/null`; do
             increment_insecure "File $check_file is SUID/SGID"
-            file_type=`file $check_file |awk '{print $5}'`
-            if [ "$file_type" != "script" ]; then
-              elfsign_check=`elfsign verify -e $check_file 2>&1`
-              verbose_message "Result:    $elfsign_check"
-            else
-              verbose_message "Result:    Shell script"
-            fi
             if [ "$ansible" = 1 ]; then
               echo ""
               echo "- name: Checking write permissions for $check_file"
@@ -65,13 +58,6 @@ audit_suid_files () {
         fi
         for check_file in `$find_command`; do
           increment_insecure "File $check_file is SUID/SGID"
-          file_type=`file $check_file |awk '{print $5}'`
-          if [ "$file_type" != "script" ]; then
-            elfsign_check=`elfsign verify -e $check_file 2>&1`
-            verbose_message "Result:    $elfsign_check"
-          else
-            verbose_message "Result:    Shell script"
-          fi
           if [ "$ansible" = 1 ]; then
             echo ""
             echo "- name: Checking write permissions for $check_file"
