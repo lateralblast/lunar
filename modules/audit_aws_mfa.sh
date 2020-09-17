@@ -10,11 +10,11 @@
 
 audit_aws_mfa () {
   verbose_message "MFA"
-  entries=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,4,8 | sed '1 d' |awk -F '\n' '{print $1}'`
+  entries=$( aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,4,8 | sed '1 d' | awk -F '\n' '{print $1}' )
   for entry in $entries; do
-    user=`echo "$entry" |cut -d, -f1`
-    pass=`echo "$entry" |cut -d, -f2`
-    mfa=`echo "$entry" |cut -d, -f3`
+    user=$( echo "$entry" | cut -d, -f1 )
+    pass=$( echo "$entry" | cut -d, -f2 )
+    mfa=$( echo "$entry" | cut -d, -f3 )
     if [ "$user" = "<root_account>" ]; then
       if [ "$mfa" = "false" ]; then
         increment_insecure "Account $user does not have MFA enabled"
@@ -33,10 +33,10 @@ audit_aws_mfa () {
       fi
     fi
   done
-  mfa_check=`aws iam get-account-summary | grep "AccountMFAEnabled" |cut -f1 -d: |sed "s/ //g" |sed "s/,//g"`
+  mfa_check=$( aws iam get-account-summary | grep "AccountMFAEnabled" | cut -f1 -d: | sed "s/ //g" | sed "s/,//g" )
   if [ "$mfa_check" = "1" ]; then
     increment_secure "The root account has MFA enabled"
-    mfa_check=`iaws iam list-virtual-mfa-devices |grep "SerialNumber" |grep "root_account" |wc -l`
+    mfa_check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep "root_account" | wc -l )
     if [ "$mfa_check" = "0" ]; then
       increment_secure "The root account does not have a virtual MFA"
     else
@@ -47,4 +47,3 @@ audit_aws_mfa () {
     increment_insecure "The root account does not a hardware MFA"
   fi
 }
-

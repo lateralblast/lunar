@@ -32,11 +32,11 @@
 
 audit_aws_monitoring () {
   verbose_message "CloudWatch"
-  trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text |awk -F':' '{print $7}'`
+  trails=$( aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text | awk -F':' '{print $7}' )
   if [ "$trails" ]; then
     increment_secure "CloudWatch log groups exits for CloudTrail"
     for trail in $trails; do
-      metrics=`aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text`
+      metrics=$( aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text )
       if [ ! "$metrics" ]; then
         increment_insecure "CloudWatch log group $trail has no metrics"
         verbose_message "" fix
@@ -76,7 +76,7 @@ audit_aws_monitoring () {
                       CreateVpc DeleteVpc ModifyVpcAttribute AcceptVpcPeeringConnection CreateVpcPeeringConnection DeleteVpcPeeringConnection \
                       RejectVpcPeeringConnection AttachClassicLinkVpc DetachClassicLinkVpc DisableVpcClassicLink EnableVpcClassicLink \
                       TerminateInstances StopInstances StartInstances RebootInstances RunInstances; do
-          check=`aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text |grep "$metric"`
+          check=$( aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text |grep "$metric" )
           if [ "$check" ]; then
             increment_secure "CloudWatch log group $trail metrics include $metric"
           else
@@ -88,11 +88,11 @@ audit_aws_monitoring () {
   else
     increment_insecure "No CloudWatch log groups exist for CloudTrail"
   fi
-  alarms=`aws cloudwatch describe-alarms --region $aws_region --query "MetricAlarms[].AlarmActions" --output text`
+  alarms=$( aws cloudwatch describe-alarms --region $aws_region --query "MetricAlarms[].AlarmActions" --output text )
   if [ "$alarms" ]; then
     increment_secure "CloudWatch alarms exits for CloudTrail"
     for alarm in $alarms; do
-      subscribers=`aws sns list-subscriptions-by-topic --region $aws_region --topic-arn $alarm --output text`
+      subscribers=$( aws sns list-subscriptions-by-topic --region $aws_region --topic-arn $alarm --output text )
       if [ "$subscribers" ]; then
         increment_secure "CloudWatch alarm $alarm has subscribers"
       else

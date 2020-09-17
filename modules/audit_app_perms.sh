@@ -9,7 +9,7 @@ audit_app_perms () {
     if [ "$audit_mode" != 2 ]; then
       OFS=$IFS
       IFS=$'\n'
-      app_dirs=`ls /Applications`
+      app_dirs=$( ls /Applications )
       for app_dir in $app_dirs; do
         check_file_perms "/Applications/$app_dir" 0755
       done

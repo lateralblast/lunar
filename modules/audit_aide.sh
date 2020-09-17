@@ -15,7 +15,7 @@ audit_aide() {
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
       check_file="/etc/sysconfig/prelink"
       if [ -f "$check_file" ]; then
-        prelink_check=`cat $check_file |grep PRELINKING |cut -f2 -d= |sed 's/ //g'`
+        prelink_check=$( grep PRELINKING $check_file | cut -f2 -d= | sed 's/ //g' )
       else
         prelink_check="no"
       fi

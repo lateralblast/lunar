@@ -11,9 +11,9 @@
 audit_aws_vpcs () {
   verbose_message "VPCs"
   # Check for exposed VPC endpoints
-  endpoints=`aws ec2 describe-vpc-endpoints --region $aws_region --query 'VpcEndpoints[*].VpcEndpointId' --output text`
+  endpoints=$( aws ec2 describe-vpc-endpoints --region $aws_region --query 'VpcEndpoints[*].VpcEndpointId' --output text )
   for enpoint in $endpoints; do
-    check=`aws ec2 describe-vpc-endpoints --region $aws_region --vpc-endpoint-ids $enpoint --query 'VpcEndpoints[].PolicyDocument' |grep Principal |egrep "\*|{\"AWS\":\"\*\"}"`
+    check=$( aws ec2 describe-vpc-endpoints --region $aws_region --vpc-endpoint-ids $enpoint --query 'VpcEndpoints[].PolicyDocument' |grep Principal |egrep "\*|{\"AWS\":\"\*\"}" )
     if [ "$check" ]; then
       increment_insecure "VPC $vpc has en exposed enpoint"
     else
@@ -21,13 +21,13 @@ audit_aws_vpcs () {
     fi
   done
   # Check for VPC peering
-	peers=`aws ec2 describe-vpc-peering-connections --region $aws_region --query VpcPeeringConnections --output text`
+	peers=$( aws ec2 describe-vpc-peering-connections --region $aws_region --query VpcPeeringConnections --output text )
   if [ ! "$peers" ]; then
     increment_secure "VPC peering is not being used"
   else
-    vpcs=`aws ec2 describe-vpcs --query Vpcs[].VpcId --output text`
+    vpcs=$( aws ec2 describe-vpcs --query Vpcs[].VpcId --output text )
     for vpc in $vpcs; do
-      check=`aws ec2 describe-route-tables --region $aws_region --filter "Name=vpc-id,Values=$vpc" --query "RouteTables[*].{RouteTableId:RouteTableId, VpcId:VpcId, Routes:Routes,AssociatedSubnets:Associations[*].SubnetId}" |grep GatewayID |grep pcx-`
+      check=$( aws ec2 describe-route-tables --region $aws_region --filter "Name=vpc-id,Values=$vpc" --query "RouteTables[*].{RouteTableId:RouteTableId, VpcId:VpcId, Routes:Routes,AssociatedSubnets:Associations[*].SubnetId}" | grep GatewayID | grep pcx- )
       if [ ! "$check" ]; then
         increment_secure "VPC $vpc does not have a peer as it's gateway"
       else
@@ -40,13 +40,13 @@ audit_aws_vpcs () {
     done
   fi
   # Check for VPC flow logging
-  logs=`aws ec2 describe-flow-logs --region $aws_region --query FlowLogs[].FlowLogId --output text`
+  logs=$( aws ec2 describe-flow-logs --region $aws_region --query FlowLogs[].FlowLogId --output text )
   if [ "$logs" ]; then
-    vpcs=`aws ec2 describe-vpcs --region $aws_region --query Vpcs[].VpcId --output text`
+    vpcs=$( aws ec2 describe-vpcs --region $aws_region --query Vpcs[].VpcId --output text )
     for vpc in $vpcs; do
-      check=`aws ec2 describe-flow-logs --region $aws_region --query FlowLogs[].ResourceId --output text`
+      check=$( aws ec2 describe-flow-logs --region $aws_region --query FlowLogs[].ResourceId --output text )
       if [ "$check" ]; then
-        active=`aws ec2 describe-flow-logs --region $aws_region --filter "Name=resource-id,Values=$vpc" |grep FlowLogStatus |grep ACTIVE`
+        active=$( aws ec2 describe-flow-logs --region $aws_region --filter "Name=resource-id,Values=$vpc" | grep FlowLogStatus | grep ACTIVE )
         if [ "$active" ]; then
           increment_secure "VPC $vpc has active flow logs"
         else

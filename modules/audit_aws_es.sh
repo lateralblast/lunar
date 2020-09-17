@@ -6,15 +6,15 @@
 
 audit_aws_es () {
   verbose_message "Elasticsearch"
-  domains=`aws es list-domain-names --region $aws_region --query "DomainNames[].DomainName" --output text`
+  domains=$( aws es list-domain-names --region $aws_region --query "DomainNames[].DomainName" --output text )
   for domain in $domains; do
-    check=`aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text |grep Principle | grep "{\"AWS\":\"\*\"}"`
+    check=$( aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text | grep Principle | grep "{\"AWS\":\"\*\"}" )
     if [ ! "$check" ]; then
       increment_secure "Elasticsearch domain $domain is not publicly accessible"
     else
       increment_insecure "Elasticsearch domain $domain is publicly accessible"
     fi
-    check=`aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text |grep "aws:SourceIp" |grep "[0-9]\."`
+    check=$( aws es describe-elasticsearch-domain --domain-name $domain --query 'DomainStatus.AccessPolicies' --output text | grep "aws:SourceIp" | grep "[0-9]\." )
     if [ "$check" ]; then
       increment_secure "Elasticsearch doamin $domain has an IP based access policy"
     else

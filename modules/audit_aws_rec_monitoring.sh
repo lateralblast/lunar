@@ -5,11 +5,11 @@
 
 audit_aws_rec_monitoring () {
   verbose_message "CloudWatch Recommendations"
-  trails=`aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text |awk -F':' '{print $7}'`
+  trails=$( aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text |awk -F':' '{print $7}' )
   if [ "$trails" ]; then
     increment_secure "CloudWatch log groups exits for CloudTrail"
     for trail in $trails; do
-      metrics=`aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text`
+      metrics=$( aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text )
       if [ ! "$metrics" ]; then
         increment_insecure "CloudWatch log group $trail has no metrics"
         verbose_message "" fix
@@ -21,7 +21,7 @@ audit_aws_rec_monitoring () {
         verbose_message "" fix
       else
         for metric in RunInstances instanceType ; do
-          check=`aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text |grep "$metric"`
+          check=$( aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text | grep "$metric" )
           if [ "$check" ]; then
             increment_secure "CloudWatch log group $trail metrics include $metric"
           else
