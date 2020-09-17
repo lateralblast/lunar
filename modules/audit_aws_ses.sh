@@ -6,9 +6,9 @@
 audit_aws_ses () {
   verbose_message "SES"
   # determine if your AWS Simple Email Service (SES) identities (domains and email addresses) are configured to use DKIM signatures
-  domains=`aws ses list-identities --region $aws_region --query Identities --output text 2> /dev/null`
+  domains=$( aws ses list-identities --region $aws_region --query Identities --output text 2> /dev/null )
   for domain in $domains; do
-    check=`aws ses get-identity-dkim-attributes --region $aws_region --identities $domain |grep DkimEnabled |grep true`
+    check=$( aws ses get-identity-dkim-attributes --region $aws_region --identities $domain | grep DkimEnabled | grep true )
     if [ "$check" ]; then
       increment_secure "Domain $domain has DKIM enabled" 
     else

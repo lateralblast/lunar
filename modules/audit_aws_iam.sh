@@ -12,15 +12,15 @@ audit_aws_iam () {
   # Root account should only be used sparingly, admin functions and responsibilities should be delegated
   verbose_message "IAM"
   aws iam generate-credential-report 2>&1 > /dev/null
-  date_test=`date +%Y-%m`
-  last_login=`aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' |cut -f2 -d, |cut -f1,2 -d- |grep '[0-9]'`
+  date_test=$( date +%Y-%m )
+  last_login=$( aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' | cut -f2 -d, | cut -f1,2 -d- | grep '[0-9]' )
   if [ "$date_test" = "$last_login" ]; then
     increment_insecure "Root account appears to be being used regularly"
   else
     increment_secure "Root account does not appear to be being used frequently"
   fi
   # Check to see if there is an IAM master role
-  check=`aws iam get-role --role-name $aws_iam_master_role 2> /dev/null`
+  check=$( aws iam get-role --role-name $aws_iam_master_role 2> /dev/null )
   if [ "$check" ]; then 
     increment_secure "IAM Master role $aws_iam_master_role exists"
   else
@@ -32,7 +32,7 @@ audit_aws_iam () {
     verbose_message "" fix
   fi
   # Check there is an IAM manager role
-  check=`aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null`
+  check=$( aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null )
   if [ "$check" ]; then 
     increment_secure "IAM Manager role $aws_iam_manager_role exists"
   else
@@ -44,19 +44,19 @@ audit_aws_iam () {
     verbose_message "" fix
   fi
   # Check groups have members
-  groups=`aws iam list-groups --query 'Groups[].GroupName' --output text`
+  groups=$( aws iam list-groups --query 'Groups[].GroupName' --output text )
   for group in $groups; do
-    users=`aws iam get-group --group-name $group --query "Users" --output text`
+    users=$( aws iam get-group --group-name $group --query "Users" --output text )
     if [ "$users" ]; then
       increment_secure "IAM group $group is not empty"
     else
       increment_insecure "IAM group $group is empty"
     fi
   done
-  users=`aws iam list-users --query 'Users[].UserName' --output text`
+  users=$( aws iam list-users --query 'Users[].UserName' --output text )
   for user in $users; do
     # Check for inactive users
-    check=`aws iam list-access-keys --user-name $user --query "AccessKeyMetadata" --output text`
+    check=$( aws iam list-access-keys --user-name $user --query "AccessKeyMetadata" --output text )
     if [ "$check" ]; then
       increment_secure "IAM user $user is active"
     else
@@ -66,7 +66,7 @@ audit_aws_iam () {
       verbose_message "" fix
     fi
     # Check users do not have attached policies, they should be members of groups which have those policies
-    policies=`aws iam list-attached-user-policies --user-name $user --query "AttachedPolicies[].PolicyArn" --output text`
+    policies=$( aws iam list-attached-user-policies --user-name $user --query "AttachedPolicies[].PolicyArn" --output text )
     if [ "$policies" ]; then
       for policy in $policies; do
         increment_insecure "IAM user $user has attached policy $policy"

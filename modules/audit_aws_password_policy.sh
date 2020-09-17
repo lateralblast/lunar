@@ -11,8 +11,8 @@
 
 audit_aws_password_policy () {
   verbose_message "Password Policy"
-  policy=`aws iam get-account-password-policy 2> /dev/null`
-  length=`echo "$pass_pol" |wc -l`
+  policy=$( aws iam get-account-password-policy 2> /dev/null )
+  length=$( echo "$pass_pol" | wc -l )
   if [ "$length" = "0" ]; then
     increment_insecure "No password policy exists"
     verbose_message "" fix

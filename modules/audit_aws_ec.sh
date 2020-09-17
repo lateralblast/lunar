@@ -5,9 +5,9 @@
 
 audit_aws_ec () {
   verbose_message "ElastiCache"
-  caches=`aws elasticache describe-replication-groups --region $aws_region --query 'ReplicationGroups[].ReplicationGroupId' --output text` 
+  caches=$( aws elasticache describe-replication-groups --region $aws_region --query 'ReplicationGroups[].ReplicationGroupId' --output text )
   for cache in $caches; do 
-    check=`aws elasticache describe-replication-groups --region $aws_region --replication-group-id $cache --query 'ReplicationGroups[].AutomaticFailover' |grep enabled`
+    check=$( aws elasticache describe-replication-groups --region $aws_region --replication-group-id $cache --query 'ReplicationGroups[].AutomaticFailover' | grep enabled )
     if [ "$check" ]; then
       increment_secure "ElastiCache $cache is Multi-AZ enabled"
     else

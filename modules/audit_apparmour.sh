@@ -22,7 +22,7 @@ audit_apparmour () {
         restore_file $check_file $restore_dir
       else
         if [ -f "$check_file" ]; then
-          armour_test=`cat $check_file |grep "apparmour=0" |head -1 |wc -l`
+          armour_test=$( grep "apparmour=0" $check_file | head -1 | wc -l )
         else
           armour_test=0
         fi
