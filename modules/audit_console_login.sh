@@ -43,7 +43,7 @@ audit_console_login () {
           echo "  when: ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
-        for console_device in `cat $check_file |grep '^tty[0-9]'`; do
+        for console_device in $( grep '^tty[0-9]' $check_file ); do
           disable_ttys=1
           console_list="$console_list $console_device"
         done
@@ -51,7 +51,7 @@ audit_console_login () {
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Consoles enabled on$console_list"
             verbose_message "" fix
-            verbose_message "cat $check_file |sed 's/^tty[0-9].*//g' |grep '[a-z]' > $temp_file" fix
+            verbose_message "cat $check_file | sed 's/^tty[0-9].*//g' | grep '[a-z]' > $temp_file" fix
             verbose_message "cat $temp_file > $check_file" fix
             verbose_message "rm $temp_file" fix
             verbose_message "" fix
@@ -59,7 +59,7 @@ audit_console_login () {
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
             setting_message "Consoles to disabled on$console_list" 
-            cat $check_file |sed 's/tty[0-9].*//g' |grep '[a-z]' > $temp_file
+            cat $check_file | sed 's/tty[0-9].*//g' | grep '[a-z]' > $temp_file
             cat $temp_file > $check_file
             rm $temp_file
           fi

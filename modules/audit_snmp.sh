@@ -18,7 +18,7 @@ audit_snmp () {
       if [ "$os_name" = "VMkernel" ]; then
         log_file="snmpstatus"
         backup_file="$work_dir/$log_file"
-        current_value=`esxcli system snmp get |grep Enable |awk '{print $2}'`
+        current_value=$( esxcli system snmp get | grep Enable | awk '{print $2}' )
         if [ "$audit_mode" != "2" ]; then
           if [ "$current_value" = "true" ]; then
             if [ "$audit_mode" = "0" ]; then
@@ -41,7 +41,7 @@ audit_snmp () {
         else
           restore_file="$restore_dir/$log_file"
          if [ -f "$restore_file" ]; then
-            previous_value=`cat $restore_file`
+            previous_value=$( cat $restore_file )
             if [ "$previous_value" != "$current_value" ]; then
               verbose_message "Restoring: SNMP to $previous_value"
               esxcli system snmp set --enable="$previous_value"

@@ -140,7 +140,7 @@
 
 audit_docker_daemon () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=`which docker`
+    docker_bin=$( which docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Daemon"
       check_file="/etc/audit/audit.rules"
@@ -148,11 +148,11 @@ audit_docker_daemon () {
         check_auditctl $docker_file "docker_file"
         check_append_file $check_file "-w $docker_file -k docker" hash
       done
-      check=`which systemctl`
+      check=$( which systemctl )
       if [ "$check" ]; then
         for docker_service in docker.service docker.socket; do
           check_auditctl $docker_service "docker_service"
-          docker_file=`systemctl show -p FragmentPath $docker_service 2> /dev/null`
+          docker_file=$( systemctl show -p FragmentPath $docker_service 2> /dev/null )
           check_append_file $check_file "-w $docker_file -k docker" hash
           check_file_perms $check_file 0640 root root
         done
@@ -161,7 +161,7 @@ audit_docker_daemon () {
         check_file_perms $check_file 0750 root root
       done
       if [ -e "/etc/docker/certs.d" ]; then
-        for check_file in `ls /etc/docker/certs.d/`; do
+        for check_file in $( ls /etc/docker/certs.d/ ); do
           check_file_perms $check_file 440 root root
         done
       fi
@@ -196,7 +196,7 @@ audit_docker_daemon () {
       check_dockerd used daemon seccomp-profile
       check_dockerd unused daemon experimental
       if [ "$audit_mode" != 2 ]; then
-        check=`docker swarm unlock-key 2> /dev/null`
+        check=$( docker swarm unlock-key 2> /dev/null )
         if [ "$check" = "no unlock key is set" ]; then
           increment_insecure "Docker swarm unlock is not set"
         else

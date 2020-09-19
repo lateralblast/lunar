@@ -12,7 +12,7 @@ audit_system_auth_use_uid () {
     if [ "$os_name" = "Linux" ]; then
       if [ "$audit_mode" != 2 ]; then
         verbose_message "The use of su is restricted by sudo"
-        check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+        check_value=$( grep '^$auth_string' $check_file | grep '$search_string$' | awk '{print $8}' )
         if [ "$check_value" != "$search_string" ]; then
           if [ "$audit_mode" = "1" ]; then
             increment_insecure "The use of su is not restricted by sudo in $check_file"

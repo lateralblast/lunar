@@ -10,28 +10,28 @@ audit_serial_login () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Login on Serial Ports"
     if [ "$os_name" = "AIX" ]; then
-      tty_list=`lsitab –a |grep "on:/usr/sbin/getty" |awk '{print $2}'`
-      if [ `expr "$tty_list" : "[A-z]"` != 1 ]; then
+      tty_list=$( lsitab –a | grep "on:/usr/sbin/getty" | awk '{print $2}' )
+      if [ $( expr "$tty_list" : "[A-z]" ) != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_secure "Serial port logins disabled"
         fi
         if [ "$audit_mode" = 2 ]; then
-          tty_list=`lsitab –a |grep "/usr/sbin/getty" |awk '{print $2}'`
-          for tty_name in `echo "$tty_list"`; do
+          tty_list=$( lsitab –a | grep "/usr/sbin/getty" | awk '{print $2}' )
+          for tty_name in $( echo "$tty_list" ); do
             log_file="$restore_dir/$tty_name"
             if [ -f "$log_file" ]; then
-              previous_value=`cat $log_file`
+              previous_value=$( cat $log_file )
               verbose_message "Restoring: TTY $tty_name to $previous_value"
               chitab "$previous_value $tty_name"
             fi
           done
         fi
       else
-        for tty_name in `echo "$tty_list"`; do
+        for tty_name in $( echo "$tty_list" ); do
           if [ "$audit_mode" != 2 ]; then
             log_file="$work_dir/$tty_name"
-            actual_value=`lsitab -a |grep "on:/usr/sbin/getty" |grep $tty_name`
-            new_value=`echo "$actual_value" |sed 's/on/off/g'`
+            actual_value=$( lsitab -a | grep "on:/usr/sbin/getty" | grep $tty_name )
+            new_value=$( echo "$actual_value" | sed 's/on/off/g' )
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "Serial port logins not disabled on $tty_name"
               verbose_message "" fix
@@ -45,7 +45,7 @@ audit_serial_login () {
           else
             log_file="$restore_dir/$tty_name"
             if [ -f "$log_file" ]; then
-              previous_value=`cat $log_file`
+              previous_value=$( cat $log_file )
               verbose_message "Restoring: TTY $tty_name to $previous_value"
               chitab "$previous_value $tty_name"
             fi
@@ -55,9 +55,9 @@ audit_serial_login () {
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" != "11" ]; then
-        serial_test=`pmadm -L |egrep "ttya|ttyb" |cut -f4 -d ":" |grep "ux" |wc -l`
+        serial_test=$( pmadm -L | egrep "ttya|ttyb" | cut -f4 -d ":" | grep "ux" | wc -l )
         log_file="$work_dir/pmadm.log"
-        if [ `expr "$serial_test" : "2"` = 1 ]; then
+        if [ $( expr "$serial_test" : "2" ) = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_secure "Serial port logins disabled"
           fi
@@ -89,7 +89,7 @@ audit_serial_login () {
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="dialup"
-      ttys_test=`cat $check_file |grep $check_string |awk '{print $5}'`
+      ttys_test=$( grep $check_string $check_file |awk '{print $5}' )
       if [ "$ttys_test" != "off" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then

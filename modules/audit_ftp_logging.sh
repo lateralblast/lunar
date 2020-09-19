@@ -9,7 +9,7 @@ audit_ftp_logging () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         get_command="svcprop -p inetd_start/exec svc:/network/ftp:default"
-        check_value=`$get_command |grep "\-d" | wc -l`
+        check_value=$( $get_command | grep "\-d" | wc -l )
         file_header="ftpd_logging"
         if [ "$audit_mode" != 2 ]; then
          verbose_message "File $file_header"
@@ -35,7 +35,7 @@ audit_ftp_logging () {
             if [ "$audit_mode" = 2 ]; then
               restore_file="$restore_dir/$file_header.log"
               if [ -f "$restore_file" ]; then
-                exec_string=`cat $restore_file`
+                exec_string=$( cat $restore_file )
                 verbose_message "Restoring: Previous value for FTP daemon to $exec_string"
                 inetadm -m svc:/network/ftp exec="$exec_string"
               fi

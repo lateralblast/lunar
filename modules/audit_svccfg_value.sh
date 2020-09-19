@@ -8,14 +8,14 @@ audit_svccfg_value () {
     service_name=$1
     service_property=$2
     correct_value=$3
-    current_value=`svccfg -s $service_name listprop $service_property |awk '{print $3}'`
+    current_value=$( svccfg -s $service_name listprop $service_property | awk '{print $3}' )
     file_header="svccfg"
     log_file="$work_dir/$file_header.log"
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$file_header.log"
       if [ -f "$restore_file" ]; then
-        restore_property=`cat $restore_file |grep "$service_name" |cut -f2 -d','`
-        restore_value=`cat $restore_file |grep "$service_name" |cut -f3 -d','`
+        restore_property=$( grep "$service_name" $restore_file | cut -f2 -d',' )
+        restore_value=$( grep "$service_name" $restore_file | cut -f3 -d',' )
         if [ `expr "$restore_property" : "[A-z]"` = 1 ]; then
           if [ "$current_value" != "$restore_vale" ]; then
             verbose_message "Restoring: $service_name $restore_propert to $restore_value"

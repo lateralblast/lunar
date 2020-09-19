@@ -8,7 +8,7 @@ audit_mob () {
     verbose_message "Managed Object Browser"
     log_file="mob_status"
     backup_file="$work_dir/$log_file"
-    current_value=`vim-cmd proxysvc/service_list |grep "/mob" |awk '{print $3}' |cut -f1 -d, |sed 's/"//g'`
+    current_value=$( vim-cmd proxysvc/service_list | grep "/mob" | awk '{print $3}' | cut -f1 -d, | sed 's/"//g' )
     if [ "$current_value" = "/mob" ]; then
       current_value="enabled"
     else
@@ -37,7 +37,7 @@ audit_mob () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        previous_value=`cat $restore_file`
+        previous_value=$( cat $restore_file )
         if [ "$previous_value" = "enabled" ]; then
           verbose_message "Restoring: Managed Object Browser to enabled"
           vim-cmd proxysvc/add_np_service "/mob" httpsWithRedirect /var/run/vmware/proxy-mob

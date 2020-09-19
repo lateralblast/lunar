@@ -12,7 +12,7 @@ audit_nis_entries () {
     verbose_message "NIS Map Entries"
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if [ "$audit_mode" != 2 ]; then
-        for file_entry in `cat $check_file |grep "^+"`; do
+        for file_entry in $( grep "^+" $check_file ); do
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "NIS entry \"$file_entry\" in $check_file"
             verbose_message "" fix
@@ -29,7 +29,7 @@ audit_nis_entries () {
               if [ "$os_version" != "11" ]; then
                 pkgchk -f -n -p $check_file 2> /dev/null
               else
-                pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+                pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
               fi
             fi
             rm $temp_file

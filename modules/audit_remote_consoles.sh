@@ -11,7 +11,7 @@ audit_remote_consoles () {
     if [ "$audit_mode" != 2 ]; then
       disable_ttys=0
       log_file="$work_dir/$log_file"
-      for console_device in `/usr/sbin/consadm -p`; do
+      for console_device in $( /usr/sbin/consadm -p ); do
         disable_ttys=1
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Console enabled on $console_device"

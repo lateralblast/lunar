@@ -11,22 +11,22 @@ audit_ndd_value () {
       ndd_property=$2
       correct_value=$3
       if [ "$ndd_property" = "tcp_extra_priv_ports_add" ]; then
-        current_value=`ndd -get $ndd_name tcp_extra_priv_ports |grep "$correct_value"`
+        current_value=$( ndd -get $ndd_name tcp_extra_priv_ports | grep "$correct_value" )
       else
-        current_value=`ndd -get $ndd_name $ndd_property`
+        current_value=$( ndd -get $ndd_name $ndd_property )
       fi
       file_header="ndd"
       log_file="$work_dir/$file_header.log"
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$file_header.log"
         if [ -f "$restore_file" ]; then
-          restore_property=`cat $restore_file |grep "$ndd_property," |cut -f2 -d','`
-          restore_value=`cat $restore_file |grep "$ndd_property," |cut -f3 -d','`
+          restore_property=$( grep "$ndd_property," $restore_file | cut -f2 -d',' )
+          restore_value=$( grep "$ndd_property," $restore_file | cut -f3 -d',' )
           if [ `expr "$restore_property" : "[A-z]"` = 1 ]; then
             if [ "$ndd_property" = "tcp_extra_priv_ports_add" ]; then
-              current_value=`ndd -get $ndd_name tcp_extra_priv_ports |grep "$restore_value" |wc -l`
+              current_value=$( ndd -get $ndd_name tcp_extra_priv_ports | grep "$restore_value" | wc -l )
             fi
-            if [ `expr "$current_value" : "[1-9]"` = 1 ]; then
+            if [ $( expr "$current_value" : "[1-9]" ) = 1 ]; then
               if [ "$current_value" != "$restore_value" ]; then
                 if [ "$ndd_property" = "tcp_extra_priv_ports_add" ]; then
                   ndd_property="tcp_extra_priv_ports_del"
@@ -51,7 +51,7 @@ audit_ndd_value () {
           if [ "$audit_mode" = 0 ]; then
             verbose_message "Setting:   NDD \"$ndd_name $ndd_property\" to \"$correct_value\""
             echo "$ndd_name,$ndd_property,$correct_value" >> $log_file
-            `$command_line`
+            $( $command_line )
           fi
         fi
       else

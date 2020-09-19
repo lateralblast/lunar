@@ -7,20 +7,20 @@ audit_old_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     verbose_message "Old users"
     never_count=0
-    finger_bin=`which finger 2> /dev/null`
+    finger_bin=$( which finger 2> /dev/null )
     if [ "$audit_mode" = 2 ]; then
       check_file="/etc/shadow"
       restore_file $check_file $restore_dir
     else
       check_file="/etc/passwd"
-      for user_name in `cat $check_file |grep -v "/usr/bin/false" |egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" |cut -f1 -d:`; do
+      for user_name in $( grep -v "/usr/bin/false" $check_file | egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" | cut -f1 -d: ); do
         check_file="/etc/shadow"
-        shadow_field=`cat $check_file |grep "^$user_name:" |cut -f2 -d":" |egrep -v "\*|\!\!|NP|LK|UP"`
+        shadow_field=$( grep "^$user_name:" $check_file | cut -f2 -d":" | egrep -v "\*|\!\!|NP|LK|UP" )
         if [ "$shadow_field" != "" ]; then
           if [ -f "$finger_bin" ]; then
-            login_status=`finger $user_name |grep "Never logged in" |awk '{print $1}'`
+            login_status=$( finger $user_name | grep "Never logged in" | awk '{print $1}' )
           else
-            login_status=`last $user_name |awk '{print $1}' |grep "$user_name"`
+            login_status=$( last $user_name | awk '{print $1}' | grep "$user_name" )
           fi
           if [ "$login_status" = "Never" ] || [ "$login_status" = "$user_name" ]; then
             if [ "$audit_mode" = 1 ]; then

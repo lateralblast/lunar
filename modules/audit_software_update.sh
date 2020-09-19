@@ -10,10 +10,10 @@ audit_software_update() {
   if [ "$os_name" = "VMkernel" ]; then
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"
     verbose_message "Software Update"
-    current_update=`esxcli software profile get 2>&1 |head -1`
+    current_update=$( esxcli software profile get 2>&1 | head -1 )
     log_file="softwareupdate.log"
     backup_file="$work_dir/$log_file"
-    available_update=`esxcli software sources profile list -d $vmware_depot | grep $os_version |head -1 |awk '{print $1}'`
+    available_update=$( esxcli software sources profile list -d $vmware_depot | grep $os_version | head -1 | awk '{print $1}' )
     if [ "$audit_mode" != 2 ]; then
       if [ "$current_update" != "$available_update" ]; then
         if [ "$audit_mode" = 0 ]; then
@@ -34,7 +34,7 @@ audit_software_update() {
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        previous_update=`cat $restore_file`
+        previous_update=$( cat $restore_file )
         if [ "$current_update" != "$previous_update" ]; then
           verbose_message "Restoring: Software to $previous_value"
           esxcli software profile install -d $vmware_depot -p $previous_update --ok-to-remove --alow-downgrades
@@ -50,7 +50,7 @@ audit_software_update() {
       check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 1 bool
       check_osx_defaults /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired 1 bool
     else
-      actual_status=`sudo softwareupdate --schedule |awk '{print $4}'`
+      actual_status=$( sudo softwareupdate --schedule |awk '{print $4}' )
       verbose_message "Software Autoupdate"
       log_file="softwareupdate.log"
       correct_status="on"
@@ -79,7 +79,7 @@ audit_software_update() {
       else
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          previous_status=`cat $restore_file`
+          previous_status=$( cat $restore_file )
           if [ "$previous_status" != "$actual_status" ]; then
             verbose_message "Restoring:   Software Update to $previous_status"
             sudo suftwareupdate --schedule $previous_status

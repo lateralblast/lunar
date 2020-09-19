@@ -12,9 +12,9 @@ audit_logadm_value () {
       log_name=$1
       log_facility=$2
       check_file="/etc/logadm.conf"
-      check_log=`logadm -V |grep -v '^#' |grep "$log_name"`
+      check_log=$( logadm -V | grep -v '^#' | grep "$log_name" )
       log_file="/var/log/$log_name"
-      if [ `expr "$check_log" : "[A-z]"` != 1 ]; then
+      if [ $( expr "$check_log" : "[A-z]" ) != 1 ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Logging for $log_name not enabled"
           verbose_message "" fix
@@ -49,7 +49,7 @@ audit_logadm_value () {
             if [ "$os_version" != "11" ]; then
               pkgchk -f -n -p $check_file 2> /dev/null
             else
-              pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+              pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
             fi
           fi
           if [ "$log_facility" = "none" ]; then
@@ -59,7 +59,7 @@ audit_logadm_value () {
               if [ "$os_version" != "11" ]; then
                 pkgchk -f -n -p $check_file 2> /dev/null
               else
-                pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+                pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
               fi
             fi
             svcadm refresh svc:/system/system-log

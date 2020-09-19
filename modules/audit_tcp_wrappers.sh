@@ -36,7 +36,7 @@ audit_tcp_wrappers () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         audit_rpc_bind
-        for service_name in `inetadm |awk '{print $3}' |grep "^svc"`; do
+        for service_name in $( inetadm | awk '{print $3}' | grep "^svc" ); do
           check_command_value inetadm tcp_wrappers TRUE $service_name
         done
       fi
@@ -52,8 +52,8 @@ audit_tcp_wrappers () {
     check_file_value is $check_file ALL colon " localhost" hash
     check_file_value is $check_file ALL colon " 127.0.0.1" hash
     if [ ! -f "$check_file" ]; then
-      for ip_address in `ifconfig -a |grep 'inet addr' |grep -v ':127.' |awk '{print $2}' |cut -f2 -d":"`; do
-        netmask=`ifconfig -a |grep '$ip_address' |awk '{print $3}' |cut -f2 -d":"`
+      for ip_address in $( ifconfig -a | grep 'inet addr' | grep -v ':127.' | awk '{print $2}' | cut -f2 -d":" ); do
+        netmask=$( ifconfig -a | grep '$ip_address' | awk '{print $3}' | cut -f2 -d":" )
         check_file_value is $check_file ALL colon " $ip_address/$netmask" hash
       done
     fi

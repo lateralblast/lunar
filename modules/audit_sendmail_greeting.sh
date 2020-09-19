@@ -10,7 +10,7 @@ audit_sendmail_greeting () {
       search_string="v/"
       restore=0
       if [ "$audit_mode" != 2 ]; then
-        check_value=`cat $check_file |grep -v '^#' |grep 'O SmtpGreetingMessage' |awk '{print $4}' |grep 'v/'`
+        check_value=$( grep -v '^#' $check_file | grep 'O SmtpGreetingMessage' | awk '{print $4}' | grep 'v/' )
         if [ "$check_value" = "$search_string" ]; then
           if [ "$audit_mode" = "1" ]; then
             increment_insecure "Found version information in sendmail greeting"
@@ -37,7 +37,7 @@ audit_sendmail_greeting () {
       fi
       disable_value $check_file "O HelpFile" hash
       if [ "$audit_mode" != 2 ]; then
-        check_value=`cat $check_file |grep -v '^#' |grep '$search_string'`
+        check_value=$( grep -v '^#' $check_file | grep '$search_string' )
         if [ "$check_value" = "$search_string" ]; then
           if [ "$audit_mode" = "1" ]; then
             increment_insecure "Found help information in sendmail greeting"

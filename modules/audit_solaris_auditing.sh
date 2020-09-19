@@ -21,7 +21,7 @@ audit_solaris_auditing () {
         log_file="$workdir$check_file"
         rolemod -K audit_flags=lo,ad,ft,ex,lck:no root
         if [ -f "$check_file" ]; then
-          audit_check=`cat $check_file |grep "audit -n" |cut -f4 -d'/'`
+          audit_check=$( grep "audit -n" $check_file | cut -f4 -d'/' )
           if [ "$audit_check" != "audit -n" ]; then
             if [ ! -f "$log_file" ]; then
               verbose_message "Saving:    File $check_file to $work_dir$check_file"
@@ -30,7 +30,7 @@ audit_solaris_auditing () {
             echo "0 * * * * /usr/sbin/audit -n" >> $check_file
             chown root:root /var/audit
             chmod 750 /var/audit
-            pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+            pkg fix $( pkg search $check_file |grep pkg |awk '{print $4}' )
           fi
         fi
       fi

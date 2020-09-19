@@ -20,7 +20,7 @@ audit_super_users() {
       check_chuser su true sugroups system root
     else
       if [ "$audit_mode" != 2 ]; then
-        for user_name in `awk -F: '$3 == "0" { print $1 }' /etc/passwd |grep -v root`; do
+        for user_name in $( awk -F: '$3 == "0" { print $1 }' /etc/passwd | grep -v root ); do
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "UID 0 for $user_name"
             verbose_message "" fix

@@ -7,7 +7,7 @@ audit_system_integrity() {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "System Integrity"
     if [ "$audit_mode" != 2 ]; then
-      check=`/usr/bin/csrutil status |grep enabled`
+      check=$( /usr/bin/csrutil status | grep enabled )
       if [ ! "$check" ]; then
         increment_insecure "System Integrity Protection is not enabled"
       else

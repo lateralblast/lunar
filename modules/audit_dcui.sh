@@ -9,7 +9,7 @@ audit_dcui () {
     check_chkconfig_service DCUI off
     verbose_message "Lockdown"
     backup_file="$work_dir/dvfilter"
-    current_value=`vim-cmd -U dcui vimsvc/auth/lockdown_is_enabled`
+    current_value=$( vim-cmd -U dcui vimsvc/auth/lockdown_is_enabled )
     if [ "$audit_mode" != "2" ]; then
       if [ "$current_value" != "true" ]; then
         if [ "$audit_mode" = "0" ]; then
@@ -32,7 +32,7 @@ audit_dcui () {
     else
       restore_file="$restore_dir/$test"
       if [ -f "$restore_file" ]; then
-        previous_value=`cat $restore_file`
+        previous_value=$( cat $restore_file )
         if [ "$previous_value" != "$current_value" ]; then
           verbose_message "Restoring: Lockdown to $previous_value"
           if [ "$previous_value" = "true" ]; then

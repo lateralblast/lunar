@@ -17,9 +17,9 @@ audit_mount_setuid () {
       if [ "$os_version" = "10" ]; then
         check_file="/etc/rmmount.conf"
         if [ -f "$check_file" ]; then
-          nosuid_check=`cat $check_file |grep -v "^#" |grep "\-o nosuid"`
+          nosuid_check=$( grep -v "^#" $check_file |grep "\-o nosuid" )
           log_file="$work_dir/$check_file"
-          if [ `expr "$nosuid_check" : "[A-z]"` != 1 ]; then
+          if [ $( expr "$nosuid_check" : "[A-z]" ) != 1 ]; then
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "Set-UID not restricted on user mounted devices"
             fi
@@ -44,7 +44,7 @@ audit_mount_setuid () {
       if [ -e "$check_file" ]; then
         verbose_message "File Systems mounted with nodev"
         if [ "$audit_mode" != "2" ]; then
-          nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3|ext4|swap|tmpfs" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
+          nodev_check=$( grep -v "^#" $check_file | egrep "ext2|ext3|ext4|swap|tmpfs" | grep -v '/ ' | grep -v '/boot' | head -1 | wc -l )
           if [ "$nodev_check" = 1 ]; then
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "Found filesystems that should be mounted nodev"

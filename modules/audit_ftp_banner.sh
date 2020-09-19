@@ -14,7 +14,7 @@ audit_ftp_banner () {
       check_lslpp $package_name
       if [ "$lslpp_check" = "$package_name" ]; then
         message_file="/usr/lib/nls/msg/$language_suffix/ftpd.cat"
-        actual_value=`dspcat -g $message_file | grep "^9[[:blank:]]" |awk '{print $3}'`
+        actual_value=$( dspcat -g $message_file | grep "^9[[:blank:]]" | awk '{print $3}' )
         if [ "$audit_mode" != 2 ]; then
           if [ "actual_value" != "Authorised" ]; then
             if [ "$audit_mode" = 1 ]; then

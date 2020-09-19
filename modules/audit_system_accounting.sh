@@ -176,9 +176,9 @@ audit_system_accounting () {
       if [ "$os_version" = "10" ]; then
         cron_file="/var/spool/cron/crontabs/sys"
         if [ -f "$check_file" ]; then
-          sar_check=`cat $check_file |grep -v "^#" |grep "sa2"`
+          sar_check=$( grep -v "^#" $check_file | grep "sa2" )
         fi
-        if [ `expr "$sar_check" : "[A-z]"` != 1 ]; then
+        if [ $( expr "$sar_check" : "[A-z]" ) != 1 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "System Accounting is not enabled"
             verbose_message "" fix
@@ -201,7 +201,7 @@ audit_system_accounting () {
             if [ "$os_version" = "10" ]; then
               pkgchk -f -n -p $check_file 2> /dev/null
             else
-              pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+              pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
             fi
           fi
         else

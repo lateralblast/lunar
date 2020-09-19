@@ -19,7 +19,7 @@ audit_pam_wheel () {
     if [ -f "$check_file" ]; then
       search_string="use_uid"
       if [ "$audit_mode" != 2 ]; then
-        check_value=`cat $check_file |grep '^auth' |grep '$search_string$' |awk '{print $8}'`
+        check_value=$( grep '^auth' $check_file | grep '$search_string$' | awk '{print $8}' )
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"

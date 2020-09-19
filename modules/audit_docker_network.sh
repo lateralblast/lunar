@@ -18,7 +18,7 @@
 
 audit_docker_network () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=`which docker`
+    docker_bin=$( which docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Network"
       backup_file="network_bridge"
@@ -27,13 +27,13 @@ audit_docker_network () {
       if [ "$audit_mode" != 2 ]; then
         check_dockerd notequal config NetworkMode "NetworkMode=host"
         check_dockerd notinclude config Ports "0.0.0.0"
-        check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'docker0'`
+        check=$( docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' | grep 'docker0' )
         if [ "$check" ]; then
           increment_insecure "Docker is using default bridge docker0"
         else
           increment_secure "Docker is not using default bridge docker0"
         fi
-        check=`docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' |grep 'com.docker.network.bridge.enable_icc' |grep $new_state`
+        check=$( docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' | grep 'com.docker.network.bridge.enable_icc' | grep $new_state )
         if [ ! "$check" ]; then
           increment_insecure "Traffic is allowed between containers"
           if [ "$audit_mode" = 0 ]; then
@@ -47,7 +47,7 @@ audit_docker_network () {
         fi
       else
         restore_file="$restore_dir/$backup_file"
-        old_state=`cat $restore_file`
+        old_state=$( cat $restore_file )
         verbose_message "Setting:   Docker network bridge enabled to $old_state"
         /usr/bin/dockerd --icc=$old_state
       fi

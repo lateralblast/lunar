@@ -24,8 +24,8 @@ audit_writable_files () {
       fi
       if [ "$audit_mode" != 2 ]; then
         if [ "$os_name" = "Linux" ]; then
-          for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
-            for check_file in `find $file_system -xdev -type f -perm -0002 2> /dev/null`; do
+          for file_system in $( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null ); do
+            for check_file in $( find $file_system -xdev -type f -perm -0002 2> /dev/null ); do
               if [ "$ansible" = 1 ]; then
                 echo ""
                 echo "- name: Checking write permissions for $check_file"
@@ -62,7 +62,7 @@ audit_writable_files () {
             find_command="find / \( -fstype ufs -type file -perm -0002 \
             -a ! -perm -1000 \) -print"
           fi
-          for check_file in `$find_command`; do
+          for check_file in $( $find_command ); do
             if [ "$ansible" = 1 ]; then
               echo ""
               echo "- name: Checking write permissions for $check_file"
@@ -88,7 +88,7 @@ audit_writable_files () {
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          for check_file in `cat $restore_file`; do
+          for check_file in $( cat $restore_file ); do
             if [ -f "$check_file" ]; then
               verbose_message "Restoring: File $check_file to previous permissions"
               chmod o+w $check_file

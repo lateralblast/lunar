@@ -81,7 +81,7 @@
 
 audit_docker_security () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=`which docker`
+    docker_bin=$( which docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Security"
       check_dockerd notequal config SecurityOpt "<no value>"
@@ -106,7 +106,7 @@ audit_docker_security () {
         check_dockerd unused kernel $param
       done
       if [ "$audit_mode" != 2 ]; then
-        check=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock`
+        check=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock )
         if [ "$check" ]; then
           increment_insecure "Docker socket is mounted inside a container"
         else

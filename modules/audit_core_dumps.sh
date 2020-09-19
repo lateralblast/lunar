@@ -19,8 +19,8 @@ audit_core_dumps () {
       if [ "$os_version" != "6" ]; then
         cores_dir="/var/cores"
         check_file="/etc/coreadm.conf"
-        cores_check=`coreadm |head -1 |awk '{print $5}'`
-        if [ `expr "$cores_check" : "/var/cores"` != 10 ]; then
+        cores_check=$( coreadm | head -1 | awk '{print $5}' )
+        if [ $( expr "$cores_check" : "/var/cores" ) != 10 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Cores are not restricted to a private directory"
           else
@@ -34,7 +34,7 @@ audit_core_dumps () {
                 find $check_file | cpio -pdm $work_dir 2> /dev/null
                 rm $check_file
                 log_file="$work_dir/$check_file"
-                coreadm | sed -e 's/^ *//g' |sed 's/ /_/g' |sed 's/:_/:/g' |awk -F: '{ print $1" "$2 }' | while read option value; do
+                coreadm | sed -e 's/^ *//g' | sed 's/ /_/g' | sed 's/:_/:/g' | awk -F: '{ print $1" "$2 }' | while read option value; do
                   if [ "$option" = "global_core_file_pattern" ]; then
                     echo "COREADM_GLOB_PATTERN=$value" > $log_file
                   fi

@@ -21,8 +21,8 @@ audit_suid_files () {
     fi
     if [ "$audit_mode" = 1 ]; then
       if [ "$os_name" = "Linux" ]; then
-        for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
-          for check_file in `find $file_system -xdev -type f -perm -4000 -print 2> /dev/null`; do
+        for file_system in $( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null ); do
+          for check_file in $( find $file_system -xdev -type f -perm -4000 -print 2> /dev/null ); do
             increment_insecure "File $check_file is SUID/SGID"
             if [ "$ansible" = 1 ]; then
               echo ""
@@ -56,7 +56,7 @@ audit_suid_files () {
           find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
           \( -perm -04000 -o -perm -02000 \) -typ e f -ls"
         fi
-        for check_file in `$find_command`; do
+        for check_file in $( $find_command ); do
           increment_insecure "File $check_file is SUID/SGID"
           if [ "$ansible" = 1 ]; then
             echo ""

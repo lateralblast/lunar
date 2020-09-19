@@ -12,7 +12,7 @@ audit_eeprom_security () {
       eeprom security-mode=none
     fi
     if [ "$audit_mode" != 2 ]; then
-      eeprom_check=`eeprom security-mode | awk -F= '{ print $2 }'`
+      eeprom_check=$( eeprom security-mode | awk -F= '{ print $2 }' )
       if [ "$gdm_check" = "none" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "EEPROM password is not enabled"

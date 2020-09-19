@@ -15,7 +15,7 @@ audit_sulogin () {
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"
-      ttys_test=`cat $check_file |grep "$check_string" |awk '{print $5}'`
+      ttys_test=$( grep "$check_string" $check_file | awk '{print $5}' )
       if [ "$ttys_test" != "insecure" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$audit_mode" = 1 ]; then
@@ -46,7 +46,7 @@ audit_sulogin () {
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/inittab"
       if [ -f "$check_file" ]; then
-        sulogin_check=`grep -l sulogin $check_file`
+        sulogin_check=$( grep -l sulogin $check_file )
         if [ "$sulogin_check" = "" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "No Authentication required for single usermode"

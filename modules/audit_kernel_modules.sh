@@ -6,10 +6,10 @@
 audit_kernel_modules () {
   if [ "$os_name" = "VMkernel" ]; then
     verbose_message "Kernel Module Signing"
-    for module in `esxcli system module list |grep '^[a-z]' |awk '($3 == "true") {print $1}'`; do
+    for module in $( esxcli system module list | grep '^[a-z]' | awk '($3 == "true") {print $1}' ); do
       log_file="kernel_module_$module"
       backup_file="$work_dir/$log_file"
-      current_value=`esxcli system module get -m $module |grep 'Signed Status' |awk -F': ' '{print $2}'`
+      current_value=$( esxcli system module get -m $module | grep 'Signed Status' | awk -F': ' '{print $2}' )
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" != "VMware Signed" ]; then
           if [ "$audit_mode" = "0" ]; then

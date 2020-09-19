@@ -20,7 +20,7 @@ audit_firewall_setting () {
     verbose_message "Firewall Settings"
     check_osx_defaults /Library/Preferences/com.apple.alf globalstate 1 int
     if [ "$audit_mode" != 2 ]; then
-    	check=`/usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode |grep enabled`
+    	check=$( /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | grep enabled )
       if [ "$check" ]; then
         increment_secure "Firewall stealth mode enabled"
       else

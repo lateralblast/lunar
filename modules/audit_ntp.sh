@@ -60,7 +60,7 @@ audit_ntp () {
         check_file="/etc/sysconfig/chronyd"
         check_file_value is $check_file OPTIONS eq '"-u chrony"' hash
         check_file="/etc/chrony/chrony.conf"
-        for server_number in `seq 0 3`; do
+        for server_number in $( seq 0 3 ); do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
           check_file_value is $check_file server space $ntp_server hash
         done

@@ -18,12 +18,12 @@ audit_power_management () {
         check_file_value is $check_file CPRCHANGEPERM eq "-" hash
       fi
       if [ "$os_version" = "11" ]; then
-        poweradm_test=`poweradm list |grep suspend |awk '{print $2}' |cut -f2 -d"="`
+        poweradm_test=$( poweradm list | grep suspend | awk '{print $2}' | cut -f2 -d"=" )
         log_file="poweradm.log"
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/#log_file"
           if [ -f "$log_file" ]; then
-            restore_value=`cat $restore_file`
+            restore_value=$( cat $restore_file )
             if [ "$poweradm_test" != "$restore_value" ]; then
               verbose_message "Restoring: Power suspend to $restore_value"
               poweradm set suspend-enable=$restore_value

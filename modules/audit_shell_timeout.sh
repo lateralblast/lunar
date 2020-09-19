@@ -9,7 +9,7 @@ audit_shell_timeout () {
       timeout="3600"
       verbose_message "Timeoute value for $test"
       backup_file="$work_dir/$test"
-      current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /UserVars/$test |cut -f2 -d,`
+      current_value=$( esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /UserVars/$test | cut -f2 -d, )
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" != "$timeout" ]; then
           if [ "$audit_mode" = "0" ]; then
@@ -31,7 +31,7 @@ audit_shell_timeout () {
       else
         restore_file="$restore_dir/$test"
         if [ -f "$restore_file" ]; then
-          previous_value=`cat $restore_file`
+          previous_value=$( cat $restore_file )
           if [ "$previous_value" != "$current_value" ]; then
             verbose_message "Restoring: Shell timeout to $previous_value"
             esxcli system settings advanced set -o /UserVars/$test -i $previous_value

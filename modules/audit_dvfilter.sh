@@ -8,7 +8,7 @@ audit_dvfilter () {
   if [ "$os_name" = "VMkernel" ]; then
     verbose_message "Dvfilter"
     backup_file="$work_dir/dvfilter"
-    current_value=`esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /Net/DVFilterBindIpAddress |cut -f2 -d,`
+    current_value=$( esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /Net/DVFilterBindIpAddress | cut -f2 -d, )
     if [ "$audit_mode" != "2" ]; then
       if [ "$current_value" != "0" ]; then
         if [ "$audit_mode" = "0" ]; then
@@ -30,7 +30,7 @@ audit_dvfilter () {
     else
       restore_file="$restore_dir/$test"
       if [ -f "$restore_file" ]; then
-        previous_value=`cat $restore_file`
+        previous_value=$( cat $restore_file )
         if [ "$previous_value" != "$current_value" ]; then
           verbose_message "Restoring: Dvfilter to $previous_value"
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -i $previous_value

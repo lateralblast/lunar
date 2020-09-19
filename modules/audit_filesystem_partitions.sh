@@ -16,7 +16,7 @@ audit_filesystem_partitions() {
   if [ "$os_name" = "Linux" ]; then
     for filesystem in /tmp /var /var/log /var/log/audit /home; do
       verbose_message "Filesystem $filesystem is a separate filesystem"
-      mount_test=`df |awk '{print $6}' |grep "^$filesystem$"`
+      mount_test=$( df |awk '{print $6}' | grep "^$filesystem$" )
       if [ "$mount_test" = "$filesystem" ]; then
         increment_secure "Filesystem $filesystem is a separate filesystem"
 	    else

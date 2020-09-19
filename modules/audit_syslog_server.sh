@@ -14,7 +14,7 @@ audit_syslog_server () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
     verbose_message="Checking:  Syslog Daemon"
     if [ "$os_name" = "FreeBSD" ]; then
-      if [ "$os_version" < 5 ]; then
+      if [ "$os_version" -lt 5 ]; then
         check_file="/etc/syslog.conf"
         check_file_value is $check_file "daemon.debug" tab "/var/log/daemon.log" hash
         check_file="/var/log/daemon.log"
@@ -25,7 +25,7 @@ audit_syslog_server () {
     if [ "$os_name" = "Linux" ]; then
       if [ "$install_rsyslog" = "yes" ]; then
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Amazon" ]; then
-          if [ "$os_version" > 4 ]; then
+          if [ "$os_version" -lt 4 ]; then
             service_name="syslog"
             check_chkconfig_service $service_name 3 off
             check_chkconfig_service $service_name 5 off
@@ -43,7 +43,7 @@ audit_syslog_server () {
             check_chkconfig_service $service_name 5 on
             funct_file_perms $check_file 0600 root root
             if [ "$audit_mode" != 2 ]; then
-              remote_check=`cat $check_file |grep -v '#' |grep '*.* @@' |grep -v localhost |grep '[A-z]' |wc -l`
+              remote_check=$( grep -v '#' $check_file | grep '*.* @@' | grep -v localhost | grep '[A-z]' | wc -l )
               if [ "$remote_check" != "1" ]; then
                 if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
                   increment_insecure "Rsyslog is not sending messages to a remote server"

@@ -11,13 +11,13 @@ audit_rsa_securid_pam () {
       if [ "$os_name" = "SunOS" ]; then
         check_file="/etc/pam.conf"
         if [ -f "$check_file" ]; then
-          check_value=`cat $check_file |grep "$search_string" |awk '{print  $3}'`
+          check_value=$( grep "$search_string" $check_file | awk '{print  $3}' )
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
         check_file="/etc/pam.d/sudo"
         if [ -f "$check_file" ]; then
-          check_value=`cat $check_file |grep "$search_string" |awk '{print  $4}'`
+          check_value=$( grep "$search_string" $check_file | awk '{print  $4}' )
         fi
       fi
       verbose_message "RSA SecurID PAM Agent Configuration"

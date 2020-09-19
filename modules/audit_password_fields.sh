@@ -24,9 +24,9 @@ audit_password_fields () {
     empty_count=0
     if [ "$audit_mode" != 2 ]; then
       if [ "$os_name" = "AIX" ]; then
-        users=`pwdck –n ALL`
+        users=$( pwdck –n ALL )
       else
-        users=`cat /etc/shadow |awk -F':' '{print $1":"$2":"}' |grep "::$" |cut -f1 -d:`
+        users=$( cat /etc/shadow | awk -F':' '{print $1":"$2":"}' | grep "::$" | cut -f1 -d: )
       fi
       for user_name in $users; do
         empty_count=1
@@ -52,20 +52,20 @@ audit_password_fields () {
         increment_secure "No empty password entries"
       fi
       for check_file in /etc/passwd /etc/shadow; do
-        legacy_check=`cat $check_file |grep '^+:' |head -1 |wc -l`
+        legacy_check=$( grep '^+:' $check_file | head -1 | wc -l )
         if [ "$legacy_check" != "0" ]; then
           if [ "$audit_mode" = 1 ]; then
             
             increment_insecure "Legacy field found in $check_file"
             verbose_message "" fix
-            verbose_message "cat $check_file |grep -v '^+:' > $temp_file" fix
+            verbose_message "cat $check_file | grep -v '^+:' > $temp_file" fix
             verbose_message "cat $temp_file  > $check_file" fix
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
             echo "Setting:  Removing legacy entries from $check_file"
-            cat $check_file |grep -v '^+:' > $temp_file
+            cat $check_file | grep -v '^+:' > $temp_file
             cat $temp_file  > $check_file
           fi
         else

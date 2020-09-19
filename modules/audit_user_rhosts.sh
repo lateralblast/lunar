@@ -17,7 +17,7 @@ audit_user_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "User RHosts Files"
     check_fail=0
-    for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$"`; do
+    for home_dir in $( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" ); do
       check_file="$home_dir/.rhosts"
       if [ -f "$check_file" ]; then
         check_fail=1
