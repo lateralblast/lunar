@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.7.1
+# Version:      7.7.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -153,9 +153,9 @@ print_help () {
   echo "-l: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "-L: Run in lockdown mode (for Operating Systems - changes made to system)"
   echo "    [includes filesystem checks which take some time]"
-  echo "-C: Show changes previously made to system"
+  echo "-Z: Show changes previously made to system"
   echo "-c: Run docker-compose testing suite (runs lunar in audit mode without making changes)"
-  echo "-D: Run docker-compose testing suite (drops to shell in order to do more testing)"
+  echo "-C: Run docker-compose testing suite (drops to shell in order to do more testing)"
   echo "-o: Set docker OS or container name"
   echo "-t: Set docker tag"
   echo "-p: Show previously versions of file"
@@ -949,7 +949,7 @@ while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
       do_compose=1
       do_shell=0
       ;;
-    D)
+    C)
       do_compose=1
       do_shell=1
       ;;
@@ -1041,7 +1041,7 @@ while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
       print_previous
       exit
       ;;
-    C)
+    Z)
       print_changes
       exit
       ;;

@@ -1357,3 +1357,5 @@
 # Fix for filesystem searches on Linux
 # 7.7.1: Wed 16 Sep 2020 21:54:39 AEST
 # Removed elfsign
+# 7.7.2: Fri 18 Sep 2020 22:58:52 AEST
+# Fixed duplicate options
