@@ -14,13 +14,13 @@
 audit_home_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
     verbose_message "Home Directory Permissions"
-    for home_dir in `cat /etc/passwd |cut -f6 -d":" |grep -v "^/$" |grep "home"`; do
+    for home_dir in $( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" | grep "home" ); do
       if [ -d "$home_dir" ]; then
         check_file_perms $home_dir 0700
       fi
     done
     if [ "$os_name" = "Darwin" ]; then
-      for home_dir in `ls /Users`; do
+      for home_dir in $( ls /Users ); do
         check_file_perms /Users/$home_dir 0700
       done
     fi

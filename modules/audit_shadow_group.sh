@@ -13,7 +13,7 @@ audit_shadow_group () {
       restore_file $check_file $restore_dir
     fi
     if [ "$audit_mode" != 2 ]; then
-      shadow_check=`cat $check_file |grep -v "^#" |grep ^shadow |cut -f4 -d":" |wc -c`
+      shadow_check=$( grep -v "^#" $check_file | grep ^shadow | cut -f4 -d":" | wc -c )
       if [ "$shadow_check" != 0 ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Shadow group contains members"

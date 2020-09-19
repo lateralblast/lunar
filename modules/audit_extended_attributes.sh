@@ -8,10 +8,10 @@ audit_extended_attributes () {
   if [ "$os_name" = "SunOS" ]; then
     verbose_message "Extended Attributes"
     if [ "$audit_mode" = 1 ]; then
-      for check_file in `find / \( -fstype nfs -o -fstype cachefs \
+      for check_file in $( find / \( -fstype nfs -o -fstype cachefs \
         -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
         -o -fstype objfs -o -fstype proc \) -prune \
-        -o -xattr -print`; do
+        -o -xattr -print ); do
         increment_insecure "File $check_file has extended attributes"
       done
     fi

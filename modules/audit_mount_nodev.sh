@@ -15,7 +15,7 @@ audit_mount_nodev () {
     if [ -e "$check_file" ]; then
       verbose_message "File Systems mounted with nodev"
       if [ "$audit_mode" != "2" ]; then
-        nodev_check=`cat $check_file |grep -v "^#" |egrep "ext2|ext3|swap|tmpfs" |grep -v '/ ' |grep -v '/boot' |head -1 |wc -l`
+        nodev_check=$( grep -v "^#" $check_file | egrep "ext2|ext3|swap|tmpfs" | grep -v '/ ' | grep -v '/boot' | head -1 | wc -l )
         if [ "$nodev_check" = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Found filesystems that should be mounted nodev"

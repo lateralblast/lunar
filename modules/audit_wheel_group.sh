@@ -9,7 +9,7 @@ audit_wheel_group () {
     string="Wheel Group"
     verbose_message "$string"
     if [ "$audit_mode" != 2 ]; then
-      check_value=`cat $check_file |grep '^$wheel_group:'`
+      check_value=$( grep '^$wheel_group:' $check_file )
       if [ "$check_value" != "$search_string" ]; then
         if [ "$audit_mode" = "1" ]; then
           increment_insecure "Wheel group does not exist in $check_file"

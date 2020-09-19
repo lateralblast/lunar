@@ -8,10 +8,10 @@ audit_java () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Java"
     if [ "$audit_mode" != 2 ]; then
-      java_bin=`which java`
+      java_bin=$( which java )
       if [ "$java_bin" ]; then
         echo "Checking:  Java version"
-        version=`java -version 2>&1 | awk -F '"' '/version/ {print $2}' |cut -f1 -d.`
+        version=$( java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -f1 -d. )
         if [ "$version" -ge "$minimum" ]; then
           increment_secure "Java version is greater than $minimum"
         else

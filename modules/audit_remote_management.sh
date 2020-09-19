@@ -8,7 +8,7 @@ audit_remote_management() {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Remote Management"
     if [ "$audit_mode" != 2 ]; then
-      actual_value=`launchctl list |awk '{print $3}' |grep ARDAgent |wc -l`
+      actual_value=$( launchctl list | awk '{print $3}' | grep ARDAgent | wc -l )
       if [ "$actual_value" = "1" ]; then
         increment_insecure "Remote Management is enabled"
         verbose_message "" fix

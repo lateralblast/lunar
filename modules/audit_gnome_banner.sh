@@ -23,7 +23,7 @@ audit_gnome_banner () {
         check_file="/etc/gdm/Init/Default"
         if [ "$audit_mode" != 2 ]; then
           if [ -f "$check_file" ]; then
-            gdm_check=`cat $check_file |grep 'Security Message' |cut -f3 -d"="`
+            gdm_check=$( grep 'Security Message' $check_file | cut -f3 -d"=" )
             if [ "$gdm_check" != "/etc/issue" ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "Warning banner not found in $check_file"
@@ -38,7 +38,7 @@ audit_gnome_banner () {
                 if [ "$os_version" = "10" ]; then
                   pkgchk -f -n -p $check_file 2> /dev/null
                 else
-                  pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+                  pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
                 fi
               fi
             fi
@@ -66,10 +66,10 @@ audit_gnome_banner () {
         check_file_value is $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
       fi
     fi
-    gconf_bin=`which gconftool-2 2> /dev/null`
+    gconf_bin=$( which gconftool-2 2> /dev/null )
     if [ "$os_name" = "Linux" ] && [ -f "$gconf_bin" ]; then
       warning_message="Authorised users only"
-      actual_value=`gconftool-2 --get /apps/gdm/simple-greeter/banner_message_text`
+      actual_value=$( gconftool-2 --get /apps/gdm/simple-greeter/banner_message_text )
       log_file="gnome_banner_warning"
       if [ "$audit_mode" != 2 ]; then
         if [ "$actual_value" != "$warning_message" ]; then
@@ -93,14 +93,14 @@ audit_gnome_banner () {
       else
         log_file="$restore_dir/$log_file"
         if [ -f "$log_file" ]; then
-          restore_value=`cat $log_file`
+          restore_value=$( cat $log_file )
           if [ "$restore_value" != "$actual_value" ]; then
             verbose_message "Restoring: Warning banner to $previous_value"
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text "$restore_value"
           fi
         fi
       fi
-      actual_value=`gconftool-2 --get /apps/gdm/simple-greeter/banner_message_enable`
+      actual_value=$( gconftool-2 --get /apps/gdm/simple-greeter/banner_message_enable )
       log_file="gnome_banner_status"
       if [ "$audit_mode" != 2 ]; then
         if [ "$actual_value" != "true" ]; then
@@ -124,7 +124,7 @@ audit_gnome_banner () {
       else
         log_file="$restore_dir/$log_file"
         if [ -f "$log_file" ]; then
-          restore_value=`cat $log_file`
+          restore_value=$( cat $log_file )
           if [ "$restore_value" != "$actual_value" ]; then
             verbose_message "Restoring: Warning banner to $previous_value"
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable "$restore_value"

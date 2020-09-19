@@ -16,11 +16,11 @@ audit_sticky_bit () {
       verbose_message "World Writable Directories and Sticky Bits"
       if [ "$os_version" = "10" ]; then
         log_file="$work_dir/sticky_bits"
-        for check_dir in `find / \( -fstype nfs -o -fstype cachefs \
+        for check_dir in $( find / \( -fstype nfs -o -fstype cachefs \
           -o -fstype autofs -o -fstype ctfs \
           -o -fstype mntfs -o -fstype objfs \
           -o -fstype proc \) -prune -o -type d \
-          \( -perm -0002 -a -perm -1000 \) -print`; do
+          \( -perm -0002 -a -perm -1000 \) -print ); do
           if [ "$audit_mode" = 1 ]; then
             
             increment_insecure "Sticky bit not set on $check_dir"
@@ -37,7 +37,7 @@ audit_sticky_bit () {
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/sticky_bits"
           if [ -f "$restore_file" ]; then
-            for check_dir in `cat $restore_file`; do
+            for check_dir in $( cat $restore_file ); do
               if [ -d "$check_dir" ]; then
                 verbose_message "Restoring:  Removing sticky bit from $check_dir"
                 chmod -t $check_dir

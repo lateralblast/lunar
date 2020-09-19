@@ -9,10 +9,10 @@ audit_wheel_sudo () {
     for check_dir in /etc /usr/local/etc /usr/sfw/etc /opt/csw/etc; do
       check_dir="$check_dir/sudoers.d"
       if [ -d "$check_dir" ]; then
-        for check_file in `find $check_dir -type f`; do
+        for check_file in $( find $check_dir -type f ); do
           check_file_perms $check_file 0440 root root
           if [ "$audit_mode" != 2 ]; then
-            w_groups=`cat $check_file |grep NOPASSWD | grep ALL |grep -v '^#' |awk '{print $1}'`
+            w_groups=$( grep NOPASSWD $check_file | grep ALL | grep -v '^#' | awk '{print $1}' )
             for w_group in $w_groups ; do
               if [ "$ansible" = 1 ]; then
                 echo ""
@@ -43,7 +43,7 @@ audit_wheel_sudo () {
       if [ -f "$check_file" ]; then
         check_file_perms $check_file 0440 root root
         if [ "$audit_mode" != 2 ]; then
-          w_groups=`cat $check_file |grep NOPASSWD | grep ALL |grep -v '^#' |awk '{print $1}'`
+          w_groups=$( grep NOPASSWD $check_file | grep ALL | grep -v '^#' | awk '{print $1}' )
           for w_group in $w_groups ; do
             if [ "$ansible" = 1 ]; then
               echo ""

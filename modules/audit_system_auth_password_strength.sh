@@ -10,7 +10,7 @@ audit_system_auth_password_strength () {
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "$check_file" ]; then
           verbose_message "Password minimum strength enabled in $check_file"
-          check_value=`cat $check_file |grep '^$auth_string' |grep '$search_string$' |awk '{print $8}'`
+          check_value=$( grep '^$auth_string' $check_file | grep '$search_string$' | awk '{print $8}' )
           if [ "$check_value" != "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
               increment_insecure "Password strength settings not enabled in $check_file"

@@ -29,7 +29,7 @@ audit_pam_gdm_autologin () {
           echo "  when: gdm_autologin_check .rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
-        gdm_check=`cat $check_file |grep -v "^#" |grep "^gdm-autologin" |head -1 |wc -l`
+        gdm_check=$( grep -v "^#" $check_file | grep "^gdm-autologin" | head -1 | wc -l )
         if [ "$gdm_check" != 0 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Gnome Autologin is enabled"

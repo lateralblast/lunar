@@ -35,7 +35,7 @@ audit_xlogin () {
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="nodaemon"
-      ttys_test=`cat $check_file |grep $check_string |awk '{print $5}'`
+      ttys_test=$( grep $check_string $check_file | awk '{print $5}' )
       if [ "$ttys_test" != "on" ]; then
         if [ "$audit_mode" != 2 ]; then
           if [ "$ansible" = 1 ]; then
@@ -70,7 +70,7 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Security Message"
         if [ "$audit_mode" != 2 ]; then
-          greet_check=`cat $check_file |grep 'private system' |wc -l`
+          greet_check=$( grep 'private system' $check_file | wc -l )
           if [ "$greet_check" != 1 ]; then
            verbose_message "File $check_file for security message"
            greet_mesg="This is a private system --- Authorized use only!"
@@ -99,7 +99,7 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Security Message"
         if [ "$audit_mode" != 2 ]; then
-          greet_check= `cat $check_file |grep 'private system' |wc -l`
+          greet_check=$( grep 'private system' $check_file | wc -l )
           greet_mesg="This is a private system --- Authorized USE only!"
           if [ "$greet_check" != 1 ]; then
             verbose_message "File $check_file for security message"
@@ -128,7 +128,7 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Listening"
         if [ "$audit_mode" != 2 ]; then
-          greet_check=`cat $check_file |grep 'nolisten tcp' |wc -l`
+          greet_check=$( grep 'nolisten tcp' $check_file | wc -l )
           if [ "$greet_check" != 1 ]; then
             verbose_message "For X11 nolisten directive in $check_file"
             if [ "$audit_mode" = 1 ]; then

@@ -15,7 +15,7 @@ audit_root_primary_group () {
     verbose_message "Root Primary Group"
     log_file="root_primary_group.log"
     check_file="/etc/group"
-    group_check=`grep "^root:" /etc/passwd | cut -f4 -d:`
+    group_check=$( grep "^root:" /etc/passwd | cut -f4 -d: )
     if [ "$audit_mode" != 2 ]; then
       if [ "$group_check" != "0" ];then
         if [ "$audit_mode" = 1 ]; then
@@ -38,7 +38,7 @@ audit_root_primary_group () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -e "$restore_file" ]; then
-        restore_value=`cat $restore_file`
+        restore_value=$( cat $restore_file )
         if [ "$restore_value" != "$group_check" ]; then
           verbose_message "Restoring: Primary root group to $restore_value"
           usermod -g $restore_value root

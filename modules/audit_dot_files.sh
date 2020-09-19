@@ -8,7 +8,7 @@ audit_dot_files () {
     verbose_message "Dot Files"
     check_file=$1
     if [ "$audit_mode" != 2 ]; then
-      for dir_name in `cat /etc/passwd |cut -f6 -d':'`; do
+      for dir_name in $( cut -f6 -d':' /etc/passwd ); do
         if [ "$dir_name" = "/" ]; then
           dot_file="/$check_file"
         else

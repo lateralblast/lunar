@@ -7,11 +7,11 @@ audit_root_ssh_keys () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     verbose_message "Root SSH keys"
     if [ "$audit_mode" != 2 ]; then
-      root_home=`cat /etc/passwd |grep '^root' |cut -f6 -d:`
+      root_home=$( grep '^root' /etc/passwd | cut -f6 -d: )
       for check_file in $root_home/.ssh/authorized_keys $root_home/.ssh/authorized_keys2; do
         if [ "$audit_home" != 2 ]; then
           if [ -f "$check_file" ]; then
-            if [ "`wc -l $check_file |awk '{print $1}'`" -ge 1 ]; then
+            if [ "$( wc -l $check_file | awk '{print $1}' )" -ge 1 ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "Keys file $check_file exists"
                 verbose_message "mv $check_file $check_file.disabled" fix

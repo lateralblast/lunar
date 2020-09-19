@@ -25,7 +25,7 @@ audit_syslog_conf () {
     if [ "$os_name" = "VMkernel" ]; then
       log_file="sysloglogdir"
       backup_file="$work_dir/$log_file"
-      current_value=`esxcli system syslog config get |grep 'Local Log Output:' |awk '{print $4}'`
+      current_value=$( esxcli system syslog config get | grep 'Local Log Output:' | awk '{print $4}' )
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" = "/scratch/log" ]; then
           if [ "$audit_mode" = "0" ]; then
@@ -50,7 +50,7 @@ audit_syslog_conf () {
       else
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          previous_value=`cat $restore_file`
+          previous_value=$( cat $restore_file )
           if [ "$previous_value" != "$current_value" ]; then
             verbose_message "Restoring: Syslog log directory to $previous_value"
             esxcli system syslog config set --logdir="$previous_value"
@@ -59,7 +59,7 @@ audit_syslog_conf () {
       fi
       log_file="syslogremotehost"
       backup_file="$work_dir/$log_file"
-      current_value=`esxcli system syslog config get |grep Remote |awk '{print $3}'`
+      current_value=$( esxcli system syslog config get | grep Remote | awk '{print $3}' )
       if [ "$audit_mode" != "2" ]; then
         if [ "$current_value" = "<none>" ]; then
           if [ "$audit_mode" = "0" ]; then
@@ -87,7 +87,7 @@ audit_syslog_conf () {
       else
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          previous_value=`cat $restore_file`
+          previous_value=$( cat $restore_file )
           if [ "$previous_value" != "$current_value" ]; then
             verbose_message "Restoring: Syslog loghost to $previous_value"
             esxcli system syslog config set --loghost="$previous_value"

@@ -9,15 +9,15 @@ audit_ipadm_value () {
       ipadm_name=$1
       ipadm_property=$2
       correct_value=$3
-      current_value=`ipadm show-prop -p $ipadm_name -co current $ipadm_property`
+      current_value=$( ipadm show-prop -p $ipadm_name -co current $ipadm_property )
       file_header="ipadm"
       log_file="$work_dir/$file_header.log"
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$file_header.log"
         if [ -f "$restore_file" ]; then
-          restore_property=`cat $restore_file |grep "$ipadm_property," |cut -f2 -d','`
-          restore_value=`cat $restore_file |grep "$ipadm_property," |cut -f3 -d','`
-          if [ `expr "$restore_property" : "[A-z]"` = 1 ]; then
+          restore_property=$( grep "$ipadm_property," $restore_file | cut -f2 -d',' )
+          restore_value=$( grep "$ipadm_property," $restore_file | cut -f3 -d',' )
+          if [ $( expr "$restore_property" : "[A-z]" ) = 1 ]; then
             if [ "$current_value" != "$restore_value" ]; then
               verbose_message "Restoring: $ipadm_name $ipadm_property to $restore_value"
               ipadm set-prop -p $ipadm_name=$restore_value $ipadm_property
@@ -38,7 +38,7 @@ audit_ipadm_value () {
           if [ "$audit_mode" = 0 ]; then
             verbose_message "Setting:   Value of \"$ipadm_name $ipadm_property\" to \"$correct_value\""
             echo "$ipadm_name,$ipadm_property,$correct_value" >> $log_file
-            `$command_line`
+            $( $command_line )
           fi
         fi
       else

@@ -12,7 +12,7 @@ audit_daemon_umask () {
     verbose_message "Daemon Umask"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "11" ]; then
-        umask_check=`svcprop -p umask/umask svc:/system/environment:init`
+        umask_check=$( svcprop -p umask/umask svc:/system/environment:init )
         umask_value="022"
         log_file="umask.log"
         
@@ -38,7 +38,7 @@ audit_daemon_umask () {
           if [ "$audit_mode" = 2 ]; then
             restore_file="$restore_dir/$log_file"
             if [ -f "$restore_file" ]; then
-              restore_value=`cat $restore_file`
+              restore_value=$( cat $restore_file )
               if [ "$restore_value" != "$umask_check" ]; then
                 verbose_message "Restoring:  Default service file creation mask to $restore_vaule"
                 svccfg -s svc:/system/environment:init setprop umask/umask = astring:  "$restore_value"
@@ -77,12 +77,12 @@ audit_daemon_umask () {
       fi
     fi
     if [ "$os_name" = "FreeBSD" ]; then
-      for check_file in `find /etc -type f |xargs grep 'umask' |cut -f1 -d:`; do
+      for check_file in $( find /etc -type f | xargs grep 'umask' | cut -f1 -d: ); do
         if [ -f "$check_file" ]; then
           check_file_value is $check_file umask space 077 hash
         fi
       done
-      for check_file in `find /usr/local/etc -type f |xargs grep 'umask' |cut -f1 -d:`; do
+      for check_file in $( find /usr/local/etc -type f | xargs grep 'umask' | cut -f1 -d: ); do
         if [ -f "$check_file" ]; then
           check_file_value is $check_file umask space 077 hash
         fi

@@ -57,7 +57,7 @@ audit_ssh_config () {
         # Check for kerberos
         check_file="/etc/krb5/krb5.conf"
         if [ -f "$check_file" ]; then
-          admin_check=`cat $check_file |grep -v '^#' |grep "admin_server" |cut -f2 -d= |sed 's/ //g' |wc -l |sed 's/ //g'`
+          admin_check=$( grep -v '^#' $check_file | grep "admin_server" | cut -f2 -d= | sed 's/ //g' | wc -l | sed 's/ //g' )
           if [ "$admin_server" != "0" ]; then
             check_file="/etc/ssh/sshd_config"
             check_file_value is $check_file GSSAPIAuthentication space yes hash

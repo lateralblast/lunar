@@ -20,7 +20,7 @@ audit_nfs () {
         check_itab rcnfs off
       fi
       if [ "$os_name" = "Darwin" ]; then
-        check=`ps -ef |grep nfsd |grep -v grep`
+        check=$( ps -ef | grep nfsd | grep -v grep )
         if [ "$check" ]; then
           increment_insecure "NFS daemon enabled"
         else
@@ -62,7 +62,7 @@ audit_nfs () {
         check_file_value is $check_file weak_mountd_authentication eq NO hash
         check_file_value is $check_file rpc_lockd_enable eq NO hash
         check_file_value is $check_file rpc_statd_enable eq NO hash
-        if [ "$os_version" < 5 ]; then
+        if [ "$os_version" -lt 5 ]; then
           check_file_value is $check_file portmap_enable eq NO hash
           check_file_value is $check_file nfs_server_enable eq NO hash
           check_file_value is $check_file single_mountd_enable eq NO hash

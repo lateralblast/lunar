@@ -13,7 +13,7 @@ audit_bonjour_advertising() {
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
     else
-      multicast_test=`cat $check_file |grep 'NoMulticastAdvertisements' |wc -l`
+      multicast_test=$( grep 'NoMulticastAdvertisements' $check_file | wc -l )
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
@@ -25,7 +25,7 @@ audit_bonjour_advertising() {
         echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
         echo "- name: Fixing $string"
-        echo "  command: sh -c \"cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file ; cat $temp_file > $check_file\""
+        echo "  command: sh -c \"cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | tr X '\n' > $temp_file ; cat $temp_file > $check_file\""
         echo "  when: mcast_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi 
@@ -33,14 +33,14 @@ audit_bonjour_advertising() {
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Bonjour Multicast Advertising enabled"
           verbose_message "" fix
-          verbose_message "cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file" fix
+          verbose_message "cat $check_file | sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | tr X '\n' > $temp_file" fix
           verbose_message "cat $temp_file > $check_file" fix
           verbose_message "rm $temp_file" fix
           verbose_message "" fix
         fi
         if [ "$audit_mode" = 0 ]; then
           backup_file $check_file
-          cat $check_file |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' |tr X '\n' > $temp_file
+          cat $check_file | sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | tr X '\n' > $temp_file
           cat $temp_file > $check_file
           rm $temp_file
         fi

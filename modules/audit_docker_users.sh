@@ -17,15 +17,15 @@
 
 audit_docker_users () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=`which docker`
+    docker_bin=$( which docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Users"
       check_file="/etc/group"
       if [ "$audit_mode" != 2 ]; then
-        for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
-          last_login=`last -1 $user_name |grep '[a-z]' |awk '{print $1}'`
+        for user_name in $( grep '^$docker_group:' $check_file | cut -f4 -d: | sed 's/,/ /g' ); do
+          last_login=$( last -1 $user_name | grep '[a-z]' | awk '{print $1}' )
           if [ "$last_login" = "wtmp" ]; then
-            lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
+            lock_test=$( grep '^$user_name:' /etc/shadow | grep -v 'LK' | cut -f1 -d: )
             if [ "$lock_test" = "$user_name" ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "User $user_name in group $docker_group and has not logged in recently and their account is not locked"
@@ -44,10 +44,10 @@ audit_docker_users () {
         restore_file $check_file $restore_dir
       fi
       if [ "$audit_mode" != 2 ]; then
-        for user_name in `cat $check_file |grep '^$docker_group:' |cut -f4 -d: |sed 's/,/ /g'`; do
-          user_id=`uid -u $user_name`
+        for user_name in $( cat $check_file | grep '^$docker_group:' | cut -f4 -d: | sed 's/,/ /g' ); do
+          user_id=$( uid -u $user_name )
           if [ "$user_id" -gt "$max_super_user_id" ] ; then
-            lock_test=`cat /etc/shadow |grep '^$user_name:' |grep -v 'LK' |cut -f1 -d:`
+            lock_test=$( grep '^$user_name:' /etc/shadow | grep -v 'LK' | cut -f1 -d: )
             if [ "$lock_test" = "$user_name" ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "User $user_name is in group $docker_group has and ID greater than $max_super_user_id and their account is not locked"

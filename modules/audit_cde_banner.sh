@@ -7,7 +7,7 @@ audit_cde_banner () {
   if [ "$os_name" = "SunOS" ]; then
     verbose_message "CDE Warning Banner"
     for cde_file in /usr/dt/config/*/Xresources ; do
-      dir_name=`dirname $cde_file |sed 's/usr/etc/'`
+      dir_name=$( dirname $cde_file | sed 's/usr/etc/' )
       check_file="$dir_name/Xresources"
       if [ -f "$check_file" ]; then
         check_file_value is $check_file "Dtlogin*greeting.labelString" colon "Authorized uses only" star

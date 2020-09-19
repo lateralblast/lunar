@@ -14,7 +14,7 @@ audit_pam_rhosts () {
         restore_file $check_file $restore_dir
       else
         if [ -f "$check_file" ]; then
-          pam_check=`cat $check_file | grep -v "^#" |grep "pam_rhosts_auth" |head -1 |wc -l`
+          pam_check=$( grep -v "^#" $check_file | grep "pam_rhosts_auth" | head -1 | wc -l )
           if [ "$ansible" = 1 ]; then
             echo ""
             echo "- name: Checking $string"
@@ -51,7 +51,7 @@ audit_pam_rhosts () {
               if [ "$os_version" != "11" ]; then
                 pkgchk -f -n -p $check_file 2> /dev/null
               else
-                pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+                pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
               fi
             fi
           else
@@ -63,11 +63,11 @@ audit_pam_rhosts () {
     if [ "$os_name" = "Linux" ]; then
       check_dir="/etc/pam.d"
       if [ -d "$check_dir" ]; then
-        for check_file in `ls $check_dir/*`; do
+        for check_file in $( ls $check_dir/* ); do
           if [ "$audit_mode" = 2 ]; then
             restore_file $check_file $restore_dir
           else
-            pam_check=`cat $check_file | grep -v "^#" |grep "rhosts_auth" |head -1 |wc -l`
+            pam_check=$( grep -v "^#" $check_file |grep "rhosts_auth" | head -1 | wc -l )
             if [ "$ansible" = 1 ]; then
               echo ""
               echo "- name: Checking $string"

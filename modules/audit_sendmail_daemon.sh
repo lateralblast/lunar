@@ -69,7 +69,7 @@ audit_sendmail_daemon() {
         restore=0
         if [ "$audit_mode" != 2 ]; then
          verbose_message "Mail transfer agent is running in local-only mode"
-          check_value=`cat $check_file |grep -v '^#' |grep 'O DaemonPortOptions' |awk '{print $3}' |grep '$search_string'`
+          check_value=$( grep -v '^#' $check_file | grep 'O DaemonPortOptions' | awk '{print $3}' | grep '$search_string' )
           if [ "$check_value" = "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
               increment_insecure "Mail transfer agent is not running in local-only mode"

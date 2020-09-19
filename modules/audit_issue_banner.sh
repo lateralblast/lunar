@@ -23,7 +23,7 @@ audit_issue_banner () {
       check_file_perms $check_file 0644 root root
       issue_check=0
       if [ -f "$check_file" ]; then
-        issue_check=`cat $check_file |grep 'NOTICE TO USERS' |wc -l`
+        issue_check=$( grep 'NOTICE TO USERS' $check_file | wc -l )
       fi
       if [ "$audit_mode" != 2 ]; then
        verbose_message "Security message in $check_file"

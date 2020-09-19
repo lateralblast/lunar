@@ -9,12 +9,12 @@ audit_core_limit () {
     verbose_message "$string"
     log_file="corelimit"
     backup_file="$work_dir/$log_file"
-    current_value=`launchctl limit core |awk '{print $3}'`
+    current_value=$( launchctl limit core | awk '{print $3}' )
     if [ "$audit_mode" != 2 ]; then
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
-        echo "  command:  sh -c \"launchctl limit core |awk '{print \$3}'\""
+        echo "  command:  sh -c \"launchctl limit core | awk '{print \$3}'\""
         echo "  register: corelimit_check"
         echo "  failed_when: corelimit_check == 1"
         echo "  changed_when: false"
@@ -46,7 +46,7 @@ audit_core_limit () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        previous_value=`cat $restore_file`
+        previous_value=$( cat $restore_file )
         if [ "$current_value" != "$previous_value" ]; then
           verbose_message "Restoring: Core limit to $previous_value"
           launchctl limit core unlimited

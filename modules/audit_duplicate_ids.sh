@@ -23,12 +23,12 @@ audit_duplicate_ids () {
     duplicate=0
     check_file=$4
     if [ "$audit_mode" != 2 ]; then
-      for file_info in `cat $check_file | cut -f$field -d":" | sort -n | uniq -c |awk '{ print $1":"$2 }'`; do
-        file_check=`expr "$file_info" : "[A-z,0-9]"`
+      for file_info in $( cat $check_file | cut -f$field -d":" | sort -n | uniq -c |awk '{ print $1":"$2 }' ); do
+        file_check=$( expr "$file_info" : "[A-z,0-9]" )
         if [ "$file_check" = 1 ]; then
-          file_check=`expr "$file_info" : "2"`
+          file_check=$( expr "$file_info" : "2" )
           if [ "$file_check" = 1 ]; then
-            file_id=`echo "$file_info" |cut -f2 -d":"`
+            file_id=$( echo "$file_info" |cut -f2 -d":" )
             if [ "$audit_mode" = 1 ];then
               increment_insecure "There are multiple $function with $term $file_id"
               duplicate=1

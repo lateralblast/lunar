@@ -36,7 +36,7 @@ audit_cron_allow () {
         fi
       fi
     fi
-    check_file="$cron_hase_dir/cron.deny"
+    check_file="$cron_base_dir/cron.deny"
     check_file_exists $check_file no
     check_file="$at_base_dir/at.deny"
     check_file_exists $check_file no
@@ -48,12 +48,12 @@ audit_cron_allow () {
     check_file_perms $check_file 0400 root $cron_group
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
-        if [ "`cat $check_file |wc -l`" = "0" ]; then
+        if [ "$( cat $check_file | wc -l )" = "0" ]; then
           dir_name="/var/spool/cron/crontabs"
           if [ -d "$dir_name" ]; then
             check_file_perms $dir_name 0770 root $cron_group
-            for user_name in `ls $dir_name`; do
-              check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
+            for user_name in $( ls $dir_name ); do
+              check_id=$( grep '^$user_name' /etc/passwd | cut -f 1 -d: )
               if [ "$check_id" = "$user_name" ]; then
                 echo "$user_name" >> $cron_file
                 echo "$user_name" >> $at_file
@@ -63,11 +63,11 @@ audit_cron_allow () {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        if [ "`cat $check_file |wc -l`" = "0" ]; then
+        if [ "$( cat $check_file | wc -l )" = "0" ]; then
           dir_name="/var/spool/cron"
           if [ -d "$dir_name" ]; then
-            for user_name in `ls $dir_name`; do
-              check_id=`cat /etc/passwd |grep '^$user_name' |cut -f 1 -d:`
+            for user_name in $( ls $dir_name ); do
+              check_id=$( grep '^$user_name' /etc/passwd | cut -f 1 -d: )
               if [ "$check_id" = "$user_name" ]; then
                 echo "$user_name" >> $cron_file
                 echo "$user_name" >> $at_file
@@ -79,8 +79,8 @@ audit_cron_allow () {
       if [ "$os_name" = "Linux" ]; then
         for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
           if [ -d "$dir_name" ]; then
-            for user_name in `ls -l $dir_name grep '-' |awk '{print $4}' |uniq`; do
-              user_check=`cat $check_file |grep ''$user_name''`
+            for user_name in $( ls -l $dir_name grep '-' | awk '{print $4}' | uniq ); do
+              user_check=$( grep ''$user_name'' $check_file )
               if [ "$user_check" != "$user_name" ]; then
                 echo "$user_name" >> $cron_file
                 echo "$user_name" >> $at_file
@@ -95,11 +95,11 @@ audit_cron_allow () {
     check_file_exists $check_file yes
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ]; then
-        if [ "`cat $check_file |wc -l`" = "0" ]; then
+        if [ "$( cat $check_file | wc -l )" = "0" ]; then
           dir_name="/var/spool/cron/atjobs"
           if [ -d "$dir_name" ]; then
-            for user_name in `ls $dir_name`; do
-              user_check=`cat $check_file |grep ''$user_name''`
+            for user_name in $( ls $dir_name ); do
+              user_check=$( grep ''$user_name'' $check_file )
               if [ "$user_check" != "$user_name" ]; then
                 echo "$user_name" >> $check_file
               fi
@@ -108,11 +108,11 @@ audit_cron_allow () {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        if [ "`cat $check_file |wc -l`" = "0" ]; then
+        if [ "$( cat $check_file | wc -l )" = "0" ]; then
           dir_name="/var/spool/at/spool"
           if [ -d "$dir_name" ]; then
-            for user_name in `ls /var/spool/at/spool`; do
-              user_check=`cat $check_file |grep ''$user_name''`
+            for user_name in $( ls /var/spool/at/spool ); do
+              user_check=$( grep ''$user_name'' $check_file )
               if [ "$user_check" != "$user_name" ]; then
                 echo "$user_name" >> $check_file
               fi

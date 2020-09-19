@@ -18,8 +18,8 @@ audit_unowned_files () {
     verbose_message "Unowned Files and Directories"
     if [ "$audit_mode" = 1 ]; then
       if [ "$os_name" = "Linux" ]; then
-        for file_system in `df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null`; do
-          for check_file in `find $file_system -xdev -nouser -ls 2> /dev/null`; do
+        for file_system in $( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null ); do
+          for check_file in $( find $file_system -xdev -nouser -ls 2> /dev/null ); do
             increment_insecure "File $check_file is unowned"
           done
         done
@@ -34,7 +34,7 @@ audit_unowned_files () {
           find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
           \( -type d -o -type f \) \( -nouser -o -nogroup \) -ls"
         fi
-        for check_file in `$find_command`; do
+        for check_file in $( $find_command ); do
           increment_insecure "File $check_file is unowned"
         done
       fi

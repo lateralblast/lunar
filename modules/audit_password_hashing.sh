@@ -20,7 +20,7 @@ audit_password_hashing () {
         verbose_message "Password Hashing"
         if [ "$audit_mode" != 2 ]; then
           log_file="hashing.log"
-          check_value=`authconfig --test |grep hashing |awk '{print $5}'`
+          check_value=$( authconfig --test | grep hashing | awk '{print $5}' )
           if [ "$check_value" != "$hashing" ]; then
             if [ "$audit_mode" = "1" ]; then
               increment_insecure "Password hashing not set to $hashing"
@@ -42,7 +42,7 @@ audit_password_hashing () {
         else
           restore_file="$restore_dir/$log_file"
           if [ -f "$restore_file" ]; then
-            check_value=`cat $restore_file`
+            check_value=$( cat $restore_file )
             verbose_message "Restoring: Password hashing to $check_value"
             authconfig --passalgo=$check_value
           fi

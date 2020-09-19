@@ -19,9 +19,9 @@ audit_home_ownership() {
     if [ "$os_name" = "AIX" ]; then
       if [ "$audit_mode" != 2 ]; then
         lsuser -c ALL | grep -v "^#name" | cut -f1 -d: | while read check_user; do
-          if [ `lsuser -f $check_user | grep id | cut -f2 -d=` -ge 200 ]; then
+          if [ $( lsuser -f $check_user | grep id | cut -f2 -d= ) -ge 200 ]; then
             found=0
-            home_dir=`lsuser -a home $check_user | cut -f 2 -d =`
+            home_dir=$( lsuser -a home $check_user | cut -f 2 -d = )
           else
             found=1
           fi
@@ -33,7 +33,7 @@ audit_home_ownership() {
               fi
             else
               if [ -d "$home_dir" ]; then
-                dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
+                dir_owner=$( ls -ld $home_dir/. | awk '{ print $3 }' )
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
                     increment_insecure "Home Directory for $check_user is owned by $dir_owner"
@@ -74,7 +74,7 @@ audit_home_ownership() {
               fi
             else
               if [ -d "$home_dir" ]; then
-                dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
+                dir_owner=$( ls -ld $home_dir/. | awk '{ print $3 }' )
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
                     increment_insecure "Home Directory for $check_user is owned by $dir_owner"
@@ -117,7 +117,7 @@ audit_home_ownership() {
               fi
             else
               if [ -d "$home_dir" ]; then
-                dir_owner=`ls -ld $home_dir/. | awk '{ print $3 }'`
+                dir_owner=$( ls -ld $home_dir/. | awk '{ print $3 }' )
                 if [ "$dir_owner" != "$check_user" ]; then
                   if [ "$audit_mode" = 1 ];then
                     increment_insecure "Home Directory for $check_user is owned by $dir_owner"

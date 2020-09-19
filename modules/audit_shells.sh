@@ -11,7 +11,7 @@ audit_shells () {
       if [ "$audit_mode" = 2 ]; then
         restore_file $check_file $restore_dir
       else
-        for check_shell in `cat $check_file |grep -v '^#'`; do
+        for check_shell in $( grep -v '^#' $check_file ); do
           if [ ! -f "check_shell" ]; then
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "Shell $check_shell in $check_file does not exit"
