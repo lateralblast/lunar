@@ -46,7 +46,7 @@ check_append_file () {
           echo "    line: '$parameter'"
           echo ""
         fi
-        check_value=`cat "$check_file" |grep -v "^$comment_value" |grep '$parameter'`
+        check_value=$( grep -v "^$comment_value" "$check_file" | grep '$parameter' )
         if [ "$check_value" != "$parameter" ]; then
           increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
           backup_file $check_file

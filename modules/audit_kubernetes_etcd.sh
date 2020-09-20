@@ -13,7 +13,7 @@
 
 audit_kubernetes_etcd () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    daemon_check=`ps -ef | grep "etcd" |grep -v grep`
+    daemon_check=$( ps -ef | grep "etcd" |grep -v grep )
     if [ "$daemon_check" ]; then
       check_file="/etc/kubernetes/manifests/etcd.yaml"
       if [ -f "$check_file" ]; then

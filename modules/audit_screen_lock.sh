@@ -13,7 +13,7 @@ audit_screen_lock () {
     check_append_file /etc/pam.d/screensaver "account    required     pam_group.so no_warn group=admin,wheel fail_safe"
     if [ "$audit_mode" != 2 ]; then
       if [ -f "~/Library/Preferences/com.apple.dock" ]; then
-        screen_test=`defaults read ~/Library/Preferences/com.apple.dock |grep corner |grep 1 |wc -l`
+        screen_test=$( defaults read ~/Library/Preferences/com.apple.dock | grep corner | grep 1 | wc -l )
         if [ "$screen_test" = "1" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Screensaver disable hot corner is enabled"

@@ -9,7 +9,7 @@
 audit_unconfined_daemons () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "Unconfined Daemons"
-    daemon_check=`ps -eZ 2> /dev/null | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'`
+    daemon_check=$( ps -eZ 2> /dev/null | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }' )
     if [ "$daemon_check" = "" ]; then
       if [ "$audit_mode" = 1 ]; then
         increment_insecure "Unconfined daemons $daemon_check"

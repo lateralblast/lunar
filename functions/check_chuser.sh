@@ -30,7 +30,7 @@ check_chuser() {
         echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
-      actual_value=`lssec -f $sec_file -s $user_name -a $group_name -a $parameter_name |awk '{print $3}' |cut -f2 -d=`
+      actual_value=$( lssec -f $sec_file -s $user_name -a $group_name -a $parameter_name | awk '{print $3}' | cut -f2 -d= )
       if [ "$actual_value" != "$correct_value" ]; then
         increment_insecure "Security Policy for \"$parameter_name\" is not set to \"$correct_value\" for \"$user_name\""
         log_file="$work_dir/$log_file"
@@ -41,7 +41,7 @@ check_chuser() {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        previous_value=`cat $log_file |cut -f2 -d=`
+        previous_value=$( cut -f2 -d= $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
           verbose_message "Restoring: Password Policy for \"$parameter_name\" to \"$previous_value\""
           cat $log_file |sh

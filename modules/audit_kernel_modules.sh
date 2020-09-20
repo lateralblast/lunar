@@ -32,7 +32,7 @@ audit_kernel_modules () {
       else
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          previous_value=`cat $restore_file`
+          previous_value=$( cat $restore_file )
           if [ "$previous_value" != "$current_value" ]; then
             verbose_message "Restoring: Kernel module to $previous_value"
             esxcli system module set -e $previous_value -m $module

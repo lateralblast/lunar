@@ -7,7 +7,7 @@ audit_file_vault() {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "File Vault"
     if [ "$audit_mode" != 2 ]; then
-      actual_value=`diskutil cs list`
+      actual_value=$( diskutil cs list )
       if [ "$actual_value" = "No CoreStorage logical volume groups found" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "File Vault is not enabled"

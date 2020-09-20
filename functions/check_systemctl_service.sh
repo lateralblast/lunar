@@ -35,11 +35,11 @@ check_systemctl_service () {
   fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
-    actual_status=`systemctl is-enabled $service_name 2> /dev/null`
+    actual_status=$( systemctl is-enabled $service_name 2> /dev/null )
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
+        check_status=$( grep $service_name $restore_file | cut -f2 -d"," )
         if [ "$check_status" = "enabled" ] || [ "$check_status" = "disabled" ]; then
           if [ "$check_status" != "$actual_status" ]; then
             verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"

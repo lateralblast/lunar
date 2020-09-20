@@ -15,7 +15,7 @@ check_launchctl_service () {
       required_status="disabled"
       change_status="unload"
     fi
-    check_value=`launchctl list |grep $launchctl_service |awk '{print $3}'`
+    check_value=$( launchctl list |grep $launchctl_service | awk '{print $3}' )
     if [ "$check_value" = "$launchctl_service" ]; then
       actual_status="enabled"
     else
@@ -49,7 +49,7 @@ check_launchctl_service () {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        restore_status=`cat $log_file`
+        restore_status=$( cat $log_file )
         if [ "$restore_status" = "enabled" ]; then
           change_status="load"
         else

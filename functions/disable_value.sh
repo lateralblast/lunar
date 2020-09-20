@@ -27,14 +27,14 @@ disable_value () {
     else
       verbose_message "Parameter \"$parameter_name\" in $check_file is disabled"
       if [ "$separator" = "tab" ]; then
-        param_hyphen=`echo "$parameter_name" |grep "^[\-]"`
+        param_hyphen=$( echo "$parameter_name" |grep "^[\-]" )
         if [ "$param_hyphen" ]; then
           parameter_name="\\$parameter_name"
         fi
-        check_value=`cat $check_file |grep -v "^$comment_value" |grep "$parameter_name" |uniq`
-        param_hyphen=`echo "$parameter_name" |grep "^[\\]"`
+        check_value=$( grep -v "^$comment_value" $check_file | grep "$parameter_name" | uniq )
+        param_hyphen=$( echo "$parameter_name" |grep "^[\\]" )
         if [ "$param_hyphen" ]; then
-          parameter_name=`echo "$parameter_name" |sed "s/^[\\]//g"`
+          parameter_name=$( echo "$parameter_name" |sed "s/^[\\]//g" )
         fi
         if [ "$check_value" != "$parameter_name" ]; then
           increment_insecure "Parameter \"$parameter_name\" not set to \"$correct_value\" in $check_file"
@@ -48,13 +48,13 @@ disable_value () {
               verbose_message "Notice:    Service restart required SSH"
             fi
             backup_file $check_file
-            cat $check_file |sed 's/$parameter_name/$comment_value&' > $temp_file
+            cat $check_file | sed 's/$parameter_name/$comment_value&' > $temp_file
             cat $temp_file > $check_file
             if [ "$os_name" = "SunOS" ]; then
               if [ "$os_version" != "11" ]; then
                 pkgchk -f -n -p $check_file 2> /dev/null
               else
-                pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+                pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
               fi
             fi
             rm $temp_file

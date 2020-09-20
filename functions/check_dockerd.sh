@@ -25,9 +25,9 @@ check_dockerd () {
       fi
       case "$type" in
         "daemon")
-          check=`ps -ef |grep dockerd |grep "$param"`
+          check=$( ps -ef | grep dockerd | grep "$param" )
           if [ "$check" ] && [ "$value" ] && [ "$used" = "unused" ]; then
-            check=`ps -ef |grep dockerd |grep "$param" |grep "$value"`
+            check=$( ps -ef | grep dockerd | grep "$param" | grep "$value" )
             if [ ! "$check" ]; then
               increment_insecure "Docker parameter $param is not set to $value"
             else
@@ -44,9 +44,9 @@ check_dockerd () {
           fi
           ;;
         "info")
-          check=`docker info 2> /dev/null |grep "$param"`
+          check=$( docker info 2> /dev/null |grep "$param" )
           if [ "$check" ] && [ "$value" ] && [ "$used" = "unused" ]; then
-            check=`docker info 2> /dev/null |grep "$param" |grep "$value"`
+            check=$( docker info 2> /dev/null | grep "$param" | grep "$value" )
             if [ ! "$check" ]; then
               increment_insecure "Docker parameter $param is not set to $value"
             else
@@ -59,13 +59,13 @@ check_dockerd () {
         "kernel")
           OFS=$IFS
           IFS=$'\n'
-          docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null`
+          docker_info=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null )
           if [ ! "$docker_info" ]; then
             verbose_message "Notice:    No Docker instances"
           fi
           for info in $docker_info; do
-            docker_id=`echo "$info" |cut -f1 -d:`
-            check=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep "$param"`
+            docker_id=$( echo "$info" | cut -f1 -d: )
+            check=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep "$param" )
             if [ "$used" = "used" ]; then
               if [ "$profile" ]; then
                 increment_secure "Docker instance $docker_id has capability $param"
@@ -78,7 +78,7 @@ check_dockerd () {
               else
                 increment_insecure "Docker instance $docker_id has capability $param"
               fi
-              check=`docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapDrop }}' $docker_id |cut -f2 -d= |grep "$param"`
+              check=$( docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapDrop }}' $docker_id | cut -f2 -d= | grep "$param" )
               if [ "$check" ]; then
                 increment_secure "Docker instance $docker_id forcibly drops capability $param"
               else
@@ -93,32 +93,32 @@ check_dockerd () {
           IFS=$'\n'
           case $param in
             "AppArmorProfile")
-              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .$param }}" 2> /dev/null`
+              docker_info=$( docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .$param }}" 2> /dev/null )
               ;;
             "User")
-              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .Config.$param }}" 2> /dev/null`
+              docker_info=$( docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .Config.$param }}" 2> /dev/null )
               ;;
             "Ports")
-              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .NetworkSettings.$param }}" 2> /dev/null`
+              docker_info=$( docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .NetworkSettings.$param }}" 2> /dev/null )
               ;;
             "Propagation")
-              docker_info=`docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}' 2> /dev/null`
+              docker_info=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}' 2> /dev/null )
               ;;
             "Health")
-              docker_info=`docker ps --quiet | xargs docker inspect --format '{{ .Id }}: Health={{ .State.Health.Status }}' 2> /dev/null`
+              docker_info=$( docker ps --quiet | xargs docker inspect --format '{{ .Id }}: Health={{ .State.Health.Status }}' 2> /dev/null )
               ;;
             *)
-              docker_info=`docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null`
+              docker_info=$( docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .HostConfig.$param }}" 2> /dev/null )
               ;;
           esac
           if [ ! "$docker_info" ]; then
             verbose_message "Notice:    No Docker instances with $param set"
           fi
           for info in $docker_info; do
-            docker_id=`echo "$info" |cut -f1 -d:`
+            docker_id=$( echo "$info" | cut -f1 -d: )
             case $used in
               "notequal")
-                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep -v "\[\]"`
+                profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep -v "\[\]" )
                 if [ ! "$value" ]; then
                   if [ "$profile" ]; then
                     increment_secure "Docker instance $docker_id does not have parameter $param set"
@@ -134,7 +134,7 @@ check_dockerd () {
                 fi
                 ;;
               "equal")
-                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep -v "\[\]"`
+                profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep -v "\[\]" )
                 if [ ! "$value" ]; then
                   if [ ! "$profile" ]; then
                     increment_secure "Docker instance $docker_id does not have parameter $param set"
@@ -150,7 +150,7 @@ check_dockerd () {
                 fi
                 ;;
               "notinclude")
-                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep "$param"`
+                profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep "$param" )
                 if [ ! "$profile" ]; then
                   increment_secure "Docker instance $docker_id parameter $param does not include $value"
                 else
@@ -158,7 +158,7 @@ check_dockerd () {
                 fi
                 ;; 
               "include")
-                profile=`echo "$info" |cut -f2 -d: |cut -f2 -d= |grep "$param"`
+                profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep "$param" )
                 if [ "$profile" ]; then
                   increment_secure "Docker instance $docker_id parameter $param includes $value"
                 else

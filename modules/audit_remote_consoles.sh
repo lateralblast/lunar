@@ -33,7 +33,7 @@ audit_remote_consoles () {
     else
       restore_file="$restore_dir$log_file"
       if [ -f "$restore_file" ]; then
-        for console_device in `cat $restore_file`; do
+        for console_device in $( cat $restore_file ); do
           verbose_message "Restoring: Console to enabled on $console_device"
           consadm -a $console_device
         done

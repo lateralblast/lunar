@@ -13,11 +13,11 @@ check_chkconfig_service () {
     correct_status=$2
     chk_config="/bin/chkconfig"
     log_file="chkconfig.log"
-    actual_status=`$chk_config --list $service_name |awk '{print $2}'`
+    actual_status=$( $chk_config --list $service_name | awk '{print $2}' )
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
+        check_status=$( grep $service_name $restore_file | cut -f2 -d"," )
         if [ "$check_status" = "on" ] || [ "$check_status" = "off" ]; then
           if [ "$check_status" != "$actual_status" ]; then
             verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"
@@ -57,15 +57,15 @@ check_chkconfig_service () {
     fi
     log_file="chkconfig.log"
     if [ "$service_level" = "3" ]; then
-      actual_status=`$chk_config --list $service_name 2> /dev/null |awk '{print \$5}' |cut -f2 -d':' |awk '{print \$1}'`
+      actual_status=$( $chk_config --list $service_name 2> /dev/null | awk '{print \$5}' | cut -f2 -d':' | awk '{print \$1}' )
     fi
     if [ "$service_level" = "5" ]; then
-      actual_status=`$chk_config --list $service_name 2> /dev/null |awk '{print \$7}' |cut -f2 -d':' |awk '{print \$1}'`
+      actual_status=$( $chk_config --list $service_name 2> /dev/null | awk '{print \$7}' | cut -f2 -d':' | awk '{print \$1}' )
     fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        check_status=`cat $restore_file |grep $service_name |grep ",$service_level," |cut -f3 -d","`
+        check_status=$( grep $service_name $restore_file | grep ",$service_level," | cut -f3 -d"," )
         if [ "$check_status" = "on" ] || [ "$check_status" = "off" ]; then
           if [ "$check_status" != "$actual_status" ]; then
             verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"

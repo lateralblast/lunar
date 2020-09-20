@@ -11,13 +11,13 @@ check_ausearch () {
       command=$3
       mode=$4
       value=$5 
-      exists=`which $bin`
+      exists=$( which $bin )
       if [ "$exists" ]; then
         if [ "$value" ]; then
-          check=`ausearch -k $bin 2> /dev/null | grep $command | grep $mode |grep "$value"`
+          check=$( ausearch -k $bin 2> /dev/null | grep $command | grep $mode | grep "$value" )
           string="Binary $bin has $command commands with option $mode is set to $value"
         else
-          check=`ausearch -k $bin 2> /dev/null | grep $command | grep $mode`
+          check=$( ausearch -k $bin 2> /dev/null | grep $command | grep $mode )
           string="Binary $bin has $command commands with option $mode is set"
         fi
         verbose_message "$string"

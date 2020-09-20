@@ -8,7 +8,7 @@ audit_root_home () {
     verbose_message "Home Directory Permissions for root Account"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        home_check=`grep root /etc/passwd | cut -f6 -d:`
+        home_check=$( grep root /etc/passwd | cut -f6 -d: )
         log_file="$work_dir/roothome.log"
         if [ "$home_check" != "/root" ]; then
           if [ "$audit_mode" = 1 ]; then
@@ -34,7 +34,7 @@ audit_root_home () {
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/rootgroup.log"
           if [ -f "$restore_file" ]; then
-            $home_check=`cat $restore_file`
+            $home_check=$( cat $restore_file )
             verbose_message "Restoring: Root home directory $home_check"
             mv -i $home_check/.?* /
             passmgmt -m -h $group_check root

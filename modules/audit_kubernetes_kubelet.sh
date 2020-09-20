@@ -13,7 +13,7 @@
 
 audit_kubernetes_kubelet () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    daemon_check=`ps -ef | grep "kubelet" |grep -v grep`
+    daemon_check=$( ps -ef | grep "kubelet" | grep -v grep )
     if [ "$daemon_check" ]; then
       check_file="/etc/systemd/system/kubelet.service.d/10-kubeadm.conf"
       if [ -f "$check_file" ]; then

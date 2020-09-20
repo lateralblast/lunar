@@ -9,7 +9,7 @@ check_subserver() {
     protocol_name=$2
     correct_value=$3
     log_file="$service_name.log"
-    actual_value=`cat /etc/inetd.conf |grep '$service_name ' |grep '$protocol_name ' |grep -v '^#' |awk '{print $1}'`
+    actual_value=$( grep '$service_name ' /etc/inetd.conf | grep '$protocol_name ' | grep -v '^#' | awk '{print $1}' )
     if [ "$actual_value" != "$service_name" ]; then
       actual_value="off"
     else
@@ -56,7 +56,7 @@ check_subserver() {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        previous_value=`cat $log_file`
+        previous_value=$( cat $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
           verbose_message "Restoring: Service \"$service_name\" Protocol \"$protocol_name\" to \"$previous_value\""
           if [ "$previous_value" = "off" ]; then

@@ -10,7 +10,7 @@ print_audit_info () {
   if [ "$verbose" = 1 ]; then
     module=$1
     comment_text=0
-    dir_name=`pwd`
+    dir_name=$( pwd )
     file_name="$dir_name/modules/$module.sh"
     if [ -f "$file_name" ] ; then
       verbose_message "# Module: $module"

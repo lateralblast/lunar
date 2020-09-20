@@ -77,7 +77,7 @@ audit_ntp () {
         check_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
         check_file_value is $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
         check_file="/etc/ntp.conf"
-        for server_number in `seq 0 3`; do
+        for server_number in $( seq 0 3 ); do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
           check_file_value is $check_file server space $ntp_server hash
         done
