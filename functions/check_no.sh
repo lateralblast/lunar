@@ -8,7 +8,7 @@ check_no() {
     parameter_name=$1
     correct_value=$2
     log_file="$parameter_name.log"
-    actual_value=`no -a |grep '$parameter_name ' |cut -f2 -d= |sed 's/ //g'`
+    actual_value=$( no -a | grep '$parameter_name ' | cut -f2 -d= | sed 's/ //g' )
     if [ "$audit_mode" != 2 ]; then
       string="Parameter $parameter_name is $correct_value"
       verbose_message "$string"
@@ -37,7 +37,7 @@ check_no() {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        previous_value=`cat $log_file`
+        previous_value=$( cat $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
           verbose_message "Restoring: Parameter \"$parameter_name\" to \"$previous_value\""
           no -p -o $parameter_name=$previous_value

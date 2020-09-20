@@ -9,9 +9,9 @@ check_aws_password_policy () {
   param=$1
   value=$2
   switch=$3
-  policy=`aws iam get-account-password-policy 2> /dev/null |grep "$param"`
+  policy=$( aws iam get-account-password-policy 2> /dev/null | grep "$param" )
   clifix="aws iam update-account-password-policy $switch"
-  check=`echo "$policy" |grep "$param" |cut -f2 -d: |sed "s/ //g" |sed "s/,//g"`
+  check=$( grep "$param" "$policy" | cut -f2 -d: | sed "s/ //g" | sed "s/,//g" )
   if [ "$check" = "$value" ]; then
     increment_secure "The password policy has $param set to $value"
   else

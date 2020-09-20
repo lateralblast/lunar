@@ -13,7 +13,7 @@ audit_printer_sharing() {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Printer Sharing"
     if [ "$audit_mode" != 2 ]; then
-      printer_test=`system_profiler SPPrintersDataType |grep Shared |awk '{print $2}' |grep 'Yes'`
+      printer_test=$( system_profiler SPPrintersDataType | grep Shared | awk '{print $2}' | grep 'Yes' )
       if [ "$printer_test" = "Yes" ]; then
         increment_insecure "Printer sharing is enabled"
         verbose_message "" fix

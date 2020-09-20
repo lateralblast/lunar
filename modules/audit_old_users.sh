@@ -24,7 +24,7 @@ audit_old_users () {
           fi
           if [ "$login_status" = "Never" ] || [ "$login_status" = "$user_name" ]; then
             if [ "$audit_mode" = 1 ]; then
-              never_count=`expr $never_count + 1`
+              never_count=$( expr $never_count + 1 )
               
               
               if [ -f "$finger_bin" ]; then

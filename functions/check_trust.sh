@@ -8,8 +8,8 @@ check_trust() {
     parameter_name=$1
     correct_value=$2
     log_file="trustchk_$parameter_name.log"
-    actual_value=`trustchk -p $parameter_name |cut -f2 -d=`
-    a_command="trustchk -p $parameter_name |cut -f2 -d= |grep $correct_value"
+    actual_value=$( trustchk -p $parameter_name |cut -f2 -d= )
+    a_command="trustchk -p $parameter_name | cut -f2 -d= | grep $correct_value"
     l_command="trustchk -p $parameter_name=$correct_value"
     if [ "$audit_mode" != 2 ]; then
       string="Trusted Execution setting for $parameter_name is set to $correct_value"
@@ -39,10 +39,10 @@ check_trust() {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        previous_value=`cat $log_file |cut -f2 -d=`
+        previous_value=$( cut -f2 -d= $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
           verbose_message "Restoring: Password Policy for \"$parameter_name\" to \"$previous_value\""
-          cat $log_file |sh
+          cat $log_file | sh
         fi
       fi
     fi

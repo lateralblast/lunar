@@ -22,7 +22,7 @@ check_sunos_service () {
       service_name=$temp_name
       correct_status=$temp_status
     fi
-    if [ `expr "$service_name" : "svc:"` = 4 ]; then
+    if [ $( expr "$service_name" : "svc:" ) = 4 ]; then
       check_svcadm_service $service_name $correct_status
     else
       check_initd_service $service_name $correct_status

@@ -13,7 +13,7 @@ check_rctcp() {
       enabled="enabled"
     fi
     log_file="$service_name.log"
-    actual_value=`lssrc -a |grep '$service_name ' |awk '{print $4}'`
+    actual_value=$( lssrc -a | grep '$service_name ' | awk '{print $4}' )
     if [ "$actual_value" = "active" ]; then
       actual_value="off"
     else
@@ -76,7 +76,7 @@ check_rctcp() {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        previous_value=`cat $log_file`
+        previous_value=$( cat $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
           verbose_message "Restoring: Service \"$service_name\" to \"$previous_value\""
           if [ "$previous_value" = "off" ]; then

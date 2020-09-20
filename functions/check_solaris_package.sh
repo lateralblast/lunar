@@ -9,12 +9,12 @@
 funct_check_pkg () {
   if [ "$os_name" = "SunOS" ]; then
     pkg_name=$1
-    pkg_check=`pkginfo $1`
+    pkg_check=$( pkginfo $1 )
     log_file="$work_dir/pkg.log"
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/pkg.log"
       if [ -f "$restore_file" ]; then
-        restore_check=`cat $restore_file |grep "^$pkg_name$" |head -1`
+        restore_check=$( cat $restore_file | grep "^$pkg_name$" | head -1 )
         if [ "$restore_check" = "$pkg_name" ]; then
           if [ "$os_version" = "11" ]; then
             restore_command "pkg uninstall $pkg_name" "Removing $pkg_name"
@@ -35,7 +35,7 @@ funct_check_pkg () {
         echo "  when: ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
-      if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then
+      if [ $( expr "$pkg_check" : "ERROR" ) != 5 ]; then
         increment_secure "Package $pkg_name is already installed"
       else
         if [ "$audit_mode" = 1 ]; then
@@ -47,9 +47,9 @@ funct_check_pkg () {
               pkgadd $pkg_name
             else
               pkgadd -d $base_dir/pkg $pkg_name
-              pkg_check=`pkginfo $1`
+              pkg_check=$( pkginfo $1 )
             fi
-            if [ `expr "$pkg_check" : "ERROR"` != 5 ]; then
+            if [ $( expr "$pkg_check" : "ERROR" ) != 5 ]; then
               verbose_message "$pkg_name" >> $log_file
             fi
           fi

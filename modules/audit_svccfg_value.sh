@@ -16,7 +16,7 @@ audit_svccfg_value () {
       if [ -f "$restore_file" ]; then
         restore_property=$( grep "$service_name" $restore_file | cut -f2 -d',' )
         restore_value=$( grep "$service_name" $restore_file | cut -f3 -d',' )
-        if [ `expr "$restore_property" : "[A-z]"` = 1 ]; then
+        if [ $( expr "$restore_property" : "[A-z]" ) = 1 ]; then
           if [ "$current_value" != "$restore_vale" ]; then
             verbose_message "Restoring: $service_name $restore_propert to $restore_value"
             svccfg -s $service_name setprop $restore_property = $restore_value

@@ -24,12 +24,12 @@ audit_kubernetes_perms () {
     done
     check_dir="/etc/kubernetes/pki"
     if [ -d "$check_dir" ]; then
-      for check_file in `ls $check_dir/*.crt`; do
+      for check_file in $( ls $check_dir/*.crt ); do
         if [ -f "$check_file" ]; then
           check_file_perms $check_file 0644 root root
         fi
       done
-      for check_file in `ls $check_dir/*.key`; do
+      for check_file in $( ls $check_dir/*.key ); do
         if [ -f "$check_file" ]; then
         check_file_perms $check_file 0600 root root
         fi

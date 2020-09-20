@@ -24,13 +24,13 @@ replace_file_value () {
   else
     position=""
   fi
-  string_check=`expr "$check_value" : "\/"`
+  string_check=$( expr "$check_value" : "\/" )
   if [ "$string_check" = 1 ]; then
-    new_check_value=`echo "$check_value" |sed 's,/,\\\/,g'`
+    new_check_value=$( echo "$check_value" |sed 's,/,\\\/,g' )
   fi
-  string_check=`expr "$correct_value" : "\/"`
+  string_check=$( expr "$correct_value" : "\/" )
   if [ "$string_check" = 1 ]; then
-    new_correct_value=`echo "$correct_value" |sed 's,/,\\\/,g'`
+    new_correct_value=$( echo "$correct_value" |sed 's,/,\\\/,g' )
   fi
   new_check_value="$position$new_check_value"
   if [ "$audit_mode" != 2 ]; then
@@ -38,7 +38,7 @@ replace_file_value () {
     verbose_message "$string"
   fi
   if [ -f "$check_file" ]; then
-    check_dfs=`cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g"`
+    check_dfs=$( cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g" )
   fi
   if [ "$check_dfs" != 0 ]; then
     if [ "$audit_mode" != 2 ]; then
@@ -57,7 +57,7 @@ replace_file_value () {
       if [ "$os_version" != "11" ]; then
         pkgchk -f -n -p $check_file 2> /dev/null
       else
-        pkg fix `pkg search $check_file |grep pkg |awk '{print $4}'`
+        pkg fix $( pkg search $check_file |grep pkg |awk '{print $4}' )
       fi
     else
       restore_file $check_file $restore_dir

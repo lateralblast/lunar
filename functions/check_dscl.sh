@@ -27,7 +27,7 @@ check_dscl () {
         echo "  when: dscl_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
-      check=`sudo dscl . -read $file $param 2> /dev/null`
+      check=$( sudo dscl . -read $file $param 2> /dev/null )
       if [ "$check" != "$value" ]; then
         increment_insecure "Parameter \"$param\" not set to \"$value\" in \"$file\""
         verbose_message "" fix

@@ -12,9 +12,9 @@ check_inetd_service () {
     log_file="$service_name.log"
     if [ -f "$check_file" ]; then
       if [ "$correct_status" = "disabled" ]; then
-        actual_status=`cat $check_file |grep '^$service_name' |grep -v '^#' |awk '{print $1}'`
+        actual_status=$( grep '^$service_name' $check_file | grep -v '^#' | awk '{print $1}' )
       else
-        actual_status=`cat $check_file |grep '^$service_name' |awk '{print $1}'`
+        actual_status=$( grep '^$service_name' $check_file | awk '{print $1}' )
       fi
       if [ "$audit_mode" != 2 ]; then
         string="If inetd service $service_name is set to $correct_status"

@@ -11,7 +11,7 @@ check_auditctl () {
       string="Auditing on file $check_file"
       verbose_message "Checking: $string"
       if [ -e "$check_file" ]; then
-        check=`auditctl -l | grep $check_file`
+        check=$( auditctl -l | grep $check_file )
         if [ ! "$check" ]; then
           if [ "$ansible" = 1 ]; then
             echo ""

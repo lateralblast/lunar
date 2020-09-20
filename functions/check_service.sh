@@ -11,7 +11,7 @@ check_sunos_service () {
   if [ "$os_name" = "SunOS" ]; then
     service_name=$1
     correct_status=$2
-    if [ `expr "$service_name" : "svc:"` = 4 ]; then
+    if [ $( expr "$service_name" : "svc:" ) = 4 ]; then
       check_svcadm_service $service_name $correct_status
     else
       check_initd_service $service_name $correct_status

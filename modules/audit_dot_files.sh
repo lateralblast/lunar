@@ -29,7 +29,7 @@ audit_dot_files () {
         fi
       done
     else
-      for check_file in `cd $restore_dir ; find . -name "$check_file" |sed "s/^\.//g"`; do
+      for check_file in $( cd $restore_dir ; find . -name "$check_file" |sed "s/^\.//g" ); do
         restore_file $check_file $restore_dir
       done
     fi

@@ -28,7 +28,7 @@ check_osx_defaults () {
         backup_file="~/Library/Preferences/ByHost/$defaults_file*"
         defaults_command="defaults"
       fi
-      check_vale=`$defaults_command $defaults_read $defaults_file $defaults_parameter 2>&1`
+      check_vale=$( $defaults_command $defaults_read $defaults_file $defaults_parameter 2>&1 )
       temp_value=defaults_value
       if [ "$defaults_type" = "bool" ]; then
         if [ "$defaults_value" = "no" ]; then

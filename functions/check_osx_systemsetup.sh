@@ -27,7 +27,7 @@ check_osx_systemsetup () {
           echo "  when: systemsetup_check.rc == 0 and ansible_facts['ansible_system'] == '$os_name'"
           echo ""
         fi
-        check=`sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"`
+        check=$( sudo systemsetup -$param | cut -f2 -d: | sed "s/ //g" | tr "[:upper:]" "[:lower:]" )
         if [ "$check" != "$value" ]; then
           increment_insecure "Parameter \"$param\" not set to \"$value\""
           backup_file="$work_dir/$backup_file"
@@ -38,8 +38,8 @@ check_osx_systemsetup () {
       else
         restore_file="$restore_dir/$backup_file"
         if [ -f "$restore_file" ]; then
-          now=`sudo systemsetup -$param |cut -f2 -d: |sed "s/ //g" |tr "[:upper:]" "[:lower:]"`
-          old=`cat $restore_file`
+          now=$( sudo systemsetup -$param | cut -f2 -d: | sed "s/ //g" | tr "[:upper:]" "[:lower:]" )
+          old=$( cat $restore_file )
           if [ "$now" != "$old" ]; then
             verbose_message "Setting:   Parameter $param back to $old"
             sudo systemsetup -$param $old

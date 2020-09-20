@@ -12,7 +12,7 @@ check_initd_service () {
     service_name=$1
     correct_status=$2
     log_file="initd.log"
-    service_check=`ls /etc/init.d |grep "^$service_name$" |wc -l |sed 's/ //g'`
+    service_check=$( ls /etc/init.d | grep "^$service_name$" | wc -l | sed 's/ //g' )
     if [ "$service_check" != 0 ]; then
       if [ "$correct_status" = "disabled" ]; then
         check_file="/etc/init.d/_$service_name"
@@ -54,9 +54,9 @@ check_initd_service () {
         if [ "$audit_mode" = 2 ]; then
           restore_file="$restore_dir/$log_file"
           if [ -f "$restore_file" ]; then
-            check_name=`cat $restore_file |grep $service_name |cut -f1 -d","`
+            check_name=$( grep $service_name $restore_file | cut -f1 -d"," )
             if [ "$check_name" = "$service_name" ]; then
-              check_status=`cat $restore_file |grep "$service_name" |cut -f2 -d","`
+              check_status=$( grep "$service_name" $restore_file | cut -f2 -d"," )
               if [ "$check_status" = "disabled" ]; then
                 restore_command "/etc/init.d/$service_name stop ; mv /etc/init.d/$service_name /etc/init.d/_$service_name" "Service $service_name to $check_status"
               else

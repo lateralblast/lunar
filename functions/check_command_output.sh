@@ -44,7 +44,7 @@ check_command_output () {
       fi
     fi
     log_file="$command_name.log"
-    check_value=`$get_command`
+    check_value=$( $get_command )
     if [ "$audit_mode" != 2 ]; then
       string="Command $command_name returns $correct_value"
       verbose_message "Chaking:  $string"
@@ -78,7 +78,7 @@ check_command_output () {
         if [ "$command_name" = "getcond" ]; then
           $restore_command
         else
-          restore_string=`cat $restore_file`
+          restore_string=$( cat $restore_file )
           $restore_command $restore_string
         fi
       fi

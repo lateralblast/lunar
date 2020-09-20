@@ -33,13 +33,13 @@ check_linux_package () {
         echo ""
       fi
       if [ "$linux_dist" = "debian" ]; then
-        package_name=`dpkg -l $package_check 2>&1 |grep $package_check |awk '{print $2}'`
+        package_name=$( dpkg -l $package_check 2>&1 | grep $package_check | awk '{print $2}' )
       else
         if [ "$group_check" ]; then
           package_type="Group"
-          package_name=`yum grouplist 2>&1 | grep "$package_check" |sed "s/^   //g"`
+          package_name=$( yum grouplist 2>&1 | grep "$package_check" | sed "s/^   //g" )
         else
-          package_name=`rpm -qi $package_check |grep '^Name' |awk '{print $3}'`
+          package_name=$( rpm -qi $package_check | grep '^Name' | awk '{print $3}' )
         fi
       fi
       if [ "$package_mode" = "install" ] && [ "$package_name" = "$package_check" ]; then
@@ -87,7 +87,7 @@ check_linux_package () {
       if [ "$audit_mode" = "0" ] && [ "$package_mode" != "check" ]; then
         if [ "$package_uninstall" = "yes" ]; then
           echo "$package_check,$package_mode" >> $backup_file
-          $command
+          $( $package_command )
         else
           increment_insecure "Not uninstalling package as package uninstall has been set to no"
           verbose_message "" fix
@@ -102,9 +102,9 @@ check_linux_package () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        restore_check=`cat $restore_file |grep $package_check |awk '{print $2}'`
+        restore_check=$( grep $package_check $restore_file | awk '{print $2}' )
         if [ "$restore_check" = "$package_check" ]; then
-          package_action=`cat $restore_file |grep $package_check |awk '{print $1}'`
+          package_action=$( grep $package_check $restore_file | awk '{print $1}' )
           verbose_message "Restoring: Package $package_action to $package_action"
           if [ "$package_action" = "install" ]; then
             if [ "$linux_dist" = "redhat" ]; then

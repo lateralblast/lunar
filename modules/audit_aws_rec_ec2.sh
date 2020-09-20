@@ -55,7 +55,7 @@ audit_aws_rec_ec2 () {
         increment_secure "EC2 snapshot $snapshot is less than $aws_ec2_max_retention days old"
       fi
       if [ "$diff_days" -gt "$aws_ec2_min_retention" ]; then
-        counter=`expr $counter + 1`
+        counter=$( expr $counter + 1 )
       fi
     done
     if [ "$counter" -gt 0 ]; then

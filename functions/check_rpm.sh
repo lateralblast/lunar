@@ -10,7 +10,7 @@ check_rpm () {
     if [ "$linux_dist" = "debian" ]; then
       check_debian_package $package_name
     else
-      rpm_check=`rpm -qi $package_name |grep $package_name |grep Name |awk '{print $3}'`
+      rpm_check=$( rpm -qi $package_name | grep $package_name | grep Name | awk '{print $3}' )
     fi
   fi
 }

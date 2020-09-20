@@ -20,7 +20,7 @@ check_pmset() {
       state="on"
     fi
     log_file="pmset_$service.log"
-    actual_value=`pmset -g | grep $service |awk '{print $2}' |grep $value`
+    actual_value=$( pmset -g | grep $service |awk '{print $2}' |grep $value )
     if [ "$audit_mode" != 2 ]; then
       string="Sleep is disabled when powered"
       verbose_message "$string"
@@ -48,7 +48,7 @@ check_pmset() {
     else
       restore_file=$retore_dir/$log_file
       if [ -f "$restore_file" ]; then
-        $restore_value=`cat $restore_file`
+        $restore_value=$( cat $restore_file )
         if [ "$restore_value" != "$actual_value" ]; then
           verbose_message "Restoring: Wake on lan to enabled"
           pmset -c $service $restore_value

@@ -46,9 +46,9 @@ check_file_perms () {
     return
   fi
   if [ "$check_owner" != "" ]; then
-    check_result=`find "$check_file" -perm $check_perms -user $check_owner -group $check_group 2> /dev/null`
+    check_result=$( find "$check_file" -perm $check_perms -user $check_owner -group $check_group 2> /dev/null )
   else
-    check_result=`find "$check_file" -perm $check_perms 2> /dev/null`
+    check_result=$( find "$check_file" -perm $check_perms 2> /dev/null )
   fi
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then
@@ -64,15 +64,15 @@ check_file_perms () {
     if [ "$audit_mode" = 0 ]; then
       log_file="$work_dir/$log_file"
       if [ "$os_name" = "SunOS" ]; then
-        file_perms=`truss -vstat -tstat ls -ld $check_file 2>&1 |grep 'm=' |tail -1 |awk '{print $3}' |cut -f2 -d'=' |cut -c4-7`
+        file_perms=$( truss -vstat -tstat ls -ld $check_file 2>&1 | grep 'm=' | tail -1 | awk '{print $3}' | cut -f2 -d'=' | cut -c4-7 )
       else
         if [ "$os_name" = "Darwin" ]; then
-          file_perms=`stat -f %p $check_file |tail -c 4`
+          file_perms=$( stat -f %p $check_file | tail -c 4 )
         else
-          file_perms=`stat -c %a $check_file`
+          file_perms=$( stat -c %a $check_file )
         fi
       fi
-      file_owner=`ls -l $check_file |awk '{print $3","$4}'`
+      file_owner=$( ls -l $check_file |awk '{print $3","$4}' )
       echo "$check_file,$file_perms,$file_owner" >> $log_file
       verbose_message "Setting:   File $check_file to have correct permissions"
       chmod $check_perms $check_file
@@ -88,12 +88,12 @@ check_file_perms () {
   if [ "$audit_mode" = 2 ]; then
     restore_file="$restore_dir/$log_file"
     if [ -f "$restore_file" ]; then
-      restore_check=`cat $restore_file |grep "$check_file" |cut -f1 -d","`
+      restore_check=$( grep "$check_file" $restore_file | cut -f1 -d"," )
       if [ "$restore_check" = "$check_file" ]; then
-        restore_info=`cat $restore_file |grep "$check_file"`
-        restore_perms=`echo "$restore_info" |cut -f2 -d","`
-        restore_owner=`echo "$restore_info" |cut -f3 -d","`
-        restore_group=`echo "$restore_info" |cut -f4 -d","`
+        restore_info=$( grep "$check_file" $restore_file )
+        restore_perms=$( echo "$restore_info" |cut -f2 -d"," )
+        restore_owner=$( echo "$restore_info" |cut -f3 -d"," )
+        restore_group=$( echo "$restore_info" |cut -f4 -d"," )
         verbose_message "Restoring: File $check_file to previous permissions"
         chmod $restore_perms $check_file
         if [ "$check_owner" != "" ]; then

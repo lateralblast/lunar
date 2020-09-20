@@ -8,7 +8,7 @@ check_itab() {
     service_name=$1
     correct_value=$2
     log_file="$service_name.log"
-    actual_value=`lsitab $service_name |cut -f1 -d:`
+    actual_value=$( lsitab $service_name | cut -f1 -d: )
     if [ "$correct_value" = "off" ]; then
       if [ "$actual_status" != "$service_name" ]; then
         actual_value="off"
@@ -31,7 +31,7 @@ check_itab() {
           increment_insecure "Service \"$service_name\" is \"$correct_value\""
           verbose_message "" fix
           if [ "$correct_value" = "off" ]; then
-            verbose_message "rmitab `lsitab |grep '^$service_name'`" fix
+            verbose_message "rmitab $( lsitab |grep '^$service_name' )" fix
           else
             verbose_message "chitab \"$correct_value\"" fix
           fi
@@ -59,7 +59,7 @@ check_itab() {
     else
       log_file="$restore_dir/$log_file"
       if [ -f "$log_file" ]; then
-        previous_value=`cat $log_file`
+        previous_value=$( cat $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
           verbose_message "Restoring: Service \"$service_name\" to \"$previous_value\""
           if [ "$previous_value" = "off" ]; then

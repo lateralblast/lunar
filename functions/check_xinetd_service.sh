@@ -14,7 +14,7 @@ audit_xinetd_service () {
     check_file="/etc/xinetd.d/$service_name"
     log_file="$work_dir/$service_name.log"
     if [ -f "$check_file" ]; then
-      actual_status=`cat $check_file |grep $parameter_name |awk '{print $3}'`
+      actual_status=$( grep $parameter_name $check_file | awk '{print $3}' )
       if [ "$audit_mode" != 2 ]; then
         string="If xinetd service $service_name has $parameter_name set to $correct_status"
         verbose_message "$string"
@@ -50,9 +50,9 @@ audit_xinetd_service () {
       else
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          check_name=`cat $restore_file |grep $service_name |cut -f1 -d","`
+          check_name=$( grep $service_name $restore_file | cut -f1 -d"," )
           if [ "$check_name" = "$service_name" ]; then
-            check_status=`cat $restore_file |grep $service_name |cut -f2 -d","`
+            check_status=$( grep $service_name $restore_file | cut -f2 -d"," )
             if [ "$actual_status" != "$check_status" ]; then
               restore_file $check_file $restore_dir
             fi
