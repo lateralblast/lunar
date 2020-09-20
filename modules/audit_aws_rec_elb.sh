@@ -25,7 +25,7 @@ audit_aws_rec_elb () {
     else
       increment_secure "ELB $elb has cross zone balancing enabled"
     fi
-    number=$( aws elb describe-instance-health --region $aws_region --load-balancer-name $elb  --query "InstanceStates[].State" | grep InService | wc -l )
+    number=$( aws elb describe-instance-health --region $aws_region --load-balancer-name $elb  --query "InstanceStates[].State" | grep -c InService )
     if [ "$number" -lt 2 ]; then
       increment_insecure "ELB $elb does not have at least 2 instances in service"
     else

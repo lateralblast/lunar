@@ -36,7 +36,7 @@ audit_aws_mfa () {
   mfa_check=$( aws iam get-account-summary | grep "AccountMFAEnabled" | cut -f1 -d: | sed "s/ //g" | sed "s/,//g" )
   if [ "$mfa_check" = "1" ]; then
     increment_secure "The root account has MFA enabled"
-    mfa_check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep "root_account" | wc -l )
+    mfa_check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep -c "root_account" )
     if [ "$mfa_check" = "0" ]; then
       increment_secure "The root account does not have a virtual MFA"
     else

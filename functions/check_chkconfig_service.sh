@@ -57,10 +57,10 @@ check_chkconfig_service () {
     fi
     log_file="chkconfig.log"
     if [ "$service_level" = "3" ]; then
-      actual_status=$( $chk_config --list $service_name 2> /dev/null | awk '{print \$5}' | cut -f2 -d':' | awk '{print \$1}' )
+      actual_status=$( $chk_config --list $service_name 2> /dev/null | awk '{print $5}' | cut -f2 -d':' | awk '{print $1}' )
     fi
     if [ "$service_level" = "5" ]; then
-      actual_status=$( $chk_config --list $service_name 2> /dev/null | awk '{print \$7}' | cut -f2 -d':' | awk '{print \$1}' )
+      actual_status=$( $chk_config --list $service_name 2> /dev/null | awk '{print $7}' | cut -f2 -d':' | awk '{print $1}' )
     fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"

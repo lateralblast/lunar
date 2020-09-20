@@ -6,7 +6,7 @@
 audit_system_auth_nullok () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$audit_mode" != 2 ]; then
-      for check_file in etc/pam.d/common-auth /etc/pam.d/system-auth; do
+      for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "$check_file" ]; then
           verbose_message "For nullok entry in $check_file"
           check_value=0

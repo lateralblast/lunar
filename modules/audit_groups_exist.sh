@@ -18,7 +18,7 @@ audit_groups_exist () {
     group_fail=0
     if [ "$audit_mode" != 2 ]; then
       for group_id in $( getent passwd | cut -f4 -d ":" ); do
-        group_exists=$( grep -v "^#" $check_file | cut -f3 -d":" | grep "^$group_id$" | wc -l | sed "s/ //g" )
+        group_exists=$( grep -v "^#" $check_file | cut -f3 -d":" | grep -c "^$group_id$" | sed "s/ //g" )
         if [ "$group_exists" = 0 ]; then
           group_fail=1
           if [ "$audit_mode" = 1 ];then

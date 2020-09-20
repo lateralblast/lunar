@@ -39,7 +39,7 @@ audit_aws_keys () {
   # Check for SSH keys
   users=$( aws iam list-users --query 'Users[].UserName' --output text )
   for user in $users; do
-    check=$( aws iam list-ssh-public-keys --region $aws_region --user-name $user | grep Active | wc -l )
+    check=$( aws iam list-ssh-public-keys --region $aws_region --user-name $user | grep -c Active )
     if [ "$check" -gt 1 ]; then
       increment_insecure "User $user does has more than one active SSH key"
     else

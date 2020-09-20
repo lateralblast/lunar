@@ -12,7 +12,7 @@ check_initd_service () {
     service_name=$1
     correct_status=$2
     log_file="initd.log"
-    service_check=$( ls /etc/init.d | grep "^$service_name$" | wc -l | sed 's/ //g' )
+    service_check=$( ls /etc/init.d | grep -c "^$service_name$" | sed 's/ //g' )
     if [ "$service_check" != 0 ]; then
       if [ "$correct_status" = "disabled" ]; then
         check_file="/etc/init.d/_$service_name"
