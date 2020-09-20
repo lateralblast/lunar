@@ -1361,3 +1361,5 @@
 # Fixed duplicate options
 # 7.7.3: Sat 19 Sep 2020 21:53:54 AEST
 # Fix big with AIX Retry Limit code
+# 7.7.4: Sun 20 Sep 2020 17:54:08 AEST
+# Fixed AWS pawword policy module
