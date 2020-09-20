@@ -38,7 +38,7 @@ replace_file_value () {
     verbose_message "$string"
   fi
   if [ -f "$check_file" ]; then
-    check_dfs=$( cat $check_file |grep "$new_check_value" |wc -l |sed "s/ //g" )
+    check_dfs=$( cat $check_file | grep -c "$new_check_value" | sed "s/ //g" )
   fi
   if [ "$check_dfs" != 0 ]; then
     if [ "$audit_mode" != 2 ]; then

@@ -9,7 +9,7 @@ audit_ftp_logging () {
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
         get_command="svcprop -p inetd_start/exec svc:/network/ftp:default"
-        check_value=$( $get_command | grep "\-d" | wc -l )
+        check_value=$( $get_command | grep -c "\-d" )
         file_header="ftpd_logging"
         if [ "$audit_mode" != 2 ]; then
          verbose_message "File $file_header"

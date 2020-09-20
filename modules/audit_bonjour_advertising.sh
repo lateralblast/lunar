@@ -13,7 +13,7 @@ audit_bonjour_advertising() {
     if [ "$audit_mode" = 2 ]; then
       restore_file $check_file $restore_dir
     else
-      multicast_test=$( grep 'NoMulticastAdvertisements' $check_file | wc -l )
+      multicast_test=$( grep -c 'NoMulticastAdvertisements' $check_file )
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
