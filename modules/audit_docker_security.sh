@@ -81,7 +81,7 @@
 
 audit_docker_security () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=$( which docker )
+    docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Security"
       check_dockerd notequal config SecurityOpt "<no value>"

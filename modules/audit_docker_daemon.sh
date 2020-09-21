@@ -140,7 +140,7 @@
 
 audit_docker_daemon () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=$( which docker )
+    docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Daemon"
       check_file="/etc/audit/audit.rules"
@@ -148,7 +148,7 @@ audit_docker_daemon () {
         check_auditctl $docker_file "docker_file"
         check_append_file $check_file "-w $docker_file -k docker" hash
       done
-      check=$( which systemctl )
+      check=$( command -v systemctl )
       if [ "$check" ]; then
         for docker_service in docker.service docker.socket; do
           check_auditctl $docker_service "docker_service"

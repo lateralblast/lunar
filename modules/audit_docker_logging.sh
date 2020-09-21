@@ -10,7 +10,7 @@
 
 audit_docker_logging () {
   if [ "$os_name" = "Linux" ]; then
-    docker_bin=$( which docker )
+    docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Logging"
       check_dockerd unused daemon log-level info
