@@ -70,7 +70,7 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Security Message"
         if [ "$audit_mode" != 2 ]; then
-          greet_check=$( grep 'private system' $check_file | wc -l )
+          greet_check=$( grep -c 'private system' $check_file )
           if [ "$greet_check" != 1 ]; then
            verbose_message "File $check_file for security message"
            greet_mesg="This is a private system --- Authorized use only!"
@@ -99,7 +99,7 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Security Message"
         if [ "$audit_mode" != 2 ]; then
-          greet_check=$( grep 'private system' $check_file | wc -l )
+          greet_check=$( grep -c 'private system' $check_file )
           greet_mesg="This is a private system --- Authorized USE only!"
           if [ "$greet_check" != 1 ]; then
             verbose_message "File $check_file for security message"
@@ -128,7 +128,7 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Listening"
         if [ "$audit_mode" != 2 ]; then
-          greet_check=$( grep 'nolisten tcp' $check_file | wc -l )
+          greet_check=$( grep -c 'nolisten tcp' $check_file )
           if [ "$greet_check" != 1 ]; then
             verbose_message "For X11 nolisten directive in $check_file"
             if [ "$audit_mode" = 1 ]; then

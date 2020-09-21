@@ -55,7 +55,7 @@ audit_serial_login () {
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" != "11" ]; then
-        serial_test=$( pmadm -L | egrep "ttya|ttyb" | cut -f4 -d ":" | grep "ux" | wc -l )
+        serial_test=$( pmadm -L | egrep "ttya|ttyb" | cut -f4 -d ":" | grep -c "ux" )
         log_file="$work_dir/pmadm.log"
         if [ $( expr "$serial_test" : "2" ) = 1 ]; then
           if [ "$audit_mode" = 1 ]; then
