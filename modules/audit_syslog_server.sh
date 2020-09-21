@@ -43,7 +43,7 @@ audit_syslog_server () {
             check_chkconfig_service $service_name 5 on
             funct_file_perms $check_file 0600 root root
             if [ "$audit_mode" != 2 ]; then
-              remote_check=$( grep -v '#' $check_file | grep '*.* @@' | grep -v localhost | grep '[A-z]' | wc -l )
+              remote_check=$( grep -v '#' $check_file | grep '*.* @@' | grep -v localhost | grep -c '[A-z]' )
               if [ "$remote_check" != "1" ]; then
                 if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
                   increment_insecure "Rsyslog is not sending messages to a remote server"

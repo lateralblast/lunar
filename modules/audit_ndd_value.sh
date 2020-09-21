@@ -24,7 +24,7 @@ audit_ndd_value () {
           restore_value=$( grep "$ndd_property," $restore_file | cut -f3 -d',' )
           if [ $( expr "$restore_property" : "[A-z]" ) = 1 ]; then
             if [ "$ndd_property" = "tcp_extra_priv_ports_add" ]; then
-              current_value=$( ndd -get $ndd_name tcp_extra_priv_ports | grep "$restore_value" | wc -l )
+              current_value=$( ndd -get $ndd_name tcp_extra_priv_ports | grep -c "$restore_value" )
             fi
             if [ $( expr "$current_value" : "[1-9]" ) = 1 ]; then
               if [ "$current_value" != "$restore_value" ]; then

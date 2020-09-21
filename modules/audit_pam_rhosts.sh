@@ -67,7 +67,7 @@ audit_pam_rhosts () {
           if [ "$audit_mode" = 2 ]; then
             restore_file $check_file $restore_dir
           else
-            pam_check=$( grep -v "^#" $check_file |grep "rhosts_auth" | head -1 | wc -l )
+            pam_check=$( grep -v "^#" $check_file | grep "rhosts_auth" | head -1 | wc -l )
             if [ "$ansible" = 1 ]; then
               echo ""
               echo "- name: Checking $string"
