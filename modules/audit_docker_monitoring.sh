@@ -11,7 +11,7 @@
 audit_docker_monitoring () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     if [ "$audit_mode" != 2 ]; then
-      docker_bin=$( which docker )
+      docker_bin=$( command -v docker )
       if [ "$docker_bin" ]; then
         verbose_message "Docker Healthcheck"
         check_dockerd equal config Health ""

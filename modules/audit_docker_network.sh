@@ -18,7 +18,7 @@
 
 audit_docker_network () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=$( which docker )
+    docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Network"
       backup_file="network_bridge"

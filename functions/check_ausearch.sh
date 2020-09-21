@@ -11,7 +11,7 @@ check_ausearch () {
       command=$3
       mode=$4
       value=$5 
-      exists=$( which $bin )
+      exists=$( command -v $bin )
       if [ "$exists" ]; then
         if [ "$value" ]; then
           check=$( ausearch -k $bin 2> /dev/null | grep $command | grep $mode | grep "$value" )

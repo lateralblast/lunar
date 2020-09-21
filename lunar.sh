@@ -223,7 +223,7 @@ check_virtual_platform () {
   if [ -f "/.dockerenv" ]; then
     virtual="Docker"
   else 
-    check=$( which dmidecode | grep dmidecode | grep -v no )
+    check=$( command -v dmidecode | grep dmidecode | grep -v no )
     if [ "$check" ]; then
       virtual=$( dmidecode | grep Manufacturer |head -1 | awk '{print $2}' | sed "s/,//g" )
     fi
@@ -692,7 +692,7 @@ print_changes () {
 #.
 
 check_aws () {
-  aws_bin=$( which aws 2> /dev/null )
+  aws_bin=$( command -v aws 2> /dev/null )
   if [ -f "$aws_bin" ]; then
     aws_creds="$HOME/.aws/credentials"
     if [ -f "$aws_creds" ]; then

@@ -17,7 +17,7 @@
 
 audit_docker_users () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    docker_bin=$( which docker )
+    docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
       verbose_message "Docker Users"
       check_file="/etc/group"
