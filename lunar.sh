@@ -933,7 +933,7 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts ":abcdklpCRe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
+while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
   case ${args} in
     e)
       do_remote=1
