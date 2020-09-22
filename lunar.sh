@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.7.4
+# Version:      7.7.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -128,90 +128,6 @@ install_rsyslog="no"
 # Change it as required
 
 company_name="Lateral Blast Pty Ltd"
-
-# print_help
-#
-# If given a -h or no valid switch print usage information
-#.
-
-print_help () {
-  echo ""
-  echo "Usage: $0 -[a|A|s|S|d|p|c|l|h|H|c|C|D|V|n] -[u] -[o] -[t]"
-  echo ""
-  echo "-a: Run in audit mode (for Operating Systems - no changes made to system)"
-  echo "-A: Run in audit mode (for Operating Systems - no changes made to system)"
-  echo "    [includes filesystem checks which take some time]"
-  echo "-n: Output ansible code segments"
-  echo "-w: Run in audit mode (for AWS - no changes made to system)"
-  echo "-d: Run in audit mode (for Docker - no changes made to system)"
-  echo "-x: Run in recommendations mode (for AWS - no changes made to system)"
-  echo "-s: Run in selective mode (only run tests you want to)"
-  echo "-R: Print information for a specific test"
-  echo "-S: List all UNIX functions available to selective mode"
-  echo "-W: List all AWS functions available to selective mode"
-  echo "-D: List all Docker functions available to selective mode"
-  echo "-l: Run in lockdown mode (for Operating Systems - changes made to system)"
-  echo "-L: Run in lockdown mode (for Operating Systems - changes made to system)"
-  echo "    [includes filesystem checks which take some time]"
-  echo "-Z: Show changes previously made to system"
-  echo "-c: Run docker-compose testing suite (runs lunar in audit mode without making changes)"
-  echo "-C: Run docker-compose testing suite (drops to shell in order to do more testing)"
-  echo "-o: Set docker OS or container name"
-  echo "-t: Set docker tag"
-  echo "-p: Show previously versions of file"
-  echo "-u: Undo lockdown (for Operating Systems - changes made to system)"
-  echo "-h: Display help"
-  echo "-H: Display usage"
-  echo "-V: Display version"
-  echo "-v: Verbose mode [used with -a and -A]"
-  echo "    [Provides more information about the audit taking place]"
-  echo ""
-}
-
-# print-usage
-#
-# IF given -H print some examples
-#.
-
-print_usage () {
-  echo ""
-  echo "Examples:"
-  echo ""
-  echo "Run AWS CLI audit"
-  echo ""
-  echo "$0 -w"
-  echo ""
-  echo "Run Docker audit"
-  echo ""
-  echo "$0 -d"
-  echo ""
-  echo "Run in Audit Mode (for Operating Systems)"
-  echo ""
-  echo "$0 -a"
-  echo ""
-  echo "Run in Audit Mode and provide more information (for Operating Systems)"
-  echo ""
-  echo "$0 -a -v"
-  echo ""
-  echo "Display previous backups:"
-  echo ""
-  echo "$0 -b"
-  echo "Previous backups:"
-  echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25"
-  echo ""
-  echo "Restore from previous backup:"
-  echo ""
-  echo "$0 -u 21_12_2012_19_45_05"
-  echo ""
-  echo "List tests:"
-  echo ""
-  echo "$0 -S"
-  echo ""
-  echo "Only run shell based tests:"
-  echo ""
-  echo "$0 -s audit_shell_services"
-  echo ""
-}
 
 # check_virtual_platform
 #
@@ -933,11 +849,155 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
-  case ${args} in
+#while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
+#  case ${args} in
+
+# print_help
+#
+# If given a -h or no valid switch print usage information
+#.
+print_help () {
+  cat << EOHELP
+Usage: ${0##*/} [OPTIONS...]
+
+ -a   Run in audit mode (for Operating Systems - no changes made to system)
+ -A   Run in audit mode (for Operating Systems - no changes made to system)
+        [includes filesystem checks which take some time]
+ -v   Verbose mode [used with -a and -A]
+        [Provides more information about the audit taking place]
+ -w   Run in audit mode (for AWS - no changes made to system)
+ -d   Run in audit mode (for Docker - no changes made to system)
+ -e   Run in audit mode on external host (for Operating Systems - no changes made to system)
+ -k   Run in audit mode (for Kubernetes - no changes made to system)
+ -x   Run in recommendations mode (for AWS - no changes made to system)
+ -s   Run in selective mode (only run tests you want to)
+ -l   Run in lockdown mode (for Operating Systems - changes made to system)
+ -L   Run in lockdown mode (for Operating Systems - changes made to system)
+        [includes filesystem checks which take some time]
+ -S   List all UNIX functions available to selective mode
+ -W   List all AWS functions available to selective mode
+ -D   List all Docker functions available to selective mode
+ -R   Print information for a specific test
+ -o   Set docker OS or container name
+ -t   Set docker tag
+ -c   Run docker-compose testing suite (runs lunar in audit mode without making changes)
+ -C   Run docker-compose testing suite (drops to shell in order to do more testing)
+ -p   Show previous versions of file
+ -Z   Show changes previously made to system
+ -b   List backup files
+ -n   Output ansible code segments
+ -r   Specify AWS region
+ -z   Run specified audit function
+ -u   Undo lockdown (for Operating Systems - changes made to system)
+ -V   Display version
+ -H   Display usage
+ -h   Display help
+
+EOHELP
+}
+
+# print-usage
+#
+# IF given -H print some examples
+#
+print_usage () {
+  echo ""
+  echo "Examples:"
+  echo ""
+  echo "Run AWS CLI audit"
+  echo ""
+  echo "$0 -w"
+  echo ""
+  echo "Run Docker audit"
+  echo ""
+  echo "$0 -d"
+  echo ""
+  echo "Run in Audit Mode (for Operating Systems)"
+  echo ""
+  echo "$0 -a"
+  echo ""
+  echo "Run in Audit Mode and provide more information (for Operating Systems)"
+  echo ""
+  echo "$0 -a -v"
+  echo ""
+  echo "Display previous backups:"
+  echo ""
+  echo "$0 -b"
+  echo "Previous backups:"
+  echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25"
+  echo ""
+  echo "Restore from previous backup:"
+  echo ""
+  echo "$0 -u 21_12_2012_19_45_05"
+  echo ""
+  echo "List tests:"
+  echo ""
+  echo "$0 -S"
+  echo ""
+  echo "Only run shell based tests:"
+  echo ""
+  echo "$0 -s audit_shell_services"
+  echo ""
+}
+
+OPTIND=1
+while getopts ":aAvw:de:kxs:lLSWDRo:t:cCpZbnr:z:u:VHh" args; do
+  case $args in
+    a)
+      audit_mode=1
+      do_fs=0
+      ;;
+    A)
+      audit_mode=1
+      do_fs=1
+      ;;
+    w)
+      audit_mode=1
+      do_aws=1
+      function="$OPTARG"
+      ;;
+    d)
+      audit_mode=1
+      do_docker=1
+      function="$OPTARG"
+      ;;
     e)
       do_remote=1
       ext_host="$OPTARG"
+      ;;
+    x)
+      audit_mode=1
+      do_aws_rec=1
+      function="$OPTARG"
+      ;;
+    s)
+      audit_mode=1
+      do_fs=0
+      do_select=1
+      function="$OPTARG"
+      ;;
+    l)
+      audit_mode=0
+      do_fs=0
+      ;;
+    L)
+      audit_mode=0
+      do_fs=1
+      ;;
+    S)
+      print_tests "UNIX"
+      ;;
+    W)
+      print_tests "AWS"
+      ;;
+    D)
+      print_tests "Docker"
+      ;;  
+    R)
+      check_environment
+      verbose=1
+      module="$OPTARG"
+      print_audit_info $module
       ;;
     o)
       test_os="$OPTARG"
@@ -953,90 +1013,6 @@ while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
       do_compose=1
       do_shell=1
       ;;
-    n)
-      ansible=1
-      ;;
-    r)
-      aws_region="$OPTARG"
-      ;;
-    v)
-      verbose=1
-      ;;
-    a)
-      audit_mode=1
-      do_fs=0
-      ;;
-    s)
-      audit_mode=1
-      do_fs=0
-      do_select=1
-      function="$OPTARG"
-      ;;
-    z)
-      audit_mode=0
-      do_fs=0
-      do_select=1
-      function="$OPTARG"
-      ;;
-    w)
-      audit_mode=1
-      do_aws=1
-      function="$OPTARG"
-      ;;
-    d)
-      audit_mode=1
-      do_docker=1
-      function="$OPTARG"
-      ;;
-    k)
-      audit_mode=1
-      do_kubernetes=1
-      function="$OPTARG"
-      ;;
-    x)
-      audit_mode=1
-      do_aws_rec=1
-      function="$OPTARG"
-      ;;
-    W)
-      print_tests "AWS"
-      ;;
-    D)
-      print_tests "Docker"
-      ;;  
-    S)
-      print_tests "UNIX"
-      ;;
-    A)
-      audit_mode=1
-      do_fs=1
-      ;;
-    l)
-      audit_mode=0
-      do_fs=0
-      ;;
-    L)
-      audit_mode=0
-      do_fs=1
-      ;;
-    u)
-      audit_mode=2
-      restore_date="$OPTARG"
-      ;;
-    h)
-      print_help
-      if [ "$verbose" = 1 ]; then
-        print_usage
-      fi
-      ;;
-    H)
-      print_usage
-      exit
-      ;;
-    V)
-      echo $script_version
-      exit
-      ;;
     p)
       print_previous
       exit
@@ -1045,12 +1021,6 @@ while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
       print_changes
       exit
       ;;
-    R)
-      check_environment
-      verbose=1
-      module="$OPTARG"
-      print_audit_info $module
-      ;;
     b)
       echo ""
       echo "Previous backups:"
@@ -1058,12 +1028,52 @@ while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
       ls $base_dir
       exit
       ;;
-    *)
-      print_help
+    n)
+      ansible=1
+      ;;
+    r)
+      aws_region="$OPTARG"
+      ;;
+    z)
+      audit_mode=0
+      do_fs=0
+      do_select=1
+      function="$OPTARG"
+      ;;
+    k)
+      audit_mode=1
+      do_kubernetes=1
+      function="$OPTARG"
+      ;;
+    u)
+      audit_mode=2
+      restore_date="$OPTARG"
+      ;;
+    v)
+      verbose=1
+      ;;
+    V)
+      echo "$script_version"
       exit
+      ;;
+    H)
+      print_usage
+      exit
+      ;;
+    h)
+      print_help
+      if [ "$verbose" = 1 ]; then
+        print_usage
+      fi 
+      exit 0
+      ;;
+    *)
+      print_help >&2
+      exit 1
       ;;
   esac
 done
+shift "$((OPTIND-1))"
 
 if [ "$do_remote" = 1 ]; then
   echo "Copying $app_dir to $ext_host:/tmp"
