@@ -114,37 +114,40 @@ Usage
 -----
 
 ```
-./lunar.sh -h
+Usage: ./lunar.sh [OPTIONS...]
 
-Usage: ./lunar.sh -[a|A|s|S|d|p|c|l|h|H|c|C|D|V|n] -[u] -[o] -[t]
-
--a: Run in audit mode (for Operating Systems - no changes made to system)
--A: Run in audit mode (for Operating Systems - no changes made to system)
-    [includes filesystem checks which take some time]
--n: Output ansible code segments
--w: Run in audit mode (for AWS - no changes made to system)
--d: Run in audit mode (for Docker - no changes made to system)
--x: Run in recommendations mode (for AWS - no changes made to system)
--s: Run in selective mode (only run tests you want to)
--R: Print information for a specific test
--S: List all UNIX functions available to selective mode
--W: List all AWS functions available to selective mode
--D: List all Docker functions available to selective mode
--l: Run in lockdown mode (for Operating Systems - changes made to system)
--L: Run in lockdown mode (for Operating Systems - changes made to system)
-    [includes filesystem checks which take some time]
--C: Show changes previously made to system
--c: Run docker-compose testing suite (runs lunar in audit mode without making changes)
--D: Run docker-compose testing suite (drops to shell in order to do more testing)
--o: Set docker OS or container name
--t: Set docker tag
--p: Show previously versions of file
--u: Undo lockdown (for Operating Systems - changes made to system)
--h: Display help
--H: Display usage
--V: Display version
--v: Verbose mode [used with -a and -A]
-    [Provides more information about the audit taking place]
+ -a   Run in audit mode (for Operating Systems - no changes made to system)
+ -A   Run in audit mode (for Operating Systems - no changes made to system)
+        [includes filesystem checks which take some time]
+ -v   Verbose mode [used with -a and -A]
+        [Provides more information about the audit taking place]
+ -w   Run in audit mode (for AWS - no changes made to system)
+ -d   Run in audit mode (for Docker - no changes made to system)
+ -e   Run in audit mode on external host (for Operating Systems - no changes made to system)
+ -k   Run in audit mode (for Kubernetes - no changes made to system)
+ -x   Run in recommendations mode (for AWS - no changes made to system)
+ -s   Run in selective mode (only run tests you want to)
+ -l   Run in lockdown mode (for Operating Systems - changes made to system)
+ -L   Run in lockdown mode (for Operating Systems - changes made to system)
+        [includes filesystem checks which take some time]
+ -S   List all UNIX functions available to selective mode
+ -W   List all AWS functions available to selective mode
+ -D   List all Docker functions available to selective mode
+ -R   Print information for a specific test
+ -o   Set docker OS or container name
+ -t   Set docker tag
+ -c   Run docker-compose testing suite (runs lunar in audit mode without making changes)
+ -C   Run docker-compose testing suite (drops to shell in order to do more testing)
+ -p   Show previous versions of file
+ -Z   Show changes previously made to system
+ -b   List backup files
+ -n   Output ansible code segments
+ -r   Specify AWS region
+ -z   Run specified audit function
+ -u   Undo lockdown (for Operating Systems - changes made to system)
+ -V   Display version
+ -H   Display usage
+ -h   Display help
 ```
 
 License
