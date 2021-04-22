@@ -64,7 +64,7 @@ audit_snmp () {
         verbose_message "SNMP Daemons"
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
           for service_name in "svc:/application/management/seaport:default" \
-            "svc:/application/management/snmpdx:default" \ 
+            "svc:/application/management/snmpdx:default" \
             "svc:/application/management/dmi:default" \
             "svc:/application/management/sma:default"; do
             check_sunos_service $service_name disabled
