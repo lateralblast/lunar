@@ -13,7 +13,7 @@ audit_hotplug () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      for service_name in pcscd haldaemon kudzu, do
+      for service_name in pcscd haldaemon kudzu; do
         check_linux_service $service_name off
       done
     fi

@@ -13,7 +13,7 @@ check_linux_service () {
     if [ -f "/usr/bin/systemctl" ]; then
       if [ "$correct_status" = "on" ] || [ "$correct_status" = "enable" ]; then
         correct_status="enable"
-      elif
+      else
         correct_status="disable"
       fi
       check_systemctl_service $correct_status $service_name
