@@ -57,7 +57,9 @@ check_file_perms () {
       verbose_message "" fix
       verbose_message "chmod $check_perms $check_file" fix
       if [ "$check_owner" != "" ]; then
-        verbose_message "chown $check_owner:$check_group $check_file" fix
+        if [ "$check_results" != "$check_file" ]; then
+          verbose_message "chown $check_owner:$check_group $check_file" fix
+        fi
       fi
       verbose_message "" fix
     fi
@@ -77,7 +79,9 @@ check_file_perms () {
       verbose_message "Setting:   File $check_file to have correct permissions"
       chmod $check_perms $check_file
       if [ "$check_owner" != "" ]; then
-        chown $check_owner:$check_group $check_file
+        if [ "$check_results" != "$check_file" ]; then
+          chown $check_owner:$check_group $check_file
+        fi
       fi
     fi
   else
@@ -97,7 +101,9 @@ check_file_perms () {
         verbose_message "Restoring: File $check_file to previous permissions"
         chmod $restore_perms $check_file
         if [ "$check_owner" != "" ]; then
-          chown $restore_owner:$restore_group $check_file
+          if [ "$check_results" != "$check_file" ]; then
+            chown $restore_owner:$restore_group $check_file
+          fi
         fi
       fi
     fi

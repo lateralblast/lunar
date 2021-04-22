@@ -1365,3 +1365,5 @@
 # Fixed AWS password policy module
 # 7.7.5: Thu 22 Apr 2021 15:15:54 AEST
 # Cleaned up linux service check code as per issue #37
+# 7.7.6: Thu 22 Apr 2021 16:32:24 AEST
+# Added code to deal with issue #61
