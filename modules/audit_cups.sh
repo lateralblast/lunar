@@ -14,15 +14,9 @@ audit_cups () {
     check_rpm cups
     if [ "$rpm_check" = "cups" ]; then
       verbose_message "Printing Services"
-      service_name="cups"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
-      service_name="cups-lpd"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
-      service_name="cupsrenice"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
+      for service_name in cups cups-lpd cupsrenice; do
+        check_linux_service $service_name off
+      done
       check_file="/etc/init.d/cups"
       check_file_perms $check_file 0744 root root
       check_file="/etc/cups/client.conf"
@@ -31,7 +25,6 @@ audit_cups () {
       check_file_perms $check_file 0600 lp sys
       check_file_value is $check_file User space lp hash
       check_file_value is $check_file Group space sys hash
-      check_systemctl_service disable cups
     fi
   fi
 }

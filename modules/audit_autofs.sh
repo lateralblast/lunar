@@ -19,9 +19,7 @@ audit_autofs () {
     fi
     if [ "$os_name" = "Linux" ]; then
       service_name="autofs"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
-      check_systemctl_service disable $service_name
+      check_linux_service $service_name off
     fi
   fi
 }

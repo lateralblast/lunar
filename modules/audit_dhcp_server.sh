@@ -19,8 +19,9 @@ audit_dhcp_server () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_systemctl_service disable dhcpd
-      check_linux_package uninstall dhcp
+      service_name="dhcpd"
+      check_linux_service $service_name off
+      check_linux_package uninstall $service_name
     fi
   fi
 }

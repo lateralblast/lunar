@@ -26,9 +26,7 @@ audit_samba () {
     fi
     if [ "$os_name" = "Linux" ]; then
       service_name="smb"
-      check_systemctl_service disable $service_name
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
+      check_linux_service $service_name off
       check_linux_package uninstall samba
     fi
     for check_dir in /etc /etc/sfw /etc/samba /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do

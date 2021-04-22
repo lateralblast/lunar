@@ -5,8 +5,9 @@
 
 audit_dcui () {
   if [ "$os_name" = "VMkernel" ]; then
-    verbose_message "DCUI"
-    check_chkconfig_service DCUI off
+    service_name="DCUI"
+    verbose_message "$service_name"
+    check_linux_service $service_name off
     verbose_message "Lockdown"
     backup_file="$work_dir/dvfilter"
     current_value=$( vim-cmd -U dcui vimsvc/auth/lockdown_is_enabled )

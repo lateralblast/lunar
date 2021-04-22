@@ -22,7 +22,8 @@ audit_ftp_server () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_systemctl_service disable vsftpd
+      service_name="vsftpd"
+      check_linux_service $service_name off
       check_linux_package uninstall vsftpd
     fi
     if [ "$os_name" = "Darwin" ]; then

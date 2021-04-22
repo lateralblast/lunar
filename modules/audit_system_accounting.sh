@@ -163,14 +163,9 @@ audit_system_accounting () {
       check_append_file $check_file "max_log_file_action = keep_logs" hash
       #- Make file immutable - MUST BE LAST!
       check_append_file $check_file "-e 2" hash
-      service_name="sysstat"
-      check_chkconfig_service $service_name 3 on
-      check_chkconfig_service $service_name 5 on
-      service_name="auditd"
-      check_chkconfig_service $service_name 3 on
-      check_chkconfig_service $service_name 5 on
-      check_systemctl_service enable sysstat
-      check_systemctl_service enable auditd
+      for service_name in sysstat auditd; do
+        check_linux_service $service_name on
+      done
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then

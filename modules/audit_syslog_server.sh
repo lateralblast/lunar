@@ -27,8 +27,7 @@ audit_syslog_server () {
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Amazon" ]; then
           if [ "$os_version" -lt 4 ]; then
             service_name="syslog"
-            check_chkconfig_service $service_name 3 off
-            check_chkconfig_service $service_name 5 off
+            check_linux_service $service_name off
             service_name="rsyslog"
             check_file="/etc/rsyslog.conf"
             check_file_value is $check_file "auth,user.*" tab "/var/log/messages" hash
@@ -38,9 +37,7 @@ audit_syslog_server () {
             check_file_value is $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
             # check_file_value is $check_file "" tab "" hash
             check_linux_package install $service_name
-            check_systemctl_service enable $service_name
-            check_chkconfig_service $service_name 3 on
-            check_chkconfig_service $service_name 5 on
+            check_linux_service $service_name on
             funct_file_perms $check_file 0600 root root
             if [ "$audit_mode" != 2 ]; then
               remote_check=$( grep -v '#' $check_file | grep '*.* @@' | grep -v localhost | grep -c '[A-z]' )

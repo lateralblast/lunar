@@ -37,8 +37,8 @@ audit_sendmail_daemon() {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        check_chkconfig_service sendmail 3 off
-        check_chkconfig_service sendmail 5 off
+        service_name="sendmail"
+        check_linux_service $service_name off
         check_file="/etc/sysconfig/sendmail"
         check_file_value is $check_file DAEMON eq no hash
         check_file_value is $check_file QUEUE eq 1h hash

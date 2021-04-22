@@ -29,18 +29,12 @@ audit_nfs () {
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          service_name="svc:/network/nfs/mapid:default"
-          check_sunos_service $service_name disabled
-          service_name="svc:/network/nfs/status:default"
-          check_sunos_service $service_name disabled
-          service_name="svc:/network/nfs/cbd:default"
-          check_sunos_service $service_name disabled
-          service_name="svc:/network/nfs/nlockmgr:default"
-          check_sunos_service $service_name disabled
-          service_name="svc:/network/nfs/client:default"
-          check_sunos_service $service_name disabled
-          service_name="svc:/network/nfs/server:default"
-          check_sunos_service $service_name disabled
+          for service_name in "svc:/network/nfs/mapid:default" \
+            "svc:/network/nfs/status:default" "svc:/network/nfs/cbd:default" \
+            "svc:/network/nfs/nlockmgr:default" "svc:/network/nfs/client:default" \
+            "svc:/network/nfs/server:default"; do
+            check_sunos_service $service_name disabled
+          done
         fi
         if [ "$os_version" != "11" ]; then
           service_name="nfs.server"
@@ -51,9 +45,7 @@ audit_nfs () {
       fi
       if [ "$os_name" = "Linux" ]; then
         for service_name in nfs nfslock portmap rpc nfs-kerner-server rpcbind; do
-          check_systemctl_service disable $service_name
-          check_chkconfig_service $service_name 3 off
-          check_chkconfig_service $service_name 5 off
+          check_linux_service $service_name off
         done
       fi
       if [ "$os_name" = "FreeBSD" ]; then

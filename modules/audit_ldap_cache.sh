@@ -14,8 +14,7 @@ audit_ldap_cache () {
     fi
     if [ "$os_name" = "Linux" ]; then
       service_name="ldap"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
+      check_linux_service $service_name off
     fi
   fi
 }

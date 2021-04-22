@@ -24,8 +24,8 @@ audit_xinetd () {
             check_xinetd_service $service_name disable yes
           done
         else
-          check_chkconfig_service xinetd 3 off
-          check_chkconfig_service xinetd 5 off
+          service_name="xinetd"
+          check_linux_service $service_name off
         fi
       fi
     fi

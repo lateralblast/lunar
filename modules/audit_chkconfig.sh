@@ -25,9 +25,7 @@ audit_chkconfig () {
       saslauthd powerd raw rexec rlogin rpasswdd openct\
       ipxmount joystick esound evms fam gpm gssd pcscd\
       tog-pegasus tux wpa_supplicant zebra ncpfs; do
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
-      check_systemctl_service disable $service_name
+      check_linux_service $service_name off
     done
   fi
 }

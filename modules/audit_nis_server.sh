@@ -17,14 +17,11 @@ audit_nis_server () {
     verbose_message "NIS Server Daemons"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        service_name="svc:/network/nis/server"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/nis/passwd"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/nis/update"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/nis/xfr"
-        check_sunos_service $service_name disabled
+        for service_name in "svc:/network/nis/server" \
+          "svc:/network/nis/passwd" "svc:/network/nis/update" \
+          "svc:/network/nis/xfr"; do
+          check_sunos_service $service_name disabled
+        done
       fi
       if [ "$os_version" = "11" ]; then
         service_name="svc:/network/nis/server"
@@ -36,9 +33,7 @@ audit_nis_server () {
     if [ "$os_name" = "Linux" ]; then
       verbose_message "NIS Server Daemons"
       for service_name in yppasswdd ypserv ypxfrd; do
-        check_systemctl_service disable $service_name
-        check_chkconfig_service $service_name 3 off
-        check_chkconfig_service $service_name 5 off
+        check_linux_service $service_name off
         check_linux_package uninstall $service_name
       done
     fi

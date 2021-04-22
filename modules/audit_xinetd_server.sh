@@ -9,10 +9,11 @@
 
 audit_xinetd_server () {
   if [ "$os_name" = "Linux" ]; then
-    check_systemctl_service disable xinetd
+    service_name="xinetd"
+    check_linux_service $service_name off
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
       verbose_message "Xinetd Server Daemon"
-      check_linux_package uninstall xinetd
+      check_linux_package uninstall $service_name
     fi
   fi
 }

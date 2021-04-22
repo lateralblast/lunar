@@ -23,12 +23,13 @@ audit_tftp_server () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_chkconfig_service tftp 3 off
-      check_chkconfig_service tftp 5 off
+      service_name="tftp"
+      check_linux_service $service_name off
       check_file_perms /tftpboot 0744 root root
       check_file_perms /var/tftpboot 0744 root root
       if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-        check_systemctl_service disable tftp.socket
+        service_name="tftp.socket"
+        check_linux_service $service_name off
         check_linux_package uninstall tftp-server
       fi
     fi

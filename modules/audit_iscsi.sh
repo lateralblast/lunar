@@ -13,12 +13,9 @@ audit_iscsi () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      service_name="iscsi"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
-      service_name="iscsd"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
+      for service_name in iscsi iscsid; do
+        check_linux_service $service_name off
+      done
     fi
   fi
 }

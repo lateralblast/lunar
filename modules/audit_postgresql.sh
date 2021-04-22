@@ -9,22 +9,18 @@ audit_postgresql () {
     verbose_message "PostgreSQL Database"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/application/database/postgresql_83:default_32bit"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/database/postgresql_83:default_64bit"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/database/postgresql:version_81"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/database/postgresql:version_82"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/database/postgresql:version_82_64bit"
-        check_sunos_service $service_name disabled
+        for service_name in "svc:/application/database/postgresql_83:default_32bit" \
+          "svc:/application/database/postgresql_83:default_64bit" \
+          "svc:/application/database/postgresql:version_81" \
+          "svc:/application/database/postgresql:version_82" \
+          "svc:/application/database/postgresql:version_82_64bit"; do
+          check_sunos_service $service_name disabled
+        done
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
       service_name="postgresql"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
+      check_linux_service $service_name off
     fi
   fi
 }

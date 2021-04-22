@@ -63,8 +63,10 @@ audit_snmp () {
       if [ "$os_name" = "SunOS" ]; then
         verbose_message "SNMP Daemons"
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          for service_name in "svc:/application/management/seaport:default" "svc:/application/management/snmpdx:default" \
-                              "svc:/application/management/dmi:default" "svc:/application/management/sma:default"; do
+          for service_name in "svc:/application/management/seaport:default" \
+            "svc:/application/management/snmpdx:default" \ 
+            "svc:/application/management/dmi:default" \
+            "svc:/application/management/sma:default"; do
             check_sunos_service $service_name disabled
           done
         else
@@ -77,9 +79,7 @@ audit_snmp () {
         check_rpm net-snmp
         if [ "$rpm_check" = "net-snmp" ]; then
           for service_name in snmp snmptrapd; do
-            check_systemctl_service disable $service_name
-            check_chkconfig_service $service_name 3 off
-            check_chkconfig_service $service_name 5 off
+            check_linux_service $service_name off
           done
           check_append_file /etc/snmp/snmpd.conf "com2sec notConfigUser default public" hash
           check_linux_package uninstall net-snmp

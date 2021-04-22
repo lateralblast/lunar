@@ -13,8 +13,7 @@ audit_bootparams () {
     fi
     if [ "$os_name" = "Linux" ]; then
       service_name="bootparamd"
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 5 off
+      check_linux_service $service_name off
     fi
   fi
 }

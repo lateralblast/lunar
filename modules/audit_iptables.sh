@@ -15,9 +15,7 @@ audit_iptables () {
     verbose_message "IP Tables"
     check_linux_package install iptables
     for service_name in iptables ip6tables; do
-      check_systemctl_service enable $service_name
-      check_chkconfig_service $service_name 3 on
-      check_chkconfig_service $service_name 5 on
+      check_linux_service $service_name on
     done
     if [ "$audit_mode" != 2 ]; then
       check=$( command -v iptables 2> /dev/null )

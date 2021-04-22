@@ -11,9 +11,7 @@ audit_email_daemons () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "Mail Daemons"
     for service_name in cyrus imapd qpopper dovecot; do
-      check_systemctl_service disable $service_name
-      check_chkconfig_service $service_name 3 off
-      check_chkconfig_service $service_name 3 off
+      check_linux_service $service_name off
       check_linux_package uninstall $service_name 
     done
   fi

@@ -8,18 +8,16 @@ audit_font_server () {
     verbose_message "Font Server"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/application/x11/xfs:default"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/font/stfsloader:default"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/font/fc-cache:default"
-        check_sunos_service $service_name disabled
+        for service_name in "svc:/application/x11/xfs:default" \
+          "svc:/application/font/stfsloader:default" \
+          "svc:/application/font/fc-cache:default"; do
+          check_sunos_service $service_name disabled
+        done
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
       for service_name in xfs; do
-        check_chkconfig_service $service_name 3 off
-        check_chkconfig_service $service_name 5 off
+        check_linux_service $service_name off
       done
     fi
   fi

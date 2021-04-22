@@ -11,7 +11,8 @@ audit_talk_server () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
       verbose_message "Talk Server Daemon"
-      check_systemctl_service disable ntalk
+      service_name="ntalk"
+      check_linux_service $service_name off
       check_linux_package uninstall talk-server
     fi
   fi

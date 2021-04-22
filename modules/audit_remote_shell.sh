@@ -16,29 +16,19 @@ audit_remote_shell () {
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/network/shell:kshell"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/login:eklogin"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/login:klogin"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/rpc/rex:default"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/rexec:default"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/shell:default"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/login:rlogin"
-        check_sunos_service $service_name disabled
-        service_name="svc:/network/telnet:default"
-        check_sunos_service $service_name disabled
+        for service_name in "svc:/network/shell:kshell" \
+          "svc:/network/login:eklogin" "svc:/network/login:klogin" \
+          "svc:/network/rpc/rex:default" "svc:/network/rexec:default" \
+          "svc:/network/shell:default" "svc:/network/login:rlogin" \
+          "svc:/network/telnet:default"; do
+          check_sunos_service $service_name disabled
+        done
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
       verbose_message "Telnet and Rlogin Services"
       for service_name in telnet login rlogin rsh shell; do
-        check_chkconfig_service $service_name 3 off
-        check_chkconfig_service $service_name 5 off
+        check_linux_service $service_name off
       done
     fi
   fi

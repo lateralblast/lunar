@@ -38,7 +38,7 @@ audit_ntp () {
     fi
     if [ "$os_name" = "VMkernel" ]; then
       service_name="ntpd"
-      check_chkconfig_service $service_name on
+      check_linux_service $service_name on
       check_file="/etc/ntp.conf"
       check_append_file $check_file "restrict 127.0.0.1"
     fi
@@ -70,8 +70,7 @@ audit_ntp () {
           check_file="/usr/lib/systemd/system/ntpd.service"
           check_file_value is $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
         else
-          check_chkconfig_service $service_name 3 on
-          check_chkconfig_service $service_name 5 on
+          check_linux_service $service_name on
         fi
         check_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
         check_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
