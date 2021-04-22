@@ -10,7 +10,8 @@
 check_chkconfig_service () {
   if [ "$os_name" = "VMkernel" ]; then
     service_name=$1
-    correct_status=$2
+    service_level=$2
+    correct_status=$3
     chk_config="/bin/chkconfig"
     log_file="chkconfig.log"
     actual_status=$( $chk_config --list $service_name | awk '{print $2}' )
