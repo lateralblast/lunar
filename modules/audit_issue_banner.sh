@@ -34,26 +34,29 @@ audit_issue_banner () {
           if [ "$audit_mode" = 0 ]; then
             echo "Setting:   Security message in $check_file"
             backup_file $check_file
-            echo "" > $check_file
-            echo "                            NOTICE TO USERS" >> $check_file
-            echo "                            ---------------" >> $check_file
-            echo "This computer system is the private property of $company_name, whether" >> $check_file
-            echo "individual, corporate or government. It is for authorized use only. Users" >> $check_file
-            echo "(authorized & unauthorized) have no explicit/implicit expectation of privacy" >> $check_file
-            echo "" >> $check_file
-            echo "Any or all uses of this system and all files on this system may be" >> $check_file
-            echo "intercepted, monitored, recorded, copied, audited, inspected, and disclosed" >> $check_file
-            echo "to your employer, to authorized site, government, and/or law enforcement" >> $check_file
-            echo "personnel, as well as authorized officials of government agencies, both" >> $check_file
-            echo "domestic and foreign." >> $check_file
-            echo "" >> $check_file
-            echo "By using this system, the user expressly consents to such interception," >> $check_file
-            echo "monitoring, recording, copying, auditing, inspection, and disclosure at the" >> $check_file
-            echo "discretion of such officials. Unauthorized or improper use of this system" >> $check_file
-            echo "may result in civil and criminal penalties and administrative or disciplinary" >> $check_file
-            echo "action, as appropriate. By continuing to use this system you indicate your" >> $check_file
-            echo "awareness of and consent to these terms and conditions of use. LOG OFF" >> $check_file
-            echo "IMMEDIATELY if you do not agree to the conditions stated in this warning." >> $check_file
+            echo "###############################################################################" > $check_file
+            echo "#                             NOTICE TO USERS                                 #" >> $check_file
+            echo "#                             ---------------                                 #" >> $check_file
+            echo "# This computer system is the private property of this company:               #" >> $check_file
+            echo "# Whether individual, corporate or government. It is for authorized use only. #" >> $check_file
+            echo "# Users (authorized & unauthorized) have no explicit/implicit expectation of  #" >> $check_file
+            echo "# privacy.                                                                    #" >> $check_file
+            echo "#                                                                             #" >> $check_file
+            echo "# Any or all uses of this system and all files on this system may be          #" >> $check_file
+            echo "# intercepted, monitored, recorded, copied, audited, inspected, and           #" >> $check_file
+            echo "# disclosed to your employer, to authorized site, government, and/or          #" >> $check_file
+            echo "# law enforcement personnel, as well as authorized officials of government    #" >> $check_file
+            echo "# agencies, both domestic and foreign.                                        #" >> $check_file
+            echo "#                                                                             #" >> $check_file
+            echo "# By using this system, the user expressly consents to such interception,     #" >> $check_file
+            echo "# monitoring, recording, copying, auditing, inspection, and disclosure at     #" >> $check_file
+            echo "# the discretion of such officials. Unauthorized or improper use of this      #" >> $check_file
+            echo "# system may result in civil and criminal penalties and administrative or     #" >> $check_file
+            echo "# disciplinary action, as appropriate. By continuing to use this system       #" >> $check_file
+            echo "# you indicate your awareness of and consent to these terms and conditions.   #" >> $check_file
+            echo "#                                                                             #" >> $check_file
+            echo "# LOG OFF IMMEDIATELY if you do not agree to the conditions in this warning.  #" >> $check_file
+            echo "###############################################################################" >> $check_file
             echo "" >> $check_file
           fi
         else

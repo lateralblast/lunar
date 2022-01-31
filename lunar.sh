@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      7.7.6
+# Version:      7.7.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -127,7 +127,7 @@ install_rsyslog="no"
 # This is the company name that will go into the security message
 # Change it as required
 
-company_name="Lateral Blast Pty Ltd"
+company_name="Insert Company Name Here"
 
 # check_virtual_platform
 #
