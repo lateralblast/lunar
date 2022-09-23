@@ -14,19 +14,35 @@ audit_system_auth_account_reset () {
           verbose_message "Account reset entry not enabled in $check_file"
           check_value=$( grep '^$auth_string' $check_file | grep '$search_string$' | awk '{print $6}' )
           if [ "$check_value" != "$search_string" ]; then
-            if [ "$audit_mode" = "1" ]; then
-              increment_insecure "Account reset entry not enabled in $check_file"
-              verbose_message "cp $check_file $temp_file" fix
-              verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_permit.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
-              verbose_message "rm $temp_file" fix
-            fi
-            if [ "$audit_mode" = 0 ]; then
-              backup_file $check_file
-              verbose_message "Setting:   Account reset entry in $check_file"
-              cp $check_file $temp_file
-              cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_tally2.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
-              rm $temp_file
-            fi
+            if [ "$os_vendor" = "Ubuntu" ] && [ "$os_release" -ge 22 ]; then
+              if [ "$audit_mode" = "1" ]; then
+                increment_insecure "Account reset entry not enabled in $check_file"
+                verbose_message "cp $check_file $temp_file" fix
+                verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_failback.so\" ) { print \"auth\trequired\tpam_failback.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
+                verbose_message "rm $temp_file" fix
+              fi
+              if [ "$audit_mode" = 0 ]; then
+                backup_file $check_file
+                verbose_message "Setting:   Account reset entry in $check_file"
+                cp $check_file $temp_file
+                cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_failback.so" ) { print "auth\trequired\tpam_failback.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
+                rm $temp_file
+              fi
+            else
+              if [ "$audit_mode" = "1" ]; then
+                increment_insecure "Account reset entry not enabled in $check_file"
+                verbose_message "cp $check_file $temp_file" fix
+                verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_tally2.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
+                verbose_message "rm $temp_file" fix
+              fi
+              if [ "$audit_mode" = 0 ]; then
+                backup_file $check_file
+                verbose_message "Setting:   Account reset entry in $check_file"
+                cp $check_file $temp_file
+                cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_tally2.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
+                rm $temp_file
+              fi
+            fi 
           else
             if [ "$audit_mode" = "1" ]; then
               increment_secure "Account entry enabled in $check_file"

@@ -1369,3 +1369,5 @@
 # Added code to deal with issue #61
 # 7.7.7: Mon 31 Jan 2022 15:56:28 AEDT
 # Updated security banner based on suggestion from Mark Lane so it can be grepped out easier
+# 7.7.8: Fri 23 Sep 2022 12:19:00 AEST
+# Updated check for tally2 PAM module which has been replaced with faillock PAM module in Ubuntu 22.04
