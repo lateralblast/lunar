@@ -1373,3 +1373,5 @@
 # Updated check for tally2 PAM module which has been replaced with faillock PAM module in Ubuntu 22.04
 # 7.7.9: Fri 23 Sep 2022 17:00:49 AEST
 # Added check for apport service on Ubuntu 22.04
+# 7.8.0: Fri 23 Sep 2022 17:53:12 AEST
+# Fixed AppArmor check for Ubuntu
