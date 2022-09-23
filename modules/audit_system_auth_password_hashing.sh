@@ -9,7 +9,7 @@ audit_system_auth_password_hashing () {
   search_string=$2
   if [ "$os_name" = "Linux" ]; then
     if [ "$audit_mode" != 2 ]; then
-      for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
+      for check_file in /etc/pam.d/common-password; do
         if [ -f "$check_file" ]; then
           verbose_message "Password minimum strength enabled in $check_file"
           check_value=$( grep '^$auth_string' $check_file | grep '$search_string$' | awk '{print $8}' )
