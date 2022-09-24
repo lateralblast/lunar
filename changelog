@@ -1375,3 +1375,5 @@
 # Added check for apport service on Ubuntu 22.04
 # 7.8.0: Fri 23 Sep 2022 17:53:12 AEST
 # Fixed AppArmor check for Ubuntu
+# 7.8.1: Sat 24 Sep 2022 19:10:14 AEST
+# Added grub check to Apparmor check
