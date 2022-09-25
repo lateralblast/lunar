@@ -1379,3 +1379,5 @@
 # Added grub check to Apparmor check
 # 7.8.2: Sun 25 Sep 2022 08:26:46 AEST
 # Added grub config/menu file check to Apparmor test
+# 7.8.3: Sun 25 Sep 2022 15:39:50 AEST
+# Added gnome defaults check for GDM3

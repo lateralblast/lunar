@@ -14,5 +14,10 @@ audit_gdm_conf () {
       check_file_value is $check_file Use24Clock eq true hash
       check_file_perms $check_file 0644 root root
     fi
+    check_file="/etc/gdm3/greeter.dconf-defaults"
+    if [ -e "$check_file" ]; then
+      verbose_message "GDM3 Configuration"
+      check_file_value is $check_file disable-user-list eq true hash
+    fi
   fi
 }

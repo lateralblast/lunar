@@ -65,6 +65,11 @@ audit_gnome_banner () {
         check_file_value is $check_file banner-message-enable eq true hash
         check_file_value is $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
       fi
+      check_file="/etc/gdm3/greeter.dconf-defaults"
+      if [ -f "$check_file" ]; then
+        check_file_value is $check_file banner-message-enable eq true hash
+        check_file_value is $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
+      fi
     fi
     gconf_bin=$( command -v gconftool-2 2> /dev/null )
     if [ "$os_name" = "Linux" ] && [ -f "$gconf_bin" ]; then
