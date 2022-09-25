@@ -2,7 +2,7 @@
 #
 # Audit file values
 #
-# This routine takes four values
+# This routine takes the following values
 #
 # check_file      = The name of the file to check
 # parameter_name  = The parameter to be checked
