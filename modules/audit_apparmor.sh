@@ -18,7 +18,7 @@ audit_apparmor () {
       check_list="/boot/grub/grub.cfg /etc/default/grub"
       do_test=1
     fi
-    foc check_file in "$check_list"; do
+    for check_file in "$check_list"; do
       if [ "$do_test" = 1 ]; then
         verbose_message "$app_name"
         check_linux_package install $package_name
@@ -69,6 +69,6 @@ audit_apparmor () {
           fi
         fi
       fi
-    fi
+    done 
   fi
 }
