@@ -41,6 +41,7 @@ audit_gnome_screen_lock () {
             verbose_message "echo \"idle-delay=uint32 900\" >> $check_file" fix
             verbose_message "echo \"[org/gnome/desktop/screensaver]\" >> $check_file" fix
             verbose_message "echo \"lock-delay=uint32 5\" >> $check_file" fix
+            verbose_message "dconf update" fix
             verbose_message "" fix
           fi 
           if [ "$audit_mode" = 0 ]; then
@@ -48,6 +49,7 @@ audit_gnome_screen_lock () {
             echo "idle-delay=uint32 900" >> $check_file
             echo "[org/gnome/desktop/screensaver]" >> $check_file
             echo "lock-delay=uint32 5" >> $check_file
+            dconf update
           fi          
           if [ "$audit_mode" = 2 ]; then
             rm $check_file
