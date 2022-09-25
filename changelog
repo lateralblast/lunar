@@ -1385,3 +1385,5 @@
 # Added initial code for gsettings function
 # 7.8.5: Sun 25 Sep 2022 17:11:38 AEST
 # Fixed bug with apparmor module
+# 7.8.6: Sun 25 Sep 2022 18:42:04 AEST
+# Added GDM lock check for Linux

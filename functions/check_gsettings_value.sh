@@ -28,7 +28,7 @@ check_gsettings_value () {
         correct_value=$( grep '$parameter_name' $restore_file | cut -f3 -d',' )
         if [ $( expr "$parameter_name" : "[A-z]" ) = 1 ]; then
           verbose_message "Returning $parameter_name to $correct_value"
-          $set_command $parameter_root $parameter_name $correct_value 
+          $set_command $parameter_root $parameter_name "$correct_value" 
         fi
       fi
     else
@@ -48,9 +48,10 @@ check_gsettings_value () {
           verbose_message "" fix
         else
           if [ "$audit_mode" = 0 ]; then
+            log_file="$restore_dir/$command_name.log"
             verbose_message "Setting:   $parameter_name to $correct_value"
             echo "$parameter_root,$parameter_name,$current_value" >> $log_file
-            $set_command $parameter_name=$correct_value
+            $set_command $parameter_root $parameter_name "$correct_value"
           fi
         fi
       fi 
