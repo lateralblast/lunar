@@ -1387,3 +1387,5 @@
 # Fixed bug with apparmor module
 # 7.8.6: Sun 25 Sep 2022 18:42:04 AEST
 # Added GDM lock check for Linux
+# 7.8.7: Sun 25 Sep 2022 21:17:32 AEST
+# Updated GDM lock check for Linux
