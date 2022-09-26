@@ -1393,3 +1393,5 @@
 # Updated GDM lock check for Linux
 # 7.8.9: Mon 26 Sep 2022 14:39:14 AEST
 # Added Gnome automount check
+# 7.9.0: Mon 26 Sep 2022 14:53:17 AEST
+# Added Gnome autorun check
