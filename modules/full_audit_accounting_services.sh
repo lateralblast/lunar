@@ -8,4 +8,6 @@ full_audit_accounting_services() {
   audit_process_accounting
   audit_audit_class
   audit_sar_accounting
+  audit_prelink
+  audit_aide
 }

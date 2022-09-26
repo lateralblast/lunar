@@ -1397,3 +1397,5 @@
 # Added Gnome autorun check
 # 7.9.1: Mon 26 Sep 2022 15:10:43 AEST
 # Updated Gnome autorun check and added Gnome XDMCP check
+# 7.9.2: Mon 26 Sep 2022 16:52:46 AEST
+# Fixed prelink and aide checks
