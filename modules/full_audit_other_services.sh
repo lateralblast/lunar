@@ -8,4 +8,5 @@ full_audit_other_services () {
   audit_encryption_kit
   audit_biosdevname
   audit_apport
+  audit_pae
 }
