@@ -14,6 +14,7 @@ full_audit_x11_services () {
   audit_gnome_banner
   audit_cde_screen_lock
   audit_gnome_screen_lock
+  audit_gnome_automount
   audit_opengl
   audit_font_server
   audit_vnc
