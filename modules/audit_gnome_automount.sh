@@ -56,14 +56,15 @@ audit_gnome_automount () {
           echo "- name: $string"
           echo "  copy:"
           echo "    content: |"
-          echo "             /org/gnome/desktop/media-handling/automount]"
+          echo "             /org/gnome/desktop/media-handling/automount"
           echo "             /org/gnome/desktop/media-handling/automount-open"
           echo "             /org/gnome/desktop/media-handling/autorun-never"
           echo "    dest: $check_file"
         fi
         if [ -f "$check_file" ]; then
-          check_file_value is $check_file "automount-false" eq "false" hash after "handling"
-          check_file_value is $check_file "automount" eq "false" hash after "handling"
+          check_append_file $check_file "/org/gnome/desktop/media-handling/automount-false" hash
+          check_append_file $check_file "/org/gnome/desktop/media-handling/automount" hash
+          check_append_file $check_file "/org/gnome/desktop/media-handling/autorun-never" hash
         else
           if [ "$audit_mode" = 1 ]; then
             verbose_message "" fix
