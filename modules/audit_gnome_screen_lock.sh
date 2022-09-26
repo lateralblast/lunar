@@ -1,9 +1,9 @@
 # audit_gnome_screen_lock
 #
-# Refer to Section(s) 6.12  Page(s) 55-56 CIS Solaris 11.1 Benchmark v1.0.0
-# Refer to Section(s) 6.8   Page(s) 92-3  CIS Solaris 10 Benchmark v5.1.0
-# Refer to Section(s) 1.8.4 Page(s) 162-5 CIS Ubuntu 22.04 Benchmaek v1.0.0
-# Refer to Section(s) 1.8.4 Page(s) 162-5 CIS Ubuntu 22.04 Benchmaek v1.0.0
+# Refer to Section(s) 6.12  Page(s) 55-56  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 6.8   Page(s) 92-3   CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 1.8.4 Page(s) 162-5  CIS Ubuntu 22.04 Benchmaek v1.0.0
+# Refer to Section(s) 1.8.5 Page(s) 167-71 CIS Ubuntu 22.04 Benchmaek v1.0.0
 #.
 
 audit_gnome_screen_lock () {
@@ -32,8 +32,8 @@ audit_gnome_screen_lock () {
             echo "             lock-delay=uint32 5"
             echo "    dest: $check_file"
           fi
-          check_file_value is $check_file idle-delay eq "uint32 900" hash
-          check_file_value is $check_file lock-delay eq "uint32 5" hash
+          check_file_value is $check_file "idle-delay" eq "uint32 900" hash after "session"
+          check_file_value is $check_file "lock-delay" eq "uint32 5" hash after "screensaver"
         else
           if [ "$audit_mode" = 1 ]; then
             verbose_message "" fix
