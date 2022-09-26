@@ -27,7 +27,6 @@ audit_grub_security () {
 #    grub_check=`cat $check_file |grep "^password --md5" |awk '{print $1}'`
 #    if [ "$grub_check" != "password" ]; then
 #      if [ "$audit_mode" = 1 ]; then
-#        
 #        increment_insecure "Grub password not set"
 #      fi
 #      This code needs work
@@ -37,22 +36,20 @@ audit_grub_security () {
 #          echo "Saving:    File $check_file to $log_file"
 #          find $check_file | cpio -pdm $work_dir 2> /dev/null
 #        fi
-#   echo -n "Enter password: "
-#   read $password_string
-#   password_string=`htpasswd -nb test $password_string |cut -f2 -d":"`
-#   echo "password --md5 $password_string" >> $check_file
-#   chmod 600 $check_file
-#   lock_check=`cat $check_file |grep lock`
-#   if [ "$lock_check" != "lock" ]; then
-#     cat $check_file |sed 's,Solaris failsafe,Solaris failsafe\
-#Lock,g' >> $temp_file
-#     cp $temp_file $check_file
-#     rm $temp_file
-#   fi
-#     fi
+#        echo -n "Enter password: "
+#        read $password_string
+#        password_string=`htpasswd -nb test $password_string |cut -f2 -d":"`
+#        echo "password --md5 $password_string" >> $check_file
+#        chmod 600 $check_file
+#        lock_check=`cat $check_file |grep lock`
+#        if [ "$lock_check" != "lock" ]; then
+#          cat $check_file |sed 's,Solaris failsafe,Solaris failsafe Lock,g' >> $temp_file
+#          cp $temp_file $check_file
+#          rm $temp_file
+#        fi
+#      fi
 #    else
 #      if [ "$audit_mode" = 1 ]; then
-#        
 #        increment_secure "Set-UID not restricted on user mounted devices"
 #      fi
 #      if [ "$audit_mode" = 2 ]; then
