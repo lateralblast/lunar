@@ -1403,3 +1403,6 @@
 # Added PAE/NX check
 # 7.9.4: Tue 27 Sep 2022 10:48:50 AEST
 # Added exim check
+# 7.9.5: Tue 27 Sep 2022 10:59:19 AEST
+# Added wireless check for Linux
+

@@ -21,4 +21,5 @@ full_audit_network_services () {
   audit_dhcpsd
   audit_mob
   audit_dvfilter
+  audit_wireless
 }
