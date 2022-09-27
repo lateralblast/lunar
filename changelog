@@ -1401,3 +1401,5 @@
 # Fixed prelink and aide checks
 # 7.9.3: Mon 26 Sep 2022 20:18:21 AEST
 # Added PAE/NX check
+# 7.9.4: Tue 27 Sep 2022 10:48:50 AEST
+# Added exim check

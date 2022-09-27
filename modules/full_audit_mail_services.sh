@@ -8,4 +8,5 @@ full_audit_mail_services () {
   audit_sendmail_aliases
   audit_email_daemons
   audit_postfix_daemon
+  audit_exim
 }
