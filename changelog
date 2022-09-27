@@ -1405,4 +1405,6 @@
 # Added exim check
 # 7.9.5: Tue 27 Sep 2022 10:59:19 AEST
 # Added wireless check for Linux
+# 7.9.6: Tue 27 Sep 2022 11:26:50 AEST
+# Added some UFW checks for Ubuntu Linux
 
