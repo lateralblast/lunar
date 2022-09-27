@@ -11,6 +11,7 @@ audit_auditd () {
     verbose_message "Audit Daemon"
     if [ "$os_name" = "Linux" ]; then
       check_linux_package install auditd
+      check_linux_package install audispd-plugins 
     fi
     if [ "$os_name" = "Darwin" ]; then
       check_launchctl_service com.apple.auditd on
