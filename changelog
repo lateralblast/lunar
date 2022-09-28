@@ -1409,4 +1409,5 @@
 # Added some UFW checks for Ubuntu Linux
 # 7.9.7: Tue 27 Sep 2022 11:47:58 AEST
 # Added audispd-plugins package check
-
+# 7.9.8: Wed 28 Sep 2022 20:20:02 AEST
+# Added grub check for audit flag

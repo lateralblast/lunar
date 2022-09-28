@@ -26,13 +26,13 @@ audit_apparmor () {
           restore_file $check_file $restore_dir
         else
           if [ -f "$check_file" ]; then
-            armor_disable_test=$( grep "$package_name=0" $check_file | head -1 | wc -l )
-            armor_enabled_test=$( grep "$package_name=1" $check_file | head -1 | wc -l )
+            package_disable_test=$( grep "$package_name=0" $check_file | head -1 | wc -l )
+            package_enabled_test=$( grep "$package_name=1" $check_file | head -1 | wc -l )
           else
-            armor_disabled_test=0
-            armor_enabled_test=0
+            package_disabled_test=0
+            package_enabled_test=0
           fi
-          if [ "$armor_disabled_test" ="1" ]; then
+          if [ "$package_disabled_test" ="1" ]; then
             increment_insecure "$app_name is disabled in $check_file"
             temp_file="$temp_dir/$package_name"
             backup_file $check_file
@@ -44,7 +44,7 @@ audit_apparmor () {
           else
             increment_secure "$app_name is not disabled in $check_file"
           fi
-          if [ "$armor_enabled_test" = "1" ]; then
+          if [ "$package_enabled_test" = "1" ]; then
             increment_secure "$app_name is enabled $check_file"
           else
             increment_insecure "$app_name is not enabled in $check_file"
