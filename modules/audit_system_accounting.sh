@@ -10,7 +10,7 @@
 # Refer to Section(s) 4.8                Page(s) 71-2         CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 4.1.1.1-3,4.2.1-18 Page(s) 148-75       CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 4.1.1.1-3,4.1.2-18 Page(s) 159-86       CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.2.1-3-4.1.3.10 Page(s) 440-55       CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.2.1-3-4.1.3.13 Page(s) 440-99       CIS Ubuntu 22.04 Benchmark v1.0.0
 #.
 
 audit_system_accounting () {
@@ -104,6 +104,9 @@ audit_system_accounting () {
       # Things that could affect logins
       check_append_file $check_file "-w /var/log/faillog -p wa -k logins" hash
       check_append_file $check_file "-w /var/log/lastlog -p wa -k logins" hash
+      if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
+        check_append_file $check_file "-w /var/run/faillock -p wa -k logins" hash
+      fi
       #- Process and session initiation (unsuccessful and successful)
       check_append_file $check_file "-w /var/run/utmp -p wa -k session" hash
       check_append_file $check_file "-w /var/log/btmp -p wa -k session" hash

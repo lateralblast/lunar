@@ -1415,3 +1415,5 @@
 # Added audit log size check
 # 8.0.0: Thu 29 Sep 2022 04:56:18 AEST
 # Fixed audit max log file size
+# 8.0.1: Thu 29 Sep 2022 05:11:57 AEST
+# Added faillock to auditing
