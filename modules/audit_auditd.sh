@@ -50,7 +50,6 @@ audit_auditd () {
           fi
         fi
       fi
-    done 
     fi
     if [ "$os_name" = "Darwin" ]; then
       check_launchctl_service com.apple.auditd on
