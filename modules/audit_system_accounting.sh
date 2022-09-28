@@ -10,6 +10,7 @@
 # Refer to Section(s) 4.8                Page(s) 71-2         CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 4.1.1.1-3,4.2.1-18 Page(s) 148-75       CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 4.1.1.1-3,4.1.2-18 Page(s) 159-86       CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.2.1-3-4.1.3.10 Page(s) 440-55       CIS Ubuntu 22.04 Benchmark v1.0.0
 #.
 
 audit_system_accounting () {
@@ -159,7 +160,7 @@ audit_system_accounting () {
       check_append_file $check_file "action_mail_acct = email" hash
       check_append_file $check_file "admin_space_left_action = email" hash
       #check_append_file $check_file "" hash
-      check_append_file $check_file "max_log_file = MB" hash
+      check_append_file $check_file "max_log_file = 8" hash
       check_append_file $check_file "max_log_file_action = keep_logs" hash
       #- Make file immutable - MUST BE LAST!
       check_append_file $check_file "-e 2" hash

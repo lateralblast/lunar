@@ -1413,3 +1413,5 @@
 # Added grub check for audit flag
 # 7.9.9: Thu 29 Sep 2022 04:42:26 AEST
 # Added audit log size check
+# 8.0.0: Thu 29 Sep 2022 04:56:18 AEST
+# Fixed audit max log file size
