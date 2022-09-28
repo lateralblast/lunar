@@ -10,7 +10,7 @@
 # Refer to Section(s) 4.8                Page(s) 71-2         CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 4.1.1.1-3,4.2.1-18 Page(s) 148-75       CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 4.1.1.1-3,4.1.2-18 Page(s) 159-86       CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.2.1-3-4.1.3.13 Page(s) 440-99       CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.2.1-3-4.1.3.29 Page(s) 440-527      CIS Ubuntu 22.04 Benchmark v1.0.0
 #.
 
 audit_system_accounting () {
@@ -101,6 +101,9 @@ audit_system_accounting () {
       check_append_file $check_file "-w /etc/sysconfig/network -p wa -k system-locale" hash
       # Things that could affect MAC policy
       check_append_file $check_file "-w /etc/selinux/ -p wa -k MAC-policy" hash
+      # Things that could affect apparmor
+      check_append_file $check_file "-w /etc/apparmor/ -p wa -k MAC-policy" hash
+      check_append_file $check_file "-w /etc/apparmor.d/ -p wa -k MAC-policy" hash
       # Things that could affect logins
       check_append_file $check_file "-w /var/log/faillog -p wa -k logins" hash
       check_append_file $check_file "-w /var/log/lastlog -p wa -k logins" hash
@@ -112,6 +115,8 @@ audit_system_accounting () {
       check_append_file $check_file "-w /var/log/btmp -p wa -k session" hash
       check_append_file $check_file "-w /var/log/wtmp -p wa -k session" hash
       #- Discretionary access control permission modification (unsuccessful and successful use of chown/chmod)
+      check_append_file $check_file "-a always,exit -S all -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=-1 -F key=perm_chng" hash
+      check_append_file $check_file "-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng" hash
       check_append_file $check_file "-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" hash
       if [ "$os_platform" = "x86_64" ]; then
         check_append_file $check_file "-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" hash
@@ -133,11 +138,13 @@ audit_system_accounting () {
       fi
       #- Use of privileged commands (unsuccessful and successful)
       #check_append_file $check_file "-a always,exit -F path=/bin/ping -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged" hash
+      check_append_file $check_file "-a always,exit -F path=/usr/bin/chacl -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd" hash
       check_append_file $check_file "-a always,exit -F arch=b32 -S mount -F auid>=500 -F auid!=4294967295 -k export" hash
       if [ "$os_platform" = "x86_64" ]; then
         check_append_file $check_file "-a always,exit -F arch=b64 -S mount -F auid>=500 -F auid!=4294967295 -k export" hash
       fi
       #- Files and programs deleted by the user (successful and unsuccessful)
+      check_append_file $check_file "-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k usermod" hash
       check_append_file $check_file "-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete" hash
       if [ "$os_platform" = "x86_64" ]; then
         check_append_file $check_file "-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=500 -F auid!=4294967295 -k delete" hash
@@ -149,6 +156,10 @@ audit_system_accounting () {
       check_append_file $check_file "-w /sbin/insmod -p x -k modules" hash
       check_append_file $check_file "-w /sbin/rmmod -p x -k modules" hash
       check_append_file $check_file "-w /sbin/modprobe -p x -k modules" hash
+      if [ "$os_platform" = "x86_64" ]; then
+        check_append_file $check_file "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module,create_module,query_module -F auid>=1000 -F auid!=unset -k kernel_modules" hash
+      fi
+      check_append_file $check_file "-a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=1000 -F auid!=unset - k kernel_modules" hash
       check_append_file $check_file "-a always,exit -S init_module -S delete_module -k modules" hash
       #- Tracks successful and unsuccessful mount commands
       if [ "$os_platform" = "x86_64" ]; then
