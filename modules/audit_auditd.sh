@@ -96,7 +96,7 @@ audit_auditd () {
     fi
     check_file="/etc/audit/auditd.conf"
     check_file_value is $check_file log_group eq adm hash
-    for check_file in /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+    for check_file in /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules; do
       if [ -f "$check_file" ]; then
         check_file_perms $check_file 0750 root root
       fi
