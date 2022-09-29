@@ -1421,3 +1421,7 @@
 # Added additional checks to system accounting/auditing
 # 8.0.3: Thu 29 Sep 2022 13:42:08 AEST
 # Added auditd log_group check
+# 8.0.4: Thu 29 Sep 2022 14:59:40 AEST
+# Added additional aide checks
+# 8.0.5: Thu 29 Sep 2022 16:17:53 AEST
+# Various updates to system logging and auditing checks

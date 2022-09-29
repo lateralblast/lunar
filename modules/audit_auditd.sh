@@ -2,10 +2,10 @@
 #
 # Check auditd is installed - Required for various other tests like docker
 #
-# Refer to Section(s) 4.1       Page(s) 157-8  CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.1.1-4 Page(s) 278-83 CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.4.3   Page(s) 535-6  CIS Ubuntu 22.04 Benchmark v1.0.0
-# Refer to Section(s) 3.2       Page(s) 91     CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 4.1       Page(s) 157-8      CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.1.1-4 Page(s) 278-83     CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.4.3,8 Page(s) 535-6,47-8 CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 3.2       Page(s) 91         CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
 audit_auditd () {
@@ -96,5 +96,10 @@ audit_auditd () {
     fi
     check_file="/etc/audit/auditd.conf"
     check_file_value is $check_file log_group eq adm hash
+    for check_file in /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+      if [ -f "$check_file" ]; then
+        check_file_perms $check_file 0750 root root
+      fi
+    done
   fi
 }
