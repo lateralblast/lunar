@@ -72,6 +72,9 @@ check_file_value () {
     sed_command="sudo sed"
     echo_command="sudo echo"
   fi
+  if [ "$check_file" = "/etc/audit/auditd.conf" ]; then
+    spacer=" $spacer "
+  fi
   if [ "$audit_mode" = 2 ]; then
     restore_file $check_file $restore_dir
   else

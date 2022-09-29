@@ -93,5 +93,7 @@ audit_auditd () {
     if [ "$os_name" = "Darwin" ]; then
       check_launchctl_service com.apple.auditd on
     fi
+    check_file="/etc/audit/auditd.conf"
+    check_file_value is $check_file log_group eq adm hash
   fi
 }

@@ -1419,3 +1419,5 @@
 # Added faillock to auditing
 # 8.0.2: Thu 29 Sep 2022 07:23:59 AEST
 # Added additional checks to system accounting/auditing
+# 8.0.3: Thu 29 Sep 2022 13:42:08 AEST
+# Added auditd log_group check
