@@ -4,6 +4,7 @@
 #
 # Refer to Section(s) 4.1       Page(s) 157-8  CIS Ubuntu 16.04 Benchmark v1.0.0
 # Refer to Section(s) 4.1.1.1-4 Page(s) 278-83 CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.4.3   Page(s) 535-6  CIS Ubuntu 22.04 Benchmark v1.0.0
 # Refer to Section(s) 3.2       Page(s) 91     CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
