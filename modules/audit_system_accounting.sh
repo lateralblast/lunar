@@ -155,7 +155,9 @@ audit_system_accounting () {
       fi
       #- All system administration actions
       check_append_file $check_file "-w /etc/sudoers -p wa -k scope" hash
+      check_append_file $check_file "-w /etc/sudoers.d -p wa -k scope" hash
       check_append_file $check_file "-w /etc/sudoers -p wa -k actions" hash
+      check_append_file $check_file "-w /var/log/sudo.log -p wa -k sudo_log_file" hash
       #- Make sue kernel module loading and unloading is recorded
       check_append_file $check_file "-w /sbin/insmod -p x -k modules" hash
       check_append_file $check_file "-w /sbin/rmmod -p x -k modules" hash
