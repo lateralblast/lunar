@@ -117,6 +117,10 @@ audit_system_accounting () {
       #- Discretionary access control permission modification (unsuccessful and successful use of chown/chmod)
       check_append_file $check_file "-a always,exit -S all -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=-1 -F key=perm_chng" hash
       check_append_file $check_file "-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng" hash
+      check_append_file $check_file "-a always,exit -F arch=b32 -C euid!=uid -F auid!=unset -S execve -k user_emulation" hash
+      if [ "$os_platform" = "x86_64" ]; then
+        check_append_file $check_file "-a always,exit -F arch=b64 -C euid!=uid -F auid!=unset -S execve -k user_emulation" hash
+      fi
       check_append_file $check_file "-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" hash
       if [ "$os_platform" = "x86_64" ]; then
         check_append_file $check_file "-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod" hash

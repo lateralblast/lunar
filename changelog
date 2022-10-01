@@ -1425,3 +1425,5 @@
 # Added additional aide checks
 # 8.0.5: Thu 29 Sep 2022 16:17:53 AEST
 # Various updates to system logging and auditing checks
+# 8.0.6: Sat  1 Oct 2022 14:22:20 AEST
+# Added check for audit log of running command as another user
