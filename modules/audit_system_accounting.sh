@@ -75,13 +75,11 @@ audit_system_accounting () {
       # Set failure mode to syslog notice
       check_append_file $check_file "-f 1" hash
       # Things that could affect time
-      check_append_file $check_file "-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change" hash
+      check_append_file $check_file "" hash
+      # Things that modify time
+      check_append_file $check_file "-a always,exit -F arch=b32 -S adjtimex,settimeofday,clock_settime,stime -k time-change" hash
       if [ "$os_platform" = "x86_64" ]; then
-        check_append_file $check_file "-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change" hash
-      fi
-      check_append_file $check_file "-a always,exit -F arch=b32 -S clock_settime -k time-change" hash
-      if [ "$os_platform" = "x86_64" ]; then
-        check_append_file $check_file "-a always,exit -F arch=b64 -S clock_settime -k time-change" hash
+        check_append_file $check_file "-a always,exit -F arch=b64 -S adjtimex,settimeofday,clock_settime -k time-change" hash
       fi
       check_append_file $check_file "-w /etc/localtime -p wa -k time-change" hash
       # Things that affect identity
@@ -91,9 +89,9 @@ audit_system_accounting () {
       check_append_file $check_file "-w /etc/shadow -p wa -k identity" hash
       check_append_file $check_file "-w /etc/security/opasswd -p wa -k identity" hash
       # Things that could affect system locale
-      check_append_file $check_file "-a exit,always -F arch=b32 -S sethostname -S setdomainname -k system-locale" hash
+      check_append_file $check_file "-a exit,always -F arch=b32 -S sethostname,setdomainname -k system-locale" hash
       if [ "$os_platform" = "x86_64" ]; then
-        check_append_file $check_file "-a exit,always -F arch=b64 -S sethostname -S setdomainname -k system-locale" hash
+        check_append_file $check_file "-a exit,always -F arch=b64 -S sethostname,setdomainname -k system-locale" hash
       fi
       check_append_file $check_file "-w /etc/issue -p wa -k system-locale" hash
       check_append_file $check_file "-w /etc/issue.net -p wa -k system-locale" hash
@@ -110,11 +108,13 @@ audit_system_accounting () {
       if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
         check_append_file $check_file "-w /var/run/faillock -p wa -k logins" hash
       fi
-      #- Process and session initiation (unsuccessful and successful)
+      # Process and session initiation (unsuccessful and successful)
       check_append_file $check_file "-w /var/run/utmp -p wa -k session" hash
       check_append_file $check_file "-w /var/log/btmp -p wa -k session" hash
       check_append_file $check_file "-w /var/log/wtmp -p wa -k session" hash
-      #- Discretionary access control permission modification (unsuccessful and successful use of chown/chmod)
+      # Record chchon command usage
+      check_append_file $check_file "-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng" hash
+      # Discretionary access control permission modification (unsuccessful and successful use of chown/chmod)
       check_append_file $check_file "-a always,exit -S all -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=-1 -F key=perm_chng" hash
       check_append_file $check_file "-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng" hash
       check_append_file $check_file "-a always,exit -F arch=b32 -C euid!=uid -F auid!=unset -S execve -k user_emulation" hash

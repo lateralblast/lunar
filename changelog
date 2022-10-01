@@ -1429,3 +1429,5 @@
 # Added check for audit log of running command as another user
 # 8.0.7: Sat  1 Oct 2022 14:28:36 AEST
 # Added sudo check to audit
+# 8.0.8: Sat  1 Oct 2022 14:40:46 AEST
+# Added check for auditing chchon
