@@ -27,7 +27,7 @@ audit_auditd () {
           package_disabled_test=0
           package_enabled_test=0
         fi
-        if [ "$package_disabled_test" ="1" ]; then
+        if [ "$package_disabled_test" = "1" ]; then
           increment_insecure "$app_name is disabled in $check_file"
           temp_file="$temp_dir/$package_name"
           backup_file $check_file
@@ -63,7 +63,7 @@ audit_auditd () {
           package_disabled_test=0
           package_enabled_test=0
         fi
-        if [ "$package_disabled_test" ="1" ]; then
+        if [ "$package_disabled_test" = "1" ]; then
           increment_insecure "$app_name is disabled in $check_file"
           temp_file="$temp_dir/$package_name"
           backup_file $check_file

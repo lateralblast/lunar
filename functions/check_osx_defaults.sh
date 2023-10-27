@@ -83,7 +83,7 @@ check_osx_defaults () {
             else
               if [ "$defaults_type" = "int" ]; then
                 $defaults_command write $defaults_file $defaults_parameter -int $defaults_value
-                if [ "$defaults_file" ="/Library/Preferences/com.apple.Bluetooth" ]; then
+                if [ "$defaults_file" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
               else

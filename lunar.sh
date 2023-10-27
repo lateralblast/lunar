@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.0.9
+# Version:      8.1.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -108,6 +108,7 @@ test_tag="none"
 do_compose=0
 do_shell=0
 do_remote=0
+my_id=$(id -u)
 
 # Disable daemons
 
@@ -140,7 +141,7 @@ check_virtual_platform () {
     virtual="Docker"
   else 
     check=$( command -v dmidecode | grep dmidecode | grep -v no )
-    if [ "$check" ]; then
+    if [ "$check" ] && [ "$my_id" = "0" ]; then
       virtual=$( dmidecode | grep Manufacturer |head -1 | awk '{print $2}' | sed "s/,//g" )
     else
       virtual=$( uname -p )
@@ -159,6 +160,8 @@ check_os_release () {
   echo ""
   echo "# SYSTEM INFORMATION:"
   echo ""
+  os_codename=""
+  os_minorrev=""
   os_name=$( uname )
   if [ "$os_name" = "Darwin" ]; then
     set -- $( sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}' )
@@ -197,6 +200,8 @@ check_os_release () {
           os_version=$( grep "DISTRIB_RELEASE" /etc/lsb-release | cut -f2 -d= | cut -f1 -d. )
           os_update=$( grep "DISTRIB_RELEASE" /etc/lsb-release | cut -f2 -d= | cut -f2 -d. )
           os_vendor=$( grep "DISTRIB_ID" /etc/lsb-release | cut -f2 -d= )
+          os_codename=$( grep "DISTRIB_CODENAME" /etc/lsb-release | cut -f2 -d= )
+          os_minorrev=$(lsb_release -d |awk '{print $3}' |cut -f3 -d. )
         else
           if [ -f "/etc/debian_version" ]; then
             os_version=$( cut -f1 -d. /etc/debian_version )
@@ -279,12 +284,21 @@ check_os_release () {
   fi
   os_machine=$( uname -m )
   check_virtual_platform
+  if [ "$os_platform" = "" ]; then
+    os_platform=$( uname -p )
+  fi
   echo "Processor: $os_platform"
   echo "Machine:   $os_machine"
   echo "Vendor:    $os_vendor"
   echo "Name:      $os_name"
   echo "Version:   $os_version"
   echo "Update:    $os_update"
+  if [ ! "$os_minorrev" = "" ]; then
+    echo "Minor Rev: $os_minorrev"
+  fi
+  if [ ! "$os_codename" = "" ]; then
+    echo "Codename:  $os_codename"
+  fi
 }
 
 # check_environment

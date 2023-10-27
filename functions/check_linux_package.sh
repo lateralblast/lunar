@@ -66,7 +66,11 @@ check_linux_package () {
           package_command="apt-get install $package_check"
         fi
         if [ "$package_check" = "aide" ]; then
-          /usr/sbin/aide --init -B 'database_out=file:/var/lib/aide/aide.db.gz'
+          if [ -f "/usr/sbin/aide" ]; then
+            if [ ! -f "/var/lib/aide/aide.db.gz" ]; then
+              /usr/sbin/aide --init -B 'database_out=file:/var/lib/aide/aide.db.gz'
+            fi
+          fi
         fi
       fi
       if [ "$package_mode" = "uninstall" ]; then

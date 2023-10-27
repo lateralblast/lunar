@@ -1433,3 +1433,11 @@
 # Added check for auditing chchon
 # 8.0.9: Fri 27 Oct 2023 12:53:20 AEDT
 # Moved home directory check to be a part of filesystem check option
+# 8.1.0: Fri Oct 27 18:55:59 AEDT 2023
+# Bug fixes for aide check
+# 8.1.1: Fri Oct 27 19:11:38 AEDT 2023
+# Bug fix for apparmor check
+# 8.1.2: Fri Oct 27 19:15:46 AEDT 2023
+# Bug fix for OS X defaults check
+# 8.1.3: Fri Oct 27 19:18:29 AEDT 2023
+# Bug fixes for auditd check
