@@ -1443,3 +1443,7 @@
 # Bug fixes for auditd check
 # 8.1.4: Fri Oct 27 19:34:00 AEDT 2023
 # Bug fixes
+# 8.1.5: Sat Oct 28 08:25:51 AEDT 2023
+# Added check for iptables
+# 8.1.6: Sat Oct 28 08:31:48 AEDT 2023
+# Added check for nmcli

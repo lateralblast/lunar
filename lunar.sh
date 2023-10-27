@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.1.4
+# Version:      8.1.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -770,6 +770,9 @@ funct_audit_select () {
   check_environment
   if [ "$( echo $function |grep aws )" ]; then
     check_aws
+  fi
+  if [ "$( echo "$function" |grep "\\.sh" |wc -l )" = "1" ]; then
+    function=$( echo "$function" |cut -f1 -d. )
   fi
   if [ "$( expr $function : audit_ )" != "6" ]; then
     function="audit_$function"
