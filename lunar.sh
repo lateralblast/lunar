@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.1.3
+# Version:      8.1.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -298,6 +298,9 @@ check_os_release () {
   fi
   if [ ! "$os_codename" = "" ]; then
     echo "Codename:  $os_codename"
+  fi
+  if [ "$os_release" = "" ]; then
+    os_release=$os_version
   fi
 }
 
