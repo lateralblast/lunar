@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.0.8
+# Version:      8.0.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -142,6 +142,8 @@ check_virtual_platform () {
     check=$( command -v dmidecode | grep dmidecode | grep -v no )
     if [ "$check" ]; then
       virtual=$( dmidecode | grep Manufacturer |head -1 | awk '{print $2}' | sed "s/,//g" )
+    else
+      virtual=$( uname -p )
     fi
   fi
   echo "Platform:  $virtual"
@@ -164,6 +166,9 @@ check_os_release () {
     os_release=$2
     os_update=$3
     os_vendor="Apple"
+    if [ "$os_update" = "" ]; then
+      os_update=$( sw_vers |grep ^BuildVersion |awk '{print $2}' )
+    fi
   fi
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
@@ -263,7 +268,15 @@ check_os_release () {
     echo "OS not supported"
     exit
   fi
-  os_platform=$( uname -p )
+  if [ "$os_name" = "Linux" ]; then
+    os_platform=$( cat /proc/cpuinfo |grep model |tail -1 |cut -f2 -d: |sed "s/^ //g" )
+  else
+    if [ "$os_name" = "Darwin" ]; then
+      os_platform=$( system_profiler SPHardwareDataType |grep Chip |cut -f2 -d: |sed "s/^ //g" )
+    else
+      os_platform=$( uname -p )
+    fi
+  fi
   os_machine=$( uname -m )
   check_virtual_platform
   echo "Processor: $os_platform"
@@ -862,7 +875,7 @@ Usage: ${0##*/} [OPTIONS...]
 
  -a   Run in audit mode (for Operating Systems - no changes made to system)
  -A   Run in audit mode (for Operating Systems - no changes made to system)
-        [includes filesystem checks which take some time]
+        [includes home directory and filesystem checks which take some time]
  -v   Verbose mode [used with -a and -A]
         [Provides more information about the audit taking place]
  -w   Run in audit mode (for AWS - no changes made to system)
@@ -878,6 +891,7 @@ Usage: ${0##*/} [OPTIONS...]
  -W   List all AWS functions available to selective mode
  -D   List all Docker functions available to selective mode
  -R   Print information for a specific test
+ -O   Print OS information
  -o   Set docker OS or container name
  -t   Set docker tag
  -c   Run docker-compose testing suite (runs lunar in audit mode without making changes)
@@ -941,7 +955,7 @@ print_usage () {
 }
 
 OPTIND=1
-while getopts ":aAvw:de:kxs:lLSWDRo:t:cCpZbnr:z:u:VHh" args; do
+while getopts ":aAvw:de:kxs:lLSWDROo:t:cCpZbnr:z:u:VHh" args; do
   case $args in
     a)
       audit_mode=1
@@ -998,6 +1012,10 @@ while getopts ":aAvw:de:kxs:lLSWDRo:t:cCpZbnr:z:u:VHh" args; do
       verbose=1
       module="$OPTARG"
       print_audit_info $module
+      ;;
+    O)
+      check_os_release
+      exit
       ;;
     o)
       test_os="$OPTARG"

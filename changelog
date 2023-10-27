@@ -1431,3 +1431,5 @@
 # Added sudo check to audit
 # 8.0.8: Sat  1 Oct 2022 14:40:46 AEST
 # Added check for auditing chchon
+# 8.0.9: Fri 27 Oct 2023 12:53:20 AEDT
+# Moved home directory check to be a part of filesystem check option
