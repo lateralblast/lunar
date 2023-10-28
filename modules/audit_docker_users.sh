@@ -25,18 +25,20 @@ audit_docker_users () {
         for user_name in $( grep '^$docker_group:' $check_file | cut -f4 -d: | sed 's/,/ /g' ); do
           last_login=$( last -1 $user_name | grep '[a-z]' | awk '{print $1}' )
           if [ "$last_login" = "wtmp" ]; then
-            lock_test=$( grep '^$user_name:' /etc/shadow | grep -v 'LK' | cut -f1 -d: )
-            if [ "$lock_test" = "$user_name" ]; then
-              if [ "$audit_mode" = 1 ]; then
-                increment_insecure "User $user_name in group $docker_group and has not logged in recently and their account is not locked"
+            if test -r "/etc/shqdow"; then
+              lock_test=$( grep '^$user_name:' /etc/shadow | grep -v 'LK' | cut -f1 -d: )
+              if [ "$lock_test" = "$user_name" ]; then
+                if [ "$audit_mode" = 1 ]; then
+                  increment_insecure "User $user_name in group $docker_group and has not logged in recently and their account is not locked"
+                fi
+                if [ "$audit_mode" = 0 ]; then
+                  backup_file $check_file
+                  verbose_message "Setting:   User $user_name to locked"
+                  passwd -l $user_name
+                fi
+              else
+                increment_secure "User $user_name in group $docker_group has not logged in recently and their account is locked"
               fi
-              if [ "$audit_mode" = 0 ]; then
-                backup_file $check_file
-                verbose_message "Setting:   User $user_name to locked"
-                passwd -l $user_name
-              fi
-            else
-              increment_secure "User $user_name in group $docker_group has not logged in recently and their account is locked"
             fi
           fi
         done
@@ -47,18 +49,20 @@ audit_docker_users () {
         for user_name in $( cat $check_file | grep '^$docker_group:' | cut -f4 -d: | sed 's/,/ /g' ); do
           user_id=$( uid -u $user_name )
           if [ "$user_id" -gt "$max_super_user_id" ] ; then
-            lock_test=$( grep '^$user_name:' /etc/shadow | grep -v 'LK' | cut -f1 -d: )
-            if [ "$lock_test" = "$user_name" ]; then
-              if [ "$audit_mode" = 1 ]; then
-                increment_insecure "User $user_name is in group $docker_group has and ID greater than $max_super_user_id and their account is not locked"
+            if test -r "/etc/shqdow"; then
+              lock_test=$( grep '^$user_name:' /etc/shadow | grep -v 'LK' | cut -f1 -d: )
+              if [ "$lock_test" = "$user_name" ]; then
+                if [ "$audit_mode" = 1 ]; then
+                  increment_insecure "User $user_name is in group $docker_group has and ID greater than $max_super_user_id and their account is not locked"
+                fi
+                if [ "$audit_mode" = 0 ]; then
+                  backup_file $check_file
+                  verbose_message "Setting:   User $user_name to locked"
+                  passwd -l $user_name
+                fi
+              else
+                increment_secure "User $user_name in group $docker_group has an id less than $max_super_user_id and their account is locked"
               fi
-              if [ "$audit_mode" = 0 ]; then
-                backup_file $check_file
-                verbose_message "Setting:   User $user_name to locked"
-                passwd -l $user_name
-              fi
-            else
-              increment_secure "User $user_name in group $docker_group has an id less than $max_super_user_id and their account is locked"
             fi
           fi
         done

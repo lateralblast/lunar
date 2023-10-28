@@ -1447,3 +1447,7 @@
 # Added check for iptables
 # 8.1.6: Sat Oct 28 08:31:48 AEDT 2023
 # Added check for nmcli
+# 8.1.7: Sat Oct 28 15:59:00 AEDT 2023
+# Added non root user check for reading shadow file
+# 8.1.8: Sat Oct 28 17:16:46 AEDT 2023
+# Added more checks for when not running as root

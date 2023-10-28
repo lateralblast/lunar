@@ -21,59 +21,62 @@ audit_password_fields () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Password Fields"
     check_file="/etc/shadow"
-    empty_count=0
-    if [ "$audit_mode" != 2 ]; then
-      if [ "$os_name" = "AIX" ]; then
-        users=$( pwdck –n ALL )
-      else
-        users=$( cat /etc/shadow | awk -F':' '{print $1":"$2":"}' | grep "::$" | cut -f1 -d: )
-      fi
-      for user_name in $users; do
-        empty_count=1
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "No password field for $user_name in $check_file"
-          verbose_message "" fix
-          verbose_message "passwd -d $user_name" fix
-          if [ "$os_name" = "SunOS" ]; then
-            verbose_message "passwd -N $user_name" fix
-          fi
-          verbose_message "" fix
+    if test -r "$check_file"; then
+      empty_count=0
+      if [ "$audit_mode" != 2 ]; then
+        if [ "$os_name" = "AIX" ]; then
+          users=$( pwdck –n ALL )
+        else
+          users=$( cat /etc/shadow | awk -F':' '{print $1":"$2":"}' | grep "::$" | cut -f1 -d: )
         fi
-        if [ "$audit_mode" = 0 ]; then
-          backup_file $check_file
-          verbose_message "Setting:   No password for $user_name"
-          passwd -d $user_name
-          if [ "$os_name" = "SunOS" ]; then
-            passwd -N $user_name
-          fi
-        fi
-      done
-      if [ "$empty_count" = 0 ]; then
-        increment_secure "No empty password entries"
-      fi
-      for check_file in /etc/passwd /etc/shadow; do
-        legacy_check=$( grep '^+:' $check_file | head -1 | wc -l )
-        if [ "$legacy_check" != "0" ]; then
+        for user_name in $users; do
+          empty_count=1
           if [ "$audit_mode" = 1 ]; then
-            
-            increment_insecure "Legacy field found in $check_file"
+            increment_insecure "No password field for $user_name in $check_file"
             verbose_message "" fix
-            verbose_message "cat $check_file | grep -v '^+:' > $temp_file" fix
-            verbose_message "cat $temp_file  > $check_file" fix
+            verbose_message "passwd -d $user_name" fix
+            if [ "$os_name" = "SunOS" ]; then
+              verbose_message "passwd -N $user_name" fix
+            fi
             verbose_message "" fix
           fi
           if [ "$audit_mode" = 0 ]; then
             backup_file $check_file
-            echo "Setting:  Removing legacy entries from $check_file"
-            cat $check_file | grep -v '^+:' > $temp_file
-            cat $temp_file  > $check_file
+            verbose_message "Setting:   No password for $user_name"
+            passwd -d $user_name
+            if [ "$os_name" = "SunOS" ]; then
+              passwd -N $user_name
+            fi
           fi
-        else
-          increment_secure "No legacy entries in $check_file"
+        done
+        if [ "$empty_count" = 0 ]; then
+          increment_secure "No empty password entries"
         fi
-      done
-    else
-      restore_file $check_file $restore_dir
+        for check_file in /etc/passwd /etc/shadow; do
+          if test -r "$check_file"; then
+            legacy_check=$( grep '^+:' $check_file | head -1 | wc -l )
+            if [ "$legacy_check" != "0" ]; then
+              if [ "$audit_mode" = 1 ]; then
+                increment_insecure "Legacy field found in $check_file"
+                verbose_message "" fix
+                verbose_message "cat $check_file | grep -v '^+:' > $temp_file" fix
+                verbose_message "cat $temp_file  > $check_file" fix
+                verbose_message "" fix
+              fi
+              if [ "$audit_mode" = 0 ]; then
+                backup_file $check_file
+                echo "Setting:  Removing legacy entries from $check_file"
+                cat $check_file | grep -v '^+:' > $temp_file
+                cat $temp_file  > $check_file
+              fi
+            else
+              increment_secure "No legacy entries in $check_file"
+            fi
+          fi
+        done
+      else
+        restore_file $check_file $restore_dir
+      fi
     fi
   fi
 }

@@ -110,22 +110,24 @@ audit_home_ownership() {
             fi
           done
           if [ "$found" = 0 ]; then
-            home_check=1
-            if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
-              if [ "$audit_mode" = 1 ];then
-                increment_insecure "User $check_user has no home directory defined"
-              fi
-            else
-              if [ -d "$home_dir" ]; then
-                dir_owner=$( ls -ld $home_dir/. | awk '{ print $3 }' )
-                if [ "$dir_owner" != "$check_user" ]; then
-                  if [ "$audit_mode" = 1 ];then
-                    increment_insecure "Home Directory for $check_user is owned by $dir_owner"
-                  fi
-                else
-                  if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
+            if test -r "$home_dir"; then
+              home_check=1
+              if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
+                if [ "$audit_mode" = 1 ];then
+                  increment_insecure "User $check_user has no home directory defined"
+                fi
+              else
+                if [ -d "$home_dir" ]; then
+                  dir_owner=$( ls -ld $home_dir/. | awk '{ print $3 }' )
+                  if [ "$dir_owner" != "$check_user" ]; then
                     if [ "$audit_mode" = 1 ];then
-                      increment_insecure "User $check_user has no home directory"
+                      increment_insecure "Home Directory for $check_user is owned by $dir_owner"
+                    fi
+                  else
+                    if [ -z "$home_dir" ] || [ "$home_dir" = "/" ]; then
+                      if [ "$audit_mode" = 1 ];then
+                        increment_insecure "User $check_user has no home directory"
+                      fi
                     fi
                   fi
                 fi
