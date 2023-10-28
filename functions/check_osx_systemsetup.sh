@@ -5,7 +5,7 @@
 
 check_osx_systemsetup () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_release" -ge 12 ]; then
+    if [ "$os_version" -ge 12 ]; then
       param=$1
       value=$2
       backup_file="systemsetup_$param"

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.1.8
+# Version:      8.2.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -71,6 +71,7 @@ aws_rds_min_retention="7"
 aws_ec2_min_retention="7"
 aws_ec2_max_retention="30"
 aws_days_to_key_deletion="7"
+keychain_sync="1"
 
 # Set up some global variables
 
@@ -165,9 +166,10 @@ check_os_release () {
   os_name=$( uname )
   if [ "$os_name" = "Darwin" ]; then
     set -- $( sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}' )
-    os_version=$1.$2
-    os_release=$2
-    os_update=$3
+    os_release="$1.$2"
+    os_version=$1
+    os_update=$2
+    os_minorrev=$3
     os_vendor="Apple"
     if [ "$os_update" = "" ]; then
       os_update=$( sw_vers |grep ^BuildVersion |awk '{print $2}' )
@@ -291,6 +293,9 @@ check_os_release () {
   echo "Machine:   $os_machine"
   echo "Vendor:    $os_vendor"
   echo "Name:      $os_name"
+  if [ ! "$os_release" = "" ]; then
+    echo "Release:   $os_release"
+  fi
   echo "Version:   $os_version"
   echo "Update:    $os_update"
   if [ ! "$os_minorrev" = "" ]; then
@@ -298,9 +303,6 @@ check_os_release () {
   fi
   if [ ! "$os_codename" = "" ]; then
     echo "Codename:  $os_codename"
-  fi
-  if [ "$os_release" = "" ]; then
-    os_release=$os_version
   fi
 }
 

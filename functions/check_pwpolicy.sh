@@ -11,7 +11,7 @@ check_pwpolicy() {
     if [ "$audit_mode" != 2 ]; then
       string="Password Policy for $parameter_name is set to $correct_value"
       verbose_message "$string"
-      if [ "$os_release" -ge 12 ]; then
+      if [ "$os_version" -ge 12 ]; then
         a_command="pwpolicy -getglobalpolicy |tr ' ' '\\\n' |grep $parameter_name |cut -f2 -d="
         actual_value=$( pwpolicy -getglobalpolicy |tr " " "\n" |grep "$parameter_name" |cut -f2 -d= )
       else
@@ -27,7 +27,7 @@ check_pwpolicy() {
       if [ "$actual_value" != "$correct_value" ]; then
         increment_insecure "Password Policy for \"$parameter_name\" is not set to \"$correct_value\""
         log_file="$work_dir/$log_file"
-        if [ "$os_release" -ge 12 ]; then
+        if [ "$os_version" -ge 12 ]; then
           l_command="sudo pwpolicy -setglobalpolicy $parameter_name=$correct_value"
           lockdown_command "echo \"$actual_value\" > $log_file ; sudo pwpolicy -setglobalpolicy $parameter_name=$correct_value" "Password Policy for \"$parameter_name\" to \"$correct_value\""
         else
@@ -64,7 +64,7 @@ check_pwpolicy() {
       if [ -f "$log_file" ]; then
         previous_value=$( cat $log_file )
         if [ "$previous_value" != "$actual_value" ]; then
-          if [ "$os_release" -ge 12 ]; then
+          if [ "$os_version" -ge 12 ]; then
             restore_command "sudo pwpolicy -setglobalpolicy $parameter_name=$previous_value" "Password Policy for \"$parameter_name\" to \"$correct_value\""
           else
             if [ "$managed_node" = "Error" ]; then

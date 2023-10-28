@@ -20,7 +20,7 @@ check_osx_defaults () {
     backup_file=$defaults_file
     defaults_command="sudo defaults"
     if [ "$audit_mode" != 2 ]; then
-      string="Parameter $defaults_parameter is set to $defaults_value in $defaults_file"
+      string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
       handle_output "Checking:  $string"
       if [ "$defaults_host" = "currentHost" ]; then
         defaults_read="-currentHost $defaults_read"

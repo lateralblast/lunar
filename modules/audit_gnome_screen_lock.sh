@@ -18,7 +18,7 @@ audit_gnome_screen_lock () {
     check_gsettings_value org.gnome.desktop.session idle-delay "uint32 900"
     check_gsettings_value org.gnome.desktop.screensaver lock-delay "uint32 5" 
     if [ "$os_vendor" = "Ubuntu" ]; then
-      if [ $os_release -ge 22 ]; then 
+      if [ $os_version -ge 22 ]; then 
         check_file="/etc/dconf/db/ibus.d/00-screensaver"
         if [ -f "$check_file" ]; then
           if [ "$ansible" = 1 ]; then

@@ -24,7 +24,7 @@ audit_syslog_server () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      if [ "$os_vendor" = "Ubuntu" ] && [ "$os_release" -ge 22 ]; then
+      if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 22 ]; then
         check_linux_package install systemd-journal-remote
         check_file="/etc/systemd/journal-upload.conf"
         if [ "$syslog_server" != "" ]; then

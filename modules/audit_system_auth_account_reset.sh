@@ -14,7 +14,7 @@ audit_system_auth_account_reset () {
           verbose_message "Account reset entry not enabled in $check_file"
           check_value=$( grep '^$auth_string' $check_file | grep '$search_string$' | awk '{print $6}' )
           if [ "$check_value" != "$search_string" ]; then
-            if [ "$os_vendor" = "Ubuntu" ] && [ "$os_release" -ge 22 ]; then
+            if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 22 ]; then
               if [ "$audit_mode" = "1" ]; then
                 increment_insecure "Account reset entry not enabled in $check_file"
                 verbose_message "cp $check_file $temp_file" fix

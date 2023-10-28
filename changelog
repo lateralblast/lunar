@@ -1451,3 +1451,9 @@
 # Added non root user check for reading shadow file
 # 8.1.8: Sat Oct 28 17:16:46 AEDT 2023
 # Added more checks for when not running as root
+# 8.1.9: Sat 28 Oct 2023 22:53:06 AEDT
+# Added addition shoftware update checks for macOS Sonoma
+# 8.2.0: Sat 28 Oct 2023 22:56:29 AEDT
+# Added keychain sync test for macOS Sonoma
+# 8.2.1: Sun 29 Oct 2023 07:23:04 AEDT
+# Fixed issue with OS version/release handling

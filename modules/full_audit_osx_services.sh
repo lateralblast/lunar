@@ -28,6 +28,7 @@ full_audit_osx_services () {
   audit_secure_keyboard_entry
   audit_bonjour_advertising
   audit_keychain_lock
+  audit_keychain_sync
   audit_auto_login
   audit_auto_logout
   audit_file_extensions
@@ -40,4 +41,5 @@ full_audit_osx_services () {
   audit_login_root
   audit_system_preferences
   audit_system_integrity
+  audi_icloud_drive
 }

@@ -13,7 +13,7 @@ audit_gnome_automount () {
     check_gsettings_value org.gnome.desktop.media-handling automount false
     check_gsettings_value org.gnome.desktop.media-handling autorun-never true
     if [ "$os_vendor" = "Ubuntu" ]; then
-      if [ $os_release -ge 22 ]; then 
+      if [ $os_version -ge 22 ]; then 
         check_file="/etc/dconf/db/ibus.d/00-media-automount"
         if [ "$ansible" = 1 ]; then
           string="Automount GNOME Users"
