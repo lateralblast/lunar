@@ -13,14 +13,22 @@ audit_bt_sharing () {
     check_osx_defaults /Library/Preferences/com.apple.Bluetooth BluetoothSystemWakeEnable 0 bool
     backup_file="bluetooth_discover"
     if [ "$audit_mode" != 2 ]; then
-      for user_name in `ls /Users |grep -v Shared`; do
-        check_value=$( sudo -u $user_name defaults read com.apple.Bluetooth PrefKeyServicesEnabled 2>&1 )
-        if [ "$check_value" = "$bt_sharing" ]; then
-          increment_secure "Bluetooth sharing for $user_name is set to $bt_sharing"
-        else
-          increment_insecure "Bluetooth sharing for $user_name is set to $bt_sharing"
-        fi
-      done
+      if [ "$os_version" -ge 14 ]; then
+        for user_name in `ls /Users |grep -v Shared`; do
+          check_value=$( sudo -u $user_name defaults read com.apple.Bluetooth PrefKeyServicesEnabled 2>&1 )
+          if [ "$check_value" = "$bt_sharing" ]; then
+            increment_secure "Bluetooth sharing for $user_name is set to $bt_sharing"
+          else
+            increment_insecure "Bluetooth sharing for $user_name is set to $bt_sharing"
+          fi
+          check_value=$( sudo -u $user_name defaults read com.apple.controlcenter.plist Bluetooth 2>&1 )
+          if [ "$check_value" = "$bt_status" ]; then
+            increment_secure "Bluetooth Status in Menu for $user_name is set to $bt_status"
+          else
+            increment_insecure "Bluetooth Status in Menu for $user_name is set to $bt_status"
+          fi
+        done
+      fi
       check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i power |cut -f2 -d: |sed "s/ //g" )
       if [ ! "$check" = "Off" ]; then
         check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i discoverable |cut -f2 -d: |sed "s/ //g" )

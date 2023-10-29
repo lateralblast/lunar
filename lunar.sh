@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.3.2
+# Version:      8.3.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -78,6 +78,7 @@ asset_cache="false"
 media_sharing="0"
 bt_sharing="0"
 wifi_status="2"
+bt_status="18"
 
 # Set up some global variables
 
