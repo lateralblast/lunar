@@ -1469,3 +1469,5 @@
 # Updates for MacOS Sonoma
 # 8.2.7: Sun 29 Oct 2023 14:29:02 AEDT
 # Documentation updates
+# 8.2.8: Sun 29 Oct 2023 15:09:04 AEDT
+# Added MacOS check for asset caching

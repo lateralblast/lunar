@@ -43,4 +43,6 @@ full_audit_osx_services () {
   audit_system_integrity
   audit_icloud_drive
   audit_air_drop
+  audit_air_play
+  audit_asset_cache
 }
