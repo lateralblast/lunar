@@ -1477,3 +1477,5 @@
 # Added additional MacOS check for bluetooth sharing
 # 8.3.1: Sun 29 Oct 2023 21:31:22 AEDT
 # Added MacOS Time Machine check
+# 8.3.2: Sun 29 Oct 2023 21:52:39 AEDT
+# Added additional MacOS wireless check
