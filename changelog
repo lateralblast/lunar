@@ -1475,3 +1475,5 @@
 # Added MacOS check for media sharing
 # 8.3.0: Sun 29 Oct 2023 21:05:10 AEDT
 # Added additional MacOS check for bluetooth sharing
+# 8.3.1: Sun 29 Oct 2023 21:31:22 AEDT
+# Added MacOS Time Machine check
