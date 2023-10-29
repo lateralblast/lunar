@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.2.2
+# Version:      8.2.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -72,6 +72,7 @@ aws_ec2_min_retention="7"
 aws_ec2_max_retention="30"
 aws_days_to_key_deletion="7"
 keychain_sync="1"
+disable_airdrop="1"
 
 # Set up some global variables
 

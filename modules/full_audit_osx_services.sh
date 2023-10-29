@@ -41,5 +41,6 @@ full_audit_osx_services () {
   audit_login_root
   audit_system_preferences
   audit_system_integrity
-  audi_icloud_drive
+  audit_icloud_drive
+  audit_air_drop
 }

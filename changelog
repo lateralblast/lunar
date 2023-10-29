@@ -1459,3 +1459,5 @@
 # Fixed issue with OS version/release handling
 # 8.2.2: Sun 29 Oct 2023 12:47:48 AEDT
 # Documentation cleanup
+# 8.2.3: Sun 29 Oct 2023 13:18:06 AEDT
+# Added Air Drop check
