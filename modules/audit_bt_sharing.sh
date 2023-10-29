@@ -2,6 +2,7 @@
 #
 # Refer to Section(s) 2.1.1   Page(s) 8-11 CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section(s) 2.1.1-3 Page(s) 21-5 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.3.3.10 Page(s) 114-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_bt_sharing () {
@@ -12,9 +13,17 @@ audit_bt_sharing () {
     check_osx_defaults /Library/Preferences/com.apple.Bluetooth BluetoothSystemWakeEnable 0 bool
     backup_file="bluetooth_discover"
     if [ "$audit_mode" != 2 ]; then
-      check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i power | cut -f2 -d: | sed "s/ //g" )
+      for user_name in `ls /Users |grep -v Shared`; do
+        check_value=$( sudo -u $user_name defaults read com.apple.Bluetooth PrefKeyServicesEnabled 2>&1 )
+        if [ "$check_value" = "$bt_sharing" ]; then
+          increment_secure "Bluetooth sharing for $user_name is set to $bt_sharing"
+        else
+          increment_insecure "Bluetooth sharing for $user_name is set to $bt_sharing"
+        fi
+      done
+      check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i power |cut -f2 -d: |sed "s/ //g" )
       if [ ! "$check" = "Off" ]; then
-        check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable | cut -f2 -d: | sed "s/ //g" )
+        check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i discoverable |cut -f2 -d: |sed "s/ //g" )
         if [ "$check" = "Off" ]; then
           increment_secure "Bluetooth is not discoverable"
         else
@@ -23,7 +32,7 @@ audit_bt_sharing () {
       else
         increment_secure "Bluetooth is turned off"
       fi
-      check=$( defaults read com.apple.systemuiserver menuExtras | grep Bluetooth.menu | sed "s/[ ,\",\,]//g" )
+      check=$( defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed "s/[ ,\",\,]//g" )
       if [ "$check" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
         increment_secure "Bluetooth status menu is enabled"
       else
