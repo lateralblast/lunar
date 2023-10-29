@@ -1,8 +1,8 @@
 # audit_bt_sharing
 #
-# Refer to Section(s) 2.1.1   Page(s) 8-11 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(s) 2.1.1-3 Page(s) 21-5 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 2.3.3.10 Page(s) 114-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 2.1.1    Page(s) 8-11   CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.1.1-3  Page(s) 21-5   CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.3.3.11 Page(s) 118-20 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_bt_sharing () {
