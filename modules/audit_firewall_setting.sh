@@ -11,8 +11,9 @@
 # 1 = on for specific services
 # 2 = on for essential services
 #
-# Refer to Sectioni(s) 2.6.4 Page(s) verbose_message "-1 CIS Apple OS X 10.8  Benchmark v1.0.0
-# Refer to Sectioni(s) 2.6.3 Page(s) 56-7 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Sectioni(s) 2.6.4    Page(s)      CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Sectioni(s) 2.6.3    Page(s) 56-7 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to ection(s)   2.2.1-2  Page(s) 60-9 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_firewall_setting () {

@@ -1457,3 +1457,5 @@
 # Added keychain sync test for macOS Sonoma
 # 8.2.1: Sun 29 Oct 2023 07:23:04 AEDT
 # Fixed issue with OS version/release handling
+# 8.2.2: Sun 29 Oct 2023 12:47:48 AEDT
+# Documentation cleanup

@@ -3,7 +3,7 @@
 # Organizations should review third party storage solutions pertaining to existing data
 # confidentiality and integrity requirements.
 #
-# Refer to ection(s) 2.1.1.2 Page(s) 45-48 CIS macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 2.1.1.2 Page(s) 45-8 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_icloud_drive() {
