@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.2.5
+# Version:      8.2.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode

@@ -6,6 +6,7 @@
 # Refer to Section(s) 2.2.1.1-2 Page(s) 98-101 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 2.4.5.1   Page(s) 35-6   CIS Apple OS X 10.5 Benchmark v1.1.0
 # Refer to Section(s) 2.2.1-3   Page(s) 26-31  CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.3.2.1-2 Page(s) 82-6   CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 # Refer to Section(s) 6.5       Page(s) 55-6   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.9.2     Page(s) 16-7   CIS ESX Server 4 Benchmark v1.1.0
 # Refer to Section(s) 2.2.1.1-2 Page(s) 90-2   CIS Amazon Linux Benchmark v2.0.0
