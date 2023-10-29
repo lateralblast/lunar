@@ -1471,3 +1471,5 @@
 # Documentation updates
 # 8.2.8: Sun 29 Oct 2023 15:09:04 AEDT
 # Added MacOS check for asset caching
+# 8.2.9: Sun 29 Oct 2023 20:48:01 AEDT
+# Added MacOS check for media sharing
