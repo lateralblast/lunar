@@ -47,4 +47,5 @@ full_audit_osx_services () {
   audit_asset_cache
   audit_media_sharing
   audit_time_machine
+  audit_siri
 }

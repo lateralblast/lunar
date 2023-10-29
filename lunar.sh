@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.3.3
+# Version:      8.3.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -79,6 +79,11 @@ media_sharing="0"
 bt_sharing="0"
 wifi_status="2"
 bt_status="18"
+siri_assistant="0"
+siri_status="1"
+siri_lockscreen="0"
+siri_trigger="0"
+siri_type="0"
 
 # Set up some global variables
 
