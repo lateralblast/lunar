@@ -1501,3 +1501,5 @@
 # Added MacOS Lockdown check
 # 8.4.3: Mon 30 Oct 2023 21:11:38 AEDT
 # Added MacOS screen corner setting check
+# 8.4.4: Mon 30 Oct 2023 21:51:34 AEDT
+# Added MacOS universal control check

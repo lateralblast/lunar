@@ -52,4 +52,5 @@ full_audit_osx_services () {
   audit_usage_data
   audit_screen_corner
   audit_lockdoen
+  audit_universal_control
 }
