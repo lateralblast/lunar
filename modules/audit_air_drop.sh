@@ -9,7 +9,7 @@
 audit_air_drop() {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
-      verbose_message "Disable Air Drop"
+      verbose_message "Air Drop"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
           check_value=$( sudo -u $user_name defaults read com.apple.NetworkBrowser DisableAirDrop 2>&1 > /dev/null )

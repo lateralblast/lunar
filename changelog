@@ -1483,3 +1483,5 @@
 # Added additional MacOS wireless check
 # 8.3.4: Mon 30 Oct 2023 07:16:19 AEDT
 # Added MacOS Siri checks
+# 8.3.5: Mon 30 Oct 2023 14:46:34 AEDT
+# Added MacOS Location Services check

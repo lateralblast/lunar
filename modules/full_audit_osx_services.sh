@@ -48,4 +48,5 @@ full_audit_osx_services () {
   audit_media_sharing
   audit_time_machine
   audit_siri
+  audit_location_services
 }
