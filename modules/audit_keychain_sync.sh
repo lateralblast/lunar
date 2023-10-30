@@ -15,7 +15,7 @@ audit_keychain_sync() {
           if [ "$check_value" = "$keychain_sync" ]; then
             increment_secure "Keychain sync enable for $user_name is set to $keychain_sync"
           else
-            increment_insecure "Keychain sync enable for $user_name is set to $keychain_sync"
+            increment_insecure "Keychain sync enable for $user_name is not set to $keychain_sync"
           fi
         done
       fi

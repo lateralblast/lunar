@@ -1493,3 +1493,5 @@
 # Added additional location services check
 # 8.3.9: Mon 30 Oct 2023 16:59:08 AEDT
 # Added MacOS Usage data check
+# 8.4.0: Mon 30 Oct 2023 17:14:08 AEDT
+# Added MacOS Ad Tracking check and updated test feedback

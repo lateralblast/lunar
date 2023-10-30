@@ -16,7 +16,7 @@ audit_wireless () {
         if [ "$check_value" = "$wifi_status" ]; then
           increment_secure "Wi-Fi status in Menu Bar for $user_name is set to $wifi_status"
         else
-          increment_insecure "Wi-Fi status in Menu Bar for $user_name is set to $wifi_status"
+          increment_insecure "Wi-Fi status in Menu Bar for $user_name is not set to $wifi_status"
         fi
       done
     else

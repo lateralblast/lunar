@@ -15,7 +15,7 @@ audit_media_sharing() {
           if [ "$check_value" = "$media_sharing" ]; then
             increment_secure "Media sharing for $user_name is set to $media_sharing"
           else
-            increment_insecure "Media sharing for $user_name is set to $media_sharing"
+            increment_insecure "Media sharing for $user_name is not set to $media_sharing"
           fi
         done
       fi

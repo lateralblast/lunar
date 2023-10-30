@@ -16,7 +16,7 @@ audit_air_play() {
           if [ "$check_value" = "$enable_airplay" ]; then
             increment_secure "Air PLay Receiver for $user_name is set to $enable_airplay"
           else
-            increment_insecure "Air Play Receiver for $user_name is set to $enable_airplay"
+            increment_insecure "Air Play Receiver for $user_name is not set to $enable_airplay"
           fi
         done
       fi

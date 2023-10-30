@@ -21,7 +21,7 @@ audit_usage_data() {
           if [ "$check_value" = "$siri_optin" ]; then
             increment_secure "Air Drop Disable for $user_name is set to $disable_airdrop"
           else
-            increment_insecure "Air Drop Disable for $user_name is set to $disable_airdrop"
+            increment_insecure "Air Drop Disable for $user_name is not set to $disable_airdrop"
           fi
         done
       fi

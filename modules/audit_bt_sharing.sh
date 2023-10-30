@@ -19,13 +19,13 @@ audit_bt_sharing () {
           if [ "$check_value" = "$bt_sharing" ]; then
             increment_secure "Bluetooth sharing for $user_name is set to $bt_sharing"
           else
-            increment_insecure "Bluetooth sharing for $user_name is set to $bt_sharing"
+            increment_insecure "Bluetooth sharing for $user_name is not set to $bt_sharing"
           fi
           check_value=$( sudo -u $user_name defaults read com.apple.controlcenter.plist Bluetooth 2>&1 )
           if [ "$check_value" = "$bt_status" ]; then
             increment_secure "Bluetooth Status in Menu for $user_name is set to $bt_status"
           else
-            increment_insecure "Bluetooth Status in Menu for $user_name is set to $bt_status"
+            increment_insecure "Bluetooth Status in Menu for $user_name is not set to $bt_status"
           fi
         done
       fi
