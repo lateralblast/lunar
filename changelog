@@ -1504,4 +1504,6 @@
 # 8.4.4: Mon 30 Oct 2023 21:51:34 AEDT
 # Added MacOS universal control check
 # 8.4.5: Tue 31 Oct 2023 10:31:22 AEDT
-# Added additional MocOS sleep checks
+# Added additional MocOS sleep checks for Intel
+# 8.4.6: Tue 31 Oct 2023 10:37:41 AEDT
+# Added additional MocOS sleep checks for Apple Silicon
