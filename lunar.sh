@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.4.2
+# Version:      8.4.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -71,6 +71,9 @@ aws_rds_min_retention="7"
 aws_ec2_min_retention="7"
 aws_ec2_max_retention="30"
 aws_days_to_key_deletion="7"
+
+# Defaults for MacOS
+
 keychain_sync="1"
 disable_airdrop="1"
 enable_airplay="0"
@@ -87,6 +90,7 @@ siri_type="0"
 siri_optin="2"
 ad_tracking="0"
 lockdown_enable="1"
+corner_value="6"
 
 # Set up some global variables
 
