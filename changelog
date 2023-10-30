@@ -1489,3 +1489,7 @@
 # Added MacOS defaults function to handle user defaults
 # 8.3.7: Mon 30 Oct 2023 16:11:53 AEDT
 # Bug fixes
+# 8.3.8: Mon 30 Oct 2023 16:19:09 AEDT
+# Added additional location services check
+# 8.3.9: Mon 30 Oct 2023 16:59:08 AEDT
+# Added MacOS Usage data check
