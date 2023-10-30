@@ -1,6 +1,10 @@
 # audit_file_vault
 #
-# Refer to Section 2.6.1 Page(s) 28 CIS Apple OS X 10.8 Benchmark v1.0.0
+# FileVault secures a system's data by automatically encrypting its boot volume and
+# requiring a password or recovery key to access it.
+#
+# Refer to Section 2.6.1 Page(s) 28     CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section 2.6.5 Page(s) 177-80 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_file_vault() {

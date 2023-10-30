@@ -1,7 +1,13 @@
 # audit_gate_keeper
 #
+# Gatekeeper is Apple’s application that utilizes allowlisting to restrict downloaded
+# applications from launching. It functions as a control to limit applications from unverified
+# sources from running without authorization. In an update to Gatekeeper in macOS 13
+# Ventura, Gatekeeper checks every application on every launch, not just quarantined apps.
+#
 # Refer to Section 2.5.1 Page(s) 26-27 CIS Apple OS X 10.8  Benchmark v1.0.0
 # Refer to Section 2.6.2 Page(s) 55    CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section 2.6.5 Page(s) 174-6 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_gate_keeper() {
