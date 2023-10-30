@@ -1485,3 +1485,7 @@
 # Added MacOS Siri checks
 # 8.3.5: Mon 30 Oct 2023 14:46:34 AEDT
 # Added MacOS Location Services check
+# 8.3.6: Mon 30 Oct 2023 16:09:37 AEDT
+# Added MacOS defaults function to handle user defaults
+# 8.3.7: Mon 30 Oct 2023 16:11:53 AEDT
+# Bug fixes

@@ -12,13 +12,24 @@ check_osx_defaults () {
     if [ "$defaults_type" = "dict" ]; then
       defaults_second_value=$5
       defaults_second_type=$6
+      defaults_user=$7
     else
       defaults_host=$5
+      defaults_user=$6
     fi
     defaults_read="read"
     defaults_write="write"
     backup_file=$defaults_file
-    defaults_command="sudo defaults"
+    if [ ! "$defaults_host" = "currentHost" ]; then
+      if [ ! "$defaults_host" = "" ]; then
+        defaults_user="$defaults_host"
+      fi
+    fi
+    if [ "$defaults_user" = "" ]; then
+      defaults_command="sudo defaults"
+    else
+      defaults_command="sudo -u $defaults_user defaults"
+    fi
     if [ "$audit_mode" != 2 ]; then
       string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
       handle_output "Checking:  $string"
