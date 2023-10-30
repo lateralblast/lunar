@@ -19,8 +19,8 @@
 # The purpose of DAR is to ensure data is encrypted while at rest. If the volume is always
 # unlocked it is not sufficient.
 #
-# Refer to Section 2.5.2    Page(s) 52-3  CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section 2.9.1.1  Page(s) 200-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 2.5.2           Page(s) 52-3  CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.9.1.1-3,2.9.2 Page(s) 200-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_sleep() {
@@ -37,6 +37,7 @@ audit_sleep() {
         check_pmset highstandbythreshold 90
         check_pmset destroyfvkeyonstandby 1
         check_pmset hibernatemode 25
+        check_pmset powernap 0 
       fi
       check_pmset destroyfvkeyonstandby 1
     else
