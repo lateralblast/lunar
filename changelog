@@ -1507,3 +1507,5 @@
 # Added additional MocOS sleep checks for Intel
 # 8.4.6: Tue 31 Oct 2023 10:37:41 AEDT
 # Added additional MocOS sleep checks for Apple Silicon
+# 8.4.7: Tue 31 Oct 2023 10:45:58 AEDT
+# Added filevault check to sleep checks
