@@ -1,13 +1,30 @@
 # audit_screen_lock
 #
-# Refer to Section(s) 2.3.1-2          Page(s) 13-14            CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(s) 2.3.1-2,4,5.9,11 Page(s) 32-4,7,137,140-1 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 5.5              Page(s) 51-52            CIS Apple OS X 10.8 Benchmark v1.0.0
+# Setting an inactivity interval for the screen saver prevents unauthorized persons from
+# viewing a system left unattended for an extensive period of time.
+#
+# Refer to Section(s) 2.3.1-2           Page(s) 13-14             CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.3.1-2,4,5.9,11  Page(s) 32-4,7,137,140-1  CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.5               Page(s) 51-52             CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.10.1            Page(s) 218-21            CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_screen_lock () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Screen lock"
+    if [ "$os_version" -ge 14 ]; then
+      verbose_message "Screen Idle Time"
+      if [ "$audit_mode" != 2 ]; then
+        for user_name in `ls /Users |grep -v Shared`; do
+          check_value=$( sudo -u $user_name defaults -currentHost read com.apple.screensaver idleTime 2>&1 > /dev/null )
+          if [ "$check_value" = "$screen_idletime" ]; then
+            increment_secure "Screen Idle Time for $user_name is set to $screen_idletime"
+          else
+            increment_insecure "Screen Idle Time for $user_name is not set to $screen_idletime"
+          fi
+        done
+      fi
+    fi
+    verbose_message "Screen Lock"
     check_osx_defaults com.apple.screensaver askForPassword 1 int currentHost
     check_osx_defaults com.apple.screensaver idleTime 900 int currentHost
     check_append_file /etc/pam.d/screensaver "account    required     pam_group.so no_warn group=admin,wheel fail_safe"

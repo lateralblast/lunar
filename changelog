@@ -1509,5 +1509,7 @@
 # Added additional MocOS sleep checks for Apple Silicon
 # 8.4.7: Tue 31 Oct 2023 10:45:58 AEDT
 # Added filevault check to sleep checks
-# 2.4.8: Tue 31 Oct 2023 10:53:13 AEDT
+# 8.4.8: Tue 31 Oct 2023 10:53:13 AEDT
 # Added powernap check to sleep checks
+# 8.4.9: Tue 31 Oct 2023 13:12:55 AEDT
+# Added screen idle time check
