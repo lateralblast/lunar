@@ -1513,3 +1513,5 @@
 # Added powernap check to sleep checks
 # 8.4.9: Tue 31 Oct 2023 13:12:55 AEDT
 # Added screen idle time check
+# 8.5.0: Tue 31 Oct 2023 13:35:22 AEDT
+# Updated documentation
