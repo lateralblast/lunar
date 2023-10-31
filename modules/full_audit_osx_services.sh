@@ -53,4 +53,5 @@ full_audit_osx_services () {
   audit_screen_corner
   audit_lockdoen
   audit_universal_control
+  audit_touch_id
 }

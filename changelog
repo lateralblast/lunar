@@ -1515,3 +1515,5 @@
 # Added screen idle time check
 # 8.5.0: Tue 31 Oct 2023 13:35:22 AEDT
 # Updated documentation
+# 8.5.1: Tue 31 Oct 2023 14:12:38 AEDT
+# Added Touch ID checks

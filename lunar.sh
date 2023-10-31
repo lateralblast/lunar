@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.5.0
+# Version:      8.5.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -93,6 +93,7 @@ lockdown_enable="1"
 corner_value="6"
 uc_disable="1"
 screen_idletime="600"
+touchid_timeout="86400"
 
 # Set up some global variables
 
