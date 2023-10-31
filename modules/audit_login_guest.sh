@@ -1,7 +1,8 @@
 # audit_login_guest
 #
-# Refer to Section(s) 1.4.2.7 Page(s) 29-verbose_message " CIS Apple OS X 10.6 Benchmark v1.0.0
-# Refer to Section(s) 6.1.3   Page(s) 156-7 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section 1.4.2.7 Page(s)       CIS Apple OS X 10.6 Benchmark v1.0.0
+# Refer to Section 6.1.3   Page(s) 156-7 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section 2.12.1  Page(s) 242-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_login_guest () {
