@@ -1,6 +1,6 @@
 # audit_setup_file
 #
-# Refer to Section(s) 9.23 Page(s) 134-5 CIS Solaris 10 Benchmark v1.1.0
+# Check Setup File permissions 
 #.
 
 audit_setup_file () {

@@ -1,5 +1,6 @@
 # audit_system_auth_password_strength
 #
+# Check password minimum strength enabled
 #.
 
 audit_system_auth_password_strength () {

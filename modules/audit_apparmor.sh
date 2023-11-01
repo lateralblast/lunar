@@ -1,5 +1,7 @@
 # audit_apparmor
 #
+# Check AppArmor
+#
 # Refer to Section(s) 4.5     Page(s) 38-9  CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.6.2.1 Page(s) 69-70 CIS Ubuntu 16.04 Benchmark v1.0.0
 # Refer to Section(s) 1.6.3   Page(s) 73-4  CIS Ubuntu 16.04 Benchmark v1.0.0

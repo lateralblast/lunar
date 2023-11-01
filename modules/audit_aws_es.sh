@@ -1,5 +1,7 @@
 # audit_aws_es
 #
+# Check AWS Elasticsearch
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/Elasticsearch/elasticsearch-domain-exposed.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Elasticsearch/elasticsearch-accessible-only-from-whitelisted-ip-addresses.html
 #.

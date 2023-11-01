@@ -1,5 +1,7 @@
 # audit_prelink
 #
+# Check prelinking
+#
 # Refer to Section(s) 1.3.1-2       Page(s) 34-5    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.3.1-2       Page(s) 39-40   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.3.1-2       Page(s) 36-7    CIS RHEL 6 Benchmark v1.2.0
@@ -10,7 +12,7 @@
 # Refer to Section(s) 1.3.1-2       Page(s) 47-9    CIS Amazon Linux Benchmark v2.0.0
 #.
 
-audit_prelink() {
+audit_prelink () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "Prelinking"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then

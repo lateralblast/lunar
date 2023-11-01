@@ -1,5 +1,7 @@
 # audit_aws_rec_elb
 #
+# Check ELB Recommendations
+# 
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-connection-draining-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-cross-zone-load-balancing-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/ELB/elb-minimum-number-of-ec2-instances.html

@@ -1,5 +1,7 @@
 # audit_encryption_kit
 #
+# Check Encryption Kit
+#
 # Refer to Section(s) 1.3 Page(s) 15-6 CIS Solaris 10 Benchmark v5.1.0
 #.
 

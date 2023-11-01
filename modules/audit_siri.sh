@@ -5,7 +5,7 @@
 # Refer to Section(s) 2.5.1 Page(s) 141-8 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_siri() {
+audit_siri () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Siri Settings"

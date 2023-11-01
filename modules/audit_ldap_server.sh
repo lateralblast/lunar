@@ -1,5 +1,7 @@
 # audit_ldap_server
 #
+# Check LDAP server
+#
 # Refer to Section(s) 3.7   Page(s) 63-4 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.7   Page(s) 76   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.7   Page(s) 66-7 CIS RHEL 6 Benchmark v1.2.0

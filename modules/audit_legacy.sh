@@ -1,5 +1,7 @@
 # audit_legacy
 #
+# Check legacy services
+#
 # Refer to Section(s) 2.1-8        Page(s) 4-8        CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.3.17,24-52 Page(s) 54-5,63-96 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 4.5          Page(s) 38-9       CIS SLES 11 Benchmark v1.0.0
@@ -8,7 +10,7 @@
 # Refer to Section(s) 2.1.1-9      Page(s) 79-87      CIS Amazon Linux Benchmark v2.0.0
 #.
 
-audit_legacy_inet() {
+audit_legacy_inet () {
   verbose_message "Inet Services"
   for service_name in time echo discard daytime chargen fs dtspc \
     exec comsat talk finger uucp name xaudio netstat ufsd rexd \
@@ -20,7 +22,7 @@ audit_legacy_inet() {
   done
 }
 
-audit_legacy_init() {
+audit_legacy_init () {
   verbose_message "Init Services"
   for service_name in llc2 pcmcia ppd slpd boot.server autoinstall \
     power bdconfig cachefs.daemon cacheos.finish asppp uucp flashprom \
@@ -31,7 +33,7 @@ audit_legacy_init() {
   done
 }
 
-audit_legacy() {
+audit_legacy () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Legacy Inet/Init Services"
     if [ "$os_name" = "AIX" ]; then

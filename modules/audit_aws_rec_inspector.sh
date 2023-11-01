@@ -1,5 +1,7 @@
 # audit_aws_rec_inspector
 #
+# Check Inspector Recommendations
+#
 # Refer to https://docs.aws.amazon.com/inspector/latest/userguide/inspector_introduction.html
 #.
 

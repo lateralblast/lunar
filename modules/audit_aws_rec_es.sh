@@ -1,5 +1,7 @@
 # audit_aws_rec_es
 #
+# Check Elasticsearch Recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/Elasticsearch/elasticsearch-dedicated-master-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Elasticsearch/general-purpose-ssd-volume.html
 #.

@@ -1,5 +1,7 @@
 # audit_gnome_automount
 #
+# Check Gnome Automount
+#
 # Refer to Section(s) 1.8.6 Page(s) 172-7  CIS Ubuntu 22.04 Benchmaek v1.0.0
 # Refer to Section(s) 1.8.7 Page(s) 178-82 CIS Ubuntu 22.04 Benchmaek v1.0.0
 # Refer to Section(s) 1.8.8 Page(s) 183-7  CIS Ubuntu 22.04 Benchmaek v1.0.0

@@ -1,5 +1,7 @@
 # audit_home_perms
 #
+# Check home permissions
+#
 # Refer to Section(s) 5.4   Page(s) 51-52 CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section(s) 6.6   Page(s) 22    CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 13.7  Page(s) 158-9 CIS SLES 11 Benchmark v1.0.0

@@ -1,9 +1,11 @@
 # audit_system_integrity
 #
-# Refer to Section 5.18 Page(s) 148-9 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Check System Integrity Protection is enabled
+#
+# Refer to Section(s) 5.18 Page(s) 148-9 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
-audit_system_integrity() {
+audit_system_integrity () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "System Integrity"
     if [ "$audit_mode" != 2 ]; then

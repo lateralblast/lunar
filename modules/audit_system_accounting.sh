@@ -1,5 +1,7 @@
 # audit_system_accounting
 #
+# Check system accounting
+#
 # Refer to Section(s) 4.2.1.1-18         Page(s) 77-96        CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 5.3.1.1-21         Page(s) 113-136      CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 5.2.1.1-18         Page(s) 86-9,100-120 CIS RHEL 6 Benchmark v1.2.0

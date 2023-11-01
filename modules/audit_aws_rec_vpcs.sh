@@ -1,5 +1,7 @@
 # audit_aws_rec_vpcs
 #
+# Check AWS VPC recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/VPC/vpc-naming-conventions.html
 # Refer to https://www.cloudconformity.com/conformity-rules/VPC/vpn-tunnel-redundancy.html
 #.

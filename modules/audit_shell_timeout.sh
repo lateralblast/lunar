@@ -1,5 +1,7 @@
 # audit_shell_timeout
 #
+# Check Shell Timeout settings
+#
 # Refer to: http://pubs.vmware.com/vsphere-55/topic/com.vmware.wssdk.apiref.doc/vim.option.OptionManager.html
 #.
 

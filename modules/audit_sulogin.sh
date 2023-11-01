@@ -1,5 +1,7 @@
 # audit_sulogin
 #
+# Check single user mode requires password
+#
 # Refer to Section(s) 1.5.4-5 Page(s) 43-44 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.4.3   Page(s) 60    CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 3.2     Page(s) 9     CIS FreeBSD Benchmark v1.0.5

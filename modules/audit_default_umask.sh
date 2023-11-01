@@ -1,5 +1,7 @@
 # audit_default_umask
 #
+# Check default umask
+#
 # Refer to Section(s) 7.4   Page(s) 147-8 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.4   Page(s) 170-1 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 7.4   Page(s) 150-1 CIS RHEL 6 Benchmark v1.2.0

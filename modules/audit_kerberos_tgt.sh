@@ -1,5 +1,7 @@
 # audit_kerberos_tgt
 #
+# Check Kerberos Ticket Warning
+#
 # Refer to Section(s) 2.6   Page(s) 19   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 2.2.6 Page(s) 26-7 CIS Solaris 10 Benchmark v5.1.0
 #.

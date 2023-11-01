@@ -1,5 +1,7 @@
 # audit_reserved_ids
 #
+# Check reserved IDs
+#
 # Refer to Section(s) 9.2.17 Page(s) 202-3 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.17   Page(s) 84-5  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.17   Page(s) 1verbose_message "-1 CIS Solaris 10 Benchmark v1.1.0

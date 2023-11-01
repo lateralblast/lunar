@@ -1,5 +1,7 @@
 # audit_cups
 #
+# Check CUPS
+#
 # Refer to Section(s) 3.4   Page(s) 61   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.4   Page(s) 73-4 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.4   Page(s) 64   CIS RHEL 6 Benchmark v1.2.0

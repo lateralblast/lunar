@@ -1,5 +1,7 @@
 # audit_file_metadata
 #
+# Check Auditing of File Metadata Modification Events
+#
 # Refer to Section(s) 4.3 Page(s) 41-2 CIS Solaris 11.1 Benchmark v1.0.0
 #.
 

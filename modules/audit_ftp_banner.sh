@@ -1,4 +1,3 @@
-
 # audit_ftp_banner
 #
 # Refer to Section(s) 2.12.11 Page(s) 215-6 CIS AIX Benchmark v1.1.0

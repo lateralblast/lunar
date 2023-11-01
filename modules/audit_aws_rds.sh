@@ -1,5 +1,7 @@
 # audit_aws_rds
 #
+# Check RDS Recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-auto-minor-version-upgrade.html
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-automated-backups-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-encryption-enabled.html

@@ -7,7 +7,7 @@
 # Refer to Section(s) 2.8.1 Page(s) 194-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_universal_control() {
+audit_universal_control () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Universal Control"

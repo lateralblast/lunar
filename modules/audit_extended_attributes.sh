@@ -1,5 +1,7 @@
 # audit_extended_attributes
 #
+# Check extended attributes
+#
 # Refer to Section(s) 9.25 Page(s) 90-1  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.25 Page(s) 136-7 CIS Solaris 10 Benchmark v1.1.0
 #.

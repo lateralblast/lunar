@@ -1,5 +1,7 @@
 # audit_sticky_bit
 #
+# Check sticky bitss set of files
+#
 # Refer to Section(s) 1.17   Page(s) 26    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.21 Page(s) 46    CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 1.1.17 Page(s) 28    CIS RHEL 5 Benchmark v2.1.0

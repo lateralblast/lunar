@@ -1,5 +1,7 @@
 # audit_email_daemons
 #
+# Check email daemons
+#
 # Refer to Section(s) 3.12   Page(s) 67    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.2.11 Page(s) 111   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 3.12   Page(s) 79-80 CIS RHEL 5 Benchmark v2.1.0

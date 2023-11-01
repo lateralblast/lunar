@@ -1,5 +1,7 @@
 # audit_telnet_banner
 #
+# Set telnet banner
+#
 # Refer to Section(s) 8.5 Page(s) 71    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 8.5 Page(s) 114-5 CIS Solaris 10 Benchmark v5.1.0
 #.

@@ -1,5 +1,7 @@
 # audit_syslog_perms
 #
+# Check syslog permissions
+#
 # Refer to Section(s) 11.7-8 Page(s) 146-7 CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 5.1.2  Page(s) 105-6 CIS RHEL 5 Benchmark v2.1.0
 #.

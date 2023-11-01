@@ -1,5 +1,7 @@
 # audit_kernel_modules
 #
+# Check Kernel Modules
+#
 # Refer to http://kb.vmware.com/kb/2042473.
 #.
 

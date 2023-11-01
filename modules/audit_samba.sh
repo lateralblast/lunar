@@ -1,5 +1,7 @@
 # audit_samba
 #
+# Check Samba settings
+#
 # Refer to Section(s) 3.13     Page(s) 68    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.13     Page(s) 80    CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.2.12   Page(s) 112   CIS RHEL 7 Benchmark v2.1.0

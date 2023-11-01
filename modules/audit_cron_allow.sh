@@ -1,5 +1,7 @@
 # audit_cron_allow
 #
+# Check cron allow
+#
 # Refer to Section(s) 6.1.10-1            Page(s) 125-7       CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.1.10-1            Page(s) 128-1verbose_message "     CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 6.1.10-1            Page(s) 145-7       CIS RHEL 5 Benchmark v2.1.0

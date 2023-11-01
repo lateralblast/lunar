@@ -1,5 +1,7 @@
 # audit_ipfw
 #
+# Check IP Firewall
+#
 # Refer to Section 1.3 Page(s) 3-4 CIS FreeBSD Benchmark v1.0.5
 #.
 

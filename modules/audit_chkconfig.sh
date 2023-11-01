@@ -1,5 +1,7 @@
 # audit_chkconfig
 #
+# Check chkconfig
+#
 # Refer to Section(s) 1.2.4-5      Page(s) 36-7   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.2.4-5      Page(s) 34-5   CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 1.2.5,2.2.11 Page(s) 53,122 CIS RHEL 7 Benchmark v2.1.0

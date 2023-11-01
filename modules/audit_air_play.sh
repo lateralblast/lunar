@@ -6,7 +6,7 @@
 # Refer to Section(s) 2.3.1.2 Page(s) 77-80 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_air_play() {
+audit_air_play () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Air PLay Receiver"

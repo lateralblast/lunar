@@ -1,5 +1,7 @@
 # audit_aws_cf
 #
+# Check AWS CloudFormation
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudFormation/cloudformation-stack-notification.html
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudFormation/cloudformation-stack-policy.html
 #.

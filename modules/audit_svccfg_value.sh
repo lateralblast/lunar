@@ -1,5 +1,6 @@
 # audit_svccfg_value
 #
+# Check syscfg settings
 #.
 
 audit_svccfg_value () {

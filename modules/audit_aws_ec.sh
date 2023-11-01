@@ -1,5 +1,7 @@
 # audit_aws_ec
 #
+# Check AWS ElastiCache
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/ElastiCache/elasticache-multi-az.html
 #.
 

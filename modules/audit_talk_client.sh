@@ -1,5 +1,7 @@
 # audit_talk_client
 #
+# Uninstall talk client
+#
 # Refer to Section(s) 2.1.9 Page(s) 53   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.9 Page(s) 61   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.9 Page(s) 55-6 CIS RHEL 6 Benchmark v1.2.0

@@ -1,5 +1,7 @@
 # audit_wbem
 #
+# Turn off Web Based Enterprise Management
+#
 # Refer to Section(s) 2.1.6 Page(s) 21-2 CIS Solaris 10 Benchmark v5.1.0
 #.
 

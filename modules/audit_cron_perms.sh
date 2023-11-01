@@ -1,5 +1,7 @@
 # audit_cron_perms
 #
+# Check cron permissions
+#
 # Refer to Section(s) 6.1.2-9 Page(s) 119-125 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.1.2-9 Page(s) 138-9   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 6.1.2-9 Page(s) 122-8   CIS RHEL 6 Benchmark v1.2.0

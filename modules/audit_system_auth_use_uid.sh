@@ -1,5 +1,7 @@
 # audit_system_auth_use_uid
 #
+# Check the use of su is restricted by sudo
+#
 # Refer to Section(s) 6.5 Page(s) 165-6 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 6.5 Page(s) 145-6 CIS RHEL 6 Benchmark v1.2.0
 #.

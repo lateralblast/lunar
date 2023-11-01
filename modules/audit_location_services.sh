@@ -8,7 +8,7 @@
 # Refer to Section(s) 2.6.1.1-2 Page(s) 153-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_location_services() {
+audit_location_services () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Location Services"

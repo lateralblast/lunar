@@ -1,5 +1,7 @@
 # audit_pam_gdm_autologin
 #
+# Check PAM GDM autologin settings
+#
 # Refer to Section(s) 16.11 Page(s) 54-5 Solaris 11.1 Benchmark v1.0.0
 #.
 

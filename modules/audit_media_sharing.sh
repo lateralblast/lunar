@@ -5,7 +5,7 @@
 # Refer to Section(s) 2.3.3.10 Page(s) 114-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_media_sharing() {
+audit_media_sharing () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Media Sharing"

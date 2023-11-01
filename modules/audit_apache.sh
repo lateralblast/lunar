@@ -1,5 +1,7 @@
 # audit_apache
 #
+# Check Apache
+#
 # Refer to Section(s) 3.11,14       Page(s) 66-9        CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.2.10        Page(s) 110         CIS Ubuntu Linux 16.04 Benchmark v1.0.0
 # Refer to Section(s) 3.11,14       Page(s) 79-81       CIS RHEL 5 Benchmark v2.1.0

@@ -1523,3 +1523,5 @@
 # Added MacOS check sysadminctl function
 # 8.5.4: Wed  1 Nov 2023 16:11:13 AEDT
 # Added MacOS SMB guest sharing check
+# 8.5.5: Wed  1 Nov 2023 19:56:46 AEDT
+# Updated documentation

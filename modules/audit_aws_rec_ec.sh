@@ -1,5 +1,7 @@
 # audit_aws_rec_ec
 #
+# Check ElastiCache Recommendation
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/ElastiCache/reserved-cache-nodes-expiration.html
 #.
 

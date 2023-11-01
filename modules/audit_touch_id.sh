@@ -6,7 +6,7 @@
 # Refer to Section(s) 2.11.2 Page(s) 237-40 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_touch_id() {
+audit_touch_id () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Touch ID"

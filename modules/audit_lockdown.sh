@@ -6,7 +6,7 @@
 # Refer to Section(s) 2.6.7 Page(s) 181-2 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_lockdown() {
+audit_lockdown () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Lockdown Mode"

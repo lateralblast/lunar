@@ -1,5 +1,7 @@
 # audit_tcp_wrappers
 #
+# Check TCP wrappers
+#
 # Refer to Section(s) 5.5.1-5  Page(s) 110-114 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 4.5.1-5  Page(s) 95-8    CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 4.5.1-5  Page(s) 86-9    CIS RHEL 6 Benchmark v1.2.0

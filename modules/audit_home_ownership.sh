@@ -1,5 +1,7 @@
 # audit_home_ownership
 #
+# Check home ownership
+#
 # Refer to Section(s) 9.2.7,12,3 Page(s) 166-7,171-2   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 192-3,197-200 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 170,174-6     CIS RHEL 6 Benchmark v1.2.0
@@ -12,7 +14,7 @@
 # Refer to Section(s) 6.2.7,9    Page(s) 273,5         CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
-audit_home_ownership() {
+audit_home_ownership () {
   if [ "$os_name" = "SunOS" ] || [  "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "Ownership of Home Directories"
     home_check=0

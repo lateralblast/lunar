@@ -1,6 +1,6 @@
 # audit_stack_protection
 #
-# Stack Protection
+# Check Stack Protection
 #
 # Checks for the following values in /etc/system:
 #

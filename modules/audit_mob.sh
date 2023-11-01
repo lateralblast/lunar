@@ -1,5 +1,7 @@
 # audit_mob
 #
+# Check Managed Object Browser
+# 
 # Refer to http://pubs.vmware.com/vsphere-51/index.jsp?topic=%2Fcom.vmware.vsphere.security.doc%2FGUID-0EF83EA7-277C-400B-B697-04BDC9173EA3.html
 #.
 

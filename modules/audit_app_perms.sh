@@ -1,5 +1,7 @@
 # audit_app_perms
 #
+# Check Application Permissions
+# 
 # Refer to Section(s) 5.1.2 Page(s) 109 CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 

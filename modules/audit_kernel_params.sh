@@ -1,5 +1,7 @@
 # audit_kernel_params
 #
+# Check Kernel Parameters
+#
 # Refer to Section(s) 4.2,5.3 Page(s) 16-19    CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 1.6.1-21 Page(s) 103-131 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 1.6.1-21 Page(s)         CIS RHEL 6 Benchmark v1.2.0

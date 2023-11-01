@@ -10,7 +10,7 @@
 # Refer to Section 2.6.5 Page(s) 174-6 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_gate_keeper() {
+audit_gate_keeper () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Gatekeeper"
     log_file="gatekeeper.log"

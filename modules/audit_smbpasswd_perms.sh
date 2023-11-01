@@ -1,5 +1,7 @@
 # audit_smbpasswd_perms
 #
+# Check SMB Password sttings
+#
 # Refer to Section(s) 11.4-5 Page(s) 144-5 CIS Solaris 10 Benchmark v1.1.0
 #.
 

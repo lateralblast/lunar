@@ -1,5 +1,7 @@
 # audit_eeprom_security
 #
+# Check EEPROM security
+#
 # Refer to Section(s) 6.15 Page(s) 59-60 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.12 Page(s) 97-8  CIS Solaris 10 Benchmark v5.1.0
 #.

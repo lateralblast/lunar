@@ -1,5 +1,7 @@
 # audit_core_limit
 #
+# Check core dump limits
+#
 # Refer to Section(s) 2.10 Page(s) 34-35 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

@@ -1,5 +1,7 @@
 # audit_remote_consoles
 #
+# Check remote consoles
+#
 # Refer to Section(s) 9.1 Page(s) 72  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.1 Page(s) 116 CIS Solaris 10 Benchmark v5.1.0
 #.

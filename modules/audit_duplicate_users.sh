@@ -1,5 +1,7 @@
 # audit_duplicate_users
 #
+# Check duplicate users
+#
 # Refer to Section(s) 9.2.16,17 Page(s) 174-5     CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.15,18 Page(s) 201,203-4 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.16,17 Page(s) 177-8     CIS RHEL 6 Benchmark v1.2.0

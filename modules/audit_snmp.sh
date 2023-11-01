@@ -1,5 +1,7 @@
 # audit_snmp
 #
+# Check SNMP configuration
+#
 # Refer to Section(s) 3.15        Page(s) 69         CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.15        Page(s) 81-2       CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.15        Page(s) 71-2       CIS RHEL 6 Benchmark v1.2.0

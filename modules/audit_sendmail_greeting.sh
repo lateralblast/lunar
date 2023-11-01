@@ -1,5 +1,6 @@
 # audit_sendmail_greeting
 #
+# Check sendmail greeting
 #.
 
 audit_sendmail_greeting () {

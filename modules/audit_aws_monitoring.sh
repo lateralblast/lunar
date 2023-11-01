@@ -1,5 +1,7 @@
 # audit_aws_monitoring
 #
+# Check AWS monitoring
+#
 # Refer to Section(s) 3.1  Page(s) 87-9   CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 3.2  Page(s) 90-2   CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 3.3  Page(s) 93-6   CIS AWS Foundations Benchmark v1.1.0

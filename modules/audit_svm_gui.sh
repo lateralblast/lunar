@@ -1,5 +1,7 @@
 # audit_svm_gui
 #
+# Check Solaris Volume Manager GUI daemons disabled
+#
 # Refer to Section(s) 2.2.13 Page(s) 33-4 CIS Solaris 10 Benchmark v5.1.0
 #.
 

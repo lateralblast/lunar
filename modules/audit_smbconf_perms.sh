@@ -1,5 +1,7 @@
 # audit_smbconf_perms
 #
+# Check SMB config permissions
+#
 # Refer to Section(s) 11.2-3 Page(s) 143-4 CIS Solaris 10 Benchmark v1.1.0
 #.
 

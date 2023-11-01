@@ -1,5 +1,7 @@
 # audit_aws_rec_dynamodb
 #
+# Check DynamoDB Recommendations
+# 
 # Refer to https://www.cloudconformity.com/conformity-rules/DynamoDB/unused-dynamodb-tables.html
 #.
 

@@ -1,5 +1,7 @@
 # audit_aws_config
 #
+# Check AWS Config
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/Config/aws-config-enabled.html
 #.
 

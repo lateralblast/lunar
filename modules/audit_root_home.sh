@@ -1,5 +1,7 @@
 # audit_root_home
 #
+# Check root home
+#
 # Refer to Section(s) 7.5 Page(s) 105-6 CIS Solaris 10 Benchmark v5.1.0
 #.
 

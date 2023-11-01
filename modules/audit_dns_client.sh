@@ -1,5 +1,6 @@
 # audit_dns_client
 #
+# Turn off Name Server Caching Daemon
 #.
 
 audit_dns_client () {

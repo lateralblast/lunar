@@ -1,5 +1,7 @@
 # audit_aws_ses
 #
+# Check AWS SES
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/SES/dkim-enabled.html
 #.
 

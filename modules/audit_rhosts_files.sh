@@ -1,5 +1,7 @@
 # audit_rhosts_files
 #
+# Check rhosts files
+#
 # Refer to Section(s) 1.5.2 Page(s) 102-3 CIS AIX Benchmark v1.1.0
 #.
 

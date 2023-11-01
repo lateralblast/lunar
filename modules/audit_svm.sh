@@ -1,5 +1,7 @@
 # audit_svm
 #
+# Check volume manager daemons disabled
+#
 # Refer to Section(s) 2.2.8,12 Page(s) 28,32-3 CIS Solaris 10 Benchmark v5.1.0
 #.
 

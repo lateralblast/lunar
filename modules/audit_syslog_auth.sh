@@ -1,5 +1,7 @@
 # audit_syslog_auth
 #
+# Check auth log
+#
 # Refer to Section(s) 4.4 Page(s) 68-9 CIS Solaris 10 Benchmark v5.1.0
 #.
 

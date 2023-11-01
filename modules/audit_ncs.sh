@@ -1,5 +1,7 @@
 # audit_ncs
 #
+# Check NCS
+#
 # Refer to Section(s) 2.12.3 Page(s) 208 CIS AIX Benchmark v1.1.0
 #.
 

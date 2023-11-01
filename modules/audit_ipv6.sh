@@ -1,12 +1,14 @@
 # audit_ipv6
 #
+# Check IPv6
+#
 # Refer to Section(s) 1.3.11,22-3 Page(s) 47,60-2 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 4.4.2       Page(s) 94      CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 4.4.2       Page(s) 85-6    CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 7.3.3       Page(s) 76      CIS SLES 11 Benchmark v1.0.0
 #.
 
-audit_ipv6() {
+audit_ipv6 () {
   if [ "$ipv6_disable" = "yes" ]; then
     verbose_message "IPv6 Autoconf Daemon"
     if [ "$os_name" = "AIX" ]; then

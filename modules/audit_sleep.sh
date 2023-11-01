@@ -23,7 +23,7 @@
 # Refer to Section(s) 2.9.1.1-3,2.9.2 Page(s) 200-11 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_sleep() {
+audit_sleep () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Sleep"
     if [ "$os_version" -ge 14 ]; then

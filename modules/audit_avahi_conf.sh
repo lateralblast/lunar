@@ -1,5 +1,7 @@
 # audit_avahi_conf
 #
+# Check Avahi Configuration
+# 
 # Refer to Section(s) 3.1.3-6 Page(s) 68-72 CIS RHEL 5 Benchmark v2.1.0
 #.
 

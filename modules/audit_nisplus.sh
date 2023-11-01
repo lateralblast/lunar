@@ -1,5 +1,7 @@
 # audit_nisplus
 #
+# Check NIS+ daemons
+#
 # Refer to Section(s) 2.2.4 Page(s) 25 CIS Solaris 10 Benchmark v5.1.0
 #.
 

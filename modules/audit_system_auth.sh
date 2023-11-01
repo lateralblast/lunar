@@ -1,5 +1,7 @@
 # audit_system_auth
 #
+# Check system auth settings
+#
 # Refer to Section(s) 6.3.1   Page(s) 160-1  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 6.3.5-6 Page(s) 163-5  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 5.3.1-2 Page(s) 238-41 CIS RHEL 7 Benchmark v2.1.0

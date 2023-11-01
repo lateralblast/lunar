@@ -1,5 +1,7 @@
 # audit_syslog_server
 #
+# Check syslog server settings
+#
 # Refer to Section(s) 4.1.1-8         Page(s) 71-76   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 5.2.1-8         Page(s) 108-113 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 5.1.1-8         Page(s) 94-9    CIS RHEL 6 Benchmark v1.2.0

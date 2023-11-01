@@ -1,5 +1,7 @@
 # audit_modprobe_conf
 #
+# Check modprobe on filesystems
+#
 # Refer to Section(s) 1.18-24,5.6.1-4    Page(s) 26-verbose_message ",114-6   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.18-24,4.6.1-4    Page(s) 27-32,90-2    CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 1.1.1.1-8,3.5.1-4  Page(s) 17-25,149-152 CIS RHEL 7 Benchmark v2.1.0

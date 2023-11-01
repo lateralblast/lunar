@@ -1,10 +1,12 @@
 # audit_keychain_lock
 #
-# Refer to Section 5.2   Page(s) 49-50 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section 5.4-5 Page(s) 1verbose_message "-3 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Check keychain lock
+#
+# Refer to Section(s) 5.2   Page(s) 49-50 CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(2) 5.4-5 Page(s)       CIS Apple OS X 10.12 Benchmark v1.0.0
 #.
 
-audit_keychain_lock() {
+audit_keychain_lock () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Keychain Lock"
     if [ "$audit_mode" != 2 ]; then

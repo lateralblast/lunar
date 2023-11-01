@@ -1,9 +1,11 @@
 # audit_safe_downloads
 #
-# Refer to Section 2.6.3 Page(s) 29-verbose_message " CIS Apple OS X 10.8 Benchmark v1.0.0
+# Check safe downloads
+#
+# Refer to Section(s) 2.6.3 Page(s) 29-verbose_message " CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
-audit_safe_downloads() {
+audit_safe_downloads () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Safe Downloads list"
     log_file="gatekeeper.log"

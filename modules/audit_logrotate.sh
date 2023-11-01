@@ -1,5 +1,7 @@
 # audit_logrotate
 #
+# Check logrotate
+#
 # Refer to Section(s) 4.3 Page(s) 97    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 5.3 Page(s) 120-1 CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 4.3 Page(s) 208   CIS RHEL 7 Benchmark v2.1.0

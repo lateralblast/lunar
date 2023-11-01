@@ -1,5 +1,7 @@
 # audit_user_dotfiles
 #
+# Check permissions on user dot file
+#
 # Refer to Section(s) 9.2.8  Page(s) 167-168 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 6.2.10 Page(s) 284     CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 9.2.8  Page(s) 193-4   CIS RHEL 5 Benchmark v2.1.0

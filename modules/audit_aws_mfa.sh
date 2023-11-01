@@ -1,5 +1,7 @@
 # audit_aws_mfa
 #
+# Check AWS MFA
+#
 # Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
 # Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html
 # Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root

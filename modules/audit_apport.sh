@@ -1,5 +1,7 @@
 # audit_apport
 #
+# Check Automatic Error Reporting
+#
 # Refer to Section(s) 1.5.3 Page(s) 124 CIS Ubuntu 22.04 Benchmark v1.0.0
 #.
 

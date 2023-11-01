@@ -1,5 +1,7 @@
 # audit_gss
 #
+# Check Generic Security Services
+#
 # Refer to Section(s) 2.7   Page(s) 19-20 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 2.2.7 Page(s) 27    CIS Solaris 10 Benchmark v5.1.0
 #.

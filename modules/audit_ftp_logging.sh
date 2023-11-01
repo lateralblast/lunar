@@ -1,5 +1,7 @@
 # audit_ftp_logging
 #
+# Check FTP logging
+#
 # Refer to Section(s) 4.2 Page(s) 67 CIS Solaris 10 Benchmark v5.1.0
 #.
 

@@ -1,5 +1,7 @@
 # audit_grub_security
 #
+# Check GRUB security
+#
 # Refer to Section(s) 1.5.3 Page(s) 47-8 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.4.1 Page(s) 57   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 1.4.1 Page(s) 52   CIS Ubuntu 16.04 Benchmark v1.0.0

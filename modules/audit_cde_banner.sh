@@ -1,5 +1,7 @@
 # audit_cde_banner
 #
+# Check CDE Warning Banner
+#
 # Refer to Section(s) 8.2 Page(s) 112-3 CIS Solaris 10 v5.1.0
 #.
 

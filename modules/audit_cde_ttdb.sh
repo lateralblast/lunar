@@ -1,5 +1,7 @@
 # audit_cde_ttdb
 #
+# Check CDE ToolTalk Database Server
+#
 # Refer to Section(s) 2.1.1 Page(s) 17-8 CIS Solaris 10 v5.1.0
 #.
 

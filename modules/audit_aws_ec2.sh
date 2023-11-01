@@ -1,5 +1,7 @@
 # audit_aws_ec2
 #
+# Check AWS EC2
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/default-securitygroups-in-use.html
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/ec2-instance-using-iam-roles.html
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/publicly-shared-ami.html

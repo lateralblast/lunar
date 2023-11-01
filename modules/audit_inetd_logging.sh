@@ -1,5 +1,7 @@
 # audit_inetd_logging
 #
+# Check inetd logging
+#
 # Refer to Section(s) 4.1 Page(s) 66-7 CIS Solaris 10 Benchmark v5.1.0
 #.
 

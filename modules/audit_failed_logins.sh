@@ -1,5 +1,7 @@
 # audit_failed_logins
 #
+# Check failed logins
+#
 # Refer to Section(s) 4.6 Page(s) 70-1 CIS Solaris 10 Benchmark v5.1.0
 #.
 

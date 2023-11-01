@@ -1,5 +1,7 @@
 # audit_aws_password_policy
 #
+# Check AWS Password Policy
+#
 # Refer to Section(s) 1.5 Page(s)  19-20 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.6 Page(s)  21-22 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.7 Page(s)  23-24 CIS AWS Foundations Benchmark v1.1.0

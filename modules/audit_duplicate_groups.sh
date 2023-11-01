@@ -1,5 +1,7 @@
 # audit_duplicate_groups
 #
+# Check duplicate groups
+#
 # Refer to Section(s) 9.2.15,17 Page(s) 173-5        CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.16,19 Page(s) 204-5        CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.15,17 Page(s) 176-9        CIS RHEL 6 Benchmark v1.2.0

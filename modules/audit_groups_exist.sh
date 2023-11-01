@@ -1,5 +1,7 @@
 # audit_groups_exist
 #
+# Check groups
+#
 # Refer to Section(s) 9.2.11 Page(s) 170-1 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.11 Page(s) 196-7 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.11 Page(s) 173-4 CIS RHEL 6 Benchmark v1.2.0

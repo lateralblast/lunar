@@ -1,5 +1,7 @@
 # audit_cde_screen_lock
 #
+# Check Screen Lock for CDE Users
+#
 # Refer to Section(s) 6.7 Page(s) 91-2 CIS Solaris 10 Benchmark v5.1.0
 #.
 

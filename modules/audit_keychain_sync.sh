@@ -5,7 +5,7 @@
 # Refer to ection(s) 2.1.1.1 Page(s) 41-44 CIS macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_keychain_sync() {
+audit_keychain_sync () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Keychain sync"

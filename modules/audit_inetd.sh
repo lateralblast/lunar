@@ -1,5 +1,7 @@
 # audit_inetd
 #
+# Check inetd
+#
 # Refer to Section(s) 10.6 Page(s) 141-2 CIS Solaris 10 Benchmark v1.1.0
 #.
 

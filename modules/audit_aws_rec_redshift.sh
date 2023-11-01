@@ -1,5 +1,7 @@
 # audit_aws_rec_redshift
 #
+# Check AWS Redshift recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/reserved-nodes-expiration.html
 #.
 

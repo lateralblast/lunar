@@ -1,5 +1,7 @@
 # audit_biosdevname
 #
+# Check BIOS dev names
+#
 # Refer to Section(s) 6.17 Page(s) 64 SLES 11 Benchmark v1.0.0
 #.
 

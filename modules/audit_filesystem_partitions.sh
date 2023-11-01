@@ -12,7 +12,7 @@
 # Refer to Section(s) 1.1.2,6-7,11-13 Page(s) 24-6,35-7 CIS Amazon Linux Benchmark v2.0.0
 #.
 
-audit_filesystem_partitions() {
+audit_filesystem_partitions () {
   if [ "$os_name" = "Linux" ]; then
     for filesystem in /tmp /var /var/log /var/log/audit /home; do
       verbose_message "Filesystem $filesystem is a separate filesystem"

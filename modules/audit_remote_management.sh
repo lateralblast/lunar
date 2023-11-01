@@ -1,11 +1,13 @@
 # audit_remote_management
 #
-# Refer to Section 2.2.9    Page(s) 25-6  CIS Apple OS X 10.8  Benchmark v1.0.0
-# Refer to Section 2.2.9    Page(s) 48-9  CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section 2.3.3.6  Page(s) 104-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Check remote management
+#
+# Refer to Section(s) 2.2.9   Page(s) 25-6  CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Section(s) 2.2.9   Page(s) 48-9  CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(S) 2.3.3.6 Page(s) 104-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_remote_management() {
+audit_remote_management () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Remote Management"
     if [ "$audit_mode" != 2 ]; then

@@ -1,5 +1,7 @@
 # audit_syslog_conf
 #
+# Check syslog confg
+#
 # Refer to http://kb.vmware.com/kb/1033696
 # Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-9F67DB52-F469-451F-B6C8-DAE8D95976E7.html
 # Refer to Section(s) 3.4     Page(s) 10    CIS FreeBSD Benchmark v1.0.5

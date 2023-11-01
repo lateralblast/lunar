@@ -1,5 +1,7 @@
 # audit_cde_cal () {
 #
+# Check Local CDE Calendar Manager
+#
 # Refer to Section(s) 2.1.2 Page(s) 18-9 CIS Solaris 10 v5.1.0
 #.
 

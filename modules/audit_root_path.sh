@@ -1,5 +1,7 @@
 # audit_root_path
 #
+# Check root path
+#
 # Refer to Section(s) 9.2.6   Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.6   Page(s) 191-2   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.6   Page(s) 167     CIS RHEL 6 Benchmark v1.2.0

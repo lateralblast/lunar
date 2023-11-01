@@ -1,5 +1,7 @@
 # audit_aws_sgs
 #
+# Check AWS Security Groups
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/security-group-ingress-any.html
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-ssh-access.html
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/unrestricted-rdp-access.html

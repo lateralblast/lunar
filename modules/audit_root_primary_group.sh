@@ -1,5 +1,7 @@
 # audit_root_primary_group
 #
+# Check root primary group
+#
 # Refer to Section(s) 7.3   Page(s) 147     CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.3   Page(s) 170     CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 7.3   Page(s) 150     CIS RHEL 6 Benchmark v1.2.0

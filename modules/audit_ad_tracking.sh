@@ -6,7 +6,7 @@
 # Refer to Section(s) 2.6.4 Page(s) 170- CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_ad_tracking() {
+audit_ad_tracking () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Ad Tracking"

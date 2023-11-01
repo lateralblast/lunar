@@ -1,9 +1,11 @@
 # audit_exim
 #
+# Check exim
+#
 # Refer to Section(s) 1.5.1 Page(s) 88-9 CIS Ubuntu 22.04 Benchmark v1.0.0
 #.
 
-audit_exim() {
+audit_exim () {
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/exim4/update-exim4.conf"
     if [ -f "$check_file" ]; then

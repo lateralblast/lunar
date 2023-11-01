@@ -1,5 +1,7 @@
 # audit_aws_creds
 #
+# Check AWS Credentials
+#
 # Refer to Section(s) 1.3  Page(s) 15-6 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.4  Page(s) 17-8 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.12 Page(s) 33-4 CIS AWS Foundations Benchmark v1.1.0

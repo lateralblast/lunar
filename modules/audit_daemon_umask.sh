@@ -1,5 +1,7 @@
 # audit_daemon_umask
 #
+# Check daemon umask
+#
 # Refer to Section(s) 3.1 Page(s) 58-9 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 3.2 Page(s) 72   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.1 Page(s) 61-2 CIS RHEL 6 Benchmark v1.2.0

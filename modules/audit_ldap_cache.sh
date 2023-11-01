@@ -1,5 +1,7 @@
 # audit_ldap_cache
 #
+# Check LDAP cache
+#
 # Refer to Section(s) 2.2.5 Page(s) 25-6 CIS Solaris 10 Benchmark v5.1.0
 #.
 

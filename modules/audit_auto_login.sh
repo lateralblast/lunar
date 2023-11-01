@@ -1,7 +1,11 @@
 # audit_auto_login
 #
-# Refer to Section 5.7       Page(s) 53-54 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section 5.8,6.1.1 Page(s) 152-3 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Disabling automatic login decreases the likelihood of an unauthorized person gaining
+# access to a system.
+#
+# Refer to Section(s) 5.7       Page(s) 53-54  CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 5.8,6.1.1 Page(s) 152-3  CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.12.3    Page(s) 248-50 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_auto_login() {

@@ -1,5 +1,7 @@
 # audit_mount_noexec
 #
+# Check No-exec on mounts
+#
 # Refer to Section(s) 1.1.4         Page(s) 14-5        CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.4         Page(s) 17-8        CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.1.10,17,20  Page(s) 35,42,45    CIS RHEL 7 Benchmark v2.1.0

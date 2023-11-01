@@ -1,5 +1,7 @@
 # audit_nobody_rpc
 #
+# Check Nobody Access for RPC Encryption Key Storage Service
+#
 # Refer to Section(s) 6.2 Page(s) 47 CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.3 Page(s) 88 CIS Solaris 10 Benchmark v5.1.0
 #.

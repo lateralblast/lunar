@@ -1,16 +1,15 @@
 # audit_printer_sharing
 #
-# Refer to Section 2.2.4    Page(s) 19-20 CIS Apple OS X 10.8  Benchmark v1.0.0
-# Refer to Section 2.2.4    Page(s) 41    CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section 2.3.3.4  Page(s) 98-9  CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 2.2.4   Page(s) 19-20 CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Section(s) 2.2.4   Page(s) 41    CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.3.3.4 Page(s) 98-9  CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 # Refer to http://support.apple.com/kb/PH11450
 #
 # Printer sharing can be disabled via: cupsctl --no-share-printers
 # Need to update this code
-#
 #.
 
-audit_printer_sharing() {
+audit_printer_sharing () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Printer Sharing"
     if [ "$audit_mode" != 2 ]; then

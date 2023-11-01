@@ -1,5 +1,7 @@
 # audit_pam_rhosts
 #
+# Check PAM rhost settings
+#
 # Refer to Section(s) 6.8 Page(s) 51-52 CIS Solaris 11.1 Benchmark  v1.0.0
 # Refer to Section(s) 6.4 Page(s) 89    CIS Solaris 10 Benchmark v5.1.0
 #.

@@ -1,6 +1,6 @@
 # audit_tcpsyn_cookie
 #
-#  TCP SYN Cookie Protection
+# TCP SYN Cookie Protection
 #
 # Refer to Section(s) 4.2.8 Page(s) 90-1 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 4.2.8 Page(s) 82-3 CIS RHEL 6 Benchmark v1.2.0

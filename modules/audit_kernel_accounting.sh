@@ -1,5 +1,7 @@
 # audit_kernel_accounting
 #
+# Check Kernel Accounting
+#
 # Refer to Section(s) 3.3 Page(s) 38-39 CIS Apple OS X 10.8  Benchmark v1.0.0
 # Refer to Section(s) 3.3 Page(s) 92    CIS Apple OS X 10.12 Benchmark v1.0.0
 # Refer to Section(s) 4.9 Page(s) 73-5  CIS Solaris 10 Benchmark v5.1.0

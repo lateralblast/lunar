@@ -1,5 +1,6 @@
 # audit_bootparams
 #
+# Turn off bootparamd
 #.
 
 audit_bootparams () {

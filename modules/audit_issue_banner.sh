@@ -1,5 +1,7 @@
 # audit_issue_banner
 #
+# Check security banner
+#
 # Refer to Section(s) 8.1-2     Page(s) 149-151 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 8.1.1-2   Page(s) 172-4   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 8.1-2     Page(s) 152-4   CIS RHEL 6 Benchmark v1.2.0

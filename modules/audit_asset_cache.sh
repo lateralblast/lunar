@@ -9,7 +9,7 @@
 # Refer to Section(s) 2.3.3.9 Page(s) 111-3 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_asset_cache() {
+audit_asset_cache () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 13 ]; then
       verbose_message "Asset Cache"

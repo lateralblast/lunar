@@ -1,5 +1,7 @@
 # audit_unowned_files
 #
+# Find unowned files
+#
 # Refer to Section(s) 9.1.11-2 Page(s) 160-1 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.1.11-2 Page(s) 184-6 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.1.11-2 Page(s) 163-4 CIS RHEL 6 Benchmark v1.2.0

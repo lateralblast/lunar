@@ -1,5 +1,7 @@
 # audit_software_update
 #
+# Check software update settings
+#
 # Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.update_manager.doc/GUID-EF6BEE4C-4583-4A8C-81B9-5B074CA2E272.html
 #
 # Refer to                  Page(s) 8     CIS Apple OS X 10.8 Benchmark v1.0.0
@@ -7,7 +9,7 @@
 # Refer to Section(s) 1.2-7 Page(s) 16-34 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_software_update() {
+audit_software_update () {
   if [ "$os_name" = "VMkernel" ]; then
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"
     verbose_message "Software Update"

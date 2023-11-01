@@ -1,5 +1,7 @@
 # audit_nis_server
 #
+# Check NIS daemon settings
+#
 # Refer to Section(s) 2.1.7  Page(s) 51-52 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.6  Page(s) 58-9  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.6  Page(s) 53-4  CIS RHEL 6 Benchmark v1.2.0

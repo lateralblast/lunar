@@ -1,5 +1,7 @@
 # audit_aws_rec_ec2
 #
+# Check EC2 Recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/ami-naming-conventions.html
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/approved-golden-amis.html
 # Refer to https://www.cloudconformity.com/conformity-rules/EC2/ec2-instance-naming-conventions.html

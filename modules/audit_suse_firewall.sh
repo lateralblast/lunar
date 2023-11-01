@@ -1,5 +1,7 @@
 # audit_suse_firewall
 #
+# Check SuSE Firewall enabled
+#
 # Refer to Section(s) 7.7 Page(s) 83-4 SLES 11 Benchmark v1.0.0
 #.
 

@@ -1,5 +1,7 @@
 # audit_webconsole
 #
+# Turn of Web Console service
+#
 # Refer to Section(s) 2.1.5 Page(s) 20-1 CIS Solaris 10 Benchmark v5.1.0
 #.
 

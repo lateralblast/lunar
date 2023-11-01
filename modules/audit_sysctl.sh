@@ -1,5 +1,7 @@
 # audit_sysctl
 #
+# Check sysctl settings
+#
 # Refer to Section(s) 5.1-5.2.8,5.4.1,2             Page(s) 98-107                  CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 4.1.1-2,4.2.1-8,4.4.1         Page(s) 82-94                   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 4.1.1-2,4.2.1-8,4.4.1.1       Page(s) 73-81,83-4              CIS RHEL 5 Benchmark v2.1.

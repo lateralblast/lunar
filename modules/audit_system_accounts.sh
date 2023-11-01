@@ -1,5 +1,7 @@
 # audit_system_accounts
 #
+# Check system accounts
+#
 # Refer to Section(s) 7.2   Page(s) 146-147 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 7.2   Page(s) 169     CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 7.2   Page(s) 149-150 CIS RHEL 6 Benchmark v1.2.0

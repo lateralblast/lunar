@@ -1,5 +1,7 @@
 # audit_system_auth_password_hashing
 #
+# heck password hashing settings
+#
 # Refer to Section(s) 5.3.4 Page(s) 243   CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.4 Page(s) 224   CIS Amazon Linux Benchmark v2.0.0
 #.

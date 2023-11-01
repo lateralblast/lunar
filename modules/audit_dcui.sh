@@ -1,5 +1,7 @@
 # audit_dcui
 #
+# Check DCUI
+#
 # Refer to http://pubs.vmware.com/vsphere-55/topic/com.vmware.vsphere.security.doc/GUID-6779F098-48FE-4E22-B116-A8353D19FF56.html
 #.
 

@@ -1,5 +1,7 @@
 # audit_system_auth_account_reset
 #
+# Check account reset settingd
+#
 # Refer to Section(s) 6.3.2 Page(s) 161-2 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.3.2 Page(s) 133-4 CIS SLES 11 Benchmark v1.0.0
 #.

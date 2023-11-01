@@ -1,5 +1,7 @@
 # audit_mount_setuid
 #
+# Check Set-UID on mounts
+#
 # Refer to Section(s) 1.1.3,13,15   Page(s) 14-25       CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.3,13,15   Page(s) 17-27       CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 1.1.4,9,16,19 Page(s) 29,34,41,44 CIS RHEL 7 Benchmark v2.1.0

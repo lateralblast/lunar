@@ -1,5 +1,7 @@
 # audit_online_documentation
 #
+# Check online documentation daemon settings
+#
 # Refer to Section(s) 2.12.4 Page(s) 209 CIS AIX Benchmark v1.1.0
 #.
 

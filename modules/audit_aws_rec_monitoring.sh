@@ -1,5 +1,7 @@
 # audit_aws_rec_monitoring
 #
+# Check CloudWatch Recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/CloudWatchLogs/ec2-large-instance-changes-alarm.html
 #.
 

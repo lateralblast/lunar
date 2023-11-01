@@ -1,5 +1,7 @@
 # audit_inactive_users
 #
+# Check inactive users
+#
 # Refer to Section(s) 7.5  Page(s) 171-2   CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 7.5  Page(s) 151-2   CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 10.5 Page(s) 141     CIS SLES 11 Benchmark v1.0.0

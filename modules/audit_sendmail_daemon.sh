@@ -1,5 +1,7 @@
 # audit_sendmail_daemon
 #
+# Check sendmail daemon settings 
+#
 # Refer to Section(s) 3.16  Page(s) 82    CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.16  Page(s) 72-3  CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 3.5   Page(s) 10    CIS FreeBSD Benchmark v1.0.5

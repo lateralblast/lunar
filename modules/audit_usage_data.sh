@@ -8,7 +8,7 @@
 # Refer to Section(s) 2.6.3 Page(s) 164-9 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_usage_data() {
+audit_usage_data () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Usage Data"

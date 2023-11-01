@@ -1,5 +1,7 @@
 # audit_dfstab
 #
+# Check dfstab
+#
 # Refer to Section(s) 10.2 Page(s) 138-9 CIS Solaris 10 Benchmark v1.1.0
 #.
 

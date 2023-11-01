@@ -1,5 +1,7 @@
 # audit_user_rhosts
 #
+# Check for rhosts files
+#
 # Refer to Section(s) 9.2.10 Page(s) 169-70 CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.10 Page(s) 195-6  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.10 Page(s) 172-3  CIS RHEL 6 Benchmark v1.2.0

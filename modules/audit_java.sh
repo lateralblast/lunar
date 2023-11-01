@@ -1,5 +1,7 @@
 # audit_java
 #
+# Check Java
+#
 # Refer to Section 2.11 Page(s) 82 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 

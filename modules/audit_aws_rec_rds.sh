@@ -1,5 +1,7 @@
 # audit_aws_rec_rds
 #
+# Check RDS recommendations
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/rds-multi-az.html
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/general-purpose-ssd-storage-type.html
 # Refer to https://www.cloudconformity.com/conformity-rules/RDS/reserved-instance-expiration.html

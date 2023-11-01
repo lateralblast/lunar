@@ -1,5 +1,7 @@
 # audit_aws_support_role
 #
+# Check AWS Support Role
+#
 # Refer to Section(s) 1.22 Page(s) 64-5 CIS AWS Foundations Benchmark v1.1.0
 #.
 

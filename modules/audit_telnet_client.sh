@@ -1,5 +1,7 @@
 # audit_telnet_client
 #
+# If telnet is not installed
+#
 # Refer to Section(s) 2.1.2 Page(s) 49  CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.2 Page(s) 56  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.2 Page(s) 51  CIS RHEL 6 Benchmark v1.2.0

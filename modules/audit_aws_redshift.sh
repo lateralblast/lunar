@@ -1,5 +1,7 @@
 # audit_aws_redshift
 #
+# Check AWS Redshift
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/cluster-allow-version-upgrade.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-audit-logging-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/Redshift/redshift-cluster-encrypted.html

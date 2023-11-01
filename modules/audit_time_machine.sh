@@ -5,7 +5,7 @@
 # Refer to Section(s) 2.3.4.1 Page(s) 125-8 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_time_machine() {
+audit_time_machine () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
       verbose_message "iCloud Drive"
