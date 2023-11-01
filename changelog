@@ -1537,3 +1537,5 @@
 # Updated documentation
 # 8.6.1: Thu  2 Nov 2023 08:35:25 AEDT
 # Added Apple Mobile File Integrity check
+# 8.6.2: Thu  2 Nov 2023 08:58:41 AEDT
+# Added MacOS Sealed System Volume check
