@@ -1541,3 +1541,5 @@
 # Added MacOS Sealed System Volume check
 # 8.6.3: Thu  2 Nov 2023 09:31:41 AEDT
 # Added MacOS /System permissions check
+# 8.6.4: Thu  2 Nov 2023 09:58:55 AEDT
+# Updated MacOS password policy check for Sonoma
