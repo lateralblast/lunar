@@ -6,7 +6,7 @@
 check_dscl () {
   if [ "$os_name" = "Darwin" ]; then
     file=$1
-    parameter=$2
+    param=$2
     value=$3
     dir="/var/db/dslocal/nodes/Default"
     if [ "$audit_mode" != 2 ]; then

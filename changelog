@@ -1519,3 +1519,5 @@
 # Added Touch ID checks
 # 8.5.2: Tue 31 Oct 2023 14:20:28 AEDT
 # Documentation updates
+# 8.5.3: Wed  1 Nov 2023 13:57:00 AEDT
+# Added MacOS check sysadminctl function
