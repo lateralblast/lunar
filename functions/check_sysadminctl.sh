@@ -14,12 +14,12 @@ check_sysadminctl () {
       search_value="enabled"
     fi
     if [ "$audit_mode" != 2 ]; then
-      string="Parameter $param is set to $value"
+      string="Parameter \"$param\" is set to \"$value\""
       verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
-        echo "  command: sh -c \"sudo sysadminctl -$param |grep $search_value 2>&1 > /dev/null\""
+        echo "  command: sh -c \"sudo sysadminctl -$param status 2>&1 > /dev/null |grep $search_value\""
         echo "  register: sysadminctl_check"
         echo "  failed_when: \"$search_value\" not in sysadminctl_check"
         echo "  changed_when: false"
@@ -31,8 +31,8 @@ check_sysadminctl () {
         echo "  when: sysadminctl_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
-      check=$( sudo sysadminctl -$param |grep $search_value 2>&1 > /dev/null )
-      if [ "$check" != "$search_value" ]; then
+      check=$( sudo sysadminctl -$param status 2>&1 > /dev/null | grep $search_value |wc -l )
+      if [ "$check" != "1" ]; then
         increment_insecure "Parameter \"$param\" not set to \"$value\""
         verbose_message "" fix
         verbose_message "sudo sysadminctl -$param $value" fix
