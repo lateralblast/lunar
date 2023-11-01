@@ -11,9 +11,9 @@
 # 1 = on for specific services
 # 2 = on for essential services
 #
-# Refer to Sectioni(s) 2.6.4    Page(s)      CIS Apple OS X 10.8  Benchmark v1.0.0
-# Refer to Sectioni(s) 2.6.3    Page(s) 56-7 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to ection(s)   2.2.1-2  Page(s) 60-9 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 2.6.4       Page(s)            CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Section(s) 2.6.3       Page(s) 56-7       CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.2.1-2,3.6 Page(s) 60-9,283-6 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_firewall_setting () {
@@ -21,12 +21,26 @@ audit_firewall_setting () {
     verbose_message "Firewall Settings"
     check_osx_defaults /Library/Preferences/com.apple.alf globalstate 1 int
     if [ "$audit_mode" != 2 ]; then
-    	check=$( /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | grep enabled )
+     	check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | egrep "enabled|on" )
       if [ "$check" ]; then
         increment_secure "Firewall stealth mode enabled"
       else
-        increment_insecure "Firewall stealth mode disabled"
+        increment_insecure "Firewall stealth mode is not enabled"
         lockdown_command "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on"
+      fi
+      check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode | egrep "enabled|on" )
+      if [ "$check" ]; then
+        increment_secure "Firewall logging mode enable"
+      else
+        increment_insecure "Firewall logging mode is not enabled"
+        lockdown_command "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on"
+      fi
+      check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingopt | grep detail )
+      if [ "$check" ]; then
+        increment_secure "Firewall logging option detailed"
+      else
+        increment_insecure "Firewall logging option is not detailed"
+        lockdown_command "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail"
       fi
     fi
   fi

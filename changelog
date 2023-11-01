@@ -1527,3 +1527,5 @@
 # Updated documentation
 # 8.5.6: Wed  1 Nov 2023 20:43:59 AEDT
 # Updated kernel accounting test for MacOS Sonoma
+# 8.5.7: Wed  1 Nov 2023 21:10:07 AEDT
+# Updated firewall logging test for MacOS Sonoma
