@@ -2,7 +2,8 @@
 #
 # Check System Integrity Protection is enabled
 #
-# Refer to Section(s) 5.18 Page(s) 148-9 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.18  Page(s) 148-9 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.1.2 Page(s) 300-3 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_system_integrity () {

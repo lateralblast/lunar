@@ -11,6 +11,7 @@
 # Refer to Section(s) 6.2.8 Page(s) 260   CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 6.2.8 Page(s) 274   CIS Ubuntu 16.04 Benchmark v1.0.0
 # Refer to Section(s) 5.1.1 Page(s) 107-8 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.1.1 Page(s) 298-9 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_home_perms () {
