@@ -1531,3 +1531,5 @@
 # Updated firewall logging test for MacOS Sonoma
 # 8.5.8: Wed  1 Nov 2023 21:22:02 AEDT
 # Updated bonjour advertising test for MacOS Sonoma
+# 8.5.9: Wed  1 Nov 2023 22:10:04 AEDT
+# Updated web sharing and NFS check for MacOS Sonoma

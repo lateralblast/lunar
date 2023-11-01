@@ -12,6 +12,7 @@
 # Refer to Section(s) 2.2.7  Page(s) 99    CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 2.2.7  Page(s) 107   CIS Ubuntu 16.04 Benchmark v1.0.0
 # Refer to Section(s) 4.6    Page(s) 105-6 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 4.3    Page(s) 294-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_nfs () {
@@ -22,12 +23,7 @@ audit_nfs () {
         check_itab rcnfs off
       fi
       if [ "$os_name" = "Darwin" ]; then
-        check=$( ps -ef | grep nfsd | grep -v grep )
-        if [ "$check" ]; then
-          increment_insecure "NFS daemon enabled"
-        else
-          increment_secure "NFS daemon disabled"
-        fi
+        check_launchctl_service com.apple.nfsd off
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
