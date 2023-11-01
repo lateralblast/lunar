@@ -1525,3 +1525,5 @@
 # Added MacOS SMB guest sharing check
 # 8.5.5: Wed  1 Nov 2023 19:56:46 AEDT
 # Updated documentation
+# 8.5.6: Wed  1 Nov 2023 20:43:59 AEDT
+# Updated kernel accounting test for MacOS Sonoma

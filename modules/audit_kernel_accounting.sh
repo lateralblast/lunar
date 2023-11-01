@@ -2,9 +2,10 @@
 #
 # Check Kernel Accounting
 #
-# Refer to Section(s) 3.3 Page(s) 38-39 CIS Apple OS X 10.8  Benchmark v1.0.0
-# Refer to Section(s) 3.3 Page(s) 92    CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 4.9 Page(s) 73-5  CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 3.3     Page(s) 38-39           CIS Apple OS X 10.8  Benchmark v1.0.0
+# Refer to Section(s) 3.3     Page(s) 92              CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 4.9     Page(s) 73-5            CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 3.2,4-5 Page(s) 274-5,8-9,280-3 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_kernel_accounting () {
@@ -39,7 +40,13 @@ audit_kernel_accounting () {
       fi
     else
       check_file="/etc/security/audit_control"
+      check_file_perms /etc/security/audit_control 0750 root wheel
+      check_file_perms /var/audit 0750 root wheel
       check_file_value is $check_file flags colon "lo,ad,fd,fm,-all" hash
+      if [ "$os_version" -ge 14 ]; then
+        check_file="/etc/security/audit_control"
+        check_file_value is $check_file expire-after colon "60d" hash
+      fi
     fi
   fi
 }
