@@ -46,9 +46,9 @@ check_file_perms () {
     return
   fi
   if [ "$check_owner" != "" ]; then
-    check_result=$( find "$check_file" -perm $check_perms -user $check_owner -group $check_group 2> /dev/null )
+    check_result=$( find "$check_file" -depth 0 -perm $check_perms -user $check_owner -group $check_group 2> /dev/null )
   else
-    check_result=$( find "$check_file" -perm $check_perms 2> /dev/null )
+    check_result=$( find "$check_file" -depth 0 -perm $check_perms 2> /dev/null )
   fi
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then
