@@ -1535,3 +1535,5 @@
 # Updated web sharing and NFS check for MacOS Sonoma
 # 8.6.0: Thu  2 Nov 2023 07:15:56 AEDT
 # Updated documentation
+# 8.6.1: Thu  2 Nov 2023 08:35:25 AEDT
+# Added Apple Mobile File Integrity check
