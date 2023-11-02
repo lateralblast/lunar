@@ -55,5 +55,6 @@ full_audit_osx_services () {
   audit_universal_control
   audit_touch_id
   aduit_apfs
+  audit_core_storage
   audit_amfi
 }

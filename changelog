@@ -1545,3 +1545,5 @@
 # Updated MacOS password policy check for Sonoma
 # 8.6.5: Thu  2 Nov 2023 14:06:09 AEDT
 # Added APFS encrypted volume checks
+# 8.6.6: Thu  2 Nov 2023 14:16:30 AEDT
+# Added Core Storage encrypted volume checks

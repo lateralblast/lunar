@@ -2,7 +2,7 @@
 #
 # Ensure all user storage APFS volumes are encrypted
 #
-# Refer to Section(s) 2.3.1.1 Page(s) 72-6 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 5.3.1 Page(s) 335-8 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_apfs () {
