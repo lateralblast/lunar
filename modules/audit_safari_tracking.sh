@@ -2,7 +2,7 @@
 #
 # Check Safari Tracking
 #
-# Refer to Section(s) 6.3.4-5 Page(s) 385-94 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 6.3.4-6 Page(s) 385-98 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_safari_tracking () {
@@ -34,6 +34,12 @@ audit_safari_tracking () {
             increment_secure "Hide IP Address in Safari for $user_name is set to $safari_hide_ip"
           else
             increment_insecure "Hide IP Address in Safari for $user_name is not set to $safari_hide_ip"
+          fi
+          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari WebKitPreferences.privateClickMeasurementEnabled 2>&1 > /dev/null )
+          if [ "$check_value" = "$safari_ad_privacy" ]; then
+            increment_secure "Safari Advertising Privacy Protection for $user_name is set to $safari_ad_privacy"
+          else
+            increment_insecure "Safari Advertising Privacy Protection for $user_name is not set to $safari_ad_privacy"
           fi
         done
       fi
