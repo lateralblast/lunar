@@ -65,4 +65,5 @@ full_audit_osx_services () {
   audit_safari_tracking
   audit_safari_auto_fill
   audit_safari_allow_popups
+  audit_safari_javascript
 }
