@@ -1557,3 +1557,5 @@
 # Updated documentation
 # 8.7.1: Thu  2 Nov 2023 20:11:40 AEDT
 # Added Safari history limit check
+# 8.7.2: Thu  2 Nov 2023 20:23:00 AEDT
+# Added Safari Fradulent Website Warning check
