@@ -1,5 +1,7 @@
 # audit_sudo_timeout
 #
+# Check sudo timeout
+#
 # Refer to Section(s) 5.1 Page(s) 48-9  CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section(s) 5.3 Page(s) 128-9 CIS Apple OS X 10.12 Benchmark v1.0.0
 # Refer to Section(s) 5.4 Page(s) 343-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0

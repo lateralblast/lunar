@@ -21,4 +21,5 @@ full_audit_password_services () {
   audit_crypt_policy
   audit_account_lockout
   audit_sudo_timeout
+  audit_sudo_timestamp
 }

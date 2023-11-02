@@ -57,4 +57,6 @@ full_audit_osx_services () {
   aduit_apfs
   audit_core_storage
   audit_amfi
+  audit_sudo_timeout
+  audit_sudo_timestamp
 }
