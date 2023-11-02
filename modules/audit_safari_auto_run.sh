@@ -9,7 +9,7 @@
 
 audit_safari_auto_run () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Safari"
+    verbose_message "Safari Auto-run"
     check_osx_defaults com.apple.Safari AutoOpenSafeDownloads 0 int
     check_osx_defaults ~/Library/Preferences/com.apple.safari.plist PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions string
   fi
