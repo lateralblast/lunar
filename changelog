@@ -1547,3 +1547,5 @@
 # Added APFS encrypted volume checks
 # 8.6.6: Thu  2 Nov 2023 14:16:30 AEDT
 # Added Core Storage encrypted volume checks
+# 8.6.7: Thu  2 Nov 2023 14:55:46 AEDT
+# Updated sudoers timeout check
