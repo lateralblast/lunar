@@ -11,6 +11,7 @@
 # Refer to Section(s) 1.7.1.1-3 Page(s) 68-73   CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 1.7.1.1-6 Page(s) 75-83   CIS Ubuntu 16.04 Benchmark v1.0.0
 # Refer to Section(s) 5.13      Page(s) 143     CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.8       Page(s) 352-4   CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_issue_banner () {

@@ -3,6 +3,7 @@
 # Check root login
 #
 # Refer to Section(s) 5.7 Page(s) 135 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 5.6 Page(s) 348-9 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_login_root () {

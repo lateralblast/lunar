@@ -1551,3 +1551,5 @@
 # Updated sudoers timeout check
 # 8.6.8: Thu  2 Nov 2023 15:19:35 AEDT
 # Added sudoers timestamp check
+# 8.6.9: Thu  2 Nov 2023 15:39:28 AEDT
+# Updated documentation
