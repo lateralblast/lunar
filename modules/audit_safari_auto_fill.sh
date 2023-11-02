@@ -2,7 +2,7 @@
 #
 # Check Safari Auto Fill
 #
-# Refer to Section(s) 6.3.4-6 Page(s) 385-402 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 6.3.8 Page(s) 403-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_safari_auto_fill () {
