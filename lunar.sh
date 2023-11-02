@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.7.5
+# Version:      8.7.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -101,6 +101,7 @@ webkit_storage_blocking_policy="1"
 webkit_prefs_storage_blocking_policy="1"
 safari_hide_ip="33422572"
 safari_ad_privacy="1"
+safari_full_url="1"
 
 # Set up some global variables
 

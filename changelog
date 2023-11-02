@@ -1565,3 +1565,5 @@
 # Added Hide IP Address in Safari check
 # 8.7.5: Thu  2 Nov 2023 21:47:18 AEDT
 # Added Safari Advertising Privacy Protection check
+# 8.7.6: Fri  3 Nov 2023 08:07:58 AEDT
+# Added Safari show full URL check

@@ -2,7 +2,7 @@
 #
 # Check Safari Tracking
 #
-# Refer to Section(s) 6.3.4-6 Page(s) 385-98 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 6.3.4-6 Page(s) 385-402 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_safari_tracking () {
@@ -40,6 +40,12 @@ audit_safari_tracking () {
             increment_secure "Safari Advertising Privacy Protection for $user_name is set to $safari_ad_privacy"
           else
             increment_insecure "Safari Advertising Privacy Protection for $user_name is not set to $safari_ad_privacy"
+          fi
+          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari ShowFullURLInSmartSearchField 2>&1 > /dev/null )
+          if [ "$check_value" = "$safari_full_url" ]; then
+            increment_secure "Safari Show Full Website Address for $user_name is set to $safari_full_url"
+          else
+            increment_insecure "Safari Show Full Website Address for $user_name is not set to $safari_full_url"
           fi
         done
       fi
