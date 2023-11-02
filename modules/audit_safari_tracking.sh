@@ -17,7 +17,7 @@ audit_safari_tracking () {
           else
             increment_insecure "Safari Block Storage Policy for $user_name is not set to $safari_block_storage_policy"
           fi
-          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari WebKitStorageBlockingPolicyy 2>&1 > /dev/null )
+          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari WebKitStorageBlockingPolicy 2>&1 > /dev/null )
           if [ "$check_value" = "$webkit_storage_blocking_policy" ]; then
             increment_secure "WebKit Storage Blocking Policy for $user_name is set to $webkit_storage_blocking_policy"
           else

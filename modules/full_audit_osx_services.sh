@@ -63,4 +63,5 @@ full_audit_osx_services () {
   audit_safari_history
   audit_safari_warn
   audit_safari_tracking
+  audit_safari_auto_fill
 }
