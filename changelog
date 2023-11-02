@@ -1559,3 +1559,5 @@
 # Added Safari history limit check
 # 8.7.2: Thu  2 Nov 2023 20:23:00 AEDT
 # Added Safari Fradulent Website Warning check
+# 8.7.3: Thu  2 Nov 2023 21:12:05 AEDT
+# Added Safari Tracking check
