@@ -1561,3 +1561,5 @@
 # Added Safari Fradulent Website Warning check
 # 8.7.3: Thu  2 Nov 2023 21:12:05 AEDT
 # Added Safari Tracking check
+# 8.7.4: Thu  2 Nov 2023 21:19:57 AEDT
+# Added Hide IP Address in Safari check

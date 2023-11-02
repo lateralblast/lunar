@@ -2,7 +2,7 @@
 #
 # Check Safari Tracking
 #
-# Refer to Section(s) 6.3.4 Page(s) 385-90 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 6.3.4-5 Page(s) 385-94 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_safari_tracking () {
@@ -28,6 +28,12 @@ audit_safari_tracking () {
             increment_secure "WebKit Preferences Storage Blocking Policy for $user_name is set to $webkit_prefs_storage_blocking_policy"
           else
             increment_insecure "WebKit Preferences Storage Blocking Policy for $user_name is not set to $webkit_prefs_storage_blocking_policy"
+          fi
+          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari WBSPrivacyProxyAvailabilityTraffic 2>&1 > /dev/null )
+          if [ "$check_value" = "$safari_hide_ip" ]; then
+            increment_secure "Hide IP Address in Safari for $user_name is set to $safari_hide_ip"
+          else
+            increment_insecure "Hide IP Address in Safari for $user_name is not set to $safari_hide_ip"
           fi
         done
       fi
