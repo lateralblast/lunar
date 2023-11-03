@@ -2,8 +2,9 @@
 #
 # Check secure keyboard entry settings
 #
-# Refer to Section(s) 2.8  Page(s) 33 CIS Apple OS X 10.8 Benchmark v1.0.0
-# Refer to Section(S) 2.10 Page(s) 81 CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 2.8   Page(s) 33    CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(S) 2.10  Page(s) 81    CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 6.4.1 Page(s) 413-6 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_secure_keyboard_entry () {
