@@ -11,36 +11,11 @@ audit_siri () {
       verbose_message "Siri Settings"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read com.apple.assistant.support.plist 'Assistant Enabled' 2>&1 )
-          if [ "$check_value" = "$siri_assistant" ]; then
-            increment_secure "Siri Assistant for $user_name is set to $siri_assistant"
-          else
-            increment_insecure "Siri Assistant for $user_name is not set to $siri_assistant"
-          fi
-          check_value=$( sudo -u $user_name defaults read com.apple.Siri.plist StatusMenuVisible 2>&1 )
-          if [ "$check_value" = "$siri_status" ]; then
-            increment_secure "Siri Status Menu for $user_name is set to $siri_status"
-          else
-            increment_insecure "Siri Status Menu for $user_name is not set to $siri_status"
-          fi
-          check_value=$( sudo -u $user_name defaults read com.apple.Siri.plist LockscreenEnabled 2>&1 )
-          if [ "$check_value" = "$siri_lockscreen" ]; then
-            increment_secure "Siri Locksreen for $user_name is set to $siri_lockscreen"
-          else
-            increment_insecure "Siri Locksreen for $user_name is not set to $siri_lockscreen"
-          fi
-          check_value=$( sudo -u $user_name defaults read com.apple.Siri.plist VoiceTriggerUserEnabled 2>&1 )
-          if [ "$check_value" = "$siri_trigger" ]; then
-            increment_secure "Siri Voice Trigger for $user_name is set to $siri_trigger"
-          else
-            increment_insecure "Siri Voice Trigger for $user_name is not set to $siri_trigger"
-          fi
-          check_value=$( sudo -u $user_name defaults read com.apple.Siri.plist TypeToSiriEnabled 2>&1 )
-          if [ "$check_value" = "$siri_type" ]; then
-            increment_secure "Siri Type for $user_name is set to $siri_type"
-          else
-            increment_insecure "Siri Type for $user_name is not set to $siri_type"
-          fi
+          check_osx_defaults com.apple.assistant.support.plist 'Assistant Enabled' 0 bool $user_name
+          check_osx_defaults com.apple.Siri.plist StatusMenuVisible 1 bool $user_name
+          check_osx_defaults com.apple.Siri.plist LockscreenEnabled 0 bool $user_name
+          check_osx_defaults com.apple.Siri.plist VoiceTriggerUserEnabled 0 bool $user_name
+          check_osx_defaults com.apple.Siri.plist TypeToSiriEnabled 0 bool $user_name
         done
       fi
     fi

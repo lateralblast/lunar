@@ -11,12 +11,7 @@ audit_media_sharing () {
       verbose_message "Media Sharing"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read com.apple.amp.mediasharingd home-sharing-enabled )
-          if [ "$check_value" = "$media_sharing" ]; then
-            increment_secure "Media sharing for $user_name is set to $media_sharing"
-          else
-            increment_insecure "Media sharing for $user_name is not set to $media_sharing"
-          fi
+          check_osx_defaults com.apple.amp.mediasharingd home-sharing-enabled 0 bool $user_name
         done
       fi
     fi

@@ -1577,3 +1577,5 @@
 # Added Safari status bar check
 # 8.8.1: Fri  3 Nov 2023 11:45:26 AEDT
 # Added MacOS Administrative login to another session check
+# 8.8.2: Fri  3 Nov 2023 19:38:55 AEDT
+# Code cleanup for MacOS defaults function

@@ -15,12 +15,7 @@ audit_screen_lock () {
       verbose_message "Screen Idle Time"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults -currentHost read com.apple.screensaver idleTime 2>&1 > /dev/null )
-          if [ "$check_value" = "$screen_idletime" ]; then
-            increment_secure "Screen Idle Time for $user_name is set to $screen_idletime"
-          else
-            increment_insecure "Screen Idle Time for $user_name is not set to $screen_idletime"
-          fi
+          check_osx_defaults com.apple.screensaver idleTime 600 int currentHost $user_name
         done
       fi
     fi

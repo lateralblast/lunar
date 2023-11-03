@@ -17,12 +17,7 @@ audit_usage_data () {
       check_file_perms "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" 644 root admin
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read /Users/$user_name/Library/Preferences/com.apple.assistant.support "Siri Data Sharing Opt-In Status" 2>&1 > /dev/null )
-          if [ "$check_value" = "$siri_optin" ]; then
-            increment_secure "Air Drop Disable for $user_name is set to $disable_airdrop"
-          else
-            increment_insecure "Air Drop Disable for $user_name is not set to $disable_airdrop"
-          fi
+          check_osx_defaults com.apple.assistant.support "Siri Data Sharing Opt-In Status" 2 int $user_name
         done
       fi
     fi

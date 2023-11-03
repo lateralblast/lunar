@@ -10,14 +10,8 @@ audit_safari_javascript () {
     if [ "$os_version" -ge 14 ]; then
       verbose_message "Safari Javascript"
       if [ "$audit_mode" != 2 ]; then
-        value="0"
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari WebKitPreferences.javaScriptEnabled 2>&1 > /dev/null )
-          if [ "$check_value" = "$value" ]; then
-            increment_secure "Safari Javascript for $user_name is set to $value"
-          else
-            increment_insecure "Safari Javascript for $user_name is not set to $value"
-          fi
+          check_osx_defaults com.apple.Safari WebKitPreferences.javaScriptEnabled 0 bool $user_name
         done
       fi
     fi

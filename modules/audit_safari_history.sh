@@ -11,12 +11,7 @@ audit_safari_history () {
       verbose_message "Safari History"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( /usr/bin/sudo -u $user_name /usr/bin/defaults read /Users/$user_name/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari HistoryAgeInDaysLimit 2>&1 > /dev/null )
-          if [ "$check_value" = "$safari_history" ]; then
-            increment_secure "Safari History Limit for $user_name is set to $safari_history"
-          else
-            increment_insecure "Safari History Limit for $user_name is not set to $safari_history"
-          fi
+          check_osx_defaults com.apple.Safari HistoryAgeInDaysLimit 31 $user_name
         done
       fi
     fi

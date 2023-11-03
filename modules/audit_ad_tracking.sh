@@ -12,12 +12,7 @@ audit_ad_tracking () {
       verbose_message "Ad Tracking"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read /Users/$user_name/Library/Preferences/com.apple.AdLib.plist allowApplePersonalizedAdvertising 2>&1 > /dev/null )
-          if [ "$check_value" = "$ad_tracking" ]; then
-            increment_secure "Ad Tracking for $user_name is set to $ad_tracking"
-          else
-            increment_insecure "Ad Tracking for $user_name is not set to $ad_tracking"
-          fi
+          check_osx_defaults com.apple.AdLib.plist allowApplePersonalizedAdvertising 0 bool $user_name
         done
       fi
     fi

@@ -17,18 +17,8 @@ audit_bt_sharing () {
     if [ "$audit_mode" != 2 ]; then
       if [ "$os_version" -ge 14 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read com.apple.Bluetooth PrefKeyServicesEnabled 2>&1 )
-          if [ "$check_value" = "$bt_sharing" ]; then
-            increment_secure "Bluetooth sharing for $user_name is set to $bt_sharing"
-          else
-            increment_insecure "Bluetooth sharing for $user_name is not set to $bt_sharing"
-          fi
-          check_value=$( sudo -u $user_name defaults read com.apple.controlcenter.plist Bluetooth 2>&1 )
-          if [ "$check_value" = "$bt_status" ]; then
-            increment_secure "Bluetooth Status in Menu for $user_name is set to $bt_status"
-          else
-            increment_insecure "Bluetooth Status in Menu for $user_name is not set to $bt_status"
-          fi
+          check_osx_defaults com.apple.Bluetooth PrefKeyServicesEnabled 0 bool $user_name
+          check_osx_defaults com.apple.controlcenter.plist Bluetooth 18 int $user_name
         done
       fi
       check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i power |cut -f2 -d: |sed "s/ //g" )

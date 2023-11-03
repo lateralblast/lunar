@@ -12,12 +12,7 @@ audit_lockdown () {
       verbose_message "Lockdown Mode"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read .GlobalPreferences.plist LDMGlobalEnabled 2>&1 )
-          if [ "$check_value" = "$lockdown_enable" ]; then
-            increment_secure "Lockdown mode for $user_name is set to $lockdown_enable"
-          else
-            increment_insecure "Lockdown mode for $user_name is not set to $lockdown_enable"
-          fi
+          check_osx_defaults .GlobalPreferences LDMGlobalEnabled 1 bool
         done
       fi
     fi

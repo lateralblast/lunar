@@ -12,12 +12,7 @@ audit_air_drop () {
       verbose_message "Air Drop"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults read com.apple.NetworkBrowser DisableAirDrop 2>&1 > /dev/null )
-          if [ "$check_value" = "$disable_airdrop" ]; then
-            increment_secure "Air Drop Disable for $user_name is set to $disable_airdrop"
-          else
-            increment_insecure "Air Drop Disable for $user_name is not set to $disable_airdrop"
-          fi
+          check_osx_defaults com.apple.NetworkBrowser DisableAirDrop 1 bool $user_name
         done
       fi
     fi

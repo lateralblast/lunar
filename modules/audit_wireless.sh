@@ -12,12 +12,7 @@ audit_wireless () {
     verbose_message "Wifi information menu"
     if [ "$os_name" = "Darwin" ] && [ "$os_version" -ge 14 ]; then
       for user_name in `ls /Users |grep -v Shared`; do
-        check_value=$( sudo -u $user_name defaults -currentHost read com.apple.controlcenter.plist DisableAirDrop 2>&1 > /dev/null )
-        if [ "$check_value" = "$wifi_status" ]; then
-          increment_secure "Wi-Fi status in Menu Bar for $user_name is set to $wifi_status"
-        else
-          increment_insecure "Wi-Fi status in Menu Bar for $user_name is not set to $wifi_status"
-        fi
+        check_osx_defaults com.apple.controlcenter.plist WiFi 2 int currentHost $user_name
       done
     else
       if [ "$os_name" = "Darwin" ]; then

@@ -21,9 +21,8 @@ check_osx_defaults () {
     defaults_write="write"
     backup_file=$defaults_file
     if [ ! "$defaults_host" = "currentHost" ]; then
-      if [ ! "$defaults_host" = "" ]; then
-        defaults_user="$defaults_host"
-      fi
+      defaults_user="$defaults_host"
+      defaults_host=""
     fi
     if [ "$defaults_user" = "" ]; then
       defaults_command="sudo defaults"
@@ -31,7 +30,11 @@ check_osx_defaults () {
       defaults_command="sudo -u $defaults_user defaults"
     fi
     if [ "$audit_mode" != 2 ]; then
-      string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
+      if [ "$defaults_user" = "" ]; then
+        string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
+      else
+        string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
+      fi
       handle_output "Checking:  $string"
       if [ "$defaults_host" = "currentHost" ]; then
         defaults_read="-currentHost $defaults_read"
@@ -50,7 +53,11 @@ check_osx_defaults () {
         fi
       fi
       if [ "$check_value" != "$temp_value" ]; then
-        increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\""
+        if [ "$defaults_user" = "" ]; then
+          increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\""
+        else
+          increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
+        fi
         verbose_message "" fix
         if [ "$defaults_value" = "" ]; then
           verbose_message "$defaults_command delete $defaults_file $defaults_parameter" fix
@@ -129,7 +136,11 @@ check_osx_defaults () {
           echo ""
         fi
       else
-        increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
+        if [ "$defaults_user" = "" ]; then
+          increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
+        else
+          increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
+        fi
       fi
     else
       restore_file $backup_file $restore_dir

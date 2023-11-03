@@ -9,15 +9,10 @@
 audit_air_play () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
-      verbose_message "Air PLay Receiver"
+      verbose_message "Air Play Receiver"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_value=$( sudo -u $user_name defaults -currentHost read com.apple.controlcenter.plist AirplayRecieverEnabled )
-          if [ "$check_value" = "$enable_airplay" ]; then
-            increment_secure "Air PLay Receiver for $user_name is set to $enable_airplay"
-          else
-            increment_insecure "Air Play Receiver for $user_name is not set to $enable_airplay"
-          fi
+          check_osx_defaults com.apple.controlcenter.plist AirplayRecieverEnabled 0 bool currentHost $user_name
         done
       fi
     fi

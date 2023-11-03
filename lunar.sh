@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.8.1
+# Version:      8.8.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -76,32 +76,9 @@ aws_days_to_key_deletion="7"
 
 keychain_sync="1"
 disable_airdrop="1"
-enable_airplay="0"
 asset_cache="false"
-media_sharing="0"
-bt_sharing="0"
 wifi_status="2"
-bt_status="18"
-siri_assistant="0"
-siri_status="1"
-siri_lockscreen="0"
-siri_trigger="0"
-siri_type="0"
-siri_optin="2"
-ad_tracking="0"
-lockdown_enable="1"
-corner_value="6"
-uc_disable="1"
-screen_idletime="600"
 touchid_timeout="86400"
-safari_history="31"
-safari_warn="1"
-safari_block_storage_policy="2"
-webkit_storage_blocking_policy="1"
-webkit_prefs_storage_blocking_policy="1"
-safari_hide_ip="33422572"
-safari_ad_privacy="1"
-safari_full_url="1"
 
 # Set up some global variables
 

@@ -14,12 +14,7 @@ audit_universal_control () {
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
           for parameter in Disable DisableMagicEdges; do
-            check_value=$( sudo -u $user_name defaults read com.apple.universalcontrol $parameter 2>&1 > /dev/null )
-            if [ "$check_value" = "$uc_disable" ]; then
-              increment_secure "Universal Control setting $parameter for $user_name is set to $uc_disable"
-            else
-              increment_insecure "Universal Control setting $parameter for $user_name is not set to $uc_disablep"
-            fi
+            check_osx_defaults com.apple.universalcontrol $parameter 1 bool $user_name
           done
         done
       fi

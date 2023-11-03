@@ -52,7 +52,7 @@ audit_software_update () {
       check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate ConfigDataInstall 1 bool
       check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 1 bool
       check_osx_defaults /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired 1 bool
-      if [ "$os_version" -ge 14 ]; then
+      if [ "$os_version" -ge 13 ]; then
         check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload 1 bool
         check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates 1 bool
       fi
