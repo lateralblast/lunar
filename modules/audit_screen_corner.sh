@@ -8,7 +8,7 @@
 
 audit_screen_corner () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Screen Saver Corners"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do

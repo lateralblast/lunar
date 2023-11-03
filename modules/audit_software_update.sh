@@ -46,13 +46,13 @@ audit_software_update () {
     fi
   fi
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 12 ]; then
+    if [ "$long_os_version" -ge 1012 ]; then
       check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled 1 int
       check_osx_defaults /Library/Preferences/com.apple.commerce AutoUpdate 1 bool
       check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate ConfigDataInstall 1 bool
       check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 1 bool
       check_osx_defaults /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired 1 bool
-      if [ "$os_version" -ge 13 ]; then
+      if [ "$long_os_version" -ge 1013 ]; then
         check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload 1 bool
         check_osx_defaults /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates 1 bool
       fi

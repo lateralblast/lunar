@@ -13,7 +13,7 @@ audit_printer_sharing () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Printer Sharing"
     if [ "$audit_mode" != 2 ]; then
-      if [ "$os_version" -ge 14 ]; then
+      if [ "$long_os_version" -ge 1014 ]; then
         printer_test=$( /usr/bin/sudo /usr/sbin/cupsctl | grep -c "_share_printers=0" )
       else
         printer_test=$( system_profiler SPPrintersDataType | grep Shared | awk '{print $2}' | grep 'Yes' |wc -l )

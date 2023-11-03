@@ -10,7 +10,7 @@
 audit_remote_apple_events () {
   if [ "$os_name" = "Darwin" ]; then
     verbose_message "Remote Apple Events"
-    if [ "$os_version" -ge 8 ]; then
+    if [ "$long_os_version" -ge 1008 ]; then
       check_osx_systemsetup getremoteappleevents off
     else
       check_launchctl_service eppc

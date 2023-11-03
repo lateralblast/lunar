@@ -34,7 +34,7 @@ audit_password_strength () {
 #      check_pwpolicy minimumSymbolCharacters 1
       check_pwpolicy RequiresNumeric 1
 #      check_pwpolicy minimumNumericCharacters 1
-      if [ "$os_version" -ge 14 ]; then
+      if [ "$long_os_version" -ge 1014 ]; then
         check_pwpolicy requiresMixedCase 1
         check_pwpolicy usingHistory 15
       fi

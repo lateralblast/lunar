@@ -10,7 +10,7 @@
 
 audit_location_services () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Location Services"
       if [ "$audit_mode" != 2 ]; then
         check_osx_defaults /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd LocationServicesEnabled 0 bool

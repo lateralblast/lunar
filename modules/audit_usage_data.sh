@@ -10,7 +10,7 @@
 
 audit_usage_data () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Usage Data"
       check_osx_defaults "Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" AutoSubmit 0 bool
       check_osx_defaults "Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" ThirdPartyDataSubmit 0 bool

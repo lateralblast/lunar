@@ -31,7 +31,7 @@ audit_ntp () {
       check_file_value is $check_file TIMESYNC eq -YES- hash
       check_launchctl_service org.ntp.ntpd on
       check_file="/private/etc/ntp.conf"
-      if [ "$os_version" -ge 9 ]; then
+      if [ "$long_os_version" -ge 1009 ]; then
         check_file="/etc/ntp-restrict.conf"
         check_file_value is $check_file restrict space "lo interface ignore wildcard interface listen lo" hash
         check_osx_systemsetup getusingnetworktime on

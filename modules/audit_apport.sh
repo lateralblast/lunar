@@ -6,7 +6,7 @@
 #.
 
 audit_apport () {
-  if [ "$os_name" = "Linux" ] && [ "$os_version" -ge 22 ]; then
+  if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 22 ]; then
     verbose_message "Automatic Error Reporting"
     check_file="/etc/default/apport"
     check_file_value is $check_file enabled eq 0

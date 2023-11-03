@@ -11,7 +11,7 @@
 
 audit_asset_cache () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 13 ]; then
+    if [ "$long_os_version" -ge 1013 ]; then
       verbose_message "Asset Cache"
       if [ "$audit_mode" != 2 ]; then
         check_value=$( /usr/bin/sudo /usr/bin/AssetCacheManagerUtil status 2>&1 |grep Activated |awk '{print $2}' )

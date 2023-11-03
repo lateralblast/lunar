@@ -1579,3 +1579,5 @@
 # Added MacOS Administrative login to another session check
 # 8.8.2: Fri  3 Nov 2023 19:38:55 AEDT
 # Code cleanup for MacOS defaults function
+# 8.8.3: Fri  3 Nov 2023 22:00:36 AEDT
+# Improved MacOS version handling

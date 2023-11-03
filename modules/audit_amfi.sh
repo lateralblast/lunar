@@ -7,7 +7,7 @@
 
 audit_amfi () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 12 ]; then
+    if [ "$long_os_version" -ge 1012 ]; then
       verbose_message "Apple Mobile File Integrity"
       if [ "$audit_mode" != 2 ]; then
         check_value=$( sudo nvram -p 2>&1 > /dev/null |grep amfi |wc -l |sed "s/ //g" )

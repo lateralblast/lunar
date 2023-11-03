@@ -9,7 +9,7 @@
 
 audit_account_switching () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Administrator Account Login to Another User Session"
       if [ "$audit_mode" != 2 ]; then
         value="0"

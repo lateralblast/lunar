@@ -8,7 +8,7 @@
 
 audit_touch_id () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Touch ID"
       if [ "$audit_mode" != 2 ]; then
         check_value=$( sudo bioutil -r -s |egrep "Touch|Biometric" |grep timeout |cut -f2 -d: |sed "s/ //g" 2>&1 > /dev/null )

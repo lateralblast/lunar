@@ -7,7 +7,7 @@
 
 audit_safari_javascript () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Safari Javascript"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do

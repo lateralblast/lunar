@@ -7,7 +7,7 @@
 
 audit_keychain_sync () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Keychain sync"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do

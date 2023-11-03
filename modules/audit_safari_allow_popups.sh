@@ -7,7 +7,7 @@
 
 audit_safari_allow_popups () {
   if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Safari Allow Popups"
       if [ "$audit_mode" != 2 ]; then
         value="0"

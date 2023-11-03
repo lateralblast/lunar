@@ -13,7 +13,7 @@ audit_guest_sharing () {
     verbose_message "Guest account file sharing"
     check_osx_defaults /Library/Preferences/com.apple.AppleFileServer guestAccess no bool
     check_osx_defaults /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess no bool
-    if [ "$os_version" -ge 14 ]; then
+    if [ "$long_os_version" -ge 1014 ]; then
       check_sysadminctl smbGuestAccess off
     fi
   fi

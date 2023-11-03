@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.8.2
+# Version:      8.8.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -310,6 +310,15 @@ check_os_release () {
   fi
   if [ ! "$os_codename" = "" ]; then
     echo "Codename:  $os_codename"
+  fi
+  if [ "$os_name" = "Darwin" ]; then
+    if [ $os_update -lt 10 ]; then
+      long_update="0$os_update"
+    else
+      long_update="$os_update"
+    fi
+    long_os_version="$os_version$long_update"
+    #echo "XRelease:  $long_os_version"
   fi
 }
 
