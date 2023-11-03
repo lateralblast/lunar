@@ -1575,3 +1575,5 @@
 # Added Safari Javascript check
 # 8.8.0: Fri  3 Nov 2023 10:14:10 AEDT
 # Added Safari status bar check
+# 8.8.1: Fri  3 Nov 2023 11:45:26 AEDT
+# Added MacOS Administrative login to another session check
