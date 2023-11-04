@@ -100,10 +100,10 @@ check_file_value () {
           verbose_message "Setting:   $string"
           if [ "$check_file" = "/etc/system" ]; then
             reboot=1
-            verbose_message "Notice:    Reboot required"
+            verbose_message "Reboot required" notice
           fi
           if [ "$sshd_test" ]; then
-            verbose_message "Notice:    Service restart required for SSH"
+            verbose_message "Service restart required for SSH" notice
           fi
           backup_file $check_file
           if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
@@ -231,10 +231,10 @@ check_file_value () {
             verbose_message "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
             if [ "$check_file" = "/etc/system" ]; then
               reboot=1
-              verbose_message "Notice:    Reboot required"
+              verbose_message "Reboot required" notice
             fi
             if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
-              verbose_message "Notice:    Service restart required for SSH"
+              verbose_message "Service restart required for SSH" notice
             fi
             backup_file $check_file
             if [ "$check_parameter" != "$parameter_name" ]; then

@@ -42,10 +42,10 @@ disable_value () {
             verbose_message "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
             if [ "$check_file" = "/etc/system" ]; then
               reboot=1
-              verbose_message "Notice:    Reboot required"
+              verbose_message "Reboot required" notice
             fi
             if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
-              verbose_message "Notice:    Service restart required SSH"
+              verbose_message "Service restart required SSH" notice
             fi
             backup_file $check_file
             cat $check_file | sed 's/$parameter_name/$comment_value&' > $temp_file

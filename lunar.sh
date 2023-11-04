@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.8.5
+# Version:      8.8.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -637,8 +637,11 @@ verbose_message () {
       if [ "$style" = "backup" ]; then
         "Backup:    $text"
       fi
-      if [ "$style" = "setting" ]; then
+      if [ "$style" = "setting" ] || [ "$style" = "set" ]; then
         "Setting:   $text"
+      fi
+      if [ "$style" = "restoring" ] || [ "$style" = "restore" ]; then
+        "Restoring: $text"
       fi
     fi
   fi

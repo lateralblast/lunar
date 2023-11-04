@@ -22,7 +22,7 @@ restore_file () {
       sum_check_file=$( cksum $check_file |awk '{print $1}' )
       sum_restore_file=$( cksum $restore_file |awk '{print $1}' )
       if [ "$sum_check_file" != "$sum_restore_file" ]; then
-        verbose_message "Restoring: File $restore_file to $check_file"
+        verbose_message "File $restore_file to $check_file" restore
         cp -p $restore_file $check_file
         if [ "$os_name" = "SunOS" ]; then
           if [ "$os_version" != "11" ]; then
@@ -33,10 +33,10 @@ restore_file () {
         fi
         if [ "$check_file" = "/etc/system" ]; then
           reboot=1
-          verbose_message "Notice:    Reboot required"
+          verbose_message "Reboot required" notice
         fi
         if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
-          verbose_message "Notice:    Service restart required"
+          verbose_message "Service restart required" notice
         fi
       fi
     fi

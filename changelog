@@ -1585,3 +1585,5 @@
 # Added check for gsettings when running gnome checks
 # 8.8.5: Sat  4 Nov 2023 16:31:08 AEDT
 # Improved tcpwrappers check
+# 8.8.6: Sat  4 Nov 2023 16:50:01 AEDT
+# Improved verbose output

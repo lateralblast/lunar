@@ -61,7 +61,7 @@ check_dockerd () {
           IFS=$'\n'
           docker_info=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null )
           if [ ! "$docker_info" ]; then
-            verbose_message "Notice:    No Docker instances"
+            verbose_message "No Docker instances" notice
           fi
           for info in $docker_info; do
             docker_id=$( echo "$info" | cut -f1 -d: )
@@ -112,7 +112,7 @@ check_dockerd () {
               ;;
           esac
           if [ ! "$docker_info" ]; then
-            verbose_message "Notice:    No Docker instances with $param set"
+            verbose_message "No Docker instances with $param set" notice
           fi
           for info in $docker_info; do
             docker_id=$( echo "$info" | cut -f1 -d: )
