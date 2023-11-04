@@ -54,10 +54,28 @@ audit_tcp_wrappers () {
     check_file_value is $check_file ALL colon " localhost" hash
     check_file_value is $check_file ALL colon " 127.0.0.1" hash
     if [ ! -f "$check_file" ]; then
-      for ip_address in $( ifconfig -a | grep 'inet addr' | grep -v ':127.' | awk '{print $2}' | cut -f2 -d":" ); do
-        netmask=$( ifconfig -a | grep '$ip_address' | awk '{print $3}' | cut -f2 -d":" )
-        check_file_value is $check_file ALL colon " $ip_address/$netmask" hash
-      done
+      check=$( command -v ifconfig 2> /dev/null )
+      if [ "$check" ]; then
+        for ip_address in $( ifconfig -a | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print $2}' | cut -f2 -d":" ); do
+          netmask=$( ifconfig -a | grep '$ip_address' | awk '{print $3}' | cut -f2 -d":" )
+          for daemon in "$tcpd_allow"; do
+            check_file_value is $check_file $daemon colon " $ip_address/$netmask" hash
+          done
+        done
+      else
+        check=$( command -v ip 2> /dev/null )
+        if [ "$check" ]; then
+          for ip_value in $( ip addr |grep 'inet [0-9]' |grep -v ' 127.' |awk '{print $2}' ); do
+            set -- $( echo "$ip_value" |awk -F"/" '{print $1" "$2 }' )
+            ip_address="$1"
+            cidr="$2"
+            netmask=$( cidr_to_mask $cidr )
+            for daemon in "$tcpd_allow"; do
+              check_file_value is $check_file $daemon colon " $ip_address/$netmask" hash
+            done
+          done
+        fi
+      fi
     fi
     if [ "$os_name" = "AIX" ]; then
       group_name="system"

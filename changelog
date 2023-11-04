@@ -1583,3 +1583,5 @@
 # Improved MacOS version handling
 # 8.8.4: Sat  4 Nov 2023 15:00:34 AEDT
 # Added check for gsettings when running gnome checks
+# 8.8.5: Sat  4 Nov 2023 16:31:08 AEDT
+# Improved tcpwrappers check
