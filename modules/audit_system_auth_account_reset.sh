@@ -20,14 +20,14 @@ audit_system_auth_account_reset () {
               if [ "$audit_mode" = "1" ]; then
                 increment_insecure "Account reset entry not enabled in $check_file"
                 verbose_message "cp $check_file $temp_file" fix
-                verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_failback.so\" ) { print \"auth\trequired\tpam_failback.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
+                verbose_message "cat $temp_file |awk '( $1 == \"account\" && $2 == \"required\" && $3 == \"pam_failback.so\" ) { print \"auth\trequired\tpam_faillock.so onerr=fail no_magic_root reset\"; print $0; next };' > $check_file" fix
                 verbose_message "rm $temp_file" fix
               fi
               if [ "$audit_mode" = 0 ]; then
                 backup_file $check_file
                 verbose_message "Setting:   Account reset entry in $check_file"
                 cp $check_file $temp_file
-                cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_failback.so" ) { print "auth\trequired\tpam_failback.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
+                cat $temp_file |awk '( $1 == "account" && $2 == "required" && $3 == "pam_faillock.so" ) { print "auth\trequired\tpam_failback.so onerr=fail no_magic_root reset"; print $0; next };' > $check_file
                 rm $temp_file
               fi
             else
