@@ -1589,3 +1589,5 @@
 # Improved verbose output
 # 8.8.7: Sun 12 Nov 2023 20:41:54 AEDT
 # Fixed PAM based account lockout issue
+# 8.8.8: Sun 12 Nov 2023 20:57:03 AEDT
+# More fixes for PAM checks

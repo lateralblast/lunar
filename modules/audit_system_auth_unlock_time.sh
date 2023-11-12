@@ -17,7 +17,11 @@ audit_system_auth_unlock_time () {
       os_check=1
     fi
     if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
-      os_check=1
+      if [ "$os_version" -ge 22 ]; then
+        os_check=0
+      else
+        os_check=1
+      fi
     fi
     for check_file in /etc/pam.d/system-auth /etc/pam.d/common-auth; do
       if [ -f "$check_file" ]; then

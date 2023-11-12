@@ -16,14 +16,22 @@ audit_system_auth_no_magic_root () {
             if [ "$audit_mode" = "1" ]; then
               increment_insecure "Auth entry not enabled in $check_file"
               verbose_message "rm $temp_file" fix
-              verbose_message "cat $temp_file |awk '( $1 == \"auth\" && $2 == \"required\" && $3 == \"pam_deny.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root\"; print $0; next };' > $check_file" fix
+              if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 22 ]; then
+                verbose_message "cat $temp_file |awk '( $1 == \"auth\" && $2 == \"required\" && $3 == \"pam_deny.so\" ) { print \"auth\trequired\tpam_faillock.so onerr=fail no_magic_root\"; print $0; next };' > $check_file" fix
+              else
+                verbose_message "cat $temp_file |awk '( $1 == \"auth\" && $2 == \"required\" && $3 == \"pam_deny.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root\"; print $0; next };' > $check_file" fix
+              fi
               verbose_message "rm $temp_file" fix
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $check_file
               verbose_message "Setting:   Auth entry in $check_file"
               cp $check_file $temp_file
-              cat $temp_file |awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root"; print $0; next };' > $check_file
+              if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 22 ]; then
+                cat $temp_file |awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_faillock.so onerr=fail no_magic_root"; print $0; next };' > $check_file
+              else
+                cat $temp_file |awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root"; print $0; next };' > $check_file
+              fi  
               rm $temp_file
             fi
           else
