@@ -52,7 +52,7 @@ check_file_perms () {
   fi
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then
-    if [ "$audit_mode" = 1 ]; then
+    if [ "$audit_mode" = 1 ] && [ -n "$check_result" ]; then
       increment_insecure "File $check_file has incorrect permissions"
       verbose_message "" fix
       verbose_message "chmod $check_perms $check_file" fix
