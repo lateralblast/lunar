@@ -1591,3 +1591,5 @@
 # Fixed PAM based account lockout issue
 # 8.8.8: Sun 12 Nov 2023 20:57:03 AEDT
 # More fixes for PAM checks
+# 8.8.9: Sun  9 Jun 2024 15:02:54 AEST
+# Fixed check_file_perms.sh find depth
