@@ -8,11 +8,13 @@
 audit_pae () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "XD/NX"
-    check_nx=`journalctl | grep 'protection: active' |tail -1 |grep active |wc -l`
-    if [ "$check_nx" = "1" ]; then
-      increment_secure "XD/NX is enabled"
-    else
-      increment_insecure "XD/NX is not enabled"
+    if [ -f "/var/log/dmesg" ]; then
+      check_nx=$(cat /var/log/dmesg | grep NX | grep 'protection: active' |tail -1 |grep active |wc -l)
+      if [ "$check_nx" = "1" ]; then
+        increment_secure "XD/NX is enabled"
+      else
+        increment_insecure "XD/NX is not enabled"
+      fi
     fi
   fi
 }

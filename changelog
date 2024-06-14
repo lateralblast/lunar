@@ -1593,3 +1593,5 @@
 # More fixes for PAM checks
 # 8.8.9: Sun  9 Jun 2024 15:02:54 AEST
 # Fixed check_file_perms.sh find depth
+# 8.9.0: Fri Jun 14 04:51:06 PM AEST 2024
+# Fix PAE check
