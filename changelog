@@ -1601,3 +1601,7 @@
 # Updated motd secure message check
 # 8.9.3: Mon Jun 17 02:39:20 PM AEST 2024
 # Updated ssh config check
+# 8.9.4: Mon Jun 17 04:26:30 PM AEST 2024
+# Fixes for auditd checks
+# 8.9.5: Mon Jun 17 04:52:05 PM AEST 2024
+# Improved syslog check

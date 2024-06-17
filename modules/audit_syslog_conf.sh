@@ -14,6 +14,19 @@ audit_syslog_conf () {
     verbose_message "Syslog Configuration"
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/syslog.conf"
+      if [ -f "/etc/rsyslog.conf" ]; then
+        systemd_check=$(command -v systemctl 2> /dev/null )
+        if [ -n "$systemd_check" ]; then
+          rsyslog_check=$( sudo systemctl |grep rsyslog |grep active |awk '{print $1}' )
+          if [ "$rsyslog_check" = "rsyslog.service" ]; then
+            if [ -f "/etc/rsyslog.d/90-cis.conf" ]; then
+              check_file="/etc/rsyslog.d/90-cis.conf"
+            else
+              check_file="/etc/rsyslog.conf"
+            fi
+          fi
+        fi
+      fi
       check_file_value is $check_file "authpriv.*" tab "/var/log/secure" hash
       check_file_value is $check_file "auth.*" tab "/var/log/messages" hash
       check_file_value is $check_file "daemon.*" tab "/var/log/daemon.log" hash

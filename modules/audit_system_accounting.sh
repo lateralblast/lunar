@@ -73,7 +73,7 @@ audit_system_accounting () {
           check_linux_package restore sysstat $restore_file
         fi
       fi
-      check_file="/etc/audit/audit.rules"
+      check_file="/etc/audit/rules.d/audit.rules"
       # Set failure mode to syslog notice
       check_append_file $check_file "-f 1" hash
       # Things that could affect time
