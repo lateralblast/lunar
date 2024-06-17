@@ -22,6 +22,8 @@ audit_wireless () {
         check=$( command -v nmcli 2> /dev/null )
         if [ "$check" ]; then
           check=$(nmcli radio all |grep enabled |wc -l)
+        else
+          check=$(find /sys/class/net/*/ -type d -name wireless |wc -l)
         fi
         answer="0"
       fi
