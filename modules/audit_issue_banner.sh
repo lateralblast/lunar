@@ -26,7 +26,7 @@ audit_issue_banner () {
       check_file_perms $check_file 0644 root root
       issue_check=0
       if [ -f "$check_file" ]; then
-        issue_check=$( grep -c 'NOTICE TO USERS' $check_file )
+        issue_check=$( egrep -c 'NOTICE TO USERS|UNAUTHORIZED ACCESS' $check_file )
       fi
       if [ "$audit_mode" != 2 ]; then
        verbose_message "Security message in $check_file"
@@ -60,6 +60,14 @@ audit_issue_banner () {
             echo "#                                                                             #" >> $check_file
             echo "# LOG OFF IMMEDIATELY if you do not agree to the conditions in this warning.  #" >> $check_file
             echo "###############################################################################" >> $check_file
+            # Alternate message
+            # echo "---------------------------------------------------------------------------------" >> $check_file
+            # echo "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED                                 " >> $check_file
+            # echo "You must have explicit, authorized permission to access or configure this device." >> $check_file
+            # echo "Unauthorized attempts and actions to access or use this system may result in     " >> $check_file
+            # echo "civil and/or criminal penalties.                                                 " >> $check_file
+            # echo "All activities performed on this device are logged and monitored.                " >> $check_file
+            # echo "---------------------------------------------------------------------------------" >> $check_file
             echo "" >> $check_file
           fi
         else

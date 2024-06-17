@@ -1597,3 +1597,5 @@
 # Fixed PAE check
 # 8.9.1: Mon Jun 17 02:11:39 PM AEST 2024
 # Improved wireless test
+# 8.9.2: Mon Jun 17 02:19:52 PM AEST 2024
+# Updated motd secure message check
