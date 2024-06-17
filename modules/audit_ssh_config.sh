@@ -32,9 +32,9 @@ audit_ssh_config () {
           check_file_value is $check_file GSSAPICleanupCredentials space yes hash
         fi
         check_file_perms $check_file 0600 root root
-        #check_file_value is $check_file Host space "*" hash
+        # check_file_value is $check_file Host space "*" hash
         check_file_value is $check_file UseLogin space no hash
-        check_file_value is $check_file Protocol space 2 hash
+        check_file_value is $check_file Protocol space $ssh_protocol hash
         check_file_value is $check_file X11Forwarding space no hash
         check_file_value is $check_file MaxAuthTries space 3 hash
         check_file_value is $check_file MaxAuthTriesLog space 0 hash
@@ -42,7 +42,9 @@ audit_ssh_config () {
         check_file_value is $check_file IgnoreRhosts space yes hash
         check_file_value is $check_file StrictModes space yes hash
         check_file_value is $check_file AllowTcpForwarding space no hash
-        check_file_value is $check_file ServerKeyBits space 1024 hash
+        if [ "$ssh_protocol" = "1" ]; then
+          check_file_value is $check_file ServerKeyBits space $ssh_key_size hash
+        fi
         check_file_value is $check_file GatewayPorts space no hash
         check_file_value is $check_file RhostsRSAAuthentication space no hash
         check_file_value is $check_file PermitRootLogin space no hash

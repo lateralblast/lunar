@@ -1599,3 +1599,5 @@
 # Improved wireless test
 # 8.9.2: Mon Jun 17 02:19:52 PM AEST 2024
 # Updated motd secure message check
+# 8.9.3: Mon Jun 17 02:39:20 PM AEST 2024
+# Updated ssh config check
