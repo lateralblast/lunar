@@ -66,13 +66,17 @@ check_systemctl_service () {
           echo ""
         fi
       fi
-      if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ]; then
-        if [ "$actual_status" != "$correct_status" ]; then
+      if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ] || [ "$actual_status" = "not-found" ]; then
+        if [ "$actual_status" != "$correct_status" ] && [ ! "$actual_status" = "not-found" ]; then
           increment_insecure "Service $service_name is not $correct_status"
           log_file="$work_dir/$log_file"
           lockdown_command "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_name $service_switch" "Service $service_name to $correct_status"
         else
-          increment_secure "Service $service_name is $correct_status"
+          if [ "$actual_status" = "not-found" ]; then
+            increment_secure "Service $service_name is $actual_status"
+          else
+            increment_secure "Service $service_name is $correct_status"
+          fi
         fi
       fi
     fi

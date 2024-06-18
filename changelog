@@ -1611,3 +1611,5 @@
 # Updated command line handling
 # 8.9.8: Tue 18 Jun 2024 21:30:13 AEST
 # Updated defaults
+# 8.9.9: Tue Jun 18 11:41:53 PM AEST 2024
+# Improved systemctl check
