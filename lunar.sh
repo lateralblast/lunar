@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.9.7
+# Version:      8.9.8
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -122,6 +122,8 @@ ssh_protocol="2"
 ssh_key_size="4096"
 do_audit=0
 do_fs=0
+audit_mode=1
+audit_type="local"
 
 # Disable daemons
 

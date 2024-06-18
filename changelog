@@ -1609,3 +1609,5 @@
 # Fixed code to print module info
 # 8.9.7: Tue Jun 18 18:52:41 AEST 2024
 # Updated command line handling
+# 8.9.8: Tue 18 Jun 2024 21:30:13 AEST
+# Updated defaults
