@@ -1605,3 +1605,7 @@
 # Fixes for auditd checks
 # 8.9.5: Mon Jun 17 04:52:05 PM AEST 2024
 # Improved syslog check
+# 8.9.6: Tue Jun 18 18:23:09 AEST 2024
+# Fixed code to print module info
+# 8.9.7: Tue Jun 18 18:52:41 AEST 2024
+# Updated command line handling

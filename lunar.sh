@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      8.9.5
+# Version:      8.9.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -80,7 +80,7 @@ asset_cache="false"
 wifi_status="2"
 touchid_timeout="86400"
 
-# Set up some global variables
+# Set up some global variables/defaults
 
 app_dir=$( dirname $0 )
 args=$@
@@ -120,6 +120,8 @@ my_id=$(id -u)
 tcpd_allow="sshd"
 ssh_protocol="2"
 ssh_key_size="4096"
+do_audit=0
+do_fs=0
 
 # Disable daemons
 
@@ -846,13 +848,6 @@ start_path=$( pwd )
 
 script_version=$( cd $start_path ; cat $0 | grep '^# Version' | awk '{print $3}' )
 
-# If given no command line arguments print usage information
-
-if [ $( expr "$args" : "\-" ) != 1 ]; then
-  print_help
-  exit
-fi
-
 # apply_latest_patches
 #
 # Code to apply patches
@@ -899,10 +894,10 @@ print_results () {
   echo ""
 }
 
-#
 # print_tests
+#
 # Print Tests
-# 
+#. 
 
 print_tests () {
   test_string="$1"
@@ -929,13 +924,20 @@ do_aws=0
 do_aws_rec=0
 do_docker=0
 
-#while getopts ":abcdklpCRZe::o:r:s:t:u:z:hwADSWVLHvxn" args; do
-#  case ${args} in
+# print_version
+#
+# Print version information
+#.
+
+print_version () {
+  echo $script_version
+}
 
 # print_help
 #
 # If given a -h or no valid switch print usage information
 #.
+
 print_help () {
   cat << EOHELP
 Usage: ${0##*/} [OPTIONS...]
@@ -977,10 +979,12 @@ Usage: ${0##*/} [OPTIONS...]
 EOHELP
 }
 
-# print-usage
+# print_usage
 #
-# IF given -H print some examples
-#
+# Print usage information
+# If given -H print some examples
+#.
+
 print_usage () {
   echo ""
   echo "Examples:"
@@ -1021,135 +1025,248 @@ print_usage () {
   echo ""
 }
 
-OPTIND=1
-while getopts ":aAvw:de:kxs:lLSWDROo:t:cCpZbnr:z:u:VHh" args; do
-  case $args in
-    a)
+# print_backups
+#
+# Print backups
+#.
+
+print_backups () {
+  echo ""
+  echo "Previous backups:"
+  echo ""
+  ls $base_dir
+}
+
+# If given no command line arguments print usage information
+
+if [ "$*" = "" ]; then
+  print_help
+  exit
+fi
+
+while test $# -gt 0
+do
+  case $1 in
+    -a|--audit)
       audit_mode=1
       do_fs=0
+      shift
       ;;
-    A)
+    --mode)
+      mode_value="$2"
+      case $mode_value in
+        audit)
+          audit_mode=1
+          ;;
+        lockdown)
+          audit_mode=0
+          ;;
+        undo|restore)
+          audit_mode=2
+          ;;
+        *)
+          audit_mode=1
+          ;;
+      esac
+      shift 2
+      ;;
+    --dofiles)
+      do_fs=1
+      shift
+      ;;
+    --type)
+      audit_type="$2"
+      shift 2
+      ;;
+    --function|--test)
+      function="$2"
+      shift 2
+      ;;
+    -A|--fullaudit)
       audit_mode=1
       do_fs=1
+      shift
       ;;
-    w)
+    -w)
       audit_mode=1
       do_aws=1
-      function="$OPTARG"
+      function="$2"
+      shift 2
       ;;
-    d)
+    -d)
       audit_mode=1
       do_docker=1
-      function="$OPTARG"
+      function="$2"
+      shift 2
       ;;
-    e)
+    -e|--host)
       do_remote=1
-      ext_host="$OPTARG"
+      ext_host="$2"
+      shift 2
       ;;
-    x)
+    -x)
       audit_mode=1
       do_aws_rec=1
-      function="$OPTARG"
+      function="$2"
+      shift 2
       ;;
-    s)
+    -s)
       audit_mode=1
       do_fs=0
       do_select=1
-      function="$OPTARG"
+      function="$2"
+      shift 2
       ;;
-    l)
+    --select|--check)
+      do_select=1
+      function="$2"
+      shift 2
+      ;;
+    -l|--lockdown)
       audit_mode=0
       do_fs=0
+      shift
       ;;
-    L)
+    -L|--fulllockdown)
       audit_mode=0
       do_fs=1
+      shift
       ;;
-    S)
+    --tests|printtests)
+      tests="$2" 
+      case $tests in
+        UNIX|unix)
+          print_tests "UNIX"
+          ;;
+        AWS|aws)
+          print_tests "AWS"
+          ;;
+        Docker|docker)
+          print_tests "Docker"
+          ;;
+      esac
+      shift 2
+      ;;
+    -S|--unixtests|--unix)
       print_tests "UNIX"
+      shift
+      exit
       ;;
-    W)
+    -W|--awstests|--aws)
       print_tests "AWS"
+      shift
+      exit
       ;;
-    D)
+    -D|dockertests|--docker)
       print_tests "Docker"
+      shift
+      exit
       ;;  
-    R)
+    -R|--moduleinfo|--testinfo)
       check_environment
       verbose=1
-      module="$OPTARG"
+      module="$2"
       print_audit_info $module
-      ;;
-    O)
-      check_os_release
+      shift 2
       exit
       ;;
-    o)
-      test_os="$OPTARG"
+    -O|--osinfo|--systeminfo)
+      check_os_release
+      shift
+      exit
       ;;
-    t)
-      test_tag="$OPTARG"
+    -o|--testos|--os)
+      test_os="$2"
+      shift 2
       ;;
-    c)
+    -t|--tag)
+      test_tag="$2"
+      shift 2
+      ;;
+    -c|--compose)
       do_compose=1
       do_shell=0
+      shift
       ;;
-    C)
+    -C|--shell)
       do_compose=1
       do_shell=1
+      shift
       ;;
-    p)
+    -p|--printprevious|--previous)
       print_previous
+      shift
       exit
       ;;
-    Z)
+    --list)
+      list="$2"
+      case $list in
+        changes)
+          print_changes
+          ;;
+        backups)
+          print_backups 
+          ;;
+      esac
+      shift 2
+      exit
+      ;;
+    -Z|--changes|--listchanges)
       print_changes
+      shift
       exit
       ;;
-    b)
-      echo ""
-      echo "Previous backups:"
-      echo ""
-      ls $base_dir
+    -b|--backups|--listbackups)
+      print_backups
+      shift
       exit
       ;;
-    n)
+    -n|--ansible)
       ansible=1
+      shift
       ;;
-    r)
-      aws_region="$OPTARG"
+    -r|--awsregion|--region)
+      aws_region="$2"
+      shift 2
       ;;
-    z)
+    -z)
       audit_mode=0
       do_fs=0
       do_select=1
-      function="$OPTARG"
+      function="$2"
+      shift 2
       ;;
-    k)
+    -k|--kubernetes)
       audit_mode=1
       do_kubernetes=1
-      function="$OPTARG"
+      function="$2"
+      shift 2
       ;;
-    u)
+    -u|--undo)
       audit_mode=2
-      restore_date="$OPTARG"
+      restore_date="$2"
+      shift 2
       ;;
-    v)
+    -v|--verbose)
       verbose=1
+      shift
       ;;
-    V)
-      echo "$script_version"
+    -V|--version)
+      print_version
+      shift
       exit
       ;;
-    H)
+    -H|-U|--usage)
       print_usage
+      shift
       exit
       ;;
-    h)
+    -h|--help)
       print_help
       if [ "$verbose" = 1 ]; then
-        print_usage
+       print_usage
       fi 
+      shift
       exit 0
       ;;
     *)
@@ -1158,7 +1275,14 @@ while getopts ":aAvw:de:kxs:lLSWDROo:t:cCpZbnr:z:u:VHh" args; do
       ;;
   esac
 done
-shift "$((OPTIND-1))"
+
+# check arguments
+
+if [ "$do_audit" = 1 ]; then
+  if [ "$audit_type" = "" ]; then
+    audit_type="local"
+  fi
+fi
 
 if [ "$do_remote" = 1 ]; then
   echo "Copying $app_dir to $ext_host:/tmp"
@@ -1201,28 +1325,33 @@ if [ "$audit_mode" != 3 ]; then
     echo "Auditing:  Selecting $function"
     funct_audit_select $audit_mode $function
   else
-    if [ "$do_kubernetes" = 1 ]; then
-      echo "Auditing:  Kubernetes"
-      funct_audit_kubernetes $audit_mode
-      exit
-    fi
-    if [ "$do_docker" = 1 ]; then
-      echo "Auditing:  Docker"
-      funct_audit_docker $audit_mode
-      exit
-    fi
-    if [ "$do_aws" = 1 ]; then
-      echo "Auditing:  AWS"
-      funct_audit_aws $audit_mode
-      exit
-    fi
-    if [ "$do_aws_rec" = 1 ]; then
-      echo "Auditing:  AWS - Recommended Tests"
-      funct_audit_aws_rec $audit_mode
-      exit
-    fi
-    echo "Auditing:  OS"
-    funct_audit_system $audit_mode
+    case $audit_type in
+      Kubernetes)
+        echo "Auditing:  Kubernetes"
+        funct_audit_kubernetes $audit_mode
+        exit
+        ;;
+      docker)
+        echo "Auditing:  Docker"
+        funct_audit_docker $audit_mode
+        exit
+        ;;
+      awsrecommended)
+        echo "Auditing:  AWS - Recommended Tests"
+        funct_audit_aws_rec $audit_mode
+        exit
+        ;;
+      aws)
+        echo "Auditing:  AWS"
+        funct_audit_aws $audit_mode
+        exit
+        ;;
+      local|system|os)
+        echo "Auditing:  OS"
+        funct_audit_system $audit_mode
+        exit
+        ;;
+    esac
   fi
   exit
 fi
