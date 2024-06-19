@@ -21,7 +21,7 @@ audit_root_primary_group () {
     if [ "$audit_mode" != 2 ]; then
       if [ "$group_check" != "0" ];then
         if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Group $group_id does not exist in group file"
+          increment_insecure "Group \"$group_id\" does not exist in group file \"$check_file\""
           verbose_message "" fix
           verbose_message "usermod -g 0 root" fix
           verbose_message "" fix

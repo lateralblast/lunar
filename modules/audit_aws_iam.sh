@@ -24,9 +24,9 @@ audit_aws_iam () {
   # Check to see if there is an IAM master role
   check=$( aws iam get-role --role-name $aws_iam_master_role 2> /dev/null )
   if [ "$check" ]; then 
-    increment_secure "IAM Master role $aws_iam_master_role exists"
+    increment_secure "IAM Master role \"$aws_iam_master_role\" exists"
   else
-    increment_insecure "IAM Master role $aws_iam_master_role does not exist"
+    increment_insecure "IAM Master role \"$aws_iam_master_role\" does not exist"
     verbose_message "" fix
     verbose_message "cd aws" fix
     verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
@@ -36,9 +36,9 @@ audit_aws_iam () {
   # Check there is an IAM manager role
   check=$( aws iam get-role --role-name $aws_iam_manager_role 2> /dev/null )
   if [ "$check" ]; then 
-    increment_secure "IAM Manager role $aws_iam_manager_role exists"
+    increment_secure "IAM Manager role \"$aws_iam_manager_role\" exists"
   else
-    increment_insecure "IAM Manager role $aws_iam_manager_role does not exist"
+    increment_insecure "IAM Manager role \"$aws_iam_manager_role\" does not exist"
     verbose_message "" fix
     verbose_message "cd aws" fix
     verbose_message "aws iam create-role --role-name $aws_iam_master_role --assume-role-policy-document file://account-creation-policy.json" fix
@@ -50,9 +50,9 @@ audit_aws_iam () {
   for group in $groups; do
     users=$( aws iam get-group --group-name $group --query "Users" --output text )
     if [ "$users" ]; then
-      increment_secure "IAM group $group is not empty"
+      increment_secure "IAM group \"$group\" is not empty"
     else
-      increment_insecure "IAM group $group is empty"
+      increment_insecure "IAM group \"$group\" is empty"
     fi
   done
   users=$( aws iam list-users --query 'Users[].UserName' --output text )
@@ -60,9 +60,9 @@ audit_aws_iam () {
     # Check for inactive users
     check=$( aws iam list-access-keys --user-name $user --query "AccessKeyMetadata" --output text )
     if [ "$check" ]; then
-      increment_secure "IAM user $user is active"
+      increment_secure "IAM user \"$user\" is active"
     else
-      increment_insecure "IAM user $user is not active"
+      increment_insecure "IAM user \"$user\" is not active"
       verbose_message "" fix
       verbose_message "aws iam delete-user --user-name $user" fix
       verbose_message "" fix
@@ -71,13 +71,13 @@ audit_aws_iam () {
     policies=$( aws iam list-attached-user-policies --user-name $user --query "AttachedPolicies[].PolicyArn" --output text )
     if [ "$policies" ]; then
       for policy in $policies; do
-        increment_insecure "IAM user $user has attached policy $policy"
+        increment_insecure "IAM user \"$user\" has attached policy \"$policy\""
         verbose_message "" fix
         verbose_message "aws iam detach-user-policy --user-name $user --policy-arn $policy" fix
         verbose_message "" fix
       done
     else
-      increment_secure "IAM user $user does not have attached policies"
+      increment_secure "IAM user \"$user\" does not have attached policies"
     fi
   done
 }

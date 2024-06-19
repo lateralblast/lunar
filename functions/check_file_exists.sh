@@ -33,22 +33,22 @@ check_file_exists () {
     fi
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        increment_insecure "File $check_file exists"
+        increment_insecure "File \"$check_file\" exists"
       fi
       if [ "$audit_mode" = 0 ]; then
         backup_file $check_file
-        verbose_message "Removing:  File $check_file"
+        verbose_message "Removing:  File \"$check_file\""
         echo "$check_file,rm" >> $log_file
         rm $check_file
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        increment_secure "File $check_file does not exist"
+        increment_secure "File \"$check_file\" does not exist"
       fi
     fi
   else
     if [ "$audit_mode" != 2 ]; then
-      string="File $check_file exists"
+      string="File \"$check_file\" exists"
       verbose_message "$string"
       if [ "$ansible" = 1 ]; then
         echo ""
@@ -67,16 +67,16 @@ check_file_exists () {
     fi
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        increment_insecure "File $check_file does not exist"
+        increment_insecure "File \"$check_file\" does not exist"
       fi
       if [ "$audit_mode" = 0 ]; then
-        verbose_message "Creating:  File $check_file"
+        verbose_message "Creating:  File \"$check_file\""
         touch $check_file
         echo "$check_file,touch" >> $log_file
       fi
     else
       if [ "$audit_mode" = 1 ]; then
-        increment_secure "File $check_file exists"
+        increment_secure "File \"$check_file\" exists"
       fi
     fi
   fi

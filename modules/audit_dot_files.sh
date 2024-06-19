@@ -16,7 +16,7 @@ audit_dot_files () {
         fi
         if [ -f "$dot_file" ]; then
           if [ "$audit_mode" = 1 ];then
-            increment_insecure "File $dot_file exists"
+            increment_insecure "File \"$dot_file\" exists"
             verbose_message "mv $dot_file $dot_file.disabled" fix
           fi
           if [ "$audit_mode" = 0 ];then
@@ -24,7 +24,7 @@ audit_dot_files () {
           fi
         else
           if [ "$audit_mode" = 1 ];then
-            increment_secure "File $dot_file does not exist"
+            increment_secure "File \"$dot_file\" does not exist"
           fi
         fi
       done

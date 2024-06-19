@@ -22,7 +22,7 @@ check_file_perms () {
     find_command="sudo find"
   fi
   if [ "$audit_mode" != 2 ]; then
-    string="File permissions on $check_file"
+    string="File permissions on \"$check_file\""
     verbose_message "$string"
     if [ "$ansible" = 1 ]; then
       echo ""
@@ -41,7 +41,7 @@ check_file_perms () {
   fi
   if [ ! -e "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      verbose_message "Notice:    File $check_file does not exist"
+      verbose_message "Notice:    File \"$check_file\" does not exist"
     fi
     return
   fi
@@ -53,7 +53,7 @@ check_file_perms () {
   log_file="fileperms.log"
   if [ "$check_result" != "$check_file" ]; then
     if [ "$audit_mode" = 1 ] && [ -n "$check_result" ]; then
-      increment_insecure "File $check_file has incorrect permissions"
+      increment_insecure "File \"$check_file\" has incorrect permissions"
       verbose_message "" fix
       verbose_message "chmod $check_perms $check_file" fix
       if [ "$check_owner" != "" ]; then
@@ -76,7 +76,7 @@ check_file_perms () {
       fi
       file_owner=$( ls -l $check_file |awk '{print $3","$4}' )
       echo "$check_file,$file_perms,$file_owner" >> $log_file
-      verbose_message "Setting:   File $check_file to have correct permissions"
+      verbose_message "Setting:   File \"$check_file\" to have correct permissions"
       chmod $check_perms $check_file
       if [ "$check_owner" != "" ]; then
         if [ "$check_results" != "$check_file" ]; then
@@ -86,7 +86,7 @@ check_file_perms () {
     fi
   else
     if [ "$audit_mode" = 1 ]; then
-      increment_secure "File $check_file has correct permissions"
+      increment_secure "File \"$check_file\" has correct permissions"
     fi
   fi
   if [ "$audit_mode" = 2 ]; then
@@ -98,7 +98,7 @@ check_file_perms () {
         restore_perms=$( echo "$restore_info" |cut -f2 -d"," )
         restore_owner=$( echo "$restore_info" |cut -f3 -d"," )
         restore_group=$( echo "$restore_info" |cut -f4 -d"," )
-        verbose_message "Restoring: File $check_file to previous permissions"
+        verbose_message "Restoring: File \"$check_file\" to previous permissions"
         chmod $restore_perms $check_file
         if [ "$check_owner" != "" ]; then
           if [ "$check_results" != "$check_file" ]; then

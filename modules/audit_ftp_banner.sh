@@ -42,7 +42,7 @@ audit_ftp_banner () {
         fi
       else
         verbose_message "" fix
-        verbose_message "Package $package_name is not installed" fix
+        verbose_message "Package \"$package_name\" is not installed" fix
         verbose_message "" fix
       fi
     fi

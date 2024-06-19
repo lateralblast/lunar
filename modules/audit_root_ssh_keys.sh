@@ -13,21 +13,21 @@ audit_root_ssh_keys () {
           if [ -f "$check_file" ]; then
             if [ "$( wc -l $check_file | awk '{print $1}' )" -ge 1 ]; then
               if [ "$audit_mode" = 1 ]; then
-                increment_insecure "Keys file $check_file exists"
+                increment_insecure "Keys file \"$check_file\" exists"
                 verbose_message "mv $check_file $check_file.disabled" fix
               fi
               if [ "$audit_mode" = 0 ]; then
                 backup_file $check_file
-                echo "Removing:  Keys file $check_file"
+                echo "Removing:  Keys file \"$check_file\""
               fi
             else
               if [ "$audit_mode" = 1 ]; then
-                increment_secure "Keys file $check_file does not contain any keys"
+                increment_secure "Keys file \"$check_file\" does not contain any keys"
               fi
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              increment_secure "Keys file $check_file does not exist"
+              increment_secure "Keys file \"$check_file\" does not exist"
             fi
           fi
         else

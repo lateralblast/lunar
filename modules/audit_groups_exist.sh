@@ -24,7 +24,7 @@ audit_groups_exist () {
         if [ "$group_exists" = 0 ]; then
           group_fail=1
           if [ "$audit_mode" = 1 ];then
-            increment_insecure "Group $group_id does not exist in group file"
+            increment_insecure "Group \"$group_id\" does not exist in group file \"$check_file\""
           fi
         fi
       done
