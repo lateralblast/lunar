@@ -1613,3 +1613,5 @@
 # Updated defaults
 # 8.9.9: Tue Jun 18 11:41:53 PM AEST 2024
 # Improved systemctl check
+# 9.0.0: Wed Jun 19 04:35:29 PM AEST 2024
+# Improvements to reporting output

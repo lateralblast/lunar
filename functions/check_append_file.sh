@@ -20,7 +20,7 @@ check_append_file () {
     restore_file="$restore_dir$check_file"
     restore_file $check_file $restore_dir
   else
-    string="Parameter $parameter is set in $check_file"
+    string="Parameter \"$parameter\" is set in \"$check_file\""
     verbose_message "$string"
     if [ ! -f "$check_file" ]; then
       increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
@@ -46,7 +46,7 @@ check_append_file () {
           echo "    line: '$parameter'"
           echo ""
         fi
-        check_value=$( grep -v "^$comment_value" "$check_file" | grep -- '$parameter' )
+        check_value=$( grep -v "^$comment_value" "$check_file" | grep -- "$parameter" )
         if [ "$check_value" != "$parameter" ]; then
           increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
           backup_file $check_file
