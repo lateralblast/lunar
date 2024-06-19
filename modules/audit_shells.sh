@@ -14,7 +14,7 @@ audit_shells () {
         for check_shell in $( grep -v '^#' $check_file ); do
           if [ ! -f "check_shell" ]; then
             if [ "$audit_mode" = 1 ]; then
-              increment_insecure "Shell $check_shell in $check_file does not exit"
+              increment_insecure "Shell \"$check_shell\" in \"$check_file\" does not exit"
             fi
             if [ "$audit_mode" = 0 ]; then
               temp_file="$temp_dir/shells"

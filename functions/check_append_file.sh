@@ -23,7 +23,7 @@ check_append_file () {
     string="Parameter \"$parameter\" is set in \"$check_file\""
     verbose_message "$string"
     if [ ! -f "$check_file" ]; then
-      increment_insecure "Parameter \"$parameter\" does not exist in $check_file"
+      increment_insecure "Parameter \"$parameter\" does not exist in \"$check_file\""
       lockdown_command "echo \"$parameter\" >> $check_file"
       if [ "$parameter" ]; then
         if [ "$ansible" = 1 ]; then
