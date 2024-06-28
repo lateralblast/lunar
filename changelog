@@ -1623,3 +1623,5 @@
 # Major cleanup of code underway
 # 9.0.4: Fri Jun 28 03:49:10 PM AEST 2024
 # Fixed bug with old users check
+# 9.0.5 Fri Jun 28 04:37:05 PM AEST 2024
+# Fixed bug with daemon unmask check

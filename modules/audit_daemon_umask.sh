@@ -27,7 +27,7 @@ audit_daemon_umask () {
           log_file="$work_dir/$log_file"
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Default service file creation mask not set to $umask_value"
-            verbose_message "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"$umask_value\"" "fix"
+            verbose_message    "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"$umask_value\"" "fix"
           fi
           if [ "$audit_mode" = 0 ]; then
             verbose_message "Setting:   Default service file creation mask to $umask_value"
@@ -84,7 +84,7 @@ audit_daemon_umask () {
     # Check relevant /etc/* directoris for files with a potential umasks
     for dir_name in /etc /etc/rc0.d /etc/rc1.d /etc/rc2.d /etc/rc4.d /etc/rc5.d /etc/rcS.d /usr/local/etc; do
       if [ -e "$dir_name" ]; then
-        file_list=$( find /etc/ -type f  -maxdepth 1 )
+        file_list=$( find /etc/ -maxdepth 1 -type f )
         for check_file in $file_list; do
           umask_test=$( grep "umask" "$check_file" )
           if [ -n "$umask_test" ]; then

@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.0.4
+# Version:      9.0.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -334,20 +334,20 @@ check_os_release () {
   if [ "$os_platform" = "" ]; then
     os_platform=$( uname -p )
   fi
-  echo "Processor: $os_platform"
-  echo "Machine:   $os_machine"
-  echo "Vendor:    $os_vendor"
-  echo "Name:      $os_name"
+  echo "Processor:  $os_platform"
+  echo "Machine:    $os_machine"
+  echo "Vendor:     $os_vendor"
+  echo "Name:       $os_name"
   if [ ! "$os_release" = "" ]; then
-    echo "Release:   $os_release"
+    echo "Release:    $os_release"
   fi
-  echo "Version:   $os_version"
-  echo "Update:    $os_update"
+  echo "Version:    $os_version"
+  echo "Update:     $os_update"
   if [ ! "$os_minorrev" = "" ]; then
-    echo "Minor Rev: $os_minorrev"
+    echo "Minor Rev:  $os_minorrev"
   fi
   if [ ! "$os_codename" = "" ]; then
-    echo "Codename:  $os_codename"
+    echo "Codename:   $os_codename"
   fi
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_update" -lt 10 ]; then
