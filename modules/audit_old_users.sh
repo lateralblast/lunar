@@ -17,7 +17,8 @@ audit_old_users () {
     if [ "$audit_mode" = 2 ]; then
       restore_file "/etc/shadow" "$restore_dir"
     else
-      for user_name in $( grep -v "/usr/bin/false""/etc/passwd" | egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" | cut -f1 -d: ); do
+      user_list=$( grep -v "/usr/bin/false" "/etc/passwd" | egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" | cut -f1 -d: )
+      for user_name in $user_list; do
         if test -r "/etc/shadow"; then
           shadow_field=$( grep "^$user_name:" "/etc/shadow" | cut -f2 -d":" | egrep -v "\*|\!\!|NP|LK|UP" )
           if [ -z "$shadow_field" ]; then
