@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.0.5
+# Version:      9.0.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -869,8 +869,8 @@ funct_audit_select () {
   module_test=$(echo "$function" | grep "audit" )
   if [ -n "$module_test" ]; then
     print_audit_info "$function"
-    check=$( type "$function" 2> /dev/null )
-    if [ "$check" ]; then
+    check=$( type "$function" | grep "not found" )
+    if [ -z "$check" ]; then
       $function
     else
       echo "Warning:   Audit function \"$function\" does not exist"
