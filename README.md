@@ -130,38 +130,39 @@ Usage
 ```
 Usage: ./lunar.sh [OPTIONS...]
 
- -a   Run in audit mode (for Operating Systems - no changes made to system)
- -A   Run in audit mode (for Operating Systems - no changes made to system)
-        [includes filesystem checks which take some time]
- -v   Verbose mode [used with -a and -A]
-        [Provides more information about the audit taking place]
- -w   Run in audit mode (for AWS - no changes made to system)
- -d   Run in audit mode (for Docker - no changes made to system)
- -e   Run in audit mode on external host (for Operating Systems - no changes made to system)
- -k   Run in audit mode (for Kubernetes - no changes made to system)
- -x   Run in recommendations mode (for AWS - no changes made to system)
- -s   Run in selective mode (only run tests you want to)
- -l   Run in lockdown mode (for Operating Systems - changes made to system)
- -L   Run in lockdown mode (for Operating Systems - changes made to system)
-        [includes filesystem checks which take some time]
- -S   List all UNIX functions available to selective mode
- -W   List all AWS functions available to selective mode
- -D   List all Docker functions available to selective mode
- -R   Print information for a specific test
- -o   Set docker OS or container name
- -t   Set docker tag
- -c   Run docker-compose testing suite (runs lunar in audit mode without making changes)
- -C   Run docker-compose testing suite (drops to shell in order to do more testing)
- -p   Show previous versions of file
- -Z   Show changes previously made to system
- -b   List backup files
- -n   Output ansible code segments
- -r   Specify AWS region
- -z   Run specified audit function
- -u   Undo lockdown (for Operating Systems - changes made to system)
- -V   Display version
- -H   Display usage
- -h   Display help
+ -a | --audit        Run in audit mode (for Operating Systems - no changes made to system)
+ -A | --fullaudit    Run in audit mode (for Operating Systems - no changes made to system)
+                     [includes home directory and filesystem checks which take some time]
+ -v | --verbose      Verbose mode [used with -a and -A]
+                     [Provides more information about the audit taking place]
+ -w | --awsaudit     Run in audit mode (for AWS - no changes made to system)
+ -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
+ -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
+ -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
+ -x | --awsrec       Run in recommendations mode (for AWS - no changes made to system)
+ -s | --select       Run in selective mode (only run tests you want to)
+ -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
+ -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
+                     [includes filesystem checks which take some time]
+ -S | --unixtests    List all UNIX functions available to selective mode
+ -W | --awstests     List all AWS functions available to selective mode
+ -D | --dockertests  List all Docker functions available to selective mode
+ -R | --testinfo     Print information for a specific test
+ -O | --osinfo       Print OS information
+ -o | --name         Set docker OS or container name
+ -t | --tag          Set docker tag
+ -c | --run          Run docker-compose testing suite (runs lunar in audit mode without making changes)
+ -C | --shell        Run docker-compose testing suite (drops to shell in order to do more testing)
+ -p | --previous     Show previous versions of file
+ -Z | --changes      Show changes previously made to system
+ -b | --backups      List backup files
+ -n | --ansible      Output ansible code segments
+ -r | --region       Specify AWS region
+ -z | --lockselect   Run specified audit function in lockdown mode
+ -u | --undo         Undo lockdown (for Operating Systems - changes made to system)
+ -V | --version      Display version
+ -H | --usage        Display usage
+ -h | --help         Display help
 ```
 
 License
