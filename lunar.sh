@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.0.6
+# Version:      9.0.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -192,7 +192,7 @@ check_virtual_platform () {
       virtual=$( uname -p )
     fi
   fi
-  echo "Platform:  $virtual"
+  echo "Platform:   $virtual"
 }
 
 
@@ -369,15 +369,15 @@ check_os_release () {
 check_environment () {
   check_os_release
   if [ "$os_name" = "Darwin" ]; then
-    echo ""
-    echo "Checking:  If node is managed"
+    verbose_message ""
+    verbose_message "If node is managed" "check"
     managed_node=$( sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d: )
     if [ "$managed_node" = "Error" ]; then
-      echo "Notice:    Node is not managed"
+      verbose_message "Node is not managed" "notice"
     else
-      echo "Notice:    Node is managed"
+      verbose_message "Node is managed" "notice"
     fi
-    echo ""
+    verbose_message ""
   fi
   if [ "$os_name" != "VMkernel" ]; then
     if [ "$os_name" = "SunOS" ]; then
@@ -387,9 +387,9 @@ check_environment () {
     fi
     if [ "$id_check" != "0" ]; then
       if [ "$os_name" != "Darwin" ]; then
-        echo ""
-        echo "Warning: $0 may need root"
-        echo ""
+        verbose_message ""
+        verbose_message "$0 may need root" "warn"
+        verbose_message ""
       fi
     fi
   fi
@@ -587,7 +587,7 @@ increment_insecure () {
     message="$1"
     total=$((total+1))
     insecure=$((insecure+1))
-    echo "Warning:    $message [$insecure Warnings]"
+    verbose_message "$message [$insecure Warnings]" "warn"
   fi
 }
 
@@ -679,6 +679,12 @@ verbose_message () {
         ;;
       create|creating)
         echo "Creating:   $text"
+        ;;
+      warn|warning)
+        echo "Warning:    $text"
+        ;;
+      secure)
+        echo "Secure:     $text"
         ;;
     esac
   fi
@@ -868,19 +874,18 @@ funct_audit_select () {
   fi
   module_test=$(echo "$function" | grep "audit" )
   if [ -n "$module_test" ]; then
-    print_audit_info "$function"
-    check=$( type "$function" | grep "not found" )
-    if [ -z "$check" ]; then
-      $function
+    if [ -f "$modules_dir/$function.sh" ]; then
+      print_audit_info "$function"
+      eval "$function"
     else
-      echo "Warning:   Audit function \"$function\" does not exist"
-      echo ""
+      verbose_message "Audit function \"$function\" does not exist" "warn"
+      verbose_message ""
       exit
     fi 
     print_results
   else
-    echo "Warning:   Audit function \"$function\" does not exist"
-    echo ""
+    verbose_message "Audit function \"$function\" does not exist" "warn"
+    verbose_message ""
   fi
 }
 

@@ -1627,3 +1627,5 @@
 # Fixed bug with daemon unmask check
 # 9.0.6: Fri Jun 28 04:46:27 PM AEST 2024
 # Improved select function check
+# 9.0.7: Fri 28 Jun 2024 17:09:33 AEST
+# Bug fixes
