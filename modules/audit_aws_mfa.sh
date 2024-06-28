@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_aws_mfa
 #
 # Check AWS MFA
@@ -11,27 +17,27 @@
 #.
 
 audit_aws_mfa () {
-  verbose_message "MFA"
-  entries=$( aws iam get-credential-report --query 'Content' --output text | $base64_d | cut -d, -f1,4,8 | sed '1 d' | awk -F '\n' '{print $1}' )
+  verbose_message "MFA" "check"
+  entries=$( aws iam get-credential-report --query 'Content' --output text | "$base64_d" | cut -d, -f1,4,8 | sed '1 d' | awk -F '\n' '{print $1}' )
   for entry in $entries; do
     user=$( echo "$entry" | cut -d, -f1 )
     pass=$( echo "$entry" | cut -d, -f2 )
     mfa=$( echo "$entry" | cut -d, -f3 )
     if [ "$user" = "<root_account>" ]; then
       if [ "$mfa" = "false" ]; then
-        increment_insecure "Account $user does not have MFA enabled"
+        increment_insecure "Account \"$user\" does not have MFA enabled"
       else
-        increment_secure "Account $user has MFA enabled"
+        increment_secure   "Account \"$user\" has MFA enabled"
       fi
     else
       if [ "$pass" != "false" ]; then
         if [ "$mfa" = "false" ]; then
-          increment_insecure "Account $user does not have MFA enabled"
+          increment_insecure "Account \"$user\" does not have MFA enabled"
         else
-          increment_secure "Account $user has MFA enabled"
+          increment_secure   "Account \"$user\" has MFA enabled"
         fi
       else
-        increment_secure "Account $user does not log into console"
+        increment_secure "Account \"$user\" does not log into console"
       fi
     fi
   done
@@ -40,7 +46,7 @@ audit_aws_mfa () {
     increment_secure "The root account has MFA enabled"
     mfa_check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep -c "root_account" )
     if [ "$mfa_check" = "0" ]; then
-      increment_secure "The root account does not have a virtual MFA"
+      increment_secure   "The root account does not have a virtual MFA"
     else
       increment_insecure "The root account does not have a hardware MFA"
     fi

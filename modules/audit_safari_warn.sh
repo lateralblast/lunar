@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_safari_warn
 #
 # Attackers use crafted web pages to social engineer users to load unwanted content.
@@ -9,10 +15,11 @@
 audit_safari_warn () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$long_os_version" -ge 1014 ]; then
-      verbose_message "Safari Fraudulent Website Warning"
+      verbose_message "Safari Fraudulent Website Warning" "check"
       if [ "$audit_mode" != 2 ]; then
-        for user_name in `ls /Users |grep -v Shared`; do
-          check_osx_defaults com.apple.Safari WarnAboutFraudulentWebsites 1 bool $user_name
+        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        for user_name in $user_list; do
+          check_osx_defaults "com.apple.Safari WarnAboutFraudulentWebsites" "1" "bool" "$user_name"
         done
       fi
     fi

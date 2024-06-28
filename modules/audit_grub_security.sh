@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_grub_security
 #
 # Check GRUB security
@@ -11,18 +17,16 @@
 
 audit_grub_security () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Grub Menu Security"
+    verbose_message "Grub Menu Security" "check"
     if [ "$os_name" = "Linux" ]; then
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
-        check_file_perms $check_file 0600 root root
+        check_file_perms "$check_file" "0600" "root" "root"
       done
-      check_file="/boot/grub/grub.cfg"
-      check_file_value is $check_file "set superusers" eq root hash
-      check_file_value is $check_file "password_pbkdf2" space root hash
-      check_file_value is $check_file "selinux" eq 1 hash
-      check_file_value is $check_file "enforcing" eq 1 hash
-      check_file="/etc/default/grub"
-      check_file_value in $check_file "audit" eq 1 hash
+      check_file_value "is" "/boot/grub/grub.cfg" "set superusers"  "eq"    "root" "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "password_pbkdf2" "space" "root" "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "selinux"         "eq"     "1"   "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "enforcing"       "eq"     "1"   "hash"
+      check_file_value "is" "/etc/default/grub"   "audit"           "eq"     "1"   "hash"
     fi
 #  if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"

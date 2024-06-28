@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_logadm_value
 #
 # Enable Debug Level Daemon Logging. Improved logging capability.
@@ -8,38 +14,36 @@
 audit_logadm_value () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Debug Level Daemon Logging"
-      log_name=$1
-      log_facility=$2
+      verbose_message "Debug Level Daemon Logging" "check"
+      log_name="$1"
+      log_facility="$2"
       check_file="/etc/logadm.conf"
       check_log=$( logadm -V | grep -v '^#' | grep "$log_name" )
       log_file="/var/log/$log_name"
-      if [ $( expr "$check_log" : "[A-z]" ) != 1 ]; then
+      if [ -z "$log_check" ]; then
         if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Logging for $log_name not enabled"
-          verbose_message "" fix
-          verbose_message "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" fix
-          verbose_message "svcadm refresh svc:/system/system-log" fix
-          verbose_message "" fix
+          increment_insecure "Logging for \"$log_name\" not enabled"
+          verbose_message    "logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file" "fix"
+          verbose_message    "svcadm refresh svc:/system/system-log" "fix"
         else
           if [ "$audit_mode" = 0 ]; then
-            verbose_message "Setting:   Syslog to capture $log_facility"
+            verbose_message "Syslog to capture \"$log_facility\"" "set"
           fi
           backup_file $check_file
           if [ "$log_facility" != "none" ]; then
             check_file="/etc/syslog.conf"
             if [ ! -f "$work_dir$check_file" ]; then
               echo "Saving:    File $check_file to $work_dir$check_file"
-              find $check_file | cpio -pdm $work_dir 2> /dev/null
+              find "$check_file" | cpio -pdm "$work_dir" 2> /dev/null
             fi
           fi
-          echo "$log_facility\t\t\t$log_file" >> $check_file
-          touch $log_file
-          chown root:root $log_file
+          echo "$log_facility\t\t\t$log_file" >> "$check_file"
+          touch "$log_file"
+          chown root:root "$log_file"
           if [ "$log_facility" = "none" ]; then
-            logadm -w $log_name -C 13 $log_file
+            logadm -w "$log_name" -C 13 "$log_file"
           else
-            logadm -w $log_name -C 13 -a 'pkill -HUP syslogd' $log_file
+            logadm -w "$log_name" -C 13 -a 'pkill -HUP syslogd' "$log_file"
             svcadm refresh svc:/system/system-log
           fi
         fi
@@ -55,11 +59,11 @@ audit_logadm_value () {
           if [ "$log_facility" = "none" ]; then
             check_file="/etc/syslog.conf"
             if [ -f "$restore_dir/$check_file" ]; then
-              cp -p $restore_dir/$check_file $check_file
+              cp -p "$restore_dir/$check_file" "$check_file"
               if [ "$os_version" != "11" ]; then
-                pkgchk -f -n -p $check_file 2> /dev/null
+                pkgchk -f -n -p "$check_file" 2> /dev/null
               else
-                pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
+                pkg fix $( pkg search "$check_file" | grep pkg | awk '{print $4}' )
               fi
             fi
             svcadm refresh svc:/system/system-log
@@ -67,7 +71,7 @@ audit_logadm_value () {
         fi
       else
         if [ "$audit_mode" = 1 ]; then
-          increment_secure "Logging for $log_name already enabled"
+          increment_secure "Logging for \"$log_name\" already enabled"
         fi
       fi
     fi

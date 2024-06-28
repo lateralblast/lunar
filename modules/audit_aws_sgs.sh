@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_aws_sgs
 #
 # Check AWS Security Groups
@@ -18,38 +24,36 @@
 
 audit_aws_sgs () {
   verbose_message "Security Groups"
-  sgs=$( aws ec2 describe-security-groups --region $aws_region --query SecurityGroups[].GroupId --output text )
+  sgs=$( aws ec2 describe-security-groups --region "$aws_region" --query SecurityGroups[].GroupId --output text )
   for sg in $sgs; do
-    inbound=$( aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' | grep "0.0.0.0/0" )
-    if [ ! "$inbound" ]; then
-      increment_secure "Security Group $sg does not have a open inbound rule"
+    inbound=$( aws ec2 describe-security-groups --region "$aws_region" --group-ids "$sg" --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' | grep "0.0.0.0/0" )
+    if [ -z "$inbound" ]; then
+      increment_secure   "Security Group $sg does not have a open inbound rule"
     else
-      check_aws_open_port $sg -1 icmp ICMP none none
-      check_aws_open_port $sg 20,21 tcp FTP none none
-      check_aws_open_port $sg 22 tcp SSH none none
-      check_aws_open_port $sg 23 tcp Telnet none none
-      check_aws_open_port $sg 25 tcp SMTP none none
-      check_aws_open_port $sg 53 tcp DNS none none
-      check_aws_open_port $sg 80 tcp HTTP none none
-      check_aws_open_port $sg 135 tcp RPC none none
-      check_aws_open_port $sg 137,138,139 tcp SMB none none
-      check_aws_open_port $sg 443 tcp HTTPS none none
-      check_aws_open_port $sg 445 tcp CIFS none none
-      check_aws_open_port $sg 1433 tcp MSSQL none none
-      check_aws_open_port $sg 1521 tcp Oracle none none
-      check_aws_open_port $sg 3306 tcp MySQL none none
-      check_aws_open_port $sg 3389 tcp RDP none none
-      check_aws_open_port $sg 5432 tcp PostgreSQL none none
-      check_aws_open_port $sg 27017 tcp MongoDB none none
+      check_aws_open_port "$sg" "-1"          "icmp" "ICMP"       "none" "none"
+      check_aws_open_port "$sg" "20,21"       "tcp"  "FTP"        "none" "none"
+      check_aws_open_port "$sg" "22"          "tcp"  "SSH"        "none" "none"
+      check_aws_open_port "$sg" "23"          "tcp"  "Telnet"     "none" "none"
+      check_aws_open_port "$sg" "25"          "tcp"  "SMTP"       "none" "none"
+      check_aws_open_port "$sg" "53"          "tcp"  "DNS"        "none" "none"
+      check_aws_open_port "$sg" "80"          "tcp"  "HTTP"       "none" "none"
+      check_aws_open_port "$sg" "135"         "tcp"  "RPC"        "none" "none"
+      check_aws_open_port "$sg" "137,138,139" "tcp"  "SMB"        "none" "none"
+      check_aws_open_port "$sg" "443"         "tcp"  "HTTPS"      "none" "none"
+      check_aws_open_port "$sg" "445"         "tcp"  "CIFS"       "none" "none"
+      check_aws_open_port "$sg" "1433"        "tcp"  "MSSQL"      "none" "none"
+      check_aws_open_port "$sg" "1521"        "tcp"  "Oracle"     "none" "none"
+      check_aws_open_port "$sg" "3306"        "tcp"  "MySQL"      "none" "none"
+      check_aws_open_port "$sg" "3389"        "tcp"  "RDP"        "none" "none"
+      check_aws_open_port "$sg" "5432"        "tcp"  "PostgreSQL" "none" "none"
+      check_aws_open_port "$sg" "27017"       "tcp"  "MongoDB"    "none" "none"
     fi
-    outbound=$( aws ec2 describe-security-groups --region $aws_region --group-ids $sg --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' | grep "0.0.0.0/0" )
-    if [ ! "$outbound" ]; then
-      increment_secure "Security Group $sg does not have a open outbound rule"
+    outbound=$( aws ec2 describe-security-groups --region "$aws_region" --group-ids "$sg" --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' | grep "0.0.0.0/0" )
+    if [ -z "$outbound" ]; then
+      increment_secure   "Security Group $sg does not have a open outbound rule"
     else
       increment_insecure "Security Group $sg has an open outbound rule"
-      verbose_message "" fix
-      verbose_message "aws ec2 revoke-security-group-egress --region $aws_region --group-name $sg --protocol tcp --cidr 0.0.0.0/0" fix
-      verbose_message "" fix
+      verbose_message    "aws ec2 revoke-security-group-egress --region $aws_region --group-name $sg --protocol tcp --cidr 0.0.0.0/0" "fix"
     fi
   done
 }

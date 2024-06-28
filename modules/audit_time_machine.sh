@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_time_machine
 #
 # Backups should automatically run whenever the backup drive is available.
@@ -8,9 +14,9 @@
 audit_time_machine () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$os_version" -ge 14 ]; then
-      verbose_message "iCloud Drive"
+      verbose_message "iCloud Drive" "check"
       if [ "$audit_mode" != 2 ]; then
-        check_osx_defaults /Library/Preferences/com.apple.TimeMachine.plist AutoBackup 1 bool
+        check_osx_defaults "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1" "bool"
       fi
     fi
   fi

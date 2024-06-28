@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_system_auth
 #
 # Check system auth settings
@@ -11,7 +17,7 @@
 
 audit_system_auth () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "PAM Authentication"
+    verbose_message "PAM Authentication" "check"
     check=0
     if [ "$os_vendor" = "Amazon" ] && [ "$os_version" = "2016" ]; then
       check=1
@@ -20,85 +26,40 @@ audit_system_auth () {
       check=1
     fi
     if [ "$check" -eq 1 ]; then
-      check_file="/etc/security/pwquality.conf"
-      check_file_value is $check_file minlen eq 14 hash  
-      check_file_value is $check_file dcredit eq "-1" hash  
-      check_file_value is $check_file ocredit eq "-1" hash  
-      check_file_value is $check_file ucredit eq "-1" hash  
-      check_file_value is $check_file lcredit eq "-1" hash  
+      check_file_value "is" "/etc/security/pwquality.conf" "minlen"  "eq" "14" "hash" 
+      check_file_value "is" "/etc/security/pwquality.conf" "dcredit" "eq" "-1" "hash" 
+      check_file_value "is" "/etc/security/pwquality.conf" "ocredit" "eq" "-1" "hash" 
+      check_file_value "is" "/etc/security/pwquality.conf" "ucredit" "eq" "-1" "hash" 
+      check_file_value "is" "/etc/security/pwquality.conf" "lcredit" "eq" "-1" "hash" 
       audit_system_auth_nullok
-      auth_string="auth"
-      search_string="unlock_time"
-      search_value="900"
-      audit_system_auth_unlock_time $auth_string $search_string $search_value
-      auth_string="account"
-      search_string="remember"
-      search_value="5"
-      audit_system_auth_password_history $auth_string $search_string $search_value
-      auth_string="password"
-      search_string="sha512"
-      audit_system_auth_password_hashing $auth_string $search_string
+      audit_system_auth_unlock_time      "auth"     "unlock_time" "900"
+      audit_system_auth_password_history "account"  "remember"    "5"
+      audit_system_auth_password_hashing "password" "sha512"
     else
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
-        check_file="/etc/security/pwquality.conf"
-        check_file_value is $check_file minlen eq 14 hash  
-        check_file_value is $check_file dcredit eq "-1" hash  
-        check_file_value is $check_file ocredit eq "-1" hash  
-        check_file_value is $check_file ucredit eq "-1" hash  
-        check_file_value is $check_file lcredit eq "-1" hash  
+        check_file_value "is" "/etc/security/pwquality.conf" "minlen"  "eq" "14" "hash"  
+        check_file_value "is" "/etc/security/pwquality.conf" "dcredit" "eq" "-1" "hash"  
+        check_file_value "is" "/etc/security/pwquality.conf" "ocredit" "eq" "-1" "hash"  
+        check_file_value "is" "/etc/security/pwquality.conf" "ucredit" "eq" "-1" "hash"  
+        check_file_value "is" "/etc/security/pwquality.conf" "lcredit" "eq" "-1" "hash"  
         audit_system_auth_nullok
-        auth_string="auth"
-        search_string="unlock_time"
-        search_value="900"
-        audit_system_auth_unlock_time $auth_string $search_string $search_value
-        auth_string="account"
-        search_string="remember"
-        search_value="5"
-        audit_system_auth_password_history $auth_string $search_string $search_value
-        auth_string="password"
-        search_string="sha512"
-        audit_system_auth_password_hashing $auth_string $search_string
+        audit_system_auth_unlock_time      "auth"     "unlock_time" "900"
+        audit_system_auth_password_history "account"  "remember"    "5"
+        audit_system_auth_password_hashing "password" "sha512"
       else
-        check_rpm libpam-cracklib
+        check_rpm "libpam-cracklib"
         if [ "$audit_mode" != 2 ]; then
           audit_system_auth_nullok
-          auth_string="account"
-          search_string="remember"
-          search_value="10"
-          audit_system_auth_password_history $auth_string $search_string $search_value
-          auth_string="auth"
-          search_string="no_magic_root"
-          audit_system_auth_no_magic_root $auth_string $search_string
-          auth_string="account"
-          search_string="reset"
-          audit_system_auth_account_reset $auth_string $search_string
-          auth_string="password"
-          search_string="minlen"
-          search_value="9"
-          audit_system_auth_password_policy $auth_string $search_string $search_value
-          auth_string="password"
-          search_string="dcredit"
-          search_value="-1"
-          audit_system_auth_password_policy $auth_string $search_string $search_value
-          auth_string="password"
-          search_string="lcredit"
-          search_value="-1"
-          audit_system_auth_password_policy $auth_string $search_string $search_value
-          auth_string="password"
-          search_string="ocredit"
-          search_value="-1"
-          audit_system_auth_password_policy $auth_string $search_string $search_value
-          auth_string="password"
-          search_string="ucredit"
-          search_value="-1"
-          audit_system_auth_password_policy $auth_string $search_string $search_value
-          auth_string="password"
-          search_string="16,12,8"
-          audit_system_auth_password_strength $auth_string $search_string
-          auth_string="auth"
-          search_string="unlock_time"
-          search_value="900"
-          audit_system_auth_unlock_time $auth_string $search_string $search_value
+          audit_system_auth_password_history  "account"  "remember"   "10"
+          audit_system_auth_password_policy   "password" "minlen"     "9"
+          audit_system_auth_password_policy   "password" "dcredit"    "-1"
+          audit_system_auth_password_policy   "password" "lcredit"    "-1"
+          audit_system_auth_password_policy   "password" "ocredit"    "-1"
+          audit_system_auth_password_policy   "password" "ucredit"    "-1"
+          audit_system_auth_unlock_time       "auth"     "unlock_time" "900"
+          audit_system_auth_account_reset     "account"  "reset"
+          audit_system_auth_password_strength "password" "16,12,8"
+          audit_system_auth_no_magic_root     "auth"     "no_magic_root"
         fi
       fi
     fi

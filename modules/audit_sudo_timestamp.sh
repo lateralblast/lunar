@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_sudo_timestanp
 #
 # Check sudo timestamp
@@ -7,6 +13,7 @@
 
 audit_sudo_timestamp () {
   if [ "$os_name" = "Darwin" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ]; then
+    verbose_message "Sudo timestamp" "check"
     major_ver=$( sudo --version |head -1 |awk '{print $3}' |cut -f1 -d. )
     minor_ver=$( sudo --version |head -1 |awk '{print $3}' |cut -f2 -d. )
     check_sudo="0"
@@ -28,7 +35,7 @@ audit_sudo_timestamp () {
         fi
       fi
     fi
-    check_file_value is $check_file "Defaults timestamp_type" eq tty hash after "# Defaults specification"
-    check_file_perms $check_file 440 root wheel 
+    check_file_value "is" "$check_file" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
+    check_file_perms "$check_file"      "440" "root" "wheel" 
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_nfs
 #
 # Check NFS
@@ -18,12 +24,12 @@
 audit_nfs () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "Darwin" ]; then
     if [ "$nfsd_disable" = "yes" ]; then
-      verbose_message "NFS Services"
+      verbose_message "NFS Services" "check"
       if [ "$os_name" = "AIX" ]; then
-        check_itab rcnfs off
+        check_itab "rcnfs" "off"
       fi
       if [ "$os_name" = "Darwin" ]; then
-        check_launchctl_service com.apple.nfsd off
+        check_launchctl_service "com.apple.nfsd" "off"
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
@@ -31,35 +37,32 @@ audit_nfs () {
             "svc:/network/nfs/status:default" "svc:/network/nfs/cbd:default" \
             "svc:/network/nfs/nlockmgr:default" "svc:/network/nfs/client:default" \
             "svc:/network/nfs/server:default"; do
-            check_sunos_service $service_name disabled
+            check_sunos_service "$service_name" "disabled"
           done
         fi
         if [ "$os_version" != "11" ]; then
-          service_name="nfs.server"
-          check_sunos_service $service_name disabled
+          check_sunos_service "nfs.server" "disabled"
         fi
-        check_file="/etc/system"
-        check_file_value is $check_file "nfssrv:nfs_portmon" eq 1 star
+        check_file_value "is" "/etc/system" "nfssrv:nfs_portmon" "eq" "1" "star"
       fi
       if [ "$os_name" = "Linux" ]; then
         for service_name in nfs nfslock portmap rpc nfs-kerner-server rpcbind; do
-          check_linux_service $service_name off
+          check_linux_service "$service_name" "off"
         done
       fi
       if [ "$os_name" = "FreeBSD" ]; then
-        check_file="/etc/rc.conf"
-        check_file_value is $check_file nfs_reserved_port_only eq YES hash
-        check_file_value is $check_file weak_mountd_authentication eq NO hash
-        check_file_value is $check_file rpc_lockd_enable eq NO hash
-        check_file_value is $check_file rpc_statd_enable eq NO hash
+        check_file_value "is" "/etc/rc.conf" "nfs_reserved_port_only"     "eq" "YES" "hash"
+        check_file_value "is" "/etc/rc.conf" "weak_mountd_authentication" "eq" "NO"  "hash"
+        check_file_value "is" "/etc/rc.conf" "rpc_lockd_enable"           "eq" "NO"  "hash"
+        check_file_value "is" "/etc/rc.conf" "rpc_statd_enable"           "eq" "NO"  "hash"
         if [ "$os_version" -lt 5 ]; then
-          check_file_value is $check_file portmap_enable eq NO hash
-          check_file_value is $check_file nfs_server_enable eq NO hash
-          check_file_value is $check_file single_mountd_enable eq NO hash
+          check_file_value "is" "/etc/rc.conf" "portmap_enable"       "eq" "NO" "hash"
+          check_file_value "is" "/etc/rc.conf" "nfs_server_enable"    "eq" "NO" "hash"
+          check_file_value "is" "/etc/rc.conf" "single_mountd_enable" "eq" "NO" "hash"
         else
-          check_file_value is $check_file rpcbind_enable eq NO hash
-          check_file_value is $check_file nfs_server_enable eq NO hash
-          check_file_value is $check_file mountd_enable eq NO hash
+          check_file_value "is" "/etc/rc.conf" "rpcbind_enable"       "eq" "NO" "hash"
+          check_file_value "is" "/etc/rc.conf" "nfs_server_enable"    "eq" "NO" "hash"
+          check_file_value "is" "/etc/rc.conf" "mountd_enable"        "eq" "NO" "hash"
         fi
       fi
     fi

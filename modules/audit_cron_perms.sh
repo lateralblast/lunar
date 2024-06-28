@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_cron_perms
 #
 # Check cron permissions
@@ -13,10 +19,10 @@
 
 audit_cron_perms () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Cron Permissions"
+    verbose_message "Cron Permissions" "check"
     for check_file in /etc/crontab /var/spool/cron /etc/cron.daily /etc/cron.d \
     /etc/cron.weekly /etc/cron.monthly /etc/cron.hourly /etc/anacrontab; do
-        check_file_perms $check_file 0700 root root
+        check_file_perms "$check_file" "0700" "root" "root"
     done
   fi
 }

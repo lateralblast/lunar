@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_gsettings_value
 #
 # Audit gsettings values
@@ -13,48 +19,49 @@
 #.
 
 check_gsettings_value () {
-  parameter_root=$1
-  parameter_name=$2 
-  correct_value=$3
+  parameter_root="$1"
+  parameter_name="$2" 
+  correct_value="$3"
   command_name="gsettings"
   check=$( command -v gsettings 2> /dev/null )
   if [ "$check" ]; then
+    string="Parameter \"$parameter_name\" to \"$correct_value\""
+    verbose_message "$string" "check"
     set_command="gsettings set"
     get_command="gsettings get"
     if [ "$os_name" = "Linux" ]; then
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$command_name.log"
         if [ -f "$restore_file" ]; then
-          parameter_root=$( grep '$parameter_name' $restore_file | cut -f1 -d',' )
-          parameter_name=$( grep '$parameter_name' $restore_file | cut -f2 -d',' )
-          correct_value=$( grep '$parameter_name' $restore_file | cut -f3 -d',' )
-          if [ $( expr "$parameter_name" : "[A-z]" ) = 1 ]; then
-            verbose_message "Returning $parameter_name to $correct_value"
-            $set_command $parameter_root $parameter_name "$correct_value" 
+          parameter_root=$( grep "$parameter_name" "$restore_file" | cut -f1 -d',' )
+          parameter_name=$( grep "$parameter_name" "$restore_file" | cut -f2 -d',' )
+          correct_value=$( grep "$parameter_name" "$restore_file" | cut -f3 -d',' )
+          p_test=$( echo "$parameter_name" | grep "[A-z]" )
+          if [ -n "$p_test" ]; then
+            verbose_message "Parameter \"$parameter_name\" to \"$correct_value\"" "restore"
+            eval "$set_command $parameter_root $parameter_name $correct_value"
           fi
         fi
       else
-        current_value=`gsettings get $parameter_root $parameter_name` 
+        current_value=$( gsettings get "$parameter_root" "$parameter_name" )
         if [ "$current_value" = "$correct_value" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Parameter \"$parameter_name\" is not set to \"$correct_value\" in $parameter_root"
-            string="Parameter $parameter_root.$parameter_name to $correct_value"
+            string="Parameter \"$parameter_root.$parameter_name\" to \"$correct_value\""
             if [ "$ansible" = 1 ]; then
               echo ""
-              echo "- name: $string"
+              echo "- name: Setting $string"
               echo "  gsetting:"
               echo "    $parameter_root.$parameter_name: $correct_value"
               echo ""
             fi
-            verbose_message "" fix
-            verbose_message "$set_command $parameter_root $parameter_name \"$correct_value\"" fix
-            verbose_message "" fix
+            verbose_message "$set_command $parameter_root $parameter_name \"$correct_value\"" "fix"
           else
             if [ "$audit_mode" = 0 ]; then
               log_file="$restore_dir/$command_name.log"
-              verbose_message "Setting:   $parameter_name to $correct_value"
-              echo "$parameter_root,$parameter_name,$current_value" >> $log_file
-              $set_command $parameter_root $parameter_name "$correct_value"
+              verbose_message "Parameter \"$parameter_name\" to \"$correct_value\"" "set"
+              echo "$parameter_root,$parameter_name,$current_value" >> "$log_file"
+              eval "$set_command $parameter_root $parameter_name $correct_value"
             fi
           fi
         fi

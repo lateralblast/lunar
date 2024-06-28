@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_docker_monitoring
 #
 # Check Docker monitoring
@@ -13,15 +19,15 @@ audit_docker_monitoring () {
     if [ "$audit_mode" != 2 ]; then
       docker_bin=$( command -v docker )
       if [ "$docker_bin" ]; then
-        verbose_message "Docker Healthcheck"
+        verbose_message "Docker Healthcheck" "check"
         check_dockerd equal config Health ""
         docker_ids=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}' 2> /dev/null )
         for docker_id in $docker_ids; do
-          check=$( docker inspect --format='{{ .Config.Healthcheck }}' $docker_id )
+          check=$( docker inspect --format='{{ .Config.Healthcheck }}' "$docker_id" )
           if [ ! "$check" = "<nil>" ]; then
-            increment_secure "Docker instance $docker_id has a Healthcheck instruction"
+            increment_secure   "Docker instance \"$docker_id\" has a Healthcheck instruction"
           else
-            increment_insecure "Docker instance $docker_id has no Healthcheck instruction"
+            increment_insecure "Docker instance \"$docker_id\" has no Healthcheck instruction"
           fi
         done
       fi

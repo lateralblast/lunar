@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_command_value
 #
 # Audit command output values
@@ -8,27 +14,29 @@
 #.
 
 check_command_value () {
-  command_name=$1
-  parameter_name=$2
-  correct_value=$3
-  service_name=$4
+  command_name="$1"
+  parameter_name="$2"
+  correct_value="$3"
+  service_name="$4"
   if [ "$audit_mode" = 2 ]; then
     restore_file="$restore_dir/$command_name.log"
     if [ -f "$restore_file" ]; then
-      parameter_name=$( grep '$parameter_name' $restore_file | cut -f1 -d',' )
-      correct_value=$( grep '$parameter_name' $restore_file | cut -f2 -d',' )
-      if [ $( expr "$parameter_name" : "[A-z]" ) = 1 ]; then
-        verbose_message "Returning $parameter_name to $correct_value"
+      parameter_name=$( grep "$parameter_name" "$restore_file" | cut -f1 -d',' )
+      correct_value=$( grep "$parameter_name" "$restore_file" | cut -f2 -d',' )
+      p_test=$( echo "$parameter_name" | grep "[A-z]" )
+      if [ -n "$p_test" ]; then
+        verbose_message "Returning \"$parameter_name\" to \"$correct_value\""
         if [ "$command_name" = "routeadm" ]; then
           if [ "$correct_value" = "disabled" ]; then
             set_command="routeadm -d"
           else
             set_command="routeadm -e"
           fi
-          $set_command $parameter_name
+          eval "$set_command $parameter_name"
         else
-          $set_command $parameter_name=$correct_value
-          if [ $( expr "$parameter_name" : "tcp_trace" ) = 9 ]; then
+          eval "$set_command $parameter_name=$correct_value"
+          p_test=$( echo "$parameter_name" | grep "tcp_trace" )
+          if [ -n "$p_test" ]; then
             svcadm refresh svc:/network/inetd
           fi
         fi
@@ -36,11 +44,11 @@ check_command_value () {
     fi
   else
     if [ "$parameter_name" = "tcp_wrappers" ]; then
-      string="Service $service_name has $parameter_name set to $correct_value"
+      string="Service \"$service_name\" has \"$parameter_name\" set to \"$correct_value\""
     else
-      string="Output of $command_name $parameter_name is $correct_value"
+      string="Output of command \"$command_name\" parameter \"$parameter_name\" is \"$correct_value\""
     fi
-   verbose_message "$string"
+   verbose_message "$string" "check"
   fi
   if [ "$command_name" = "inetadm" ]; then
     check_command="inetadm -l $service_name"
@@ -84,37 +92,33 @@ check_command_value () {
         else
           set_command="routeadm -e"
         fi
-        verbose_message "" fix
-        verbose_message "$set_command $parameter_name" fix
-        verbose_message "" fix
+        verbose_message "$set_command $parameter_name" "fix"
       else
-        verbose_message "" fix
-        verbose_message "$set_command $parameter_name=$correct_value" fix
-        verbose_message "" fix
+        verbose_message "$set_command $parameter_name=$correct_value" "fix"
       fi
     else
       if [ "$audit_mode" = 0 ]; then
         verbose_message "Setting:   $parameter_name to $correct_value"
-        echo "$parameter_name,$current_value" >> $log_file
+        echo "$parameter_name,$current_value" >> "$log_file"
         if [ "$command_name" = "routeadm" ]; then
           if [ "$correct_value" = "disabled" ]; then
             set_command="routeadm -d"
           else
             set_command="routeadm -e"
           fi
-          $set_command $parameter_name
+          eval "$set_command $parameter_name"
         else
-          $set_command $parameter_name=$correct_value
-        fi
+          eval "$set_command $parameter_name=$correct_value"
+        fi 
       fi
     fi
   else
     if [ "$audit_mode" != 2 ]; then
       if [ "$audit_mode" = 1 ]; then
         if [ "$parameter_name" = "tcp_wrappers" ]; then
-          increment_secure "Service $service_name already has \"$parameter_name\" set to \"$correct_value\""
+          increment_secure "Service \"$service_name\" already has \"$parameter_name\" set to \"$correct_value\""
         else
-          increment_secure "Output for command $command_name \"$parameter_name\" already set to \"$correct_value\""
+          increment_secure "Output for command \"$command_name\" parameter \"$parameter_name\" already set to \"$correct_value\""
         fi
       fi
     fi

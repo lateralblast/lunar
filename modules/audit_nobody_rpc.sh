@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_nobody_rpc
 #
 # Check Nobody Access for RPC Encryption Key Storage Service
@@ -9,9 +15,8 @@
 audit_nobody_rpc () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Nobody Access for RPC Encryption Key Storage Service"
-      check_file="/etc/default/keyserv"
-      check_file_value is $check_file ENABLE_NOBODY_KEYS eq NO hash
+      verbose_message  "Nobody Access for RPC Encryption Key Storage Service" "check"
+      check_file_value "is" "/etc/default/keyserv" "ENABLE_NOBODY_KEYS" "eq"  "NO" "hash"
     fi
   fi
 }

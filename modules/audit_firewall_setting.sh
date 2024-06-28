@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_firewall_setting
 #
 # Apple's firewall will protect your computer from certain incoming attacks.
@@ -18,29 +24,29 @@
 
 audit_firewall_setting () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Firewall Settings"
-    check_osx_defaults /Library/Preferences/com.apple.alf globalstate 1 int
+    verbose_message    "Firewall Settings" "check"
+    check_osx_defaults "/Library/Preferences/com.apple.alf globalstate" "1" "int"
     if [ "$audit_mode" != 2 ]; then
      	check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | egrep "enabled|on" )
       if [ "$check" ]; then
-        increment_secure "Firewall stealth mode enabled"
+        increment_secure   "Firewall stealth mode enabled"
       else
         increment_insecure "Firewall stealth mode is not enabled"
-        lockdown_command "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on"
+        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on"
       fi
       check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode | egrep "enabled|on" )
       if [ "$check" ]; then
-        increment_secure "Firewall logging mode enable"
+        increment_secure   "Firewall logging mode enable"
       else
         increment_insecure "Firewall logging mode is not enabled"
-        lockdown_command "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on"
+        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on"
       fi
       check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingopt | grep detail )
       if [ "$check" ]; then
-        increment_secure "Firewall logging option detailed"
+        increment_secure   "Firewall logging option detailed"
       else
         increment_insecure "Firewall logging option is not detailed"
-        lockdown_command "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail"
+        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail"
       fi
     fi
   fi

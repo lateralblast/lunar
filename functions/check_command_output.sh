@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_command_output
 #
 # Code to test command output
@@ -46,8 +52,8 @@ check_command_output () {
     log_file="$command_name.log"
     check_value=$( $get_command )
     if [ "$audit_mode" != 2 ]; then
-      string="Command $command_name returns $correct_value"
-      verbose_message "Chaking:  $string"
+      string="Command \"$command_name\" returns \"$correct_value\""
+      verbose_message "$string" "check"
        if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
@@ -64,22 +70,22 @@ check_command_output () {
         echo ""
       fi
       if [ "$check_value" != "$correct_value" ]; then
-        increment_insecure "Command $command_name does not return correct value"
+        increment_insecure "Command \"$command_name\" does not return correct value"
       else
-        increment_secure "Command $command_name returns correct value"
+        increment_secure   "Command \"$command_name\" returns correct value"
       fi
       log_file="$work_dir/$log_file"
-      lockdown_command "echo \"$restore_command\" > $log_file ; $set_command" "Command $command_name to correct value"
+      lockdown_command "echo \"$restore_command\" > $log_file ; $set_command" "Command \"$command_name\" to correct value"
     fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        verbose_message "Restoring: Previous value for $command_name"
+        verbose_message "Restoring: Previous value for \"$command_name\""
         if [ "$command_name" = "getcond" ]; then
-          $restore_command
+          eval "$restore_command"
         else
-          restore_string=$( cat $restore_file )
-          $restore_command $restore_string
+          restore_string=$( cat "$restore_file" )
+          eval "$restore_command $restore_string"
         fi
       fi
     fi

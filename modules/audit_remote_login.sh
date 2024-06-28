@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_remote_login
 #
 # Check remote login
@@ -8,7 +14,7 @@
 
 audit_remote_login () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Remote Login"
-    check_osx_systemsetup getremotelogin off
+    verbose_message       "Remote Login"   "check"
+    check_osx_systemsetup "getremotelogin" "off"
   fi
 }

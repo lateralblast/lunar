@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_dhcp_server
 #
 # Check DHCP server
@@ -13,17 +19,15 @@
 
 audit_dhcp_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "DHCP Server"
+    verbose_message "DHCP Server" "check"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/network/dhcp-server:default"
-        check_sunos_service $service_name disabled
+        check_sunos_service "svc:/network/dhcp-server:default" "disabled"
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      service_name="dhcpd"
-      check_linux_service $service_name off
-      check_linux_package uninstall $service_name
+      check_linux_service "dhcpd" "off"
+      check_linux_package "uninstall" "dhcpd"
     fi
   fi
 }

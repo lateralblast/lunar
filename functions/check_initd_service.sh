@@ -1,3 +1,8 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
 
 # check_initd_service
 #
@@ -9,11 +14,11 @@
 
 check_initd_service () {
   if [ "$os_name" = "SunOS" ]; then
-    service_name=$1
-    correct_status=$2
+    service_name="$1"
+    correct_status="$2"
     log_file="initd.log"
-    service_check=$( ls /etc/init.d | grep -c "^$service_name$" | sed 's/ //g' )
-    if [ "$service_check" != 0 ]; then
+    service_check=$( ls /etc/init.d | grep "^$service_name$" | sed 's/ //g' )
+    if [ -n "$service_check" ]; then
       if [ "$correct_status" = "disabled" ]; then
         check_file="/etc/init.d/_$service_name"
         if [ -f "$check_file" ]; then
@@ -30,8 +35,8 @@ check_initd_service () {
         fi
       fi
       if [ "$audit_mode" != 2 ]; then
-        string="If init.d service $service_name is $correct_status"
-        verbose_message "$string"
+        string="If init.d service \"$service_name\" is \"$correct_status\""
+        verbose_message " $string" "check"
         if [ "$ansible" = 1 ]; then
           echo ""
           echo "- name: Checking $string"
@@ -43,7 +48,7 @@ check_initd_service () {
         fi
       fi
       if [ "$actual_status" != "$correct_status" ]; then
-        increment_insecure "Service $service_name is not $correct_status"
+        increment_insecure "Service \"$service_name\" is not \"$correct_status\""
         log_file="$work_dir/$log_file"
         if [ "$correct_status" = "disabled" ]; then
           lockdown_command "echo \"$service_name,$actual_status\" >> $log_file ; /etc/init.d/$service_name stop ; mv /etc/init.d/$service_name /etc/init.d/_$service_name" "Service $service_name to $correct_status"
@@ -65,7 +70,7 @@ check_initd_service () {
             fi
           fi
         else
-          increment_secure "Service $service_name is $correct_status"
+          increment_secure "Service \"$service_name\" is \"$correct_status\""
         fi
       fi
     fi

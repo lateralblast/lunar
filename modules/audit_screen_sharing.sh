@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_screen_sharing
 #
 # Check sreen sharing settings
@@ -9,7 +15,7 @@
 
 audit_screen_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Screen Sharing"
-    check_launchctl_service com.apple.screensharing off
+    verbose_message         "Screen Sharing" "check"
+    check_launchctl_service "com.apple.screensharing" "off"
   fi
 }

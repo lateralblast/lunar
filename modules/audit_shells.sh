@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_shells
 #
 # Check that shells in /etc/shells exist
@@ -5,11 +11,11 @@
 
 audit_shells () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Shells"
+    verbose_message "Shells" "check"
     check_file="/etc/shells"
     if [ -f "$check_file" ]; then
       if [ "$audit_mode" = 2 ]; then
-        restore_file $check_file $restore_dir
+        restore_file "$check_file" "$restore_dir"
       else
         for check_shell in $( grep -v '^#' $check_file ); do
           if [ ! -f "check_shell" ]; then
@@ -18,9 +24,9 @@ audit_shells () {
             fi
             if [ "$audit_mode" = 0 ]; then
               temp_file="$temp_dir/shells"
-              backup_file $check_file
-              grep -v "^$check_shell" $check_file > $temp_file
-              cat $temp_file > $check_file
+              backup_file "$check_file"
+              grep -v "^$check_shell" $check_file > "$temp_file"
+              cat "$temp_file" > "$check_file"
             fi
           fi
         done

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_login_guest
 #
 # Refer to Section 1.4.2.7 Page(s)       CIS Apple OS X 10.6 Benchmark v1.0.0
@@ -7,10 +13,10 @@
 
 audit_login_guest () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Guest login"
-    check_osx_defaults /Library/Preferences/com.apple.loginwindow.plist GuestEnabled no bool 
-    check_dscl /Users/Guest AuthenticationAuthority ";basic;"
-    check_dscl /Users/Guest passwd "*"
-    check_dscl /Users/Guest UserShell "/sbin/nologin"
+    verbose_message    "Guest login" "check"
+    check_osx_defaults "/Library/Preferences/com.apple.loginwindow.plist" "GuestEnabled" "no" "bool" 
+    check_dscl         "/Users/Guest" "AuthenticationAuthority" ";basic;"
+    check_dscl         "/Users/Guest" "passwd"    "*"
+    check_dscl         "/Users/Guest" "UserShell" "/sbin/nologin"
   fi
 }

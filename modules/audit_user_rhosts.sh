@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_user_rhosts
 #
 # Check for rhosts files
@@ -17,18 +23,21 @@
 
 audit_user_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "User RHosts Files"
+    verbose_message "User RHosts Files" "check"
     check_fail=0
-    for home_dir in $( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" ); do
+    home_dirs=$( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" )
+    for home_dir in $home_dirs; do
       check_file="$home_dir/.rhosts"
       if [ -f "$check_file" ]; then
         check_fail=1
-        check_file_exists $check_file no
+        check_file_exists "$check_file" "no"
       fi
     done
     if [ "$check_fail" != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
         increment_secure "No user rhosts files exist"
+      else
+        increment_insecure "User rhosts files exist"
       fi
     fi
   fi

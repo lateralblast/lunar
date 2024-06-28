@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_bt_sharing
 #
 # Check BT sharing
@@ -9,23 +15,24 @@
 
 audit_bt_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Bluetooth services and file sharing"
-    check_osx_defaults /Library/Preferences/com.apple.Bluetooth ControllerPowerState 0 int
-    check_osx_defaults /Library/Preferences/com.apple.Bluetooth PANServices 0 int
-    check_osx_defaults /Library/Preferences/com.apple.Bluetooth BluetoothSystemWakeEnable 0 bool
+    verbose_message    "Bluetooth services and file sharing"      "check"
+    check_osx_defaults "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0" "int"
+    check_osx_defaults "/Library/Preferences/com.apple.Bluetooth" "PANServices"               "0" "int"
+    check_osx_defaults "/Library/Preferences/com.apple.Bluetooth" "BluetoothSystemWakeEnable" "0" "bool"
     backup_file="bluetooth_discover"
     if [ "$audit_mode" != 2 ]; then
       if [ "$os_version" -ge 14 ]; then
-        for user_name in `ls /Users |grep -v Shared`; do
-          check_osx_defaults com.apple.Bluetooth PrefKeyServicesEnabled 0 bool $user_name
-          check_osx_defaults com.apple.controlcenter.plist Bluetooth 18 int $user_name
+        user_list=$( find /Users -maxdepth 1 -type d |grep -vE "localized|Shared" |cut -f3 -d/ )
+        for user_name in $user_list; do
+          check_osx_defaults "com.apple.Bluetooth"           "PrefKeyServicesEnabled" "0"  "bool" "$user_name"
+          check_osx_defaults "com.apple.controlcenter.plist" "Bluetooth"              "18" "int"  "$user_name"
         done
       fi
       check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i power |cut -f2 -d: |sed "s/ //g" )
       if [ ! "$check" = "Off" ]; then
         check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i discoverable |cut -f2 -d: |sed "s/ //g" )
         if [ "$check" = "Off" ]; then
-          increment_secure "Bluetooth is not discoverable"
+          increment_secure   "Bluetooth is not discoverable"
         else
           increment_insecure "Bluetooth is discoverable"
         fi
@@ -34,7 +41,7 @@ audit_bt_sharing () {
       fi
       check=$( defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed "s/[ ,\",\,]//g" )
       if [ "$check" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
-        increment_secure "Bluetooth status menu is enabled"
+        increment_secure   "Bluetooth status menu is enabled"
       else
         increment_insecure "Bluetooth status menu is not enabled"
       fi

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_modprobe_conf
 #
 # Check modprobe on filesystems
@@ -13,19 +19,18 @@
 
 audit_modprobe_conf () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Modprobe Configuration"
-    check_file="/etc/modprobe.conf"
-    check_append_file $check_file "install tipc /bin/true"
-    check_append_file $check_file "install rds /bin/true"
-    check_append_file $check_file "install sctp /bin/true"
-    check_append_file $check_file "install dccp /bin/true"
-    check_append_file $check_file "install udf /bin/true"
-    check_append_file $check_file "install squashfs /bin/true"
-    check_append_file $check_file "install hfs /bin/true"
-    check_append_file $check_file "install hfsplus /bin/true"
-    check_append_file $check_file "install jffs2 /bin/true"
-    check_append_file $check_file "install freevxfs /bin/true"
-    check_append_file $check_file "install cramfs /bin/true"
-    check_append_file $check_file "install vfat /bin/true"
+    verbose_message "Modprobe Configuration" "check"
+    check_append_file "/etc/modprobe.conf" "install tipc /bin/true"
+    check_append_file "/etc/modprobe.conf" "install rds /bin/true"
+    check_append_file "/etc/modprobe.conf" "install sctp /bin/true"
+    check_append_file "/etc/modprobe.conf" "install dccp /bin/true"
+    check_append_file "/etc/modprobe.conf" "install udf /bin/true"
+    check_append_file "/etc/modprobe.conf" "install squashfs /bin/true"
+    check_append_file "/etc/modprobe.conf" "install hfs /bin/true"
+    check_append_file "/etc/modprobe.conf" "install hfsplus /bin/true"
+    check_append_file "/etc/modprobe.conf" "install jffs2 /bin/true"
+    check_append_file "/etc/modprobe.conf" "install freevxfs /bin/true"
+    check_append_file "/etc/modprobe.conf" "install cramfs /bin/true"
+    check_append_file "/etc/modprobe.conf" "install vfat /bin/true"
   fi
 }

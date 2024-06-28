@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_wireless
 #
 # Wireless checks
@@ -9,10 +15,11 @@
 
 audit_wireless () {
   if [ "$os_name" = "Darwin" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Wifi information menu"
+    verbose_message "Wifi information menu" "check"
     if [ "$os_name" = "Darwin" ] && [ "$os_version" -ge 14 ]; then
-      for user_name in `ls /Users |grep -v Shared`; do
-        check_osx_defaults com.apple.controlcenter.plist WiFi 2 int currentHost $user_name
+      user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+      for user_name in $user_list; do
+        check_osx_defaults "com.apple.controlcenter.plist" "WiFi" "2" "int" "currentHost" "$user_name"
       done
     else
       if [ "$os_name" = "Darwin" ]; then
@@ -21,7 +28,7 @@ audit_wireless () {
       else
         check=$( command -v nmcli 2> /dev/null )
         if [ "$check" ]; then
-          check=$(nmcli radio all |grep enabled |wc -l)
+          check=$(nmcli radio all |grep -c enabled )
         else
           check=$(find /sys/class/net/*/ -type d -name wireless |wc -l)
         fi

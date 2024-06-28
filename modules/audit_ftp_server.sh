@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ftp_server
 #
 # Turn off ftp server
@@ -13,20 +19,18 @@
 
 audit_ftp_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    verbose_message "FTP Daemon"
+    verbose_message "FTP Daemon" "check"
     if [ "$os_anme" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/network/ftp:default"
-        check_sunos_service $service_name disabled
+        check_sunos_service "svc:/network/ftp:default" "disabled"
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      service_name="vsftpd"
-      check_linux_service $service_name off
-      check_linux_package uninstall vsftpd
+      check_linux_service "vsftpd"    "off"
+      check_linux_package "uninstall" "vsftpd"
     fi
     if [ "$os_name" = "Darwin" ]; then
-      check_launchctl ftp off
+      check_launchctl "ftp" "off"
     fi
   fi
 }

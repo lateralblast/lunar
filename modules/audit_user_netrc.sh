@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_user_netrc
 #
 # Check for netrc files
@@ -16,18 +22,21 @@
 
 audit_user_netrc () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "User Netrc Files"
+    verbose_message "User Netrc Files" "check"
     check_fail=0
-    for home_dir in $( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" ); do
+    home_dirs=$( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" )
+    for home_dir in $home_dirs; do
       check_file="$home_dir/.netrc"
       if [ -f "$check_file" ]; then
         check_fail=1
-        check_file_perms $check_file 0600
+        check_file_perms "$check_file" "0600"
       fi
     done
     if [ "$check_fail" != 1 ]; then
       if [ "$audit_mode" = 1 ]; then
         increment_secure "No user netrc files exist"
+      else
+        increment_insecure "User netrc files exist"
       fi
     fi
   fi

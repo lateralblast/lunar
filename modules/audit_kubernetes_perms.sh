@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_kubernetes_perms
 #
 # Check Kubernetes permissions
@@ -15,26 +21,25 @@
 
 audit_kubernetes_perms () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+    verbose_message "Kubernetes permissions" "check"
     check_file="/var/lib/etcd"
     if [ -f "$check_file" ]; then
-      check_file_perms $check_file 0700 etcd etcd
+      check_file_perms "$check_file" "0700" "etcd" "etcd"
     fi
     for check_file in /etc/kubernetes/admin.conf /etc/kubernetes/scheduler.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/kubelet.conf; do
       if [ -f "$check_file" ]; then
-        check_file_perms $check_file 0644 root root
+        check_file_perms "$check_file" "0644" "root" "root"
       fi
     done
     check_dir="/etc/kubernetes/pki"
     if [ -d "$check_dir" ]; then
-      for check_file in $( ls $check_dir/*.crt ); do
-        if [ -f "$check_file" ]; then
-          check_file_perms $check_file 0644 root root
-        fi
+      file_list=$( find "$check_dir" -name "*.crt" -type f -maxdepth 1 )
+      for check_file in $file_list; do
+        check_file_perms "$check_file" "0644" "root" "root"
       done
-      for check_file in $( ls $check_dir/*.key ); do
-        if [ -f "$check_file" ]; then
-        check_file_perms $check_file 0600 root root
-        fi
+      file_list=$( find "$check_dir" -name "*.key" -type f -maxdepth 1 )
+      for check_file in $file_list; do
+        check_file_perms "$check_file" "0600" "root" "root"
       done
     fi
   fi

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_unconfined_daemons
 #
 # Check for unconfined daemons
@@ -10,11 +16,11 @@
 
 audit_unconfined_daemons () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Unconfined Daemons"
+    verbose_message "Unconfined Daemons" "check"
     daemon_check=$( ps -eZ 2> /dev/null | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }' )
-    if [ "$daemon_check" = "" ]; then
+    if [ -z "$daemon_check" ]; then
       if [ "$audit_mode" = 1 ]; then
-        increment_insecure "Unconfined daemons $daemon_check"
+        increment_insecure "Unconfined daemons \"$daemon_check\""
       fi
     else
       if [ "$audit_mode" = 1 ]; then

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_dns_server
 #
 # Refer to Section(s) 3.9    Page(s) 65-6 CIS CentOS Linux 6 Benchmark v1.0.0
@@ -15,27 +21,25 @@
 audit_dns_server () {
   if [ "$named_disable" = "yes" ]; then
     if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-      verbose_message "DNS Server"
+      verbose_message "DNS Server" "check"
       if [ "$os_name" = "AIX" ]; then
-        check_rctcp named off
+        check_rctcp "named" "off"
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          service_name="svc:/network/dns/server:default"
-          check_sunos_service $service_name disabled
+          check_sunos_service "svc:/network/dns/server:default" "disabled"
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
         for service_name in dnsmasq named bind9; do
-          check_linux_service $service_name off
+          check_linux_service "$service_name" "off"
         done
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
-          check_linux_package uninstall bind
+          check_linux_package "uninstall" "bind"
         fi
       fi
       if [ "$os_name" = "FreeBSD" ]; then
-        check_file="/etc/rc.conf"
-        check_file_value is $check_file named_enable eq NO hash
+        check_file_value "is" "/etc/rc.conf" "named_enable" "eq" "NO" "hash"
       fi
     fi
   fi

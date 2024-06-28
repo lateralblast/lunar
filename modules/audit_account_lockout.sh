@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_account_lockout
 #
 # Check Account Lockout
@@ -7,7 +13,7 @@
 
 audit_account_lockout () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Account Lockout"
-    check_pwpolicy maxFailedLoginAttempts 3
+    verbose_message "Account Lockout" "check"
+    check_pwpolicy  "maxFailedLoginAttempts" "3"
   fi
 }

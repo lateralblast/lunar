@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_postfix_daemon
 #
 # Refer to Section(s) 3.16   Page(s) 69-70 CIS CentOS Linux 6 Benchmark v1.0.0
@@ -8,12 +14,10 @@
 
 audit_postfix_daemon () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message="Postfix Daemon"
+    verbose_message "Postfix Daemon" "check"
     if [ "$os_vendor" = "SuSE" ]; then
-      check_file="/etc/sysconfig/mail"
-      check_file_value is $check_file SMTPD_LISTEN_REMOTE eq no hash
+      check_file_value "is" "/etc/sysconfig/mail"  "SMTPD_LISTEN_REMOTE" "eq" "no"        "hash"
     fi
-    check_file="/etc/postfix/main.cf"
-    check_file_value is $check_file inet_interfaces eq localhost hash
+    check_file_value   "is" "/etc/postfix/main.cf" "inet_interfaces"     "eq" "localhost" "hash"
   fi
 }

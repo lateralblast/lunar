@@ -1,3 +1,10 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1083
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_writable_files
 #
 # Refer to Section(s) 9.1.10   Page(s) 159-160 CIS CentOS Linux 6 Benchmark v1.0.0
@@ -18,15 +25,17 @@
 audit_writable_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
     if [ "$do_fs" = 1 ]; then
-      verbose_message "World Writable Files"
+      verbose_message "World Writable Files" "check"
       log_file="worldwritablefiles.log"
       if [ "$audit_mode" = 0 ]; then
         log_file="$work_dir/$log_file"
       fi
       if [ "$audit_mode" != 2 ]; then
         if [ "$os_name" = "Linux" ]; then
-          for file_system in $( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null ); do
-            for check_file in $( find $file_system -xdev -type f -perm -0002 2> /dev/null ); do
+          file_systems=$( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null )
+          for file_system in $file_systems; do
+            check_files=$( find "$file_system" -xdev -type f -perm -0002 2> /dev/null )
+            for check_file in $check_files; do
               if [ "$ansible" = 1 ]; then
                 echo ""
                 echo "- name: Checking write permissions for $check_file"
@@ -37,14 +46,12 @@ audit_writable_files () {
               fi
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "File $check_file is world writable"
-                verbose_message "" fix
-                verbose_message "chmod o-w $check_file" fix
-                verbose_message "" fix
+                verbose_message    "chmod o-w $check_file" "fix"
               fi
               if [ "$audit_mode" = 0 ]; then
-                echo "$check_file" >> $log_file
-                verbose_message "Setting:   File $check_file to be non world writable"
-                chmod o-w $check_file
+                echo "$check_file" >> "$log_file"
+                verbose_message "File \"$check_file\" to be non world writable" "set"
+                chmod o-w "$check_file"
               fi
             done
           done
@@ -74,14 +81,12 @@ audit_writable_files () {
             fi
             if [ "$audit_mode" = 1 ]; then
               increment_insecure "File $check_file is world writable"
-              verbose_message "" fix
-              verbose_message "chmod o-w $check_file" fix
-              verbose_message "" fix
+              verbose_message    "chmod o-w $check_file" "fix"
             fi
             if [ "$audit_mode" = 0 ]; then
-              echo "$check_file" >> $log_file
-              verbose_message "Setting:   File $check_file to be non world writable"
-              chmod o-w $check_file
+              echo "$check_file" >> "$log_file"
+              verbose_message "File \"$check_file\" to be non world writable" "set"
+              chmod o-w "$check_file"
             fi
           done
         fi
@@ -89,10 +94,11 @@ audit_writable_files () {
       if [ "$audit_mode" = 2 ]; then
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          for check_file in $( cat $restore_file ); do
+          check_files=$( cat "$restore_file" )
+          for check_file in $check_files; do
             if [ -f "$check_file" ]; then
-              verbose_message "Restoring: File $check_file to previous permissions"
-              chmod o+w $check_file
+              verbose_message "File \"$check_file\" to previous permissions" "restore"
+              chmod o+w "$check_file"
             fi
           done
         fi

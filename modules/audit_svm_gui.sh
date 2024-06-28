@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_svm_gui
 #
 # Check Solaris Volume Manager GUI daemons disabled
@@ -8,15 +14,11 @@
 audit_svm_gui () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Solaris Volume Manager GUI Daemons"
-      service_name="svc:/network/rpc/mdcomm"
-      check_sunos_service $service_name disabled
-      service_name="svc:/network/rpc/meta"
-      check_sunos_service $service_name disabled
-      service_name="svc:/network/rpc/metamed"
-      check_sunos_service $service_name disabled
-      service_name="svc:/network/rpc/metamh"
-      check_sunos_service $service_name disabled
+      verbose_message     "Solaris Volume Manager GUI Daemons" "check"
+      check_sunos_service "svc:/network/rpc/mdcomm"  "disabled"
+      check_sunos_service "svc:/network/rpc/meta"    "disabled"
+      check_sunos_service "svc:/network/rpc/metamed" "disabled"
+      check_sunos_service "svc:/network/rpc/metamh"  "disabled"
     fi
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_remote_apple_events
 #
 # Check Apple remote events
@@ -9,11 +15,11 @@
 
 audit_remote_apple_events () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Remote Apple Events"
+    verbose_message "Remote Apple Events" "check"
     if [ "$long_os_version" -ge 1008 ]; then
-      check_osx_systemsetup getremoteappleevents off
+      check_osx_systemsetup   "getremoteappleevents" "off"
     else
-      check_launchctl_service eppc
+      check_launchctl_service "eppc"
     fi
   fi
 }

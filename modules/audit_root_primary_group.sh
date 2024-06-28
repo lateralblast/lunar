@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_root_primary_group
 #
 # Check root primary group
@@ -14,7 +20,7 @@
 
 audit_root_primary_group () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Root Primary Group"
+    verbose_message "Root Primary Group" "check"
     log_file="root_primary_group.log"
     check_file="/etc/group"
     group_check=$( grep "^root:" /etc/passwd | cut -f4 -d: )
@@ -22,14 +28,12 @@ audit_root_primary_group () {
       if [ "$group_check" != "0" ];then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Group \"$group_id\" does not exist in group file \"$check_file\""
-          verbose_message "" fix
-          verbose_message "usermod -g 0 root" fix
-          verbose_message "" fix
+          verbose_message    "usermod -g 0 root" "fix"
         fi
         if [ "$audit_mode" = 0 ];then
           log_file="$work_dir/$log_file"
-          echo "$group_check" > $log_file
-          verbose_message "Setting:   Primary group for root to root"
+          echo "$group_check" > "$log_file"
+          verbose_message "Primary group for root to root" "set"
           usermod -g 0 root
         fi
       else
@@ -40,10 +44,10 @@ audit_root_primary_group () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -e "$restore_file" ]; then
-        restore_value=$( cat $restore_file )
+        restore_value=$( cat "$restore_file" )
         if [ "$restore_value" != "$group_check" ]; then
-          verbose_message "Restoring: Primary root group to $restore_value"
-          usermod -g $restore_value root
+          verbose_message "Restoring: Primary root group to \"$restore_value\"" "restore"
+          usermod -g "$restore_value" root
         fi
       fi
     fi

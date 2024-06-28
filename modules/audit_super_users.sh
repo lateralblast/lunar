@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_super_users
 #
 # Check Super Users
@@ -17,24 +23,19 @@
 
 audit_super_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Accounts with UID 0"
+    verbose_message "Accounts with UID 0" "check"
     if [ "$os_name" = "AIX" ]; then
       check_chuser su true sugroups system root
     else
       if [ "$audit_mode" != 2 ]; then
         for user_name in $( awk -F: '$3 == "0" { print $1 }' /etc/passwd | grep -v root ); do
           if [ "$audit_mode" = 1 ]; then
-            increment_insecure "UID 0 for $user_name"
-            verbose_message "" fix
-            verbose_message "userdel $user_name" fix
-            verbose_message "" fix
+            increment_insecure "UID 0 for User \"$user_name\""
+            verbose_message    "userdel $user_name" "fix"
           fi
           if [ "$audit_mode" = 0 ]; then
-            check_file="/etc/shadow"
-            backup_file $check_file
-            check_file="/etc/passwd"
-            backup_file="$work_dir$check_file"
-            backup_file $check_file
+            backup_file "/etc/shadow"
+            backup_file "/etc/passwd"
             echo "Removing:  Account $user_name it UID 0"
             userdel $user_name
           fi
@@ -45,10 +46,8 @@ audit_super_users () {
           fi
         fi
       else
-        check_file="/etc/shadow"
-        restore_file $check_file $restore_dir
-        check_file="/etc/passwd"
-        restore_file $check_file $restore_dir
+        restore_file "/etc/shadow" "$restore_dir"
+        restore_file "/etc/passwd" "$restore_dir"
       fi
     fi
   fi

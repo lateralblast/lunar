@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # full_audit_osx_services
 #
 # Audit All System
@@ -51,7 +57,7 @@ full_audit_osx_services () {
   audit_location_services
   audit_usage_data
   audit_screen_corner
-  audit_lockdoen
+  audit_lockdown
   audit_universal_control
   audit_touch_id
   aduit_apfs

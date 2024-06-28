@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_password_strength
 #
 # Refer to Section(s) 5.12-19 Page(s) 58-66  CIS Apple OS X 10.8 Benchmark v1.0.0
@@ -12,41 +18,39 @@ audit_password_strength () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
     verbose_message "Strong Password Creation Policies"
     if  [ "$os_name" = "SunOS" ]; then
-      check_file="/etc/default/passwd"
-      check_file_value is $check_file PASSLENGTH eq 8 hash
-      check_file_value is $check_file NAMECHECK eq YES hash
-      check_file_value is $check_file HISTORY eq 10 hash
-      check_file_value is $check_file MINDIFF eq 3 hash
-      check_file_value is $check_file MINALPHA eq 2 hash
-      check_file_value is $check_file MINUPPER eq 1 hash
-      check_file_value is $check_file MINLOWER eq 1 hash
-      check_file_value is $check_file MINDIGIT eq 1 hash
-      check_file_value is $check_file MINNONALPHA eq 1 hash
-      check_file_value is $check_file MAXREPEATS eq 0 hash
-      check_file_value is $check_file WHITESPACE eq YES hash
-      check_file_value is $check_file DICTIONDBDIR eq /var/passwd hash
-      check_file_value is $check_file DICTIONLIST eq /usr/share/lib/dict/words hash
+      check_file_value "is" "/etc/default/passwd" "PASSLENGTH"   "eq" "8"    "hash"
+      check_file_value "is" "/etc/default/passwd" "NAMECHECK"    "eq" "YES"  "hash"
+      check_file_value "is" "/etc/default/passwd" "HISTORY"      "eq" "10"   "hash"
+      check_file_value "is" "/etc/default/passwd" "MINDIFF"      "eq" "3"    "hash"
+      check_file_value "is" "/etc/default/passwd" "MINALPHA"     "eq" "2"    "hash"
+      check_file_value "is" "/etc/default/passwd" "MINUPPER"     "eq" "1"    "hash"
+      check_file_value "is" "/etc/default/passwd" "MINLOWER"     "eq" "1"    "hash"
+      check_file_value "is" "/etc/default/passwd" "MINDIGIT"     "eq" "1"    "hash"
+      check_file_value "is" "/etc/default/passwd" "MINNONALPHA"  "eq" "1"    "hash"
+      check_file_value "is" "/etc/default/passwd" "MAXREPEATS"   "eq" "0"    "hash"
+      check_file_value "is" "/etc/default/passwd" "WHITESPACE"   "eq" "YES"  "hash"
+      check_file_value "is" "/etc/default/passwd" "DICTIONDBDIR" "eq" "/var/passwd"               "hash"
+      check_file_value "is" "/etc/default/passwd" "DICTIONLIST"  "eq" "/usr/share/lib/dict/words" "hash"
     fi
     if [ "$os_name" = "Darwin" ]; then
-      check_pwpolicy requiresAlpha 1
-#      check_pwpolicy minimumAlphaCharacters 1
-      check_pwpolicy requiresSymbol 1
-#      check_pwpolicy minimumSymbolCharacters 1
-      check_pwpolicy RequiresNumeric 1
-#      check_pwpolicy minimumNumericCharacters 1
+      check_pwpolicy "requiresAlpha" "1"
+#      check_pwpolicy "minimumAlphaCharacters" "1"
+      check_pwpolicy "requiresSymbol" "1"
+#      check_pwpolicy "minimumSymbolCharacters" "1"
+      check_pwpolicy "RequiresNumeric" "1"
+#      check_pwpolicy "minimumNumericCharacters" "1"
       if [ "$long_os_version" -ge 1014 ]; then
-        check_pwpolicy requiresMixedCase 1
-        check_pwpolicy usingHistory 15
+        check_pwpolicy "requiresMixedCase" "1"
+        check_pwpolicy "usingHistory"      "15"
       fi
-      check_pwpolicy maxMinutesUntilChangePassword 86400
-      check_pwpolicy minChars 15
-      check_pwpolicy passwordCannotBeName 1
-      check_pwpolicy minutesUntilFailedLoginReset 0
-      check_pwpolicy policyAttributeMaximumFailedAuthentications 15
+      check_pwpolicy "maxMinutesUntilChangePassword" "86400"
+      check_pwpolicy "minChars"                      "15"
+      check_pwpolicy "passwordCannotBeName"          "1"
+      check_pwpolicy "minutesUntilFailedLoginReset"  "0"
+      check_pwpolicy "policyAttributeMaximumFailedAuthentications" "15"
     fi
     if [ "$os_name" = "FreeBSD" ]; then
-      check_file="/etc/login.conf"
-      check_file_value is $check_file passwd_format eq blf hash
+      check_file_value "is" "/etc/login.conf" "passwd_format" "eq" "blf" "hash"
     fi
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_secure_swap
 #
 # Check secure swap settings
@@ -7,7 +13,7 @@
 
 audit_secure_swap () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Secure swap"
-    check_osx_defaults /Library/Preferences/com.apple.virtualMemory UseEncryptedSwap yes bool
+    verbose_message    "Secure swap" "check"
+    check_osx_defaults "/Library/Preferences/com.apple.virtualMemory" "UseEncryptedSwap" "yes" "bool"
   fi
 }

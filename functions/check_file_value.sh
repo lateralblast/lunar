@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_file_value
 #
 # Audit file values
@@ -18,14 +24,14 @@
 #.
 
 check_file_value () {
-  operator=$1
-  check_file=$2
-  parameter_name=$3
-  separator=$4
-  correct_value=$5
-  comment_value=$6
-  position=$7
-  search_value=$8
+  operator="$1"
+  check_file="$2"
+  parameter_name="$3"
+  separator="$4"
+  correct_value="$5"
+  comment_value="$6"
+  position="$7"
+  search_value="$8"
   sshd_test=$( echo "$check_file" | grep "sshd_config" )
   if [ "$operator" = "set" ]; then
     correct_value="[A-Z,a-z,0-9]"
@@ -76,28 +82,24 @@ check_file_value () {
     spacer=" $spacer "
   fi
   if [ "$audit_mode" = 2 ]; then
-    restore_file $check_file $restore_dir
+    restore_file "$check_file" "$restore_dir"
   else
-    string="Value of \"$parameter_name\" $operator set to \"$correct_value\" in $check_file"
-    verbose_message "$string"
+    string="Value of \"$parameter_name\" $operator set to \"$correct_value\" in \"$check_file\""
+    verbose_message "$string" "check"
     if [ ! -f "$check_file" ]; then
       if [ "$audit_mode" = 1 ]; then
-        increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in $check_file"
+        increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in \"$check_file\""
         if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ]; then
           line="$parameter_name$separator\"$correct_value\""
-          verbose_message "" fix
-          verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" fix
-          verbose_message "" fix
+          verbose_message "echo \"$parameter_name$separator\"$correct_value\" >> $check_file" "fix"
         else
           line="$parameter_name$separator$correct_value"
-          verbose_message "" fix
-          verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" fix
-          verbose_message "" fix
+          verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" "fix"
         fi
       else
         if [ "$audit_mode" = 0 ]; then
           string="Parameter $parameter_name to $correct_value in $check_file"
-          verbose_message "Setting:   $string"
+          verbose_message "\"$string\"" "set"
           if [ "$check_file" = "/etc/system" ]; then
             reboot=1
             verbose_message "Reboot required" notice
@@ -107,14 +109,14 @@ check_file_value () {
           fi
           backup_file $check_file
           if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
-            echo "$parameter_name$separator\"$correct_value\"" >> $check_file
+            echo "$parameter_name$separator\"$correct_value\"" >> "$check_file"
           else
-            echo "$parameter_name$separator$correct_value" >> $check_file
+            echo "$parameter_name$separator$correct_value" >> "$check_file"
           fi
         fi
         if [ "$ansible" = 1 ]; then
           echo ""
-          echo "- name: $string"
+          echo "- name: Checking $string"
           echo "  lineinfile:"
           echo "    path: $check_file"
           echo "    line: '$line'"
@@ -192,34 +194,25 @@ check_file_value () {
           parameter_name=$( echo "$parameter_name" |sed "s/^[\\]//g" )
         fi
         if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in $check_file"
+          increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in \"$check_file\""
           if [ "$check_parameter" != "$parameter_name" ]; then
             if [ "$separator_value" = "tab" ]; then
-              verbose_message "" fix
-              verbose_message "echo -e \"$parameter_name\t$correct_value\" >> $check_file" fix
-              verbose_message "" fix
+              verbose_message "echo -e \"$parameter_name\t$correct_value\" >> $check_file" "fix"
             else
               if [ "$position" = "after" ]; then
-                verbose_message "" fix
-                verbose_message "$cat_command $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" fix
-                verbose_message "$cat_command $temp_file > $check_file" fix
-                verbose_message "" fix
+                verbose_message "$cat_command $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" "fix"
+                verbose_message "$cat_command $temp_file > $check_file" "fix"
               else
-                verbose_message "" fix
-                verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" fix
-                verbose_message "" fix
+                verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" "fix"
               fi
             fi
           else
             if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
-              verbose_message "" fix
-              verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" fix
+              verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/\" $check_file > $temp_file" "fix"
             else
-              verbose_message "" fix
-              verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer$correct_value/\" $check_file > $temp_file" fix
+              verbose_message "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer$correct_value/\" $check_file > $temp_file" "fix"
             fi
-            verbose_message "$cat_command $temp_file > $check_file" fix
-            verbose_message "" fix
+            verbose_message "$cat_command $temp_file > $check_file" "fix"
           fi
         else
           if [ "$audit_mode" = 0 ]; then
@@ -228,31 +221,31 @@ check_file_value () {
             else
               check_parameter=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f1 -d"$separator" |sed 's/ //g' |uniq )
             fi
-            verbose_message "Setting:   Parameter \"$parameter_name\" to \"$correct_value\" in $check_file"
+            verbose_message "Parameter \"$parameter_name\" to \"$correct_value\" in \"$check_file\"" "set"
             if [ "$check_file" = "/etc/system" ]; then
               reboot=1
-              verbose_message "Reboot required" notice
+              verbose_message "Reboot required" "notice"
             fi
             if [ "$check_file" = "/etc/ssh/sshd_config" ] || [ "$check_file" = "/etc/sshd_config" ]; then
-              verbose_message "Service restart required for SSH" notice
+              verbose_message "Service restart required for SSH" "notice"
             fi
-            backup_file $check_file
+            backup_file "$check_file"
             if [ "$check_parameter" != "$parameter_name" ]; then
               if [ "$separator_value" = "tab" ]; then
-                $echo_command -e "$parameter_name\t$correct_value" >> $check_file
+                $echo_command -e "$parameter_name\t$correct_value" >> "$check_file"
               else
                 if [ "$position" = "after" ]; then
-                  $cat_command $check_file |sed "s,$search_value,&\n$parameter_name$separator$correct_value," > $temp_file
-                  $cat_command $temp_file > $check_file
+                  $cat_command $check_file |sed "s,$search_value,&\n$parameter_name$separator$correct_value," > "$temp_file"
+                  $cat_command $temp_file > "$check_file"
                 else
-                  $echo_command "$parameter_name$separator$correct_value" >> $check_file
+                  $echo_command "$parameter_name$separator$correct_value" >> "$check_file"
                 fi
               fi
             else
               if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
-                $sed_command "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > $temp_file
+                $sed_command "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > "$temp_file"
               else
-                $sed_command "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > $temp_file
+                $sed_command "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > "$temp_file"
               fi
               cat $temp_file > $check_file
               if [ "$os_name" = "SunOS" ]; then
@@ -262,12 +255,12 @@ check_file_value () {
                   pkg fix $( pkg search $check_file |grep pkg |awk '{print $4}' )
                 fi
               fi
-              rm $temp_file
+              rm "$temp_file"
             fi
           fi
         fi
       else
-        increment_secure "Parameter \"$parameter_name\" $operator set to \"$correct_value\" in $check_file"
+        increment_secure "Parameter \"$parameter_name\" $operator set to \"$correct_value\" in \"$check_file\""
       fi
     fi
   fi

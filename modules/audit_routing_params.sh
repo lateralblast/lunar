@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_routing_params
 #
 # Network Routing
@@ -22,39 +28,39 @@
 audit_routing_params () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "IP Routing"
-      check_command_value routeadm ipv4-routing disabled
-      check_command_value routeadm ipv6-routing disabled
-      verbose_message "IP Forwarding"
-      check_command_value routeadm ipv4-forwarding disabled
-      check_command_value routeadm ipv6-forwarding disabled
-      check_file_exists /etc/notrouter yes
+      verbose_message     "IP Routing" "check"
+      check_command_value "routeadm" "ipv4-routing"    "disabled"
+      check_command_value "routeadm" "ipv6-routing"    "disabled"
+      verbose_message     "IP Forwarding" "check"
+      check_command_value "routeadm" "ipv4-forwarding" "disabled"
+      check_command_value "routeadm" "ipv6-forwarding" "disabled"
+      check_file_exists   "/etc/notrouter" "yes"
     fi
     if [ "$os_version" = "11" ]; then
-      verbose_message "IP Routing"
-      audit_ipadm_value _forward_src_routed ipv4 0
-      audit_ipadm_value _forward_src_routed ipv6 0
-      audit_ipadm_value _rev_src_routes tcp 0
-      verbose_message "Broadcasting"
-      audit_ipadm_value _forward_directed_broadcasts ip 0
-      audit_ipadm_value _respond_to_timestamp ip 0
-      audit_ipadm_value _respond_to_timestamp_broadcast ip 0
-      audit_ipadm_value _respond_to_address_mask_broadcast ip 0
-      audit_ipadm_value _respond_to_echo_broadcast ip 0
-      verbose_message "Multicasting"
-      audit_ipadm_value _respond_to_echo_multicast ipv4 0
-      audit_ipadm_value _respond_to_echo_multicast ipv6 0
-      verbose_message "IP Redirecting"
-      audit_ipadm_value _ignore_redirect ipv4 1
-      audit_ipadm_value _ignore_redirect ipv6 1
-      audit_ipadm_value _send_redirects ipv4 0
-      audit_ipadm_value _send_redirects ipv6 0
-      verbose_message "Multihoming"
-      audit_ipadm_value _strict_dst_multihoming ipv4 1
-      audit_ipadm_value _strict_dst_multihoming ipv6 1
-      verbose_message "Queue Sizing"
-      audit_ipadm_value _conn_req_max_q0 tcp 4096
-      audit_ipadm_value _conn_req_max_q tcp 1024
+      verbose_message   "IP Routing" "check"
+      audit_ipadm_value "_forward_src_routed" "ipv4" "0"
+      audit_ipadm_value "_forward_src_routed" "ipv6" "0"
+      audit_ipadm_value "_rev_src_routes"     "tcp"  "0"
+      verbose_message   "Broadcasting" "check"
+      audit_ipadm_value "_forward_directed_broadcasts"       "ip" "0"
+      audit_ipadm_value "_respond_to_timestamp"              "ip" "0"
+      audit_ipadm_value "_respond_to_timestamp_broadcast"    "ip" "0"
+      audit_ipadm_value "_respond_to_address_mask_broadcast" "ip" "0"
+      audit_ipadm_value "_respond_to_echo_broadcast"         "ip" "0"
+      verbose_message   "Multicasting" "check"
+      audit_ipadm_value "_respond_to_echo_multicast" "ipv4" "0"
+      audit_ipadm_value "_respond_to_echo_multicast" "ipv6" "0"
+      verbose_message   "IP Redirecting" "check"
+      audit_ipadm_value "_ignore_redirect" "ipv4" "1"
+      audit_ipadm_value "_ignore_redirect" "ipv6" "1"
+      audit_ipadm_value "_send_redirects"  "ipv4" "0"
+      audit_ipadm_value "_send_redirects"  "ipv6" "0"
+      verbose_message   "Multihoming" "check"
+      audit_ipadm_value "_strict_dst_multihoming" "ipv4" "1"
+      audit_ipadm_value "_strict_dst_multihoming" "ipv6" "1"
+      verbose_message   "Queue Sizing" "check"
+      audit_ipadm_value "_conn_req_max_q0"  "tcp" "4096"
+      audit_ipadm_value "_conn_req_max_q"   "tcp" "1024"
     fi
   fi
 }

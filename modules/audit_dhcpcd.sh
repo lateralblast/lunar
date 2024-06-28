@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_dhcpcd
 #
 # Check DHCP client
@@ -8,8 +14,8 @@
 audit_dhcpcd () {
   if [ "$dhcpcd_disable" = "yes" ]; then
     if [ "$os_name" = "AIX" ]; then
-      verbose_message "DHCP Client Daemon"
-      check_rctcp dhcpcd off
+      verbose_message "DHCP Client Daemon" "check"
+      check_rctcp     "dhcpcd" "off"
     fi
   fi
 }

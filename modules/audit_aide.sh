@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_aide
 #
 # Check AIDE
@@ -10,16 +16,15 @@
 
 audit_aide () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "AIDE"
-    check_linux_package install aide
-    check_linux_package install aide-common
-    check_append_file /etc/cron.d/aide "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
-    check_file="/etc/aide/aide.conf"
-    check_file_value is $check_file /sbin/auditctl space p+i+n+u+g+s+b+acl+xattrs+sha512 hash
-    check_file_value is $check_file /sbin/auditd space p+i+n+u+g+s+b+acl+xattrs+sha512 hash
-    check_file_value is $check_file /sbin/ausearch space p+i+n+u+g+s+b+acl+xattrs+sha512 hash
-    check_file_value is $check_file /sbin/aureport space p+i+n+u+g+s+b+acl+xattrs+sha512 hash
-    check_file_value is $check_file /sbin/autrace space p+i+n+u+g+s+b+acl+xattrs+sha512 hash
-    check_file_value is $check_file /sbin/augenrules space p+i+n+u+g+s+b+acl+xattrs+sha512 hash
+    verbose_message     "AIDE" "check"
+    check_linux_package "install" "aide"
+    check_linux_package "install" "aide-common"
+    check_append_file   "/etc/cron.d/aide" "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
+    check_file_value    "is" "/etc/aide/aide.conf" "/sbin/auditctl"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
+    check_file_value    "is" "/etc/aide/aide.conf" "/sbin/auditd"     "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
+    check_file_value    "is" "/etc/aide/aide.conf" "/sbin/ausearch"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
+    check_file_value    "is" "/etc/aide/aide.conf" "/sbin/aureport"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
+    check_file_value    "is" "/etc/aide/aide.conf" "/sbin/autrace"    "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
+    check_file_value    "is" "/etc/aide/aide.conf" "/sbin/augenrules" "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
   fi
 }

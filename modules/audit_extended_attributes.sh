@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_extended_attributes
 #
 # Check extended attributes
@@ -8,13 +14,14 @@
 
 audit_extended_attributes () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "Extended Attributes"
+    verbose_message "Extended Attributes" "check"
     if [ "$audit_mode" = 1 ]; then
-      for check_file in $( find / \( -fstype nfs -o -fstype cachefs \
-        -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
-        -o -fstype objfs -o -fstype proc \) -prune \
-        -o -xattr -print ); do
-        increment_insecure "File $check_file has extended attributes"
+      file_list=$( find / \( -fstype nfs -o -fstype cachefs \
+      -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
+      -o -fstype objfs -o -fstype proc \) -prune \
+      -o -xattr -print )
+      for check_file in $file_list; do
+        increment_insecure "File \"$check_file\" has extended attributes"
       done
     fi
   fi

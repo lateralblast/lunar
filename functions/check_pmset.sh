@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_pmset
 #
 # Check Apple Power Management settings
@@ -5,8 +11,8 @@
 
 check_pmset() {
   if [ "$os_name" = "Darwin" ]; then
-    service=$1
-    value=$2
+    service="$1"
+    value="$2"
     if [ "$value" = "off" ]; then
       value="0"
     fi
@@ -20,10 +26,10 @@ check_pmset() {
       state="on"
     fi
     log_file="pmset_$service.log"
-    actual_value=$( pmset -g | grep $service |awk '{print $2}' |grep $value )
+    actual_value=$( pmset -g | grep "$service" |awk '{print $2}' |grep "$value" )
     if [ "$audit_mode" != 2 ]; then
       string="Sleep is disabled when powered"
-      verbose_message "$string"
+      verbose_message "$string" "check"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"
@@ -40,18 +46,18 @@ check_pmset() {
         echo ""
       fi
       if [ ! "$actual_value" = "$value" ]; then
-        increment_insecure "Service $service is not $state"
-        lockdown_command "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service $service to $state"
+        increment_insecure "Service \"$service\" is not \"$state\""
+        lockdown_command   "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service $service to $state"
       else
-        increment_secure "Service $service is $state"
+        increment_secure   "Service \"$service\" is \"$state\""
       fi
     else
       restore_file=$retore_dir/$log_file
       if [ -f "$restore_file" ]; then
-        $restore_value=$( cat $restore_file )
+        restore_value=$( cat "$restore_file" )
         if [ "$restore_value" != "$actual_value" ]; then
-          verbose_message "Restoring: Wake on lan to enabled"
-          pmset -c $service $restore_value
+          verbose_message "Wake on lan to enabled" "restore"
+          eval "pmset -c $service $restore_value"
         fi
       fi
     fi

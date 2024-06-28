@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_email_daemons
 #
 # Check email daemons
@@ -11,10 +17,10 @@
 
 audit_email_daemons () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Mail Daemons"
+    verbose_message "Mail Daemons" "check"
     for service_name in cyrus imapd qpopper dovecot; do
-      check_linux_service $service_name off
-      check_linux_package uninstall $service_name 
+      check_linux_service "$service_name" "off"
+      check_linux_package "uninstall"     "$service_name"
     done
   fi
 }

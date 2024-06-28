@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ipv6
 #
 # Check IPv6
@@ -10,20 +16,18 @@
 
 audit_ipv6 () {
   if [ "$ipv6_disable" = "yes" ]; then
-    verbose_message "IPv6 Autoconf Daemon"
+    verbose_message "IPv6 Autoconf Daemon" "check"
     if [ "$os_name" = "AIX" ]; then
       for service_name in autoconf6 ndpd-host ndpd-router; do
-        check_rctcp $service_name off
+        check_rctcp "$service_name" "off"
       done
     fi
     if [ "$os_name" = "Linux" ]; then
       if [ "$disable_ipv6" = "yes" ]; then
-        check_file="/etc/modprobe.conf"
-        check_append_file $check_file "options ipv6 \"disable=1\""
+        check_append_file "/etc/modprobe.conf" "options ipv6 \"disable=1\""
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-          check_file="/etc/sysconfig/network"
-          check_file_value is $check_file NETWORKING_IPV6 eq no hash
-          check_file_value is $check_file IPV6INIT eq no hash
+          check_file_value "is" "/etc/sysconfig/network" "NETWORKING_IPV6" "eq" "no" "hash"
+          check_file_value "is" "/etc/sysconfig/network" "IPV6INIT"        "eq" "no" "hash"
         fi
       fi
     fi

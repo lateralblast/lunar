@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_issue_banner
 #
 # Check security banner
@@ -16,7 +22,7 @@
 
 audit_issue_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Security Warning Message"
+    verbose_message "Security Warning Message" "check"
     if [ "$os_name" = "Darwin" ]; then
       file_list="/etc/issue /etc/motd /etc/issue.net /Library/Security/PolicyBanner.txt"
     else
@@ -26,57 +32,57 @@ audit_issue_banner () {
       check_file_perms $check_file 0644 root root
       issue_check=0
       if [ -f "$check_file" ]; then
-        issue_check=$( egrep -c 'NOTICE TO USERS|UNAUTHORIZED ACCESS' $check_file )
+        issue_check=$( grep -E "NOTICE TO USERS|UNAUTHORIZED ACCESS" "$check_file" )
       fi
       if [ "$audit_mode" != 2 ]; then
-       verbose_message "Security message in $check_file"
-        if [ "$issue_check" != 1 ]; then
+       verbose_message "Security message in \"$check_file\"" "check"
+        if [ -n "$issue_check" ]; then
           if [ "$audit_mode" = 1 ]; then
-            increment_insecure "No security message in $check_file"
+            increment_insecure "No security message in \"$check_file\""
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "Setting:   Security message in $check_file"
-            backup_file $check_file
-            echo "###############################################################################" > $check_file
-            echo "#                             NOTICE TO USERS                                 #" >> $check_file
-            echo "#                             ---------------                                 #" >> $check_file
-            echo "# This computer system is the private property of this company:               #" >> $check_file
-            echo "# Whether individual, corporate or government. It is for authorized use only. #" >> $check_file
-            echo "# Users (authorized & unauthorized) have no explicit/implicit expectation of  #" >> $check_file
-            echo "# privacy.                                                                    #" >> $check_file
-            echo "#                                                                             #" >> $check_file
-            echo "# Any or all uses of this system and all files on this system may be          #" >> $check_file
-            echo "# intercepted, monitored, recorded, copied, audited, inspected, and           #" >> $check_file
-            echo "# disclosed to your employer, to authorized site, government, and/or          #" >> $check_file
-            echo "# law enforcement personnel, as well as authorized officials of government    #" >> $check_file
-            echo "# agencies, both domestic and foreign.                                        #" >> $check_file
-            echo "#                                                                             #" >> $check_file
-            echo "# By using this system, the user expressly consents to such interception,     #" >> $check_file
-            echo "# monitoring, recording, copying, auditing, inspection, and disclosure at     #" >> $check_file
-            echo "# the discretion of such officials. Unauthorized or improper use of this      #" >> $check_file
-            echo "# system may result in civil and criminal penalties and administrative or     #" >> $check_file
-            echo "# disciplinary action, as appropriate. By continuing to use this system       #" >> $check_file
-            echo "# you indicate your awareness of and consent to these terms and conditions.   #" >> $check_file
-            echo "#                                                                             #" >> $check_file
-            echo "# LOG OFF IMMEDIATELY if you do not agree to the conditions in this warning.  #" >> $check_file
-            echo "###############################################################################" >> $check_file
+            verbose_message "Setting:   Security message in \"$check_file\"" "set"
+            backup_file     "$check_file"
+            echo "###############################################################################" >  "$check_file"
+            echo "#                             NOTICE TO USERS                                 #" >> "$check_file"
+            echo "#                             ---------------                                 #" >> "$check_file"
+            echo "# This computer system is the private property of this company:               #" >> "$check_file"
+            echo "# Whether individual, corporate or government. It is for authorized use only. #" >> "$check_file"
+            echo "# Users (authorized & unauthorized) have no explicit/implicit expectation of  #" >> "$check_file"
+            echo "# privacy.                                                                    #" >> "$check_file"
+            echo "#                                                                             #" >> "$check_file"
+            echo "# Any or all uses of this system and all files on this system may be          #" >> "$check_file"
+            echo "# intercepted, monitored, recorded, copied, audited, inspected, and           #" >> "$check_file"
+            echo "# disclosed to your employer, to authorized site, government, and/or          #" >> "$check_file"
+            echo "# law enforcement personnel, as well as authorized officials of government    #" >> "$check_file"
+            echo "# agencies, both domestic and foreign.                                        #" >> "$check_file"
+            echo "#                                                                             #" >> "$check_file"
+            echo "# By using this system, the user expressly consents to such interception,     #" >> "$check_file"
+            echo "# monitoring, recording, copying, auditing, inspection, and disclosure at     #" >> "$check_file"
+            echo "# the discretion of such officials. Unauthorized or improper use of this      #" >> "$check_file"
+            echo "# system may result in civil and criminal penalties and administrative or     #" >> "$check_file"
+            echo "# disciplinary action, as appropriate. By continuing to use this system       #" >> "$check_file"
+            echo "# you indicate your awareness of and consent to these terms and conditions.   #" >> "$check_file"
+            echo "#                                                                             #" >> "$check_file"
+            echo "# LOG OFF IMMEDIATELY if you do not agree to the conditions in this warning.  #" >> "$check_file"
+            echo "###############################################################################" >> "$check_file"
             # Alternate message
-            # echo "---------------------------------------------------------------------------------" >> $check_file
-            # echo "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED                                 " >> $check_file
-            # echo "You must have explicit, authorized permission to access or configure this device." >> $check_file
-            # echo "Unauthorized attempts and actions to access or use this system may result in     " >> $check_file
-            # echo "civil and/or criminal penalties.                                                 " >> $check_file
-            # echo "All activities performed on this device are logged and monitored.                " >> $check_file
-            # echo "---------------------------------------------------------------------------------" >> $check_file
-            echo "" >> $check_file
+            # echo "---------------------------------------------------------------------------------" >> "$check_file"
+            # echo "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED                                 " >> "$check_file"
+            # echo "You must have explicit, authorized permission to access or configure this device." >> "$check_file"
+            # echo "Unauthorized attempts and actions to access or use this system may result in     " >> "$check_file"
+            # echo "civil and/or criminal penalties.                                                 " >> "$check_file"
+            # echo "All activities performed on this device are logged and monitored.                " >> "$check_file"
+            # echo "---------------------------------------------------------------------------------" >> "$check_file"
+            echo "" >> "$check_file"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
-            increment_secure "Security message in $check_file"
+            increment_secure "Security message in \"$check_file\""
           fi
         fi
       else
-        restore_file $check_file $restore_dir
+        restore_file "$check_file" "$restore_dir"
       fi
     done
   fi

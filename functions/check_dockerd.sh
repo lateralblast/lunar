@@ -1,26 +1,34 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+# shellcheck disable=SC2009
+# shellcheck disable=SC2016
+
 # check_dockerd
 #
-# Check whether a executable, file or directory is being audited
+# Check dockerd parameter value
 #.
 
 check_dockerd () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     if [ "$audit_mode" != 2 ]; then
-      used=$1
-      type=$2
-      param=$3
-      value=$4
+      used="$1"
+      type="$2"
+      param="$3"
+      value="$4"
       if [ "$type" = "config" ]; then
         if [ "$value" ]; then
-         verbose_message "Docker $type parameter $param has value $value"
+         verbose_message "Docker \"$type\" parameter \"$param\" has value \"$value\"" "check"
         else
-         verbose_message "Docker $type parameter $param has no value"
+         verbose_message "Docker \"$type\" parameter \"$param\" has no value" "check"
         fi
       else
         if [ "$value" ]; then
-         verbose_message "Docker $type parameter $param is $used and has value $value"
+         verbose_message "Docker \"$type\" parameter \"$param\" is \"$used\" and has value \"$value\"" "check"
         else
-         verbose_message "Docker $type parameter $param is $used"
+         verbose_message "Docker \"$type\" parameter \"$param\" is \"$used\"" "check"
         fi
       fi
       case "$type" in
@@ -29,17 +37,17 @@ check_dockerd () {
           if [ "$check" ] && [ "$value" ] && [ "$used" = "unused" ]; then
             check=$( ps -ef | grep dockerd | grep "$param" | grep "$value" )
             if [ ! "$check" ]; then
-              increment_insecure "Docker parameter $param is not set to $value"
+              increment_insecure "Docker parameter \"$param\" is not set to \"$value\""
             else
-              increment_secure "Docker parameter $param is set to $value"
+              increment_secure   "Docker parameter \"$param\" is set to \"$value\""
             fi
           else
             if [ "$used" = "used" ] && [ ! "$check" ]; then
               
-              increment_insecure "Docker parameter $param is not used"
+              increment_insecure "Docker parameter \"$param\" is not used"
             else
               
-              increment_secure "Docker parameter $param is $used"
+              increment_secure   "Docker parameter \"$param\" is \"$used\""
             fi
           fi
           ;;
@@ -48,17 +56,17 @@ check_dockerd () {
           if [ "$check" ] && [ "$value" ] && [ "$used" = "unused" ]; then
             check=$( docker info 2> /dev/null | grep "$param" | grep "$value" )
             if [ ! "$check" ]; then
-              increment_insecure "Docker parameter $param is not set to $value"
+              increment_insecure "Docker parameter \"$param\" is not set to \"$value\""
             else
-              increment_secure "Docker parameter $param is set to $value"
+              increment_secure   "Docker parameter \"$param\" is set to \"$value\""
             fi
           else
-            increment_secure "Docker parameter $param is $used"
+            increment_secure "Docker parameter \"$param\" is \"$used\""
           fi
           ;;
         "kernel")
           OFS=$IFS
-          IFS=$'\n'
+          IFS=$(printf '\n+'); IFS=${IFS%?}
           docker_info=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null )
           if [ ! "$docker_info" ]; then
             verbose_message "No Docker instances" notice
@@ -68,21 +76,21 @@ check_dockerd () {
             check=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep "$param" )
             if [ "$used" = "used" ]; then
               if [ "$profile" ]; then
-                increment_secure "Docker instance $docker_id has capability $param"
+                increment_secure   "Docker instance \"$docker_id\" has capability \"$param\""
               else
-                increment_insecure "Docker instance $docker_id does not have capability $param"
+                increment_insecure "Docker instance \"$docker_id\" does not have capability \"$param\""
               fi
             else
               if [ "$profile" ]; then
-                increment_secure "Docker instance $docker_id does not have capability $param"
+                increment_secure   "Docker instance \"$docker_id\" does not have capability \"$param\""
               else
-                increment_insecure "Docker instance $docker_id has capability $param"
+                increment_insecure "Docker instance \"$docker_id\" has capability \"$param\""
               fi
-              check=$( docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapDrop }}' $docker_id | cut -f2 -d= | grep "$param" )
+              check=$( docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapDrop }}' "$docker_id" | cut -f2 -d= | grep "$param" )
               if [ "$check" ]; then
-                increment_secure "Docker instance $docker_id forcibly drops capability $param"
+                increment_secure   "Docker instance \"$docker_id\" forcibly drops capability \"$param\""
               else
-                increment_insecure "Docker instance $docker_id does not forcibly capability $param"
+                increment_insecure "Docker instance \"$docker_id\" does not forcibly capability \"$param\""
               fi
             fi
           done
@@ -90,7 +98,7 @@ check_dockerd () {
           ;;
         "config")
           OFS=$IFS
-          IFS=$'\n'
+          IFS=$(printf '\n+'); IFS=${IFS%?}
           case $param in
             "AppArmorProfile")
               docker_info=$( docker ps --quiet --all | xargs docker inspect --format "{{ .Id }}: $param={{ .$param }}" 2> /dev/null )
@@ -112,7 +120,7 @@ check_dockerd () {
               ;;
           esac
           if [ ! "$docker_info" ]; then
-            verbose_message "No Docker instances with $param set" notice
+            verbose_message "No Docker instances with \"$param\" set" notice
           fi
           for info in $docker_info; do
             docker_id=$( echo "$info" | cut -f1 -d: )
@@ -121,15 +129,15 @@ check_dockerd () {
                 profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep -v "\[\]" )
                 if [ ! "$value" ]; then
                   if [ "$profile" ]; then
-                    increment_secure "Docker instance $docker_id does not have parameter $param set"
+                    increment_secure   "Docker instance \"$docker_id\" does not have parameter \"$param\" set"
                   else
-                    increment_insecure "Docker instance $docker_id has parameter $param set"
+                    increment_insecure "Docker instance \"$docker_id\" has parameter \"$param\" set"
                   fi
                 else
                   if [ ! "$profile" = "$value" ]; then
-                    increment_secure "Docker instance $docker_id does not have parameter $param set to $value"
+                    increment_secure   "Docker instance \"$docker_id\" does not have parameter \"$param\" set to \"$value\""
                   else
-                    increment_insecure "Docker instance $docker_id has parameter $param set to $value"
+                    increment_insecure "Docker instance \"$docker_id\" has parameter \"$param\" set to \"$value\""
                   fi
                 fi
                 ;;
@@ -137,32 +145,32 @@ check_dockerd () {
                 profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep -v "\[\]" )
                 if [ ! "$value" ]; then
                   if [ ! "$profile" ]; then
-                    increment_secure "Docker instance $docker_id does not have parameter $param set"
+                    increment_secure   "Docker instance \"$docker_id\" does not have parameter \"$param\" set"
                   else
-                    increment_insecure "Docker instance $docker_id has parameter $param set"
+                    increment_insecure "Docker instance \"$docker_id\" has parameter \"$param\" set"
                   fi
                 else
                   if [ "$profile" = "$value" ]; then
-                    increment_secure "Docker instance $docker_id does not have parameter $param set to $value"
+                    increment_secure   "Docker instance \"$docker_id\" does not have parameter \"$param\" set to \"$value\""
                   else
-                    increment_insecure "Docker instance $docker_id does not have parameter $param set to $value"
+                    increment_insecure "Docker instance \"$docker_id\" does not have parameter \"$param\" set to \"$value\""
                   fi
                 fi
                 ;;
               "notinclude")
                 profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep "$param" )
                 if [ ! "$profile" ]; then
-                  increment_secure "Docker instance $docker_id parameter $param does not include $value"
+                  increment_secure   "Docker instance \"$docker_id\" parameter \"$param\" does not include \"$value\""
                 else
-                  increment_insecure "Docker instance $docker_id parameter $param includes $value"
+                  increment_insecure "Docker instance \"$docker_id\" parameter \"$param\" includes \"$value\""
                 fi
                 ;; 
               "include")
                 profile=$( echo "$info" | cut -f2 -d: | cut -f2 -d= | grep "$param" )
                 if [ "$profile" ]; then
-                  increment_secure "Docker instance $docker_id parameter $param includes $value"
+                  increment_secure   "Docker instance \"$docker_id\" parameter \"$param\" includes \"$value\""
                 else
-                  increment_insecure "Docker instance $docker_id parameter $param does not include $value"
+                  increment_insecure "Docker instance \"$docker_id\" parameter \"$param\" does not include \"$value\""
                 fi
                 ;; 
             esac 

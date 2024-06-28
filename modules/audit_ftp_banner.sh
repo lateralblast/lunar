@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ftp_banner
 #
 # Refer to Section(s) 2.12.11 Page(s) 215-6 CIS AIX Benchmark v1.1.0
@@ -7,7 +13,7 @@
 
 audit_ftp_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "FTP Warning Banner"
+    verbose_message "FTP Warning Banner" "check"
     if [ "$os_name" = "AIX" ]; then
       package_name="bos.msg.$language_suffix.net.tcp.client"
       check_lslpp $package_name
@@ -18,12 +24,10 @@ audit_ftp_banner () {
           if [ "actual_value" != "Authorised" ]; then
             if [ "$audit_mode" = 1 ]; then
               increment_secure "FTP warning message isn't enabled"
-              verbose_message "" fix
               verbose_message "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp" fix
               verbose_message "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" /tmp/ftpd.tmp > /tmp/ftpd.msg" fix
               verbose_message "gencat /usr/lib/nls/msg/en_US/ftpd.cat /tmp/ftpd.msg" fix
               verbose_message "rm /tmp/ftpd.tmp /tmp/ftpd.msg" fix
-              verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file $message_file
@@ -41,9 +45,7 @@ audit_ftp_banner () {
           restore_file $message_file $restore_dir
         fi
       else
-        verbose_message "" fix
         verbose_message "Package \"$package_name\" is not installed" fix
-        verbose_message "" fix
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then

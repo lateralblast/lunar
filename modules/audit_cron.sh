@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_cron
 #
 # Check cron
@@ -11,12 +17,10 @@
 
 audit_cron () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Cron Daemon"
-    service_name="crond"
-    check_linux_service $service_name on
+    verbose_message "Cron Daemon" "check"
+    check_linux_service "crond" "on"
     if [ "$anacron_enable" = "yes" ]; then
-      service_name="anacron"
-      check_linux_service $service_name on
+      check_linux_service "anacron" "on"
     fi
   fi
 }

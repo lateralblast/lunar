@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_search_fs
 #
 # Audit Filesystem
@@ -15,11 +21,10 @@ audit_search_fs () {
       audit_vopied
       audit_bpjava_msvc
     else
-      check_file="/etc/hosts.allow"
-      funct_file_value $check_file bpcd colon " ALL" hash
-      funct_file_value $check_file vnetd colon " ALL" hash
-      funct_file_value $check_file bpcd vopied " ALL" hash
-      funct_file_value $check_file bpcd bpjava-msvc " ALL" hash
+      funct_file_value "/etc/hosts.allow" "bpcd"  "colon"       " ALL" "hash"
+      funct_file_value "/etc/hosts.allow" "vnetd" "colon"       " ALL" "hash"
+      funct_file_value "/etc/hosts.allow" "bpcd"  "vopied"      " ALL" "hash"
+      funct_file_value "/etc/hosts.allow" "bpcd"  "bpjava-msvc" " ALL" "hash"
     fi
     audit_extended_attributes
   fi

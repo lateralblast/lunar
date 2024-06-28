@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_sulogin
 #
 # Check single user mode requires password
@@ -13,7 +19,7 @@
 
 audit_sulogin () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    verbose_message "Single User Mode Requires Password"
+    verbose_message "Single User Mode Requires Password" "check"
     if [ "$os_name" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"
@@ -24,14 +30,14 @@ audit_sulogin () {
             increment_insecure "Single user mode does not require a password"
           fi
           if [ "$audit_mode" = 2 ]; then
-            verbose_message "Setting:   Single user mode to require a password"
-            backup_file $check_file
-            tmp_file="/tmp/ttys_$check_string"
-            awk '($4 == "console") { $5 = "insecure" } { print }' $check_file > $tmp_file
-            cat $tmp_file > $check_file
+            verbose_message "Setting:   Single user mode to require a password" "set"
+            backup_file     "$check_file"
+            temp_file="/tmp/ttys_$check_string"
+            awk '($4 == "console") { $5 = "insecure" } { print }' < "$check_file" > "$temp_file"
+            cat "$temp_file" > "$check_file"
           fi
         else
-          restore_file $check_file $restore_dir
+          restore_file "$check_file" "$restore_dir"
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -40,47 +46,42 @@ audit_sulogin () {
       fi
     fi
     if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Red" ] && [ "$os_version" = "7" ]; then
-      check_file="/usr/lib/systemd/system/rescue.service"
-      check_file_value is $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
-      check_file="/usr/lib/systemd/system/emergency.service"
-      check_file_value is $check_file ExecStart eq '-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"' hash 2 "blockdefault"
+      check_file_value "is" "/usr/lib/systemd/system/rescue.service"    "ExecStart" "eq" "-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"" "hash" "2" "blockdefault"
+      check_file_value "is" "/usr/lib/systemd/system/emergency.service" "ExecStart" "eq" "-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"" "hash" "2" "blockdefault"
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/inittab"
       if [ -f "$check_file" ]; then
-        sulogin_check=$( grep -l sulogin $check_file )
-        if [ "$sulogin_check" = "" ]; then
+        sulogin_check=$( grep -l sulogin "$check_file" )
+        if [ -z "$sulogin_check" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "No Authentication required for single usermode"
-            verbose_message "" fix
-            verbose_message "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" fix
-            verbose_message "cat $temp_file > $check_file" fix
-            verbose_message "rm $temp_file" fix
-            verbose_message "" fix
+            verbose_message    "cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > $temp_file" "fix"
+            verbose_message    "cat $temp_file > $check_file" "fix"
+            verbose_message    "rm $temp_file" "fix"
           fi
           if [ "$audit_mode" = 0 ]; then
             verbose_message "Setting:   Single user mode to require authentication"
             backup_file $check_file
-            cat $check_file |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' > $temp_file
-            cat $temp_file > $check_file
-            rm $temp_file
+            awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' < "$check_file" > "$temp_file"
+            cat "$temp_file" > "$check_file"
+            rm "$temp_file"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
             increment_secure "Single usermode requires authentication"
           fi
           if [ "$audit_mode" = 2 ]; then
-            restore_file $check_file $restore_dir
+            restore_file "$check_file" "$restore_dir"
           fi
-          check_file_perms $check_file 0600 root root
+          check_file_perms "$check_file" "0600" "root" "root"
         fi
         check_file="/etc/sysconfig/init"
-        check_file_value is $check_file SINGLE eq "/sbin/sulogin" hash
-        check_file_value is $check_file PROMPT eq no hash
-        check_file_perms $check_file 0600 root root
+        check_file_value "is" "/etc/sysconfig/init" "SINGLE" "eq"   "/sbin/sulogin" "hash"
+        check_file_value "is" "/etc/sysconfig/init" "PROMPT" "eq"   "no"            "hash"
+        check_file_perms "/etc/sysconfig/init"      "0600"   "root" "root"
       fi
-      check_file="/etc/sysconfig/boot"
-      check_file_value is $check_file PROMPT_FOR_CONFIRM eq no hash
+      check_file_value "is" "/etc/sysconfig/boot" "PROMPT_FOR_CONFIRM" "eq" "no" "hash"
     fi
   fi
 }

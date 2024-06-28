@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_password_expiry
 #
 # Refer to Section(s) 7.1.1-3   Page(s) 143-146 CIS CentOS Linux 6 Benchmark v1.0.0
@@ -15,49 +21,45 @@
 
 audit_password_expiry () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Password Expiration Parameters on Active Accounts"
+    verbose_message "Password Expiration Parameters on Active Accounts" "check"
     if [ "$os_name" = "AIX" ]; then
-      check_chsec /etc/security/user default mindiff 4
-      check_chsec /etc/security/user default minage 1
-      check_chsec /etc/security/user default maxage 13
-      check_chsec /etc/security/user default minlen 8
-      check_chsec /etc/security/user default minalpha 2
-      check_chsec /etc/security/user default minother 2
-      check_chsec /etc/security/user default maxrepeats 2
-      check_chsec /etc/security/user default histexpire 13
-      check_chsec /etc/security/user default histsize 20
-      check_chsec /etc/security/user default maxexpired 2
+      check_chsec "/etc/security/user" "default" "mindiff"    "4"
+      check_chsec "/etc/security/user" "default" "minage"     "1"
+      check_chsec "/etc/security/user" "default" "maxage"     "13"
+      check_chsec "/etc/security/user" "default" "minlen"     "8"
+      check_chsec "/etc/security/user" "default" "minalpha"   "2"
+      check_chsec "/etc/security/user" "default" "minother"   "2"
+      check_chsec "/etc/security/user" "default" "maxrepeats" "2"
+      check_chsec "/etc/security/user" "default" "histexpire" "13"
+      check_chsec "/etc/security/user" "default" "histsize"   "20"
+      check_chsec "/etc/security/user" "default" "maxexpired" "2"
       if [ "$os_version" > 4 ]; then
         if [ "$os_version" = "5" ]; then
           if [ "$os_update" > 3 ]; then
-            check_chsec /etc/security/login.cfg usw pwd_algorithm ssha256
+            check_chsec "/etc/security/login.cfg" "usw" "pwd_algorithm" "ssha256"
           fi
         else
-          check_chsec /etc/security/login.cfg usw pwd_algorithm ssha256
+          check_chsec "/etc/security/login.cfg" "usw" "pwd_algorithm" "ssha256"
         fi
       fi
     fi
     if [ "$os_name" = "SunOS" ]; then
-      check_file="/etc/default/passwd"
-      check_file_value is $check_file MAXWEEKS eq 13 hash
-      check_file_value is $check_file MINWEEKS eq 1 hash
-      check_file_value is $check_file WARNWEEKS eq 4 hash
-      check_file="/etc/default/login"
-      check_file_value is $check_file DISABLETIME eq 3600 hash
+      check_file_value "is" "/etc/default/passwd" "MAXWEEKS"    "eq" "13" "hash"
+      check_file_value "is" "/etc/default/passwd" "MINWEEKS"    "eq" "1" "hash"
+      check_file_value "is" "/etc/default/passwd" "WARNWEEKS"   "eq" "4" "hash"
+      check_file_value "is" "/etc/default/login"  "DISABLETIME" "eq" "3600" "hash"
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_file="/etc/login.defs"
-      check_file_value is $check_file PASS_MAX_DAYS eq 90 hash
-      check_file_value is $check_file PASS_MIN_DAYS eq 7 hash
-      check_file_value is $check_file PASS_WARN_AGE eq 14 hash
-      check_file_value is $check_file PASS_MIN_LEN eq 9 hash
-      check_file_perms $check_file 0640 root root
+      check_file_value "is" "/etc/login.defs" "PASS_MAX_DAYS" "eq" "90" "hash"
+      check_file_value "is" "/etc/login.defs" "PASS_MIN_DAYS" "eq" "7" "hash"
+      check_file_value "is" "/etc/login.defs" "PASS_WARN_AGE" "eq" "14" "hash"
+      check_file_value "is" "/etc/login.defs" "PASS_MIN_LEN"  "eq" "9" "hash"
+      check_file_perms "/etc/login.defs" "0640" "root" "root"
     fi
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" > 5 ]; then
-        check_file="/etc/adduser.conf"
-        check_file_value is $check_file passwdtype eq yes hash
-        check_file_value is $check_file upwexpire eq 91d hash
+        check_file_value "is" "/etc/adduser.conf" "passwdtype" "eq" "yes" "hash"
+        check_file_value "is" "/etc/adduser.conf" "upwexpire"  "eq" "91d" "hash"
       fi
     fi
   fi

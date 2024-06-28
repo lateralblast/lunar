@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_telnet_banner
 #
 # Set telnet banner
@@ -8,8 +14,7 @@
 
 audit_telnet_banner () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "Telnet Banner"
-    check_file="/etc/default/telnetd"
-    check_file_value is $check_file BANNER eq /etc/issue hash
+    verbose_message  "Telnet Banner" "check"
+    check_file_value "is" "/etc/default/telnetd" "BANNER" "eq" "/etc/issue" "hash"
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_sendmail_daemon
 #
 # Check sendmail daemon settings 
@@ -13,51 +19,46 @@
 
 audit_sendmail_daemon() {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Sendmail Daemon"
+    verbose_message "Sendmail Daemon" "check"
     if [ "$sendmail_disable" = "yes" ]; then
       if [ "$os_name" = "AIX" ]; then
-        check_rctcp sendmail off
+        check_rctcp "sendmail" "off"
       fi
       if [ "$os_name" = "SunOS" ]; then
         if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          service_name="svc:/network/smtp:sendmail"
-          check_sunos_service $service_name disabled
+          check_sunos_service "svc:/network/smtp:sendmail" "disabled"
         fi
         if [ "$os_version" = "10" ]; then
-          service_name="sendmail"
-          check_sunos_service $service_name disabled
+          check_sunos_service "sendmail" "disabled"
         fi
         if [ "$os_version" = "9" ] || [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-          check_file="/etc/default/sendmail"
-          check_file_value is $check_file QUEUEINTERVAL eq 15m hash
-          check_append_file $check_file "MODE=" hash
+          check_file_value  "is" "/etc/default/sendmail" "QUEUEINTERVAL" "eq" "15m" "hash"
+          check_append_file "/etc/default/sendmail"      "MODE=" "hash"
         else
           check_initd_service sendmail disable
           check_file="/var/spool/cron/crontabs/root"
           check_string="0 * * * * /usr/lib/sendmail -q"
-          check_append_file $check_file $check_string has
+          check_append_file "$check_file" "$check_string" "hash"
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        service_name="sendmail"
-        check_linux_service $service_name off
-        check_file="/etc/sysconfig/sendmail"
-        check_file_value is $check_file DAEMON eq no hash
-        check_file_value is $check_file QUEUE eq 1h hash
+        check_linux_service "sendmail" "off"
+        check_file_value    "is" "/etc/sysconfig/sendmail" "DAEMON" "eq" "no" "hash"
+        check_file_value    "is" "/etc/sysconfig/sendmail" "QUEUE"  "eq" "1h" "hash"
       fi
       if [ "$os_name" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
         if [ "$os_version" < 5 ]; then
-          check_file_value is $check_file sendmail_enable eq NONE hash
+          check_file_value "is" "/etc/rc.conf" "sendmail_enable" "eq" "NONE" "hash"
         else
           if [ "$os_version" > 5 ]; then
             if [ "$os_version" = "5" ] && [ "$os_update" = "0" ]; then
-              check_file_value is $check_file sendmail_enable eq NONE hash
+              check_file_value "is" "/etc/rc.conf" "sendmail_enable"           "eq" "NONE" "hash"
             else
-              check_file_value is $check_file sendmail_enable eq NO hash
-              check_file_value is $check_file sendmail_submit_enable eq NO hash
-              check_file_value is $check_file sendmail_outbound_enable eq NO hash
-              check_file_value is $check_file sendmail_msp_queue_enable eq NO hash
+              check_file_value "is" "/etc/rc.conf" "sendmail_enable"           "eq" "NO"   "hash"
+              check_file_value "is" "/etc/rc.conf" "sendmail_submit_enable"    "eq" "NO"   "hash"
+              check_file_value "is" "/etc/rc.conf" "sendmail_outbound_enable"  "eq" "NO"   "hash"
+              check_file_value "is" "/etc/rc.conf" "sendmail_msp_queue_enable" "eq" "NO"   "hash"
             fi
           fi
         fi

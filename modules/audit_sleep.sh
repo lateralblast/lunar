@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_sleep
 #
 # MacBooks should be set so that the standbydelay is 15 minutes (900 seconds) or less.
@@ -25,23 +31,23 @@
 
 audit_sleep () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Sleep"
+    verbose_message "Sleep" "check"
     if [ "$long_os_version" -ge 1014 ]; then
       if [ "$os_machine" = "arm64" ]; then
-        check_pmset sleep 10
-        check_pmset displaysleep 15
-        check_pmset hibernatemode 25
+        check_pmset "sleep"                 "10"
+        check_pmset "displaysleep"          "15"
+        check_pmset "hibernatemode"         "25"
       else
-        check_pmset standbydelaylow 900
-        check_pmset standbydelayhigh 900
-        check_pmset highstandbythreshold 90
-        check_pmset destroyfvkeyonstandby 1
-        check_pmset hibernatemode 25
-        check_pmset powernap 0 
+        check_pmset "standbydelaylow"       "900"
+        check_pmset "standbydelayhigh"      "900"
+        check_pmset "highstandbythreshold"  "90"
+        check_pmset "destroyfvkeyonstandby" "1"
+        check_pmset "hibernatemode"         "25"
+        check_pmset "powernap"              "0"
       fi
-      check_pmset destroyfvkeyonstandby 1
+      check_pmset "destroyfvkeyonstandby" "1"
     else
-      check_pmset sleep off
+      check_pmset "sleep" "off"
     fi
   fi
 }

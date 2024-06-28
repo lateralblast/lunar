@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_air_play
 #
 # AirDrop can allow malicious files to be downloaded from unknown sources. Contacts
@@ -9,10 +15,11 @@
 audit_air_play () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$long_os_version" -ge 1014 ]; then
-      verbose_message "Air Play Receiver"
+      verbose_message "Air Play Receiver" "check"
       if [ "$audit_mode" != 2 ]; then
-        for user_name in `ls /Users |grep -v Shared`; do
-          check_osx_defaults com.apple.controlcenter.plist AirplayRecieverEnabled 0 bool currentHost $user_name
+        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        for user_name in $user_list; do
+          check_osx_defaults "com.apple.controlcenter.plist" "AirplayRecieverEnabled" "0" "bool" "currentHost" "$user_name"
         done
       fi
     fi

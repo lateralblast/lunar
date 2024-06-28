@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_icloud_drive
 #
 # Organizations should review third party storage solutions pertaining to existing data
@@ -9,15 +15,16 @@
 audit_icloud_drive () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$long_os_version" -ge 1014 ]; then
-      verbose_message "iCloud Drive"
+      verbose_message "iCloud Drive" "check"
       if [ "$audit_mode" != 2 ]; then
-        for user_name in `ls /Users |grep -v Shared`; do
+        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        for user_name in $user_list; do
           for dir_name in Documents Desktop; do
-            check_value=$( sudo -u $user_name ls -l /Users/$user_name/Library/Mobile\ Documents/com~apple~CloudDocs/$dir_name/ | grep total |wc -l )
+            check_value=$( sudo -u "$user_name" ls -l /Users/$user_name/Library/Mobile\ Documents/com~apple~CloudDocs/$dir_name/ | grep total |wc -l )
             if [ "$check_value" = "0" ]; then
-              increment_secure "Documents in $dir_name for $user_name are not syncing "
+              increment_secure   "Documents in \"$dir_name\" for \"$user_name\" are not syncing "
             else
-              increment_insecure "Documents in $dir_name for $user_name are syncing "
+              increment_insecure "Documents in \"$dir_name\" for \"$user_name\" are syncing "
             fi
           done
         done

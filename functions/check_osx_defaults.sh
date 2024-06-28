@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_osx_defaults
 #
 # Function to check defaults under OS X
@@ -5,17 +11,17 @@
 
 check_osx_defaults () {
   if [ "$os_name" = "Darwin" ]; then
-    defaults_file=$1
-    defaults_parameter=$2
-    defaults_value=$3
-    defaults_type=$4
+    defaults_file="$1"
+    defaults_parameter="$2"
+    defaults_value="$3"
+    defaults_type="$4"
     if [ "$defaults_type" = "dict" ]; then
-      defaults_second_value=$5
-      defaults_second_type=$6
-      defaults_user=$7
+      defaults_second_value="$5"
+      defaults_second_type="$6"
+      defaults_user="$7"
     else
-      defaults_host=$5
-      defaults_user=$6
+      defaults_host="$5"
+      defaults_user="$6"
     fi
     defaults_read="read"
     defaults_write="write"
@@ -35,14 +41,14 @@ check_osx_defaults () {
       else
         string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
       fi
-      handle_output "Checking:  $string"
+      verbose_message "$string" "check"
       if [ "$defaults_host" = "currentHost" ]; then
         defaults_read="-currentHost $defaults_read"
         defaults_write="-currentHost $defaults_write"
-        backup_file="~/Library/Preferences/ByHost/$defaults_file*"
+        backup_file="$HOME/Library/Preferences/ByHost/$defaults_file*"
         defaults_command="defaults"
       fi
-      check_vale=$( $defaults_command $defaults_read $defaults_file $defaults_parameter 2>&1 )
+      check_vale=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2>&1" )
       temp_value=defaults_value
       if [ "$defaults_type" = "bool" ]; then
         if [ "$defaults_value" = "no" ]; then
@@ -58,63 +64,61 @@ check_osx_defaults () {
         else
           increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
         fi
-        verbose_message "" fix
         if [ "$defaults_value" = "" ]; then
-          verbose_message "$defaults_command delete $defaults_file $defaults_parameter" fix
+          verbose_message "$defaults_command delete $defaults_file $defaults_parameter" "fix"
           command="$defaults_command delete $defaults_file $defaults_parameter"
         else
           if [ "$defaults_type" = "bool" ]; then
-            verbose_message "$defaults_command write $defaults_file $defaults_parameter -bool \"$defaults_value\"" fix
+            verbose_message "$defaults_command write $defaults_file $defaults_parameter -bool \"$defaults_value\"" "fix"
             command="$defaults_command write $defaults_file $defaults_parameter -bool \"$defaults_value\""
           else
             if [ "$defaults_type" = "int" ]; then
-              verbose_message "$defaults_command write $defaults_file $defaults_parameter -int $defaults_value" fix
+              verbose_message "$defaults_command write $defaults_file $defaults_parameter -int $defaults_value" "fix"
               command="$defaults_command write $defaults_file $defaults_parameter -int $defaults_value"
             else
               if [ "$defaults_type" = "dict" ]; then
                 if [ "$defaults_second_type" = "bool" ]; then
-                  verbose_message "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value" fix
+                  verbose_message "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value" "fix"
                   command="$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value"
                 else
                   if [ "$defaults_second_type" = "int" ]; then
-                    verbose_message "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value" fix
+                    verbose_message "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value" "fix"
                     command="$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value"
                   fi
                 fi
               else
-                verbose_message "$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\"" fix
+                verbose_message "$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\"" "fix"
                 command="$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\""
               fi
             fi
           fi
         fi
-        verbose_message "" fix
         if [ "$audit_mode" = 0 ]; then
           backup_file "$backup_file"
-         string="Parameter $defaults_parameter to $defaults_value in $defaults_file"
-         verbose_message "Setting:   $string"
+          string="Parameter $defaults_parameter to $defaults_value in $defaults_file"
+          verbose_message "$string" "set"
           if [ "$defaults_value" = "" ]; then
-            $defaults_command delete $defaults_file $defaults_parameter
+            eval "$defaults_command delete $defaults_file $defaults_parameter"
           else
             if [ "$defaults_type" = "bool" ]; then
-              $defaults_command write $defaults_file $defaults_parameter -bool "$defaults_value"
+              eval "$defaults_command write $defaults_file $defaults_parameter -bool $defaults_value"
             else
               if [ "$defaults_type" = "int" ]; then
-                $defaults_command write $defaults_file $defaults_parameter -int $defaults_value
+                eval "$defaults_command write $defaults_file $defaults_parameter -int $defaults_value"
                 if [ "$defaults_file" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
               else
                 if [ "$defaults_type" = "dict" ]; then
                   if [ "$defaults_second_type" = "bool" ]; then
-                    $defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value
+                    eval "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value"
                   else
                     if [ "$defaults_second_type" = "int" ]; then
-                      $defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value
+                      eval "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value"
                     fi
                   fi
                 else
-                  $defaults_command write $defaults_file $defaults_parameter "$defaults_value"
+                  eval "$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\""
                 fi
               fi
             fi
@@ -143,7 +147,7 @@ check_osx_defaults () {
         fi
       fi
     else
-      restore_file $backup_file $restore_dir
+      restore_file "$backup_file" "$restore_dir"
     fi
   fi
 }

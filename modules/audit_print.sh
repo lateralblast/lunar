@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_print
 #
 # Refer to Section(s) 3.14    Page(s) 14-15 CIS FreeBSD Benchmark v1.0.5
@@ -7,25 +13,21 @@
 
 audit_print () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Printing Daemons"
+    verbose_message "Printing Daemons" "check"
     if [ "$os_name" = "AIX" ]; then
-      check_itab qdaemon off
-      check_itab lpd off
-      check_itab piobe off
+      check_itab "qdaemon" "off"
+      check_itab "lpd"     "off"
+      check_itab "piobe"   "off"
     fi
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        service_name="svc:/application/print/ipp-listener:default"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/print/rfc1179"
-        check_sunos_service $service_name disabled
-        service_name="svc:/application/print/server:default"
-        check_sunos_service $service_name disabled
+        check_sunos_service "svc:/application/print/ipp-listener:default" "disabled"
+        check_sunos_service "svc:/application/print/rfc1179"              "disabled"
+        check_sunos_service "svc:/application/print/server:default"       "disabled"
       fi
     fi
     if [ "$os_name" = "FreeBSD" ]; then
-      check_file="/etc/rc.conf"
-      check_file_value is $check_file lpd_enable eq NO hash
+      check_file_value "is" "/etc/rc.conf" "lpd_enable" "eq" "NO" "hash"
     fi
   fi
 }

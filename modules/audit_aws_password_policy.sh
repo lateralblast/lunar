@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_aws_password_policy
 #
 # Check AWS Password Policy
@@ -12,28 +18,26 @@
 #.
 
 audit_aws_password_policy () {
-  verbose_message "Password Policy"
+  verbose_message "Password Policy" "check"
   policy=$( aws iam get-account-password-policy 2> /dev/null )
   length=$( echo "$policy" | wc -l )
   if [ "$length" = "0" ]; then
     increment_insecure "No password policy exists"
-    verbose_message "" fix
-    verbose_message "aws iam update-account-password-policy --require-uppercase-characters" fix
-    verbose_message "aws iam update-account-password-policy --require-lowercase-characters" fix
-    verbose_message "aws iam update-account-password-policy --require-symbols" fix
-    verbose_message "aws iam update-account-password-policy --require-numbers" fix
-    verbose_message "aws iam update-account-password-policy --minimum-password-length 14" fix
-    verbose_message "aws iam update-account-password-policy --password-reuse-prevention 24" fix
-    verbose_message "aws iam update-account-password-policy --max-password-age 90" fix
-    verbose_message "" fix
+    verbose_message "aws iam update-account-password-policy --require-uppercase-characters" "fix"
+    verbose_message "aws iam update-account-password-policy --require-lowercase-characters" "fix"
+    verbose_message "aws iam update-account-password-policy --require-symbols" "fix"
+    verbose_message "aws iam update-account-password-policy --require-numbers" "fix"
+    verbose_message "aws iam update-account-password-policy --minimum-password-length 14" "fix"
+    verbose_message "aws iam update-account-password-policy --password-reuse-prevention 24" "fix"
+    verbose_message "aws iam update-account-password-policy --max-password-age 90" "fix"
   else
-    check_aws_password_policy RequireUppercaseCharacters true "--require-uppercase-characters"
-    check_aws_password_policy RequireLowercaseCharacters true "--require-lowercase-characters"
-    check_aws_password_policy RequireSymbols true "--require-symbols"
-    check_aws_password_policy RequireNumbers true "--require-numbers"
-    check_aws_password_policy MinimumPasswordLength 14 "--minimum-password-length 14"
-    check_aws_password_policy PasswordReusePrevention 24 "--password-reuse-prevention 24"
-    check_aws_password_policy MaxPasswordAge 90 "--max-password-age 90"
+    check_aws_password_policy "RequireUppercaseCharacters" "true" "--require-uppercase-characters"
+    check_aws_password_policy "RequireLowercaseCharacters" "true" "--require-lowercase-characters"
+    check_aws_password_policy "RequireSymbols"             "true" "--require-symbols"
+    check_aws_password_policy "RequireNumbers"             "true" "--require-numbers"
+    check_aws_password_policy "MinimumPasswordLength"      "14"   "--minimum-password-length 14"
+    check_aws_password_policy "PasswordReusePrevention"    "24"   "--password-reuse-prevention 24"
+    check_aws_password_policy "MaxPasswordAge"             "90"   "--max-password-age 90"
   fi
 }
 

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_safari_tracking
 #
 # Check Safari Tracking
@@ -8,15 +14,15 @@
 audit_safari_tracking () {
   if [ "$os_name" = "Darwin" ]; then
     if [ "$long_os_version" -ge 1014 ]; then
-      verbose_message "Safari Cross-site Tracking"
+      verbose_message "Safari Cross-site Tracking" "check"
       if [ "$audit_mode" != 2 ]; then
         for user_name in `ls /Users |grep -v Shared`; do
-          check_osx_defaults com.apple.Safari BlockStoragePolicy 2 int $user_name
-          check_osx_defaults com.apple.Safari WebKitStorageBlockingPolicy 1 int $user_name
-          check_osx_defaults com.apple.Safari WebKitPreferences.storageBlockingPolicy 1 int $user_name
-          check_osx_defaults com.apple.Safari WBSPrivacyProxyAvailabilityTraffic 33422572 int $user_name
-          check_osx_defaults com.apple.Safari WebKitPreferences.privateClickMeasurementEnabled 1 bool $user_name
-          check_osx_defaults com.apple.Safari ShowFullURLInSmartSearchField 1 bool $user_name
+          check_osx_defaults "com.apple.Safari" "BlockStoragePolicy"                               "2"        "int"  "$user_name"
+          check_osx_defaults "com.apple.Safari" "WebKitStorageBlockingPolicy"                      "1"        "int"  "$user_name"
+          check_osx_defaults "com.apple.Safari" "WebKitPreferences.storageBlockingPolicy"          "1"        "int"  "$user_name"
+          check_osx_defaults "com.apple.Safari" "WBSPrivacyProxyAvailabilityTraffic"               "33422572" "int"  "$user_name"
+          check_osx_defaults "com.apple.Safari" "WebKitPreferences.privateClickMeasurementEnabled" "1"        "bool" "$user_name"
+          check_osx_defaults "com.apple.Safari" "ShowFullURLInSmartSearchField"                    "1"        "bool" "$user_name"
         done
       fi
     fi

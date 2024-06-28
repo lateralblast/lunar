@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ncs
 #
 # Check NCS
@@ -7,7 +13,7 @@
 
 audit_ncs () {
   if [ "$os_name" = "AIX" ]; then
-    verbose_message "NCS"
-    check_itab ncs off
+    verbose_message "NCS" "check"
+    check_itab      "ncs" "off"
   fi
 }

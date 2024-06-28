@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_apparmor
 #
 # Check AppArmor
@@ -20,12 +26,12 @@ audit_apparmor () {
       check_list="/boot/grub/grub.cfg /etc/default/grub"
       do_test=1
     fi
-    for check_file in "$check_list"; do
+    for check_file in $check_list; do
       if [ "$do_test" = 1 ]; then
-        verbose_message "$app_name"
-        check_linux_package install $package_name
+        verbose_message "Package \"$app_name\"" "check"
+        check_linux_package "install" "$package_name"
         if [ "$audit_mode" = 2 ]; then
-          restore_file $check_file $restore_dir
+          restore_file "$check_file" "$restore_dir"
         else
           if [ -f "$check_file" ]; then
             package_disable_test=$( grep "$package_name=0" "$check_file" | head -1 | wc -l )
@@ -37,7 +43,7 @@ audit_apparmor () {
           if [ "$package_disabled_test" = "1" ]; then
             increment_insecure "Application \"$app_name\" is disabled in \"$check_file\""
             temp_file="$temp_dir/$package_name"
-            backup_file $check_file
+            backup_file "$check_file"
             if [ "$os_vendor" = "SuSE" ]; then 
               lockdown_command "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; enforce /etc/$package_name.d/*" "Removing disabled $app_name in $check_file"
             else
@@ -51,11 +57,11 @@ audit_apparmor () {
           else
             increment_insecure "Application \"$app_name\" is not enabled in \"$check_file\""
             temp_file="$temp_dir/$package_name"
-            backup_file $check_file
+            backup_file "$check_file"
             if [ "$check_file" = "/etc/default/grub" ]; then
-              line_check=$( grep "^GRUB_CMDLINE_LINUX" $check_file | head -1 | wc -l )
-              if [ "$line_check" = "1" ]; then
-                existing_value=$( cat $check_file |grep "^GRUB_CMDLINE_LINUX" |cut -f2 -d= |sed "s/\"//g" )
+              line_check=$( grep -c "^GRUB_CMDLINE_LINUX" "$check_file" )
+              if [ -n "$line_check" ]; then
+                existing_value=$( grep "^GRUB_CMDLINE_LINUX" < "$check_file" |cut -f2 -d= |sed "s/\"//g" )
                 new_value="GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor $existing_value\""
                 lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file" "Removing disabled $app_name"
               else

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_docker_security
 #
 # Docker security
@@ -83,25 +89,25 @@ audit_docker_security () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
-      verbose_message "Docker Security"
-      check_dockerd notequal config SecurityOpt "<no value>"
-      check_dockerd include config SecurityOpt "userns"
-      check_dockerd include config SecurityOpt "no-new-privileges"
-      check_dockerd equal config Privileged "false"
-      check_dockerd notequal config AppArmorProfile ""
-      check_dockerd equal config ReadonlyRootfs "true"
-      check_dockerd notequal config PidMode "host"
-      check_dockerd notequal config IpcMode "host"
-      check_dockerd notequal config UsernsMode "host"
-      check_dockerd equal config Devices ""
-      check_dockerd equal config Ulimits "<no value>"
-      check_dockerd notequal config Propagation "shared"
-      check_dockerd notequal config UTSMode "shared"
-      check_ausearch equal docker exec privileged ""
-      check_ausearch equal docker exec user ""
-      check_dockerd equal config CgroupParent ""
-      check_dockerd notequal config PidsLimit "0"
-      check_dockerd notequal config PidsLimit "-1"
+      verbose_message "Docker Security"  "check"
+      check_dockerd  "notequal" "config" "SecurityOpt"     "<no value>"
+      check_dockerd  "include"  "config" "SecurityOpt"     "userns"
+      check_dockerd  "include"  "config" "SecurityOpt"     "no-new-privileges"
+      check_dockerd  "equal"    "config" "Privileged"      "false"
+      check_dockerd  "notequal" "config" "AppArmorProfile" ""
+      check_dockerd  "equal"    "config" "ReadonlyRootfs"  "true"
+      check_dockerd  "notequal" "config" "PidMode"         "host"
+      check_dockerd  "notequal" "config" "IpcMode"         "host"
+      check_dockerd  "notequal" "config" "UsernsMode"      "host"
+      check_dockerd  "equal"    "config" "Devices"         ""
+      check_dockerd  "equal"    "config" "Ulimits"         "<no value>"
+      check_dockerd  "notequal" "config" "Propagation"     "shared"
+      check_dockerd  "notequal" "config" "UTSMode"         "shared"
+      check_ausearch "equal"    "docker" "exec"            "privileged" ""
+      check_ausearch "equal"    "docker" "exec"            "user"       ""
+      check_dockerd  "equal"    "config" "CgroupParent"    ""
+      check_dockerd  "notequal" "config" "PidsLimit"       "0"
+      check_dockerd  "notequal" "config" "PidsLimit"       "-1"
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
         check_dockerd unused kernel $param
       done
@@ -110,7 +116,7 @@ audit_docker_security () {
         if [ "$check" ]; then
           increment_insecure "Docker socket is mounted inside a container"
         else
-          increment_secure "Docker socket is not mounted inside a container"
+          increment_secure   "Docker socket is not mounted inside a container"
         fi
       fi
     fi

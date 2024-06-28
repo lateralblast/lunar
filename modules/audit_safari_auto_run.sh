@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_safari_auto_run
 #
 # Check Safari settingd
@@ -9,8 +15,8 @@
 
 audit_safari_auto_run () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Safari Auto-run"
-    check_osx_defaults com.apple.Safari AutoOpenSafeDownloads 0 int
-    check_osx_defaults ~/Library/Preferences/com.apple.safari.plist PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions string
+    verbose_message "Safari Auto-run" "check"
+    check_osx_defaults "com.apple.Safari AutoOpenSafeDownloads" "0" "int"
+    check_osx_defaults "$HOME/Library/Preferences/com.apple.safari.plist" "PlugInFirstVisitPolicy" "PlugInPolicyAllowWithSecurityRestrictions" "string"
   fi
 }

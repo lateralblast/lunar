@@ -1,3 +1,10 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+# shellcheck disable=SC2043
+
 # audit_core_dumps
 #
 # Check core dumps
@@ -16,38 +23,38 @@
 
 audit_core_dumps () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    verbose_message "Core Dumps"
+    verbose_message "Core Dumps" "check"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" != "6" ]; then
         cores_dir="/var/cores"
         check_file="/etc/coreadm.conf"
-        cores_check=$( coreadm | head -1 | awk '{print $5}' )
-        if [ $( expr "$cores_check" : "/var/cores" ) != 10 ]; then
+        cores_check=$( coreadm | head -1 | awk '{print $5}' |grep "/var/cores" )
+        if [ -z "$cores_check" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Cores are not restricted to a private directory"
           else
             if [ "$audit_mode" = 0 ]; then
-              verbose_message "Setting:   Making sure restricted to a private directory"
+              verbose_message "Making sure restricted to a private directory" "set"
               if [ -f "$check_file" ]; then
-                Raate "Saving:    File $check_file to $work_dir$check_file"
-                find $check_file | cpio -pdm $work_dir 2> /dev/null
+                verbose_message "File \"$check_file\" to \"$work_dir$check_file\"" "save"
+                find "$check_file" | cpio -pdm "$work_dir" 2> /dev/null
               else
-                touch $check_file
-                find $check_file | cpio -pdm $work_dir 2> /dev/null
-                rm $check_file
+                touch "$check_file"
+                find "$check_file" | cpio -pdm "$work_dir" 2> /dev/null
+                rm "$check_file"
                 log_file="$work_dir/$check_file"
-                coreadm | sed -e 's/^ *//g' | sed 's/ /_/g' | sed 's/:_/:/g' | awk -F: '{ print $1" "$2 }' | while read option value; do
+                coreadm | sed -e 's/^ *//g' | sed 's/ /_/g' | sed 's/:_/:/g' | awk -F: '{ print $1" "$2 }' | while read -r option value; do
                   if [ "$option" = "global_core_file_pattern" ]; then
-                    echo "COREADM_GLOB_PATTERN=$value" > $log_file
+                    echo "COREADM_GLOB_PATTERN=$value" > "$log_file"
                   fi
                   if [ "$option" = "global_core_file_content" ]; then
-                    echo "COREADM_GLOB_CONTENT=$value" >> $log_file
+                    echo "COREADM_GLOB_CONTENT=$value" >> "$log_file"
                   fi
                   if [ "$option" = "init_core_file_pattern" ]; then
-                    echo "COREADM_INIT_PATTERN=$value" >> $log_file
+                    echo "COREADM_INIT_PATTERN=$value" >> "$log_file"
                   fi
                   if [ "$option" = "init_core_file_content" ]; then
-                    echo "COREADM_INIT_CONTENT=$value" >> $log_file
+                    echo "COREADM_INIT_CONTENT=$value" >> "$log_file"
                   fi
                   if [ "$option" = "global_core_dumps" ]; then
                     if [ "$value" = "enabled" ]; then
@@ -55,7 +62,7 @@ audit_core_dumps () {
                     else
                       value="no"
                     fi
-                    echo "COREADM_GLOB_ENABLED=$value" >> $log_file
+                    echo "COREADM_GLOB_ENABLED=$value" >> "$log_file"
                   fi
                   if [ "$option" = "per-process_core_dumps" ]; then
                     if [ "$value" = "enabled" ]; then
@@ -63,7 +70,7 @@ audit_core_dumps () {
                     else
                       value="no"
                     fi
-                    echo "COREADM_PROC_ENABLED=$value" >> $log_file
+                    echo "COREADM_PROC_ENABLED=$value" >> "$log_file"
                   fi
                   if [ "$option" = "global_setid_core_dumps" ]; then
                     if [ "$value" = "enabled" ]; then
@@ -71,7 +78,7 @@ audit_core_dumps () {
                     else
                       value="no"
                     fi
-                    echo "COREADM_GLOB_SETID_ENABLED=$value" >> $log_file
+                    echo "COREADM_GLOB_SETID_ENABLED=$value" >> "$log_file"
                   fi
                   if [ "$option" = "per-process_setid_core_dumps" ]; then
                     if [ "$value" = "enabled" ]; then
@@ -79,7 +86,7 @@ audit_core_dumps () {
                     else
                       value="no"
                     fi
-                    echo "COREADM_PROC_SETID_ENABLED=$value" >> $log_file
+                    echo "COREADM_PROC_SETID_ENABLED=$value" >> "$log_file"
                   fi
                   if [ "$option" = "global_core_dump_logging" ]; then
                     if [ "$value" = "enabled" ]; then
@@ -87,16 +94,16 @@ audit_core_dumps () {
                     else
                       value="no"
                     fi
-                    echo "COREADM_GLOB_LOG_ENABLED=$value" >> $log_file
+                    echo "COREADM_GLOB_LOG_ENABLED=$value" >> "$log_file"
                   fi
                 done
               fi
               coreadm -g /var/cores/core_%n_%f_%u_%g_%t_%p -e log -e global -e global-setid -d process -d proc-setid
             fi
             if [ ! -d "$cores_dir" ]; then
-              mkdir $cores_dir
-              chmod 700 $cores_dir
-              chown root:root $cores_dir
+              mkdir "$cores_dir"
+              chmod 700 "$cores_dir"
+              chown root:root "$cores_dir"
             fi
           fi
         else
@@ -105,8 +112,8 @@ audit_core_dumps () {
           fi
         fi
         if [ "$audit_mode" = 2 ]; then
-          restore_file $check_file $restore_dir
           restore_file="$restore_dir$check_file"
+          restore_file "$check_file" "$restore_dir"
           if [ -f "$restore_file" ]; then
             coreadm -u
           fi
@@ -114,18 +121,13 @@ audit_core_dumps () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      verbose_message "Core Dumps"
-      for service_name in kdump; do
-        check_linux_service $service_name off
-      done
-      check_file="/etc/security/limits.conf"
-      check_append_file $check_file "* hard core 0"
-      check_file="/etc/sysctl.conf"
-      check_file_value is $check_file fs.suid_dumpable eq 0 hash
+      verbose_message     "Core Dumps" "check"
+      check_linux_service "kdump"      "off"
+      check_append_file   "/etc/security/limits.conf" "* hard core 0"
+      check_file_value    "is" "/etc/sysctl.conf"     "fs.suid_dumpable" "eq" "0" "hash"
     fi
     if [ "$os_name" = "FreeBSD" ]; then
-      check_file="/etc/sysctl.conf"
-      check_file_value is $check_file kern.coredump eq 0 hash
+      check_file_value "is" "/etc/sysctl.conf" "kern.coredump" "eq" "0" "hash"
     fi
   fi
 }

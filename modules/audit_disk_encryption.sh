@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_disk_encryption
 #
 # Check Disk Encryption is enabled
@@ -7,11 +13,11 @@
 
 audit_disk_encryption () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Disk Encryption"
+    verbose_message "Disk Encryption" "check"
     if [ "$audit_mode" != 2 ]; then
       check=$( diskutil cs list | grep -i encryption | grep AES-XTS )
       if [ "$check" ]; then
-        increment_secure "Disk encryption is enabled"
+        increment_secure   "Disk encryption is enabled"
       else
         increment_insecure "Disk encryption is not enabled"
       fi

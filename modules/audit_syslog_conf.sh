@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_syslog_conf
 #
 # Check syslog confg
@@ -11,7 +17,7 @@
 
 audit_syslog_conf () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "VMkernel" ]; then
-    verbose_message "Syslog Configuration"
+    verbose_message "Syslog Configuration" "check"
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/syslog.conf"
       if [ -f "/etc/rsyslog.conf" ]; then
@@ -27,15 +33,14 @@ audit_syslog_conf () {
           fi
         fi
       fi
-      check_file_value is $check_file "authpriv.*" tab "/var/log/secure" hash
-      check_file_value is $check_file "auth.*" tab "/var/log/messages" hash
-      check_file_value is $check_file "daemon.*" tab "/var/log/daemon.log" hash
-      check_file_value is $check_file "syslog.*" tab "/var/log/syslog" hash
-      check_file_value is $check_file "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" tab "/var/log/unused.log" hash
+      check_file_value "is" "$check_file" "authpriv.*" "tab" "/var/log/secure"     "hash"
+      check_file_value "is" "$check_file" "auth.*"     "tab" "/var/log/messages"   "hash"
+      check_file_value "is" "$check_file" "daemon.*"   "tab" "/var/log/daemon.log" "hash"
+      check_file_value "is" "$check_file" "syslog.*"   "tab" "/var/log/syslog"     "hash"
+      check_file_value "is" "$check_file" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/unused.log" "hash"
     fi
     if [ "$os_name" = "FreeBSD" ]; then
-      check_file="/etc/rc.conf"
-      check_file_value is $check_file syslogd_flags eq -s hash
+      check_file_value "is" "/etc/rc.conf" "syslogd_flags" "eq" "-s" "hash"
     fi
     if [ "$os_name" = "VMkernel" ]; then
       log_file="sysloglogdir"
@@ -53,8 +58,7 @@ audit_syslog_conf () {
           if [ "$audit_mode" = "1" ]; then
             increment_insecure "Syslog log directory is not persistent"
             if [ "$syslog_logdir" != "" ]; then
-              verbose_message "" fix
-              verbose_message "esxcli system syslog config set --logdir=$syslog_logdir" fix
+              verbose_message "esxcli system syslog config set --logdir=$syslog_logdir" "fix"
             fi
           fi
         else
@@ -84,14 +88,11 @@ audit_syslog_conf () {
             fi
           fi
           if [ "$audit_mode" = "1" ]; then
-            verbose_message "" fix
             increment_insecure "Syslog remote host is not enabled"
             if [ "$syslog_server" = "" ]; then
-              verbose_message "" fix
-              verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" fix
+              verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" "fix"
             else
-              verbose_message "" fix
-              verbose_message "esxcli system syslog config set --loghost=$syslog_server" fix
+              verbose_message "esxcli system syslog config set --loghost=$syslog_server"  "fix"
             fi
           fi
         else
@@ -104,7 +105,7 @@ audit_syslog_conf () {
         if [ -f "$restore_file" ]; then
           previous_value=$( cat $restore_file )
           if [ "$previous_value" != "$current_value" ]; then
-            verbose_message "Restoring: Syslog loghost to $previous_value"
+            verbose_message "Restoring: Syslog loghost to \"$previous_value\""
             esxcli system syslog config set --loghost="$previous_value"
           fi
         fi

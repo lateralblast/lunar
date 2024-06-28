@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_core_limit
 #
 # Check core dump limits
@@ -8,7 +14,7 @@
 audit_core_limit () {
   if [ "$os_name" = "Darwin" ]; then
     string="Core dump limits"
-    verbose_message "$string"
+    verbose_message "$string" "check"
     log_file="corelimit"
     backup_file="$work_dir/$log_file"
     current_value=$( launchctl limit core | awk '{print $3}' )
@@ -31,13 +37,11 @@ audit_core_limit () {
       if [ "$current_value" != "0" ]; then
         if [ ! "$audit_mode" = 0 ]; then
           increment_insecure "Core dumps unlimited"
-          verbose_message "" fix
-          verbose_message "launchctl limit core 0" fix
-          verbose_message "" fix
+          verbose_message    "launchctl limit core 0" "fix"
         fi
         if [ "$audit_mode" = 0 ]; then
-          verbose_message "Setting:   Core dump limits"
-          echo "$current_value" > $log_file
+          verbose_message "Core dump limits" "set"
+          echo "$current_value" > "$log_file"
           launchctl limit core 0
         fi
       else
@@ -48,9 +52,9 @@ audit_core_limit () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        previous_value=$( cat $restore_file )
+        previous_value=$( cat "$restore_file" )
         if [ "$current_value" != "$previous_value" ]; then
-          verbose_message "Restoring: Core limit to $previous_value"
+          verbose_message "Core limit to \"$previous_value\"" "restore"
           launchctl limit core unlimited
         fi
       fi

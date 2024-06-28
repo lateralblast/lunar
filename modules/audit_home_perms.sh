@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_home_perms
 #
 # Check home permissions
@@ -17,15 +23,17 @@
 audit_home_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
     if [ "$do_fs" = "1" ]; then
-      verbose_message "Home Directory Permissions"
-      for home_dir in $( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" | grep "home" ); do
+      verbose_message "Home Directory Permissions" "check"
+      dir_list=$( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" | grep "home" )
+      for home_dir in $dir_list; do
         if [ -d "$home_dir" ]; then
-          check_file_perms $home_dir 0700
+          check_file_perms "$home_dir" "0700"
         fi
       done
       if [ "$os_name" = "Darwin" ]; then
-        for home_dir in $( ls /Users ); do
-          check_file_perms /Users/$home_dir 0700
+        dir_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        for home_dir in $dir_list; do
+          check_file_perms "/Users/$home_dir" "0700"
         done
       fi
     fi

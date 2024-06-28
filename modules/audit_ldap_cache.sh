@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ldap_cache
 #
 # Check LDAP cache
@@ -7,16 +13,14 @@
 
 audit_ldap_cache () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "LDAP Client"
+    verbose_message "LDAP Cache" "check"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        service_name="svc:/network/ldap/client"
-        check_sunos_service $service_name disabled
+        check_sunos_service "svc:/network/ldap/client" "disabled"
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      service_name="ldap"
-      check_linux_service $service_name off
+      check_linux_service "ldap" "off"
     fi
   fi
 }

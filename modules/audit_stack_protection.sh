@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_stack_protection
 #
 # Check Stack Protection
@@ -13,9 +19,8 @@
 
 audit_stack_protection () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "Stack Protection"
-    check_file="/etc/system"
-    check_file_value is $check_file "set noexec_user_stack" eq 1 star
-    check_file_value is $check_file "set noexec_user_stack_log" eq 1 star
+    verbose_message "Stack Protection" "check"
+    check_file_value "is" "/etc/system" "set noexec_user_stack"     "eq" "1" "star"
+    check_file_value "is" "/etc/system" "set noexec_user_stack_log" "eq" "1" "star"
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_pam_rhosts
 #
 # Check PAM rhost settings
@@ -8,12 +14,12 @@
 
 audit_pam_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    string="PAM RHosts Configuration"
-    verbose_message "$string"
+    string="PAM RHosts Configuration" "check"
+    verbose_message "$string" "check"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/pam.conf"
       if [ "$audit_mode" = 2 ]; then
-        restore_file $check_file $restore_dir
+        restore_file "$check_file" "$restore_dir"
       else
         if [ -f "$check_file" ]; then
           pam_check=$( grep -v "^#" $check_file | grep "pam_rhosts_auth" | head -1 | wc -l )
@@ -34,30 +40,28 @@ audit_pam_rhosts () {
           fi
           if [ "$pam_check" = "1" ]; then
             if [ "$audit_mode" = 1 ]; then
-              increment_insecure "Rhost authentication enabled in $check_file"
-              verbose_message "" fix
-              verbose_message "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" fix
-              verbose_message "cat $temp_file > $check_file" fix
-              verbose_message "rm $temp_file" fix
-              verbose_message "" fix
+              increment_insecure "Rhost authentication enabled in \"$check_file\""
+              verbose_message    "sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file" "fix"
+              verbose_message    "cat $temp_file > $check_file" "fix"
+              verbose_message    "rm $temp_file" "fix"
             else
               log_file="$work_dir$check_file"
               if [ ! -f "$log_file" ]; then
-                verbose_message "Saving:    File $check_file to $work_dir$check_file"
-                find $check_file | cpio -pdm $work_dir 2> /dev/null
+                verbose_message "File $check_file to $work_dir$check_file" "save"
+                find "$check_file" | cpio -pdm "$work_dir" 2> /dev/null
               fi
-              echo "Setting:   Rhost authentication to disabled in $check_file"
-              sed -e 's/^.*pam_rhosts_auth/#&/' < $check_file > $temp_file
-              cat $temp_file > $check_file
-              rm $temp_file
+              verbose_message "Rhost authentication to disabled in $check_file" "set"
+              sed -e 's/^.*pam_rhosts_auth/#&/' "$check_file" > "$temp_file"
+              cat "$temp_file" > "$check_file"
+              rm "$temp_file"
               if [ "$os_version" != "11" ]; then
-                pkgchk -f -n -p $check_file 2> /dev/null
+                pkgchk -f -n -p "$check_file" 2> /dev/null
               else
-                pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
+                pkg fix $( pkg search "$check_file" | grep pkg | awk '{print $4}' )
               fi
             fi
           else
-            increment_secure "Rhost authentication disabled in $check_file"
+            increment_secure "Rhost authentication disabled in \"$check_file\""
           fi
         fi
       fi
@@ -87,7 +91,7 @@ audit_pam_rhosts () {
             fi
             if [ "$pam_check" = "1" ]; then
               if [ "$audit_mode" = 1 ]; then
-                increment_insecure "Rhost authentication enabled in $check_file"
+                increment_insecure "Rhost authentication enabled in \"$check_file\""
                 verbose_message "" fix
                 verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" fix
                 verbose_message "cat $temp_file > $check_file" fix
@@ -96,10 +100,10 @@ audit_pam_rhosts () {
               fi
               if [ "$audit_mode" = 0 ]; then
                 backup_file $check_file
-                verbose_message "Setting:   Rhost authentication to disabled in $check_file"
-                sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file
-                cat $temp_file > $check_file
-                rm $temp_file
+                verbose_message "Setting:   Rhost authentication to disabled in \"$check_file\""
+                sed -e 's/^.*rhosts_auth/#&/' < "$check_file" > "$temp_file"
+                cat "$temp_file" > "$check_file"
+                rm "$temp_file"
               fi
             else
               increment_secure "Rhost authentication disabled in $check_file"

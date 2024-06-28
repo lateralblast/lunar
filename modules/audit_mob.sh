@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_mob
 #
 # Check Managed Object Browser
@@ -7,7 +13,7 @@
 
 audit_mob () {
   if [ "$os_name" = "VMkernel" ]; then
-    verbose_message "Managed Object Browser"
+    verbose_message "Managed Object Browser" "check"
     log_file="mob_status"
     backup_file="$work_dir/$log_file"
     current_value=$( vim-cmd proxysvc/service_list | grep "/mob" | awk '{print $3}' | cut -f1 -d, | sed 's/"//g' )
@@ -20,16 +26,14 @@ audit_mob () {
       if [ "$current_value" != "disabled" ]; then
         if [ "$audit_mode" = "0" ]; then
           if [ "$syslog_server" != "" ]; then
-            echo "enabled" > $backup_file
-            verbose_message "Setting:   Managed Object Browser to disabled"
+            echo "enabled" > "$backup_file"
+            verbose_message "Managed Object Browser to disabled" "set"
             vim-cmd proxysvc/remove_service "/mob" "httpsWithRedirect"
           fi
         fi
         if [ "$audit_mode" = "1" ]; then
           increment_insecure "Managed Object Browser enabled"
-          verbose_message "" fix
-          verbose_message "vim-cmd proxysvc/remove_service \"/mob\" \"httpsWithRedirect\"" fix
-          verbose_message "" fix
+          verbose_message    "vim-cmd proxysvc/remove_service \"/mob\" \"httpsWithRedirect\"" "fix"
         fi
       else
         if [ "$audit_mode" = "1" ]; then
@@ -39,7 +43,7 @@ audit_mob () {
     else
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        previous_value=$( cat $restore_file )
+        previous_value=$( cat "$restore_file" )
         if [ "$previous_value" = "enabled" ]; then
           verbose_message "Restoring: Managed Object Browser to enabled"
           vim-cmd proxysvc/add_np_service "/mob" httpsWithRedirect /var/run/vmware/proxy-mob

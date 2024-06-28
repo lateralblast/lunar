@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_remote_management
 #
 # Check remote management
@@ -14,20 +20,16 @@ audit_remote_management () {
       actual_value=$( launchctl list | awk '{print $3}' | grep -c ARDAgent )
       if [ "$actual_value" = "1" ]; then
         increment_insecure "Remote Management is enabled"
-        verbose_message "" fix
-        verbose_message "Open System Preferences" fix
-        verbose_message "Select Sharing" fix
-        verbose_message "Uncheck Remote Management" fix
-        verbose_message "" fix
+        verbose_message    "Open System Preferences"   "fix"
+        verbose_message    "Select Sharing"            "fix"
+        verbose_message    "Uncheck Remote Management" "fix"
       else
         increment_secure "Remote Management is disabled"
       fi
     else
-      verbose_message "" fix
-      verbose_message "Open System Preferences" fix
-      verbose_message "Select Sharing" fix
-      verbose_message "Uncheck Remote Management" fix
-      verbose_message "" fix
+      verbose_message "Open System Preferences"   "fix"
+      verbose_message "Select Sharing"            "fix"
+      verbose_message "Uncheck Remote Management" "fix"
     fi
   fi
 }

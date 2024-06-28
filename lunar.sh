@@ -1,7 +1,10 @@
 #!/bin/sh
 
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.0.2
+# Version:      9.0.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -82,8 +85,8 @@ touchid_timeout="86400"
 
 # Set up some global variables/defaults
 
-app_dir=$( dirname $0 )
-args=$@
+app_dir=$( dirname "$0" )
+args="*@"
 secure=0
 insecure=0
 total=0
@@ -152,8 +155,12 @@ company_name="Insert Company Name Here"
 
 cidr_to_mask () {
   set -- $(( 5 - ($1 / 8) )) 255 255 255 255 $(( (255 << (8 - ($1 % 8))) & 255 )) 0 0 0
-  [ $1 -gt 1 ] && shift $1 || shift
-  echo ${1-0}.${2-0}.${3-0}.${4-0}
+  if [ "$1" -gt 1 ]; then
+    shift "$1" 
+  else
+    shift
+  fi
+  echo "${1-0}"."${2-0}"."${3-0}"."${4-0}"
 }
 
 # mask_to_cidr
@@ -162,9 +169,9 @@ cidr_to_mask () {
 #.
 
 mask_to_cidr () {
-  local x=${1##*255.}
-  set -- 0^^^128^192^224^240^248^252^254^ $(( (${#1} - ${#x})*2 )) ${x%%.*}
-  x=${1%%$3*}
+  x="${1##*255.}"
+  set -- 0^^^128^192^224^240^248^252^254^ $(( (${#1} - ${#x})*2 )) "${x%%.*}"
+  x=${1%%"$3"*}
   echo $(( $2 + (${#x}/4) ))
 }
 
@@ -214,24 +221,24 @@ check_os_release () {
   fi
   if [ "$os_name" = "Linux" ]; then
     if [ -f "/etc/redhat-release" ]; then
-      os_version=$( cat /etc/redhat-release | awk '{print $3}' | cut -f1 -d. )
+      os_version=$( awk '{print $3}' < /etc/redhat-release | cut -f1 -d. )
       if [ "$os_version" = "Enterprise" ]; then
-        os_version=$( cat /etc/redhat-release | awk '{print $7}' | cut -f1 -d. )
+        os_version=$( awk '{print $7}' < /etc/redhat-release | cut -f1 -d. )
         if [ "$os_version" = "Beta" ]; then
-          os_version=$( cat /etc/redhat-release | awk '{print $6}' | cut -f1 -d. )
-          os_update=$( cat /etc/redhat-release | awk '{print $6}' | cut -f2 -d. )
+          os_version=$( awk '{print $6}' < /etc/redhat-release | cut -f1 -d. )
+          os_update=$( awk '{print $6}' < /etc/redhat-release | cut -f2 -d. )
         else
-          os_update=$( cat /etc/redhat-release | awk '{print $7}' | cut -f2 -d. )
+          os_update=$( awk '{print $7}' < /etc/redhat-release | cut -f2 -d. )
         fi
       else
         if [ "$os_version" = "release" ]; then
-          os_version=$( cat /etc/redhat-release | awk '{print $4}' | cut -f1 -d. )
-          os_update=$( cat /etc/redhat-release | awk '{print $4}' | cut -f2 -d. )
+          os_version=$( awk '{print $4}' < /etc/redhat-release | cut -f1 -d. )
+          os_update=$( awk '{print $4}' < /etc/redhat-release | cut -f2 -d. )
         else
-          os_update=$( cat /etc/redhat-release | awk '{print $3}' | cut -f2 -d. )
+          os_update=$( awk '{print $3}' < /etc/redhat-release | cut -f2 -d. )
         fi
       fi
-      os_vendor=$( cat /etc/redhat-release | awk '{print $1}' )
+      os_vendor=$( awk '{print $1}' < /etc/redhat-release )
       linux_dist="redhat"
     else
       if [ -f "/etc/debian_version" ]; then
@@ -253,7 +260,8 @@ check_os_release () {
           fi
         fi
         linux_dist="debian"
-        if [ $( echo "${os_version}" | grep "[0-9]" ) ]; then 
+        os_test=$( echo "$os_version" | grep "[0-9]" )
+        if [ -n "$os_test" ]; then 
           if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "$os_version" -lt 16 ]; then
             echo "Notice:    The sysv-rc-conf package may be required by this script but is not present"
           fi
@@ -313,7 +321,7 @@ check_os_release () {
     exit
   fi
   if [ "$os_name" = "Linux" ]; then
-    os_platform=$( cat /proc/cpuinfo |grep model |tail -1 |cut -f2 -d: |sed "s/^ //g" )
+    os_platform=$( grep model < /proc/cpuinfo |tail -1 |cut -f2 -d: |sed "s/^ //g" )
   else
     if [ "$os_name" = "Darwin" ]; then
       os_platform=$( system_profiler SPHardwareDataType |grep Chip |cut -f2 -d: |sed "s/^ //g" )
@@ -342,7 +350,7 @@ check_os_release () {
     echo "Codename:  $os_codename"
   fi
   if [ "$os_name" = "Darwin" ]; then
-    if [ $os_update -lt 10 ]; then
+    if [ "$os_update" -lt 10 ]; then
       long_update="0$os_update"
     else
       long_update="$os_update"
@@ -395,14 +403,15 @@ check_environment () {
       echo "Loading Functions"
       echo ""
     fi
-    for file_name in $( ls $functions_dir/*.sh ); do
+    file_list=$( ls "$functions_dir"/*.sh )
+    for file_name in $file_list; do
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
-        . $file_name
+        . "$file_name"
       else
-        source $file_name
+        source "$file_name"
       fi
       if [ "$verbose" = "1" ]; then
-        echo "Loading:   $file_name"
+        echo "Loading:   \"$file_name\""
       fi
     done
   fi
@@ -413,20 +422,21 @@ check_environment () {
       echo "Loading Modules"
       echo ""
     fi
-    for file_name in $( ls $modules_dir/*.sh ); do
+    file_list=$( ls "$modules_dir"/*.sh )
+    for file_name in $file_list; do
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
-        . $file_name
+        . "$file_name"
       else
         if [ "$file_name" = "modules/audit_ftp_users.sh" ]; then
           if [ "$os_name" != "VMkernel" ]; then
-             source $file_name
+             source "$file_name"
           fi
         else
-          source $file_name
+          source "$file_name"
         fi
       fi
       if [ "$verbose" = "1" ]; then
-        echo "Loading:   $file_name"
+        echo "Loading:   \"$file_name\""
       fi
     done
   fi
@@ -438,11 +448,12 @@ check_environment () {
     if [ "$verbose" = "1" ]; then
       echo ""
     fi
-    for file_name in $( ls $private_dir/*.sh ); do
+    file_list=$( ls "$private_dir"/*.sh )
+    for file_name in $file_list; do
       if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] ||  [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
-        . $file_name
+        . "$file_name"
       else
-        source $file_name
+        source "$file_name"
       fi
     done
     if [ "$verbose" = "1" ]; then
@@ -450,15 +461,15 @@ check_environment () {
     fi
   fi
   if [ ! -d "$base_dir" ]; then
-    mkdir -p $base_dir
-    chmod 700 $base_dir
+    mkdir -p "$base_dir"
+    chmod 700 "$base_dir"
   fi
   if [ ! -d "$temp_dir" ]; then
-    mkdir -p $temp_dir
+    mkdir -p "$temp_dir"
   fi
   if [ "$audit_mode" = 0 ]; then
     if [ ! -d "$work_dir" ]; then
-      mkdir -p $work_dir
+      mkdir -p "$work_dir"
     fi
   fi
 }
@@ -471,16 +482,16 @@ check_environment () {
 #.
 
 lockdown_command () {
-  command=$1
-  message=$2
+  command="$1"
+  message="$2"
   if [ "$audit_mode" = 0 ]; then
     if [ "$message" ]; then
       echo "Setting:   $message"
     fi
     echo "Executing: $command"
-   $( $command )
+    eval "$command"
   else
-    verbose_message "$command" fix
+    verbose_message "$command" "fix"
   fi
 }
 
@@ -491,16 +502,16 @@ lockdown_command () {
 #.
 
 restore_command () {
-  command=$1
-  message=$2
+  command="$1"
+  message="$2"
   if [ "$audit_mode" = 0 ]; then
     if [ "$message" ]; then
       echo "Restoring: $message"
     fi
     echo "Executing: $command"
-   $( $command )
+    eval "$command"
   else
-    verbose_message "$command" fix
+    verbose_message "$command" "fix"
   fi
 }
 
@@ -512,10 +523,10 @@ restore_command () {
 
 backup_state () {
   if [ "$audit_mode" = 0 ]; then
-    backup_name=$1
-    backup_value=$1
+    backup_name="$1"
+    backup_value="$1"
     backup_file="$work_dir/$backup_name.log"
-    echo "$backup_value" > $backup_file
+    echo "$backup_value" > "$backup_file"
   fi
 }
 
@@ -527,12 +538,12 @@ backup_state () {
 
 restore_state () {
   if [ "$audit_mode" = 2 ]; then
-    restore_name=$1
-    current_value=$2
-    restore_command=$3
+    restore_name="$1"
+    current_value="$2"
+    restore_command="$3"
     restore_file="$restore_dir/$restore_name"
     if [ -f "$restore_file" ]; then
-      restore_value=$( cat $restore_file )
+      restore_value=$( cat "$restore_file" )
       if [ "$current_value" != "$restore_value" ]; then
         echo "Executing: $command"
         $( $restore_command )
@@ -548,7 +559,7 @@ restore_state () {
 
 increment_total () {
   if [ "$audit_mode" != 2 ]; then
-    total=$( expr $total + 1 )
+    total=$((total+1))
   fi
 }
 
@@ -559,10 +570,10 @@ increment_total () {
 
 increment_secure () {
   if [ "$audit_mode" != 2 ]; then
-    message=$1
-    total=$( expr $total + 1 )
-    secure=$( expr $secure + 1 )
-    echo "Secure:    $message [$secure Passes]"
+    message="$1"
+    total=$((total+1))
+    secure=$((insecure+1))
+    echo "Secure:     $message [$secure Passes]"
   fi
 }
 
@@ -573,10 +584,10 @@ increment_secure () {
 
 increment_insecure () {
   if [ "$audit_mode" != 2 ]; then
-    message=$1
-    total=$( expr $total + 1 )
-    insecure=$( expr $insecure + 1 )
-    echo "Warning:   $message [$insecure Warnings]"
+    message="$1"
+    total=$((total+1))
+    insecure=$((insecure+1))
+    echo "Warning:    $message [$insecure Warnings]"
   fi
 }
 
@@ -590,29 +601,36 @@ print_previous () {
     echo ""
     echo "Printing previous settings:"
     echo ""
-    find $base_dir -type f -print -exec cat -n {} \;
+    find "$base_dir" -type f -print -exec cat -n {} \;
   fi
 }
 
-#
 # handle_output
 #
 # Handle output
 #.
 
 handle_output () {
-  text=$1
+  text="$1"
   echo "$1"
 }
 
+# checking_message
 #
+# Checking message
+#.
+
+checking_message () {
+  verbose_message "$1" "check"
+}
+
 # setting_message
 #
 # Setting message
 #.
 
 setting_message () {
-  verbose_message $1 setting
+  verbose_message "$1" "set"
 }
 
 # verbose_message
@@ -621,8 +639,8 @@ setting_message () {
 #.
 
 verbose_message () {
-  text=$1
-  style=$2
+  text="$1"
+  style="$2"
   if [ "$verbose" = 1 ]; then
     if [ "$style" = "fix" ]; then
       if [ "$text" = "" ]; then
@@ -634,22 +652,35 @@ verbose_message () {
       echo "$text"
     fi
   else
-    if [ ! "$style" ] && [ "$text" ]; then
-      echo "Checking:  $text"
-    else
-      if [ "$style" = "notice" ]; then
-        "Notice:    $text"
-      fi
-      if [ "$style" = "backup" ]; then
-        "Backup:    $text"
-      fi
-      if [ "$style" = "setting" ] || [ "$style" = "set" ]; then
-        "Setting:   $text"
-      fi
-      if [ "$style" = "restoring" ] || [ "$style" = "restore" ]; then
-        "Restoring: $text"
-      fi
-    fi
+    case $style in
+      notice)
+        echo "Notice:     $text"
+        ;;
+      install|installing)
+        echo "Installing: $text"
+        ;;
+      backup)
+        echo "Backup:     $text"
+        ;;
+      save|saving)
+        echo "Saving:     $text"
+        ;;
+      set|setting)
+        echo "Setting:    $text"
+        ;;
+      restore|restoring)
+        echo "Restoring:  $text"
+        ;;
+      remove|removing)
+        echo "Removing:   $text"
+        ;;
+      check|checking)
+        echo "Checking:   $text"
+        ;;
+      create|creating)
+        echo "Creating:   $text"
+        ;;
+    esac
   fi
 }
 
@@ -664,17 +695,18 @@ print_changes () {
     echo ""
     echo "Printing changes:"
     echo ""
-    for saved_file in $( find $base_dir -type f -print ); do
-      check_file=$( echo $saved_file | cut -f 5- -d"/" )
-      top_dir=$( echo $saved_file | cut -f 1-4 -d"/" )
-      echo "Directory: $top_dir"
+    file_list=$( find "$base_dir" -type f -print )
+    for saved_file in $file_list; do
+      check_file=$( echo "$saved_file" | cut -f 5- -d"/" )
+      top_dir=$( echo "$saved_file" | cut -f 1-4 -d"/" )
+      echo "Directory: \"$top_dir\""
       log_test=$( echo "$check_file" |grep "log$" )
-      if [ $( expr "$log_test" : "[A-z]" ) = 1 ]; then
+      if [ -n "$log_test" ]; then
         echo "Original system parameters:"
-        cat $saved_file | sed "s/,/ /g"
+        sed "s/,/ /g" < "$saved_file"
       else
-        echo "Changes to /$check_file:"
-        diff $saved_file /$check_file
+        echo "Changes to \"/$check_file\":"
+        diff "$saved_file" "/$check_file"
       fi
     done
   else
@@ -771,15 +803,15 @@ funct_audit_system () {
   check_environment
   if [ "$audit_mode" = 0 ]; then
     if [ ! -d "$work_dir" ]; then
-      mkdir -p $work_dir
+      mkdir -p "$work_dir"
       if [ "$os_name" = "SunOS" ]; then
         echo "Creating:  Alternate Boot Environment $date_suffix"
         if [ "$os_version" = "11" ]; then
-          beadm create audit_$date_suffix
+          beadm create "audit_$date_suffix"
         fi
         if [ "$os_version" = "8" ] || [ "$os_version" = "9" ] || [ "$os_version" = "10" ]; then
           if [ "$os_platform" != "i386" ]; then
-            lucreate -n audit_$date_suffix
+            lucreate -n "audit_$date_suffix"
           fi
         fi
       else
@@ -791,10 +823,10 @@ funct_audit_system () {
   if [ "$audit_mode" = 2 ]; then
     restore_dir="$base_dir/$restore_date"
     if [ ! -d "$restore_dir" ]; then
-      echo "Restore directory $restore_dir does not exit"
+      echo "Restore directory \"$restore_dir\" does not exit"
       exit
     else
-      echo "Setting:   Restore directory to $restore_dir"
+      echo "Setting:   Restore directory to \"$restore_dir\""
     fi
   fi
   audit_system_all
@@ -802,7 +834,8 @@ funct_audit_system () {
     audit_search_fs
   fi
   #audit_test_subset
-  if [ $( expr "$os_platform" : "sparc" ) != 1 ]; then
+  sparc_test=$( echo "$os_platform" |grep "sparc" )
+  if [ -z "$sparc_test" ]; then
     audit_system_x86
   else
     audit_system_sparc
@@ -819,18 +852,24 @@ funct_audit_select () {
   audit_mode=$1
   function=$2
   check_environment
-  if [ "$( echo $function |grep aws )" ]; then
+  module_test=$(echo "$function" |grep aws)
+  if [ -n "$module_test" ]; then
     check_aws
   fi
-  if [ "$( echo "$function" |grep "\\.sh" |wc -l )" = "1" ]; then
+  suffix_test=$( echo "$function" |grep "\\.sh" )
+  if [ "-n $suffix_test" ]; then
     function=$( echo "$function" |cut -f1 -d. )
   fi
-  if [ "$( expr $function : audit_ )" != "6" ]; then
-    function="audit_$function"
+  module_test=$(echo "$function" | grep "full" )
+  if [ -z "$module_test" ]; then  
+    if [ "$( expr "$function" : audit_ )" != "6" ]; then
+      function="audit_$function"
+    fi
   fi
-  if [ "$function" != "audit_" ]; then
-    print_audit_info $function
-    check=$( type $function 2> /dev/null )
+  module_test=$(echo "$function" | grep "audit" )
+  if [ -n "$module_test" ]; then
+    print_audit_info "$function"
+    check=$( type "$function" 2> /dev/null )
     if [ "$check" ]; then
       $function
     else
@@ -838,8 +877,11 @@ funct_audit_select () {
       echo ""
       exit
     fi 
+    print_results
+  else
+    echo "Warning:   Audit function \"$function\" does not exist"
+    echo ""
   fi
-  print_results
 }
 
 # Get the path the script starts from
@@ -848,7 +890,7 @@ start_path=$( pwd )
 
 # Get the version of the script from the script itself
 
-script_version=$( cd $start_path ; cat $0 | grep '^# Version' | awk '{print $3}' )
+script_version=$( cd "$start_path" || exit ; grep '^# Version' < "$0"| awk '{print $3}' )
 
 # apply_latest_patches
 #
@@ -884,14 +926,14 @@ print_results () {
     else
       reboot="Not Required"
     fi
-    echo "Reboot:    $reboot"
+    echo "Reboot:     $reboot"
   fi
-  echo "Tests:     $total"
-  echo "Passes:    $secure"
-  echo "Warnings:  $insecure"
+  echo "Tests:      $total"
+  echo "Passes:     $secure"
+  echo "Warnings:   $insecure"
   if [ "$audit_mode" = 0 ]; then
-    echo "Backup:    $work_dir"
-    echo "Restore:   $0 -u $date_suffix"
+    echo "Backup:     $work_dir"
+    echo "Restore:    $0 -u $date_suffix"
   fi
   echo ""
 }
@@ -911,7 +953,17 @@ print_tests () {
   fi
   echo "$test_string Security Tests:"
   echo ""
-  ls $modules_dir | grep -v '^full_' |grep -i $grep_string |sed 's/\.sh//g'
+  dir_list=$( ls "$modules_dir" ) 
+  for dir_entry in $dir_list ; do
+    if [ "$test_string" = "AWS" ]; then
+      module_name=$( echo "$dir_entry" | grep -v "^full_" |grep "aws" |sed "s/\.sh//g" )
+    else
+      module_name=$( echo "$dir_entry" | grep -v "^full_" |grep -v "aws" |sed "s/\.sh//g" )
+    fi
+    if [ -n "$module_name" ]; then
+      echo "$module_name"
+    fi
+  done
   echo ""
 }
 
@@ -932,7 +984,7 @@ do_docker=0
 #.
 
 print_version () {
-  echo $script_version
+  echo "$script_version"
 }
 
 # print_help
@@ -944,39 +996,39 @@ print_help () {
   cat << EOHELP
 Usage: ${0##*/} [OPTIONS...]
 
- -a   Run in audit mode (for Operating Systems - no changes made to system)
- -A   Run in audit mode (for Operating Systems - no changes made to system)
-        [includes home directory and filesystem checks which take some time]
- -v   Verbose mode [used with -a and -A]
-        [Provides more information about the audit taking place]
- -w   Run in audit mode (for AWS - no changes made to system)
- -d   Run in audit mode (for Docker - no changes made to system)
- -e   Run in audit mode on external host (for Operating Systems - no changes made to system)
- -k   Run in audit mode (for Kubernetes - no changes made to system)
- -x   Run in recommendations mode (for AWS - no changes made to system)
- -s   Run in selective mode (only run tests you want to)
- -l   Run in lockdown mode (for Operating Systems - changes made to system)
- -L   Run in lockdown mode (for Operating Systems - changes made to system)
-        [includes filesystem checks which take some time]
- -S   List all UNIX functions available to selective mode
- -W   List all AWS functions available to selective mode
- -D   List all Docker functions available to selective mode
- -R   Print information for a specific test
- -O   Print OS information
- -o   Set docker OS or container name
- -t   Set docker tag
- -c   Run docker-compose testing suite (runs lunar in audit mode without making changes)
- -C   Run docker-compose testing suite (drops to shell in order to do more testing)
- -p   Show previous versions of file
- -Z   Show changes previously made to system
- -b   List backup files
- -n   Output ansible code segments
- -r   Specify AWS region
- -z   Run specified audit function
- -u   Undo lockdown (for Operating Systems - changes made to system)
- -V   Display version
- -H   Display usage
- -h   Display help
+ -a | --audit        Run in audit mode (for Operating Systems - no changes made to system)
+ -A | --fullaudit    Run in audit mode (for Operating Systems - no changes made to system)
+                     [includes home directory and filesystem checks which take some time]
+ -v | --verbose      Verbose mode [used with -a and -A]
+                     [Provides more information about the audit taking place]
+ -w | --awsaudit     Run in audit mode (for AWS - no changes made to system)
+ -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
+ -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
+ -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
+ -x | --awsrec       Run in recommendations mode (for AWS - no changes made to system)
+ -s | --select       Run in selective mode (only run tests you want to)
+ -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
+ -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
+                     [includes filesystem checks which take some time]
+ -S | --unixtests    List all UNIX functions available to selective mode
+ -W | --awstests     List all AWS functions available to selective mode
+ -D | --dockertests  List all Docker functions available to selective mode
+ -R | --testinfo     Print information for a specific test
+ -O | --osinfo       Print OS information
+ -o | --name         Set docker OS or container name
+ -t | --tag          Set docker tag
+ -c | --run          Run docker-compose testing suite (runs lunar in audit mode without making changes)
+ -C | --shell        Run docker-compose testing suite (drops to shell in order to do more testing)
+ -p | --previous     Show previous versions of file
+ -Z | --changes      Show changes previously made to system
+ -b | --backups      List backup files
+ -n | --ansible      Output ansible code segments
+ -r | --region       Specify AWS region
+ -z | --lockselect   Run specified audit function in lockdown mode
+ -u | --undo         Undo lockdown (for Operating Systems - changes made to system)
+ -V | --version      Display version
+ -H | --usage        Display usage
+ -h | --help         Display help
 
 EOHELP
 }
@@ -1036,7 +1088,7 @@ print_backups () {
   echo ""
   echo "Previous backups:"
   echo ""
-  ls $base_dir
+  ls "$base_dir"
 }
 
 # If given no command line arguments print usage information
@@ -1089,13 +1141,13 @@ do
       do_fs=1
       shift
       ;;
-    -w)
+    -w|--awsaudit)
       audit_mode=1
       do_aws=1
       function="$2"
       shift 2
       ;;
-    -d)
+    -d|--dockeraudit)
       audit_mode=1
       do_docker=1
       function="$2"
@@ -1106,7 +1158,7 @@ do
       ext_host="$2"
       shift 2
       ;;
-    -x)
+    -x|--awsrec)
       audit_mode=1
       do_aws_rec=1
       function="$2"
@@ -1129,12 +1181,12 @@ do
       do_fs=0
       shift
       ;;
-    -L|--fulllockdown)
+    -L|--fulllockdown|fulllock)
       audit_mode=0
       do_fs=1
       shift
       ;;
-    --tests|printtests)
+    --tests|--printtests)
       tests="$2" 
       case $tests in
         UNIX|unix)
@@ -1159,7 +1211,7 @@ do
       shift
       exit
       ;;
-    -D|dockertests|--docker)
+    -D|--dockertests)
       print_tests "Docker"
       shift
       exit
@@ -1168,7 +1220,7 @@ do
       check_environment
       verbose=1
       module="$2"
-      print_audit_info $module
+      print_audit_info "$module"
       shift 2
       exit
       ;;
@@ -1177,7 +1229,7 @@ do
       shift
       exit
       ;;
-    -o|--testos|--os)
+    -o|--name)
       test_os="$2"
       shift 2
       ;;
@@ -1185,7 +1237,7 @@ do
       test_tag="$2"
       shift 2
       ;;
-    -c|--compose)
+    -c|--run)
       do_compose=1
       do_shell=0
       shift
@@ -1195,7 +1247,7 @@ do
       do_shell=1
       shift
       ;;
-    -p|--printprevious|--previous)
+    -p|--previous)
       print_previous
       shift
       exit
@@ -1238,7 +1290,7 @@ do
       function="$2"
       shift 2
       ;;
-    -k|--kubernetes)
+    -k|--kubeaudit)
       audit_mode=1
       do_kubernetes=1
       function="$2"
@@ -1288,18 +1340,18 @@ fi
 
 if [ "$do_remote" = 1 ]; then
   echo "Copying $app_dir to $ext_host:/tmp"
-  scp -r $app_dir $ext_host:/tmp
+  scp -r "$app_dir" "$ext_host":/tmp
   echo "Executing lunar in audit mode (no changes will be made) on $ext_host"
-  ssh $ext_host "sudo /tmp/lunar.sh -a"
+  ssh "$ext_host" "sudo /tmp/lunar.sh -a"
   exit
 fi
 
 if [ "$do_compose" = 1 ]; then
   if [ ! "$test_os" = "none" ] && [ ! "$test_tag" = "none" ]; then
     if [ "$do_shell" = 0 ]; then
-      cd $app_dir ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-audit
+      cd "$app_dir" || exit ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-audit
     else
-      cd $app_dir ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-shell
+      cd "$app_dir" || exit ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-shell
     fi
   else
     echo "OS name or version not given"
@@ -1325,32 +1377,32 @@ if [ "$audit_mode" != 3 ]; then
   echo ""
   if [ "$do_select" = 1 ]; then
     echo "Auditing:  Selecting $function"
-    funct_audit_select $audit_mode $function
+    funct_audit_select "$audit_mode" "$function"
   else
     case $audit_type in
       Kubernetes)
         echo "Auditing:  Kubernetes"
-        funct_audit_kubernetes $audit_mode
+        funct_audit_kubernetes "$audit_mode"
         exit
         ;;
       docker)
         echo "Auditing:  Docker"
-        funct_audit_docker $audit_mode
+        funct_audit_docker "$audit_mode"
         exit
         ;;
       awsrecommended)
         echo "Auditing:  AWS - Recommended Tests"
-        funct_audit_aws_rec $audit_mode
+        funct_audit_aws_rec "$audit_mode"
         exit
         ;;
       aws)
         echo "Auditing:  AWS"
-        funct_audit_aws $audit_mode
+        funct_audit_aws "$audit_mode"
         exit
         ;;
       local|system|os)
         echo "Auditing:  OS"
-        funct_audit_system $audit_mode
+        funct_audit_system "$audit_mode"
         exit
         ;;
     esac

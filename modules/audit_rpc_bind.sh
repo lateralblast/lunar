@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_rpc_bind
 #
 # Check that rpc bind has tcp wrappers enabled in case it's turned on.
@@ -7,16 +13,12 @@
 
 audit_rpc_bind () {
   if [ "$os_name" = "SunOS" ]; then
+    verbose_message "RPC Bind" check
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "RPC Bind"
-      service_name="svc:/network/rpc/bind"
-      service_property="config/enable_tcpwrappers"
-      correct_value="true"
-      audit_svccfg_value $service_name $service_property $correct_value
+      audit_svccfg_value "svc:/network/rpc/bind" "config/enable_tcpwrappers" "true"
     fi
     if [ "$os_version" = "11" ]; then
-      service_name="svc:/network/rpc/bind"
-      check_sunos_service $service_name disabled
+      check_sunos_service "svc:/network/rpc/bind" "disabled"
     fi
   fi
 }

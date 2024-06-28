@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_reserved_ids
 #
 # Check reserved IDs
@@ -9,7 +15,7 @@
 
 audit_reserved_ids () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "Reserved IDs"
+    verbose_message "Reserved IDs" "check"
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
         found=0
@@ -22,14 +28,14 @@ audit_reserved_ids () {
         if [ "$found" = 0 ]; then
           uuid_check=1
           if [ "$audit_mode" = 1 ];then
-            increment_insecure "User $check_user has a reserved UID ($check_uid)"
+            increment_insecure "User \"$check_user\" has a reserved UID \"$check_uid\""
           fi
         fi
       done
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Reserved IDs"
+    verbose_message "Reserved IDs" "check"
     if [ "$audit_mode" != 2 ]; then
      verbose_message "Whether reserved UUIDs are assigned to system accounts"
     fi
@@ -47,7 +53,7 @@ audit_reserved_ids () {
         if [ "$found" = 0 ]; then
           uuid_check=1
           if [ "$audit_mode" = 1 ];then
-            increment_insecure "User $check_user has a reserved UID ($check_uid)"
+            increment_insecure "User \"$check_user\" has a reserved UID \"$check_uid\""
           fi
         fi
       done

@@ -1,3 +1,10 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+# shellcheck disable=SC2028
+
 # audit_wheel_sudo
 #
 # Check wheel group settings in sudoers
@@ -5,14 +12,15 @@
 
 audit_wheel_sudo () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
-    verbose_message "Sudoers group settings"
+    verbose_message "Sudoers group settings" "check"
     for check_dir in /etc /usr/local/etc /usr/sfw/etc /opt/csw/etc; do
       check_dir="$check_dir/sudoers.d"
       if [ -d "$check_dir" ]; then
-        for check_file in $( find $check_dir -type f ); do
-          check_file_perms $check_file 0440 root root
+        check_files=$( find "$check_dir" -type f )
+        for check_file in $check_files; do
+          check_file_perms "$check_file" "0440" "root" "root"
           if [ "$audit_mode" != 2 ]; then
-            w_groups=$( grep NOPASSWD $check_file | grep ALL | grep -v '^#' | awk '{print $1}' )
+            w_groups=$( grep NOPASSWD "$check_file" | grep ALL | grep -v '^#' | awk '{print $1}' )
             for w_group in $w_groups ; do
               if [ "$ansible" = 1 ]; then
                 echo ""
@@ -25,17 +33,15 @@ audit_wheel_sudo () {
               fi
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "Group $w_group does not require password to escalate privileges"
-                verbose_message "" fix
-                verbose_message "cat $check_file |sed 's/^\(%.*NOPASSWD.*\)/#\1/g' > $temp_file ; cat $temp_file > $check_file" fix
-                verbose_message "" fix
+                verbose_message    "sed 's/^\(%.*NOPASSWD.*\)/#\1/g' < $check_file > $temp_file ; cat $temp_file > $check_file" "fix"
               fi
               if [ "$audit_mode" = 0 ]; then
-                backup_file $check_file
-                verbose_message "Setting:   Disabling $w_group NOPASSWD entry"
+                backup_file     "$check_file"
+                verbose_message "Disabling group \"$w_group\" NOPASSWD entry" "set"
               fi
             done
           else
-            restore_file $check_file $restore_dir
+            restore_file "$check_file" "$restore_dir"
           fi
         done
       fi
@@ -43,7 +49,7 @@ audit_wheel_sudo () {
       if [ -f "$check_file" ]; then
         check_file_perms $check_file 0440 root root
         if [ "$audit_mode" != 2 ]; then
-          w_groups=$( grep NOPASSWD $check_file | grep ALL | grep -v '^#' | awk '{print $1}' )
+          w_groups=$( grep NOPASSWD "$check_file" | grep ALL | grep -v '^#' | awk '{print $1}' )
           for w_group in $w_groups ; do
             if [ "$ansible" = 1 ]; then
               echo ""
@@ -55,18 +61,16 @@ audit_wheel_sudo () {
               echo ""
             fi
             if [ "$audit_mode" = 1 ]; then
-              increment_insecure "Group $w_group does not require password to escalate privileges"
-               verbose_message "" fix
-               verbose_message "cat $check_file |sed 's/^\(%.*NOPASSWD.*\)/#\1/g' > $temp_file ; cat $temp_file > $check_file" fix
-               verbose_message "" fix
+              increment_insecure "Group \"$w_group\" does not require password to escalate privileges"
+              verbose_message    "sed 's/^\(%.*NOPASSWD.*\)/#\1/g' < $check_file > $temp_file ; cat $temp_file > $check_file" "fix"
             fi
             if [ "$audit_mode" = 0 ]; then
-              backup_file $check_file
-              verbose_message "Setting:   Disabling $w_group NOPASSWD entry"
+              backup_file     "$check_file"
+              verbose_message "Disabling $w_group NOPASSWD entry" "set"
             fi
           done
         else
-          restore_file $check_file $restore_dir
+          restore_file "$check_file" "$restore_dir"
         fi
       fi
     done

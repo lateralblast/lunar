@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # check_systemctl_service
 #
 # Code to audit a service managed by systemctl, and enable, or disable
@@ -8,15 +14,15 @@
 #.
 
 check_systemctl_service () {
-  temp_status=$1
-  temp_name=$2
+  temp_status="$1"
+  temp_name="$2"
   use_systemctl="no"
   if [ "$temp_name" = "on" ] || [ "$temp_name" = "off" ]; then
-    correct_status=$temp_name 
-    service_name=$temp_status
+    correct_status="$temp_name" 
+    service_name="$temp_status"
   else
-    correct_status=$temp_status
-    service_name=$temp_name
+    correct_status="$temp_status"
+    service_name="$temp_name"
   fi
   if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ] || [ "$correct_status" = "on" ]; then
     service_switch="enable"
@@ -35,11 +41,11 @@ check_systemctl_service () {
   fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
-    actual_status=$( systemctl is-enabled $service_name 2> /dev/null )
+    actual_status=$( systemctl is-enabled "$service_name" 2> /dev/null )
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
-        check_status=$( grep $service_name $restore_file | cut -f2 -d"," )
+        check_status=$( grep "$service_name" "$restore_file" | cut -f2 -d"," )
         if [ "$check_status" = "enabled" ] || [ "$check_status" = "disabled" ]; then
           if [ "$check_status" != "$actual_status" ]; then
             verbose_message "Restoring: Service $service_name at run level $service_level to $check_status"
@@ -48,13 +54,13 @@ check_systemctl_service () {
             else
               service_switch="disable"
             fi
-            systemctl $service_name $service_switch
+            eval "systemctl $service_name $service_switch"
           fi
         fi
       fi
     else
-      string="Service $service_name is $correct_status"
-      verbose_message "$string"
+      string="Service \"$service_name\" is \"$correct_status\""
+      verbose_message "$string" "check"
       if [ "$audit_mode" != 2 ]; then
         if [ "$ansible" = 1 ]; then
           echo ""
@@ -68,14 +74,14 @@ check_systemctl_service () {
       fi
       if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ] || [ "$actual_status" = "not-found" ]; then
         if [ "$actual_status" != "$correct_status" ] && [ ! "$actual_status" = "not-found" ]; then
-          increment_insecure "Service $service_name is not $correct_status"
           log_file="$work_dir/$log_file"
-          lockdown_command "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_name $service_switch" "Service $service_name to $correct_status"
+          increment_insecure "Service $service_name is not $correct_status"
+          lockdown_command   "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_name $service_switch" "Service \"$service_name\" to \"$correct_status\""
         else
           if [ "$actual_status" = "not-found" ]; then
-            increment_secure "Service $service_name is $actual_status"
+            increment_secure "Service \"$service_name\" is \"$actual_status\""
           else
-            increment_secure "Service $service_name is $correct_status"
+            increment_secure "Service \"$service_name\" is \"$correct_status\""
           fi
         fi
       fi

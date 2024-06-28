@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_remote_shell
 #
 # Turn off remote shell services
@@ -7,11 +13,11 @@
 
 audit_remote_shell () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Telnet and Rlogin Services"
+    verbose_message "Telnet and Rlogin Services" "check"
     if [ "$os_name" = "AIX" ]; then
-      check_chsec /etc/security/user root rlogin false
+      check_chsec "/etc/security/user" "root" "rlogin" "false"
       for user_name in daemon bin sys adm uucp nobody lpd; do
-        check_chuser login false rlogin false $user_name
+        check_chuser "login" "false" "rlogin" "false" "$user_name"
       done
     fi
     if [ "$os_name" = "SunOS" ]; then
@@ -21,14 +27,13 @@ audit_remote_shell () {
           "svc:/network/rpc/rex:default" "svc:/network/rexec:default" \
           "svc:/network/shell:default" "svc:/network/login:rlogin" \
           "svc:/network/telnet:default"; do
-          check_sunos_service $service_name disabled
+          check_sunos_service "$service_name" "disabled"
         done
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      verbose_message "Telnet and Rlogin Services"
       for service_name in telnet login rlogin rsh shell; do
-        check_linux_service $service_name off
+        check_linux_service "$service_name" "off"
       done
     fi
   fi

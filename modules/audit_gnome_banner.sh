@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_gnome_banner
 #
 # Create Warning Banner for GNOME Users
@@ -13,42 +19,39 @@
 
 audit_gnome_banner () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Gnome Warning Banner"
+    verbose_message "Gnome Warning Banner" "check"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ]; then
-        check_file="/etc/X11/gdm.conf"
-        check_file_value is $check_file Welcome eq "Authorised users only" hash
+        check_file_value "is" "/etc/X11/gdm.conf" "Welcome" "eq" "Authorised users only" "hash"
       fi
       if [ "$os_version" = "11" ]; then
         check_file="/etc/gdm/Init/Default"
         if [ "$audit_mode" != 2 ]; then
           if [ -f "$check_file" ]; then
-            gdm_check=$( grep 'Security Message' $check_file | cut -f3 -d"=" )
+            gdm_check=$( grep 'Security Message' "$check_file" | cut -f3 -d= )
             if [ "$gdm_check" != "/etc/issue" ]; then
               if [ "$audit_mode" = 1 ]; then
-                increment_insecure "Warning banner not found in $check_file"
-                verbose_message "" fix
-                verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> $check_file" fix
-                verbose_message "" fix
+                increment_insecure "Warning banner not found in \"$check_file\""
+                verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> $check_file" "fix"
               fi
               if [ "$audit_mode" = 0 ]; then
                 backup_file $check_file
-                verbose_message "Setting:   Warning banner in $check_file"
-                echo "   --title=\"Security Message\" --filename=/etc/issue" >> $check_file
+                verbose_message "Setting:   Warning banner in \"$check_file\""
+                echo "   --title=\"Security Message\" --filename=/etc/issue" >> "$check_file"
                 if [ "$os_version" = "10" ]; then
-                  pkgchk -f -n -p $check_file 2> /dev/null
+                  eval "pkgchk -f -n -p $check_file 2> /dev/null"
                 else
-                  pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
+                  pkg fix $( pkg search "$check_file" | grep pkg | awk '{print $4}' )
                 fi
               fi
             fi
             if [ "$file_entry" = "" ]; then
               if [ "$audit_mode" = 1 ]; then
-                increment_secure "Warning banner in $check_file"
+                increment_secure "Warning banner in \"$check_file\""
               fi
             fi
           else
-            restore_file $check_file $restore_dir
+            restore_file "$check_file" "$restore_dir"
           fi
         fi
       fi
@@ -56,19 +59,19 @@ audit_gnome_banner () {
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/dconf/profile/gdm"
       if [ -f "$check_file" ]; then
-        check_file_value is $check_file user-db colon user hash
-        check_file_value is $check_file system-db colon gdm hash
-        check_file_value is $check_file file-db colon /usr/share/gdm/greeter-dconf-defaults hash
+        check_file_value "is" "$check_file" "user-db"   "colon" "user" "hash"
+        check_file_value "is" "$check_file" "system-db" "colon" "gdm" "hash"
+        check_file_value "is" "$check_file" "file-db"   "colon" "/usr/share/gdm/greeter-dconf-defaults" "hash"
       fi
       check_file="/etc/dconf/db/gdm.d/01-banner-message"
       if [ -f "$check_file" ]; then
-        check_file_value is $check_file banner-message-enable eq true hash
-        check_file_value is $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
+        check_file_value "is" "$check_file" "banner-message-enable" "eq" "true" "hash"
+        check_file_value "is" "$check_file" "banner-message-text"   "eq" "Authorized uses only. All activity may be monitored and reported." "hash"
       fi
       check_file="/etc/gdm3/greeter.dconf-defaults"
       if [ -f "$check_file" ]; then
-        check_file_value is $check_file banner-message-enable eq true hash
-        check_file_value is $check_file banner-message-text eq "Authorized uses only. All activity may be monitored and reported." hash
+        check_file_value "is" "$check_file" "banner-message-enable" "eq" "true" "hash"
+        check_file_value "is" "$check_file" "banner-message-text"   "eq" "Authorized uses only. All activity may be monitored and reported." "hash"
       fi
     fi
     gconf_bin=$( command -v gconftool-2 2> /dev/null )
@@ -79,15 +82,13 @@ audit_gnome_banner () {
       if [ "$audit_mode" != 2 ]; then
         if [ "$actual_value" != "$warning_message" ]; then
           if [ "$audit_mode" = 1 ]; then
-            increment_insecure "Warning banner not found in $check_file"
-            verbose_message "" fix
-            verbose_message "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"$warning_message\"" fix
-            verbose_message "" fix
+            increment_insecure "Warning banner not found in \"$check_file\""
+            verbose_message    "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"$warning_message\"" "fix"
           fi
           if [ "$audit_mode" = 0 ]; then
             verbose_message "Setting:   Warning banner to \"$warning_message\""
             log_file="$work_dir/$log_file"
-            echo "$actual_value" > $log_file
+            echo "$actual_value" > "$log_file"
             gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"$warning_message\"
           fi
         else
@@ -98,10 +99,10 @@ audit_gnome_banner () {
       else
         log_file="$restore_dir/$log_file"
         if [ -f "$log_file" ]; then
-          restore_value=$( cat $log_file )
+          restore_value=$( cat "$log_file" )
           if [ "$restore_value" != "$actual_value" ]; then
             verbose_message "Restoring: Warning banner to $previous_value"
-            gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text "$restore_value"
+            eval "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text $restore_value"
           fi
         fi
       fi
@@ -110,16 +111,14 @@ audit_gnome_banner () {
       if [ "$audit_mode" != 2 ]; then
         if [ "$actual_value" != "true" ]; then
           if [ "$audit_mode" = 1 ]; then
-            increment_insecure "Warning banner not found in $check_file"
-            verbose_message "" fix
-            verbose_message "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true" fix
-            verbose_message "" fix
+            increment_insecure "Warning banner not found in \"$check_file\""
+            verbose_message    "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true" "fix"
           fi
           if [ "$audit_mode" = 0 ]; then
-            verbose_message "Setting:   Warning banner to \"$warning_message\""
+            verbose_message "Warning banner to \"$warning_message\"" "set"
             log_file="$work_dir/$log_file"
-            echo "$actual_value" > $log_file
-            gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true
+            echo "$actual_value" > "$log_file"
+            eval "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true"
           fi
         else
           if [ "$audit_mode" = 1 ]; then
@@ -129,10 +128,10 @@ audit_gnome_banner () {
       else
         log_file="$restore_dir/$log_file"
         if [ -f "$log_file" ]; then
-          restore_value=$( cat $log_file )
+          restore_value=$( cat "$log_file" )
           if [ "$restore_value" != "$actual_value" ]; then
             verbose_message "Restoring: Warning banner to $previous_value"
-            gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable "$restore_value"
+            eval "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable $restore_value"
           fi
         fi
       fi

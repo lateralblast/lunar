@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_duplicate_users
 #
 # Check duplicate users
@@ -16,8 +22,8 @@
 
 audit_duplicate_users () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Duplicate Users"
-    audit_duplicate_ids 1 users name /etc/passwd
-    audit_duplicate_ids 3 users id /etc/passwd
+    verbose_message     "Duplicate Users"
+    audit_duplicate_ids "1" "users" "name" "/etc/passwd"
+    audit_duplicate_ids "3" "users" "id"   "/etc/passwd"
   fi
 }

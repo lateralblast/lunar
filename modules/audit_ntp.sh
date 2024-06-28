@@ -1,3 +1,11 @@
+#!/bin/sh
+
+# -> Needs fixing
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ntp
 #
 # Check NTP settings
@@ -17,33 +25,27 @@
 
 audit_ntp () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "VMkernel" ]; then
-    verbose_message "Network Time Protocol"
+    verbose_message "Network Time Protocol" "check"
     if [ "$os_name" = "SunOS" ]; then
-      check_file="/etc/inet/ntp.conf"
-      check_file_value is $check_file server space pool.ntp.org hash
+      check_file_value "is" "/etc/inet/ntp.conf" "server" "space" "pool.ntp.org" "hash"
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/network/ntp4:default"
-        check_sunos_service $service_name enabled
+        check_sunos_service "svc:/network/ntp4:default" "enabled"
       fi
     fi
     if [ "$os_name" = "Darwin" ]; then
-      check_file="/private/etc/hostconfig"
-      check_file_value is $check_file TIMESYNC eq -YES- hash
-      check_launchctl_service org.ntp.ntpd on
-      check_file="/private/etc/ntp.conf"
+      check_file_value   "is" "/private/etc/hostconfig" "TIMESYNC" "eq" "-YES-" "hash"
+      check_launchctl_service "org.ntp.ntpd" "on"
+      #check_file="/private/etc/ntp.conf"
       if [ "$long_os_version" -ge 1009 ]; then
-        check_file="/etc/ntp-restrict.conf"
-        check_file_value is $check_file restrict space "lo interface ignore wildcard interface listen lo" hash
-        check_osx_systemsetup getusingnetworktime on
-        timerserver="$country_suffix.pool.ntp.org"
-        check_osx_systemsetup getnetworktimeserver $timerserver
+        check_file_value "is" "/etc/ntp-restrict.conf" "space" "lo interface ignore wildcard interface listen lo" "hash"
+        check_osx_systemsetup "getusingnetworktime" "on"
+        timeserver="$country_suffix.pool.ntp.org"
+        check_osx_systemsetup "getnetworktimeserver" "$timeserver"
       fi
     fi
     if [ "$os_name" = "VMkernel" ]; then
-      service_name="ntpd"
-      check_linux_service $service_name on
-      check_file="/etc/ntp.conf"
-      check_append_file $check_file "restrict 127.0.0.1"
+      check_linux_service "ntpd" "on"
+      check_append_file   "/etc/ntp.conf" "restrict 127.0.0.1"
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/ntp.conf"
@@ -59,29 +61,25 @@ audit_ntp () {
         do_chrony=1
       fi
       if [ "$do_chrony" -eq 1 ]; then
-        check_linux_package install chrony
-        check_file="/etc/sysconfig/chronyd"
-        check_file_value is $check_file OPTIONS eq '"-u chrony"' hash
-        check_file="/etc/chrony/chrony.conf"
+        check_linux_package "install" "chrony"
+        check_file_value    "is"      "/etc/sysconfig/chronyd" "OPTIONS" "eq" "\"-u chrony\"" "hash"
         for server_number in $( seq 0 3 ); do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
-          check_file_value is $check_file server space $ntp_server hash
+          check_file_value "is" "/etc/chrony/chrony.conf" "space" "$ntp_server" "hash"
         done
       else
-        check_linux_package install ntp
+        check_linux_package "install" "ntp"
         if [ -f "/usr/bin/systemctl" ]; then
-          check_file="/usr/lib/systemd/system/ntpd.service"
-          check_file_value is $check_file ExecStart eq "/usr/sbin/ntpd -u ntp:ntp $OPTIONS" hash
+          check_append_file "/usr/lib/systemd/system/ntpd.service"      "restrict default kod nomodify nopeer notrap noquery"    "hash"
+          check_append_file "/usr/lib/systemd/system/ntpd.service"      "restrict -6 default kod nomodify nopeer notrap noquery" "hash"
+          check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "OPTIONS" "eq" "\"-u ntp:ntp -p /var/run/ntpd.pid\""     "hash"
+          check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "ExecStart" "eq" "/usr/sbin/ntpd -u ntp:ntp \$OPTIONS"   "hash"
         else
-          check_linux_service $service_name on
+          check_linux_service "ntp" "on"
         fi
-        check_append_file $check_file "restrict default kod nomodify nopeer notrap noquery" hash
-        check_append_file $check_file "restrict -6 default kod nomodify nopeer notrap noquery" hash
-        check_file_value is $check_file OPTIONS eq '"-u ntp:ntp -p /var/run/ntpd.pid"' hash
-        check_file="/etc/ntp.conf"
         for server_number in $( seq 0 3 ); do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
-          check_file_value is $check_file server space $ntp_server hash
+          check_file_value "is" "/etc/ntp.conf" "server" "space" "$ntp_server" "hash"
         done
       fi
     fi

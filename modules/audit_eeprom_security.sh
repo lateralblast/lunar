@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_eeprom_security
 #
 # Check EEPROM security
@@ -8,9 +14,9 @@
 
 audit_eeprom_security () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "EEPROM Password"
+    verbose_message "EEPROM Password" "check"
     if [ "$audit_mode" = 2 ]; then
-      echo "Restoring: EEPROM password to none"
+      echo "EEPROM password to none" "restore"
       eeprom security-mode=none
     fi
     if [ "$audit_mode" != 2 ]; then
@@ -18,10 +24,8 @@ audit_eeprom_security () {
       if [ "$gdm_check" = "none" ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "EEPROM password is not enabled"
-          verbose_message "" fix
-          verbose_message "eeprom security-mode=command" fix
-          verbose_message "eeprom security-#badlogins=0" fix
-          verbose_message "" fix
+          verbose_message    "eeprom security-mode=command" "fix"
+          verbose_message    "eeprom security-#badlogins=0" "fix"
         fi
         if [ "$audit_mode" = 0 ]; then
           eeprom security-mode=command

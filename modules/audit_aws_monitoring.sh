@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_aws_monitoring
 #
 # Check AWS monitoring
@@ -33,36 +39,34 @@
 #.
 
 audit_aws_monitoring () {
-  verbose_message "CloudWatch"
-  trails=$( aws cloudtrail describe-trails --region $aws_region --query "trailList[].CloudWatchLogsLogGroupArn" --output text | awk -F':' '{print $7}' )
+  verbose_message "CloudWatch" "check"
+  trails=$( aws cloudtrail describe-trails --region "$aws_region" --query "trailList[].CloudWatchLogsLogGroupArn" --output text | awk -F':' '{print $7}' )
   if [ "$trails" ]; then
     increment_secure "CloudWatch log groups exits for CloudTrail"
     for trail in $trails; do
-      metrics=$( aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text )
+      metrics=$( aws logs describe-metric-filters --region "$aws_region" --log-group-name "$trail" --query "metricFilters[].filterPattern" --output text )
       if [ ! "$metrics" ]; then
         increment_insecure "CloudWatch log group $trail has no metrics"
-        verbose_message "" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name unauthorized-api-calls-metric --metric-transformations metricName=unauthorized-api-calls-metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name no_mfa_console_signin_metric --metric-transformations metricName=no_mfa_console_signin_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = \"ConsoleLogin\") && ($.additionalEventData.MFAUsed != \"Yes\") }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name root_usage_metric --metric-transformations metricName=root_usage_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name iam_changes_metric --metric-transformations metricName=iam_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name cloudtrail_config_changes_metric --metric-transformations metricName=cloudtrail_cfg_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) ||($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name console_signin_failure_metric --metric-transformations metricName=console_signin_failure_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failedauthentication\") }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name disable_or_delete_cmk_metric --metric-transformations metricName=disable_or_delete_cmk_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion))}'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name s3_bucket_policy_changes_metric --metric-transformations metricName=s3_bucket_policy_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name aws_config_changes_metric --metric-transformations metricName=aws_config_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name nacl_changes_metric --metric-transformations metricName=nacl_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name security_group_changes_metric --metric-transformations metricName=security_group_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.event Name = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup)}'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name network_gateway_changes_metric --metric-transformations metricName=network_gw_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name route_table_changes_metric --metric-transformations metricName=route_table_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name vpc_changes_metric --metric-transformations metricName=vpc_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }'" fix
-        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name ec2_changes_metric --metric-transformations metricName=ec2_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = RunInstances) || ($.eventName = RebootInstances) || ($.eventName = StartInstances) || ($.eventName = StopInstances) || ($.eventName = TerminateInstances) }'" fix
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name unauthorized-api-calls-metric --metric-transformations metricName=unauthorized-api-calls-metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }'"     "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name no_mfa_console_signin_metric --metric-transformations metricName=no_mfa_console_signin_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = \"ConsoleLogin\") && ($.additionalEventData.MFAUsed != \"Yes\") }'"        "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name root_usage_metric --metric-transformations metricName=root_usage_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name iam_changes_metric --metric-transformations metricName=iam_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name cloudtrail_config_changes_metric --metric-transformations metricName=cloudtrail_cfg_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) ||($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name console_signin_failure_metric --metric-transformations metricName=console_signin_failure_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failedauthentication\") }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name disable_or_delete_cmk_metric --metric-transformations metricName=disable_or_delete_cmk_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion))}'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name s3_bucket_policy_changes_metric --metric-transformations metricName=s3_bucket_policy_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name aws_config_changes_metric --metric-transformations metricName=aws_config_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name nacl_changes_metric --metric-transformations metricName=nacl_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name security_group_changes_metric --metric-transformations metricName=security_group_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.event Name = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup)}'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name network_gateway_changes_metric --metric-transformations metricName=network_gw_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }'"        "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name route_table_changes_metric --metric-transformations metricName=route_table_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name vpc_changes_metric --metric-transformations metricName=vpc_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }'" "fix"
+        verbose_message "aws logs put-metric-filter --region $aws_region --log-group-name $trail --filter-name ec2_changes_metric --metric-transformations metricName=ec2_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = RunInstances) || ($.eventName = RebootInstances) || ($.eventName = StartInstances) || ($.eventName = StopInstances) || ($.eventName = TerminateInstances) }'" "fix"
         for sns_topic in unauthorized-api-calls no_mfa_console_signin root_usage iam_changes cloudtrail_config_changes console_signin_failure disable_or_delete_cmk \
                          s3_bucket_policy_changes aws_config_changes nacl_changes security_group network_gateway route_table_changes vpc_changes ec2_changes; do
-           verbose_message "aws sns create-topic --region $aws_region --name $sns_topic" fix
-           verbose_message "aws sns subscribe --region $aws_region --topic-arn $sns_topic --protocol $sns_protocol notification-endpoint $sns_endpoints" fix 
+           verbose_message "aws sns create-topic --region $aws_region --name $sns_topic" "fix"
+           verbose_message "aws sns subscribe --region $aws_region --topic-arn $sns_topic --protocol $sns_protocol notification-endpoint $sns_endpoints" "fix" 
         done
-        verbose_message "" fix
       else
         for metric in UnauthorizedOperation AccessDenied ConsoleLogin additionalEventData.MFAUsed userIdentity.invokedBy AwsServiceEvent \
                       DeleteGroupPolicy DeleteRolePolicy DeleteUserPolicy PutGroupPolicy PutRolePolicy PutUserPolicy CreatePolicy \
@@ -78,11 +82,11 @@ audit_aws_monitoring () {
                       CreateVpc DeleteVpc ModifyVpcAttribute AcceptVpcPeeringConnection CreateVpcPeeringConnection DeleteVpcPeeringConnection \
                       RejectVpcPeeringConnection AttachClassicLinkVpc DetachClassicLinkVpc DisableVpcClassicLink EnableVpcClassicLink \
                       TerminateInstances StopInstances StartInstances RebootInstances RunInstances; do
-          check=$( aws logs describe-metric-filters --region $aws_region --log-group-name $trail --query "metricFilters[].filterPattern" --output text |grep "$metric" )
-          if [ "$check" ]; then
-            increment_secure "CloudWatch log group $trail metrics include $metric"
+          check=$( aws logs describe-metric-filters --region "$aws_region" --log-group-name "$trail" --query "metricFilters[].filterPattern" --output text |grep "$metric" )
+          if [ -n "$check" ]; then
+            increment_secure   "CloudWatch log group \"$trail\" metrics include \"$metric\""
           else
-            increment_insecure "CloudWatch log groups $trail metrics do not include $metric"
+            increment_insecure "CloudWatch log groups \"$trail\" metrics do not include \"$metric\""
           fi
         done
       fi
@@ -90,15 +94,15 @@ audit_aws_monitoring () {
   else
     increment_insecure "No CloudWatch log groups exist for CloudTrail"
   fi
-  alarms=$( aws cloudwatch describe-alarms --region $aws_region --query "MetricAlarms[].AlarmActions" --output text )
+  alarms=$( aws cloudwatch describe-alarms --region "$aws_region" --query "MetricAlarms[].AlarmActions" --output text )
   if [ "$alarms" ]; then
     increment_secure "CloudWatch alarms exits for CloudTrail"
     for alarm in $alarms; do
-      subscribers=$( aws sns list-subscriptions-by-topic --region $aws_region --topic-arn $alarm --output text )
+      subscribers=$( aws sns list-subscriptions-by-topic --region "$aws_region" --topic-arn "$alarm" --output text )
       if [ "$subscribers" ]; then
-        increment_secure "CloudWatch alarm $alarm has subscribers"
+        increment_secure   "CloudWatch alarm \"$alarm\" has subscribers"
       else
-        increment_insecure "CloudWatch alarm $alarm does not have subscribers"
+        increment_insecure "CloudWatch alarm \"$alarm\" does not have subscribers"
       fi 
     done
   else

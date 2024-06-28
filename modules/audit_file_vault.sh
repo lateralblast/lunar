@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_file_vault
 #
 # FileVault secures a system's data by automatically encrypting its boot volume and
@@ -9,7 +15,7 @@
 
 audit_file_vault () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "File Vault"
+    verbose_message "File Vault" "check"
     if [ "$audit_mode" != 2 ]; then
       actual_value=$( diskutil cs list )
       if [ "$actual_value" = "No CoreStorage logical volume groups found" ]; then
@@ -17,12 +23,10 @@ audit_file_vault () {
           increment_insecure "File Vault is not enabled"
         fi
         if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
-          verbose_message "" fix
-          verbose_message "Open System Preferences" fix
-          verbose_message "Select Security & Privacy" fix
-          verbose_message "Select FileVault" fix
-          verbose_message "Select Turn on FileVault" fix
-          verbose_message "" fix
+          verbose_message "Open System Preferences"   "fix"
+          verbose_message "Select Security & Privacy" "fix"
+          verbose_message "Select FileVault"          "fix"
+          verbose_message "Select Turn on FileVault"  "fix"
         fi
       else
         if [ "$audit_mode" = 1 ]; then
@@ -30,12 +34,10 @@ audit_file_vault () {
         fi
       fi
     else
-      verbose_message "" fix
-      verbose_message "Open System Preferences" fix
-      verbose_message "Select Security & Privacy" fix
-      verbose_message "Select FileVault" fix
-      verbose_message "Select Turn on FileVault" fix
-      verbose_message "" fix
+      verbose_message "Open System Preferences"   "fix"
+      verbose_message "Select Security & Privacy" "fix"
+      verbose_message "Select FileVault"          "fix"
+      verbose_message "Select Turn on FileVault"  "fix"
     fi
   fi
 }

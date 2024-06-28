@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_failed_logins
 #
 # Check failed logins
@@ -8,13 +14,10 @@
 audit_failed_logins () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ]; then
-      verbose_message "Failed Login Attempts"
-      check_file="/etc/default/login"
-      check_file_value is $check_file SYSLOG_FAILED_LOGINS eq 0 hash
-      check_file="/etc/default/login"
-      check_file_value is $check_file SYSLOG eq YES hash
-      check_file="/etc/default/su"
-      check_file_value is $check_file SYSLOG eq YES hash
+      verbose_message  "Failed Login Attempts"   "check"
+      check_file_value "is" "/etc/default/login" "SYSLOG_FAILED_LOGINS" "eq" "0" "hash"
+      check_file_value "is" "/etc/default/login" "SYSLOG" "eq" "YES" "hash"
+      check_file_value "is" "/etc/default/su"    "SYSLOG" "eq" "YES" "hash"
     fi
   fi
 }

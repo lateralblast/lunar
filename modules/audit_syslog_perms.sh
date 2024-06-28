@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_syslog_perms
 #
 # Check syslog permissions
@@ -8,15 +14,15 @@
 
 audit_syslog_perms () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Syslog Permissions"
+    verbose_message "Syslog Permissions" "check"
     if [ "$os_name" = "SunOS" ]; then
-      check_file_perms /var/log/syslog 0600 root sys
+      check_file_perms "/var/log/syslog"     "0600" "root" "sys"
     fi
     if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-      check_file_perms /var/log/secure 0600 root root
-      check_file_perms /var/log/messages 0600 root root
-      check_file_perms /var/log/daemon.log 0600 root root
-      check_file_perms /var/log/unused.log 0600 root root
+      check_file_perms "/var/log/secure"     "0600" "root" "root"
+      check_file_perms "/var/log/messages"   "0600" "root" "root"
+      check_file_perms "/var/log/daemon.log" "0600" "root" "root"
+      check_file_perms "/var/log/unused.log" "0600" "root" "root"
     fi
   fi
 }

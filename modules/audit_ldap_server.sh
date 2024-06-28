@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ldap_server
 #
 # Check LDAP server
@@ -13,9 +19,8 @@
 
 audit_ldap_server () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_mesage "LDAP Server"
-    service_name="slapd"
-    check_linux_service $service_name off
-    check_linux_package uninstall openldap-clients
+    verbose_mesage      "LDAP Server" "check"
+    check_linux_service "slapd"       "off"
+    check_linux_package "uninstall"   "openldap-clients"
   fi
 }

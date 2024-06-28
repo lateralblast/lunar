@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # print_audit_info
 #
 # This function searches the script for the information associated
@@ -8,7 +14,7 @@
 
 print_audit_info () {
   if [ "$verbose" = 1 ]; then
-    module=$1
+    module="$1"
     comment_text=0
     dir_name=$( pwd )
     check=$( echo "$module" |grep "audit" )
@@ -18,7 +24,7 @@ print_audit_info () {
     file_name="$dir_name/modules/$module.sh"
     if [ -f "$file_name" ] ; then
       verbose_message "# Module: $module"
-      while read line ; do
+      while read -r line ; do
         if [ "$line" = "# $module" ]; then
           comment_text=1
         else
@@ -28,15 +34,13 @@ print_audit_info () {
               comment_text=0
             fi
             if [ "$comment_text" = 1 ]; then
-              if [ "$line" = "#" ]; then
-                verbose_message ""
-              else
+              if [ "$line" != "#" ]; then
                 verbose_message "$line"
               fi
             fi
           fi
         fi
-      done < $file_name
+      done < "$file_name"
    fi 
   fi
 }

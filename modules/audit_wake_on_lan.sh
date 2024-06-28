@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_wake_on_lan
 #
 # Refer to Section(s) 2.5.1 Page(s) 26-7  CIS Apple OS X 10.8  Benchmark v1.0.0
@@ -7,7 +13,7 @@
 
 audit_wake_on_lan() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Wake on Lan"
-    check_pmset womp off
+    verbose_message "Wake on Lan" "check"
+    check_pmset     "womp" "off"
   fi
 }

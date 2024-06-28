@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_login_warning
 #
 # An access warning may reduce a casual attacker's tendency to target the system.
@@ -12,7 +18,7 @@
 
 audit_login_warning () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Login message warning"
-    check_osx_defaults com.apple.loginwindow LoginwindowText "Authorised users only"
+    verbose_message    "Login message warning" "check"
+    check_osx_defaults "com.apple.loginwindow" "LoginwindowText" "Authorised users only"
   fi
 }

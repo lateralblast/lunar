@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_ldap
 #
 # Turn off ldap
@@ -9,15 +15,14 @@
 
 audit_ldap () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ]; then
-    verbose_message "LDAP Client"
+    verbose_message "LDAP Client" "check"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-        service_name="svc:/network/ldap/client:default"
-        check_sunos_service $service_name disabled
+        check_sunos_service "svc:/network/ldap/client:default" "disabled"
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_linux_package uninstall openldap-clients
+      check_linux_package "uninstall" "openldap-clients"
     fi
   fi
 }

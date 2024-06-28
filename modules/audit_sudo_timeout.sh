@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_sudo_timeout
 #
 # Check sudo timeout
@@ -9,6 +15,7 @@
 
 audit_sudo_timeout () {
   if [ "$os_name" = "Darwin" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "SunOS" ]; then
+    verbose_message "Sudo timeout" "check"
     if [ "$os_name" = "Darwin" ] && [ "$os_version" -ge 14 ]; then
       check_file="/etc/sudoers.d/sudoers_timeout"
     else
@@ -18,7 +25,7 @@ audit_sudo_timeout () {
         check_file="/etc/sudoers"
       fi
     fi
-    check_file_value is $check_file "Defaults timestamp_timeout" eq 0 hash after "# Defaults specification"
-    check_file_perms $check_file 440 root wheel 
+    check_file_value "is" "$check_file" "Defaults timestamp_timeout" "eq" "0" "hash" "after" "# Defaults specification"
+    check_file_perms "$check_file" "440" "root" "wheel" 
   fi
 }

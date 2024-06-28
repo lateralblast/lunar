@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_service_tags
 #
 # Turn off Service Tags if not being used. It can provide information that can
@@ -7,13 +13,10 @@
 audit_service_tags () {
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
-      verbose_message "Service Tags Daemons"
-      service_name="svc:/network/stdiscover:default"
-      check_sunos_service $service_name disabled
-      service_name="svc:/network/stlisten:default"
-      check_sunos_service $service_name disabled
-      service_name="svc:/application/stosreg:default"
-      check_sunos_service $service_name disabled
+      verbose_message     "Service Tags Daemons" "check"
+      check_sunos_service "svc:/network/stdiscover:default"  "disabled"
+      check_sunos_service "svc:/network/stlisten:default"    "disabled"
+      check_sunos_service "svc:/application/stosreg:default" "disabled"
     fi
   fi
 }

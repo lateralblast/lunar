@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_execshield
 #
 # Execshield is made up of a number of kernel features to provide protection
@@ -15,19 +21,16 @@
 
 audit_execshield () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "XD/NS Support"
+    verbose_message "XD/NS Support" "check"
     if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      if [ "$os_version" > 4 ]; then
-        check_linux_package install kernel-PAE
-        check_file="/etc/sysctl.conf"
-        # Configure kernel shield
-        check_file_value is $check_file kernel.exec-shield eq 1 hash
-        # Restrict core dumps
-        check_file_value is $check_file fs.suid.dumpable eq 0 hash
+      if [ "$os_version" -gt 4 ]; then
+        check_linux_package "install" "kernel-PAE"
+        check_file_value    "is" "/etc/sysctl.conf" "kernel.exec-shield" "eq" "1" "hash"
+        check_file_value    "is" "/etc/sysctl.conf" "fs.suid.dumpable"   "eq" "0" "hash"
       fi
     else
       if [ "$os_vendor" = "SuSE" ]; then
-        check_linux_package install kernel-pae
+        check_linux_package "install" "kernel-pae"
       fi
     fi
   fi

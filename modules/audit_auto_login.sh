@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_auto_login
 #
 # Disabling automatic login decreases the likelihood of an unauthorized person gaining
@@ -10,14 +16,14 @@
 
 audit_auto_login() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Autologin"
-    check_osx_defaults /Library/Preferences/.GlobalPreferences com.apple.userspref.DisableAutoLogin yes bool
+    verbose_message "Autologin" "check"
+    check_osx_defaults "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes" "bool"
     if [ ! "$audit_mode" != 2 ]; then
       check=$( defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser )
       if [ "$check" ]; then
         increment_insecure "Autologin enabled"
       else
-        increment_secure "Autologin disabled"
+        increment_secure   "Autologin disabled"
       fi
     fi
   fi

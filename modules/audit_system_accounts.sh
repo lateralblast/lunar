@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_system_accounts
 #
 # Check system accounts
@@ -16,38 +22,37 @@
 
 audit_system_accounts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
-    verbose_message "System Accounts that do not have a shell"
-    check_file="/etc/passwd"
-    if test -r "/etc/shqdow"; then
+    verbose_message "System Accounts that do not have a shell" "check"
+    password_file="/etc/passwd"
+    shadow_file="/etc/shadow"
+    if test -r "$shadow_file"; then
       if [ "$audit_mode" != 2 ]; then
-        for user_name in $( cat /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}' ); do
-          shadow_field=$( grep "$user_name:" /etc/shadow | egrep -v "\*|\!\!|NP|UP|LK" | cut -f1 -d: );
+        for user_name in $( awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}' < "$password_file" ); do
+          shadow_field=$( grep "$user_name:" "$shadow_file" | egrep -v "\*|\!\!|NP|UP|LK" | cut -f1 -d: );
           if [ "$shadow_field" = "$user_name" ]; then
-            increment_insecure "System account $user_name has an invalid shell but the account is disabled"
+            increment_insecure "System account \"$user_name\" has an invalid shell but the account is disabled"
           else
             if [ "$audit_mode" = 1 ]; then
-              increment_insecure "System account $user_name has an invalid shell"
-              verbose_message "" fix
+              increment_insecure "System account \"$user_name\" has an invalid shell"
               if [ "$os_name" = "FreeBSD" ]; then
-                verbose_message "pw moduser $user_name -s /sbin/nologin" fix
+                verbose_message "pw moduser $user_name -s /sbin/nologin" "fix"
               else
-                verbose_message "usermod -s /sbin/nologin $user_name" fix
+                verbose_message "usermod -s /sbin/nologin $user_name" "fix"
               fi
-              verbose_message "" fix
             fi
             if [ "$audit_mode" = 0 ]; then
-              verbose_message "Setting:   System account $user_name to have shell /sbin/nologin"
-              backup_file $check_file
+              verbose_message "System account \"$user_name\" to have shell /sbin/nologin" "set"
+              backup_file     "$password_file"
               if [ "$os_name" = "FreeBSD" ]; then
-                pw moduser $user_name -s /sbin/nologin
+                pw moduser "$user_name" -s /sbin/nologin
               else
-                usermod -s /sbin/nologin $user_name
+                usermod -s /sbin/nologin "$user_name"
               fi
             fi
           fi
         done
       else
-        restore_file $check_file $restore_dir
+        restore_file "$password_file" "$restore_dir"
       fi
     fi
   fi

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_iptables
 #
 # Turn on iptables
@@ -12,11 +18,10 @@
 
 audit_iptables () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "IP Tables"
-    check_linux_package install iptables
-    for service_name in iptables ip6tables; do
-      check_linux_service $service_name on
-    done
+    verbose_message     "IP Tables" "check"
+    check_linux_package "install" "iptables"
+    check_linux_service "iptables" "on"
+    check_linux_service "ip6tables" "on"
     if [ "$audit_mode" != 2 ]; then
       check=$( command -v iptables 2> /dev/null )
       if [ "$check" ]; then
@@ -26,7 +31,7 @@ audit_iptables () {
         if [ ! "$check" ]; then
           increment_insecure "All other devices allow trafic to the loopback network"
         else
-          increment_secure "All other devices deny trafic to the loopback network"
+          increment_secure   "All other devices deny trafic to the loopback network"
         fi
       fi
     fi

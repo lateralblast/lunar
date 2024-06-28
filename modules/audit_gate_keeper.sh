@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_gate_keeper
 #
 # Gatekeeper is Apple’s application that utilizes allowlisting to restrict downloaded
@@ -12,7 +18,7 @@
 
 audit_gate_keeper () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Gatekeeper"
+    verbose_message "Gatekeeper" "check"
     log_file="gatekeeper.log"
     if [ "$audit_mode" != 2 ]; then
       actual_value=$( sudo spctl --status | awk '{print $2}' | sed 's/d$//g' )
@@ -21,7 +27,7 @@ audit_gate_keeper () {
           increment_insecure "Gatekeeper is not enabled"
         fi
         if [ "$audit_mode" = 0 ]; then
-          verbose_message "Seting:    Gatekeeper to enabled"
+          verbose_message "Gatekeeper to enabled" "set"
           echo "$actual_value" > $work_dir/$log_file
           sudo spctl --master-enable
         fi
@@ -35,8 +41,8 @@ audit_gate_keeper () {
       if [ -f "$restore_file" ]; then
         restore_value=$( cat $restore_file )
         if [ "$restore_value" != "$actual_value" ]; then
-          verbose_message "Restoring: Gatekeeper to $restore_value"
-          sudo spctl --master-$restore_value
+          verbose_message "Gatekeeper to \"$restore_value\"" "restore"
+          eval "sudo spctl --master-$restore_value"
         fi
       fi
     fi

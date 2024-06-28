@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_gnome_screen_lock
 #
 # Check Gnome Screen Lock
@@ -10,15 +16,14 @@
 
 audit_gnome_screen_lock () {
   if [ "$os_name" = "SunOS" ]; then
-    verbose_message "Screen Lock for GNOME Users"
-    check_file="/usr/openwin/lib/app-defaults/XScreenSaver"
-    check_file_value is $check_file "*timeout:" space "0:10:00" bang
-    check_file_value is $check_file "*lockTimeout:" space "0:00:00" bang
+    verbose_message "Screen Lock for GNOME Users" "check"
+    check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*timeout:"     "space" "0:10:00" "bang"
+    check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*lockTimeout:" "space" "0:00:00" "bang"
   fi
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Screen Lock for GNOME Users"
-    check_gsettings_value org.gnome.desktop.session idle-delay "uint32 900"
-    check_gsettings_value org.gnome.desktop.screensaver lock-delay "uint32 5" 
+    verbose_message "Screen Lock for GNOME Users" "check"
+    check_gsettings_value "org.gnome.desktop.session"     "idle-delay" "uint32 900"
+    check_gsettings_value "org.gnome.desktop.screensaver" "lock-delay" "uint32 5" 
     if [ "$os_vendor" = "Ubuntu" ]; then
       if [ $os_version -ge 22 ]; then 
         check_file="/etc/dconf/db/ibus.d/00-screensaver"
@@ -34,27 +39,25 @@ audit_gnome_screen_lock () {
             echo "             lock-delay=uint32 5"
             echo "    dest: $check_file"
           fi
-          check_file_value is $check_file "idle-delay" eq "uint32 900" hash after "session"
-          check_file_value is $check_file "lock-delay" eq "uint32 5" hash after "screensaver"
+          check_file_value "is" "$check_file" "idle-delay" "eq" "uint32 900" "hash" "after" "session"
+          check_file_value "is" "$check_file" "lock-delay" "eq" "uint32 5"   "hash" "after" "screensaver"
         else
           if [ "$audit_mode" = 1 ]; then
-            verbose_message "" fix
-            verbose_message "echo \"[org/gnome/desktop/session]\" > $check_file" fix
-            verbose_message "echo \"idle-delay=uint32 900\" >> $check_file" fix
-            verbose_message "echo \"[org/gnome/desktop/screensaver]\" >> $check_file" fix
-            verbose_message "echo \"lock-delay=uint32 5\" >> $check_file" fix
-            verbose_message "dconf update" fix
-            verbose_message "" fix
+            verbose_message "echo \"[org/gnome/desktop/session]\" > $check_file"      "fix"
+            verbose_message "echo \"idle-delay=uint32 900\" >> $check_file"           "fix"
+            verbose_message "echo \"[org/gnome/desktop/screensaver]\" >> $check_file" "fix"
+            verbose_message "echo \"lock-delay=uint32 5\" >> $check_file"             "fix"
+            verbose_message "dconf update" "fix"
           fi 
           if [ "$audit_mode" = 0 ]; then
-            echo "[org/gnome/desktop/session]" > $check_file
-            echo "idle-delay=uint32 900" >> $check_file
-            echo "[org/gnome/desktop/screensaver]" >> $check_file
-            echo "lock-delay=uint32 5" >> $check_file
+            echo "[org/gnome/desktop/session]" > "$check_file"
+            echo "idle-delay=uint32 900" >> "$check_file"
+            echo "[org/gnome/desktop/screensaver]" >> "$check_file"
+            echo "lock-delay=uint32 5" >> "$check_file"
             dconf update
           fi          
           if [ "$audit_mode" = 2 ]; then
-            rm $check_file
+            rm "$check_file"
           fi
         fi
       fi

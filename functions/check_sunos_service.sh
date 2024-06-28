@@ -1,3 +1,8 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
 
 # check_sunos_service
 #
@@ -9,8 +14,8 @@
 
 check_sunos_service () {
   if [ "$os_name" = "SunOS" ]; then
-    temp_name=$1
-    temp_status=$2
+    temp_name="$1"
+    temp_status="$2"
     if [ "$temp_name" = "disable" ] || [ "$temp_name" = "enable" ]; then
       service_name=$temp_status
       if [ "$temp_name" = "disable" ]; then
@@ -19,14 +24,15 @@ check_sunos_service () {
         correct_status="enabled"
       fi
     else
-      service_name=$temp_name
-      correct_status=$temp_status
+      service_name="$temp_name"
+      correct_status="$temp_status"
     fi
-    if [ $( expr "$service_name" : "svc:" ) = 4 ]; then
-      check_svcadm_service $service_name $correct_status
+    s_test=$( echo "$service_name" | grep "svc:" )
+    if [ -n "$s_test" ]; then
+      check_svcadm_service "$service_name" "$correct_status"
     else
-      check_initd_service $service_name $correct_status
-      check_inetd_service $service_name $correct_status
+      check_initd_service  "$service_name" "$correct_status"
+      check_inetd_service  "$service_name" "$correct_status"
     fi
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_cd_sharing
 #
 # Check CD sharing
@@ -9,9 +15,9 @@
 
 audit_cd_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "DVD/CD Sharing"
+    verbose_message "DVD/CD Sharing" "check"
     if [ "$audit_mode" != 2 ]; then
-      check_launchctl_service com.apple.ODSAgent off
+      check_launchctl_service "com.apple.ODSAgent" "off"
     fi
   fi
 }

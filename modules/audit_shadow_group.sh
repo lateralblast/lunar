@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_shadow_group
 #
 # Check shadow group
@@ -8,28 +14,26 @@
 
 audit_shadow_group () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Shadow Group"
+    verbose_message "Shadow Group" "check"
     check_file="/etc/group"
     temp_file="$temp_dir/group"
     if [ "$audit_mode" = 2 ]; then
-      restore_file $check_file $restore_dir
+      restore_file "$check_file" "$restore_dir"
     fi
     if [ "$audit_mode" != 2 ]; then
-      shadow_check=$( grep -v "^#" $check_file | grep ^shadow | cut -f4 -d":" | wc -c )
+      shadow_check=$( grep -v "^#" "$check_file" | grep ^shadow | cut -f4 -d":" | wc -c )
       if [ "$shadow_check" != 0 ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Shadow group contains members"
-          verbose_message "" fix
-          verbose_message "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" fix
-          verbose_message "cat $temp_file > $check_file" fix
-          verbose_message "rm $temp_file" fix
-          verbose_message "" fix
+          verbose_message    "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" "fix"
+          verbose_message    "cat $temp_file > $check_file" "fix"
+          verbose_message    "rm $temp_file" "fix"
         fi
         if [ "$audit_mode" = 0 ]; then
-          backup_file $check_file
-          cat $check_file |awk -F':' '( $1 == "shadow" ) {print $1":"$2":"$3":" ; next}; {print}' > $temp_file
-          cat $temp_file > $check_file
-          rm $temp_file
+          backup_file "$check_file"
+          awk -F':' '( $1 == "shadow" ) {print $1":"$2":"$3":" ; next}; {print}' < "$check_file" > "$temp_file"
+          cat "$temp_file" > "$check_file"
+          rm "$temp_file"
         fi
       else
         if [ "$audit_mode" = 1 ];then

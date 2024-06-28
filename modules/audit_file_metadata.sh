@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_file_metadata
 #
 # Check Auditing of File Metadata Modification Events
@@ -6,17 +12,16 @@
 #.
 
 audit_file_metadata () {
-  check_file="/etc/security/audit_event"
   if [ "$os_name" = "SunOS" ]; then
     if [ "$os_version" = "11" ]; then
-      verbose_message "Auditing of File Metadata Modification Events"
-      check_append_file $check_file "lck:AUE_CHMOD" hash
-      check_append_file $check_file "lck:AUE_CHOWN" hash
-      check_append_file $check_file "lck:AUE_FCHOWN" hash
-      check_append_file $check_file "lck:AUE_FCHMOD" hash
-      check_append_file $check_file "lck:AUE_LCHOWN" hash
-      check_append_file $check_file "lck:AUE_ACLSET" hash
-      check_append_file $check_file "lck:AUE_FACLSET" hash
+      verbose_message   "Auditing of File Metadata Modification Events" "check"
+      check_append_file "/etc/security/audit_event" "lck:AUE_CHMOD"     "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_CHOWN"     "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_FCHOWN"    "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_FCHMOD"    "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_LCHOWN"    "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_ACLSET"    "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_FACLSET"   "hash"
     fi
   fi
 }

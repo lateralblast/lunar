@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_passwd_perms
 #
 # Refer to Section(s) 9.1.2-9  Page(s) 153-9   CIS CentOS Linux 6 Benchmark v1.0.0
@@ -22,23 +28,21 @@ audit_passwd_perms () {
       check_file_perms $check_dir 0750 root security
     fi
     if [ "$os_name" = "Linux" ]; then
-      for check_file in /etc/passwd /etc/group ; do
-        check_file_perms $check_file 0644 root root
-      done
-      for check_file in /etc/shadow /etc/gshadow; do
-        check_file_perms $check_file 0600 root root
-      done
-      for check_file in /etc/group- /etc/passwd- /etc/shadow- /etc/gshadow-; do
-        check_file_perms $check_file 0600 root root
-      done
+      check_file_perms "/etc/passwd"   "0644" "root" "root"
+      check_file_perms "/etc/group"    "0644" "root" "root"
+      check_file_perms "/etc/shadow"   "0600" "root" "root"
+      check_file_perms "/etc/gshadow"  "0600" "root" "root"
+      check_file_perms "/etc/group-"   "0600" "root" "root"
+      check_file_perms "/etc/passwd-"  "0600" "root" "root"
+      check_file_perms "/etc/shadow-"  "0600" "root" "root"
+      check_file_perms "/etc/gshadow-" "0600" "root" "root"
     fi
     if [ "$os_name" = "FreeBSD" ]; then
-      for check_file in /etc/passwd /etc/group /etc/pwd.db; do
-        check_file_perms $check_file 0644 root wheel
-      done
-      for check_file in /etc/master.passwd /etc/spwd.db; do
-        check_file_perms $check_file 0644 root wheel
-      done
+      check_file_perms "/etc/passwd"        "0644" "root" "wheel"
+      check_file_perms "/etc/group"         "0644" "root" "wheel"
+      check_file_perms "/etc/pwd.db_file"   "0644" "root" "wheel"
+      check_file_perms "/etc/master.passwd" "0600" "root" "wheel"
+      check_file_perms "/etc/spwd.db"       "0600" "root" "wheel"
     fi
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_suse_firewall
 #
 # Check SuSE Firewall enabled
@@ -8,10 +14,9 @@
 audit_suse_firewall () {
   if [ "$os_name" = "Linux" ]; then
     if [ "$os_vendor" = "SuSE" ]; then
-      verbose_message "SuSE Firewall"
-      for service_name in "SuSEfirewall2_init" "SuSEfirewall2_setup"; do
-        check_linux_service $service_name on
-      done
+      verbose_message     "SuSE Firewall" "check"
+      check_linux_service "SuSEfirewall2_init"  "on"
+      check_linux_service "SuSEfirewall2_setup" "on"
     fi
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_web_sharing
 #
 # Turn off web sharing
@@ -9,12 +15,11 @@
 
 audit_web_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Web sharing"
-    check_launchctl_service org.apache.httpd off
-    check_file="/etc/apache2/httpd.conf"
-    check_file_value is $check_file ServerTokens space Prod hash
-    check_file_value is $check_file ServerSignature space Off hash
-    check_file_value is $check_file UserDir space Disabled hash
-    check_file_value is $check_file TraceEnable space Off hash
+    verbose_message   "Web sharing" "check"
+    check_file_value "is" "/etc/apache2/httpd.conf" "ServerTokens"    "space" "Prod"     "hash"
+    check_file_value "is" "/etc/apache2/httpd.conf" "ServerSignature" "space" "Off"      "hash"
+    check_file_value "is" "/etc/apache2/httpd.conf" "UserDir"         "space" "Disabled" "hash"
+    check_file_value "is" "/etc/apache2/httpd.conf" "TraceEnable"     "space" "Off"      "hash"
+    check_launchctl_service "org.apache.httpd" "off"
   fi
 }

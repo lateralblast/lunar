@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_suid_files
 #
 # Check Set UID/GID on files
@@ -16,7 +22,7 @@
 
 audit_suid_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Set UID/GID Files"
+    verbose_message "Set UID/GID Files" "check"
     log_file="setuidfiles.log"
     if [ "$audit_mode" = 0 ]; then
       log_file="$work_dir/$log_file"
@@ -25,7 +31,7 @@ audit_suid_files () {
       if [ "$os_name" = "Linux" ]; then
         for file_system in $( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null ); do
           for check_file in $( find $file_system -xdev -type f -perm -4000 -print 2> /dev/null ); do
-            increment_insecure "File $check_file is SUID/SGID"
+            increment_insecure "File \"$check_file\" is SUID/SGID"
             if [ "$ansible" = 1 ]; then
               echo ""
               echo "- name: Checking write permissions for $check_file"
@@ -35,15 +41,13 @@ audit_suid_files () {
               echo ""
             fi
             if [ "$audit_mode" = 1 ]; then
-              increment_insecure "File $check_file is world writable"
-              verbose_message "" fix
-              verbose_message "chmod o-S $check_file" fix
-              verbose_message "" fix
+              increment_insecure "File \"$check_file\" is world writable"
+              verbose_message    "chmod o-S $check_file" "fix"
             fi
             if [ "$audit_mode" = 0 ]; then
-              echo "$check_file" >> $log_file
-              verbose_message "Setting:   File $check_file to be non world writable"
-              chmod o-S $check_file
+              echo "$check_file" >> "$log_file"
+              verbose_message "Setting:   File \"$check_file\" to be non world writable"
+              chmod o-S "$check_file"
             fi
           done
         done
@@ -69,15 +73,13 @@ audit_suid_files () {
             echo ""
           fi
           if [ "$audit_mode" = 1 ]; then
-            increment_insecure "File $check_file is world writable"
-            verbose_message "" fix
-            verbose_message "chmod o-S $check_file" fix
-            verbose_message "" fix
+            increment_insecure "File \"$check_file\" is world writable"
+            verbose_message "chmod o-S $check_file" "fix"
           fi
           if [ "$audit_mode" = 0 ]; then
-            echo "$check_file" >> $log_file
-            verbose_message "Setting:   File $check_file to be non world writable"
-            chmod o-S $check_file
+            echo "$check_file" >> "$log_file"
+            verbose_message "File \"$check_file\" to be non world writable" "set"
+            chmod o-S "$check_file"
           fi
         done
       fi

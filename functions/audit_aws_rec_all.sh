@@ -1,5 +1,9 @@
-# audit_aws_rec_all
-#
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # Audit AWS
 #
 # Run various AWS audit recommended tests

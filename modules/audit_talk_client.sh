@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_talk_client
 #
 # Uninstall talk client
@@ -13,7 +19,7 @@
 
 audit_talk_client () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Talk Client"
-    check_linux_package uninstall talk
+    verbose_message     "Talk Client" "check"
+    check_linux_package "uninstall"   "talk"
   fi
 }

@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_xinetd_service
 #
 # Code to audit an xinetd service, and enable, or disable
@@ -8,29 +14,29 @@
 
 audit_xinetd_service () {
   if [ "$os_name" = "Linux" ]; then
-    service_name=$1
-    parameter_name=$2
-    correct_status=$3
+    service_name="$1"
+    parameter_name="$2"
+    correct_status="$3"
     check_file="/etc/xinetd.d/$service_name"
     log_file="$work_dir/$service_name.log"
     if [ -f "$check_file" ]; then
-      actual_status=$( grep $parameter_name $check_file | awk '{print $3}' )
+      actual_status=$( grep "$parameter_name" "$check_file" | awk '{print $3}' )
       if [ "$audit_mode" != 2 ]; then
-        string="If xinetd service $service_name has $parameter_name set to $correct_status"
-        verbose_message "$string"
+        string="If xinetd service \"$service_name\" has \"$parameter_name\" set to \"$correct_status\""
+        verbose_message "$string" "check"
         if [ "$actual_status" != "$correct_status" ]; then
           if [ "$linux_dist" = "debian" ]; then
             command="update-rc.d $service_name $correct_status"
           else
             command="chkconfig $service_name $correct_status"
           fi
-          increment_insecure "Service $service_name does not have $parameter_name set to $correct_status"
           log_file="$work_dir/$log_file"
-          backup_file $check_file
-          lockdown_command "echo \"$parameter_name,$actual_status\" >> $log_file ; cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command" "Service to $parameter_name"
-          l_command "cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command"
+          increment_insecure "Service \"$service_name\" does not have \"$parameter_name\" set to \"$correct_status\""
+          backup_file        "$check_file"
+          lockdown_command   "echo \"$parameter_name,$actual_status\" >> $log_file ; cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command" "Service to $parameter_name"
+          lockdown_command   "cat $check_file |sed 's/$parameter_name.*/$parameter_name = $correct_status/g' > $temp_file ; cp $temp_file $check_file ; $command"
         else
-          increment_secure "Service $service_name has $parameter_name set to $correct_status"
+          increment_secure   "Service \"$service_name\" has \"$parameter_name\" set to \"$correct_status\""
         fi
         if [ "$ansible" = 1 ]; then
           echo ""
@@ -50,11 +56,11 @@ audit_xinetd_service () {
       else
         restore_file="$restore_dir/$log_file"
         if [ -f "$restore_file" ]; then
-          check_name=$( grep $service_name $restore_file | cut -f1 -d"," )
+          check_name=$( grep "$service_name" "$restore_file" | cut -f1 -d"," )
           if [ "$check_name" = "$service_name" ]; then
-            check_status=$( grep $service_name $restore_file | cut -f2 -d"," )
+            check_status=$( grep "$service_name" "$restore_file" | cut -f2 -d"," )
             if [ "$actual_status" != "$check_status" ]; then
-              restore_file $check_file $restore_dir
+              restore_file "$check_file" "$restore_dir"
             fi
           fi
         fi

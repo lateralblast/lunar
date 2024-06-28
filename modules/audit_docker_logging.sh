@@ -1,3 +1,9 @@
+#!/bin/sh
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
+
 # audit_docker_logging
 #
 # Check Docker logging
@@ -12,10 +18,10 @@ audit_docker_logging () {
   if [ "$os_name" = "Linux" ]; then
     docker_bin=$( command -v docker )
     if [ "$docker_bin" ]; then
-      verbose_message "Docker Logging"
-      check_dockerd unused daemon log-level info
-      check_dockerd used daemon log-driver
-      check_dockerd used daemon log-opt 
+      verbose_message "Docker Logging"  "check"
+      check_dockerd   "unused" "daemon" "log-level"  "info"
+      check_dockerd   "used"   "daemon" "log-driver" ""
+      check_dockerd   "used"   "daemon" "log-opt"    ""
     fi
   fi
 }
