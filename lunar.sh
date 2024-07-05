@@ -1034,7 +1034,7 @@ Usage: ${0##*/} [OPTIONS...]
                      [Provides more information about the audit taking place]
  -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
  -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
- -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
+ -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system) - Do filesystem checks
  -M | --workdir      Set work directory
  -n | --ansible      Output ansible code segments
  -o | --name         Set docker OS or container name
