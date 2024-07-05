@@ -1635,3 +1635,5 @@
 # Improved avahi conf check
 # 9.1.0: Fri Jul  5 03:57:46 PM AEST 2024
 # Output format improvements
+# 9.1.1: Fri Jul  5 04:03:52 PM AEST 2024
+# Fixed bug with systemctl command

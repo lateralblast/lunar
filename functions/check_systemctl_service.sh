@@ -54,7 +54,7 @@ check_systemctl_service () {
             else
               service_switch="disable"
             fi
-            eval "systemctl $service_name $service_switch"
+            eval "systemctl $service_switch $service_name"
           fi
         fi
       fi
@@ -76,7 +76,7 @@ check_systemctl_service () {
         if [ "$actual_status" != "$correct_status" ] && [ ! "$actual_status" = "not-found" ]; then
           log_file="$work_dir/$log_file"
           increment_insecure "Service $service_name is not $correct_status"
-          lockdown_command   "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_name $service_switch" "Service \"$service_name\" to \"$correct_status\""
+          lockdown_command   "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_switch $service_name" "Service \"$service_name\" to \"$correct_status\""
         else
           if [ "$actual_status" = "not-found" ]; then
             increment_secure "Service \"$service_name\" is \"$actual_status\""

@@ -15,7 +15,7 @@ Do not use the lockdown functionality at the moment, it needs testing.
 Version
 -------
 
-Current version 9.1.0
+Current version 9.1.1
 
 Refer to lunar.sh and changelog for more up to date version information
 
