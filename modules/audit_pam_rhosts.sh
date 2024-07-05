@@ -14,7 +14,7 @@
 
 audit_pam_rhosts () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    string="PAM RHosts Configuration" "check"
+    string="PAM RHosts Configuration"
     verbose_message "$string" "check"
     if [ "$os_name" = "SunOS" ]; then
       check_file="/etc/pam.conf"

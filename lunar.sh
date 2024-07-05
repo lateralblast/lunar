@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.0.7
+# Version:      9.0.8
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -646,7 +646,7 @@ verbose_message () {
       if [ "$text" = "" ]; then
         echo ""
       else
-        echo "[ Fix ]    $text"
+        echo "[ Fix ]     $text"
       fi
     else
       echo "$text"
