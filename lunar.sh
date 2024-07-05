@@ -393,7 +393,7 @@ check_environment () {
     fi
   fi
   if [ "$base_dir" = "" ]; then
-    if [ ! "$id_check" = "0" ]; the
+    if [ ! "$id_check" = "0" ]; then
       base_dir="$HOME/.$pkg_suffix"
     else
       base_dir="$def_base_dir"
