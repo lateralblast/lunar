@@ -1633,3 +1633,5 @@
 # Formatting and bug fixes
 # 9.0.9: Fri Jul  5 01:41:18 PM AEST 2024
 # Improved avahi conf check
+# 9.1.0: Fri Jul  5 03:57:46 PM AEST 2024
+# Output format improvements

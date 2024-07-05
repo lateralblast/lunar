@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.0.9
+# Version:      9.1.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -486,9 +486,9 @@ lockdown_command () {
   message="$2"
   if [ "$audit_mode" = 0 ]; then
     if [ "$message" ]; then
-      echo "Setting:   $message"
+      verbose_message "$message" "set"
     fi
-    echo "Executing: $command"
+    verbose_message "$command" "execute"
     eval "$command"
   else
     verbose_message "$command" "fix"
@@ -653,6 +653,12 @@ verbose_message () {
     fi
   else
     case $style in
+      audit|auditing)
+        echo "Auditing:   $text"
+        ;;
+      exec|execute|executing)
+        echo "Executing:  $text"
+        ;;
       notice)
         echo "Notice:     $text"
         ;;
@@ -667,6 +673,9 @@ verbose_message () {
         ;;
       set|setting)
         echo "Setting:    $text"
+        ;;
+      run|running)
+        echo "Running:    $text"
         ;;
       restore|restoring)
         echo "Restoring:  $text"
@@ -832,7 +841,7 @@ funct_audit_system () {
       echo "Restore directory \"$restore_dir\" does not exit"
       exit
     else
-      echo "Setting:   Restore directory to \"$restore_dir\""
+      verbose_message "Restore directory to \"$restore_dir\"" "set"
     fi
   fi
   audit_system_all
@@ -1367,46 +1376,46 @@ fi
 if [ "$audit_mode" != 3 ]; then
   echo ""
   if [ "$audit_mode" = 2 ]; then
-    echo "Running:   In Restore mode (changes will be made to system)"
-    echo "Setting:   Restore date $restore_date"
+    verbose_message "In Restore mode (changes will be made to system)" "run"
+    verbose_message "Restore date $restore_date" "set"
   fi
   if [ "$audit_mode" = 1 ]; then
-    echo "Running:   In audit mode (no changes will be made to system)"
+    verbose_message "In audit mode (no changes will be made to system)" "run"
   fi
   if [ "$audit_mode" = 0 ]; then
-    echo "Running:   In lockdown mode (changes will be made to system)"
+    verbose_message "In lockdown mode (changes will be made to system)" "run"
   fi
   if [ "$do_fs" = 1 ]; then
-    echo "           Filesystem checks will be done"
+    verbose_message "Filesystem checks will be done" "info"
   fi
   echo ""
   if [ "$do_select" = 1 ]; then
-    echo "Auditing:  Selecting $function"
+    verbose_message    "Selecting $function" "audit"
     funct_audit_select "$audit_mode" "$function"
   else
     case $audit_type in
       Kubernetes)
-        echo "Auditing:  Kubernetes"
+        verbose_message        "Kubernetes" "audit"
         funct_audit_kubernetes "$audit_mode"
         exit
         ;;
       docker)
-        echo "Auditing:  Docker"
+        verbose_message    "Docker" "audit"
         funct_audit_docker "$audit_mode"
         exit
         ;;
       awsrecommended)
-        echo "Auditing:  AWS - Recommended Tests"
+        verbose_message     "AWS - Recommended Tests" "audit"
         funct_audit_aws_rec "$audit_mode"
         exit
         ;;
       aws)
-        echo "Auditing:  AWS"
+        verbose_message "AWS" "audit"
         funct_audit_aws "$audit_mode"
         exit
         ;;
       local|system|os)
-        echo "Auditing:  OS"
+        verbose_message    "Operating System" "audit"
         funct_audit_system "$audit_mode"
         exit
         ;;
