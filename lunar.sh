@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.1.3
+# Version:      9.1.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -92,13 +92,12 @@ insecure=0
 total=0
 syslog_server=""
 syslog_logdir=""
-pkg_company="LTRL"
 pkg_suffix="lunar"
-base_dir="/opt/$pkg_company$pkg_suffix"
+def_base_dir="/var/log/$pkg_suffix"
 date_suffix=$( date +%d_%m_%Y_%H_%M_%S )
-work_dir="$base_dir/$date_suffix"
-temp_dir="$base_dir/tmp"
-temp_file="$temp_dir/temp_file"
+def_work_dir="$def_base_dir/$date_suffix"
+def_temp_dir="$def_base_dir/tmp"
+def_temp_file="$def_temp_dir/$date_suffix.tmp"
 wheel_group="wheel"
 docker_group="docker"
 reboot=0
@@ -393,9 +392,19 @@ check_environment () {
       fi
     fi
   fi
-  base_dir="$HOME/.$pkg_suffix"
-  temp_dir="/tmp"
-  work_dir="$base_dir/$date_suffix"
+  if [ "$base_dir" = "" ]; then
+    if [ ! "$id_check" = "0" ]; the
+      base_dir="$HOME/.$pkg_suffix"
+    else
+      base_dir="$def_base_dir"
+    fi
+  fi
+  if [ "$temp_dir" = "" ]; then
+    temp_dir="$base_dir/tmp"
+  fi
+  if [ "$work_dir" = "" ]; then
+    work_dir="$base_dir/$date_suffix"
+  fi
   # Load functions from functions directory
   if [ -d "$functions_dir" ]; then
     if [ "$verbose" = "1" ]; then
@@ -1011,38 +1020,41 @@ print_help () {
 Usage: ${0##*/} [OPTIONS...]
 
  -a | --audit        Run in audit mode (for Operating Systems - no changes made to system)
- -A | --fullaudit    Run in audit mode (for Operating Systems - no changes made to system)
-                     [includes home directory and filesystem checks which take some time]
- -v | --verbose      Verbose mode [used with -a and -A]
-                     [Provides more information about the audit taking place]
- -w | --awsaudit     Run in audit mode (for AWS - no changes made to system)
- -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
- -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
- -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
- -x | --awsrec       Run in recommendations mode (for AWS - no changes made to system)
- -s | --select       Run in selective mode (only run tests you want to)
- -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
- -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
-                     [includes filesystem checks which take some time]
- -S | --unixtests    List all UNIX functions available to selective mode
- -W | --awstests     List all AWS functions available to selective mode
- -D | --dockertests  List all Docker functions available to selective mode
- -R | --testinfo     Print information for a specific test
- -O | --osinfo       Print OS information
- -o | --name         Set docker OS or container name
- -t | --tag          Set docker tag
+ -A | --fullaudit    Run in audit mode (for Operating Systems - no changes made to system) - Do filesystem checks
+ -b | --backups      List backup files
+ -B | --basedir      Base directory for work
  -c | --run          Run docker-compose testing suite (runs lunar in audit mode without making changes)
  -C | --shell        Run docker-compose testing suite (drops to shell in order to do more testing)
- -p | --previous     Show previous versions of file
- -Z | --changes      Show changes previously made to system
- -b | --backups      List backup files
- -n | --ansible      Output ansible code segments
- -r | --region       Specify AWS region
- -z | --lockselect   Run specified audit function in lockdown mode
- -u | --undo         Undo lockdown (for Operating Systems - changes made to system)
- -V | --version      Display version
- -H | --usage        Display usage
+ -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
+ -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
+ -D | --dockertests  List all Docker functions available to selective mode
  -h | --help         Display help
+ -H | --usage        Display usage
+                     [includes home directory and filesystem checks which take some time]
+                     [Provides more information about the audit taking place]
+ -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
+ -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
+ -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
+ -M | --workdir      Set work directory
+ -n | --ansible      Output ansible code segments
+ -o | --name         Set docker OS or container name
+ -O | --osinfo       Print OS information
+ -p | --previous     Show previous versions of file
+                     [includes filesystem checks which take some time]
+ -S | --unixtests    List all UNIX functions available to selective mode
+ -r | --region       Specify AWS region
+ -R | --testinfo     Print information for a specific test
+ -s | --select       Run in selective mode (only run tests you want to)
+ -t | --tag          Set docker tag
+ -T | --tempdir      Set temp directory
+ -u | --undo         Undo lockdown (for Operating Systems - changes made to system)
+ -v | --verbose      Verbose mode [used with -a and -A]
+ -w | --awsaudit     Run in audit mode (for AWS - no changes made to system)
+ -W | --awstests     List all AWS functions available to selective mode
+ -V | --version      Display version
+ -x | --awsrec       Run in recommendations mode (for AWS - no changes made to system)
+ -z | --lockselect   Run specified audit function in lockdown mode
+ -Z | --changes      Show changes previously made to system
 
 EOHELP
 }
@@ -1120,6 +1132,11 @@ do
       do_fs=0
       shift
       ;;
+    -A|--fullaudit)
+      audit_mode=1
+      do_fs=1
+      shift
+      ;;
     --mode)
       mode_value="$2"
       case $mode_value in
@@ -1142,63 +1159,22 @@ do
       do_fs=1
       shift
       ;;
-    --type)
-      audit_type="$2"
-      shift 2
-      ;;
     --function|--test)
       function="$2"
       shift 2
       ;;
-    -A|--fullaudit)
-      audit_mode=1
-      do_fs=1
-      shift
-      ;;
-    -w|--awsaudit)
-      audit_mode=1
-      do_aws=1
-      function="$2"
+    --list)
+      list="$2"
+      case $list in
+        changes)
+          print_changes
+          ;;
+        backups)
+          print_backups 
+          ;;
+      esac
       shift 2
-      ;;
-    -d|--dockeraudit)
-      audit_mode=1
-      do_docker=1
-      function="$2"
-      shift 2
-      ;;
-    -e|--host)
-      do_remote=1
-      ext_host="$2"
-      shift 2
-      ;;
-    -x|--awsrec)
-      audit_mode=1
-      do_aws_rec=1
-      function="$2"
-      shift 2
-      ;;
-    -s)
-      audit_mode=1
-      do_fs=0
-      do_select=1
-      function="$2"
-      shift 2
-      ;;
-    --select|--check)
-      do_select=1
-      function="$2"
-      shift 2
-      ;;
-    -l|--lockdown)
-      audit_mode=0
-      do_fs=0
-      shift
-      ;;
-    -L|--fulllockdown|fulllock)
-      audit_mode=0
-      do_fs=1
-      shift
+      exit
       ;;
     --tests|--printtests)
       tests="$2" 
@@ -1215,40 +1191,17 @@ do
       esac
       shift 2
       ;;
-    -S|--unixtests|--unix)
-      print_tests "UNIX"
-      shift
-      exit
-      ;;
-    -W|--awstests|--aws)
-      print_tests "AWS"
-      shift
-      exit
-      ;;
-    -D|--dockertests)
-      print_tests "Docker"
-      shift
-      exit
-      ;;  
-    -R|--moduleinfo|--testinfo)
-      check_environment
-      verbose=1
-      module="$2"
-      print_audit_info "$module"
-      shift 2
-      exit
-      ;;
-    -O|--osinfo|--systeminfo)
-      check_os_release
-      shift
-      exit
-      ;;
-    -o|--name)
-      test_os="$2"
+    --type)
+      audit_type="$2"
       shift 2
       ;;
-    -t|--tag)
-      test_tag="$2"
+    -b|--backups|--listbackups)
+      print_backups
+      shift
+      exit
+      ;;
+    -B|--basedir)
+      base_dir="$2"
       shift 2
       ;;
     -c|--run)
@@ -1261,53 +1214,108 @@ do
       do_shell=1
       shift
       ;;
-    -p|--previous)
-      print_previous
-      shift
-      exit
-      ;;
-    --list)
-      list="$2"
-      case $list in
-        changes)
-          print_changes
-          ;;
-        backups)
-          print_backups 
-          ;;
-      esac
-      shift 2
-      exit
-      ;;
-    -Z|--changes|--listchanges)
-      print_changes
-      shift
-      exit
-      ;;
-    -b|--backups|--listbackups)
-      print_backups
-      shift
-      exit
-      ;;
-    -n|--ansible)
-      ansible=1
-      shift
-      ;;
-    -r|--awsregion|--region)
-      aws_region="$2"
-      shift 2
-      ;;
-    -z)
-      audit_mode=0
-      do_fs=0
-      do_select=1
+    -d|--dockeraudit)
+      audit_mode=1
+      do_docker=1
       function="$2"
       shift 2
+      ;;
+    -D|--dockertests)
+      print_tests "Docker"
+      shift
+      exit
+      ;;  
+    -e|--host)
+      do_remote=1
+      ext_host="$2"
+      shift 2
+      ;;
+    -h|--help)
+      print_help
+      if [ "$verbose" = 1 ]; then
+       print_usage
+      fi 
+      shift
+      exit 0
+      ;;
+    -H|--usage)
+      print_usage
+      shift
+      exit
       ;;
     -k|--kubeaudit)
       audit_mode=1
       do_kubernetes=1
       function="$2"
+      shift 2
+      ;;
+    -l|--lockdown)
+      audit_mode=0
+      do_fs=0
+      shift
+      ;;
+    -L|--fulllockdown|fulllock)
+      audit_mode=0
+      do_fs=1
+      shift
+      ;;
+    -M|--workdir)
+      work_dir="$2"
+      shift 2
+      ;;
+    -n|--ansible)
+      ansible=1
+      shift
+      ;;
+    -o|--name)
+      test_os="$2"
+      shift 2
+      ;;
+    -O|--osinfo|--systeminfo)
+      check_os_release
+      shift
+      exit
+      ;;
+    -p|--previous)
+      print_previous
+      shift
+      exit
+      ;;
+    -r|--awsregion|--region)
+      aws_region="$2"
+      shift 2
+      ;;
+    -R|--moduleinfo|--testinfo)
+      check_environment
+      verbose=1
+      module="$2"
+      print_audit_info "$module"
+      shift 2
+      exit
+      ;;
+    -s)
+      audit_mode=1
+      do_fs=0
+      do_select=1
+      function="$2"
+      shift 2
+      ;;
+    --select|--check)
+      do_select=1
+      function="$2"
+      shift 2
+      ;;
+    -S|--unixtests|--unix)
+      print_tests "UNIX"
+      shift
+      exit
+      ;;
+    -t|--tag)
+      test_tag="$2"
+      shift 2
+      ;;
+    -T|--tempdir)
+      temp_dir="$2"
       shift 2
       ;;
     -u|--undo)
@@ -1324,18 +1332,34 @@ do
       shift
       exit
       ;;
-    -H|-U|--usage)
-      print_usage
+    -w|--awsaudit)
+      audit_mode=1
+      do_aws=1
+      function="$2"
+      shift 2
+      ;;
+    -W|--awstests|--aws)
+      print_tests "AWS"
       shift
       exit
       ;;
-    -h|--help)
-      print_help
-      if [ "$verbose" = 1 ]; then
-       print_usage
-      fi 
+    -x|--awsrec)
+      audit_mode=1
+      do_aws_rec=1
+      function="$2"
+      shift 2
+      ;;
+    -z)
+      audit_mode=0
+      do_fs=0
+      do_select=1
+      function="$2"
+      shift 2
+      ;;
+    -Z|--changes|--listchanges)
+      print_changes
       shift
-      exit 0
+      exit
       ;;
     *)
       print_help >&2
