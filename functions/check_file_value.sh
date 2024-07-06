@@ -239,20 +239,20 @@ check_file_value () {
               backup_file "$check_file"
               if [ "$check_parameter" != "$parameter_name" ]; then
                 if [ "$separator_value" = "tab" ]; then
-                  $echo_command -e "$parameter_name\t$correct_value" >> "$check_file"
+                  eval "$echo_command -e \"$parameter_name\t$correct_value\" >> $check_file"
                 else
                   if [ "$position" = "after" ]; then
-                    $cat_command $check_file |sed "s,$search_value,&\n$parameter_name$separator$correct_value," > "$temp_file"
-                    $cat_command $temp_file > "$check_file"
+                    eval "$cat_command $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file"
+                    eval "$cat_command $temp_file > $check_file"
                   else
                     $echo_command "$parameter_name$separator$correct_value" >> "$check_file"
                   fi
                 fi
               else
                 if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
-                  $sed_command "s/^$parameter_name.*/$parameter_name$spacer\"$correct_value\"/" $check_file > "$temp_file"
+                  eval "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer\\"$correct_value\\"/\" $check_file > $temp_file"
                 else
-                  $sed_command "s/^$parameter_name.*/$parameter_name$spacer$correct_value/" $check_file > "$temp_file"
+                  eval "$sed_command \"s/^$parameter_name.*/$parameter_name$spacer$correct_value/\" $check_file > $temp_file"
                 fi
                 cat $temp_file > $check_file
                 if [ "$os_name" = "SunOS" ]; then
