@@ -1663,3 +1663,5 @@
 # Improved gnome automount test
 # 9.2.4: Sat Jul  6 21:20:59 AEST 2024
 # Improved gnome screen lock test
+# 9.2.5: Sat Jul  6 21:27:38 AEST 2024
+# Improved cron allow test
