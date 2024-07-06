@@ -1657,3 +1657,7 @@
 # Bug fixes
 # 9.2.1: Sat Jul  6 08:35:44 PM AEST 2024
 # Fixed wheel group test
+# 9.2.2: Sat Jul  6 21:04:48 AEST 2024
+# Fixed find command in cron test
+# 9.2.3: Sat Jul  6 21:11:40 AEST 2024
+# Improved gnome automount test

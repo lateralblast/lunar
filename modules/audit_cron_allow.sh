@@ -65,7 +65,7 @@ audit_cron_allow () {
       done
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
         if [ -d "$dir_name" ]; then
-          user_list=$( find "$dir_name" -type -f -not -user root -printf '%u\n' |sort -t: u )
+          user_list=$( find "$dir_name" -type f -not -user root -printf '%u\n' |sort -t: u )
           for user_name in $user_list; do
             user_check=$( grep "'$user_name" "$check_file" )
             if [ "$user_check" != "$user_name" ]; then
