@@ -1655,3 +1655,5 @@
 # Added file checks for deleting some files
 # 9.2.0: Sat Jul  6 15:07:51 AEST 2024
 # Bug fixes
+# 9.2.1: Sat Jul  6 08:35:44 PM AEST 2024
+# Fixed wheel group test

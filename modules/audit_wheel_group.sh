@@ -15,10 +15,10 @@ audit_wheel_group () {
     string="Wheel Group"
     verbose_message "$string" "check"
     if [ "$audit_mode" != 2 ]; then
-      check_value=$( grep "^$wheel_group:" $check_file )
-      if [ "$check_value" != "$search_string" ]; then
+      check_value=$( grep "^$wheel_group:" "$check_file" )
+      if [ -z "$check_value" ]; then
         if [ "$audit_mode" = "1" ]; then
-          increment_insecure "Wheel group does not exist in \"$check_file\""
+          increment_insecure "Wheel group \"$wheel_group\" does not exist in \"$check_file\""
         fi
         if [ "$ansible" = 1 ]; then
           echo ""
@@ -29,13 +29,13 @@ audit_wheel_group () {
         fi
         if [ "$audit_mode" = 0 ]; then
           backup_file     "$check_file"
-          verbose_message "Adding group \"$wheel_group\" to \"$check_file\"" "set"
+          verbose_message "Adding wheel group \"$wheel_group\" to \"$check_file\"" "set"
           groupadd "$wheel_group"
           usermod -G "$wheel_group" root
         fi
       else
         if [ "$audit_mode" = "1" ]; then
-          increment_secure "Wheel group exists in \"$check_file\""
+          increment_secure "Wheel group \"$wheel_group\" exists in \"$check_file\""
         fi
       fi
     else
