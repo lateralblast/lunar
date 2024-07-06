@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.1.4
+# Version:      9.1.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -1020,7 +1020,8 @@ print_help () {
 Usage: ${0##*/} [OPTIONS...]
 
  -a | --audit        Run in audit mode (for Operating Systems - no changes made to system)
- -A | --fullaudit    Run in audit mode (for Operating Systems - no changes made to system) - Do filesystem checks
+ -A | --fullaudit    Run in audit mode (for Operating Systems - no changes made to system)
+                     [includes home directory and filesystem checks which take some time]
  -b | --backups      List backup files
  -B | --basedir      Base directory for work
  -c | --run          Run docker-compose testing suite (runs lunar in audit mode without making changes)
@@ -1030,17 +1031,15 @@ Usage: ${0##*/} [OPTIONS...]
  -D | --dockertests  List all Docker functions available to selective mode
  -h | --help         Display help
  -H | --usage        Display usage
-                     [includes home directory and filesystem checks which take some time]
-                     [Provides more information about the audit taking place]
  -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
  -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
- -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system) - Do filesystem checks
+ -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
+                     [includes home directory and filesystem checks which take some time]
  -M | --workdir      Set work directory
  -n | --ansible      Output ansible code segments
  -o | --name         Set docker OS or container name
  -O | --osinfo       Print OS information
  -p | --previous     Show previous versions of file
-                     [includes filesystem checks which take some time]
  -S | --unixtests    List all UNIX functions available to selective mode
  -r | --region       Specify AWS region
  -R | --testinfo     Print information for a specific test
@@ -1049,6 +1048,7 @@ Usage: ${0##*/} [OPTIONS...]
  -T | --tempdir      Set temp directory
  -u | --undo         Undo lockdown (for Operating Systems - changes made to system)
  -v | --verbose      Verbose mode [used with -a and -A]
+                     [Provides more information about the audit taking place]
  -w | --awsaudit     Run in audit mode (for AWS - no changes made to system)
  -W | --awstests     List all AWS functions available to selective mode
  -V | --version      Display version
