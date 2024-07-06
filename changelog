@@ -1661,3 +1661,5 @@
 # Fixed find command in cron test
 # 9.2.3: Sat Jul  6 21:11:40 AEST 2024
 # Improved gnome automount test
+# 9.2.4: Sat Jul  6 21:20:59 AEST 2024
+# Improved gnome screen lock test
