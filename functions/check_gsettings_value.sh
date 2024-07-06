@@ -43,7 +43,7 @@ check_gsettings_value () {
           fi
         fi
       else
-        current_value=$( gsettings get "$parameter_root" "$parameter_name" )
+        current_value=$( gsettings get "$parameter_root" "$parameter_name" 2> /dev/null )
         if [ "$current_value" = "$correct_value" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Parameter \"$parameter_name\" is not set to \"$correct_value\" in $parameter_root"
