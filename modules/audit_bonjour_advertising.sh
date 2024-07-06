@@ -51,7 +51,9 @@ audit_bonjour_advertising() {
             backup_file "$check_file"
             sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' < "$check_file" | tr X '\n' > "$temp_file"
             cat "$temp_file" > "$check_file"
-            rm "$temp_file"
+            if [ -f "$temp_file" ]; then
+              rm "$temp_file"
+            fi
           fi
         else
           if [ "$audit_mode" = 1 ]; then

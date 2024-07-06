@@ -37,7 +37,9 @@ audit_system_auth_no_magic_root () {
               else
                 awk '( $1 == "auth" && $2 == "required" && $3 == "pam_deny.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root"; print $0; next };'  < "$temp_file" > "$check_file"
               fi  
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             if [ "$audit_mode" = "1" ]; then

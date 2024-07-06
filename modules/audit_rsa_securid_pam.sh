@@ -48,7 +48,9 @@ audit_rsa_securid_pam () {
               sed 's/^auth/#\&/' < "$check_file" > "$temp_file"
               cat "$temp_file" > "$check_file"
               echo "auth\trequired\tpam_securid.so reserve" >> "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
             if [ "$os_name" = "SunOS" ]; then
               echo "sudo\tauth\trequired\tpam_securid.so reserve" >> "$check_file"

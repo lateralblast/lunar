@@ -25,7 +25,9 @@ audit_root_ssh_keys () {
               if [ "$audit_mode" = 0 ]; then
                 backup_file     "$check_file"
                 verbose_message "Removing:  Keys file \"$check_file\"" "remove"
-                rm "$check_file"
+                if [ -f "$check_file" ]; then
+                  rm "$check_file"
+                fi
               fi
             else
               if [ "$audit_mode" = 1 ]; then

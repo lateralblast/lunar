@@ -57,7 +57,9 @@ audit_gnome_screen_lock () {
             dconf update
           fi          
           if [ "$audit_mode" = 2 ]; then
-            rm "$check_file"
+            if [ -f "$check_file" ]; then
+              rm "$check_file"
+            fi
           fi
         fi
       fi

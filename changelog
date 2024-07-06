@@ -1649,3 +1649,7 @@
 # Cleaned up some commands
 # 9.1.7: Sat Jul  6 11:47:47 AM AEST 2024
 # Fixed temp_file assignment
+# 9.1.8: Sat Jul  6 14:10:53 AEST 2024
+# Disable results output when running in restore mode
+# 9.1.9: Sat Jul  6 14:56:17 AEST 2024
+# Added file checks for deleting some files

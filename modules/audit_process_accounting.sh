@@ -33,7 +33,9 @@ audit_process_accounting () {
       if [ "$audit_mode" = 2 ]; then
         log_file="$restore_dir/acct.log"
         if [ -f "$log_file" ]; then
-          rm "$check_file"
+          if [ -f "$check_file" ]; then
+            rm "$check_file"
+          fi
           verbose_message "Process accounting to disabled" "restore"
           verbose_message "Stoping Process accounting"     "notice"
           eval "$init_file stop > /dev/null 2>&1"

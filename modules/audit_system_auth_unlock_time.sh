@@ -54,7 +54,9 @@ audit_system_auth_unlock_time () {
               else
                 awk '( $1 == "auth" && $2 == "required" && $3 == "pam_tally2.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail audit silent deny=5 unlock_time=900"; print $0; next };' < "$temp_file" > "$check_file"
               fi
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             if [ "$audit_mode" = "1" ]; then

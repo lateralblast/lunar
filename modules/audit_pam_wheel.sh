@@ -53,7 +53,9 @@ audit_pam_wheel () {
             verbose_message "Setting:   Su to require wheel group membership in PAM in \"$check_file\""
             cp "$check_file" "$temp_file"
             awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' < "$temp_file" > $check_file
-            rm "$temp_file"
+            if [ -f "$tuse_file" ]; then
+              rm "$temp_file"
+            fi
           fi
         else
           if [ "$audit_mode" = "1" ]; then

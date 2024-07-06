@@ -61,7 +61,9 @@ audit_mount_fdi () {
             echo '  </device>' >> "$temp_file"
             echo '</deviceinfo>' >> "$temp_file"
             cat "$temp_file" > "$check_file"
-            rm "$temp_file"
+            if [ -f "$temp_file" ]; then
+              rm "$temp_file"
+            fi
           fi
         else
           if [ "$audit_mode" = 1 ]; then

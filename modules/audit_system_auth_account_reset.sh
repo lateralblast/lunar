@@ -34,7 +34,9 @@ audit_system_auth_account_reset () {
                 verbose_message  "Account reset entry in \"$check_file\"" "set"
                 cp "$check_file" "$temp_file"
                 awk '( $1 == "account" && $2 == "required" && $3 == "pam_faillock.so" ) { print "auth\trequired\tpam_failback.so onerr=fail no_magic_root reset"; print $0; next };' < "$temp_file" > "$check_file"
-                rm "$temp_file"
+                if [ -f "$temp_file" ]; then
+                  rm "$temp_file"
+                fi
               fi
             else
               if [ "$audit_mode" = "1" ]; then
@@ -48,7 +50,9 @@ audit_system_auth_account_reset () {
                 verbose_message  "Account reset entry in \"$check_file\"" "set"
                 cp "$check_file" "$temp_file"
                 awk '( $1 == "account" && $2 == "required" && $3 == "pam_tally2.so" ) { print "auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset"; print $0; next };' < "$temp_file" > "$check_file"
-                rm "$temp_file"
+                if [ -f "$temp_file" ]; then
+                  rm "$temp_file"
+                fi
               fi
             fi 
           else

@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.1.7
+# Version:      9.1.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -954,9 +954,11 @@ print_results () {
     fi
     echo "Reboot:     $reboot"
   fi
-  echo "Tests:      $total"
-  echo "Passes:     $secure"
-  echo "Warnings:   $insecure"
+  if [ ! "$audit_mode" = 2 ]; then
+    echo "Tests:      $total"
+    echo "Passes:     $secure"
+    echo "Warnings:   $insecure"
+  fi
   if [ "$audit_mode" = 0 ]; then
     echo "Backup:     $work_dir"
     echo "Restore:    $0 -u $date_suffix"

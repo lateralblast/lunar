@@ -53,7 +53,9 @@ audit_pam_rhosts () {
               verbose_message "Rhost authentication to disabled in $check_file" "set"
               sed -e 's/^.*pam_rhosts_auth/#&/' "$check_file" > "$temp_file"
               cat "$temp_file" > "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
               if [ "$os_version" != "11" ]; then
                 pkgchk -f -n -p "$check_file" 2> /dev/null
               else
@@ -103,7 +105,9 @@ audit_pam_rhosts () {
                 verbose_message "Setting:   Rhost authentication to disabled in \"$check_file\""
                 sed -e 's/^.*rhosts_auth/#&/' < "$check_file" > "$temp_file"
                 cat "$temp_file" > "$check_file"
-                rm "$temp_file"
+                if [ -f "$temp_file" ]; then
+                  rm "$temp_file"
+                fi
               fi
             else
               increment_secure "Rhost authentication disabled in $check_file"

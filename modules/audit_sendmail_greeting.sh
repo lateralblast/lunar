@@ -30,7 +30,9 @@ audit_sendmail_greeting () {
             verbose_message  "Sendmail greeting to have no version information" "set"
             cp "$check_file" "$temp_file"
             awk '/O SmtpGreetingMessage=/ { print "O SmtpGreetingMessage=Mail Server Ready; $b"; next} { print }' < "$temp_file" > "$check_file"
-            rm $temp_file
+            if [ -f "$temp_file" ]; then
+              rm $temp_file
+            fi
           fi
         else
           if [ "$audit_mode" = "1" ]; then
@@ -52,7 +54,9 @@ audit_sendmail_greeting () {
             verbose_message  "Sendmail to have no help information" "set"
             cp "$check_file" "$temp_file"
             sed 's/^O HelpFile=/#O HelpFile=/' < "$temp_file" > "$check_file"
-            rm  "$temp_file"
+            if [ -f "$temp_file" ]; then
+              rm  "$temp_file"
+            fi
           fi
         else
           if [ "$audit_mode" = "1" ]; then

@@ -43,15 +43,15 @@ check_rctcp() {
           if [ "$correct_value" = "off" ]; then
             verbose_message "chrctcp -d $service_name" "fix"
             verbose_message "stopsrc -s $service_name" "fix"
-            verbose_message "sed \"/$service_name /s/^/#/g\" < /etc/rc.tcpip > /tmp/zzz" "fix"
-            verbose_message "cat /tmp/zzz > /etc/rc.tcpip" "fix"
-            verbose_message "rm /tmp/zzz" "fix"
+            verbose_message "sed \"/$service_name /s/^/#/g\" < /etc/rc.tcpip > $temp_file" "fix"
+            verbose_message "cat $temp_file > /etc/rc.tcpip" "fix"
+            verbose_message "rm $temp_file" "fix"
           else
             verbose_message "chrctcp -a $service_name" "fix"
             verbose_message "startsrc -s $service_name" "fix"
-            verbose_message "sed \"/$service_name /s/^#.//g\" < /etc/rc.tcpip > /tmp/zzz" "fix"
-            verbose_message "cat /tmp/zzz > /etc/rc.tcpip" "fix"
-            verbose_message "rm /tmp/zzz" "fix"
+            verbose_message "sed \"/$service_name /s/^#.//g\" < /etc/rc.tcpip > $temp_file" "fix"
+            verbose_message "cat $temp_file > /etc/rc.tcpip" "fix"
+            verbose_message "rm $temp_file" "fix"
           fi
         fi
         if [ "$audit_mode" = 0 ]; then
@@ -61,15 +61,15 @@ check_rctcp() {
           if [ "$correct_value" = "off" ]; then
             chrctcp -d "$service_name"
             stopsrc -s "$service_name"
-            sed "/$service_name /s/^/#/g" < /etc/rc.tcpip > /tmp/zzz
-            cat /tmp/zzz > /etc/rc.tcpip
-            rm /tmp/zzz
+            sed "/$service_name /s/^/#/g" < /etc/rc.tcpip > "$temp_file"
+            cat "$temp_file" > /etc/rc.tcpip
+            rm "$temp_file"
           else
             chrctcp -a "$service_name"
             startsrc -s "$service_name"
-            sed "/$service_name /s/^#.//g" < /etc/rc.tcpip > /tmp/zzz
-            cat /tmp/zzz > /etc/rc.tcpip
-            rm /tmp/zzz
+            sed "/$service_name /s/^#.//g" < /etc/rc.tcpip > "$temp_file"
+            cat "$temp_file" > /etc/rc.tcpip
+            rm "$temp_file"
           fi
         fi
       else
@@ -86,15 +86,15 @@ check_rctcp() {
           if [ "$previous_value" = "off" ]; then
             chrctcp -d "$service_name"
             stopsrc -s "$service_name"
-            sed "/$service_name /s/^/#/g" < /etc/rc.tcpip > /tmp/zzz
-            cat /tmp/zzz > /etc/rc.tcpip
-            rm /tmp/zzz
+            sed "/$service_name /s/^/#/g" < /etc/rc.tcpip > "$temp_file"
+            cat "$temp_file" > /etc/rc.tcpip
+            rm "$temp_file"
           else
             chrctcp -a "$service_name"
             startsrc -s "$service_name"
-            sed "/$service_name /s/^#.//g" < /etc/rc.tcpip > /tmp/zzz
-            cat /tmp/zzz > /etc/rc.tcpip
-            rm /tmp/zzz
+            sed "/$service_name /s/^#.//g" < /etc/rc.tcpip > "$temp_file"
+            cat "$temp_file" > /etc/rc.tcpip
+            rm "$temp_file"
           fi
         fi
       fi

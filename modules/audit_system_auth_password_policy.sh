@@ -35,7 +35,9 @@ audit_system_auth_password_policy () {
               verbose_message  "Password \"$search_string\" to \"$search_value\" in \"$check_file\"" "set"
               cp "$check_file" "$temp_file"
               awk '( $1 == "password" && $2 == "requisite" && $3 == "pam_cracklib.so" ) { print $0  " dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9"; next }; { print }' < "$temp_file" > "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             if [ "$audit_mode" = "1" ]; then

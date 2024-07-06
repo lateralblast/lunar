@@ -33,7 +33,9 @@ audit_system_auth_use_uid () {
             verbose_message  "Setting:   The use of su to be restricted by sudo in $check_file"
             cp "$check_file" "$temp_file"
             sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' < "$temp_file" > "$check_file"
-            rm "$temp_file"
+            if [ -f "$temp_file" ]; then
+              rm "$temp_file"
+            fi
           fi
         else
           if [ "$audit_mode" = "1" ]; then

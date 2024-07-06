@@ -40,7 +40,9 @@ audit_nis_entries () {
                   pkg fix $( pkg search "$check_file" | grep pkg | awk '{print $4}' )
                 fi
               fi
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           done
           if [ "$file_entry" = "" ]; then

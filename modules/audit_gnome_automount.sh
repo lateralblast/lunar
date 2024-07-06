@@ -53,7 +53,9 @@ audit_gnome_automount () {
             dconf update
           fi          
           if [ "$audit_mode" = 2 ]; then
-            rm "$check_file"
+            if [ -f "$check_file" ]; then
+              rm "$check_file"
+            fi
           fi
         fi
         check_file="/etc/dconf/db/ibus.d/locks/00-media-automount"
@@ -87,7 +89,9 @@ audit_gnome_automount () {
             dconf update
           fi          
           if [ "$audit_mode" = 2 ]; then
-            rm "$check_file"
+            if [ -f "$check_file" ]; then
+              rm "$check_file"
+            fi
           fi
         fi
       fi

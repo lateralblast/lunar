@@ -29,7 +29,9 @@ audit_system_auth_nullok () {
               verbose_message  "Removing \"nullok\" entries from \"$check_file\"" "set"
               cp "$check_file" "$temp_file"
               sed 's/ nullok//' < "$temp_file" > "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             if [ "$audit_mode" = "1" ]; then

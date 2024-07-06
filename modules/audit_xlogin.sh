@@ -89,7 +89,8 @@ audit_xlogin () {
              backup_file $check_file
              awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue="$greet_mesg" < "$check_file" > "$temp_file"
              cat "$temp_file" > "$check_file"
-             rm "$temp_file"
+             if [ -f "$temp_file" ]; then
+               rm "$temp_file"
              fi
           else
             increment_secure "File \"$check_file\" has security message"
@@ -116,7 +117,9 @@ audit_xlogin () {
                backup_file $check_file
                awk '/GreetString=/ { print "GreetString=" GreetString; next }; { print }' GreetString="$greet_mesg" < "$check_file" > "$temp_file"
                cat "$temp_file" > "$check_file"
-               rm "$temp_file"
+               if [ -f "$temp_file" ]; then
+                 rm "$temp_file"
+               fi
              fi
           else
             increment_secure "File $check_file has security message"
@@ -144,7 +147,9 @@ audit_xlogin () {
               awk '( $1 !~ /^#/ && $3 == "/usr/X11R6/bin/X" ) { $3 = $3 " -nolisten tcp" }; { print }' < "$check_file" > "$temp_file"
               awk '( $1 !~ /^#/ && $3 == "/usr/bin/X" ) { $3 = $3 " -nolisten tcp" }; { print }'< "$check_file"  > "$temp_file"
               cat "$temp_file" > "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             increment_secure "X11 nolisten directive found in file \"$check_file\""

@@ -41,7 +41,9 @@ audit_core_dumps () {
               else
                 touch "$check_file"
                 find "$check_file" | cpio -pdm "$work_dir" 2> /dev/null
-                rm "$check_file"
+                if [ -f "$check_file" ]; then
+                  rm "$check_file"
+                fi
                 log_file="$work_dir/$check_file"
                 coreadm | sed -e 's/^ *//g' | sed 's/ /_/g' | sed 's/:_/:/g' | awk -F: '{ print $1" "$2 }' | while read -r option value; do
                   if [ "$option" = "global_core_file_pattern" ]; then

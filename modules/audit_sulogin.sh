@@ -65,7 +65,9 @@ audit_sulogin () {
             backup_file $check_file
             awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' < "$check_file" > "$temp_file"
             cat "$temp_file" > "$check_file"
-            rm "$temp_file"
+            if [ -f "$temp_file" ]; then
+              rm "$temp_file"
+            fi
           fi
         else
           if [ "$audit_mode" = 1 ]; then

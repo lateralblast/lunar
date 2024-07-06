@@ -33,7 +33,9 @@ audit_system_auth_password_hashing () {
               verbose_message  "Password minimum length in \"$check_file\"" "set"
               cp "$check_file" "$temp_file"
               sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < "$temp_file" > "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             if [ "$audit_mode" = "1" ]; then

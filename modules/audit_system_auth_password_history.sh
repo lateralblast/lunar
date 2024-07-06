@@ -40,7 +40,9 @@ audit_system_auth_password_history () {
               verbose_message  "Password entry in $check_file" "set"
               cp "$check_file" "$temp_file"
               awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " $search_string=$search_value"; next };' < "$temp_file" > "$check_file"
-              rm "$temp_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
             fi
           else
             if [ "$audit_mode" = "1" ]; then
