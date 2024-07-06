@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.1.6
+# Version:      9.1.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -401,6 +401,9 @@ check_environment () {
   fi
   if [ "$temp_dir" = "" ]; then
     temp_dir="$base_dir/tmp"
+  fi
+  if [ "$temp_file" = "" ]; then
+    temp_file="$temp_dir/$pkg_suffix.tmp"
   fi
   if [ "$work_dir" = "" ]; then
     work_dir="$base_dir/$date_suffix"
@@ -1029,6 +1032,7 @@ Usage: ${0##*/} [OPTIONS...]
  -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
  -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
  -D | --dockertests  List all Docker functions available to selective mode
+ -F | --tempfile     Temporary file to use for operations
  -h | --help         Display help
  -H | --usage        Display usage
  -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
@@ -1228,6 +1232,10 @@ do
     -e|--host)
       do_remote=1
       ext_host="$2"
+      shift 2
+      ;;
+    -F|--tempfile)
+      temp_file="$2"
       shift 2
       ;;
     -h|--help)
