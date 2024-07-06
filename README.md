@@ -140,6 +140,7 @@ Usage: ./lunar.sh [OPTIONS...]
  -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
  -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
  -D | --dockertests  List all Docker functions available to selective mode
+ -F | --tempfile     Temporary file to use for operations
  -h | --help         Display help
  -H | --usage        Display usage
  -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
