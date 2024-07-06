@@ -1653,3 +1653,5 @@
 # Disable results output when running in restore mode
 # 9.1.9: Sat Jul  6 14:56:17 AEST 2024
 # Added file checks for deleting some files
+# 9.2.0: Sat Jul  6 15:07:51 AEST 2024
+# Bug fixes

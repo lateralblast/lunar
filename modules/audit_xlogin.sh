@@ -75,23 +75,24 @@ audit_xlogin () {
       if [ -f "$check_file" ]; then
         verbose_message "X Security Message" "check"
         if [ "$audit_mode" != 2 ]; then
-          greet_check=$( grep -c 'private system' $check_file )
-          if [ "$greet_check" != 1 ]; then
-           verbose_message "File $check_file for security message" "check"
-           greet_mesg="This is a private system --- Authorized use only!"
-           if [ "$audit_mode" = 1 ]; then
-             increment_insecure "File $check_file does not have a security message"
-             verbose_message "awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" < $check_file > $temp_file" "fix"
-             verbose_message "cat $temp_file > $check_file" "fix"
-             verbose_message "rm $temp_file"                "fix"
-           else
-             verbose_message "Security message in $check_file" "set"
-             backup_file $check_file
-             awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue="$greet_mesg" < "$check_file" > "$temp_file"
-             cat "$temp_file" > "$check_file"
-             if [ -f "$temp_file" ]; then
-               rm "$temp_file"
-             fi
+          greet_check=$( grep 'private system' "$check_file" )
+          if [ -z "$greet_check" ]; then
+            verbose_message "File $check_file for security message" "check"
+            greet_mesg="This is a private system --- Authorized use only!"
+            if [ "$audit_mode" = 1 ]; then
+              increment_insecure "File $check_file does not have a security message"
+              verbose_message "awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"$greet_mesg\" < $check_file > $temp_file" "fix"
+              verbose_message "cat $temp_file > $check_file" "fix"
+              verbose_message "rm $temp_file"                "fix"
+            else
+              verbose_message "Security message in $check_file" "set"
+              backup_file $check_file
+              awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue="$greet_mesg" < "$check_file" > "$temp_file"
+              cat "$temp_file" > "$check_file"
+              if [ -f "$temp_file" ]; then
+                rm "$temp_file"
+              fi
+            fi
           else
             increment_secure "File \"$check_file\" has security message"
           fi
