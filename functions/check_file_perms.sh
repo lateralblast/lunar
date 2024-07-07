@@ -48,7 +48,7 @@ check_file_perms () {
   fi
   if [ ! -e "$check_file" ]; then
     if [ "$audit_mode" != 2 ]; then
-      verbose_message "File \"$check_file\" does not exist" "notice"
+      verbose_message "File \"$check_file\" does not exist" "warn"
     fi
     return
   fi

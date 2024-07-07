@@ -27,6 +27,6 @@ backup_file () {
       fi
     fi
   else
-    verbose_message "File \"$check_file\" does not exist"
+    verbose_message "File \"$check_file\" does not exist" "warn"
   fi
 }

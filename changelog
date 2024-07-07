@@ -1669,3 +1669,5 @@
 # Improved gsettings function
 # 9.2.7: Sun Jul  7 10:07:11 AM AEST 2024
 # Improved file backup function
+# 9.2.8: Sun Jul  7 10:12:53 AM AEST 2024
+# Made file warnings consistent when file doesn't exist
