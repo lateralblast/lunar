@@ -1671,3 +1671,5 @@
 # Improved file backup function
 # 9.2.8: Sun Jul  7 10:12:53 AM AEST 2024
 # Made file warnings consistent when file doesn't exist
+# 9.2.9: Mon Jul  8 12:32:14 AEST 2024
+# Improved aide check
