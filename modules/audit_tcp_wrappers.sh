@@ -54,10 +54,15 @@ audit_tcp_wrappers () {
     check_file_value "is" "/etc/hosts.deny"  "ALL" "colon" " ALL"       "hash"
     check_file_value "is" "/etc/hosts.allow" "ALL" "colon" " localhost" "hash"
     check_file_value "is" "/etc/hosts.allow" "ALL" "colon" " 127.0.0.1" "hash"
+    ip_list=$( who | cut -d"(" -f2 |cut -d")" -f1 |sort -u )
+    for ip_address in $ip_list; do
+      check_file_value "is" "/etc/hosts.allow" "ALL" "colon" " $ip_address" "hash"
+    done
     if [ ! -f "$check_file" ]; then
       check=$( command -v ifconfig 2> /dev/null )
       if [ "$check" ]; then
-        for ip_address in $( ifconfig -a | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print $2}' | cut -f2 -d":" ); do
+        ip_list=$( ifconfig -a | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print $2}' | cut -f2 -d":" )
+        for ip_address in $ip_list; do
           netmask=$( ifconfig -a | grep '$ip_address' | awk '{print $3}' | cut -f2 -d":" )
           for daemon in "$tcpd_allow"; do
             check_file_value "is" "$check_file" "$daemon" "colon" " $ip_address/$netmask" "hash"
@@ -66,7 +71,8 @@ audit_tcp_wrappers () {
       else
         check=$( command -v ip 2> /dev/null )
         if [ "$check" ]; then
-          for ip_value in $( ip addr |grep 'inet [0-9]' |grep -v ' 127.' |awk '{print $2}' ); do
+          ip_values=$( ip addr |grep 'inet [0-9]' |grep -v ' 127.' |awk '{print $2}' )
+          for ip_value in $ip_values; do
             set -- $( echo "$ip_value" |awk -F"/" '{print $1" "$2 }' )
             ip_address="$1"
             cidr="$2"
