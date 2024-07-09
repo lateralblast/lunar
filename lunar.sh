@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.3.0
+# Version:      9.3.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -115,7 +115,9 @@ use_expr="no"
 use_finger="yes"
 test_os="none"
 test_tag="none"
+action="none"
 do_compose=0
+do_multipass=0
 do_shell=0
 do_remote=0
 my_id=$(id -u)
@@ -1029,11 +1031,12 @@ Usage: ${0##*/} [OPTIONS...]
                      [includes home directory and filesystem checks which take some time]
  -b | --backups      List backup files
  -B | --basedir      Base directory for work
- -c | --run          Run docker-compose testing suite (runs lunar in audit mode without making changes)
+ -c | --distro       Distro/Code name (used with docker/multipass)
  -C | --shell        Run docker-compose testing suite (drops to shell in order to do more testing)
  -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
  -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
  -D | --dockertests  List all Docker functions available to selective mode
+ -f | --action       Action (e.g delete - used with multipass) 
  -F | --tempfile     Temporary file to use for operations
  -h | --help         Display help
  -H | --usage        Display usage
@@ -1041,9 +1044,10 @@ Usage: ${0##*/} [OPTIONS...]
  -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
  -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
                      [includes home directory and filesystem checks which take some time]
+ -m | --machine      Create and run in a VM (docker/multipass)
  -M | --workdir      Set work directory
  -n | --ansible      Output ansible code segments
- -o | --name         Set docker OS or container name
+ -o | --name         Set docker/multipass OS or container name
  -O | --osinfo       Print OS information
  -p | --previous     Show previous versions of file
  -S | --unixtests    List all UNIX functions available to selective mode
@@ -1210,10 +1214,9 @@ do
       base_dir="$2"
       shift 2
       ;;
-    -c|--run)
-      do_compose=1
-      do_shell=0
-      shift
+    -c|--codename|--distro)
+      test_distro="$2"
+      shift 2
       ;;
     -C|--shell)
       do_compose=1
@@ -1236,6 +1239,10 @@ do
       ext_host="$2"
       shift 2
       ;;
+    -f|--action)
+      action="$2"
+      shift 2
+      ;; 
     -F|--tempfile)
       temp_file="$2"
       shift 2
@@ -1273,11 +1280,24 @@ do
       work_dir="$2"
       shift 2
       ;;
+    -m|--machine|--vm)
+      vm_type="$2"
+      case $vm_type in
+        docker)
+          do_compose=1
+          do_shell=0
+          ;;
+        multipass)
+          do_multipass=1
+          ;;
+      esac
+      shift 2
+      ;;
     -n|--ansible)
       ansible=1
       shift
       ;;
-    -o|--name)
+    -o|--os|osver)
       test_os="$2"
       shift 2
       ;;
@@ -1320,7 +1340,7 @@ do
       shift
       exit
       ;;
-    -t|--tag)
+    -t|--tag|--name)
       test_tag="$2"
       shift 2
       ;;
@@ -1386,6 +1406,8 @@ if [ "$do_audit" = 1 ]; then
   fi
 fi
 
+# Run script remotely 
+
 if [ "$do_remote" = 1 ]; then
   echo "Copying $app_dir to $ext_host:/tmp"
   scp -r "$app_dir" "$ext_host":/tmp
@@ -1394,12 +1416,52 @@ if [ "$do_remote" = 1 ]; then
   exit
 fi
 
-if [ "$do_compose" = 1 ]; then
+# Run in docker or multipass
+
+if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
   if [ ! "$test_os" = "none" ] && [ ! "$test_tag" = "none" ]; then
-    if [ "$do_shell" = 0 ]; then
-      cd "$app_dir" || exit ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-audit
+    if [ "$do_compose" = 1 ]; then
+      d_test=$(command -v docker-compose )
+      if [ -n "$d_test" ]; then
+        if [ "$do_shell" = 0 ]; then
+          cd "$app_dir" || exit ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-audit
+        else
+          cd "$app_dir" || exit ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-shell
+        fi
+      else
+        verbose_message "Command docker-compose not found" "warn"
+        exit
+      fi
     else
-      cd "$app_dir" || exit ; export OS_NAME="$test_os" ; export OS_VERSION="$test_tag" ; docker-compose run test-shell
+      mp_test=$(command -v multipass)
+      if [ -n "$mp_test" ]
+        vm_test=$(multipass list |awk '{print $1}' |grep "$test_tag" )
+        if [ -n "$vm_test" ]; then
+          if [ "$action" = "delete" ]; then
+            multipass delete "$test_tag"
+            multipass purge
+          else
+            if [ "$do_shell" = 0 ]; then
+            else
+            fi
+          fi
+        else 
+          if [ "$action" = "delete" ]; then
+            verbose_message "Multipass VM \"$test_tag\" does not exist"
+            exit
+          else
+            multipass launch "$test_os" --name "$test_tag"
+          fi
+        fi
+        if [ "$do_shell" = 0 ]; then
+          ;;
+        else
+          ;;
+        fi
+      else
+        verbose_message "Command multipass not found" "warn"
+        exit
+      fi
     fi
   else
     echo "OS name or version not given"

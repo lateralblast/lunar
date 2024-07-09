@@ -1675,3 +1675,5 @@
 # Improved aide check
 # 9.3.0: Mon Jul  8 13:54:59 AEST 2024
 # Improved tcp_wrappers check
+# 9.3.1: Tue  9 Jul 2024 12:19:45 AEST
+# Initial clean up of options to allow other containers besides docker
