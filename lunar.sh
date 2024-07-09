@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.3.1
+# Version:      9.3.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -128,6 +128,7 @@ do_audit=0
 do_fs=0
 audit_mode=1
 audit_type="local"
+git_url="https://github.com/lateralblast/lunar.git"
 
 # Disable daemons
 
@@ -1038,6 +1039,7 @@ Usage: ${0##*/} [OPTIONS...]
  -D | --dockertests  List all Docker functions available to selective mode
  -f | --action       Action (e.g delete - used with multipass) 
  -F | --tempfile     Temporary file to use for operations
+ -g | --giturl       Git URL for code to copy to container
  -h | --help         Display help
  -H | --usage        Display usage
  -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
@@ -1243,6 +1245,10 @@ do
       action="$2"
       shift 2
       ;; 
+    -g|--giturl)
+      git_url="$2"
+      shift 2
+      ;;
     -F|--tempfile)
       temp_file="$2"
       shift 2
@@ -1434,7 +1440,7 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
       fi
     else
       mp_test=$(command -v multipass)
-      if [ -n "$mp_test" ]
+      if [ -n "$mp_test" ]; then
         vm_test=$(multipass list |awk '{print $1}' |grep "$test_tag" )
         if [ -n "$vm_test" ]; then
           if [ "$action" = "delete" ]; then
@@ -1442,7 +1448,12 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
             multipass purge
           else
             if [ "$do_shell" = 0 ]; then
+              multipass shell "$test_tag"
             else
+              if [ "$action" = "refresh" ]; then
+                multipass exec "$test_tag" -- bash -c "rm -rf lunar"
+              fi
+              multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh -a"
             fi
           fi
         else 
@@ -1451,12 +1462,9 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
             exit
           else
             multipass launch "$test_os" --name "$test_tag"
+            multipass exec "$test_tag" -- bash -c "git clone $git_url"
+            multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh -a"
           fi
-        fi
-        if [ "$do_shell" = 0 ]; then
-          ;;
-        else
-          ;;
         fi
       else
         verbose_message "Command multipass not found" "warn"
