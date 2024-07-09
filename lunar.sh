@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.3.2
+# Version:      9.3.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -93,7 +93,7 @@ total=0
 syslog_server=""
 syslog_logdir=""
 pkg_suffix="lunar"
-def_base_dir="/var/log/$pkg_suffix"
+base_dir="/var/log/$pkg_suffix"
 date_suffix=$( date +%d_%m_%Y_%H_%M_%S )
 def_work_dir="$def_base_dir/$date_suffix"
 def_temp_dir="$def_base_dir/tmp"
@@ -197,6 +197,27 @@ check_virtual_platform () {
   echo "Platform:   $virtual"
 }
 
+# get_ubuntu_codename
+#
+# Get Ubuntu Codename 
+#.
+
+get_ubuntu_codename () {
+  case "$1" in
+    "20.04")
+      ubuntu_codename="focal"
+      ;;
+    "22.04")
+      ubuntu_codename="focal"
+      ;;
+    "24.04")
+      ubuntu_codename="noble"
+      ;;
+    *)
+      ubuntu_codename="lts"    
+      ;;
+  esac
+}
 
 # check_os_release
 #
@@ -616,7 +637,9 @@ print_previous () {
     echo ""
     echo "Printing previous settings:"
     echo ""
-    find "$base_dir" -type f -print -exec cat -n {} \;
+    if [ -d "$base_dir" ]; then
+      find "$base_dir" -type f -print -exec cat -n {} \;
+    fi
   fi
 }
 
@@ -986,11 +1009,23 @@ print_tests () {
   echo ""
   dir_list=$( ls "$modules_dir" ) 
   for dir_entry in $dir_list ; do
-    if [ "$test_string" = "AWS" ]; then
-      module_name=$( echo "$dir_entry" | grep -v "^full_" |grep "aws" |sed "s/\.sh//g" )
-    else
-      module_name=$( echo "$dir_entry" | grep -v "^full_" |grep -v "aws" |sed "s/\.sh//g" )
-    fi
+    case $test_string in
+      AWS|aws)
+        module_name=$( echo "$dir_entry" | grep -v "^full_" |grep "aws" |sed "s/\.sh//g" )
+        ;;
+      Docker|docker)
+        module_name=$( echo "$dir_entry" | grep -v "^full_" |grep "docker" |sed "s/\.sh//g" )
+        ;;
+      Kubernetes|kubernetes|k8s)
+        module_name=$( echo "$dir_entry" | grep -v "^full_" |grep "kubernetes" |sed "s/\.sh//g" )
+        ;;
+      All|all)
+        module_name=$( echo "$dir_entry" | grep -v "^full_" |sed "s/\.sh//g" )
+        ;;
+      *)
+        module_name=$( echo "$dir_entry" | grep -v "^full_" |grep "$test_string" |sed "s/\.sh//g" )
+        ;;
+    esac
     if [ -n "$module_name" ]; then
       echo "$module_name"
     fi
@@ -1126,7 +1161,9 @@ print_backups () {
   echo ""
   echo "Previous backups:"
   echo ""
-  ls "$base_dir"
+  if [ -d "$base_dir" ]; then
+    find "$base_dir" -maxdepth 1
+  fi
 }
 
 # If given no command line arguments print usage information
@@ -1177,31 +1214,33 @@ do
       ;;
     --list)
       list="$2"
-      case $list in
-        changes)
-          print_changes
-          ;;
-        backups)
-          print_backups 
-          ;;
-      esac
-      shift 2
+      if [ -z "$list" ]; then
+        print_changes
+        print_backups
+        shift
+        exit
+      else
+        case $list in
+          changes)
+            print_changes
+            ;;
+          backups)
+            print_backups 
+            ;;
+        esac
+        shift 2
+      fi
       exit
       ;;
     --tests|--printtests)
       tests="$2" 
-      case $tests in
-        UNIX|unix)
-          print_tests "UNIX"
-          ;;
-        AWS|aws)
-          print_tests "AWS"
-          ;;
-        Docker|docker)
-          print_tests "Docker"
-          ;;
-      esac
-      shift 2
+      if [ -z "$tests" ]; then
+        print_tests "All"
+      else
+        print_tests "$tests"
+        shift 2
+      fi
+      exit
       ;;
     --type)
       audit_type="$2"
@@ -1425,6 +1464,15 @@ fi
 # Run in docker or multipass
 
 if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
+  if [ "$do_multipass" = 1 ]; then
+    get_ubuntu_codename "$test_os"
+    test_os="$ubuntu_codename"
+    if [ "$test_tag" = "none" ]; then
+      if [ ! "$test_os" = "none" ]; then
+        test_tag="$pkg_suffix-$test_os"
+      fi
+    fi
+  fi
   if [ ! "$test_os" = "none" ] && [ ! "$test_tag" = "none" ]; then
     if [ "$do_compose" = 1 ]; then
       d_test=$(command -v docker-compose )
@@ -1447,13 +1495,19 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
             multipass delete "$test_tag"
             multipass purge
           else
-            if [ "$do_shell" = 0 ]; then
+            if [ "$do_shell" = 1 ] || [ "$action" = "shell" ]; then
               multipass shell "$test_tag"
             else
               if [ "$action" = "refresh" ]; then
                 multipass exec "$test_tag" -- bash -c "rm -rf lunar"
+                multipass exec "$test_tag" -- bash -c "git clone $git_url"
               fi
-              multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh -a"
+              if [ "$action" = "audit" ]; then
+                multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh --audit"
+              fi
+              if [ "$action" = "lockdown" ]; then
+                multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh --lockdown"
+              fi
             fi
           fi
         else 
@@ -1461,9 +1515,11 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
             verbose_message "Multipass VM \"$test_tag\" does not exist"
             exit
           else
-            multipass launch "$test_os" --name "$test_tag"
-            multipass exec "$test_tag" -- bash -c "git clone $git_url"
-            multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh -a"
+            if [ "$action" = "create" ]; then
+              multipass launch "$test_os" --name "$test_tag"
+              multipass exec "$test_tag" -- bash -c "git clone $git_url"
+              exit
+            fi
           fi
         fi
       else

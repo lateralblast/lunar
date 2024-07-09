@@ -1679,3 +1679,5 @@
 # Initial clean up of options to allow other containers besides docker
 # 9.3.2: Tue Jul  9 14:47:38 AEST 2024
 # Bug fixes
+# 9.3.3: Tue Jul  9 21:23:27 AEST 2024
+# Cleaned up tests/list options, added some multipass support for testing and updated documentation

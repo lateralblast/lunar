@@ -15,7 +15,7 @@ Do not use the lockdown functionality at the moment, it needs testing.
 Version
 -------
 
-Current version 9.3.2
+Current version 9.3.3
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -54,14 +54,15 @@ Supported Operating Systems
 The following Operating Systems are supported:
 
 - Linux
-  - RHEL 5,6,7
-  - Centos 5,6,7
+  - Rocky Linux
+  - RHEL
+  - Centos
   - Scientific Linux
-  - SLES 10,11,12
+  - SLES
   - Debian
   - Ubuntu
   - Amazon Linux
-- Solaris (6,7,8,9,10 and 11)
+- Solaris
 - Mac OS X
 - FreeBSD (needs more testing)
 - AIX (needs more testing)
@@ -135,21 +136,24 @@ Usage: ./lunar.sh [OPTIONS...]
                      [includes home directory and filesystem checks which take some time]
  -b | --backups      List backup files
  -B | --basedir      Base directory for work
- -c | --run          Run docker-compose testing suite (runs lunar in audit mode without making changes)
+ -c | --distro       Distro/Code name (used with docker/multipass)
  -C | --shell        Run docker-compose testing suite (drops to shell in order to do more testing)
  -e | --host         Run in audit mode on external host (for Operating Systems - no changes made to system)
  -d | --dockeraudit  Run in audit mode (for Docker - no changes made to system)
  -D | --dockertests  List all Docker functions available to selective mode
+ -f | --action       Action (e.g delete - used with multipass)
  -F | --tempfile     Temporary file to use for operations
+ -g | --giturl       Git URL for code to copy to container
  -h | --help         Display help
  -H | --usage        Display usage
  -k | --kubeaudit    Run in audit mode (for Kubernetes - no changes made to system)
  -l | --lockdown     Run in lockdown mode (for Operating Systems - changes made to system)
  -L | --fulllock     Run in lockdown mode (for Operating Systems - changes made to system)
                      [includes home directory and filesystem checks which take some time]
+ -m | --machine      Create and run in a VM (docker/multipass)
  -M | --workdir      Set work directory
  -n | --ansible      Output ansible code segments
- -o | --name         Set docker OS or container name
+ -o | --name         Set docker/multipass OS or container name
  -O | --osinfo       Print OS information
  -p | --previous     Show previous versions of file
  -S | --unixtests    List all UNIX functions available to selective mode
@@ -166,7 +170,44 @@ Usage: ./lunar.sh [OPTIONS...]
  -V | --version      Display version
  -x | --awsrec       Run in recommendations mode (for AWS - no changes made to system)
  -z | --lockselect   Run specified audit function in lockdown mode
- -Z | --changes      Show changes previously made to system```
+ -Z | --changes      Show changes previously made to system
+
+```
+
+Examples
+--------
+
+Perform full audit (without recursive file system checks):
+
+```
+./lunar.sh --audit
+```
+
+List tests:
+
+```
+./lunar.sh --tests
+```
+
+List AWS tests:
+
+```
+./lunar.sh --tests aws
+```
+
+Do a specific test:
+
+```
+./lunar.sh --audit --select remote_shell
+```
+
+Create a Ubuntu 24.04 multipass VM for testing:
+
+```
+./lunar.sh --action create --machine multipass --osver 24.04 
+```
+
+
 
 License
 -------
