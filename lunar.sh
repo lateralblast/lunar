@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.3.3
+# Version:      9.3.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -700,6 +700,9 @@ verbose_message () {
       notice)
         echo "Notice:     $text"
         ;;
+      delete|deleting)
+        echo "Deleting:   $text"
+        ;;
       install|installing)
         echo "Installing: $text"
         ;;
@@ -1186,24 +1189,6 @@ do
       do_fs=1
       shift
       ;;
-    --mode)
-      mode_value="$2"
-      case $mode_value in
-        audit)
-          audit_mode=1
-          ;;
-        lockdown)
-          audit_mode=0
-          ;;
-        undo|restore)
-          audit_mode=2
-          ;;
-        *)
-          audit_mode=1
-          ;;
-      esac
-      shift 2
-      ;;
     --dofiles)
       do_fs=1
       shift
@@ -1282,6 +1267,31 @@ do
       ;;
     -f|--action)
       action="$2"
+      case $action in
+        audit)
+          audit_mode=1
+          do_fs=0
+          ;;
+        fullaudit)
+          audit_mode=1
+          do_fs=2
+          ;;
+        lockdown)
+          audit_mode=0
+          do_fs=0
+          ;;
+        lockdown)
+          audit_mode=0
+          do_fs=1
+          ;;
+        undo|restore)
+          audit_mode=2
+          ;;
+        osinfo|systeminfo)
+          check_os_release
+          exit
+          ;;
+      esac
       shift 2
       ;; 
     -g|--giturl)
@@ -1334,6 +1344,7 @@ do
           ;;
         multipass)
           do_multipass=1
+          do_shell=0
           ;;
       esac
       shift 2
@@ -1342,7 +1353,7 @@ do
       ansible=1
       shift
       ;;
-    -o|--os|osver)
+    -o|--os|--osver)
       test_os="$2"
       shift 2
       ;;
@@ -1492,6 +1503,7 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
         vm_test=$(multipass list |awk '{print $1}' |grep "$test_tag" )
         if [ -n "$vm_test" ]; then
           if [ "$action" = "delete" ]; then
+            verbose_message "Multipass VM \"$test_tag\" with release \"$test_os\"" "delete"
             multipass delete "$test_tag"
             multipass purge
           else
@@ -1501,12 +1513,8 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
               if [ "$action" = "refresh" ]; then
                 multipass exec "$test_tag" -- bash -c "rm -rf lunar"
                 multipass exec "$test_tag" -- bash -c "git clone $git_url"
-              fi
-              if [ "$action" = "audit" ]; then
-                multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh --audit"
-              fi
-              if [ "$action" = "lockdown" ]; then
-                multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh --lockdown"
+              else
+                multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh --action $action"
               fi
             fi
           fi
@@ -1516,6 +1524,7 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
             exit
           else
             if [ "$action" = "create" ]; then
+              verbose_message "Multipass VM \"$test_tag\" with release \"$test_os\"" "create"
               multipass launch "$test_os" --name "$test_tag"
               multipass exec "$test_tag" -- bash -c "git clone $git_url"
               exit
@@ -1531,6 +1540,7 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
     echo "OS name or version not given"
     exit
   fi
+  exit
 fi 
 
 if [ "$audit_mode" != 3 ]; then

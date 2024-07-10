@@ -1681,3 +1681,9 @@
 # Bug fixes
 # 9.3.3: Tue Jul  9 21:23:27 AEST 2024
 # Cleaned up tests/list options, added some multipass support for testing and updated documentation
+# 9.3.4: Wed Jul 10 03:07:15 PM AEST 2024
+# Improved dialog
+# 9.3.5: Wed Jul 10 03:12:22 PM AEST 2024
+# Bug fixes
+# 9.3.6: Wed Jul 10 10:15:15 PM AEST 2024
+# Bug fixes and improvements
