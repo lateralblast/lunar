@@ -1689,3 +1689,5 @@
 # Bug fixes and improvements
 # 9.3.7: Thu Jul 11 02:05:40 PM AEST 2024
 # Added strict and debug switches
+# 9.3.8: Thu Jul 11 05:07:08 PM AEST 2024
+# Fixed return code in check_systemctl_service

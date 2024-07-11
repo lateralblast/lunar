@@ -39,9 +39,14 @@ check_systemctl_service () {
       use_systemctl="yes"
     fi
   fi
+  if [ "$correct_status" = "disabled" ]; then
+    search_string="disabled|not-found"
+  else
+    search_string="enabled"
+  fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
-    actual_status=$( systemctl is-enabled "$service_name" 2> /dev/null )
+    actual_status=$( systemctl is-enabled "$service_name" 2> /dev/null |grep -E "$search_string" )
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
