@@ -40,8 +40,8 @@ audit_gnome_screen_lock () {
               echo "             lock-delay=uint32 5"
               echo "    dest: $check_file"
             fi
-            check_file_value "is" "$check_file" "idle-delay" "eq" "uint32 900" "hash" "after" "session"
-            check_file_value "is" "$check_file" "lock-delay" "eq" "uint32 5"   "hash" "after" "screensaver"
+            check_file_value_with_position "is" "$check_file" "idle-delay" "eq" "uint32 900" "hash" "after" "session"
+            check_file_value_with_position "is" "$check_file" "lock-delay" "eq" "uint32 5"   "hash" "after" "screensaver"
           else
             if [ "$audit_mode" = 1 ]; then
               verbose_message "echo \"[org/gnome/desktop/session]\" > $check_file"      "fix"

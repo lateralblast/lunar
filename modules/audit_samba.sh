@@ -37,9 +37,9 @@ audit_samba () {
     for check_dir in /etc /etc/sfw /etc/samba /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
       check_file="$check_dir/smb.conf"
       if [ -f "$check_file" ]; then
-        check_file_value "is" "$check_file" "restrict anonymous" "eq" "2"   "semicolon" "after" "\[Global\]"
-        check_file_value "is" "$check_file" "guest OK"           "eq" "no"  "semicolon" "after" "\[Global\]"
-        check_file_value "is" "$check_file" "client ntlmv2 auth" "eq" "yes" "semicolon" "after" "\[Global\]"
+        check_file_value_with_position "is" "$check_file" "restrict anonymous" "eq" "2"   "semicolon" "after" "\[Global\]"
+        check_file_value_with_position "is" "$check_file" "guest OK"           "eq" "no"  "semicolon" "after" "\[Global\]"
+        check_file_value_with_position "is" "$check_file" "client ntlmv2 auth" "eq" "yes" "semicolon" "after" "\[Global\]"
       fi
     done
   fi

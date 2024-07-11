@@ -19,8 +19,8 @@
 audit_iptables () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message     "IP Tables" "check"
-    check_linux_package "install" "iptables"
-    check_linux_service "iptables" "on"
+    check_linux_package "install"   "iptables"
+    check_linux_service "iptables"  "on"
     check_linux_service "ip6tables" "on"
     if [ "$audit_mode" != 2 ]; then
       check=$( command -v iptables 2> /dev/null )

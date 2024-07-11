@@ -35,9 +35,9 @@ audit_gnome_automount () {
             echo "    dest: $check_file"
           fi
           if [ -f "$check_file" ]; then
-            check_file_value "is" "$check_file" "automount-open" "eq" "false" "hash after" "handling"
-            check_file_value "is" "$check_file" "automount"      "eq" "false" "hash after" "handling"
-            check_file_value "is" "$check_file" "autorun-never"  "eq" "true"  "hash after" "handling"
+            check_file_value_with_position "is" "$check_file" "automount-open" "eq" "false" "hash after" "handling"
+            check_file_value_with_position "is" "$check_file" "automount"      "eq" "false" "hash after" "handling"
+            check_file_value_with_position "is" "$check_file" "autorun-never"  "eq" "true"  "hash after" "handling"
           else
             if [ "$audit_mode" = 1 ]; then
               verbose_message "echo \"[org/gnome/desktop/media-handling]\" > $check_file" "fix"

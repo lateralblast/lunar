@@ -23,7 +23,7 @@
 # A copy of the value is stored in a log file, which can be restored
 #.
 
-check_file_value () {
+check_file_value_with_position () {
   operator="$1"
   check_file="$2"
   parameter_name="$3"
@@ -109,10 +109,10 @@ check_file_value () {
             verbose_message "\"$string\"" "set"
             if [ "$check_file" = "/etc/system" ]; then
               reboot=1
-              verbose_message "Reboot required" notice
+              verbose_message "Reboot required" "notice"
             fi
             if [ "$sshd_test" ]; then
-              verbose_message "Service restart required for SSH" notice
+              verbose_message "Service restart required for SSH" "notice"
             fi
             backup_file $check_file
             if [ "$check_file" = "/etc/default/sendmail" ] || [ "$check_file" = "/etc/sysconfig/mail" ] || [ "$check_file" = "/etc/rc.conf" ] || [ "$check_file" = "/boot/loader.conf" ] || [ "$check_file" = "/etc/sysconfig/boot" ]; then
@@ -272,4 +272,8 @@ check_file_value () {
       fi
     fi
   fi
+}
+
+check_file_value () {
+  check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "" ""
 }

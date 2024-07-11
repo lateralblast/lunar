@@ -100,7 +100,7 @@ check_linux_package () {
           eval "$package_command"
         else
           increment_insecure "Not uninstalling package as package uninstall has been set to no"
-          verbose_message "$command" "fix"
+          verbose_message    "$command" "fix"
         fi
       else
         verbose_message "$command" "fix"

@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.3.6
+# Version:      9.3.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -94,10 +94,10 @@ syslog_server=""
 syslog_logdir=""
 pkg_suffix="lunar"
 base_dir="/var/log/$pkg_suffix"
+temp_dir="$base_dir/tmp"
 date_suffix=$( date +%d_%m_%Y_%H_%M_%S )
-def_work_dir="$def_base_dir/$date_suffix"
-def_temp_dir="$def_base_dir/tmp"
-def_temp_file="$def_temp_dir/$date_suffix.tmp"
+temp_file="$temp_dir/$pkg_suffix.tmp"
+work_dir="$base_dir/$date_suffix"
 wheel_group="wheel"
 docker_group="docker"
 reboot=0
@@ -140,6 +140,96 @@ sendmail_disable="yes"
 ipv6_disable="yes"
 routed_disable="yes"
 named_disable="yes"
+
+# verbose_message
+#
+# Print a message if verbose mode enabled
+#.
+
+verbose_message () {
+  text="$1"
+  style="$2"
+  if [ "$verbose" = 1 ] && [ "$style" = "fix" ]; then
+    if [ "$text" = "" ]; then
+      echo ""
+    else
+      echo "[ Fix ]     $text"
+    fi
+  else
+    case $style in
+      audit|auditing)
+        echo "Auditing:   $text"
+        ;;
+      load|loading)
+        echo "Loading:    $text"
+        ;;
+      exec|execute|executing)
+        echo "Executing:  $text"
+        ;;
+      notice)
+        echo "Notice:     $text"
+        ;;
+      delete|deleting)
+        echo "Deleting:   $text"
+        ;;
+      install|installing)
+        echo "Installing: $text"
+        ;;
+      backup)
+        echo "Backup:     $text"
+        ;;
+      save|saving)
+        echo "Saving:     $text"
+        ;;
+      set|setting)
+        echo "Setting:    $text"
+        ;;
+      run|running)
+        echo "Running:    $text"
+        ;;
+      restore|restoring)
+        echo "Restoring:  $text"
+        ;;
+      remove|removing)
+        echo "Removing:   $text"
+        ;;
+      check|checking)
+        echo "Checking:   $text"
+        ;;
+      create|creating)
+        echo "Creating:   $text"
+        ;;
+      warn|warning)
+        echo "Warning:    $text"
+        ;;
+      secure)
+        echo "Secure:     $text"
+        ;;
+    esac
+  fi
+}
+
+# Get our ID
+
+os_name=$( uname )
+if [ "$os_name" != "VMkernel" ]; then
+  if [ "$os_name" = "SunOS" ]; then
+    id_check=$( id | cut -c5 )
+  else
+    id_check=$( id -u )
+  fi
+  if [ "$id_check" != "0" ]; then
+    verbose_message "$0 may need root" "warn"
+  fi
+fi
+
+# Reset base dirs if not running as root
+if [ ! "$id_check" = 0 ]; then
+  base_dir="$HOME/.$pkg_suffix"
+  temp_dir="$base_dir/tmp"
+  temp_file="$temp_dir/$pkg_suffix.tmp"
+  work_dir="$base_dir/$date_suffix"
+fi
 
 # Install packages
 
@@ -243,6 +333,7 @@ check_os_release () {
     fi
   fi
   if [ "$os_name" = "Linux" ]; then
+    os_release=$(lsb_release -r 2> /dev/null |awk '{print $2}')
     if [ -f "/etc/redhat-release" ]; then
       os_version=$( awk '{print $3}' < /etc/redhat-release | cut -f1 -d. )
       if [ "$os_version" = "Enterprise" ]; then
@@ -392,7 +483,7 @@ check_os_release () {
 check_environment () {
   check_os_release
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message ""
+    verbose_message "" ""
     verbose_message "If node is managed" "check"
     managed_node=$( sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d: )
     if [ "$managed_node" = "Error" ]; then
@@ -400,37 +491,7 @@ check_environment () {
     else
       verbose_message "Node is managed" "notice"
     fi
-    verbose_message ""
-  fi
-  if [ "$os_name" != "VMkernel" ]; then
-    if [ "$os_name" = "SunOS" ]; then
-      id_check=$( id | cut -c5 )
-    else
-      id_check=$( id -u )
-    fi
-    if [ "$id_check" != "0" ]; then
-      if [ "$os_name" != "Darwin" ]; then
-        verbose_message ""
-        verbose_message "$0 may need root" "warn"
-        verbose_message ""
-      fi
-    fi
-  fi
-  if [ "$base_dir" = "" ]; then
-    if [ ! "$id_check" = "0" ]; then
-      base_dir="$HOME/.$pkg_suffix"
-    else
-      base_dir="$def_base_dir"
-    fi
-  fi
-  if [ "$temp_dir" = "" ]; then
-    temp_dir="$base_dir/tmp"
-  fi
-  if [ "$temp_file" = "" ]; then
-    temp_file="$temp_dir/$pkg_suffix.tmp"
-  fi
-  if [ "$work_dir" = "" ]; then
-    work_dir="$base_dir/$date_suffix"
+    verbose_message "" ""
   fi
   # Load functions from functions directory
   if [ -d "$functions_dir" ]; then
@@ -447,7 +508,7 @@ check_environment () {
         source "$file_name"
       fi
       if [ "$verbose" = "1" ]; then
-        echo "Loading:   \"$file_name\""
+        verbose_message "\"$file_name\"" "load"
       fi
     done
   fi
@@ -472,7 +533,7 @@ check_environment () {
         fi
       fi
       if [ "$verbose" = "1" ]; then
-        echo "Loading:   \"$file_name\""
+        verbose_message "\"$file_name\"" "load"
       fi
     done
   fi
@@ -671,76 +732,6 @@ setting_message () {
   verbose_message "$1" "set"
 }
 
-# verbose_message
-#
-# Print a message if verbose mode enabled
-#.
-
-verbose_message () {
-  text="$1"
-  style="$2"
-  if [ "$verbose" = 1 ]; then
-    if [ "$style" = "fix" ]; then
-      if [ "$text" = "" ]; then
-        echo ""
-      else
-        echo "[ Fix ]     $text"
-      fi
-    else
-      echo "$text"
-    fi
-  else
-    case $style in
-      audit|auditing)
-        echo "Auditing:   $text"
-        ;;
-      exec|execute|executing)
-        echo "Executing:  $text"
-        ;;
-      notice)
-        echo "Notice:     $text"
-        ;;
-      delete|deleting)
-        echo "Deleting:   $text"
-        ;;
-      install|installing)
-        echo "Installing: $text"
-        ;;
-      backup)
-        echo "Backup:     $text"
-        ;;
-      save|saving)
-        echo "Saving:     $text"
-        ;;
-      set|setting)
-        echo "Setting:    $text"
-        ;;
-      run|running)
-        echo "Running:    $text"
-        ;;
-      restore|restoring)
-        echo "Restoring:  $text"
-        ;;
-      remove|removing)
-        echo "Removing:   $text"
-        ;;
-      check|checking)
-        echo "Checking:   $text"
-        ;;
-      create|creating)
-        echo "Creating:   $text"
-        ;;
-      warn|warning)
-        echo "Warning:    $text"
-        ;;
-      secure)
-        echo "Secure:     $text"
-        ;;
-    esac
-  fi
-}
-
-
 # print_changes
 #
 # Do a diff between previous file (saved) and existing file
@@ -929,13 +920,13 @@ funct_audit_select () {
       eval "$function"
     else
       verbose_message "Audit function \"$function\" does not exist" "warn"
-      verbose_message ""
+      verbose_message "" ""
       exit
     fi 
     print_results
   else
     verbose_message "Audit function \"$function\" does not exist" "warn"
-    verbose_message ""
+    verbose_message "" ""
   fi
 }
 
@@ -1366,6 +1357,14 @@ do
       print_previous
       shift
       exit
+      ;;
+    -q|--strict)
+      set -eu
+      shift
+      ;;
+    -Q|--debug)
+      set -x
+      shift
       ;;
     -r|--awsregion|--region)
       aws_region="$2"

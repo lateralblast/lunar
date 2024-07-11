@@ -29,7 +29,7 @@ audit_gdm_conf () {
     check_file="/etc/gdm3/custom.conf"
     if [ -e "$check_file" ]; then
       verbose_message  "GDM3 XDMCP Configuration" "check"
-      check_file_value "is" "$check_file" "Enable" "eq" "false" "hash" "after" "xdmcp"
+      check_file_value_with_position "is" "$check_file" "Enable" "eq" "false" "hash" "after" "xdmcp"
     fi
   fi
 }

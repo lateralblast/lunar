@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -eu
 
 # shellcheck disable=SC2034
 # shellcheck disable=SC1090
@@ -35,7 +35,7 @@ audit_sudo_timestamp () {
         fi
       fi
     fi
-    check_file_value "is" "$check_file" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
-    check_file_perms "$check_file"      "440" "root" "wheel" 
+    check_file_value_with_position "is"  "$check_file" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
+    check_file_perms "$check_file" "440" "root"        "wheel" 
   fi
 }

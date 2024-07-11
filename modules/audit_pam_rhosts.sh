@@ -73,7 +73,7 @@ audit_pam_rhosts () {
       if [ -d "$check_dir" ]; then
         for check_file in $( ls $check_dir/* ); do
           if [ "$audit_mode" = 2 ]; then
-            restore_file $check_file $restore_dir
+            restore_file "$check_file" "$restore_dir"
           else
             pam_check=$( grep -v "^#" $check_file | grep "rhosts_auth" | head -1 | wc -l )
             if [ "$ansible" = 1 ]; then
@@ -94,15 +94,13 @@ audit_pam_rhosts () {
             if [ "$pam_check" = "1" ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "Rhost authentication enabled in \"$check_file\""
-                verbose_message "" fix
-                verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" fix
-                verbose_message "cat $temp_file > $check_file" fix
-                verbose_message "rm $temp_file" fix
-                verbose_message "" fix
+                verbose_message "sed -e 's/^.*rhosts_auth/#&/' < $check_file > $temp_file" "fix"
+                verbose_message "cat $temp_file > $check_file" "fix"
+                verbose_message "rm $temp_file" "fix"
               fi
               if [ "$audit_mode" = 0 ]; then
-                backup_file $check_file
-                verbose_message "Setting:   Rhost authentication to disabled in \"$check_file\""
+                backup_file     "$check_file"
+                verbose_message "Rhost authentication to disabled in \"$check_file\"" "set"
                 sed -e 's/^.*rhosts_auth/#&/' < "$check_file" > "$temp_file"
                 cat "$temp_file" > "$check_file"
                 if [ -f "$temp_file" ]; then
@@ -110,7 +108,7 @@ audit_pam_rhosts () {
                 fi
               fi
             else
-              increment_secure "Rhost authentication disabled in $check_file"
+              increment_secure "Rhost authentication disabled in \"$check_file\""
             fi
           fi
         done

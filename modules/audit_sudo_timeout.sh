@@ -25,7 +25,7 @@ audit_sudo_timeout () {
         check_file="/etc/sudoers"
       fi
     fi
-    check_file_value "is" "$check_file" "Defaults timestamp_timeout" "eq" "0" "hash" "after" "# Defaults specification"
-    check_file_perms "$check_file" "440" "root" "wheel" 
+    check_file_value_with_position "is" "$check_file" "Defaults timestamp_timeout" "eq" "0" "hash" "after" "# Defaults specification"
+    check_file_perms "$check_file" "440" "root"       "wheel" 
   fi
 }

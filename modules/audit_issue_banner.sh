@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -eu
 
 # shellcheck disable=SC2034
 # shellcheck disable=SC1090
@@ -29,14 +29,15 @@ audit_issue_banner () {
       file_list="/etc/issue /etc/motd /etc/issue.net"
     fi
     for check_file in $file_list; do
-      check_file_perms $check_file 0644 root root
-      issue_check=0
       if [ -f "$check_file" ]; then
-        issue_check=$( grep -E "NOTICE TO USERS|UNAUTHORIZED ACCESS" "$check_file" )
+        check_file_perms $check_file 0644 root root
+        issue_check=$( grep -E "NOTICE TO USERS|UNAUTHORIZED ACCESS" "$check_file" |wc -l)
+      else
+        issue_check=0
       fi
       if [ "$audit_mode" != 2 ]; then
        verbose_message "Security message in \"$check_file\"" "check"
-        if [ -n "$issue_check" ]; then
+        if [ "$issue_check" = 0 ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "No security message in \"$check_file\""
           fi
