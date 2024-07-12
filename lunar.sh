@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.3.9
+# Version:      9.4.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -899,17 +899,18 @@ funct_audit_select () {
   audit_mode=$1
   function=$2
   check_environment
-  module_test=$(echo "$function" |grep aws)
-  if [ -n "$module_test" ]; then
+  module_test=$(echo "$function" |grep aws |wc -l)
+  if [ "$module_test" = "1" ]; then
     check_aws
   fi
-  suffix_test=$( echo "$function" |grep "\\.sh" )
-  if [ "-n $suffix_test" ]; then
+  suffix_test=$( echo "$function" |grep "\\.sh" | wc -l)
+  if [ "$suffix_test" = "1" ]; then
     function=$( echo "$function" |cut -f1 -d. )
   fi
-  module_test=$(echo "$function" | grep "full" )
-  if [ -z "$module_test" ]; then  
-    if [ "$( expr "$function" : audit_ )" != "6" ]; then
+  module_test=$(echo "$function" | grep "full" | wc -l)
+  if [ "$module_test" = "0" ]; then  
+    function_test=$(echo "$function" | grep "audit_" | wc -l)
+    if [ "$function_test" = "0" ]; then
       function="audit_$function"
     fi
   fi

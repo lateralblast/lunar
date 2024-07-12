@@ -1693,3 +1693,5 @@
 # Fixed return code in check_systemctl_service
 # 9.3.9: Fri Jul 12 10:48:58 AM AEST 2024
 # Bug fixes and improvements
+# 9.4.0: Fri Jul 12 01:26:48 PM AEST 2024
+# Bug fixes

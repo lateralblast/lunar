@@ -26,7 +26,7 @@ check_systemctl_service () {
   fi
   if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ] || [ "$correct_status" = "on" ]; then
     service_switch="enable"
-    correct_status="is-enabled"
+    correct_status="enabled"
   else
     service_switch="disable"
     correct_status="disabled"
@@ -40,13 +40,18 @@ check_systemctl_service () {
     fi
   fi
   if [ "$correct_status" = "disabled" ]; then
-    search_string="disabled|not-found"
+    search_string="disabled"
   else
-    search_string="is-enabled"
+    search_string="enabled"
   fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
-    actual_status=$( systemctl is-enabled "$service_name" 2> /dev/null |grep -E "$search_string" )
+    nf_status=$( systemctl is-enabled "$service_name" | grep "not-found" |wc -l )
+    if [ "$nf_status" = "1" ]; then
+      actual_status="not-found"
+    else
+      actual_status=$( systemctl is-enabled "$service_name" |grep -E "$search_string" )
+    fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
@@ -80,7 +85,7 @@ check_systemctl_service () {
       if [ "$actual_status" = "is-enabled" ] || [ "$actual_status" = "disabled" ] || [ "$actual_status" = "not-found" ]; then
         if [ "$actual_status" != "$correct_status" ] && [ ! "$actual_status" = "not-found" ]; then
           log_file="$work_dir/$log_file"
-          increment_insecure "Service $service_name is not $correct_status"
+          increment_insecure "Service \"$service_name\" is not \"$correct_status\""
           lockdown_command   "echo \"$service_name,$actual_status\" >> $log_file ; systemctl $service_switch $service_name" "Service \"$service_name\" to \"$correct_status\""
         else
           if [ "$actual_status" = "not-found" ]; then

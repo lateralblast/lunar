@@ -208,7 +208,7 @@ check_file_value_with_position () {
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in \"$check_file\""
             if [ "$check_parameter" != "$parameter_name" ]; then
-              if [ "$separator_value" = "tab" ]; then
+              if [ "$separator" = "tab" ]; then
                 verbose_message "echo -e \"$parameter_name\t$correct_value\" >> $check_file" "fix"
               else
                 if [ "$position" = "after" ]; then
