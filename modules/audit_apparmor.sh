@@ -45,9 +45,9 @@ audit_apparmor () {
             temp_file="$temp_dir/$package_name"
             backup_file "$check_file"
             if [ "$os_vendor" = "SuSE" ]; then 
-              lockdown_command "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; enforce /etc/$package_name.d/*" "Removing disabled $app_name in $check_file"
+              lockdown_command "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; enforce /etc/$package_name.d/*" "Disabled Application/Package \"$app_name\" in \"$check_file\" to removed"
             else
-              lockdown_command "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; aa-enforce /etc/$package_name.d/*" "Removing disabled $app_name in $check_file"
+              lockdown_command "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; aa-enforce /etc/$package_name.d/*" "Disabled Application/Package \"$app_name\" in \"$check_file\" to removed"
             fi 
           else
             increment_secure "Application \"$app_name\" is not disabled in \"$check_file\""
@@ -63,15 +63,15 @@ audit_apparmor () {
               if [ -n "$line_check" ]; then
                 existing_value=$( grep "^GRUB_CMDLINE_LINUX" < "$check_file" |cut -f2 -d= |sed "s/\"//g" )
                 new_value="GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor $existing_value\""
-                lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file" "Removing disabled $app_name"
+                lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file" "Disabled Application/Package \"$app_name\" removed"
               else
                 lockdown_command "echo 'GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor\"' >> $check_file"
               fi
             else
               if [ "$check_file" = "/boot/grub/grub.cfg" ]; then
-                lockdown_command "cat $check_file |sed 's/^\s*linux.*/& apparmor=1 security=apparmor/g' > $temp_file ; cat $temp_file > $check_file ; aa-enforce /etc/$package_name.d/*" "Enabling $app_name in $check_file"
+                lockdown_command "cat $check_file |sed 's/^\s*linux.*/& apparmor=1 security=apparmor/g' > $temp_file ; cat $temp_file > $check_file ; aa-enforce /etc/$package_name.d/*" "Application/Package \"$app_name\" in \"$check_file\" to enabled"
               else
-                lockdown_command "cat $check_file |sed 's/^\s*kernel.*/& apparmor=1 security=apparmor/g' > $temp_file ; cat $temp_file > $check_file ; enforce /etc/$package_name.d/*" "Enabling $app_name in $check_file"
+                lockdown_command "cat $check_file |sed 's/^\s*kernel.*/& apparmor=1 security=apparmor/g' > $temp_file ; cat $temp_file > $check_file ; enforce /etc/$package_name.d/*" "Application/Package \"$app_name\" in \"$check_file\" to enabled"
               fi
             fi
           fi

@@ -34,7 +34,7 @@ audit_system_auth () {
       audit_system_auth_nullok
       audit_system_auth_unlock_time      "auth"     "unlock_time" "900"
       audit_system_auth_password_history "account"  "remember"    "5"
-      audit_system_auth_password_hashing "password" "sha512"
+      audit_system_auth_password_hashing "password" "$password_hashing"
     else
       if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
         check_file_value "is" "/etc/security/pwquality.conf" "minlen"  "eq" "14" "hash"  
@@ -45,7 +45,7 @@ audit_system_auth () {
         audit_system_auth_nullok
         audit_system_auth_unlock_time      "auth"     "unlock_time" "900"
         audit_system_auth_password_history "account"  "remember"    "5"
-        audit_system_auth_password_hashing "password" "sha512"
+        audit_system_auth_password_hashing "password" "$password_hashing"
       else
         check_rpm "libpam-cracklib"
         if [ "$audit_mode" != 2 ]; then

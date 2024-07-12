@@ -42,7 +42,7 @@ audit_sysctl () {
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv6.conf.default.accept_ra"            "eq" "0"    "hash"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv6.route.flush"                       "eq" "1"    "hash"
     check_file_value  "is" "/etc/sysctl.conf"     "kernel.randomize_va_space"                  "eq" "2"    "hash"
-    check_append_file "/etc/security/limits.conf" "* hard core 0"
+    check_append_file "/etc/security/limits.conf" "* hard core 0" "hash"
     check_file_perms  "/etc/sysctl.conf"  "0600"  "root" "root"
   fi
 }

@@ -38,7 +38,7 @@ audit_auditd () {
           temp_file="$temp_dir/$package_name"
           increment_insecure "Application \"$app_name\" is disabled in \"$check_file\""
           backup_file        "$check_file"
-          lockdown_command   "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Removing disabled Application \"$app_name\" in \"$check_file\""
+          lockdown_command   "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Application \"$app_name\" in \"$check_file\" to disabled"
         else
           increment_secure   "Application \"$app_name\" is not disabled in \"$check_file\""
         fi
@@ -52,9 +52,9 @@ audit_auditd () {
           if [ -n "$line_check" ]; then
             existing_value=$( grep "^GRUB_CMDLINE_LINUX" "$check_file" |cut -f2 -d= |sed "s/\"//g" )
             new_value="GRUB_CMDLINE_LINUX=\"audit=1 $existing_value\""
-            lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Enabling Application \"$app_name\""
+            lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Application \"$app_name\" to enabled"
           else
-            lockdown_command "echo 'GRUB_CMDLINE_LINUX=\"audit=1\"' >> $check_file ; update-grub" "Enabling Application \"$app_name\""
+            lockdown_command "echo 'GRUB_CMDLINE_LINUX=\"audit=1\"' >> $check_file ; update-grub" "Application \"$app_name\" to enabled"
           fi
         fi
       fi
@@ -74,10 +74,10 @@ audit_auditd () {
           temp_file="$temp_dir/$package_name"
           increment_insecure "$app_name is disabled in $check_file"
           backup_file        "$check_file"
-          lockdown_command   "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Removing disabled $app_name in $check_file"
+          lockdown_command   "cat $check_file |sed 's/$package_name=0//g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Application/Feature \"$app_name \" in \"$check_file\" to enabled"
           existing_value=$( grep "^GRUB_CMDLINE_LINUX" "$check_file" |cut -f2 -d= |sed "s/\"//g" )
           new_value="GRUB_CMDLINE_LINUX=\"$package_name=$package_value $existing_value\""
-          lockdown_command   "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Enabling $app_name"
+          lockdown_command   "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Application/Feature \"$app_name\" to enabled"
         else
           increment_secure "$app_name is not disabled in $check_file"
         fi
@@ -91,9 +91,9 @@ audit_auditd () {
           if [ -n "$line_check" ]; then
             existing_value=$( grep "^GRUB_CMDLINE_LINUX" "$check_file" |cut -f2 -d= |sed "s/\"//g" )
             new_value="GRUB_CMDLINE_LINUX=\"$package_name=$package_value $existing_value\""
-            lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Enabling $app_name"
+            lockdown_command "cat $check_file |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"$new_value\"/g' > $temp_file ; cat $temp_file > $check_file ; update-grub" "Application/Feature \"$app_name\" to enabled"
           else
-            lockdown_command "echo 'GRUB_CMDLINE_LINUX=\"$package_name=$package_value\"' >> $check_file ; update-grub" "Enabling \"$app_name\""
+            lockdown_command "echo 'GRUB_CMDLINE_LINUX=\"$package_name=$package_value\"' >> $check_file ; update-grub" "Application/Feature \"$app_name\" to enabled"
           fi
         fi
       fi

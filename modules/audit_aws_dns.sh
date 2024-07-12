@@ -21,7 +21,7 @@ audit_aws_dns () {
     check=$( aws route53domains get-domain-detail --domain-name "$domain" | grep true )
     if [ -z "$check" ]; then
       increment_insecure "Domain $domain does not auto renew"
-      lockdown_command   "aws route53domains enable-domain-auto-renew --domain-name $domain"
+      lockdown_command   "aws route53domains enable-domain-auto-renew --domain-name $domain" "Auto-Renew on Domain \"$domain\" to enabled"
     else
       increment_secure   "Domain \"$domain\" auto renews"
     fi

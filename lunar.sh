@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.4.0
+# Version:      9.4.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -129,6 +129,7 @@ do_fs=0
 audit_mode=1
 audit_type="local"
 git_url="https://github.com/lateralblast/lunar.git"
+password_hashing="sha512"
 
 # Disable daemons
 
@@ -603,9 +604,9 @@ restore_command () {
   message="$2"
   if [ "$audit_mode" = 0 ]; then
     if [ "$message" ]; then
-      echo "Restoring: $message"
+      verbose_message "$message" "restore"
     fi
-    echo "Executing: $command"
+    verbose_message "$command" "execute"
     eval "$command"
   else
     verbose_message "$command" "fix"

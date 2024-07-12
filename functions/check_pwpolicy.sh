@@ -76,7 +76,7 @@ check_pwpolicy() {
             if [ "$managed_node" = "Error" ]; then
               restore_command "sudo pwpolicy -n /Local/Default -setglobalpolicy $parameter_name=$previous_value" "Password Policy for \"$parameter_name\" to \"$previous_value\""
             else
-              restore_command "sudo pwpolicy -n -setglobalpolicy $parameter_name=$previous_value" "Restoring: Password Policy for \"$parameter_name\" to \"$previous_value\""
+              restore_command "sudo pwpolicy -n -setglobalpolicy $parameter_name=$previous_value" "Password Policy for \"$parameter_name\" to \"$previous_value\""
             fi
           fi
         fi

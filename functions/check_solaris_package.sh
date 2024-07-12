@@ -23,9 +23,9 @@ funct_check_pkg () {
         restore_check=$( grep "^$pkg_name$" < "$restore_file" | head -1 )
         if [ "$restore_check" = "$pkg_name" ]; then
           if [ "$os_version" = "11" ]; then
-            restore_command "pkg uninstall $pkg_name" "Removing \"$pkg_name\""
+            restore_command "pkg uninstall $pkg_name" "Package \"$pkg_name\""
           else
-            restore_command "pkgrm $pkg_name" "Removing \"$pkg_name\""
+            restore_command "pkgrm $pkg_name" "Package \"$pkg_name\""
           fi
         fi
       fi
@@ -58,7 +58,7 @@ funct_check_pkg () {
             fi
             p_test=$( echo "$pkg_check" |grep "ERROR" )
             if [ -z "$pkg_check" ]; then
-              verbose_message "$pkg_name" >> "$log_file"
+              verbose_message "$pkg_name" >> "$log_file" "fix"
             fi
           fi
         fi

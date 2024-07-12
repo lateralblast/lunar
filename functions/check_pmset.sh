@@ -47,7 +47,7 @@ check_pmset() {
       fi
       if [ ! "$actual_value" = "$value" ]; then
         increment_insecure "Service \"$service\" is not \"$state\""
-        lockdown_command   "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service $service to $state"
+        lockdown_command   "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service \"$service\" to \"$state\""
       else
         increment_secure   "Service \"$service\" is \"$state\""
       fi

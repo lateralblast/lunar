@@ -38,7 +38,7 @@ check_append_file () {
       verbose_message "$secure_string" "check"
       if [ ! -f "$check_file" ]; then
         increment_insecure "Parameter \"$parameter\" does not exist in \"$check_file\""
-        lockdown_command   "echo \"$parameter\" >> $check_file"
+        lockdown_command   "echo \"$parameter\" >> $check_file" "Parameter \"$parameter\" in \"$check_file\""
         if [ "$parameter" ]; then
           if [ "$ansible" = 1 ]; then
             echo ""
@@ -60,11 +60,11 @@ check_append_file () {
             echo "    line: '$parameter'"
             echo ""
           fi
-          check_value=$( grep -v "^$comment_value" "$check_file" | grep -- "$parameter" )
-          if [ "$check_value" != "$parameter" ]; then
+          check_value=$( grep -v "^$comment_value" "$check_file" | grep -- "$parameter" |uniq |wc -l )
+          if [ "$check_value" != "1" ]; then
             increment_insecure "$insecure_string"
             backup_file        "$check_file"
-            lockdown_command   "echo \"$parameter\" >> $check_file"
+            lockdown_command   "echo \"$parameter\" >> $check_file" "Parameter \"$parameter\" in \"$check_file\""
           else
             increment_secure   "$secure_string"
           fi

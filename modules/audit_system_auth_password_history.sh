@@ -21,7 +21,7 @@ audit_system_auth_password_history () {
   search_value="$3"
   if [ "$os_name" = "Linux" ]; then
     check_file="/etc/security/opasswd"
-    check_file_exists "$check_file"
+    check_file_exists "$check_file" "yes"
     check_file_perms  "$check_file" "0600" "root" "root"
     for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
       if [ -f "$check_file" ]; then

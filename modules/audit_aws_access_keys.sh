@@ -25,7 +25,7 @@ audit_aws_access_keys () {
       increment_insecure "Account \"$aws_user\" has key access enabled but has not used their AWS API credentials consider removing keys"
       key_ids=$( aws iam list-access-keys --user-name "$aws_user" --query "AccessKeyMetadata[].{AccessKeyId:AccessKeyId, Status:Status}" --output text | grep Active | awk '{print $1}' )
       for key_id in $key_ids; do
-        lockdown_command "aws iam delete-access-key --access-key $key_id --user-name $aws_user"
+        lockdown_command "aws iam delete-access-key --access-key $key_id --user-name $aws_user" "Key \"$key_id\" for user \"$aws_user\" to disabled"
       done
     else
       increment_secure "Account \"$aws_user\" has key access enabled and has used their AWS API credentials"

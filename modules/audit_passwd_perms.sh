@@ -19,7 +19,7 @@
 
 audit_passwd_perms () {
   if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    verbose_message "Group and Password File Permissions"
+    verbose_message "Group and Password File Permissions" "check"
     if [ "$os_name" = "AIX" ]; then
       for check_file in /etc/passwd /etc/group; do
         check_file_perms $check_file 0644 root security

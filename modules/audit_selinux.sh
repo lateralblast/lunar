@@ -29,7 +29,7 @@ audit_selinux () {
         check_file_value "is" "$check_file" "enforcing" "eq"   "1" "hash"
       fi
     done
-    check_rpm "uninstall" "setroubleshoot"
-    check_rpm "uninstall" "mctrans"
+    check_linux_package "uninstall" "setroubleshoot"
+    check_linux_package "uninstall" "mctrans"
   fi
 }

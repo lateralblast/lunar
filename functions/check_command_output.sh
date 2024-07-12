@@ -18,35 +18,35 @@ check_command_output () {
     if [ "$command_name" = "getpolicy" ]; then
       get_command="auditconfig -getpolicy |head -1 |cut -f2 -d'=' |sed 's/ //g'"
       correct_value="argv,cnt,zonename"
-      restore_command="auditconfig -setpolicy"
+      r_command="auditconfig -setpolicy"
     fi
     if [ "$command_name" = "getnaflages" ]; then
       get_command="auditconfig -getpolicy |head -1 |cut -f2 -d'=' |sed 's/ //g' |cut -f1 -d'('"
       correct_value="lo"
-      restore_command="auditconfig -setnaflags"
+      r_command="auditconfig -setnaflags"
     fi
     if [ "$command_name" = "getflages" ]; then
       get_command="auditconfig -getflags |head -1 |cut -f2 -d'=' |sed 's/ //g' |cut -f1 -d'('"
       correct_value="lck,ex,aa,ua,as,ss,lo,ft"
-      restore_command="auditconfig -setflags"
+      r_command="auditconfig -setflags"
     fi
     if [ "$command_name" = "getplugin" ]; then
       get_command="auditconfig -getplugin audit_binfile |tail-1 |cut -f3 -d';'"
       correct_value="p_minfree=1"
-      restore_command="auditconfig -setplugin audit_binfile active"
+      r_command="auditconfig -setplugin audit_binfile active"
     fi
     if [ "$command_name" = "userattr" ]; then
       get_command="userattr audit_flags root"
       correct_value="lo,ad,ft,ex,lck:no"
-      restore_command="auditconfig -setplugin audit_binfile active"
+      r_command="auditconfig -setplugin audit_binfile active"
     fi
     if [ "$command_name" = "getcond" ]; then
       set_command="auditconfig -conf"
     else
       if [ "$command_name" = "getflags" ]; then
-        set_command="$restore_command lo,ad,ft,ex,lck"
+        set_command="$r_command lo,ad,ft,ex,lck"
       else
-        set_command="$restore_command $correct_value"
+        set_command="$r_command $correct_value"
       fi
     fi
     log_file="$command_name.log"
@@ -75,17 +75,17 @@ check_command_output () {
         increment_secure   "Command \"$command_name\" returns correct value"
       fi
       log_file="$work_dir/$log_file"
-      lockdown_command "echo \"$restore_command\" > $log_file ; $set_command" "Command \"$command_name\" to correct value"
+      lockdown_command "echo \"$r_command\" > $log_file ; $set_command" "Command \"$command_name\" to correct value"
     fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"
       if [ -f "$restore_file" ]; then
         verbose_message "Restoring: Previous value for \"$command_name\""
         if [ "$command_name" = "getcond" ]; then
-          eval "$restore_command"
+          eval "$r_command"
         else
           restore_string=$( cat "$restore_file" )
-          eval "$restore_command $restore_string"
+          eval "$r_command $restore_string"
         fi
       fi
     fi

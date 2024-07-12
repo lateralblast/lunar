@@ -65,7 +65,7 @@ check_initd_service () {
               if [ "$check_status" = "disabled" ]; then
                 restore_command "/etc/init.d/$service_name stop ; mv /etc/init.d/$service_name /etc/init.d/_$service_name" "Service $service_name to $check_status"
               else
-                restore_command "mv /etc/init.d/_$service_name /etc/init.d/$service_name ; /etc/init.d/$service_name start" "Restoring: Service $service_name to $check_status"
+                restore_command "mv /etc/init.d/_$service_name /etc/init.d/$service_name ; /etc/init.d/$service_name start" "Service $service_name to $check_status"
               fi
             fi
           fi

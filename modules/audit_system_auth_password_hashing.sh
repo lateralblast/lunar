@@ -24,9 +24,9 @@ audit_system_auth_password_hashing () {
           if [ "$check_value" != "$search_string" ]; then
             if [ "$audit_mode" = "1" ]; then
               increment_insecure "Password strength settings not enabled in $check_file"
-              verbose_message    "cp $check_file $temp_file" fix
-              verbose_message    "sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < $temp_file > $check_file" fix
-              verbose_message    "rm $temp_file"
+              verbose_message    "cp $check_file $temp_file" "fix"
+              verbose_message    "sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < $temp_file > $check_file" "fix"
+              verbose_message    "rm $temp_file" "fix"
             fi
             if [ "$audit_mode" = 0 ]; then
               backup_file      "$check_file"
