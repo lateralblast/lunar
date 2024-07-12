@@ -93,13 +93,12 @@ audit_sendmail_daemon() {
             fi
           else
             if [ "$audit_mode" = "1" ]; then
-              
               increment_secure "Mail transfer agent is running in local-only mode"
             fi
           fi
+        else
+          restore_file "$check_file" "$restore_dir"
         fi
-      else
-        restore_file $check_file $restore_dir
       fi
     fi
   fi
