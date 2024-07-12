@@ -20,7 +20,7 @@
 audit_ftp_server () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
     verbose_message "FTP Daemon" "check"
-    if [ "$os_anme" = "SunOS" ]; then
+    if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         check_sunos_service "svc:/network/ftp:default" "disabled"
       fi

@@ -24,7 +24,7 @@ audit_ipv6 () {
     fi
     if [ "$os_name" = "Linux" ]; then
       if [ "$disable_ipv6" = "yes" ]; then
-        check_append_file "/etc/modprobe.conf" "options ipv6 \"disable=1\""
+        check_append_file "/etc/modprobe.conf" "options ipv6 \"disable=1\"" "hash"
         if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
           check_file_value "is" "/etc/sysconfig/network" "NETWORKING_IPV6" "eq" "no" "hash"
           check_file_value "is" "/etc/sysconfig/network" "IPV6INIT"        "eq" "no" "hash"

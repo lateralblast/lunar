@@ -26,7 +26,7 @@ check_systemctl_service () {
   fi
   if [ "$correct_status" = "enable" ] || [ "$correct_status" = "enabled" ] || [ "$correct_status" = "on" ]; then
     service_switch="enable"
-    correct_status="enabled"
+    correct_status="is-enabled"
   else
     service_switch="disable"
     correct_status="disabled"
@@ -42,7 +42,7 @@ check_systemctl_service () {
   if [ "$correct_status" = "disabled" ]; then
     search_string="disabled|not-found"
   else
-    search_string="enabled"
+    search_string="is-enabled"
   fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
@@ -77,7 +77,7 @@ check_systemctl_service () {
           echo ""
         fi
       fi
-      if [ "$actual_status" = "enabled" ] || [ "$actual_status" = "disabled" ] || [ "$actual_status" = "not-found" ]; then
+      if [ "$actual_status" = "is-enabled" ] || [ "$actual_status" = "disabled" ] || [ "$actual_status" = "not-found" ]; then
         if [ "$actual_status" != "$correct_status" ] && [ ! "$actual_status" = "not-found" ]; then
           log_file="$work_dir/$log_file"
           increment_insecure "Service $service_name is not $correct_status"

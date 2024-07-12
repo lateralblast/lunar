@@ -54,7 +54,7 @@ check_file_exists () {
   else
     if [ "$audit_mode" != 2 ]; then
       string="File \"$check_file\" exists"
-      verbose_message "Checking:  $string"
+      verbose_message "$string" "check"
       if [ "$ansible" = 1 ]; then
         echo ""
         echo "- name: Checking $string"

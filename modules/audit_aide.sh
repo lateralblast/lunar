@@ -20,13 +20,13 @@ audit_aide () {
     check_linux_package "install" "aide"
     check_linux_package "install" "aide-common"
     if [ -d "/etc/aide" ]; then
-      check_append_file   "/etc/cron.d/aide" "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
-      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/auditctl"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
-      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/auditd"     "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
-      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/ausearch"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
-      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/aureport"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
-      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/autrace"    "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
-      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/augenrules" "space" "p+i+n+u+g+s+b+acl+xattrs+sha512" "hash"
+      check_append_file   "/etc/cron.d/aide" "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check" "hash"
+      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/auditctl"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
+      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/auditd"     "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
+      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/ausearch"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
+      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/aureport"   "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
+      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/autrace"    "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
+      check_file_value    "is" "/etc/aide/aide.conf" "/sbin/augenrules" "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
     fi
   fi
 }

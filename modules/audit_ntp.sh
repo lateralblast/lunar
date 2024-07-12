@@ -45,7 +45,7 @@ audit_ntp () {
     fi
     if [ "$os_name" = "VMkernel" ]; then
       check_linux_service "ntpd" "on"
-      check_append_file   "/etc/ntp.conf" "restrict 127.0.0.1"
+      check_append_file   "/etc/ntp.conf" "restrict 127.0.0.1" "hash"
     fi
     if [ "$os_name" = "Linux" ]; then
       check_file="/etc/ntp.conf"

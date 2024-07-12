@@ -17,8 +17,8 @@ audit_pam_deny () {
      verbose_message "PAM Deny Weak Authentication Services" "check"
     if [ "$os_name" = "FreeBSD" ]; then
       if [ "$os_version" < 5 ]; then
-        check_append_file "/etc/pam.conf" "rexecd\tauth\trequired\tpam_deny.so"
-        check_append_file "/etc/pam.conf" "rsh\tauth\trequired\tpam_deny.so"
+        check_append_file "/etc/pam.conf" "rexecd\tauth\trequired\tpam_deny.so" "hash"
+        check_append_file "/etc/pam.conf" "rsh\tauth\trequired\tpam_deny.so"    "hash"
       else
         :
         # Need to insert code here
@@ -26,7 +26,7 @@ audit_pam_deny () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_append_file "/etc/pam.d/sshd" "auth\trequisite\tpam_deny.so"
+      check_append_file "/etc/pam.d/sshd" "auth\trequisite\tpam_deny.so" "hash"
     fi
   fi
 }

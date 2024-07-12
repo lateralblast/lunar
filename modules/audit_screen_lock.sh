@@ -29,7 +29,7 @@ audit_screen_lock () {
     verbose_message "Screen Lock" "check"
     check_osx_defaults "com.apple.screensaver"  "askForPassword" "1"   "int" "currentHost"
     check_osx_defaults "com.apple.screensaver"  "idleTime"       "900" "int" "currentHost"
-    check_append_file  "/etc/pam.d/screensaver" "account    required     pam_group.so no_warn group=admin,wheel fail_safe"
+    check_append_file  "/etc/pam.d/screensaver" "account    required     pam_group.so no_warn group=admin,wheel fail_safe" "hash"
     if [ "$audit_mode" != 2 ]; then
       if [ -f "$HOME/Library/Preferences/com.apple.dock" ]; then
         screen_test=$( defaults read ~/Library/Preferences/com.apple.dock | grep corner | grep 1 | wc -l )

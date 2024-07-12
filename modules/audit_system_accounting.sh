@@ -36,7 +36,7 @@ audit_system_accounting () {
       check_file_value  "is" "/etc/rc.conf" "accounting_enable" "eq" "YES" "hash"
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_append_file   "/etc/audit/audit.rules" "-w /var/log/sudo.log -p wa -k actions"
+      check_append_file   "/etc/audit/audit.rules" "-w /var/log/sudo.log -p wa -k actions" "hash"
       check_linux_package "install" "sysstat"
       log_file="sysstat.log"
       if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
@@ -46,17 +46,17 @@ audit_system_accounting () {
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "System accounting not enabled"
           if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ]; then
-            verbose_message "yum -y install $package_check" fix
+            verbose_message "yum -y install $package_check" "fix"
           fi
           if [ "$os_vendor" = "SuSE" ]; then
-            verbose_message "zypper install $package_check" fix
+            verbose_message "zypper install $package_check" "fix"
           fi
           if [ "$os_vendor" = "Debian" ] || [ "$os_vendor" = "Ubuntu" ]; then
-            verbose_message "apt-get install $package_check" fix
+            verbose_message "apt-get install $package_check" "fix"
           fi
         fi
         if [ "$audit_mode" = 0 ]; then
-          verbose_message "Setting:   System Accounting to enabled"
+          verbose_message "System Accounting to enabled" "set"
           log_file="$work_dir/$log_file"
           echo "Installed sysstat" >> $log_file
           check_linux_package "install" "sysstat"

@@ -18,7 +18,7 @@ audit_xwindows_server () {
       verbose_message "X Windows Server"
       no_rego=$( yum grouplist 2>&1 | grep "not registered" )
       if [ -z "$no_rego" ]; then
-        check_linux_package "uninstalled" "X Windows Server" "group"
+        check_linux_package_with_group "uninstalled" "X Windows Server" "group"
       else
         verbose_message "Warning:   System not registered with a repository"
       fi

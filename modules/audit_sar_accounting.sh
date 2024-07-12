@@ -16,24 +16,24 @@ audit_sar_accounting () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ]; then
     verbose_message "SAR Accounting" "check"
     if [ "$os_name" = "SunOS" ]; then
-      check_append_file "/var/spool/cron/crontabs/adm" "0,20,40 * * * * /usr/lib/sa/sa1"
-      check_append_file "/var/spool/cron/crontabs/adm" "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A"
+      check_append_file "/var/spool/cron/crontabs/adm" "0,20,40 * * * * /usr/lib/sa/sa1"                         "hash"
+      check_append_file "/var/spool/cron/crontabs/adm" "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A" "hash"
     fi
     if [ "$os_name" = "AIX" ]; then
       package_name="bos.acct"
       check_lslpp $package_name
       if [ "$lslpp_check" = "$package_name" ]; then
-        check_append_file "/var/spool/cron/crontabs/adm" "#================================================================="
-        check_append_file "/var/spool/cron/crontabs/adm" "#      SYSTEM ACTIVITY REPORTS"
-        check_append_file "/var/spool/cron/crontabs/adm" "# 8am-5pm activity reports every 20 mins during weekdays."
-        check_append_file "/var/spool/cron/crontabs/adm" "# activity reports every an hour on Saturday and Sunday."
-        check_append_file "/var/spool/cron/crontabs/adm" "# 6pm-7am activity reports every an hour during weekdays."
-        check_append_file "/var/spool/cron/crontabs/adm" "# Daily summary prepared at 18:05."
-        check_append_file "/var/spool/cron/crontabs/adm" "#================================================================="
-        check_append_file "/var/spool/cron/crontabs/adm" "0 8-17 * * 1-5 /usr/lib/sa/sa1 1200 3 &"
-        check_append_file "/var/spool/cron/crontabs/adm" "0 * * * 0,6 /usr/lib/sa/sa1 &"
-        check_append_file "/var/spool/cron/crontabs/adm" "0 18-7 * * 1-5 /usr/lib/sa/sa1 &"
-        check_append_file "/var/spool/cron/crontabs/adm" "5 18 * * 1-5 /usr/lib/sa/sa2 -s 8:00 -e 18:01 -i 3600 -ubcwyaqvm &"
+        check_append_file "/var/spool/cron/crontabs/adm" "#=================================================================" "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "#      SYSTEM ACTIVITY REPORTS"                                     "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "# 8am-5pm activity reports every 20 mins during weekdays."          "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "# activity reports every an hour on Saturday and Sunday."           "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "# 6pm-7am activity reports every an hour during weekdays."          "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "# Daily summary prepared at 18:05."                                 "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "#=================================================================" "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "0 8-17 * * 1-5 /usr/lib/sa/sa1 1200 3 &"                            "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "0 * * * 0,6 /usr/lib/sa/sa1 &"                                      "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "0 18-7 * * 1-5 /usr/lib/sa/sa1 &"                                   "hash"
+        check_append_file "/var/spool/cron/crontabs/adm" "5 18 * * 1-5 /usr/lib/sa/sa2 -s 8:00 -e 18:01 -i 3600 -ubcwyaqvm &" "hash"
       else
         verbose_message "Sar accounting requires \"$package_name\" to be installed" "fix"
       fi

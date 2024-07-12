@@ -125,7 +125,7 @@ audit_core_dumps () {
     if [ "$os_name" = "Linux" ]; then
       verbose_message     "Core Dumps" "check"
       check_linux_service "kdump"      "off"
-      check_append_file   "/etc/security/limits.conf" "* hard core 0"
+      check_append_file   "/etc/security/limits.conf" "* hard core 0"    "hash"
       check_file_value    "is" "/etc/sysctl.conf"     "fs.suid_dumpable" "eq" "0" "hash"
     fi
     if [ "$os_name" = "FreeBSD" ]; then

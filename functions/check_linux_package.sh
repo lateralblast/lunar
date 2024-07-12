@@ -12,7 +12,7 @@
 # package_check:  Package to check for
 #.
 
-check_linux_package () {
+check_linux_package_with_group () {
   if [ "$os_name" = "Linux" ]; then
     package_mode="$1"
     package_check="$2"
@@ -41,7 +41,7 @@ check_linux_package () {
       if [ "$linux_dist" = "debian" ]; then
         package_name=$( dpkg -l "$package_check" 2>&1 | grep "$package_check" | awk '{print $2}' )
       else
-        if [ "$group_check" ]; then
+        if [ ! "$group_check" = "" ]; then
           package_type="Group"
           package_name=$( yum grouplist 2>&1 | grep "$package_check" | sed "s/^   //g" )
         else
@@ -100,10 +100,10 @@ check_linux_package () {
           eval "$package_command"
         else
           increment_insecure "Not uninstalling package as package uninstall has been set to no"
-          verbose_message    "$command" "fix"
+          verbose_message    "$package_command" "fix"
         fi
       else
-        verbose_message "$command" "fix"
+        verbose_message "$package_command" "fix"
       fi
     else
       restore_file="$restore_dir/$log_file"
@@ -145,4 +145,8 @@ check_linux_package () {
       fi
     fi
   fi
+}
+
+check_linux_package () {
+  check_linux_package_with_group "$1" "$2" ""
 }
