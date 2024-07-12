@@ -34,7 +34,7 @@ audit_apparmor () {
           restore_file "$check_file" "$restore_dir"
         else
           if [ -f "$check_file" ]; then
-            package_disable_test=$( grep "$package_name=0" "$check_file" | head -1 | wc -l )
+            package_disabled_test=$( grep "$package_name=0" "$check_file" | head -1 | wc -l )
             package_enabled_test=$( grep "$package_name=1" "$check_file" | head -1 | wc -l )
           else
             package_disabled_test=0
