@@ -1697,3 +1697,5 @@
 # Bug fixes
 # 9.4.1: Fri Jul 12 05:06:40 PM AEST 2024
 # Bug fixes
+# 8.4.2: Fri Jul 12 08:43:30 PM AEST 2024
+# Fixed iptables check

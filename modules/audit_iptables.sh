@@ -26,9 +26,9 @@ audit_iptables () {
       check=$( command -v iptables 2> /dev/null )
       if [ "$check" ]; then
         if [ "$my_id" = "0" ]; then
-          check=$( iptables -L INPUT -v -n | grep "127.0.0.0" | grep "0.0.0.0" | grep DROP )
+          check=$( iptables -L INPUT -v -n | grep "127.0.0.0" | grep "0.0.0.0" | grep DROP | uniq |wc -l )
         fi
-        if [ ! "$check" ]; then
+        if [ "$check" = "0" ]; then
           increment_insecure "All other devices allow trafic to the loopback network"
         else
           increment_secure   "All other devices deny trafic to the loopback network"
