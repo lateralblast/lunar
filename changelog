@@ -1705,3 +1705,5 @@
 # Fixed sendmail daemon check
 # 8.4.5: Fri Jul 12 09:09:28 PM AEST 2024
 # Fixed ssh root key check
+# 8.4.6: Fri Jul 12 09:43:08 PM AEST 2024
+# Fixed duplicate users check
