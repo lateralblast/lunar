@@ -15,34 +15,32 @@ audit_root_ssh_keys () {
     if [ "$audit_mode" != 2 ]; then
       root_home=$( grep '^root' /etc/passwd | cut -f6 -d: )
       for check_file in $root_home/.ssh/authorized_keys $root_home/.ssh/authorized_keys2; do
-        if [ "$audit_home" != 2 ]; then
-          if [ -f "$check_file" ]; then
-            if [ "$( wc -l $check_file | awk '{print $1}' )" -ge 1 ]; then
-              if [ "$audit_mode" = 1 ]; then
-                increment_insecure "Keys file \"$check_file\" exists"
-                verbose_message    "mv $check_file $check_file.disabled" "fix"
-              fi
-              if [ "$audit_mode" = 0 ]; then
-                backup_file     "$check_file"
-                verbose_message "Removing:  Keys file \"$check_file\"" "remove"
-                if [ -f "$check_file" ]; then
-                  rm "$check_file"
-                fi
-              fi
-            else
-              if [ "$audit_mode" = 1 ]; then
-                increment_secure "Keys file \"$check_file\" does not contain any keys"
+        if [ -f "$check_file" ]; then
+          if [ "$( wc -l $check_file | awk '{print $1}' )" -ge 1 ]; then
+            if [ "$audit_mode" = 1 ]; then
+              increment_insecure "Keys file \"$check_file\" exists"
+              verbose_message    "mv $check_file $check_file.disabled" "fix"
+            fi
+            if [ "$audit_mode" = 0 ]; then
+              backup_file     "$check_file"
+              verbose_message "Removing:  Keys file \"$check_file\"" "remove"
+              if [ -f "$check_file" ]; then
+                rm "$check_file"
               fi
             fi
           else
             if [ "$audit_mode" = 1 ]; then
-              increment_secure "Keys file \"$check_file\" does not exist"
+              increment_secure "Keys file \"$check_file\" does not contain any keys"
             fi
           fi
         else
-          restore_file "$check_file" "$restore_dir"
+          if [ "$audit_mode" = 1 ]; then
+            increment_secure "Keys file \"$check_file\" does not exist"
+          fi
         fi
       done
+    else
+      restore_file "$check_file" "$restore_dir"
     fi
   fi
 }

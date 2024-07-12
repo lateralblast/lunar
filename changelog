@@ -1703,3 +1703,5 @@
 # Fixed apparmor check
 # 8.4.4: Fri Jul 12 09:00:09 PM AEST 2024
 # Fixed sendmail daemon check
+# 8.4.5: Fri Jul 12 09:09:28 PM AEST 2024
+# Fixed ssh root key check
