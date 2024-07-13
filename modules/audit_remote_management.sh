@@ -15,9 +15,9 @@
 
 audit_remote_management () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Remote Management"
+    verbose_message "Remote Management" "check"
     if [ "$audit_mode" != 2 ]; then
-      actual_value=$( launchctl list | awk '{print $3}' | grep -c ARDAgent )
+      actual_value=$( launchctl list | awk '{print $3}' | grep ARDAgent | wc -l | sed "s/ //g" )
       if [ "$actual_value" = "1" ]; then
         increment_insecure "Remote Management is enabled"
         verbose_message    "Open System Preferences"   "fix"
