@@ -80,14 +80,11 @@ audit_snmp () {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        check_rpm net-snmp
-        if [ "$rpm_check" = "net-snmp" ]; then
-          for service_name in snmp snmptrapd; do
-            check_linux_service "$service_name" "off"
-          done
-          check_append_file   "/etc/snmp/snmpd.conf" "com2sec notConfigUser default public" "hash"
-          check_linux_package "uninstall" "net-snmp"
-        fi
+        for service_name in snmp snmptrapd; do
+          check_linux_service "$service_name" "off"
+        done
+        check_append_file   "/etc/snmp/snmpd.conf" "com2sec notConfigUser default public" "hash"
+        check_linux_package "uninstall" "net-snmp"
       fi
     else
       if [ "$os_name" = "AIX" ]; then

@@ -50,7 +50,12 @@ check_systemctl_service () {
     if [ "$nf_status" = "1" ]; then
       actual_status="not-found"
     else
-      actual_status=$( systemctl is-enabled "$service_name" |grep -E "$search_string" )
+      en_status=$( systemctl is-enabled "$service_name" | grep -E "enabled|static" |wc -l )
+      if [ "$en_status" = "1" ]; then
+        actual_status="enabled"
+      else
+        actual_status=$( systemctl is-enabled "$service_name" |grep -E "$search_string" )
+      fi
     fi
     if [ "$audit_mode" = 2 ]; then
       restore_file="$restore_dir/$log_file"

@@ -26,7 +26,7 @@ audit_user_dotfiles () {
     for home_dir in $home_dirs; do
       for check_file in $home_dir/.[A-Za-z0-9]*; do
         if [ -f "$check_file" ]; then
-          check_file_perms "$check_file" "0600"
+          check_file_perms "$check_file" "0600" "" ""
         fi
       done
     done

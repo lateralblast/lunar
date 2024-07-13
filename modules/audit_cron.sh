@@ -17,8 +17,8 @@
 
 audit_cron () {
   if [ "$os_name" = "Linux" ]; then
-    verbose_message "Cron Daemon" "check"
-    check_linux_service "crond" "on"
+    verbose_message     "Cron Daemon" "check"
+    check_linux_service "crond"       "on"
     if [ "$anacron_enable" = "yes" ]; then
       check_linux_service "anacron" "on"
     fi

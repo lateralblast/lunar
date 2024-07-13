@@ -12,7 +12,7 @@
 audit_dot_files () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
     verbose_message "Dot Files" "check"
-    check_file=$1
+    check_file="$1"
     if [ "$audit_mode" != 2 ]; then
       dir_list=$( cut -f6 -d':' /etc/passwd )
       for dir_name in $dir_list; do
@@ -24,7 +24,7 @@ audit_dot_files () {
         if [ -f "$dot_file" ]; then
           if [ "$audit_mode" = 1 ];then
             increment_insecure "File \"$dot_file\" exists"
-            verbose_message "mv $dot_file $dot_file.disabled" fix
+            verbose_message    "mv $dot_file $dot_file.disabled" "fix"
           fi
           if [ "$audit_mode" = 0 ];then
             backup_file "$dot_file"

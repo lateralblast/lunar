@@ -53,17 +53,17 @@ check_file_perms () {
     return
   fi
   if [ "$check_owner" != "" ]; then
-    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" -user "$check_owner" -group "$check_group" 2> /dev/null )
+    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" -user "$check_owner" -group "$check_group" 2> /dev/null | wc -l)
   else
-    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" 2> /dev/null )
+    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" 2> /dev/null | wc -l)
   fi
   log_file="fileperms.log"
-  if [ "$check_result" != "$check_file" ]; then
+  if [ "$check_result" != "1" ]; then
     if [ "$audit_mode" = 1 ] && [ -n "$check_result" ]; then
       increment_insecure "File \"$check_file\" has incorrect permissions"
       verbose_message    "chmod $check_perms $check_file" "fix"
       if [ "$check_owner" != "" ]; then
-        if [ "$check_results" != "$check_file" ]; then
+        if [ "$check_result" != "1" ]; then
           verbose_message "chown $check_owner:$check_group $check_file" "fix"
         fi
       fi

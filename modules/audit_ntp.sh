@@ -65,14 +65,14 @@ audit_ntp () {
         check_file_value    "is"      "/etc/sysconfig/chronyd" "OPTIONS" "eq" "\"-u chrony\"" "hash"
         for server_number in $( seq 0 3 ); do
           ntp_server="$server_number.$country_suffix.pool.ntp.org"
-          check_file_value "is" "/etc/chrony/chrony.conf" "space" "$ntp_server" "hash"
+          check_file_value "is" "/etc/chrony/chrony.conf" "pool" "$ntp_server iburst" "space" "hash"
         done
       else
         check_linux_package "install" "ntp"
         if [ -f "/usr/bin/systemctl" ]; then
           check_append_file "/usr/lib/systemd/system/ntpd.service"      "restrict default kod nomodify nopeer notrap noquery"    "hash"
           check_append_file "/usr/lib/systemd/system/ntpd.service"      "restrict -6 default kod nomodify nopeer notrap noquery" "hash"
-          check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "OPTIONS" "eq" "\"-u ntp:ntp -p /var/run/ntpd.pid\""     "hash"
+          check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "OPTIONS"   "eq" "\"-u ntp:ntp -p /var/run/ntpd.pid\""   "hash"
           check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "ExecStart" "eq" "/usr/sbin/ntpd -u ntp:ntp \$OPTIONS"   "hash"
         else
           check_linux_service "ntp" "on"

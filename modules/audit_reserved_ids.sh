@@ -20,7 +20,7 @@ audit_reserved_ids () {
       getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
         found=0
         for test_user in root daemon bin sys adm lp uucp nuucp smmsp listen \
-        gdm webservd postgres svctag nobody noaccess nobody4 unknown; do
+          gdm webservd postgres svctag nobody noaccess nobody4 unknown; do
           if [ "$check_user" = "$test_user" ]; then
             found=1
           fi
@@ -37,7 +37,7 @@ audit_reserved_ids () {
   if [ "$os_name" = "Linux" ]; then
     verbose_message "Reserved IDs" "check"
     if [ "$audit_mode" != 2 ]; then
-     verbose_message "Whether reserved UUIDs are assigned to system accounts"
+     verbose_message "Whether reserved UUIDs are assigned to system accounts" "check"
     fi
     if [ "$audit_mode" != 2 ]; then
       getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read check_user check_uid; do

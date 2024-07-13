@@ -36,7 +36,7 @@ audit_password_fields () {
         else
           user_list=$( cat /etc/shadow | awk -F':' '{print $1":"$2":"}' | grep "::$" | cut -f1 -d: )
         fi
-        for user_name in $users; do
+        for user_name in $user_list; do
           empty_count=1
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "No password field for \"$user_name\" in \"$check_file\""

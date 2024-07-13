@@ -46,7 +46,7 @@ audit_nfs () {
         check_file_value "is" "/etc/system" "nfssrv:nfs_portmon" "eq" "1" "star"
       fi
       if [ "$os_name" = "Linux" ]; then
-        for service_name in nfs nfslock portmap rpc nfs-kerner-server rpcbind; do
+        for service_name in nfs nfslock rpc nfs-kerner-server rpcbind; do
           check_linux_service "$service_name" "off"
         done
       fi

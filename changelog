@@ -1697,13 +1697,63 @@
 # Bug fixes
 # 9.4.1: Fri Jul 12 05:06:40 PM AEST 2024
 # Bug fixes
-# 8.4.2: Fri Jul 12 08:43:30 PM AEST 2024
+# 9.4.2: Fri Jul 12 08:43:30 PM AEST 2024
 # Fixed iptables check
-# 8.4.3: Fri Jul 12 08:50:57 PM AEST 2024
+# 9.4.3: Fri Jul 12 08:50:57 PM AEST 2024
 # Fixed apparmor check
-# 8.4.4: Fri Jul 12 09:00:09 PM AEST 2024
+# 9.4.4: Fri Jul 12 09:00:09 PM AEST 2024
 # Fixed sendmail daemon check
-# 8.4.5: Fri Jul 12 09:09:28 PM AEST 2024
+# 9.4.5: Fri Jul 12 09:09:28 PM AEST 2024
 # Fixed ssh root key check
-# 8.4.6: Fri Jul 12 09:43:08 PM AEST 2024
+# 9.4.6: Fri Jul 12 09:43:08 PM AEST 2024
 # Fixed duplicate users check
+# 9.4.7: Sat Jul 13 09:09:54 AM AEST 2024
+# Fixed user dot files check
+# 9.4.8: Sat Jul 13 09:14:14 AM AEST 2024
+# Fixed password fields check
+# 9.4.9: Sat Jul 13 09:18:36 AM AEST 2024
+# Fixed reserved ID check
+# 9.5.0: Sat Jul 13 09:35:18 AM AEST 2024
+# Fixed daemon umask check
+# 9.5.1: Sat Jul 13 10:09:32 AM AEST 2024
+# Fixed wheel group check
+# 9.5.2: Sat Jul 13 10:14:43 AM AEST 2024
+# Added wheel group and password hashing switches
+# 9.5.3: Sat Jul 13 10:30:34 AM AEST 2024
+# Fixed file permissions check
+# 9.5.4: Sat Jul 13 10:38:11 AM AEST 2024
+# Fixed old users check
+# 9.5.5: Sat Jul 13 11:24:41 AM AEST 2024
+# Fixed cron check and added anacron switch
+# 9.5.6: Sat Jul 13 11:32:17 AM AEST 2024
+# Fixed shadow group check
+# 9.5.7: Sat Jul 13 11:39:27 AM AEST 2024
+# Fixed xlogin check
+# 9.5.8: Sat Jul 13 11:46:38 AM AEST 2024
+# Fixed gnome banner check
+# 9.5.9: Sat Jul 13 11:57:17 AM AEST 2024
+# Fixed krb5 check
+# 9.6.0: Sat Jul 13 12:03:35 PM AEST 2024
+# Fixed NIS entries check
+# 9.6.1: Sat Jul 13 12:13:35 PM AEST 2024
+# Fixed avahi daemon check
+# 9.6.2: Sat Jul 13 12:16:42 PM AEST 2024
+# Fixed mount setuid check
+# 9.6.3: Sat Jul 13 12:26:27 PM AEST 2024
+# Fixed NFS check
+# 9.6.4: Sat Jul 13 12:31:12 PM AEST 2024
+# Fixed filesystem mount check
+# 9.6.5: Sat Jul 13 12:48:49 PM AEST 2024
+# Fixed syslog server check
+# 9.6.6: Sat Jul 13 12:54:24 PM AEST 2024
+# Fixed SNMP test
+# 9.6.7: Sat Jul 13 01:03:46 PM AEST 2024
+# Fixed chrony check
+# 9.6.8: Sat Jul 13 01:07:45 PM AEST 2024
+# Fixed dhcp server test
+# 9.6.9: Sat Jul 13 01:10:26 PM AEST 2024
+# Fixed apport check
+# 9.7.0: Sat Jul 13 01:15:04 PM AEST 2024
+# Fixed SPARC hardware check
+# 9.7.1: Sat Jul 13 01:27:35 PM AEST 2024
+# Documentation updates

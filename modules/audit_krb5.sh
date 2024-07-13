@@ -11,7 +11,7 @@
 
 audit_krb5 () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "Kerberos"
+    verbose_message "Kerberos" "check"
     if [ "$os_name" = "SunOS" ]; then
       if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
         for service_name in "svc:/network/security/krb5kdc:default" \

@@ -14,9 +14,9 @@
 
 audit_xlogin () {
   if [ "$os_name" = "SunOS" ] || [ "$os_name" = "AIX" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Linux" ]; then
-    verbose_message "X Windows"
+    verbose_message "X Windows" "check"
     if [ "$os_name" = "AIX" ]; then
-      verbose_message "CDE Startup"
+      verbose_message "CDE Startup" "check"
       check_itab dt off
     fi
     if [ "$os_name" = "SunOS" ]; then

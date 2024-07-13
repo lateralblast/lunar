@@ -25,7 +25,7 @@ audit_shadow_group () {
       if [ "$shadow_check" != 0 ]; then
         if [ "$audit_mode" = 1 ]; then
           increment_insecure "Shadow group contains members"
-          verbose_message    "cat $check_file |awk -F':' '( $1 == \"shadow\" ) {print $1\":\"$2\":\"$3\":\" ; next}; {print}' > $temp_file" "fix"
+          verbose_message    "cat $check_file |awk -F':' '( \$1 == \"shadow\" ) {print \$1\":\"\$2\":\"\$3\":\" ; next}; {print}' > $temp_file" "fix"
           verbose_message    "cat $temp_file > $check_file" "fix"
           verbose_message    "rm $temp_file" "fix"
         fi
