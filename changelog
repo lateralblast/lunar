@@ -1799,3 +1799,5 @@
 # Fixed touch ID check
 # 9.9.2: Sat 13 Jul 2024 23:15:06 AEST
 # Fixed APFS check
+# 9.9.3: Sat 13 Jul 2024 23:17:18 AEST
+# Fixed safari history check
