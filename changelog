@@ -1795,3 +1795,5 @@
 # Fixed keychain lock check
 # 9.9.0: Sat 13 Jul 2024 23:09:40 AEST
 # Fixed application permissions check
+# 9.9.1: Sat 13 Jul 2024 23:12:47 AEST
+# Fixed touch ID check
