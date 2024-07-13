@@ -16,8 +16,8 @@
 
 audit_auto_login() {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message "Autologin" "check"
-    check_osx_defaults "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes" "bool"
+    verbose_message         "Autologin" "check"
+    check_osx_defaults_bool "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes"
     if [ ! "$audit_mode" != 2 ]; then
       check=$( defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser )
       if [ "$check" ]; then

@@ -17,7 +17,7 @@ audit_bonjour_advertising() {
   if [ "$os_name" = "Darwin" ]; then
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     if [ "$long_os_version" -ge 1014 ]; then
-      check_osx_defaults "/Library/Preferences/com.apple.mDNSResponder.plist" "NoMulticastAdvertisements" "1" "bool"
+      check_osx_defaults_bool "/Library/Preferences/com.apple.mDNSResponder.plist" "NoMulticastAdvertisements" "1"
     else
       verbose_message "Bonjour Multicast Advertising" "check"
       temp_file="$temp_dir/mdnsmcast"

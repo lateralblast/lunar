@@ -18,7 +18,7 @@
 
 audit_login_details () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message    "Login display details" "check"
-    check_osx_defaults "/Library/Preferences/com.apple.loginwindow" "RetriesUntilHint" "0" "int"
+    verbose_message        "Login display details" "check"
+    check_osx_defaults_int "/Library/Preferences/com.apple.loginwindow" "RetriesUntilHint" "0"
   fi
 }

@@ -19,7 +19,7 @@ audit_lockdown () {
       if [ "$audit_mode" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
         for user_name in $user_list; do
-          check_osx_defaults ".GlobalPreferences" "LDMGlobalEnabled" "1" "bool"
+          check_osx_defaults_bool ".GlobalPreferences" "LDMGlobalEnabled" "1"
         done
       fi
     fi

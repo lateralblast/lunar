@@ -16,7 +16,7 @@ audit_time_machine () {
     if [ "$os_version" -ge 14 ]; then
       verbose_message "iCloud Drive" "check"
       if [ "$audit_mode" != 2 ]; then
-        check_osx_defaults "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1" "bool"
+        check_osx_defaults_bool "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1"
       fi
     fi
   fi

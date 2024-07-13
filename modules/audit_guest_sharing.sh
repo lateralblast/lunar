@@ -16,9 +16,9 @@
 
 audit_guest_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message     "Guest account file sharing" "check"
-    check_osx_defaults  "/Library/Preferences/com.apple.AppleFileServer"  "guestAccess" "no" "bool"
-    check_osx_defaults  "/Library/Preferences/SystemConfiguration/com.apple.smb.server" "AllowGuestAccess" "no" "bool"
+    verbose_message          "Guest account file sharing" "check"
+    check_osx_defaults_bool  "/Library/Preferences/com.apple.AppleFileServer"                "guestAccess"      "no"
+    check_osx_defaults_bool  "/Library/Preferences/SystemConfiguration/com.apple.smb.server" "AllowGuestAccess" "no"
     if [ "$long_os_version" -ge 1014 ]; then
       check_sysadminctl "smbGuestAccess" "off"
     fi

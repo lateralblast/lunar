@@ -19,7 +19,7 @@ audit_air_play () {
       if [ "$audit_mode" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
         for user_name in $user_list; do
-          check_osx_defaults "com.apple.controlcenter.plist" "AirplayRecieverEnabled" "0" "bool" "currentHost" "$user_name"
+          check_osx_defaults_user "com.apple.controlcenter.plist" "AirplayRecieverEnabled" "0" "bool" "currentHost" "$user_name"
         done
       fi
     fi

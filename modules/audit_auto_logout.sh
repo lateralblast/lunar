@@ -13,7 +13,7 @@
 
 audit_auto_logout () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message    "Autologout" "check"
-    check_osx_defaults "/Library/Preferences/.GlobalPreferences" "com.apple.autologout.AutoLogOutDelay" "0" "int"
+    verbose_message        "Autologout" "check"
+    check_osx_defaults_int "/Library/Preferences/.GlobalPreferences" "com.apple.autologout.AutoLogOutDelay" "0"
   fi
 }

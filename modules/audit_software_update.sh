@@ -51,14 +51,14 @@ audit_software_update () {
   fi
   if [ "$os_name" = "Darwin" ]; then
     if [ "$long_os_version" -ge 1012 ]; then
-      check_osx_defaults "/Library/Preferences/com.apple.SoftwareUpdate"   "AutomaticCheckEnabled"            "1" "int"
-      check_osx_defaults "/Library/Preferences/com.apple.commerce"         "AutoUpdate"                       "1" "bool"
-      check_osx_defaults "/Library/Preferences/com.apple.SoftwareUpdate"   "ConfigDataInstall"                "1" "bool"
-      check_osx_defaults "/Library/Preferences/com.apple.SoftwareUpdate"   "CriticalUpdateInstall"            "1" "bool"
-      check_osx_defaults "/Library/Preferences/com.apple.commerce"         "AutoUpdateRestartRequired"        "1" "bool"
+      check_osx_defaults_int  "/Library/Preferences/com.apple.SoftwareUpdate"   "AutomaticCheckEnabled"            "1"
+      check_osx_defaults_bool "/Library/Preferences/com.apple.commerce"         "AutoUpdate"                       "1"
+      check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate"   "ConfigDataInstall"                "1"
+      check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate"   "CriticalUpdateInstall"            "1"
+      check_osx_defaults_bool "/Library/Preferences/com.apple.commerce"         "AutoUpdateRestartRequired"        "1"
       if [ "$long_os_version" -ge 1013 ]; then
-        check_osx_defaults "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticDownload"                "1" "bool"
-        check_osx_defaults "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticallyInstallMacOSUpdates" "1" "bool"
+        check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticDownload"                "1"
+        check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticallyInstallMacOSUpdates" "1"
       fi
     else
       verbose_message "Software Autoupdate" "check"

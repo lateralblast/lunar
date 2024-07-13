@@ -18,7 +18,7 @@ audit_safari_allow_popups () {
       if [ "$audit_mode" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
         for user_name in $user_list; do
-          check_osx_defaults "com.apple.Safari" "safariAllowPopups" "0" "bool" "$user_name"
+          check_osx_defaults_user "com.apple.Safari" "safariAllowPopups" "0" "bool" "$user_name"
         done
       fi
     fi

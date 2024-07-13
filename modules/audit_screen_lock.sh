@@ -22,14 +22,14 @@ audit_screen_lock () {
       if [ "$audit_mode" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
         for user_name in $user_list; do
-          check_osx_defaults "com.apple.screensaver" "idleTime" "600" "int" "currentHost" "$user_name"
+          check_osx_defaults_user "com.apple.screensaver" "idleTime" "600" "int" "currentHost" "$user_name"
         done
       fi
     fi
-    verbose_message "Screen Lock" "check"
-    check_osx_defaults "com.apple.screensaver"  "askForPassword" "1"   "int" "currentHost"
-    check_osx_defaults "com.apple.screensaver"  "idleTime"       "900" "int" "currentHost"
-    check_append_file  "/etc/pam.d/screensaver" "account    required     pam_group.so no_warn group=admin,wheel fail_safe" "hash"
+    verbose_message         "Screen Lock" "check"
+    check_osx_defaults_host "com.apple.screensaver"  "askForPassword" "1"   "int"
+    check_osx_defaults_host "com.apple.screensaver"  "idleTime"       "900" "int"
+    check_append_file       "/etc/pam.d/screensaver" "account    required     pam_group.so no_warn group=admin,wheel fail_safe" "hash"
     if [ "$audit_mode" != 2 ]; then
       if [ -f "$HOME/Library/Preferences/com.apple.dock" ]; then
         screen_test=$( defaults read ~/Library/Preferences/com.apple.dock | grep corner | grep 1 | wc -l | sed "s/ //g" )

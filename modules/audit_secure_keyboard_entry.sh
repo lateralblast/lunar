@@ -15,7 +15,7 @@
 
 audit_secure_keyboard_entry () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message    "Secure Keyboard Entry" "check"
-    check_osx_defaults "Terminal" "SecureKeyboardEntry" "1" "int"
+    verbose_message        "Secure Keyboard Entry"  "check"
+    check_osx_defaults_int "Terminal" "SecureKeyboardEntry" "1" "int"
   fi
 }

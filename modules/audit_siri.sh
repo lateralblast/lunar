@@ -18,11 +18,11 @@ audit_siri () {
       if [ "$audit_mode" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
         for user_name in $user_list; do
-          check_osx_defaults "com.apple.Siri.plist" "StatusMenuVisible"       "1" "bool" "$user_name"
-          check_osx_defaults "com.apple.Siri.plist" "LockscreenEnabled"       "0" "bool" "$user_name"
-          check_osx_defaults "com.apple.Siri.plist" "VoiceTriggerUserEnabled" "0" "bool" "$user_name"
-          check_osx_defaults "com.apple.Siri.plist" "TypeToSiriEnabled"       "0" "bool" "$user_name"
-          check_osx_defaults "com.apple.assistant.support.plist" "Assistant Enabled" "0" "bool" "$user_name"
+          check_osx_defaults_user "com.apple.Siri.plist"              "StatusMenuVisible"       "1" "bool" "$user_name"
+          check_osx_defaults_user "com.apple.Siri.plist"              "LockscreenEnabled"       "0" "bool" "$user_name"
+          check_osx_defaults_user "com.apple.Siri.plist"              "VoiceTriggerUserEnabled" "0" "bool" "$user_name"
+          check_osx_defaults_user "com.apple.Siri.plist"              "TypeToSiriEnabled"       "0" "bool" "$user_name"
+          check_osx_defaults_user "com.apple.assistant.support.plist" "Assistant Enabled"       "0" "bool" "$user_name"
         done
       fi
     fi

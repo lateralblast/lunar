@@ -156,3 +156,31 @@ check_osx_defaults () {
     fi
   fi
 }
+
+check_osx_defaults_dict () {
+  check_osx_defaults "$1" "$2" "$3" "$4" "$5" "$6" "" ""
+}
+
+check_osx_defaults_int () {
+  check_osx_defaults "$1" "$2" "$3" "int" "" "" "" ""
+}
+
+check_osx_defaults_bool () {
+  check_osx_defaults "$1" "$2" "$3" "bool" "" "" "" ""
+}
+
+check_osx_defaults_string () {
+  check_osx_defaults "$1" "$2" "$3" "string" "" "" "" ""
+}
+
+check_osx_defaults_user () {
+  check_osx_defaults "$1" "$2" "$3" "$4" "$5" "" "" ""
+}
+
+check_osx_defaults_host () {
+  check_osx_defaults "$1" "$2" "$3" "$4" "currentHost" "" "" ""
+}
+
+check_osx_defaults_value () {
+  check_osx_defaults "$1" "$2" "$3" "" "" "" "" ""
+}

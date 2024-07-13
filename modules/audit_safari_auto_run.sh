@@ -15,8 +15,8 @@
 
 audit_safari_auto_run () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message    "Safari Auto-run" "check"
-    check_osx_defaults "com.apple.Safari AutoOpenSafeDownloads" "0" "int"
-    check_osx_defaults "$HOME/Library/Preferences/com.apple.safari.plist" "PlugInFirstVisitPolicy" "PlugInPolicyAllowWithSecurityRestrictions" "string"
+    verbose_message           "Safari Auto-run" "check"
+    check_osx_defaults_int    "com.apple.Safari AutoOpenSafeDownloads" "0" "int"
+    check_osx_defaults_string "$HOME/Library/Preferences/com.apple.safari.plist" "PlugInFirstVisitPolicy" "PlugInPolicyAllowWithSecurityRestrictions"
   fi
 }

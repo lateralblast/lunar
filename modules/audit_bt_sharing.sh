@@ -15,17 +15,17 @@
 
 audit_bt_sharing () {
   if [ "$os_name" = "Darwin" ]; then
-    verbose_message    "Bluetooth services and file sharing"      "check"
-    check_osx_defaults "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0" "int"
-    check_osx_defaults "/Library/Preferences/com.apple.Bluetooth" "PANServices"               "0" "int"
-    check_osx_defaults "/Library/Preferences/com.apple.Bluetooth" "BluetoothSystemWakeEnable" "0" "bool"
+    verbose_message         "Bluetooth services and file sharing"      "check"
+    check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0"
+    check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "PANServices"               "0"
+    check_osx_defaults_bool "/Library/Preferences/com.apple.Bluetooth" "BluetoothSystemWakeEnable" "0"
     backup_file="bluetooth_discover"
     if [ "$audit_mode" != 2 ]; then
       if [ "$os_version" -ge 14 ]; then
         user_list=$( find /Users -maxdepth 1 -type d |grep -vE "localized|Shared" |cut -f3 -d/ )
         for user_name in $user_list; do
-          check_osx_defaults "com.apple.Bluetooth"           "PrefKeyServicesEnabled" "0"  "bool" "$user_name"
-          check_osx_defaults "com.apple.controlcenter.plist" "Bluetooth"              "18" "int"  "$user_name"
+          check_osx_defaults_user "com.apple.Bluetooth"           "PrefKeyServicesEnabled" "0"  "bool" "$user_name"
+          check_osx_defaults_user "com.apple.controlcenter.plist" "Bluetooth"              "18" "int"  "$user_name"
         done
       fi
       check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i power |cut -f2 -d: |sed "s/ //g" )

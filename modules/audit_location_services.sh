@@ -19,8 +19,8 @@ audit_location_services () {
     if [ "$long_os_version" -ge 1014 ]; then
       verbose_message "Location Services" "check"
       if [ "$audit_mode" != 2 ]; then
-        check_osx_defaults "/var/db/locationd/Library/Preferences/ByHost/com.apple.locationd" "LocationServicesEnabled" "0" "bool"
-        check_osx_defaults "/Library/Preferences/com.apple.locationmenu.plist"                "ShowSystemServices"      "1" "bool"
+        check_osx_defaults_bool "/var/db/locationd/Library/Preferences/ByHost/com.apple.locationd" "LocationServicesEnabled" "0"
+        check_osx_defaults_bool "/Library/Preferences/com.apple.locationmenu.plist"                "ShowSystemServices"      "1"
       fi
     fi
   fi

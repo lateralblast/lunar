@@ -19,7 +19,7 @@ audit_wireless () {
     if [ "$os_name" = "Darwin" ] && [ "$os_version" -ge 14 ]; then
       user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
       for user_name in $user_list; do
-        check_osx_defaults "com.apple.controlcenter.plist" "WiFi" "2" "int" "currentHost" "$user_name"
+        check_osx_defaults_user "com.apple.controlcenter.plist" "WiFi" "2" "int" "currentHost" "$user_name"
       done
     else
       if [ "$os_name" = "Darwin" ]; then
