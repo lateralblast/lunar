@@ -21,7 +21,7 @@ audit_nis_entries () {
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if test -r "$check_file"; then
         if [ "$audit_mode" != 2 ]; then
-          entry_check=$( grep "^\+" "$check_file" | wc -l)
+          entry_check=$( grep "^\+" "$check_file" | wc -l | sed "s/ //g" )
           if [ ! "$entry_check" = "0" ]; then
             file_entries=$( grep "^\+" "$check_file" )
             for file_entry in $file_entries; do

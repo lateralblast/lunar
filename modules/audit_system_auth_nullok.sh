@@ -16,7 +16,7 @@ audit_system_auth_nullok () {
         if [ -f "$check_file" ]; then
           verbose_message "For \"nullok\" entry in \"$check_file\"" "check"
           check_value=0
-          check_value=$( grep -v '^#' "$check_file" | grep "nullok" | head -1 | wc -l )
+          check_value=$( grep -v '^#' "$check_file" | grep "nullok" | head -1 | wc -l | sed "s/ //g" )
           if [ "$check_value" = 1 ]; then
             if [ "$audit_mode" = "1" ]; then
               increment_insecure "Found nullok \"entry\" in \"$check_file\""

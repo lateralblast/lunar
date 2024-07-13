@@ -53,9 +53,9 @@ check_file_perms () {
     return
   fi
   if [ "$check_owner" != "" ]; then
-    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" -user "$check_owner" -group "$check_group" 2> /dev/null | wc -l)
+    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" -user "$check_owner" -group "$check_group" 2> /dev/null | wc -l | sed "s/ //g" )
   else
-    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" 2> /dev/null | wc -l)
+    check_result=$( find "$check_file" -maxdepth 0 -perm "$check_perms" 2> /dev/null | wc -l | sed "s/ //g" )
   fi
   log_file="fileperms.log"
   if [ "$check_result" != "1" ]; then
@@ -82,7 +82,7 @@ check_file_perms () {
       if [ "$os_name" = "Linux" ]; then
         file_owner=$( stat -c "%U,%G" "$check_file" )
       else
-        file_owner=$( ls -ld "$check_file" |awk '{print $3","$4}' )
+        file_owner=$( ls -ld "$check_file" | awk '{print $3","$4}' )
       fi
       verbose_message "File \"$check_file\" to have correct permissions" "set"
       echo "$check_file,$file_perms,$file_owner" >> "$log_file"
@@ -104,9 +104,9 @@ check_file_perms () {
       restore_check=$( grep "$check_file" "$restore_file" | cut -f1 -d"," )
       if [ "$restore_check" = "$check_file" ]; then
         restore_info=$( grep "$check_file" "$restore_file" )
-        restore_perms=$( echo "$restore_info" |cut -f2 -d"," )
-        restore_owner=$( echo "$restore_info" |cut -f3 -d"," )
-        restore_group=$( echo "$restore_info" |cut -f4 -d"," )
+        restore_perms=$( echo "$restore_info" | cut -f2 -d"," )
+        restore_owner=$( echo "$restore_info" | cut -f3 -d"," )
+        restore_group=$( echo "$restore_info" | cut -f4 -d"," )
         verbose_message "File \"$check_file\" to previous permissions" "restore"
         chmod "$restore_perms" "$check_file"
         if [ "$check_owner" != "" ]; then

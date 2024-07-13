@@ -63,7 +63,7 @@ audit_ssh_config () {
         check_file_value "is" "$check_file" "RSAAuthentication"        "space" "no"  "hash"
         check_file_value "is" "$check_file" "Banner"                   "space" "/etc/issue" "hash"
         check_file_value "is" "$check_file" "LogLevel"                 "space" "VERBOSE"    "hash"
-        if [ "$ssh_sandbox" = "1" ]; then
+        if [ "$ssh_sandbox" = "yes" ]; then
           check_file_value "is" "$check_file" "UsePrivilegeSeparation" "space" "sandbox" "hash"
         else
           check_file_value "is" "$check_file" "UsePrivilegeSeparation" "space" "yes"     "hash"

@@ -59,7 +59,7 @@ audit_password_fields () {
         fi
         for check_file in /etc/passwd /etc/shadow; do
           if test -r "$check_file"; then
-            legacy_check=$( grep '^+:' $check_file | head -1 | wc -l )
+            legacy_check=$( grep '^+:' $check_file | head -1 | wc -l | sed "s/ //g" )
             if [ "$legacy_check" != "0" ]; then
               if [ "$audit_mode" = 1 ]; then
                 increment_insecure "Legacy field found in \"$check_file\""

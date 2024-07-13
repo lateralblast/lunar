@@ -15,7 +15,7 @@ audit_wheel_group () {
     string="Wheel Group"
     verbose_message "$string" "check"
     if [ "$audit_mode" != 2 ]; then
-      check_value=$( grep "^$wheel_group:" "$check_file" |wc -l)
+      check_value=$( grep "^$wheel_group:" "$check_file" |wc -l | sed "s/ //g" )
       if [ "$check_value" = "0" ]; then
         if [ "$audit_mode" = "1" ]; then
           increment_insecure "Wheel group \"$wheel_group\" does not exist in \"$check_file\""

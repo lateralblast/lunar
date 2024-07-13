@@ -20,7 +20,7 @@ audit_xinetd () {
       check=$( ls -l $check_dir | awk '{print $2}' )
       if [ ! "$check" = "0" ]; then
         verbose_message "Xinet Services" "check"
-        xinetd_check=$( grep disable "$check_dir"/* | awk '{print $3}' | grep no | head -1 | wc -l )
+        xinetd_check=$( grep disable "$check_dir"/* | awk '{print $3}' | grep no | head -1 | wc -l | sed "s/ //g" )
         if [ "$xinetd_check" = "1" ]; then
           for service_name in amanda amandaidx amidxtape auth chargen-dgram \
             chargen-stream cvs daytime-dgram daytime-stream discard-dgram \

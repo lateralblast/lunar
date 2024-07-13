@@ -86,7 +86,7 @@ audit_daemon_umask () {
       if [ -e "$dir_name" ]; then
         file_list=$( find /etc/ -maxdepth 1 -type f )
         for check_file in $file_list; do
-          umask_test=$( grep "umask" "$check_file" | wc -l )
+          umask_test=$( grep "umask" "$check_file" | wc -l | sed "s/ //g" )
           if [ ! "$umask_test" = "0" ]; then
             check_file_value "is" "$check_file" "umask" "space" "077" "hash"
           fi

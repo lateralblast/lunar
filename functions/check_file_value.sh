@@ -33,7 +33,7 @@ check_file_value_with_position () {
   position="$7"
   search_value="$8"
   dir_name=$( dirname "$check_file" )
-  sshd_test=$( echo "$check_file" | grep "sshd_config" |wc -l)
+  sshd_test=$( echo "$check_file" | grep "sshd_config" | wc -l | sed "s/ //g" )
   if [ ! -f "$check_file" ]; then
     verbose_message "File \"$check_file\" does not exist" "warn"
   fi
@@ -132,34 +132,34 @@ check_file_value_with_position () {
           fi
         fi
       else
-        correct_hyphen=$( echo "$correct_value" |grep "^[\-]" |wc -l )
+        correct_hyphen=$( echo "$correct_value" | grep "^[\-]" | wc -l | sed "s/ //g" )
         if [ "$correct_hyphen" = "1" ]; then
           correct_value="\\$correct_value"
         fi
-        param_hyphen=$( echo "$parameter_name" |grep "^[\-]" |wc -l )
+        param_hyphen=$( echo "$parameter_name" | grep "^[\-]" | wc -l | sed "s/ //g" )
         if [ "$param_hyphen" = "1" ]; then
           parameter_name="\\$parameter_name"
         fi
         if [ "$separator" = "tab" ]; then
-          check_value=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $2}' |sed 's/"//g' |uniq |egrep "$correct_value" |wc -l )
+          check_value=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | awk '{print $2}' | sed 's/"//g' | uniq | egrep "$correct_value" | wc -l | sed "s/ //g" )
         else
           if [ "$sshd_test" = "1" ]; then
-            check_value=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value" |wc -l )
+            check_value=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | cut -f2 -d"$separator" | sed 's/"//g' | sed 's/ //g' | uniq | egrep "$correct_value" | wc -l | sed "s/ //g" )
             if [ ! "$check_value" ]; then
-              check_value=$( $cat_command $check_file |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value" |wc -l )
+              check_value=$( $cat_command $check_file | grep "$parameter_name" | cut -f2 -d"$separator" | sed 's/"//g' | sed 's/ //g' | uniq | egrep "$correct_value" | wc -l | sed "s/ //g" )
             fi
           else
             if [ "$search_value" ]; then
               if [ "$operator" = "is" ]; then
-                check_value=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$search_value" |wc -l )
+                check_value=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | cut -f2 -d"$separator" | sed 's/"//g' | sed 's/ //g' | uniq | egrep "$search_value" | wc -l | sed "s/ //g" )
               else
-                check_value=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |grep "$separator" |uniq |egrep "$search_value" |wc -l )
+                check_value=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | grep "$separator" | uniq | egrep "$search_value" | wc -l | sed "s/ //g" )
               fi
             else
               if [ "$operator" = "is" ]; then
-                check_value=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f2 -d"$separator" |sed 's/"//g' |sed 's/ //g' |uniq |egrep "$correct_value" |wc -l )
+                check_value=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | cut -f2 -d"$separator" | sed 's/"//g' | sed 's/ //g' | uniq | egrep "$correct_value" | wc -l | sed "s/ //g" )
               else
-                check_value=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |grep "$separator" |uniq |egrep "$correct_value" |wc -l )
+                check_value=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | grep "$separator" | uniq | egrep "$correct_value" | wc -l | sed "s/ //g" )
               fi
             fi
           fi
@@ -192,18 +192,18 @@ check_file_value_with_position () {
           echo ""
         fi
         if [ "$separator" = "tab" ]; then
-          check_parameter=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |awk '{print $1}' )
+          check_parameter=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | awk '{print $1}' )
         else
-          check_parameter=$( $cat_command $check_file |grep -v "^$comment_value" |grep "$parameter_name" |cut -f1 -d"$separator" |sed 's/ //g' |uniq )
+          check_parameter=$( $cat_command $check_file | grep -v "^$comment_value" | grep "$parameter_name" | cut -f1 -d"$separator" | sed 's/ //g' | uniq )
         fi
         if [ "$test_value" = 0 ]; then
-          correct_hyphen=$( echo "$correct_value" |grep "^[\\]" | wc -l)
+          correct_hyphen=$( echo "$correct_value" | grep "^[\\]" | wc -l | sed "s/ //g" )
           if [ "$correct_hyphen" = "1" ]; then
-            correct_value=$( echo "$correct_value" |sed "s/^[\\]//g" )
+            correct_value=$( echo "$correct_value" | sed "s/^[\\]//g" )
           fi
-          param_hyphen=$( echo "$parameter_name" |grep "^[\\]" | wc -l)
+          param_hyphen=$( echo "$parameter_name" | grep "^[\\]" | wc -l | sed "s/ //g" )
           if [ "$param_hyphen" = "1" ]; then
-            parameter_name=$( echo "$parameter_name" |sed "s/^[\\]//g" )
+            parameter_name=$( echo "$parameter_name" | sed "s/^[\\]//g" )
           fi
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Parameter \"$parameter_name\" $negative set to \"$correct_value\" in \"$check_file\""
@@ -212,7 +212,7 @@ check_file_value_with_position () {
                 verbose_message "echo -e \"$parameter_name\t$correct_value\" >> $check_file" "fix"
               else
                 if [ "$position" = "after" ]; then
-                  verbose_message "$cat_command $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" "fix"
+                  verbose_message "$cat_command $check_file | sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file" "fix"
                   verbose_message "$cat_command $temp_file > $check_file" "fix"
                 else
                   verbose_message "echo \"$parameter_name$separator$correct_value\" >> $check_file" "fix"
@@ -242,7 +242,7 @@ check_file_value_with_position () {
                   eval "$echo_command -e \"$parameter_name\t$correct_value\" >> $check_file"
                 else
                   if [ "$position" = "after" ]; then
-                    eval "$cat_command $check_file |sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file"
+                    eval "$cat_command $check_file | sed \"s,$search_value,&\n$parameter_name$separator$correct_value,\" > $temp_file"
                     eval "$cat_command $temp_file > $check_file"
                   else
                     $echo_command "$parameter_name$separator$correct_value" >> "$check_file"
@@ -259,7 +259,7 @@ check_file_value_with_position () {
                   if [ "$os_version" != "11" ]; then
                     pkgchk -f -n -p $check_file 2> /dev/null
                   else
-                    pkg fix $( pkg search $check_file |grep pkg |awk '{print $4}' )
+                    pkg fix $( pkg search $check_file | grep pkg | awk '{print $4}' )
                   fi
                 fi
                 rm "$temp_file"

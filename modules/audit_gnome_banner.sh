@@ -74,7 +74,7 @@ audit_gnome_banner () {
         check_file_value "is" "$check_file" "banner-message-text"   "eq" "Authorized uses only. All activity may be monitored and reported." "hash"
       fi
     fi
-    gconf_test=$( command -v gconftool 2> /dev/null | wc -l )
+    gconf_test=$( command -v gconftool 2> /dev/null | wc -l | sed "s/ //g" )
     if [ "$gconf_test" = "1" ]; then
       gconf_bin=$( command -v gconftool 2> /dev/null )
     fi

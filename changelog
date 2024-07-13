@@ -1757,3 +1757,19 @@
 # Fixed SPARC hardware check
 # 9.7.1: Sat Jul 13 01:27:35 PM AEST 2024
 # Documentation updates
+# 9.7.2: Sat 13 Jul 2024 17:33:22 AEST
+# Fixed version detection on MacOS
+# 9.7.3: Sat 13 Jul 2024 17:37:35 AEST
+# Fixed dmidecode check
+# 9.7.4: Sat 13 Jul 2024 17:41:13 AEST
+# Fixed SSH sandbox check
+# 9.7.5: Sat 13 Jul 2024 17:43:01 AEST
+# Fixed password strength test
+# 9.7.6: Sat 13 Jul 2024 17:48:24 AES
+# Fixed kernel accounting check
+# 9.7.7: Sat 13 Jul 2024 17:57:16 AEST
+# Fixed ntp check
+# 9.7.8: Sat 13 Jul 2024 20:04:00 AEST
+# Fixes for MacOS
+# 9.7.9: Sat 13 Jul 2024 20:41:18 AEST
+# More fixes for MacOS

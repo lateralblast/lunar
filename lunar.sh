@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.7.1
+# Version:      9.7.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -131,6 +131,7 @@ audit_type="local"
 git_url="https://github.com/lateralblast/lunar.git"
 password_hashing="sha512"
 anacron_enable="no"
+ssh_sandbox="yes"
 
 # Disable daemons
 
@@ -280,8 +281,8 @@ check_virtual_platform () {
   if [ -f "/.dockerenv" ]; then
     virtual="Docker"
   else 
-    check=$( command -v dmidecode | grep dmidecode | grep -v no )
-    if [ "$check" ] && [ "$my_id" = "0" ]; then
+    dmi_check=$( command -v dmidecode | grep dmidecode | grep -v no | wc -l | sed "s/ //g" )
+    if [ "$dmi_check" = "1" ] && [ "$my_id" = "0" ]; then
       virtual=$( dmidecode | grep Manufacturer |head -1 | awk '{print $2}' | sed "s/,//g" )
     else
       virtual=$( uname -p )
@@ -325,11 +326,9 @@ check_os_release () {
   os_minorrev=""
   os_name=$( uname )
   if [ "$os_name" = "Darwin" ]; then
-    set -- $( sw_vers | awk 'BEGIN { FS="[:\t.]"; } /^ProductVersion/ && $0 != "" {print $3, $4, $5}' )
-    os_release="$1.$2"
-    os_version=$1
-    os_update=$2
-    os_minorrev=$3
+    os_release=$( sw_vers |grep ProductVersion |awk '{print $2}' )
+    os_version=$( echo "$os_release" |cut -f1 -d. )
+    os_update=$( echo "$os_release" |cut -f2 -d. )
     os_vendor="Apple"
     if [ "$os_update" = "" ]; then
       os_update=$( sw_vers |grep ^BuildVersion |awk '{print $2}' )
@@ -884,7 +883,7 @@ funct_audit_system () {
     audit_search_fs
   fi
   #audit_test_subset
-  sparc_test=$( echo "$os_platform" |grep "sparc" | wc -l )
+  sparc_test=$( echo "$os_platform" |grep "sparc" | wc -l | sed "s/ //g" )
   if [ "$sparc_test" = "0" ]; then
     audit_system_x86
   else
@@ -902,17 +901,17 @@ funct_audit_select () {
   audit_mode=$1
   function=$2
   check_environment
-  module_test=$(echo "$function" |grep aws |wc -l)
+  module_test=$(echo "$function" |grep aws |wc -l | sed "s/ //g" )
   if [ "$module_test" = "1" ]; then
     check_aws
   fi
-  suffix_test=$( echo "$function" |grep "\\.sh" | wc -l)
+  suffix_test=$( echo "$function" |grep "\\.sh" | wc -l | sed "s/ //g" )
   if [ "$suffix_test" = "1" ]; then
     function=$( echo "$function" |cut -f1 -d. )
   fi
-  module_test=$(echo "$function" | grep "full" | wc -l)
+  module_test=$(echo "$function" | grep "full" | wc -l | sed "s/ //g" )
   if [ "$module_test" = "0" ]; then  
-    function_test=$(echo "$function" | grep "audit_" | wc -l)
+    function_test=$(echo "$function" | grep "audit_" | wc -l | sed "s/ //g" )
     if [ "$function_test" = "0" ]; then
       function="audit_$function"
     fi
@@ -1088,10 +1087,11 @@ Usage: ${0##*/} [OPTIONS...]
  -o | --name          Set docker/multipass OS or container name
  -O | --osinfo        Print OS information
  -p | --previous      Show previous versions of file
- -S | --unixtests     List all UNIX functions available to selective mode
+ -P | --sandbox.      Enable/Disabe SSH sandbox
  -r | --region        Specify AWS region
  -R | --testinfo      Print information for a specific test
  -s | --select        Run in selective mode (only run tests you want to)
+ -S | --unixtests     List all UNIX functions available to selective mode
  -t | --tag           Set docker tag
  -T | --tempdir       Set temp directory
  -u | --undo          Undo lockdown (for Operating Systems - changes made to system)
@@ -1376,6 +1376,10 @@ do
       print_previous
       shift
       exit
+      ;;
+    -P|--sshsandbox|--sandbox)
+      ssh_sandbox="$2"
+      shift 2
       ;;
     -q|--quiet|--nostrict)
       unset eu

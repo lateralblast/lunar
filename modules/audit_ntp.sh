@@ -37,7 +37,7 @@ audit_ntp () {
       check_launchctl_service "org.ntp.ntpd" "on"
       #check_file="/private/etc/ntp.conf"
       if [ "$long_os_version" -ge 1009 ]; then
-        check_file_value "is" "/etc/ntp-restrict.conf" "space" "lo interface ignore wildcard interface listen lo" "hash"
+        check_file_value      "is" "/etc/ntp-restrict.conf" "restrict" "space" "lo interface ignore wildcard interface listen lo" "hash"
         check_osx_systemsetup "getusingnetworktime" "on"
         timeserver="$country_suffix.pool.ntp.org"
         check_osx_systemsetup "getnetworktimeserver" "$timeserver"

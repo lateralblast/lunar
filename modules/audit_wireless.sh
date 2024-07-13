@@ -26,11 +26,11 @@ audit_wireless () {
         check=$( defaults read com.apple.systemuiserver menuExtras | grep AirPort.menu | sed "s/[ ,\",\,]//g" )
         answer="/System/Library/CoreServices/MenuExtras/AirPort.menu"
       else
-        check=$( command -v nmcli 2> /dev/null )
-        if [ "$check" ]; then
+        check=$( command -v nmcli 2> /dev/null | sed "s/ //g" )
+        if [ "$check" = "1" ]; then
           check=$(nmcli radio all |grep -c enabled )
         else
-          check=$(find /sys/class/net/*/ -type d -name wireless |wc -l)
+          check=$(find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
         fi
         answer="0"
       fi

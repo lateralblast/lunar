@@ -22,11 +22,11 @@ audit_pam_rhosts () {
         restore_file "$check_file" "$restore_dir"
       else
         if [ -f "$check_file" ]; then
-          pam_check=$( grep -v "^#" $check_file | grep "pam_rhosts_auth" | head -1 | wc -l )
+          pam_check=$( grep -v "^#" $check_file | grep "pam_rhosts_auth" | head -1 | wc -l | sed "s/ //g" )
           if [ "$ansible" = 1 ]; then
             echo ""
             echo "- name: Checking $string"
-            echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep 'pam_rhosts_auth' |head -1 |wc -l\""
+            echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep 'pam_rhosts_auth' |head -1 |wc -l | sed 's/ //g'\""
             echo "  register: pam_rhosts_auth_check"
             echo "  failed_when: pam_rhosts_auth_check == 1"
             echo "  changed_when: false"
@@ -75,11 +75,11 @@ audit_pam_rhosts () {
           if [ "$audit_mode" = 2 ]; then
             restore_file "$check_file" "$restore_dir"
           else
-            pam_check=$( grep -v "^#" $check_file | grep "rhosts_auth" | head -1 | wc -l )
+            pam_check=$( grep -v "^#" $check_file | grep "rhosts_auth" | head -1 | wc -l | sed "s/ //g" )
             if [ "$ansible" = 1 ]; then
               echo ""
               echo "- name: Checking $string"
-              echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep 'rhosts_auth' |head -1 |wc -l\""
+              echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep 'rhosts_auth' |head -1 |wc -l | sed 's/ //g'\""
               echo "  register: pam_rhosts_auth_check"
               echo "  failed_when: pam_rhosts_auth_check == 1"
               echo "  changed_when: false"

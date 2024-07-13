@@ -22,7 +22,7 @@ audit_printer_sharing () {
       if [ "$long_os_version" -ge 1014 ]; then
         printer_test=$( /usr/bin/sudo /usr/sbin/cupsctl | grep -c "_share_printers=0" )
       else
-        printer_test=$( system_profiler SPPrintersDataType | grep Shared | awk '{print $2}' | grep 'Yes' |wc -l )
+        printer_test=$( system_profiler SPPrintersDataType | grep Shared | awk '{print $2}' | grep 'Yes' |wc -l | sed "s/ //g" )
       fi
       if [ "$printer_test" = "0" ]; then
         increment_insecure "Printer sharing is enabled"

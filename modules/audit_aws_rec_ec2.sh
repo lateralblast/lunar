@@ -168,7 +168,7 @@ audit_aws_rec_ec2 () {
   done
   # Check number of Elastic IPs that are being used
   max_ips=$( aws ec2 describe-account-attributes --region "$aws_region" --attribute-names max-elastic-ips --query "AccountAttributes[].AttributeValues[].AttributeValue" --output text )
-  no_ips=$( aws ec2 describe-addresses --region "$aws_region" --query 'Addresses[].PublicIp' --filters "Name=domain,Values=standard" --output text | wc -l )
+  no_ips=$( aws ec2 describe-addresses --region "$aws_region" --query 'Addresses[].PublicIp' --filters "Name=domain,Values=standard" --output text | wc -l | sed "s/ //g" )
   if [ "$max_ips" -ne "$no_ips" ]; then
     increment_secure   "Number of Elastic IPs consumed is less than limit of \"$max_ips\""
   else

@@ -46,11 +46,11 @@ check_systemctl_service () {
   fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
-    nf_status=$( systemctl is-enabled "$service_name" | grep "not-found" |wc -l )
+    nf_status=$( systemctl is-enabled "$service_name" | grep "not-found" | wc -l | sed "s/ //g" )
     if [ "$nf_status" = "1" ]; then
       actual_status="not-found"
     else
-      en_status=$( systemctl is-enabled "$service_name" | grep -E "enabled|static" |wc -l )
+      en_status=$( systemctl is-enabled "$service_name" | grep -E "enabled|static" | wc -l | sed "s/ //g" )
       if [ "$en_status" = "1" ]; then
         actual_status="enabled"
       else

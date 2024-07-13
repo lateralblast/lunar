@@ -37,7 +37,7 @@ check_sysadminctl () {
         echo "  when: sysadminctl_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
-      check=$( eval "sudo sysadminctl -$param status > /dev/null 2>&1 | grep $search_value |wc -l" )
+      check=$( eval "sudo sysadminctl -$param status > /dev/null 2>&1 | grep $search_value | wc -l | sed 's/ //g'" )
       if [ "$check" != "1" ]; then
         increment_insecure "Parameter \"$param\" not set to \"$value\""
         verbose_message    "sudo sysadminctl -$param $value" "fix"

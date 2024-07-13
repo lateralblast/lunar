@@ -81,7 +81,8 @@ audit_cron_allow () {
     check_file_exists $check_file yes
     if [ "$audit_mode" = 0 ]; then
       if [ "$os_name" = "SunOS" ]; then
-        if [ "$( cat $check_file | wc -l )" = "0" ]; then
+        f_check=$( cat "$check_file" | wc -l | sed "s/ //g" )
+        if [ "$f_check" = "0" ]; then
           dir_name="/var/spool/cron/atjobs"
           if [ -d "$dir_name" ]; then
             user_list=$( find "$dir_name" -depth  )
@@ -95,7 +96,8 @@ audit_cron_allow () {
         fi
       fi
       if [ "$os_name" = "Linux" ]; then
-        if [ "$( cat $check_file | wc -l )" = "0" ]; then
+        f_check=$( cat "$check_file" | wc -l | sed "s/ //g" )
+        if [ "$f_check" = "0" ]; then
           dir_name="/var/spool/at/spool"
           if [ -d "$dir_name" ]; then
             for user_name in $( ls /var/spool/at/spool ); do

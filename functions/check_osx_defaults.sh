@@ -48,8 +48,13 @@ check_osx_defaults () {
         backup_file="$HOME/Library/Preferences/ByHost/$defaults_file*"
         defaults_command="defaults"
       fi
-      check_vale=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2>&1" )
-      temp_value=defaults_value
+      null_check=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | wc -l |sed 's/ //g'" )
+      if [ "$null_check" = "0" ]; then
+        check_value="not-found"
+      else
+        check_vale=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | sed 's/^ //g'" )
+      fi
+      temp_value="$defaults_value"
       if [ "$defaults_type" = "bool" ]; then
         if [ "$defaults_value" = "no" ]; then
           temp_value=0
