@@ -27,22 +27,22 @@ audit_firewall_setting () {
     verbose_message        "Firewall Settings" "check"
     check_osx_defaults_int "/Library/Preferences/com.apple.alf" "globalstate" "1"
     if [ "$audit_mode" != 2 ]; then
-     	check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | egrep "enabled|on" )
-      if [ "$check" ]; then
+     	check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | egrep "enabled|on" | wc -l | sed "s/ //g" )
+      if [ "$check" = "1" ]; then
         increment_secure   "Firewall stealth mode enabled"
       else
         increment_insecure "Firewall stealth mode is not enabled"
         lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on" "Stealth mode on"
       fi
-      check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode | egrep "enabled|on" )
-      if [ "$check" ]; then
+      check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode | egrep "enabled|on" | wc -l | sed "s/ //g" )
+      if [ "$check" = "1" ]; then
         increment_secure   "Firewall logging mode enable"
       else
         increment_insecure "Firewall logging mode is not enabled"
         lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on" "Logging mode on"
       fi
-      check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingopt | grep detail )
-      if [ "$check" ]; then
+      check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingopt | grep detail | wc -l | sed "s/ //g" )
+      if [ "$check" = "1" ]; then
         increment_secure   "Firewall logging option detailed"
       else
         increment_insecure "Firewall logging option is not detailed"

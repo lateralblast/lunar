@@ -1779,3 +1779,5 @@
 # Fixed file sharing check
 # 9.8.2: Sat 13 Jul 2024 22:10:29 AEST
 # Fixed firewall setting check
+# 9.8.3: Sat 13 Jul 2024 22:14:57 AEST
+# More firewall setting check fixes
