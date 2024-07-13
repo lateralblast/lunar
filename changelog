@@ -1793,3 +1793,5 @@
 # Fixed safe downloads check
 # 9.8.9: Sat 13 Jul 2024 23:06:29 AEST
 # Fixed keychain lock check
+# 9.9.0: Sat 13 Jul 2024 23:09:40 AEST
+# Fixed application permissions check

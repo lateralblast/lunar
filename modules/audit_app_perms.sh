@@ -21,7 +21,7 @@ audit_app_perms () {
       for check_dir in Applications System; do
         test_dirs=$( find /$check_dir -maxdepth 1 -type d )
         for test_dir in $test_dirs; do
-          check_file_perms "$test_dir" "0755"
+          check_file_perms "$test_dir" "0755" "" ""
         done
       done
       IFS=$OFS
