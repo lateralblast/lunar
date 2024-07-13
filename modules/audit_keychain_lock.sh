@@ -18,9 +18,9 @@ audit_keychain_lock () {
     if [ "$audit_mode" != 2 ]; then
       for check_value in "timeout=21600s" lock-on-sleep; do
        verbose_message "Keychain has \"$check_value\" set" "check"
-        actual_value=$( security show-keychain-info 2>&1 | grep "$check_value" )
-        if [ -z "$actual_value" ]; then
-          increment_insecure "Keychain has \"$check_value\" set"
+        actual_value=$( security show-keychain-info 2> /dev/null | grep "$check_value" | wc -l | sed "s/ //g" )
+        if [ "$actual_value" = "0" ]; then
+          increment_insecure "Keychain does not have \"$check_value\" set"
         else
           increment_secure   "Keychain has \"$check_value\" set"
         fi

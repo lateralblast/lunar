@@ -1791,3 +1791,5 @@
 # Fixed remote management check
 # 9.8.8: Sat 13 Jul 2024 22:56:50 AEST
 # Fixed safe downloads check
+# 9.8.9: Sat 13 Jul 2024 23:06:29 AEST
+# Fixed keychain lock check
