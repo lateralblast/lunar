@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.9.4
+# Version:      9.9.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -1087,7 +1087,7 @@ Usage: ${0##*/} [OPTIONS...]
  -o | --name          Set docker/multipass OS or container name
  -O | --osinfo        Print OS information
  -p | --previous      Show previous versions of file
- -P | --sandbox.      Enable/Disabe SSH sandbox
+ -P | --sandbox       Enable/Disabe SSH sandbox
  -r | --region        Specify AWS region
  -R | --testinfo      Print information for a specific test
  -s | --select        Run in selective mode (only run tests you want to)

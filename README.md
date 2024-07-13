@@ -22,7 +22,7 @@ the script with the -q or --nostrict flag.
 Version
 -------
 
-Current version 9.9.4
+Current version 9.9.5
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -166,10 +166,11 @@ Usage: ./lunar.sh [OPTIONS...]
  -o | --name          Set docker/multipass OS or container name
  -O | --osinfo        Print OS information
  -p | --previous      Show previous versions of file
- -S | --unixtests     List all UNIX functions available to selective mode
+ -P | --sandbox       Enable/Disabe SSH sandbox
  -r | --region        Specify AWS region
  -R | --testinfo      Print information for a specific test
  -s | --select        Run in selective mode (only run tests you want to)
+ -S | --unixtests     List all UNIX functions available to selective mode
  -t | --tag           Set docker tag
  -T | --tempdir       Set temp directory
  -u | --undo          Undo lockdown (for Operating Systems - changes made to system)
