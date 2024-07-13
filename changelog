@@ -1789,3 +1789,5 @@
 # Fixed dscl check
 # 9.8.7: Sat 13 Jul 2024 22:50:22 AEST
 # Fixed remote management check
+# 9.8.8: Sat 13 Jul 2024 22:56:50 AEST
+# Fixed safe downloads check
