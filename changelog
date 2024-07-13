@@ -1775,3 +1775,5 @@
 # More fixes for MacOS
 # 9.8.0: Sat 13 Jul 2024 22:01:16 AEST
 # Fixes for MacOS defaults checks
+# 9.8.1: Sat 13 Jul 2024 22:05:46 AEST
+# Fixed file sharing check
