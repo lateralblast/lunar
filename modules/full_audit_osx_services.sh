@@ -60,7 +60,7 @@ full_audit_osx_services () {
   audit_lockdown
   audit_universal_control
   audit_touch_id
-  aduit_apfs
+  audit_apfs
   audit_core_storage
   audit_amfi
   audit_sudo_timeout
