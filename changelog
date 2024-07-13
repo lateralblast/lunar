@@ -1781,3 +1781,5 @@
 # Fixed firewall setting check
 # 9.8.3: Sat 13 Jul 2024 22:14:57 AEST
 # More firewall setting check fixes
+# 9.8.4: Sat 13 Jul 2024 22:24:09 AEST
+# Fixed pmset check

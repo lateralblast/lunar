@@ -13,6 +13,7 @@ check_pmset() {
   if [ "$os_name" = "Darwin" ]; then
     service="$1"
     value="$2"
+    state="$value"
     if [ "$value" = "off" ]; then
       value="0"
     fi
@@ -26,7 +27,12 @@ check_pmset() {
       state="on"
     fi
     log_file="pmset_$service.log"
-    actual_value=$( pmset -g | grep "$service" |awk '{print $2}' |grep "$value" )
+    actual_test=$( pmset -g | grep "$service" |awk '{print $2}' |grep "$value" | wc -l | sed "s/ //g" )
+    if [ "$actual_test" = "0" ]; then
+      actual_value="not-found"
+    else
+      actual_value=$( pmset -g | grep "$service" |awk '{print $2}' |grep "$value" )
+    fi
     if [ "$audit_mode" != 2 ]; then
       string="Sleep is disabled when powered"
       verbose_message "$string" "check"
@@ -47,7 +53,7 @@ check_pmset() {
       fi
       if [ ! "$actual_value" = "$value" ]; then
         increment_insecure "Service \"$service\" is not \"$state\""
-        lockdown_command   "echo \"$check\" > $work_dir/$log_file ; pmset -c $service $value" "Service \"$service\" to \"$state\""
+        lockdown_command   "echo \"$state\" > $work_dir/$log_file ; pmset -c $service $value" "Service \"$service\" to \"$state\""
       else
         increment_secure   "Service \"$service\" is \"$state\""
       fi
