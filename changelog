@@ -1785,3 +1785,5 @@
 # Fixed pmset check
 # 9.8.5: Sat 13 Jul 2024 22:37:04 AEST
 # Improved MacOS defaults check
+# 9.8.6: Sat 13 Jul 2024 22:42:24 AEST
+# Fixed dscl check

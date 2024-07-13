@@ -33,7 +33,12 @@ check_dscl () {
         echo "  when: dscl_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
         echo ""
       fi
-      check=$( sudo dscl . -read "$file" "$param" 2> /dev/null )
+      d_check=$( sudo dscl . -read "$file" "$param" 2> /dev/null | wc -l | sed "s/ //g" )
+      if [ "$d_check" = "0" ]; then
+        check="not-found"
+      else
+        check=$( sudo dscl . -read "$file" "$param" 2> /dev/null )
+      fi
       if [ "$check" != "$value" ]; then
         increment_insecure "Parameter \"$param\" not set to \"$value\" in \"$file\""
         verbose_message    "sudo dscl . -create $file $param \"$value\"" "fix"
