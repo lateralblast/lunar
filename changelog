@@ -1777,3 +1777,5 @@
 # Fixes for MacOS defaults checks
 # 9.8.1: Sat 13 Jul 2024 22:05:46 AEST
 # Fixed file sharing check
+# 9.8.2: Sat 13 Jul 2024 22:10:29 AEST
+# Fixed firewall setting check
