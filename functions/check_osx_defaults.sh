@@ -52,7 +52,12 @@ check_osx_defaults () {
       if [ "$null_check" = "0" ]; then
         check_value="not-found"
       else
-        check_vale=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | sed 's/^ //g'" )
+        zero_check=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | sed 's/^ //g' |grep '0' |wc -l |sed 's/ //g'" )
+        if [ "$zero_check" = "1" ]; then
+          check_value="0"
+        else
+          check_vale=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | sed 's/^ //g'" )
+        fi
       fi
       temp_value="$defaults_value"
       if [ "$defaults_type" = "bool" ]; then

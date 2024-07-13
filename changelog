@@ -1783,3 +1783,5 @@
 # More firewall setting check fixes
 # 9.8.4: Sat 13 Jul 2024 22:24:09 AEST
 # Fixed pmset check
+# 9.8.5: Sat 13 Jul 2024 22:37:04 AEST
+# Improved MacOS defaults check
