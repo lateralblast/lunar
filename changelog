@@ -1821,3 +1821,5 @@
 # More improvements to gsettings check
 # 10.0.3: Sun 14 Jul 2024 12:56:07 AEST
 # Removed check_rpm function
+# 10.0.4: Sun 14 Jul 2024 13:03:58 AEST
+# Improved select function/module handling

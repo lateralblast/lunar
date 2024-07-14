@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.0.3
+# Version:      10.0.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -134,6 +134,7 @@ anacron_enable="no"
 ssh_sandbox="yes"
 do_debug=0
 do_select=0
+function=""
 
 # Disable daemons
 
@@ -1480,6 +1481,8 @@ do
       ;;
   esac
 done
+
+function=$(echo "$function" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g" )
 
 # check arguments
 
