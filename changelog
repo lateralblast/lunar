@@ -1815,3 +1815,5 @@
 # Improved systemctl check
 # 10.0.0: Sun 14 Jul 2024 12:08:51 AEST
 # Removed may need to be run as root warning for help and version switches
+# 10.0.1: Sun 14 Jul 2024 12:21:36 AEST
+# Improved gsettings check

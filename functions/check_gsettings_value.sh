@@ -23,8 +23,8 @@ check_gsettings_value () {
   parameter_name="$2" 
   correct_value="$3"
   command_name="gsettings"
-  check=$( command -v gsettings 2> /dev/null )
-  if [ "$check" ]; then
+  check=$( command -v gsettings 2> /dev/null | wc -l | sed "s/ //g" )
+  if [ "$check" = "1" ]; then
     string="Parameter \"$parameter_name\" to \"$correct_value\""
     verbose_message "$string" "check"
     set_command="gsettings set"
@@ -43,7 +43,12 @@ check_gsettings_value () {
           fi
         fi
       else
-        current_value=$( gsettings get "$parameter_root" "$parameter_name" 2> /dev/null )
+        schema_check=$( gsettings get "$parameter_root" "$parameter_name" | grep "No schemas" | wc -l | sed "s/ //g" )
+        if [ "$schema_check" = "1" ]; then
+          current_value="not-found"
+        else
+          current_value=$( gsettings get "$parameter_root" "$parameter_name" 2> /dev/null )
+        fi
         if [ "$current_value" = "$correct_value" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Parameter \"$parameter_name\" is not set to \"$correct_value\" in $parameter_root"
