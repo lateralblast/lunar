@@ -1807,3 +1807,9 @@
 # Updated documentation
 # 9.9.6: Sun 14 Jul 2024 10:45:51 AEST
 # Fixed multipass VM check
+# 9.9.7: Sun 14 Jul 2024 11:28:05 AEST
+# Added debug switch to multipass
+# 9.9.8: Sun 14 Jul 2024 11:39:07 AEST
+# Added select switch to select
+# 9.9.9: Sun 14 Jul 2024 12:03:00 AEST
+# Improved systemctl check

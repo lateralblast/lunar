@@ -46,6 +46,10 @@ check_systemctl_service () {
   fi
   if [ "$use_systemctl" = "yes" ]; then
     log_file="systemctl.log"
+    alias_check=$( systemctl is-enabled "$service_name" |grep "alias" | wc -l | sed "s/ //g" )
+    if [ "$alias_check" = "1" ]; then
+      service_name=$( systemctl status "$service_name" | head -1 | awk '{print $2}' )
+    fi
     nf_status=$( systemctl is-enabled "$service_name" | grep "not-found" | wc -l | sed "s/ //g" )
     if [ "$nf_status" = "1" ]; then
       actual_status="not-found"

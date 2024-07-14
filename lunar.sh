@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.9.6
+# Version:      9.9.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -132,6 +132,8 @@ git_url="https://github.com/lateralblast/lunar.git"
 password_hashing="sha512"
 anacron_enable="no"
 ssh_sandbox="yes"
+do_debug=0
+do_select=0
 
 # Disable daemons
 
@@ -1386,6 +1388,7 @@ do
       shift
       ;;
     -Q|--debug)
+      do_debug=1
       set -x
       shift
       ;;
@@ -1520,9 +1523,9 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
         exit
       fi
     else
-      mp_test=$(command -v multipass)
-      if [ -n "$mp_test" ]; then
-        vm_test=$(multipass list | awk '{print $1}' | grep "$test_tag" | wc -l )
+      mp_test=$(command -v multipass | wc -l | sed "s/ //g" )
+      if [ "$mp_test" = "1" ]; then
+        vm_test=$(multipass list | awk '{print $1}' | grep "$test_tag" | wc -l | sed "s/ //g" )
         if [ "$vm_test" = "1" ]; then
           if [ "$action" = "delete" ]; then
             verbose_message "Multipass VM \"$test_tag\" with release \"$test_os\"" "delete"
@@ -1536,7 +1539,14 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
                 multipass exec "$test_tag" -- bash -c "rm -rf lunar"
                 multipass exec "$test_tag" -- bash -c "git clone $git_url"
               else
-                multipass exec "$test_tag" -- bash -c "sudo lunar/lunar.sh --action $action"
+                mp_command="sudo lunar/lunar.sh --action $action"
+                if [ "$do_debug" = "1" ]; then  
+                  mp_command="$mp_command --debug"
+                fi
+                if [ "$do_select" = "1" ]; then  
+                  mp_command="$mp_command --select $function"
+                fi
+                multipass exec "$test_tag" -- bash -c "$mp_command"
               fi
             fi
           fi
