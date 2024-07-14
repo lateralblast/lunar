@@ -1805,3 +1805,5 @@
 # Fixed safari warning check
 # 9.9.5: Sat 13 Jul 2024 23:23:49 AEST
 # Updated documentation
+# 9.9.6: Sun 14 Jul 2024 10:45:51 AEST
+# Fixed multipass VM check

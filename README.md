@@ -22,7 +22,7 @@ the script with the -q or --nostrict flag.
 Version
 -------
 
-Current version 9.9.5
+Current version 9.9.6
 
 Refer to lunar.sh and changelog for more up to date version information
 

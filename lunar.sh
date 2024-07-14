@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      9.9.5
+# Version:      9.9.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -1522,8 +1522,8 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
     else
       mp_test=$(command -v multipass)
       if [ -n "$mp_test" ]; then
-        vm_test=$(multipass list |awk '{print $1}' |grep "$test_tag" )
-        if [ -n "$vm_test" ]; then
+        vm_test=$(multipass list | awk '{print $1}' | grep "$test_tag" | wc -l )
+        if [ "$vm_test" = "1" ]; then
           if [ "$action" = "delete" ]; then
             verbose_message "Multipass VM \"$test_tag\" with release \"$test_os\"" "delete"
             multipass delete "$test_tag"
