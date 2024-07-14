@@ -1817,3 +1817,5 @@
 # Removed may need to be run as root warning for help and version switches
 # 10.0.1: Sun 14 Jul 2024 12:21:36 AEST
 # Improved gsettings check
+# 10.0.2: Sun Jul 14 12:36:32 AEST 2024
+# More improvements to gsettings check

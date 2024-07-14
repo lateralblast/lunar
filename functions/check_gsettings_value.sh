@@ -43,13 +43,8 @@ check_gsettings_value () {
           fi
         fi
       else
-        schema_check=$( gsettings get "$parameter_root" "$parameter_name" | grep "No schemas" | wc -l | sed "s/ //g" )
-        if [ "$schema_check" = "1" ]; then
-          current_value="not-found"
-        else
-          current_value=$( gsettings get "$parameter_root" "$parameter_name" 2> /dev/null )
-        fi
-        if [ "$current_value" = "$correct_value" ]; then
+        value_check=$( gsettings get "$parameter_root" "$parameter_name" 2>  /dev/null | grep "$correct_value" | wc -l | sed "s/ //g" )
+        if [ "$value_check" = "0" ]; then
           if [ "$audit_mode" = 1 ]; then
             increment_insecure "Parameter \"$parameter_name\" is not set to \"$correct_value\" in $parameter_root"
             string="Parameter \"$parameter_root.$parameter_name\" to \"$correct_value\""
@@ -62,12 +57,17 @@ check_gsettings_value () {
             fi
             verbose_message "$set_command $parameter_root $parameter_name \"$correct_value\"" "fix"
           else
+            current_value=$( gsettings get "$parameter_root" "$parameter_name" 2> /dev/null )
             if [ "$audit_mode" = 0 ]; then
               log_file="$restore_dir/$command_name.log"
               verbose_message "Parameter \"$parameter_name\" to \"$correct_value\"" "set"
               echo "$parameter_root,$parameter_name,$current_value" >> "$log_file"
               eval "$set_command $parameter_root $parameter_name $correct_value"
             fi
+          fi
+        else
+          if [ "$audit_mode" = 1 ]; then
+            increment_secure "Parameter \"$parameter_name\" is set to \"$correct_value\" in $parameter_root"
           fi
         fi
       fi 
