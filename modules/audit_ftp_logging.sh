@@ -20,7 +20,7 @@ audit_ftp_logging () {
         check_value=$( $get_command | grep -c "\-d" )
         file_header="ftpd_logging"
         if [ "$audit_mode" != 2 ]; then
-         verbose_message "File $file_header"
+         verbose_message "File $file_header" "check"
         fi
         log_file="$work_dir/$file_header.log"
         if [ "$audit_mode" = 1 ]; then
@@ -33,7 +33,7 @@ audit_ftp_logging () {
         else
           if [ "$audit_mode" = 0 ]; then
             if [ "$check_value" -eq 0 ]; then
-              verbose_message "Setting:   FTP daemon logging to enabled"
+              verbose_message "FTP daemon logging to enabled" "set"
               eval "$get_command > $log_file"
               eval "inetadm -m svc:/network/ftp exec=\"/usr/sbin/in.ftpd -a -l -d\""
             fi
@@ -42,7 +42,7 @@ audit_ftp_logging () {
               restore_file="$restore_dir/$file_header.log"
               if [ -f "$restore_file" ]; then
                 exec_string=$( cat "$restore_file" )
-                verbose_message "Restoring: Previous value for FTP daemon to \"$exec_string\""
+                verbose_message "Previous value for FTP daemon to \"$exec_string\"" "restore"
                 evel "inetadm -m svc:/network/ftp exec=\"$exec_string\""
               fi
             fi
@@ -51,20 +51,17 @@ audit_ftp_logging () {
       fi
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_rpm vsftpd
-      if [ "$rpm_check" = "vsftpd" ]; then
-        check_file="/etc/vsftpd.conf"
-        if [ -f "$check_file" ]; then
-          check_file_value "is" "$check_file" "log_ftp_protocol" "eq" "YES" "hash"
-          check_file_value "is" "$check_file" "ftpd_banner"      "eq" "Authorized users only. All activity may be monitored and reported." "hash"
-          check_file_perms "$check_file"      "0600" "root"      "root"
-        fi
-        check_file="/etc/vsftpd/vsftpd.conf"
-        if [ -f "$check_file" ]; then
-          check_file_value "is" "$check_file" "log_ftp_protocol" "eq" "YES" "hash"
-          check_file_value "is" "$check_file" "ftpd_banner"      "eq" "Authorized users only. All activity may be monitored and reported." "hash"
-          check_file_perms "$check_file"      "0600" "root"      "root"
-        fi
+      check_file="/etc/vsftpd.conf"
+      if [ -f "$check_file" ]; then
+        check_file_value "is" "$check_file" "log_ftp_protocol" "eq" "YES" "hash"
+        check_file_value "is" "$check_file" "ftpd_banner"      "eq" "Authorized users only. All activity may be monitored and reported." "hash"
+        check_file_perms      "$check_file" "0600" "root"      "root"
+      fi
+      check_file="/etc/vsftpd/vsftpd.conf"
+      if [ -f "$check_file" ]; then
+        check_file_value "is" "$check_file" "log_ftp_protocol" "eq" "YES" "hash"
+        check_file_value "is" "$check_file" "ftpd_banner"      "eq" "Authorized users only. All activity may be monitored and reported." "hash"
+        check_file_perms      "$check_file" "0600" "root"      "root"
       fi
     fi
   fi

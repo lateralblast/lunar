@@ -47,7 +47,6 @@ audit_system_auth () {
         audit_system_auth_password_history "account"  "remember"    "5"
         audit_system_auth_password_hashing "password" "$password_hashing"
       else
-        check_rpm "libpam-cracklib"
         if [ "$audit_mode" != 2 ]; then
           audit_system_auth_nullok
           audit_system_auth_password_history  "account"  "remember"   "10"

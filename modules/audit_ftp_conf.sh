@@ -19,10 +19,7 @@ audit_ftp_conf () {
       audit_ftp_users "/etc/ftpd/ftpusers"
     fi
     if [ "$os_name" = "Linux" ]; then
-      check_rpm vsftpd
-      if [ "$rpm_check" = "vsftpd" ]; then
-        audit_ftp_users "/etc/vsftpd/ftpusers"
-      fi
+      audit_ftp_users "/etc/vsftpd/ftpusers"
     fi
   fi
 }
