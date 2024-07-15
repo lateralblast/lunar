@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.0.4
+# Version:      10.0.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -135,6 +135,7 @@ ssh_sandbox="yes"
 do_debug=0
 do_select=0
 function=""
+no_cat=0
 
 # Disable daemons
 
@@ -974,18 +975,25 @@ secure_baseline () {
 
 print_results () {
   echo ""
-  if [ "$audit_mode" != 1 ]; then
-    if [ "$reboot" = 1 ]; then
-      reboot="Required"
-    else
-      reboot="Not Required"
-    fi
-    echo "Reboot:     $reboot"
+  if [ "$reboot" = 1 ]; then
+    reboot="Required"
+  else
+    reboot="Not Required"
   fi
   if [ ! "$audit_mode" = 2 ]; then
-    echo "Tests:      $total"
-    echo "Passes:     $secure"
-    echo "Warnings:   $insecure"
+    if [ "$no_cat" = "1" ]; then
+      echo "Tests:      $total"
+      echo "Passes:     $secure"
+      echo "Warnings:   $insecure"
+    else
+      echo " \    /\    Tests:      $total"
+      echo "  )  ( ')   Passes:     $secure"
+      echo " (  /  )    Warnings:   $insecure"
+      echo "  \(__)|    Reboot:     $reboot"
+    fi
+  fi
+  if [ "$audit_mode" != 1 ]; then
+    echo "Reboot:     $reboot"
   fi
   if [ "$audit_mode" = 0 ]; then
     echo "Backup:     $work_dir"
@@ -1087,6 +1095,7 @@ Usage: ${0##*/} [OPTIONS...]
  -L | --fulllock      Run in lockdown mode (for Operating Systems - changes made to system)
                       [includes home directory and filesystem checks which take some time]
  -m | --machine       Create and run in a VM (docker/multipass)
+ -N | --nocat         No cat in score output
  -M | --workdir       Set work directory
  -n | --ansible       Output ansible code segments
  -o | --name          Set docker/multipass OS or container name
@@ -1366,6 +1375,10 @@ do
       ;;
     -n|--ansible)
       ansible=1
+      shift
+      ;;
+    -N|--nocat)
+      no_cat=1
       shift
       ;;
     -o|--os|--osver)

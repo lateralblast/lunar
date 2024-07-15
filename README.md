@@ -22,7 +22,7 @@ the script with the -q or --nostrict flag.
 Version
 -------
 
-Current version 10.0.4
+Current version 10.0.5
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -163,6 +163,7 @@ Usage: ./lunar.sh [OPTIONS...]
  -m | --machine       Create and run in a VM (docker/multipass)
  -M | --workdir       Set work directory
  -n | --ansible       Output ansible code segments
+ -N | --nocat         No cat in score output
  -o | --name          Set docker/multipass OS or container name
  -O | --osinfo        Print OS information
  -p | --previous      Show previous versions of file

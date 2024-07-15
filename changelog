@@ -1823,3 +1823,5 @@
 # Removed check_rpm function
 # 10.0.4: Sun 14 Jul 2024 13:03:58 AEST
 # Improved select function/module handling
+# 10.0.5: Mon 15 Jul 2024 11:31:58 AEST
+# Updated output
