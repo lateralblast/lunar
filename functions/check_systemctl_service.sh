@@ -58,7 +58,10 @@ check_systemctl_service () {
       if [ "$en_status" = "1" ]; then
         actual_status="enabled"
       else
-        actual_status=$( systemctl is-enabled "$service_name" |grep -E "$search_string" )
+        en_status=$( systemctl is-enabled "$service_name" |grep -E "disabled" | wc -l | sed "s/ //g" )
+        if [ "$en_status" = "1" ]; then
+          actual_status="disabled"
+        fi
       fi
     fi
     if [ "$audit_mode" = 2 ]; then
