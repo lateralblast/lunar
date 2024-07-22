@@ -1829,3 +1829,5 @@
 # Bug fixes
 # 10.0.7: Mon Jul 22 15:06:52 AEST 2024
 # Fix for systemctl check
+# 10.0.8: Mon Jul 22 15:43:40 AEST 2024
+# Fix for old users check

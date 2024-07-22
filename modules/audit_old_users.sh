@@ -19,10 +19,10 @@ audit_old_users () {
       user_list=$( grep -v "/usr/bin/false" "/etc/passwd" | egrep -v "^halt|^shutdown|^root|^sync|/sbin/nologin" | cut -f1 -d: )
       for user_name in $user_list; do
         if test -r "/etc/shadow"; then
-          shadow_field=$( grep "^$user_name:" "/etc/shadow" | cut -f2 -d":" | egrep -v "\*|\!\!|NP|LK|UP" )
-          if [ -z "$shadow_field" ]; then
-            login_status=$( last "$user_name" | awk '{print $1}' | grep "$user_name" )
-            if [ "$login_status" = "Never" ] || [ "$login_status" = "$user_name" ]; then
+          shadow_check=$( grep "^$user_name:" "/etc/shadow" | cut -f2 -d":" | egrep -v "\*|\!\!|NP|LK|UP" | wc -l | sed "s/ //g" )
+          if [ "$shadow_check" = "1" ]; then
+            login_check=$( last "$user_name" | awk '{print $1}' | grep "$user_name" | head -1 | wc -l | sed "s/ //g" )
+            if [ "$login_check" = "1" ]; then
               if [ "$audit_mode" = 1 ]; then
                 never_count=$((never_count+1))
                 increment_insecure "User \"$user_name\" has not logged in recently and their account is not locked"
