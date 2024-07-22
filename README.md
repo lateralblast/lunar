@@ -16,13 +16,13 @@ and I've used the -e (errexit) and -u (nounset) shell flags to help
 protect against errors. The -x (xtrace) shell flag can be enabled by
 using the script with the -Q or --debug flag.
 
-If you run into errors, you can disable the -w and -u flags, by running
+If you run into errors, you can disable the -e and -u flags, by running
 the script with the -q or --nostrict flag.
 
 Version
 -------
 
-Current version 10.0.5
+Current version 10.0.6
 
 Refer to lunar.sh and changelog for more up to date version information
 

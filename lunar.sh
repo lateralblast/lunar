@@ -4,7 +4,7 @@
 # shellcheck disable=SC1090
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.0.5
+# Version:      10.0.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -226,7 +226,8 @@ if [ "$os_name" != "VMkernel" ]; then
   else
     id_check=$( id -u )
   fi
-  if [[ "$args" =~ "help" ]] || [[ "$args" =~ "version" ]]; then
+  arg_test=$(echo "$args" | grep -E "help|version" | wc -l | sed "s/ //g" )
+  if [ "$arg_test" = "1" ]; then
     if [ "$id_check" != "0" ]; then
       verbose_message "$0 may need root" "warn"
     fi
