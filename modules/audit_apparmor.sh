@@ -8,14 +8,15 @@
 #
 # Check AppArmor
 #
-# Refer to Section(s) 4.5     Page(s) 38-9  CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 1.6.2.1 Page(s) 69-70 CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 1.6.3   Page(s) 73-4  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.5           Page(s) 38-9        CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 1.6.2.1,1.6.3 Page(s) 69-70,73-4  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 1.3.1.1-2     Page(s) 151-4  CIS Ubuntu 16.04 Benchmark v1.0.0
 #.
 
 audit_apparmor () {
   if [ "${os_name}" = "Linux" ]; then
-    do_test=0
+    do_grub_test=0
+    do_app_test=0
     package_name="apparmor"
     app_name="AppArmor"
     if [ "${os_vendor}" = "SuSE" ]; then 
@@ -24,10 +25,19 @@ audit_apparmor () {
     fi
     if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 16 ]; then
       check_list="/boot/grub/grub.cfg /etc/default/grub"
-      do_test=1
+      do_grub_test=1
+      do_app_test=1
+    fi
+    if [ "${do_app_test}" = 1 ]; then
+      profile_test=$( apparmor_status |grep "unconfined mode" |awk '{print $1}' )
+      if [ "${profile_test}" = "0" ]; then
+        increment_secure "There are no unconfined applications"
+      else
+        increment_insecure "There are unconfined applications"
+      fi
     fi
     for check_file in ${check_list}; do
-      if [ "${do_test}" = 1 ]; then
+      if [ "${do_grub_test}" = 1 ]; then
         verbose_message "Package \"${app_name}\"" "check"
         check_linux_package "install" "${package_name}"
         if [ "${audit_mode}" = 2 ]; then
