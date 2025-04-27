@@ -1845,3 +1845,5 @@
 # Fixed keychain sync check
 # 10.1.5: Sun 27 Apr 2025 17:17:40 AEST
 # Documentation updates
+# 10.1.6: Sun 27 Apr 2025 18:53:29 AEST
+# Updated modprobe filesystem kernel modules check
