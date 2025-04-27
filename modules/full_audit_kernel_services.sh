@@ -24,4 +24,5 @@ full_audit_kernel_services () {
   audit_execshield
   audit_apparmor
   audit_virtual_memory
+  audit_ptrace_scope
 }
