@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_guest_sharing
@@ -15,11 +15,11 @@
 #.
 
 audit_guest_sharing () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message          "Guest account file sharing" "check"
     check_osx_defaults_bool  "/Library/Preferences/com.apple.AppleFileServer"                "guestAccess"      "no"
     check_osx_defaults_bool  "/Library/Preferences/SystemConfiguration/com.apple.smb.server" "AllowGuestAccess" "no"
-    if [ "$long_os_version" -ge 1014 ]; then
+    if [ "${long_os_version}" -ge 1014 ]; then
       check_sysadminctl "smbGuestAccess" "off"
     fi
   fi

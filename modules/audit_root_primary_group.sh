@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_root_primary_group
@@ -19,35 +19,35 @@
 #.
 
 audit_root_primary_group () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Root Primary Group" "check"
     log_file="root_primary_group.log"
     check_file="/etc/group"
     group_check=$( grep "^root:" /etc/passwd | cut -f4 -d: )
-    if [ "$audit_mode" != 2 ]; then
-      if [ "$group_check" != "0" ];then
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Group \"$group_id\" does not exist in group file \"$check_file\""
+    if [ "${audit_mode}" != 2 ]; then
+      if [ "${group_check}" != "0" ];then
+        if [ "${audit_mode}" = 1 ]; then
+          increment_insecure "Group \"${group_id}\" does not exist in group file \"${check_file}\""
           verbose_message    "usermod -g 0 root" "fix"
         fi
-        if [ "$audit_mode" = 0 ];then
-          log_file="$work_dir/$log_file"
-          echo "$group_check" > "$log_file"
+        if [ "${audit_mode}" = 0 ];then
+          log_file="${work_dir}/${log_file}"
+          echo "${group_check}" > "${log_file}"
           verbose_message "Primary group for root to root" "set"
           usermod -g 0 root
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_secure "Primary group for root is root"
         fi
       fi
     else
-      restore_file="$restore_dir/$log_file"
-      if [ -e "$restore_file" ]; then
-        restore_value=$( cat "$restore_file" )
-        if [ "$restore_value" != "$group_check" ]; then
-          verbose_message "Restoring: Primary root group to \"$restore_value\"" "restore"
-          usermod -g "$restore_value" root
+      restore_file="${restore_dir}/${log_file}"
+      if [ -e "${restore_file}" ]; then
+        restore_value=$( cat "${restore_file}" )
+        if [ "${restore_value}" != "${group_check}" ]; then
+          verbose_message "Restoring: Primary root group to \"${restore_value}\"" "restore"
+          usermod -g "${restore_value}" root
         fi
       fi
     fi

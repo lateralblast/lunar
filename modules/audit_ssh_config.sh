@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_ssh_config
@@ -25,64 +25,64 @@
 
 audit_ssh_config () {
   verbose_message "SSH" "check"
-  if [ "$os_name" = "VMkernel" ]; then
+  if [ "${os_name}" = "VMkernel" ]; then
     verbose_message     "SSH Daemon" "check"
     check_linux_service "SSH" "off"
   fi
   for check_file in /etc/sshd_config /etc/ssh/sshd_config /usr/local/etc/sshd_config /opt/local/ssh/sshd_config; do
-    if [ -f "$check_file" ]; then
-      if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
+    if [ -f "${check_file}" ]; then
+      if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
        verbose_message "SSH Configuration" "check"
-        if [ "$os_name" = "Darwin" ]; then
-          check_file_value "is" "$check_file" "GSSAPIAuthentication"     "space" "yes" "hash"
-          check_file_value "is" "$check_file" "GSSAPICleanupCredentials" "space" "yes" "hash"
+        if [ "${os_name}" = "Darwin" ]; then
+          check_file_value "is" "${check_file}" "GSSAPIAuthentication"     "space" "yes" "hash"
+          check_file_value "is" "${check_file}" "GSSAPICleanupCredentials" "space" "yes" "hash"
         fi
-        check_file_perms "$check_file" "0600" "root" "root"
-        # check_file_value is $check_file Host space "*" hash
-        check_file_value "is" "$check_file" "UseLogin"                 "space" "no"  "hash"
-        check_file_value "is" "$check_file" "X11Forwarding"            "space" "no"  "hash"
-        check_file_value "is" "$check_file" "MaxAuthTries"             "space" "3"   "hash"
-        check_file_value "is" "$check_file" "MaxAuthTriesLog"          "space" "0"   "hash"
-        check_file_value "is" "$check_file" "RhostsAuthentication"     "space" "no"  "hash"
-        check_file_value "is" "$check_file" "IgnoreRhosts"             "space" "yes" "hash"
-        check_file_value "is" "$check_file" "StrictModes"              "space" "yes" "hash"
-        check_file_value "is" "$check_file" "AllowTcpForwarding"       "space" "no"  "hash"
-        check_file_value "is" "$check_file" "Protocol"                 "space" "$ssh_protocol" "hash"
+        check_file_perms "${check_file}" "0600" "root" "root"
+        # check_file_value is ${check_file} Host space "*" hash
+        check_file_value "is" "${check_file}" "UseLogin"                 "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "X11Forwarding"            "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "MaxAuthTries"             "space" "3"   "hash"
+        check_file_value "is" "${check_file}" "MaxAuthTriesLog"          "space" "0"   "hash"
+        check_file_value "is" "${check_file}" "RhostsAuthentication"     "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "IgnoreRhosts"             "space" "yes" "hash"
+        check_file_value "is" "${check_file}" "StrictModes"              "space" "yes" "hash"
+        check_file_value "is" "${check_file}" "AllowTcpForwarding"       "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "Protocol"                 "space" "$ssh_protocol" "hash"
         if [ "$ssh_protocol" = "1" ]; then
-          check_file_value "is" "$check_file" "ServerKeyBits" "space" "$ssh_key_size" "hash"
+          check_file_value "is" "${check_file}" "ServerKeyBits" "space" "$ssh_key_size" "hash"
         fi
-        check_file_value "is" "$check_file" "GatewayPorts"             "space" "no"  "hash"
-        check_file_value "is" "$check_file" "RhostsRSAAuthentication"  "space" "no"  "hash"
-        check_file_value "is" "$check_file" "PermitRootLogin"          "space" "no"  "hash"
-        check_file_value "is" "$check_file" "PermitEmptyPasswords"     "space" "no"  "hash"
-        check_file_value "is" "$check_file" "PermitUserEnvironment"    "space" "no"  "hash"
-        check_file_value "is" "$check_file" "HostbasedAuthentication"  "space" "no"  "hash"
-        check_file_value "is" "$check_file" "PrintMotd"                "space" "no"  "hash"
-        check_file_value "is" "$check_file" "ClientAliveInterval"      "space" "300" "hash"
-        check_file_value "is" "$check_file" "ClientAliveCountMax"      "space" "0"   "hash"
-        check_file_value "is" "$check_file" "RSAAuthentication"        "space" "no"  "hash"
-        check_file_value "is" "$check_file" "Banner"                   "space" "/etc/issue" "hash"
-        check_file_value "is" "$check_file" "LogLevel"                 "space" "VERBOSE"    "hash"
+        check_file_value "is" "${check_file}" "GatewayPorts"             "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "RhostsRSAAuthentication"  "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "PermitRootLogin"          "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "PermitEmptyPasswords"     "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "PermitUserEnvironment"    "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "HostbasedAuthentication"  "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "PrintMotd"                "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "ClientAliveInterval"      "space" "300" "hash"
+        check_file_value "is" "${check_file}" "ClientAliveCountMax"      "space" "0"   "hash"
+        check_file_value "is" "${check_file}" "RSAAuthentication"        "space" "no"  "hash"
+        check_file_value "is" "${check_file}" "Banner"                   "space" "/etc/issue" "hash"
+        check_file_value "is" "${check_file}" "LogLevel"                 "space" "VERBOSE"    "hash"
         if [ "$ssh_sandbox" = "yes" ]; then
-          check_file_value "is" "$check_file" "UsePrivilegeSeparation" "space" "sandbox" "hash"
+          check_file_value "is" "${check_file}" "UsePrivilegeSeparation" "space" "sandbox" "hash"
         else
-          check_file_value "is" "$check_file" "UsePrivilegeSeparation" "space" "yes"     "hash"
+          check_file_value "is" "${check_file}" "UsePrivilegeSeparation" "space" "yes"     "hash"
         fi
-        check_file_value "is" "$check_file" "LoginGraceTime" "space" "120" "hash"
+        check_file_value "is" "${check_file}" "LoginGraceTime" "space" "120" "hash"
         # Check for kerberos
         check_file="/etc/krb5/krb5.conf"
-        if [ -f "$check_file" ]; then
-          admin_check=$( grep -v '^#' $check_file | grep "admin_server" | cut -f2 -d= | sed 's/ //g' | wc -l | sed 's/ //g' )
+        if [ -f "${check_file}" ]; then
+          admin_check=$( grep -v '^#' ${check_file} | grep "admin_server" | cut -f2 -d= | sed 's/ //g' | wc -l | sed 's/ //g' )
           if [ "$admin_server" != "0" ]; then
             check_file="/etc/ssh/sshd_config"
-            check_file_value "is" "$check_file" "UsePAM"                          "space" "yes" "hash"
-            check_file_value "is" "$check_file" "GSSAPIAuthentication"            "space" "yes" "hash"
-            check_file_value "is" "$check_file" "GSSAPIKeyExchange"               "space" "yes" "hash"
-            check_file_value "is" "$check_file" "GSSAPIStoreDelegatedCredentials" "space" "yes" "hash"
-            #check_file_value is $check_file Host space "*" hash
+            check_file_value "is" "${check_file}" "UsePAM"                          "space" "yes" "hash"
+            check_file_value "is" "${check_file}" "GSSAPIAuthentication"            "space" "yes" "hash"
+            check_file_value "is" "${check_file}" "GSSAPIKeyExchange"               "space" "yes" "hash"
+            check_file_value "is" "${check_file}" "GSSAPIStoreDelegatedCredentials" "space" "yes" "hash"
+            #check_file_value is ${check_file} Host space "*" hash
           fi
         fi
-        if [ "$os_name" = "FreeBSD" ]; then
+        if [ "${os_name}" = "FreeBSD" ]; then
           check_file_value "is" "/etc/rc.conf" "sshd_enable" "eq" "YES" "hash"
         fi
       fi
@@ -95,5 +95,5 @@ audit_ssh_config () {
     #
     #
     # Enable on new machines
-    # check_file_value is $check_file Cipher space "aes128-ctr,aes192-ctr,aes256-ctr" hash
+    # check_file_value is ${check_file} Cipher space "aes128-ctr,aes192-ctr,aes256-ctr" hash
 }

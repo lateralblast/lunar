@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_reserved_ids
@@ -14,46 +14,46 @@
 #.
 
 audit_reserved_ids () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Reserved IDs" "check"
-    if [ "$audit_mode" != 2 ]; then
-      getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read check_user check_uid; do
+    if [ "${audit_mode}" != 2 ]; then
+      getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read -r check_user check_uid; do
         found=0
         for test_user in root daemon bin sys adm lp uucp nuucp smmsp listen \
           gdm webservd postgres svctag nobody noaccess nobody4 unknown; do
-          if [ "$check_user" = "$test_user" ]; then
+          if [ "${check_user}" = "${test_user}" ]; then
             found=1
           fi
         done
-        if [ "$found" = 0 ]; then
-          uuid_check=1
-          if [ "$audit_mode" = 1 ];then
-            increment_insecure "User \"$check_user\" has a reserved UID \"$check_uid\""
+        if [ "${found}" = 0 ]; then
+          check_uid=1
+          if [ "${audit_mode}" = 1 ];then
+            increment_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
           fi
         fi
       done
     fi
   fi
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Reserved IDs" "check"
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
      verbose_message "Whether reserved UUIDs are assigned to system accounts" "check"
     fi
-    if [ "$audit_mode" != 2 ]; then
-      getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read check_user check_uid; do
+    if [ "${audit_mode}" != 2 ]; then
+      getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read -r check_user check_uid; do
         found=0
         for test_user in root bin daemon adm lp sync shutdown halt mail news uucp \
           operator games gopher ftp nobody nscd vcsa rpc mailnull smmsp pcap \
           dbus sshd rpcuser nfsnobody haldaemon distcache apache \
           oprofile webalizer dovecot squid named xfs gdm sabayon; do
-          if [ "$check_user" = "$test_user" ]; then
+          if [ "${check_user}" = "${test_user}" ]; then
             found=1
           fi
         done
-        if [ "$found" = 0 ]; then
-          uuid_check=1
-          if [ "$audit_mode" = 1 ];then
-            increment_insecure "User \"$check_user\" has a reserved UID \"$check_uid\""
+        if [ "${found}" = 0 ]; then
+          check_uid=1
+          if [ "${audit_mode}" = 1 ];then
+            increment_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
           fi
         fi
       done

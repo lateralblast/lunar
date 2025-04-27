@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_online_documentation
@@ -12,12 +12,12 @@
 #.
 
 audit_online_documentation () {
-  if [ "$os_name" = "AIX" ] || [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "AIX" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Online Documentation" "check"
-    if [ "$os_name" = "AIX" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       check_itab "httpdlite" "off"
     fi
-    if [ "$os_name" = "SunOS" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
       check_initd_service "ab2mgr" "disabled"
     fi
   fi

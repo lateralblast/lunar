@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_syslog_conf
@@ -16,9 +16,9 @@
 #.
 
 audit_syslog_conf () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "VMkernel" ]; then
+  if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Syslog Configuration" "check"
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/syslog.conf"
       if [ -f "/etc/rsyslog.conf" ]; then
         systemd_check=$(command -v systemctl 2> /dev/null )
@@ -33,80 +33,80 @@ audit_syslog_conf () {
           fi
         fi
       fi
-      check_file_value "is" "$check_file" "authpriv.*" "tab" "/var/log/secure"     "hash"
-      check_file_value "is" "$check_file" "auth.*"     "tab" "/var/log/messages"   "hash"
-      check_file_value "is" "$check_file" "daemon.*"   "tab" "/var/log/daemon.log" "hash"
-      check_file_value "is" "$check_file" "syslog.*"   "tab" "/var/log/syslog"     "hash"
-      check_file_value "is" "$check_file" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/unused.log" "hash"
+      check_file_value "is" "${check_file}" "authpriv.*" "tab" "/var/log/secure"     "hash"
+      check_file_value "is" "${check_file}" "auth.*"     "tab" "/var/log/messages"   "hash"
+      check_file_value "is" "${check_file}" "daemon.*"   "tab" "/var/log/daemon.log" "hash"
+      check_file_value "is" "${check_file}" "syslog.*"   "tab" "/var/log/syslog"     "hash"
+      check_file_value "is" "${check_file}" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/unused.log" "hash"
     fi
-    if [ "$os_name" = "FreeBSD" ]; then
+    if [ "${os_name}" = "FreeBSD" ]; then
       check_file_value "is" "/etc/rc.conf" "syslogd_flags" "eq" "-s" "hash"
     fi
-    if [ "$os_name" = "VMkernel" ]; then
+    if [ "${os_name}" = "VMkernel" ]; then
       log_file="sysloglogdir"
-      backup_file="$work_dir/$log_file"
+      backup_file="${work_dir}/${log_file}"
       current_value=$( esxcli system syslog config get | grep 'Local Log Output:' | awk '{print $4}' )
-      if [ "$audit_mode" != "2" ]; then
-        if [ "$current_value" = "/scratch/log" ]; then
-          if [ "$audit_mode" = "0" ]; then
-            if [ "$syslog_logdir" != "" ]; then
-              echo "$current_value" > $backup_file
+      if [ "${audit_mode}" != "2" ]; then
+        if [ "${current_value}" = "/scratch/log" ]; then
+          if [ "${audit_mode}" = "0" ]; then
+            if [ "${syslog_logdir}" != "" ]; then
+              echo "${current_value}" > "${backup_file}"
               verbose_message "Setting:   Syslog log directory to a persistent datastore"
-              esxcli system syslog config set --logdir="$syslog_logdir"
+              esxcli system syslog config set --logdir="${syslog_logdir}"
             fi
           fi
-          if [ "$audit_mode" = "1" ]; then
+          if [ "${audit_mode}" = "1" ]; then
             increment_insecure "Syslog log directory is not persistent"
-            if [ "$syslog_logdir" != "" ]; then
-              verbose_message "esxcli system syslog config set --logdir=$syslog_logdir" "fix"
+            if [ "${syslog_logdir}" != "" ]; then
+              verbose_message "esxcli system syslog config set --logdir=${syslog_logdir}" "fix"
             fi
           fi
         else
-          if [ "$audit_mode" = "1" ]; then
+          if [ "${audit_mode}" = "1" ]; then
             increment_secure "Syslog log directory is on a persistent datastore"
           fi
         fi
       else
-        restore_file="$restore_dir/$log_file"
-        if [ -f "$restore_file" ]; then
-          previous_value=$( cat $restore_file )
-          if [ "$previous_value" != "$current_value" ]; then
-            verbose_message "Restoring: Syslog log directory to $previous_value"
-            esxcli system syslog config set --logdir="$previous_value"
+        restore_file="${restore_dir}/${log_file}"
+        if [ -f "${restore_file}" ]; then
+          previous_value=$( cat "${restore_file}" )
+          if [ "${previous_value}" != "${current_value}" ]; then
+            verbose_message "Restoring: Syslog log directory to ${previous_value}"
+            esxcli system syslog config set --logdir="${previous_value}"
           fi
         fi
       fi
       log_file="syslogremotehost"
-      backup_file="$work_dir/$log_file"
+      backup_file="${work_dir}/${log_file}"
       current_value=$( esxcli system syslog config get | grep Remote | awk '{print $3}' )
-      if [ "$audit_mode" != "2" ]; then
-        if [ "$current_value" = "<none>" ]; then
-          if [ "$audit_mode" = "0" ]; then
-            if [ "$syslog_server" != "" ]; then
-              echo "$current_value" > $backup_file
-              esxcli system syslog config set --loghost="$syslog_server"
+      if [ "${audit_mode}" != "2" ]; then
+        if [ "${current_value}" = "<none>" ]; then
+          if [ "${audit_mode}" = "0" ]; then
+            if [ "${syslog_server}" != "" ]; then
+              echo "${current_value}" > "${backup_file}"
+              esxcli system syslog config set --loghost="${syslog_server}"
             fi
           fi
-          if [ "$audit_mode" = "1" ]; then
+          if [ "${audit_mode}" = "1" ]; then
             increment_insecure "Syslog remote host is not enabled"
-            if [ "$syslog_server" = "" ]; then
+            if [ "${syslog_server}" = "" ]; then
               verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" "fix"
             else
-              verbose_message "esxcli system syslog config set --loghost=$syslog_server"  "fix"
+              verbose_message "esxcli system syslog config set --loghost=${syslog_server}"  "fix"
             fi
           fi
         else
-          if [ "$audit_mode" = "1" ]; then
+          if [ "${audit_mode}" = "1" ]; then
             increment_secure "Syslog remote host is enabled"
           fi
         fi
       else
-        restore_file="$restore_dir/$log_file"
-        if [ -f "$restore_file" ]; then
-          previous_value=$( cat $restore_file )
-          if [ "$previous_value" != "$current_value" ]; then
-            verbose_message "Restoring: Syslog loghost to \"$previous_value\""
-            esxcli system syslog config set --loghost="$previous_value"
+        restore_file="${restore_dir}/${log_file}"
+        if [ -f "${restore_file}" ]; then
+          previous_value=$( cat "${restore_file}" )
+          if [ "${previous_value}" != "${current_value}" ]; then
+            verbose_message "Restoring: Syslog loghost to \"${previous_value}\""
+            esxcli system syslog config set --loghost="${previous_value}"
           fi
         fi
       fi

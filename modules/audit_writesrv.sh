@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_writesrv
@@ -10,7 +10,7 @@
 #.
 
 audit_writesrv () {
-  if [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "AIX" ]; then
     verbose_message "Writesrv" "check"
     check_itab      "writesrv" "off"
   fi

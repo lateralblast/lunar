@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_telnet_client
@@ -17,7 +17,7 @@
 #.
 
 audit_telnet_client () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message     "Telnet Client" "check"
     check_linux_package "uninstall"     "telnet"
   fi

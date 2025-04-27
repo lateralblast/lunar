@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_dhcpscd
@@ -12,8 +12,8 @@
 #.
 
 audit_dhcpsd () {
-  if [ "$dhcpsd_disable" = "yes" ]; then
-    if [ "$os_name" = "AIX" ]; then
+  if [ "${dhcpsd_disable}" = "yes" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       verbose_message "DHCP Server Daemon" "check"
       check_rctcp     "dhcpsd" "off"
     fi

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_sysctl
@@ -18,7 +18,7 @@
 #.
 
 audit_sysctl () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message   "Sysctl Configuration"      "check"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.default.secure_redirects"     "eq" "0"    "hash"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.all.secure_redirects"         "eq" "0"    "hash"

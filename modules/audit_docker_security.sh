@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_docker_security
@@ -86,9 +86,9 @@
 #.
 
 audit_docker_security () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
-    if [ "$docker_bin" ]; then
+    if [ "${docker_bin}" ]; then
       verbose_message "Docker Security"  "check"
       check_dockerd  "notequal" "config" "SecurityOpt"     "<no value>"
       check_dockerd  "include"  "config" "SecurityOpt"     "userns"
@@ -109,11 +109,11 @@ audit_docker_security () {
       check_dockerd  "notequal" "config" "PidsLimit"       "0"
       check_dockerd  "notequal" "config" "PidsLimit"       "-1"
       for param in NET_ADMIN SYS_ADMIN SYS_MODULE; do
-        check_dockerd unused kernel $param
+        check_dockerd unused kernel ${param}
       done
-      if [ "$audit_mode" != 2 ]; then
-        check=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock )
-        if [ "$check" ]; then
+      if [ "${audit_mode}" != 2 ]; then
+        docker_check=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock )
+        if [ "${docker_check}" ]; then
           increment_insecure "Docker socket is mounted inside a container"
         else
           increment_secure   "Docker socket is not mounted inside a container"

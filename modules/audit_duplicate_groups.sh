@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_duplicate_groups
@@ -20,7 +20,7 @@
 #.
 
 audit_duplicate_groups () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message     "Duplicate Groups" "check"
 #    audit_duplicate_ids "1" "groups" "name" "/etc/group"
 #    audit_duplicate_ids "3" "groups" "id"   "/etc/group"

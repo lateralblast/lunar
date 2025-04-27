@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_mount_setuid
@@ -19,66 +19,66 @@
 #.
 
 audit_mount_setuid () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Set-UID on Mounted Devices" "check"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ]; then
         check_file="/etc/rmmount.conf"
-        if [ -f "$check_file" ]; then
-          nosuid_check=$( grep -v "^#" "$check_file" |grep "\-o nosuid" )
-          log_file="$work_dir/$check_file"
+        if [ -f "${check_file}" ]; then
+          nosuid_check=$( grep -v "^#" "${check_file}" |grep "\-o nosuid" )
+          log_file="${work_dir}/${check_file}"
           if [ -n "$nosuid_check" ]; then
-            if [ "$audit_mode" = 1 ]; then
+            if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Set-UID not restricted on user mounted devices"
             fi
-            if [ "$audit_mode" = 0 ]; then
+            if [ "${audit_mode}" = 0 ]; then
               verbose_message   "Set-UID restricted on user mounted devices" "check"
-              backup_file       "$check_file"
-              check_append_file "$check_file" "mount * hsfs udfs ufs -o nosuid" "hash"
+              backup_file       "${check_file}"
+              check_append_file "${check_file}" "mount * hsfs udfs ufs -o nosuid" "hash"
             fi
           else
-            if [ "$audit_mode" = 1 ]; then
+            if [ "${audit_mode}" = 1 ]; then
               increment_secure "Set-UID not restricted on user mounted devices"
             fi
-            if [ "$audit_mode" = 2 ]; then
-              restore_file "$check_file" "$restore_dir"
+            if [ "${audit_mode}" = 2 ]; then
+              restore_file "${check_file}" "${restore_dir}"
             fi
           fi
         fi
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/fstab"
-      if [ -e "$check_file" ]; then
+      if [ -e "${check_file}" ]; then
         verbose_message "File Systems mounted with nodev" "check"
-        if [ "$audit_mode" != "2" ]; then
-          nodev_check=$( grep -v "^#" $check_file | egrep "ext2|ext3|ext4|swap|tmpfs" | grep -v '/ ' | grep -v '/boot' |wc -l | sed "s/ //g" )
-          if [ ! "$nodev_check" ="0" ]; then
-            if [ "$audit_mode" = 1 ]; then
+        if [ "${audit_mode}" != "2" ]; then
+          nodev_check=$( grep -v "^#" ${check_file} | grep -E "ext2|ext3|ext4|swap|tmpfs" | grep -v '/ ' | grep -cv '/boot' | sed "s/ //g" )
+          if [ ! "$nodev_check" = "0" ]; then
+            if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Found filesystems that should be mounted nodev"
-              verbose_message "cat $check_file | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > $temp_file" "fix"
-              verbose_message "cat $temp_file > $check_file" "fix"
-              verbose_message "rm $temp_file" "fix"
+              verbose_message "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
+              verbose_message "cat ${temp_file} > ${check_file}" "fix"
+              verbose_message "rm ${temp_file}" "fix"
             fi
-            if [ "$audit_mode" = 0 ]; then
+            if [ "${audit_mode}" = 0 ]; then
               verbose_message "Setting nodev on filesystems" "set"
-              backup_file     "$check_file"
-              awk '( $3 ~ /^ext[2,3,4]|tmpfs$/ && $2 != "/" ) { $4 = $4 ",nosuid" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }'< "$check_file" > "$temp_file"
-              cat "$temp_file" > "$check_file"
-              if [ -f "$temp_file" ]; then
-                rm "$temp_file"
+              backup_file     "${check_file}"
+              awk '( $3 ~ /^ext[2,3,4]|tmpfs$/ && $2 != "/" ) { $4 = $4 ",nosuid" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }'< "${check_file}" > "${temp_file}"
+              cat "${temp_file}" > "${check_file}"
+              if [ -f "${temp_file}" ]; then
+                rm "${temp_file}"
               fi
             fi
           else
-            if [ "$audit_mode" = 1 ]; then
+            if [ "${audit_mode}" = 1 ]; then
               increment_secure "No filesystem that should be mounted with nodev"
             fi
-            if [ "$audit_mode" = 2 ]; then
-              restore_file "$check_file" "$restore_dir"
+            if [ "${audit_mode}" = 2 ]; then
+              restore_file "${check_file}" "${restore_dir}"
             fi
           fi
         fi
-        check_file_perms "$check_file" "0644" "root" "root"
+        check_file_perms "${check_file}" "0644" "root" "root"
       fi
     fi
   fi

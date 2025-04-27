@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_esxi_shell
@@ -13,7 +13,7 @@
 #.
 
 audit_esxi_shell () {
-  if [ "$os_name" = "VMkernel" ]; then
+  if [ "${os_name}" = "VMkernel" ]; then
     verbose_message     "ESXShell" "check"
     check_linux_service "ESXShell" "off"
   fi

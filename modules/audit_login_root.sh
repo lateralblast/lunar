@@ -2,8 +2,8 @@
 
 # -> Needs fixing
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_login_root
@@ -15,7 +15,7 @@
 #.
 
 audit_login_root () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Root login"  "check"
     check_dscl      "/Users/root" "AuthenticationAuthority" "No such key: AuthenticationAuthority"
   fi

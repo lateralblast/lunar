@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_gate_keeper
@@ -17,32 +17,32 @@
 #.
 
 audit_gate_keeper () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Gatekeeper" "check"
     log_file="gatekeeper.log"
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       actual_value=$( sudo spctl --status | awk '{print $2}' | sed 's/d$//g' )
-      if [ "$actual_value" = "disable" ]; then
-        if [ "$audit_mode" = 1 ]; then
+      if [ "${actual_value}" = "disable" ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Gatekeeper is not enabled"
         fi
-        if [ "$audit_mode" = 0 ]; then
+        if [ "${audit_mode}" = 0 ]; then
           verbose_message "Gatekeeper to enabled" "set"
-          echo "$actual_value" > $work_dir/$log_file
+          echo "${actual_value}" > "${work_dir}/${log_file}"
           sudo spctl --master-enable
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_secure "Gatekeeper is enabled"
         fi
       fi
     else
-      restore_file=$restore_dir/$log_file
-      if [ -f "$restore_file" ]; then
-        restore_value=$( cat $restore_file )
-        if [ "$restore_value" != "$actual_value" ]; then
-          verbose_message "Gatekeeper to \"$restore_value\"" "restore"
-          eval "sudo spctl --master-$restore_value"
+      restore_file="${restore_dir}/${log_file}"
+      if [ -f "${restore_file}" ]; then
+        restore_value=$( cat "${restore_file}" )
+        if [ "${restore_value}" != "${actual_value}" ]; then
+          verbose_message "Gatekeeper to \"${restore_value}\"" "restore"
+          eval "sudo spctl --master-${restore_value}"
         fi
       fi
     fi

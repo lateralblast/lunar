@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # funct_check_pkg
@@ -13,52 +13,52 @@
 #.
 
 funct_check_pkg () {
-  if [ "$os_name" = "SunOS" ]; then
-    pkg_name="$1"
-    pkg_check=$( pkginfo "$1" )
-    log_file="$work_dir/pkg.log"
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/pkg.log"
-      if [ -f "$restore_file" ]; then
-        restore_check=$( grep "^$pkg_name$" < "$restore_file" | head -1 )
-        if [ "$restore_check" = "$pkg_name" ]; then
-          if [ "$os_version" = "11" ]; then
-            restore_command "pkg uninstall $pkg_name" "Package \"$pkg_name\""
+  if [ "${os_name}" = "SunOS" ]; then
+    package_name="$1"
+    package_check=$( pkginfo "$1" )
+    log_file="${work_dir}/pkg.log"
+    if [ "${audit_mode}" = 2 ]; then
+      restore_file="${restore_dir}/pkg.log"
+      if [ -f "${restore_file}" ]; then
+        restore_check=$( grep "^${package_name}$" < "${restore_file}" | head -1 )
+        if [ "$restore_check" = "${package_name}" ]; then
+          if [ "${os_version}" = "11" ]; then
+            restore_command "pkg uninstall ${package_name}" "Package \"${package_name}\""
           else
-            restore_command "pkgrm $pkg_name" "Package \"$pkg_name\""
+            restore_command "pkgrm ${package_name}" "Package \"${package_name}\""
           fi
         fi
       fi
     else
-      string="Package \"$pkg_name\" is installed"
-      verbose_message "$string" "check"
-      if [ "$ansible" = 1 ]; then
+      string="Package \"${package_name}\" is installed"
+      verbose_message "${string}" "check"
+      if [ "${ansible}" = 1 ]; then
         echo ""
-        echo "- name: Checking $string"
+        echo "- name: Checking ${string}"
         echo "  package:"
-        echo "    name: $pkg_name"
+        echo "    name: ${package_name}"
         echo "    state: present"
-        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+        echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
-      p_test=$( echo "$pkg_check" |grep "ERROR" )
-      if [ -z "$pkg_test" ]; then
-        increment_secure "Package \"$pkg_name\" is already installed"
+      package_test=$( echo "${package_check}" |grep "ERROR" )
+      if [ -z "${package_test}" ]; then
+        increment_secure "Package \"${package_name}\" is already installed"
       else
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Package \"$pkg_name\" is not installed"
-          pkg_dir="$base_dir/pkg/$pkg_name"
+        if [ "${audit_mode}" = 1 ]; then
+          increment_insecure "Package \"${package_name}\" is not installed"
+          pkg_dir="${base_dir}/pkg/${package_name}"
           if [ -d "$pkg_dir" ]; then
-            verbose_message "Package \"$pkg_name\"" "install"
-            if [ "$os_version" = "11" ]; then
-              pkgadd "$pkg_name"
+            verbose_message "Package \"${package_name}\"" "install"
+            if [ "${os_version}" = "11" ]; then
+              pkgadd "${package_name}"
             else
-              pkgadd -d "$base_dir/pkg" "$pkg_name"
-              pkg_check=$( pkginfo "$1" )
+              pkgadd -d "${base_dir}/pkg" "${package_name}"
+              package_check=$( pkginfo "$1" )
             fi
-            p_test=$( echo "$pkg_check" |grep "ERROR" )
-            if [ -z "$pkg_check" ]; then
-              verbose_message "$pkg_name" >> "$log_file" "fix"
+            package_test=$( echo "${package_check}" |grep "ERROR" )
+            if [ -z "${package_check}" ]; then
+              verbose_message "${package_name}" >> "${log_file}" "fix"
             fi
           fi
         fi

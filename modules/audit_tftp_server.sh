@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_tftp_server
@@ -16,21 +16,21 @@
 #.
 
 audit_tftp_server () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "TFTP Server Daemon" "check"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_file_perms    "/tftpboot"                      "0744" "root" "root"
         check_file_perms    "/etc/netboot"                   "0744" "root" "root"
         check_sunos_service "svc:/network/tftp/udp6:default" "disabled"
         check_sunos_service "svc:/network/tftp/udp4:default" "disabled"
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_linux_service "tftp"          "off"
       check_file_perms    "/tftpboot"     "0744" "root" "root"
       check_file_perms    "/var/tftpboot" "0744" "root" "root"
-      if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
+      if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
         check_linux_service "tftp.socket" "off"
         check_linux_package "uninstall"   "tftp-server"
       fi

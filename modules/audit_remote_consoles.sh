@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_remote_consoles
@@ -13,36 +13,37 @@
 #.
 
 audit_remote_consoles () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Remote Consoles" "check"
     log_file="remoteconsoles.log"
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       disable_ttys=0
-      log_file="$work_dir/$log_file"
+      log_file="${work_dir}/${log_file}"
       console_list=$( /usr/sbin/consadm -p )
       for console_device in $console_list; do
         disable_ttys=1
-        if [ "$audit_mode" = 1 ]; then
-          increment_insecure "Console enabled on \"$console_device\""
-          verbose_message    "consadm -d $console_device" "fix"
+        if [ "${audit_mode}" = 1 ]; then
+          increment_insecure "Console enabled on \"${console_device}\""
+          verbose_message    "consadm -d ${console_device}" "fix"
         fi
-        if [ "$audit_mode" = 0 ]; then
-          echo "$console_device" >> "$log_file"
-          verbose_message "Console disabled on \"$console_device\"" "set"
-          consadm -d "$console_device"
+        if [ "${audit_mode}" = 0 ]; then
+          echo "${console_device}" >> "${log_file}"
+          verbose_message "Console disabled on \"${console_device}\"" "set"
+          consadm -d "${console_device}"
         fi
       done
-      if [ "$disable_ttys" = 0 ]; then
-        if [ "$audit_mode" = 1 ]; then
+      if [ "${disable_ttys}" = 0 ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_secure "No remote consoles enabled"
         fi
       fi
     else
-      restore_file="$restore_dir$log_file"
-      if [ -f "$restore_file" ]; then
-        for console_device in $( cat "$restore_file" ); do
-          verbose_message "Console to enabled on \"$console_device\"" "restore"
-          consadm -a "$console_device"
+      restore_file="${restore_dir}${log_file}"
+      if [ -f "${restore_file}" ]; then
+        restore_list=$( cat "${restore_file}" )
+        for console_device in ${restore_list}; do
+          verbose_message "Console to enabled on \"${console_device}\"" "restore"
+          consadm -a "${console_device}"
         done
       fi
     fi

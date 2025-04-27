@@ -5,26 +5,32 @@ LUNAR
 
 Lockdown UNix Auditing and Reporting
 
+Version
+-------
+
+Current version 10.1.4
+
+Refer to lunar.sh and changelog for more up to date version information
+
+License
+-------
+
+CC BY-SA: https://creativecommons.org/licenses/by-sa/4.0/
+
+Fund me here: https://ko-fi.com/richardatlateralblast
+
 ** NOTICE **
 ------------
 
 Run this code in audit more only, e.g. with -a or --audit switch.
 Run lockdown at your own risk. As per any system change, have backups.
+I'm working on improving the lockdown and recovery mode, but I would
+avoid using it in that mode for the moment.
 
 I've tried to clean up this script as much as possible using shellcheck,
-and I've used the -e (errexit) and -u (nounset) shell flags to help
-protect against errors. The -x (xtrace) shell flag can be enabled by
-using the script with the -Q or --debug flag.
-
-If you run into errors, you can disable the -e and -u flags, by running
-the script with the -q or --nostrict flag.
-
-Version
--------
-
-Current version 10.0.8
-
-Refer to lunar.sh and changelog for more up to date version information
+and I've enable the option to use the -e (errexit) and -u (nounset) shell
+flags to help protect against errors. The -x (xtrace) shell flag can be
+enabled by using the script with the -Q or --debug flag.
 
 Introduction
 ------------
@@ -136,54 +142,112 @@ Usage
 -----
 
 ```
-Usage: ./lunar.sh [OPTIONS...]
+Usage: ./lunar.sh -switch|--switch
 
- -a | --audit         Run in audit mode (for Operating Systems - no changes made to system)
- -A | --fullaudit     Run in audit mode (for Operating Systems - no changes made to system)
-                      [includes home directory and filesystem checks which take some time]
- -b | --backups       List backup files
- -B | --basedir       Base directory for work
- -c | --distro        Distro/Code name (used with docker/multipass)
- -C | --shell         Run docker-compose testing suite (drops to shell in order to do more testing)
- -d | --dockeraudit   Run in audit mode (for Docker - no changes made to system)
- -D | --dockertests   List all Docker functions available to selective mode
- -e | --host          Run in audit mode on external host (for Operating Systems - no changes made to system)
- -E | --hash          Password hash
- -f | --action        Action (e.g delete - used with multipass)
- -F | --tempfile      Temporary file to use for operations
- -g | --giturl        Git URL for code to copy to container
- -G | --wheelgroup    Set wheel group
- -h | --help          Display help
- -H | --usage         Display usage
- -i | --anacron       Enable/Disable anacron
- -k | --kubeaudit     Run in audit mode (for Kubernetes - no changes made to system)
- -l | --lockdown      Run in lockdown mode (for Operating Systems - changes made to system)
- -L | --fulllock      Run in lockdown mode (for Operating Systems - changes made to system)
-                      [includes home directory and filesystem checks which take some time]
- -m | --machine       Create and run in a VM (docker/multipass)
- -M | --workdir       Set work directory
- -n | --ansible       Output ansible code segments
- -N | --nocat         No cat in score output
- -o | --name          Set docker/multipass OS or container name
- -O | --osinfo        Print OS information
- -p | --previous      Show previous versions of file
- -P | --sandbox       Enable/Disabe SSH sandbox
- -r | --region        Specify AWS region
- -R | --testinfo      Print information for a specific test
- -s | --select        Run in selective mode (only run tests you want to)
- -S | --unixtests     List all UNIX functions available to selective mode
- -t | --tag           Set docker tag
- -T | --tempdir       Set temp directory
- -u | --undo          Undo lockdown (for Operating Systems - changes made to system)
- -v | --verbose       Verbose mode [used with -a and -A]
-                      [Provides more information about the audit taking place]
- -w | --awsaudit      Run in audit mode (for AWS - no changes made to system)
- -W | --awstests      List all AWS functions available to selective mode
- -V | --version       Display version
- -x | --awsrec        Run in recommendations mode (for AWS - no changes made to system)
- -z | --lockselect    Run specified audit function in lockdown mode
- -Z | --changes       Show changes previously made to system
-
+switch(s):
+---------
+-1|--list)
+  List changes/backups
+-2|--tests|--printtests)
+  Print tests
+-9|--shellcheck)
+  Run shellcheck against script
+-a|--audit)
+  Run in audit mode (for Operating Systems - no changes made to system)
+-A|--fullaudit)
+  Run in audit mode and include filesystems (for Operating Systems - no changes made to system)
+-b|--backups|--listbackups)
+  List backups
+-B|--basedir)
+  Set base directory
+-c|--codename|--distro)
+   Distro/Code name (used with docker/multipass)
+-C|--shell)
+  Run docker-compose testing suite (drops to shell in order to do more testing)
+-d|--dockeraudit)
+  Run in audit mode (for Docker - no changes made to system)
+-D|--dockertests)
+  List all Docker functions available to selective mode
+-e|--host)
+  Run in audit mode on external host (for Operating Systems - no changes made to system)
+-E|--hash|--passwordhash)
+  Password hash
+-f|--action)
+  Action (e.g delete - used with multipass)
+-F|--tempfile)
+  Temporary file to use for operations
+-g|--giturl)
+  Git URL for code to copy to container
+-G|--wheelgroup)
+  Set wheel group
+-h|--help)
+  Display help
+-H|--usage)
+  Display usage
+-i|--anacron)
+  Enable/Disable anacron
+-I|--type)
+  Audit type
+-k|--kubeaudit)
+  Run in audit mode (for Kubernetes - no changes made to system)
+-K|--function|--test)
+  Do a specific function
+-l|--lockdown)
+  Run in lockdown mode (for Operating Systems - changes made to system)
+-L|--fulllockdown|fulllock)
+  Run in lockdown mode (for Operating Systems - changes made to system)
+-m|--machine|--vm)
+  Set virtualisation type
+-M|--workdir)
+  Set work directory
+-n|--ansible)
+  Output ansible
+-N|--nocat)
+  Do output cat in score
+-o|--os|--osver)
+  Set OS version
+-O|--osinfo|--systeminfo)
+  Print OS/System information
+-p|--previous)
+  Print previous audit information
+-P|--sshsandbox|--sandbox)
+  Enable/Disabe SSH sandbox
+-q|--quiet|--nostrict)
+  Run in quiet mode
+-Q|--debug)
+  Run in debug mode
+-r|--awsregion|--region)
+  Set AWS region
+-R|--moduleinfo|--testinfo)
+  Print information about a module
+-s|--select|--check)
+  Run in selective mode (only run tests you want to)
+-S|--unixtests|--unix)
+  List UNIX tests
+-t|--tag|--name)
+  Set docker tag
+-T|--tempdir)
+  Set temp directoru
+-u|--undo)
+  Undo lockdown (for Operating Systems - changes made to system)
+-U|--dofiles)
+  Include filesystems
+-v|--verbose)
+  Run in verbose mode
+-V|--version)
+  Print version
+-w|--awsaudit)
+  Run in audit mode (for AWS - no changes made to system)
+-W|--awstests|--aws)
+  List all AWS functions available to selective mode
+-x|--awsrec)
+  Run in recommendations mode (for AWS - no changes made to system)
+-X|--strict)
+  Run shellcheck against script
+-z)
+  Run specified audit function in lockdown mode
+-Z|--changes|--listchanges)
+  List changes
 ```
 
 Examples
@@ -218,15 +282,6 @@ Create a Ubuntu 24.04 multipass VM for testing:
 ```
 ./lunar.sh --action create --machine multipass --osver 24.04 
 ```
-
-
-
-License
--------
-
-This software is licensed as CC-BA (Creative Commons By Attrbution)
-
-http://creativecommons.org/licenses/by/4.0/legalcode
 
 More Information
 ----------------

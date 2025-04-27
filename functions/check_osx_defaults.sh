@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # check_osx_defaults
@@ -10,12 +10,12 @@
 #.
 
 check_osx_defaults () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     defaults_file="$1"
     defaults_parameter="$2"
     defaults_value="$3"
     defaults_type="$4"
-    if [ "$defaults_type" = "dict" ]; then
+    if [ "${defaults_type}" = "dict" ]; then
       defaults_second_value="$5"
       defaults_second_type="$6"
       defaults_user="$7"
@@ -25,139 +25,139 @@ check_osx_defaults () {
     fi
     defaults_read="read"
     defaults_write="write"
-    backup_file=$defaults_file
-    if [ ! "$defaults_host" = "currentHost" ]; then
-      defaults_user="$defaults_host"
+    backup_file=${defaults_file}
+    if [ ! "${defaults_host}" = "currentHost" ]; then
+      defaults_user="${defaults_host}"
       defaults_host=""
     fi
-    if [ "$defaults_user" = "" ]; then
+    if [ "${defaults_user}" = "" ]; then
       defaults_command="sudo defaults"
     else
-      defaults_command="sudo -u $defaults_user defaults"
+      defaults_command="sudo -u ${defaults_user} defaults"
     fi
-    if [ "$audit_mode" != 2 ]; then
-      if [ "$defaults_user" = "" ]; then
-        string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
+    if [ "${audit_mode}" != 2 ]; then
+      if [ "${defaults_user}" = "" ]; then
+        string="Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\""
       else
-        string="Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
+        string="Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
       fi
-      verbose_message "$string" "check"
-      if [ "$defaults_host" = "currentHost" ]; then
-        defaults_read="-currentHost $defaults_read"
-        defaults_write="-currentHost $defaults_write"
-        backup_file="$HOME/Library/Preferences/ByHost/$defaults_file*"
+      verbose_message "${string}" "check"
+      if [ "${defaults_host}" = "currentHost" ]; then
+        defaults_read="-currentHost ${defaults_read}"
+        defaults_write="-currentHost ${defaults_write}"
+        backup_file="$HOME/Library/Preferences/ByHost/${defaults_file}*"
         defaults_command="defaults"
       fi
-      null_check=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | wc -l |sed 's/ //g'" )
+      null_check=$( eval "${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | wc -l |sed 's/ //g'" )
       if [ "$null_check" = "0" ]; then
         check_value="not-found"
       else
-        zero_check=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | sed 's/^ //g' |grep '0' |wc -l |sed 's/ //g'" )
-        if [ "$zero_check" = "1" ]; then
+        zero_check=$( eval "${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g' |grep '0' |wc -l |sed 's/ //g'" )
+        if [ "${zero_check}" = "1" ]; then
           check_value="0"
         else
-          check_vale=$( eval "$defaults_command $defaults_read $defaults_file $defaults_parameter 2> /dev/null | sed 's/^ //g'" )
+          check_vale=$( eval "${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g'" )
         fi
       fi
-      temp_value="$defaults_value"
-      if [ "$defaults_type" = "bool" ]; then
-        if [ "$defaults_value" = "no" ]; then
+      temp_value="${defaults_value}"
+      if [ "${defaults_type}" = "bool" ]; then
+        if [ "${defaults_value}" = "no" ]; then
           temp_value=0
         fi
-        if [ "$defaults_value" = "yes" ]; then
+        if [ "${defaults_value}" = "yes" ]; then
           temp_value=1
         fi
       fi
-      if [ "$check_value" != "$temp_value" ]; then
-        if [ "$defaults_user" = "" ]; then
-          increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\""
+      if [ "${check_value}" != "${temp_value}" ]; then
+        if [ "${defaults_user}" = "" ]; then
+          increment_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\""
         else
-          increment_insecure "Parameter \"$defaults_parameter\" not set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
+          increment_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
         fi
-        if [ "$defaults_value" = "" ]; then
-          verbose_message "$defaults_command delete $defaults_file $defaults_parameter" "fix"
-          command="$defaults_command delete $defaults_file $defaults_parameter"
+        if [ "${defaults_value}" = "" ]; then
+          verbose_message "${defaults_command} delete ${defaults_file} ${defaults_parameter}" "fix"
+          command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
         else
-          if [ "$defaults_type" = "bool" ]; then
-            verbose_message "$defaults_command write $defaults_file $defaults_parameter -bool \"$defaults_value\"" "fix"
-            command="$defaults_command write $defaults_file $defaults_parameter -bool \"$defaults_value\""
+          if [ "${defaults_type}" = "bool" ]; then
+            verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\"" "fix"
+            command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\""
           else
-            if [ "$defaults_type" = "int" ]; then
-              verbose_message "$defaults_command write $defaults_file $defaults_parameter -int $defaults_value" "fix"
-              command="$defaults_command write $defaults_file $defaults_parameter -int $defaults_value"
+            if [ "${defaults_type}" = "int" ]; then
+              verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}" "fix"
+              command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
             else
-              if [ "$defaults_type" = "dict" ]; then
-                if [ "$defaults_second_type" = "bool" ]; then
-                  verbose_message "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value" "fix"
-                  command="$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value"
+              if [ "${defaults_type}" = "dict" ]; then
+                if [ "${defaults_second_type}" = "bool" ]; then
+                  verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}" "fix"
+                  command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
                 else
-                  if [ "$defaults_second_type" = "int" ]; then
-                    verbose_message "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value" "fix"
-                    command="$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value"
+                  if [ "${defaults_second_type}" = "int" ]; then
+                    verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}" "fix"
+                    command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
                   fi
                 fi
               else
-                verbose_message "$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\"" "fix"
-                command="$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\""
+                verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\"" "fix"
+                command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
               fi
             fi
           fi
         fi
-        if [ "$audit_mode" = 0 ]; then
-          backup_file "$backup_file"
-          string="Parameter $defaults_parameter to $defaults_value in $defaults_file"
-          verbose_message "$string" "set"
-          if [ "$defaults_value" = "" ]; then
-            eval "$defaults_command delete $defaults_file $defaults_parameter"
+        if [ "${audit_mode}" = 0 ]; then
+          backup_file "${backup_file}"
+          string="Parameter ${defaults_parameter} to ${defaults_value} in ${defaults_file}"
+          verbose_message "${string}" "set"
+          if [ "${defaults_value}" = "" ]; then
+            eval "${defaults_command} delete ${defaults_file} ${defaults_parameter}"
           else
-            if [ "$defaults_type" = "bool" ]; then
-              eval "$defaults_command write $defaults_file $defaults_parameter -bool $defaults_value"
+            if [ "${defaults_type}" = "bool" ]; then
+              eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
             else
-              if [ "$defaults_type" = "int" ]; then
-                eval "$defaults_command write $defaults_file $defaults_parameter -int $defaults_value"
-                if [ "$defaults_file" = "/Library/Preferences/com.apple.Bluetooth" ]; then
+              if [ "${defaults_type}" = "int" ]; then
+                eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
+                if [ "${defaults_file}" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
               else
-                if [ "$defaults_type" = "dict" ]; then
-                  if [ "$defaults_second_type" = "bool" ]; then
-                    eval "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -bool $defaults_second_value"
+                if [ "${defaults_type}" = "dict" ]; then
+                  if [ "${defaults_second_type}" = "bool" ]; then
+                    eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
                   else
-                    if [ "$defaults_second_type" = "int" ]; then
-                      eval "$defaults_command write $defaults_file $defaults_parameter -dict $defaults_value -int $defaults_second_value"
+                    if [ "${defaults_second_type}" = "int" ]; then
+                      eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
                     fi
                   fi
                 else
-                  eval "$defaults_command write $defaults_file $defaults_parameter \"$defaults_value\""
+                  eval "${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
                 fi
               fi
             fi
           fi
         fi
-        if [ "$ansible" = 1 ]; then
+        if [ "${ansible}" = 1 ]; then
           echo ""
-          echo "- name: Checking $string"
-          echo "  command: sh -c \"$defaults_command $defaults_read $defaults_file $defaults_parameter 2>&1 |grep $defaults_value\""
+          echo "- name: Checking ${string}"
+          echo "  command: sh -c \"${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2>&1 |grep ${defaults_value}\""
           echo "  register: defaults_check"
           echo "  failed_when: defaults_check == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
-          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+          echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
-          echo "- name: Fixing $string"
-          echo "  command: sh -c \"$command\""
-          echo "  when: defaults_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+          echo "- name: Fixing ${string}"
+          echo "  command: sh -c \"${command}\""
+          echo "  when: defaults_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
       else
-        if [ "$defaults_user" = "" ]; then
-          increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\""
+        if [ "${defaults_user}" = "" ]; then
+          increment_secure "Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\""
         else
-          increment_secure "Parameter \"$defaults_parameter\" is set to \"$defaults_value\" in \"$defaults_file\" for user \"$defaults_user\""
+          increment_secure "Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
         fi
       fi
     else
-      restore_file "$backup_file" "$restore_dir"
+      restore_file "${backup_file}" "${restore_dir}"
     fi
   fi
 }

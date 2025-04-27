@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_sleep
@@ -30,10 +30,10 @@
 #.
 
 audit_sleep () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Sleep" "check"
-    if [ "$long_os_version" -ge 1014 ]; then
-      if [ "$os_machine" = "arm64" ]; then
+    if [ "${long_os_version}" -ge 1014 ]; then
+      if [ "${os_machine}" = "arm64" ]; then
         check_pmset "sleep"                 "10"
         check_pmset "displaysleep"          "15"
         check_pmset "hibernatemode"         "25"

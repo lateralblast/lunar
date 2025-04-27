@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_chkconfig
@@ -16,7 +16,7 @@
 #.
 
 audit_chkconfig () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Miscellaneous Services" "check"
     for service_name in wu-ftpd ftp vsftpd aaeventd\
       tftp acpid amd arptables_jg arpwatch atd netfs irda isdn \
@@ -33,7 +33,7 @@ audit_chkconfig () {
       saslauthd powerd raw rexec rlogin rpasswdd openct\
       ipxmount joystick esound evms fam gpm gssd pcscd\
       tog-pegasus tux wpa_supplicant zebra ncpfs; do
-      check_linux_service "$service_name" "off"
+      check_linux_service "${service_name}" "off"
     done
   fi
 }

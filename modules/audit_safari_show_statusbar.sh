@@ -12,13 +12,13 @@
 #.
 
 audit_safari_show_statusbar () {
-  if [ "$os_name" = "Darwin" ]; then
-    if [ "$long_os_version" -ge 1014 ]; then
+  if [ "${os_name}" = "Darwin" ]; then
+    if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Safari Show Status Bar" "check"
-      if [ "$audit_mode" != 2 ]; then
+      if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
-        for user_name in $user_list; do
-          check_osx_defaults_user "com.apple.Safari" "ShowOverlayStatusBar" "1" "bool" "$user_name"
+        for user_name in ${user_list}; do
+          check_osx_defaults_user "com.apple.Safari" "ShowOverlayStatusBar" "1" "bool" "${user_name}"
         done
       fi
     fi

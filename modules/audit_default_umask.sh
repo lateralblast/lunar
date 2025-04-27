@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_default_umask
@@ -21,18 +21,18 @@
 #.
 
 audit_default_umask () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Default umask for Users" "check"
-    if [ "$os_name" = "SunOS" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/etc/default/login" "UMASK" "eq" "077" "hash"
     fi
-    if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+    if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
       for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/csh.login \
         /etc/csh.cshrc /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc; do
-        check_file_value "is" "$check_file" "umask" "space" "077" "hash"
+        check_file_value "is" "${check_file}" "umask" "space" "077" "hash"
       done
       for check_file in /etc/bashrc /etc/skel/.bashrc /etc/login.defs; do
-        check_file_value "is" "$check_file" "UMASK" "eq" "077" "hash"
+        check_file_value "is" "${check_file}" "UMASK" "eq" "077" "hash"
       done
     fi
   fi

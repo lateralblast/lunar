@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_dfstab
@@ -12,7 +12,7 @@
 #.
 
 audit_dfstab () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message    "Full Path Names in Exports" "check"
     replace_file_value "/etc/dfs/dfstab" "share" "/usr/bin/share" "start"
   fi

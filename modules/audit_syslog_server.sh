@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2063
 # shellcheck disable=SC2154
 
 # audit_syslog_server
@@ -20,20 +21,20 @@
 #.
 
 audit_syslog_server () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Syslog Daemon" "check"
-    if [ "$os_name" = "FreeBSD" ]; then
-      if [ "$os_version" -lt 5 ]; then
+    if [ "${os_name}" = "FreeBSD" ]; then
+      if [ "${os_version}" -lt 5 ]; then
         check_file_value  "is" "/etc/syslog.conf" "daemon.debug" "tab" "/var/log/daemon.log" "hash"
         check_file_exists "/var/log/daemon.log" "file" "yes"
         funct_file_perms  "/var/log/daemon.log" "600"  "root" "wheel"
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
-      if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 22 ]; then
+    if [ "${os_name}" = "Linux" ]; then
+      if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
         check_linux_package "install" "systemd-journal-remote"
-        if [ "$syslog_server" != "" ]; then
-          check_file_value "is" "/etc/systemd/journal-upload.conf" "URL" "eq" "$syslog_server" "hash"
+        if [ "${syslog_server}" != "" ]; then
+          check_file_value "is" "/etc/systemd/journal-upload.conf" "URL" "eq" "${syslog_server}" "hash"
         fi
         check_file_value    "is" "/etc/systemd/journal-upload.conf" "ServerKeyFile"          "eq" "/etc/ssl/private/journal-upload.pem" "hash"
         check_file_value    "is" "/etc/systemd/journal-upload.conf" "ServerCertificateFile"  "eq" "/etc/ssl/certs/journal-upload.pem"   "hash"
@@ -46,9 +47,9 @@ audit_syslog_server () {
         check_linux_service "systemd-journald.service"              "on"
         check_file_perms    "/usr/lib/tmpfiles.d/systemd.conf"      "0640" "root" "root"
       fi
-      if [ "$install_rsyslog" = "yes" ]; then
-        if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "SuSE" ] || [ "$os_vendor" = "Amazon" ]; then
-          if [ "$os_version" -lt 4 ]; then
+      if [ "${install_rsyslog}" = "yes" ]; then
+        if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "SuSE" ] || [ "${os_vendor}" = "Amazon" ]; then
+          if [ "${os_version}" -lt 4 ]; then
             check_linux_service "syslog" "off"
             check_file_value    "is" "/etc/rsyslog.conf" "*.emerg"                 "tab" ":omusrmsg:*"         "hash"
             check_file_value    "is" "/etc/rsyslog.conf" "mail.*"                  "tab" "/var/log/mail"       "hash"
@@ -65,12 +66,12 @@ audit_syslog_server () {
             check_linux_package "install"           "rsyslog"
             check_linux_service "rsyslog"           "on"
             funct_file_perms    "/etc/rsyslog.conf" "0600" "root" "root"
-            if [ "$audit_mode" != 2 ]; then
-              remote_check=$( grep -v '#' $check_file | grep '*.* @@' | grep -v localhost | grep -c '[A-z]' )
-              if [ "$remote_check" != "1" ]; then
-                if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
+            if [ "${audit_mode}" != 2 ]; then
+              remote_check=$( grep -v '#' "${check_file}" | grep "*.* @@" | grep -v localhost | grep -c "[A-Z]|[a-z]" )
+              if [ "${remote_check}" != "1" ]; then
+                if [ "${audit_mode}" = 1 ] || [ "${audit_mode}" = 0 ]; then
                   increment_insecure "Rsyslog is not sending messages to a remote server"
-                  verbose_message "Add a server entry to $check_file, eg:" "fix"
+                  verbose_message "Add a server entry to ${check_file}, eg:" "fix"
                   verbose_message "*.* @@loghost.example.com" "fix"
                 fi
               else

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_core_limit
@@ -12,49 +12,49 @@
 #.
 
 audit_core_limit () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     string="Core dump limits"
-    verbose_message "$string" "check"
+    verbose_message "${string}" "check"
     log_file="corelimit"
-    backup_file="$work_dir/$log_file"
+    backup_file="${work_dir}/${log_file}"
     current_value=$( launchctl limit core | awk '{print $3}' )
-    if [ "$audit_mode" != 2 ]; then
-      if [ "$ansible" = 1 ]; then
+    if [ "${audit_mode}" != 2 ]; then
+      if [ "${ansible}" = 1 ]; then
         echo ""
-        echo "- name: Checking $string"
+        echo "- name: Checking ${string}"
         echo "  command:  sh -c \"launchctl limit core | awk '{print \$3}'\""
         echo "  register: corelimit_check"
         echo "  failed_when: corelimit_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+        echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
-        echo "- name: Fixing $string"
+        echo "- name: Fixing ${string}"
         echo "  command: sh -c \"launchctl limit core 0\""
-        echo "  when: corelimit_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+        echo "  when: corelimit_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
-      if [ "$current_value" != "0" ]; then
-        if [ ! "$audit_mode" = 0 ]; then
+      if [ "${current_value}" != "0" ]; then
+        if [ ! "${audit_mode}" = 0 ]; then
           increment_insecure "Core dumps unlimited"
           verbose_message    "launchctl limit core 0" "fix"
         fi
-        if [ "$audit_mode" = 0 ]; then
+        if [ "${audit_mode}" = 0 ]; then
           verbose_message "Core dump limits" "set"
-          echo "$current_value" > "$log_file"
+          echo "${current_value}" > "${log_file}"
           launchctl limit core 0
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_secure "Core dump limits exist"
         fi
       fi
     else
-      restore_file="$restore_dir/$log_file"
-      if [ -f "$restore_file" ]; then
-        previous_value=$( cat "$restore_file" )
-        if [ "$current_value" != "$previous_value" ]; then
-          verbose_message "Core limit to \"$previous_value\"" "restore"
+      restore_file="${restore_dir}/${log_file}"
+      if [ -f "${restore_file}" ]; then
+        previous_value=$( cat "${restore_file}" )
+        if [ "${current_value}" != "${previous_value}" ]; then
+          verbose_message "Core limit to \"${previous_value}\"" "restore"
           launchctl limit core unlimited
         fi
       fi

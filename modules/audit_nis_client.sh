@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_nis_client
@@ -19,17 +19,17 @@
 #.
 
 audit_nis_client () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "NIS Client Daemons" "check"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/network/nis/client" "disabled"
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       for service_name in ypbind nis; do
-        check_linux_service "$service_name" "off"
-        check_linux_package "uninstall"     "$service_name"
+        check_linux_service "${service_name}" "off"
+        check_linux_package "uninstall"     "${service_name}"
       done
     fi
   fi

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_autofs
@@ -17,14 +17,14 @@
 #.
 
 audit_autofs () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Automount Services" "check"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/system/filesystem/autofs" "disabled"
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_linux_service "autofs" "off"
     fi
   fi

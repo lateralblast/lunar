@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_pam_wheel
@@ -18,52 +18,52 @@
 #.
 
 audit_pam_wheel () {
-  if [ "$os_name" = "Linux" ]; then
-    string="PAM SU Configuration"
-    verbose_message "$string" "check"
+  if [ "${os_name}" = "Linux" ]; then
+    check_string="PAM SU Configuration"
+    verbose_message "${string}" "check"
     check_file="/etc/pam.d/su"
-    if [ -f "$check_file" ]; then
+    if [ -f "${check_file}" ]; then
       search_string="use_uid"
-      if [ "$audit_mode" != 2 ]; then
-        check_value=$( grep '^auth' "$check_file" | grep '$search_string$' | awk '{print $8}' )
-        if [ "$ansible" = 1 ]; then
+      if [ "${audit_mode}" != 2 ]; then
+        check_value=$( grep "^auth" "${check_file}" | grep "${search_string}$" | awk '{print $8}' )
+        if [ "${ansible}" = 1 ]; then
           echo ""
-          echo "- name: Checking $string"
-          echo "  command:  sh -c \"cat $check_file | grep -v '^#' |grep '$search_string$' |head -1 |wc -l\""
+          echo "- name: Checking ${check_string}"
+          echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep '${search_string}$' |head -1 |wc -l\""
           echo "  register: pam_wheel_auth_check"
           echo "  failed_when: pam_wheel_auth_check == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
-          echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+          echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
-          echo "- name: Fixing $string"
-          echo "  command: sh -c \"sed -i 's/^.*$search_string$/#&/' $check_file\""
-          echo "  when: pam_wheel_auth_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+          echo "- name: Fixing ${check_string}"
+          echo "  command: sh -c \"sed -i 's/^.*${search_string}$/#&/' ${check_file}\""
+          echo "  when: pam_wheel_auth_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
-        if [ "$check_value" != "$search_string" ]; then
-          if [ "$audit_mode" = "1" ]; then
-            increment_insecure "Wheel group membership not required for su in \"$check_file\""
-            verbose_message    "cp $check_file $temp_file" "fix"
-            verbose_message    "cat $temp_file |awk '( \$1==\"#auth\" && \$2==\"required\" && \$3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",\$3,\"\tuse_uid\"; next }; { print }' > $check_file" "fix"
-            verbose_message    "rm $temp_file" "fix"
+        if [ "${check_value}" != "${search_string}" ]; then
+          if [ "${audit_mode}" = "1" ]; then
+            increment_insecure "Wheel group membership not required for su in \"${check_file}\""
+            verbose_message    "cp ${check_file} ${temp_file}" "fix"
+            verbose_message    "cat ${temp_file} |awk '( \$1==\"#auth\" && \$2==\"required\" && \$3~\"pam_wheel.so\" ) { print \"auth\t\trequired\t\",\$3,\"\tuse_uid\"; next }; { print }' > ${check_file}" "fix"
+            verbose_message    "rm ${temp_file}" "fix"
           fi
-          if [ "$audit_mode" = 0 ]; then
-            backup_file     "$check_file"
-            verbose_message "Setting:   Su to require wheel group membership in PAM in \"$check_file\""
-            cp "$check_file" "$temp_file"
-            awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' < "$temp_file" > $check_file
+          if [ "${audit_mode}" = 0 ]; then
+            backup_file     "${check_file}"
+            verbose_message "Setting:   Su to require wheel group membership in PAM in \"${check_file}\""
+            cp "${check_file}" "${temp_file}"
+            awk '( $1=="#auth" && $2=="required" && $3~"pam_wheel.so" ) { print "auth\t\trequired\t",$3,"\tuse_uid"; next }; { print }' < "${temp_file}" > ${check_file}
             if [ -f "$tuse_file" ]; then
-              rm "$temp_file"
+              rm "${temp_file}"
             fi
           fi
         else
-          if [ "$audit_mode" = "1" ]; then
-            increment_secure "Wheel group membership required for su in \"$check_file\""
+          if [ "${audit_mode}" = "1" ]; then
+            increment_secure "Wheel group membership required for su in \"${check_file}\""
           fi
         fi
       else
-        restore_file "$check_file" "$restore_dir"
+        restore_file "${check_file}" "${restore_dir}"
       fi
     fi
   fi

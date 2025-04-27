@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2046
 # shellcheck disable=SC2154
 
 # audit_logrotate
@@ -16,40 +17,40 @@
 #.
 
 audit_logrotate () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/logrotate.d/syslog"
-    if [ -f "$check_file" ]; then
+    if [ -f "${check_file}" ]; then
       verbose_message "Log Rotate Configuration" "check"
-      if [ "$audit_mode" != 2 ]; then
-        if [ "$os_vendor" = "SuSE" ]; then
+      if [ "${audit_mode}" != 2 ]; then
+        if [ "${os_vendor}" = "SuSE" ]; then
           search_string="/var/log/warn /var/log/messages /var/log/allmessages /var/log/localmessages /var/log/firewall /var/log/acpid /var/log/NetworkManager /var/log/mail /var/log/mail.info /var/log/mail.warn /var/log/mail.err /var/log/news/news.crit /var/log/news/news.err /var/log/news/news.notice"
         else
           search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
         fi
-        check_value=$( grep "$search_string" "$check_file" |sed 's/ {//g' )
-        if [ "$check_value" != "$search_string" ]; then
-          if [ "$audit_mode" = 1 ]; then
-            increment_insecure "Log rotate is not configured for $search_string"
-            verbose_message    "cat $check_file |sed 's,.*{,$search_string {,' > $temp_file" "fix"
-            verbose_message    "cat $temp_file > $check_file" "fix"
-            verbose_message    "rm $temp_file" "fix"
+        check_value=$( grep "${search_string}" "${check_file}" |sed 's/ {//g' )
+        if [ "${check_value}" != "${search_string}" ]; then
+          if [ "${audit_mode}" = 1 ]; then
+            increment_insecure "Log rotate is not configured for ${search_string}"
+            verbose_message    "cat ${check_file} |sed 's,.*{,${search_string} {,' > ${temp_file}" "fix"
+            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
+            verbose_message    "rm ${temp_file}" "fix"
           fi
-          if [ "$audit_mode" = 0 ]; then
-            backup_file "$check_file"
+          if [ "${audit_mode}" = 0 ]; then
+            backup_file "${check_file}"
             echo "Removing:  Configuring logrotate"
-            sed 's,.*{,$search_string {,' "$check_file" > "$temp_file"
-            cat "$temp_file" > "$check_file"
-            if [ -f "$temp_file" ]; then
-              rm "$temp_file"
+            sed "s,.*{,${search_string} {," "${check_file}" > "${temp_file}"
+            cat "${temp_file}" > "${check_file}"
+            if [ -f "${temp_file}" ]; then
+              rm "${temp_file}"
             fi
           fi
         else
-          if [ "$audit_mode" = 1 ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_secure "Log rotate is configured"
           fi
         fi
       else
-        restore_file "$check_file" "$restore_dir"
+        restore_file "${check_file}" "${restore_dir}"
       fi
     fi
   fi

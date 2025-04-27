@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_search_fs
@@ -12,10 +12,10 @@
 #.
 
 audit_search_fs () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Filesystem Search"
-    nb_check=$( pkginfo -l | grep SYMCnbclt | grep PKG | awk '{print $2}' )
-    if [ "$nb_check" != "SYMCnbclt" ]; then
+    check=$( pkginfo -l | grep SYMCnbclt | grep PKG | awk '{print $2}' )
+    if [ "${check}" != "SYMCnbclt" ]; then
       audit_bpcd
       audit_vnetd
       audit_vopied

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_file_sharing
@@ -12,7 +12,7 @@
 #.
 
 audit_file_sharing () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Apple File Sharing" "check"
     check_osx_defaults_bool "/Library/Preferences/SystemConfiguration/com.apple.smb.server" "AllowGuestAccess" "no"
     check_launchctl_service "com.apple.AppleFileServer" "off"

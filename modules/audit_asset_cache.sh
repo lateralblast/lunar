@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_asset_cache
@@ -16,15 +16,15 @@
 #.
 
 audit_asset_cache () {
-  if [ "$os_name" = "Darwin" ]; then
-    if [ "$long_os_version" -ge 1013 ]; then
+  if [ "${os_name}" = "Darwin" ]; then
+    if [ "${long_os_version}" -ge 1013 ]; then
       verbose_message "Asset Cache" "check"
-      if [ "$audit_mode" != 2 ]; then
+      if [ "${audit_mode}" != 2 ]; then
         check_value=$( /usr/bin/sudo /usr/bin/AssetCacheManagerUtil status 2>&1 |grep Activated |awk '{print $2}' )
-        if [ "$check_value" = "$asset_cache" ]; then
-          increment_secure   "Content Caching is set to \"$asset_cache\""
+        if [ "${check_value}" = "${asset_cache}" ]; then
+          increment_secure   "Content Caching is set to \"${asset_cache}\""
         else
-          increment_insecure "Content Caching is not set to \"$asset_cache\""
+          increment_insecure "Content Caching is not set to \"${asset_cache}\""
         fi
       fi
     fi

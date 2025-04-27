@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_aws_ec2
@@ -17,47 +17,47 @@
 
 audit_aws_ec2 () {
   verbose_message "EC2" "check"
-  instances=$( aws ec2 describe-instances --region "$aws_region" --query 'Reservations[].Instances[].InstanceId' --filters "Name=instance.group-name,Values=default" --output text )
-  if [ -z "$instances" ]; then
+  instances=$( aws ec2 describe-instances --region "${aws_region}" --query 'Reservations[].Instances[].InstanceId' --filters "Name=instance.group-name,Values=default" --output text )
+  if [ -z "${instances}" ]; then
     increment_secure "There are no instances using the default security group"
   else
-    for instance in $instances; do
-      increment_insecure "The instance \"$instance\" is using the default security group"
+    for instance in ${instances}; do
+      increment_insecure "The instance \"${instance}\" is using the default security group"
     done
   fi
-  instances=$( aws ec2 describe-instances --region "$aws_region" --query "Reservations[].Instances[].InstanceId" --output text )
-  for instance in $instances; do
-    profile=$( aws ec2 describe-instances --region "$aws_region" --instance-ids "$instance" --query "Reservations[*].Instances[*].IamInstanceProfile" --output text )
-    if [ -n "$profile" ]; then
-      increment_secure   "Instances \"$instance\" uses an IAM profile"
+  instances=$( aws ec2 describe-instances --region "${aws_region}" --query "Reservations[].Instances[].InstanceId" --output text )
+  for instance in ${instances}; do
+    profile=$( aws ec2 describe-instances --region "${aws_region}" --instance-ids "${instance}" --query "Reservations[*].Instances[*].IamInstanceProfile" --output text )
+    if [ -n "${profile}" ]; then
+      increment_secure   "Instances \"${instance}\" uses an IAM profile"
     else
-      increment_insecure "Warning:   Instance \"$instance\" does not use an IAM profile"
+      increment_insecure "Warning:   Instance \"${instance}\" does not use an IAM profile"
     fi
   done
-  images=$( aws ec2 describe-images --region "$aws_region" --owners self --query "Images[].ImageId" --output text )
-  for image in $images; do
-    public=$( aws ec2 describe-images --owners self --region "$aws_region" --image-ids "$image" --query "Images[].Public" | grep true )
-    if [ -z "$public" ]; then
-      increment_secure   "Image \"$image\" is not publicly shared"
+  images=$( aws ec2 describe-images --region "${aws_region}" --owners self --query "Images[].ImageId" --output text )
+  for image in ${images}; do
+    public=$( aws ec2 describe-images --owners self --region "${aws_region}" --image-ids "${image}" --query "Images[].Public" | grep true )
+    if [ -z "${public}" ]; then
+      increment_secure   "Image \"${image}\" is not publicly shared"
     else
-      increment_insecure "Image \"$image\" is publicly shared"
-      verbose_message    "aws ec2 modify-image-attribute --region $aws_region --image-id $image --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" "fix"
+      increment_insecure "Image \"${image}\" is publicly shared"
+      verbose_message    "aws ec2 modify-image-attribute --region ${aws_region} --image-id ${image} --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" "fix"
     fi
   done
   volumes=$( aws ec2 describe-volumes --query "Volumes[].VolumeId" --output text )
-  for volume in $volumes; do
-    check=$( aws ec2 describe-volumes --volume-id "$volume" --query "Volumes[].Encrypted" | grep true )
-    if [ -n "$check" ]; then
-      increment_secure   "EBS Volume \"$volume\" is encrypted"
+  for volume in ${volumes}; do
+    check=$( aws ec2 describe-volumes --volume-id "${volume}" --query "Volumes[].Encrypted" | grep true )
+    if [ -n "${check}" ]; then
+      increment_secure   "EBS Volume \"${volume}\" is encrypted"
     else
-      increment_insecure "EBS Volume \"$volume\" is not encrypted"
+      increment_insecure "EBS Volume \"${volume}\" is not encrypted"
     fi
     # Check if KMS is being used
-    key_id=$( aws ec2 describe-volumes --region "$aws_region" --volume-ids "$volume" --query 'Volumes[].KmsKeyId' --output text | cut -f2 -d/ )
-    if [ -n "$key_id" ]; then
-      increment_secure   "EBS Volume \"$volume\" is encrypted with a KMS key"
+    key_id=$( aws ec2 describe-volumes --region "${aws_region}" --volume-ids "${volume}" --query 'Volumes[].KmsKeyId' --output text | cut -f2 -d/ )
+    if [ -n "${key_id}" ]; then
+      increment_secure   "EBS Volume \"${volume}\" is encrypted with a KMS key"
     else
-      increment_insecure "EBS Volume \"$volume\" is encrypted not with a KMS key"
+      increment_insecure "EBS Volume \"${volume}\" is encrypted not with a KMS key"
     fi
   done
 }

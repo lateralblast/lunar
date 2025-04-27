@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_auto_logout
@@ -12,7 +12,7 @@
 #.
 
 audit_auto_logout () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message        "Autologout" "check"
     check_osx_defaults_int "/Library/Preferences/.GlobalPreferences" "com.apple.autologout.AutoLogOutDelay" "0"
   fi

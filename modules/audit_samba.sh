@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_samba
@@ -19,27 +19,27 @@
 #.
 
 audit_samba () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Samba Daemons" "check"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ]; then
-        if [ $os_update -ge 4 ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ]; then
+        if [ "${os_update}" -ge 4 ]; then
           check_sunos_service "svc:/network/samba" "disabled"
         else
           check_sunos_service "samba" "disabled"
         fi
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_linux_service "smb"       "off"
       check_linux_package "uninstall" "samba"
     fi
     for check_dir in /etc /etc/sfw /etc/samba /usr/local/etc /usr/sfw/etc /opt/sfw/etc; do
-      check_file="$check_dir/smb.conf"
-      if [ -f "$check_file" ]; then
-        check_file_value_with_position "is" "$check_file" "restrict anonymous" "eq" "2"   "semicolon" "after" "\[Global\]"
-        check_file_value_with_position "is" "$check_file" "guest OK"           "eq" "no"  "semicolon" "after" "\[Global\]"
-        check_file_value_with_position "is" "$check_file" "client ntlmv2 auth" "eq" "yes" "semicolon" "after" "\[Global\]"
+      check_file="${check_dir}/smb.conf"
+      if [ -f "${check_file}" ]; then
+        check_file_value_with_position "is" "${check_file}" "restrict anonymous" "eq" "2"   "semicolon" "after" "\[Global\]"
+        check_file_value_with_position "is" "${check_file}" "guest OK"           "eq" "no"  "semicolon" "after" "\[Global\]"
+        check_file_value_with_position "is" "${check_file}" "client ntlmv2 auth" "eq" "yes" "semicolon" "after" "\[Global\]"
       fi
     done
   fi

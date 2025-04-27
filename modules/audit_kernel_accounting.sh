@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_kernel_accounting
@@ -15,24 +15,24 @@
 #.
 
 audit_kernel_accounting () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Darwin" ]; then
     check_file="/etc/system"
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ]; then
-        if [ -f "$check_file" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ]; then
+        if [ -f "${check_file}" ]; then
           verbose_message "Kernel and Process Accounting" "check"
-          check_acc=$( grep -v "^\*" "$check_file" | grep "c2audit:audit_load" )
+          check_acc=$( grep -v "^\*" "${check_file}" | grep "c2audit:audit_load" )
           if [ -z "$check_acc" ]; then
-            check_file_value "is" "$check_file" "c2audit" "colon" "audit_load" "star"
-            if [ "$audit_mode" = 0 ]; then
-              log_file="$work_dir/bsmconv.log"
-              echo "y" >> "$log_file"
+            check_file_value "is" "${check_file}" "c2audit" "colon" "audit_load" "star"
+            if [ "${audit_mode}" = 0 ]; then
+              log_file="${work_dir}/bsmconv.log"
+              echo "y" >> "${log_file}"
               echo "y" | /etc/security/bsmconv
             fi
           fi
-          if [ "$audit_mode" = 2 ]; then
-            restore_file="$restore_dir/bsmconv.log"
-            if [ -f "$restore_file" ]; then
+          if [ "${audit_mode}" = 2 ]; then
+            restore_file="${restore_dir}/bsmconv.log"
+            if [ -f "${restore_file}" ]; then
               echo "y" | /etc/security/bsmunconv
             fi
           fi
@@ -46,7 +46,7 @@ audit_kernel_accounting () {
       check_file_perms "/etc/security/audit_control"      "0750"  "root"  "wheel"
       check_file_perms "/var/audit" "0750" "root" "wheel"
       check_file_value "is" "/etc/security/audit_control" "flags" "colon" "lo,ad,fd,fm,-all" "hash"
-      if [ "$os_version" -ge 14 ]; then
+      if [ "${os_version}" -ge 14 ]; then
         check_file_value "is" "/etc/security/audit_control" "expire-after" "colon" "60d" "hash"
       fi
     fi

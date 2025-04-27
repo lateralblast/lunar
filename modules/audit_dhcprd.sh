@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_dhcprd
@@ -12,8 +12,8 @@
 #.
 
 audit_dhcprd () {
-  if [ "$dhcprd_disable" = "yes" ]; then
-    if [ "$os_name" = "AIX" ]; then
+  if [ "${dhcprd_disable}" = "yes" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       verbose_message "DHCP Relay Daemon" "check"
       check_rctcp     "dhcprd" "off"
     fi

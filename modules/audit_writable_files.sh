@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1083
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_writable_files
@@ -23,82 +23,82 @@
 #.
 
 audit_writable_files () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
-    if [ "$do_fs" = 1 ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
+    if [ "${do_fs}" = 1 ]; then
       verbose_message "World Writable Files" "check"
       log_file="worldwritablefiles.log"
-      if [ "$audit_mode" = 0 ]; then
-        log_file="$work_dir/$log_file"
+      if [ "${audit_mode}" = 0 ]; then
+        log_file="${work_dir}/${log_file}"
       fi
-      if [ "$audit_mode" != 2 ]; then
-        if [ "$os_name" = "Linux" ]; then
+      if [ "${audit_mode}" != 2 ]; then
+        if [ "${os_name}" = "Linux" ]; then
           file_systems=$( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null )
-          for file_system in $file_systems; do
-            check_files=$( find "$file_system" -xdev -type f -perm -0002 2> /dev/null )
-            for check_file in $check_files; do
-              if [ "$ansible" = 1 ]; then
+          for file_system in ${file_system}s; do
+            check_files=$( find "${file_system}" -xdev -type f -perm -0002 2> /dev/null )
+            for check_file in ${check_file}s; do
+              if [ "${ansible}" = 1 ]; then
                 echo ""
-                echo "- name: Checking write permissions for $check_file"
+                echo "- name: Checking write permissions for ${check_file}"
                 echo "  file:"
-                echo "    path: $check_file"
+                echo "    path: ${check_file}"
                 echo "    mode: o-w"
                 echo ""
               fi
-              if [ "$audit_mode" = 1 ]; then
-                increment_insecure "File $check_file is world writable"
-                verbose_message    "chmod o-w $check_file" "fix"
+              if [ "${audit_mode}" = 1 ]; then
+                increment_insecure "File ${check_file} is world writable"
+                verbose_message    "chmod o-w ${check_file}" "fix"
               fi
-              if [ "$audit_mode" = 0 ]; then
-                echo "$check_file" >> "$log_file"
-                verbose_message "File \"$check_file\" to be non world writable" "set"
-                chmod o-w "$check_file"
+              if [ "${audit_mode}" = 0 ]; then
+                echo "${check_file}" >> "${log_file}"
+                verbose_message "File \"${check_file}\" to be non world writable" "set"
+                chmod o-w "${check_file}"
               fi
             done
           done
         else
-          if [ "$os_name" = "SunOS" ]; then
+          if [ "${os_name}" = "SunOS" ]; then
             find_command="find / \( -fstype nfs -o -fstype cachefs \
             -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
             -o -fstype objfs -o -fstype proc \) -prune \
             -o -type f -perm -0002 -print"
           fi
-          if [ "$os_name" = "AIX" ]; then
+          if [ "${os_name}" = "AIX" ]; then
             find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
             \( -type d -o -type f \) -perm -o+w -ls"
           fi
-          if [ "$os_name" = "FreeBSD" ]; then
+          if [ "${os_name}" = "FreeBSD" ]; then
             find_command="find / \( -fstype ufs -type file -perm -0002 \
             -a ! -perm -1000 \) -print"
           fi
-          for check_file in $( $find_command ); do
-            if [ "$ansible" = 1 ]; then
+          for check_file in $( ${find_command} ); do
+            if [ "${ansible}" = 1 ]; then
               echo ""
-              echo "- name: Checking write permissions for $check_file"
+              echo "- name: Checking write permissions for ${check_file}"
               echo "  file:"
-              echo "    path: $check_file"
+              echo "    path: ${check_file}"
               echo "    mode: o-w"
               echo ""
             fi
-            if [ "$audit_mode" = 1 ]; then
-              increment_insecure "File $check_file is world writable"
-              verbose_message    "chmod o-w $check_file" "fix"
+            if [ "${audit_mode}" = 1 ]; then
+              increment_insecure "File ${check_file} is world writable"
+              verbose_message    "chmod o-w ${check_file}" "fix"
             fi
-            if [ "$audit_mode" = 0 ]; then
-              echo "$check_file" >> "$log_file"
-              verbose_message "File \"$check_file\" to be non world writable" "set"
-              chmod o-w "$check_file"
+            if [ "${audit_mode}" = 0 ]; then
+              echo "${check_file}" >> "${log_file}"
+              verbose_message "File \"${check_file}\" to be non world writable" "set"
+              chmod o-w "${check_file}"
             fi
           done
         fi
       fi
-      if [ "$audit_mode" = 2 ]; then
-        restore_file="$restore_dir/$log_file"
-        if [ -f "$restore_file" ]; then
-          check_files=$( cat "$restore_file" )
-          for check_file in $check_files; do
-            if [ -f "$check_file" ]; then
-              verbose_message "File \"$check_file\" to previous permissions" "restore"
-              chmod o+w "$check_file"
+      if [ "${audit_mode}" = 2 ]; then
+        restore_file="${restore_dir}/${log_file}"
+        if [ -f "${restore_file}" ]; then
+          check_files=$( cat "${restore_file}" )
+          for check_file in ${check_file}s; do
+            if [ -f "${check_file}" ]; then
+              verbose_message "File \"${check_file}\" to previous permissions" "restore"
+              chmod o+w "${check_file}"
             fi
           done
         fi

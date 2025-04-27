@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_passwd_perms
@@ -18,16 +18,16 @@
 #.
 
 audit_passwd_perms () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Group and Password File Permissions" "check"
-    if [ "$os_name" = "AIX" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       for check_file in /etc/passwd /etc/group; do
-        check_file_perms $check_file 0644 root security
+        check_file_perms ${check_file} 0644 root security
       done
       check_dir="/etc/security"
-      check_file_perms $check_dir 0750 root security
+      check_file_perms ${check_dir} 0750 root security
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_file_perms "/etc/passwd"   "0644" "root" "root"
       check_file_perms "/etc/group"    "0644" "root" "root"
       check_file_perms "/etc/shadow"   "0600" "root" "root"
@@ -37,7 +37,7 @@ audit_passwd_perms () {
       check_file_perms "/etc/shadow-"  "0600" "root" "root"
       check_file_perms "/etc/gshadow-" "0600" "root" "root"
     fi
-    if [ "$os_name" = "FreeBSD" ]; then
+    if [ "${os_name}" = "FreeBSD" ]; then
       check_file_perms "/etc/passwd"        "0644" "root" "wheel"
       check_file_perms "/etc/group"         "0644" "root" "wheel"
       check_file_perms "/etc/pwd.db_file"   "0644" "root" "wheel"

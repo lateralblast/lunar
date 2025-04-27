@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_ufw
@@ -12,7 +12,7 @@
 #.
 
 audit_ufw () {
-  if [ "$os_name" = "Linux" ] && [ "$os_vendor" = "Ubuntu" ]; then
+  if [ "${os_name}" = "Linux" ] && [ "${os_vendor}" = "Ubuntu" ]; then
     verbose_message     "UFW"       "check"
     check_linux_package "install"   "ufw"
     check_linux_package "uninstall" "iptables-persistent"

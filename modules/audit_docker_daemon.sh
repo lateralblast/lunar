@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_docker_daemon
@@ -145,42 +145,42 @@
 #.
 
 audit_docker_daemon () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
-    if [ "$docker_bin" ]; then
+    if [ "${docker_bin}" ]; then
       verbose_message "Docker Daemon" "check"
       check_file="/etc/audit/audit.rules"
       for docker_file in /usr/bin/docker /var/lib/docker /etc/docker /etc/default/docker /etc/docker/daemon.json /usr/bin/docker-containerd /usr/bin/docker-runc; do
-        check_auditctl    "$docker_file" "docker_file"
-        check_append_file "$check_file"  "-w $docker_file -k docker" "hash"
+        check_auditctl    "${docker_file}" "docker_file"
+        check_append_file "${check_file}"  "-w ${docker_file} -k docker" "hash"
       done
-      check=$( command -v systemctl )
-      if [ "$check" ]; then
+      systemctl_check=$( command -v systemctl )
+      if [ "${systemctl_check}" ]; then
         for docker_service in docker.service docker.socket; do
-          check_auditctl "$docker_service" "docker_service"
-          docker_file=$( systemctl show -p FragmentPath $docker_service 2> /dev/null )
-          check_append_file "$check_file" "-w $docker_file -k docker" "hash"
-          check_file_perms  "$check_file" "0640" "root" "root"
+          check_auditctl "${docker_service}" "docker_service"
+          docker_file=$( systemctl show -p FragmentPath ${docker_service} 2> /dev/null )
+          check_append_file "${check_file}" "-w ${docker_file} -k docker" "hash"
+          check_file_perms  "${check_file}" "0640" "root" "root"
         done
       fi
       for check_file in /etc/docker /etc/docker/certs.d; do
-        check_file_perms $check_file 0750 root root
+        check_file_perms ${check_file} 0750 root root
       done
       if [ -e "/etc/docker/certs.d" ]; then
         file_list=$( find /etc/docker/certs.d/ -type f )
-        for check_file in $file_list; do
-          check_file_perms "$check_file" "440" "root" "root"
+        for check_file in ${file_list}; do
+          check_file_perms "${check_file}" "440" "root" "root"
         done
       fi
       check_file_perms /var/run/docker.sock 660 root docker
       for check_file in /etc/default/docker /etc/docker/daemon.json; do
-        check_file_perms "$check_file" "640" "root" "root"
+        check_file_perms "${check_file}" "640" "root" "root"
       done
       tlscert_file=""
       tlscacert_file=""
       tlskey_file=""
-      for check_file in $tlscert_file $tlscacert_file $tlskey_file; do
-        check_file_perms "$check_file" "400" "root" "root"
+      for check_file in ${tlscert_file} ${tlscacert_file} ${tlskey_file}; do
+        check_file_perms "${check_file}" "400" "root" "root"
       done
       check_dockerd     "unused"      "daemon" "insecure-registry"       ""
       check_dockerd     "unused"      "daemon" "storage-driver"          "aufs"
@@ -202,9 +202,9 @@ audit_docker_daemon () {
       check_dockerd     "used"        "daemon" "userland-proxy"          "false"
       check_dockerd     "used"        "daemon" "seccomp-profile"         ""
       check_dockerd     "unused"      "daemon" "experimental"            ""
-      if [ "$audit_mode" != 2 ]; then
+      if [ "${audit_mode}" != 2 ]; then
         check=$( docker swarm unlock-key 2> /dev/null )
-        if [ "$check" = "no unlock key is set" ]; then
+        if [ "${check}" = "no unlock key is set" ]; then
           increment_insecure "Docker swarm unlock is not set"
         else
           increment_secure   "Docker swarm unlock key is not set or swarm is not running"

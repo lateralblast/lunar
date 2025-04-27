@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_time_machine
@@ -12,10 +12,10 @@
 #.
 
 audit_time_machine () {
-  if [ "$os_name" = "Darwin" ]; then
-    if [ "$os_version" -ge 14 ]; then
+  if [ "${os_name}" = "Darwin" ]; then
+    if [ "${os_version}" -ge 14 ]; then
       verbose_message "iCloud Drive" "check"
-      if [ "$audit_mode" != 2 ]; then
+      if [ "${audit_mode}" != 2 ]; then
         check_osx_defaults_bool "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1"
       fi
     fi

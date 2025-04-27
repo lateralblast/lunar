@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_yum_conf
@@ -17,8 +17,8 @@
 #.
 
 audit_yum_conf () {
-  if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+  if [ "${os_name}" = "Linux" ]; then
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       verbose_message  "Yum Configuration" "check"
       check_file_value "is" "/etc/yum.conf" "gpgcheck" "eq" "1" "hash"
     fi

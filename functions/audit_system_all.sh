@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_system_all
@@ -33,7 +33,7 @@ audit_system_all () {
   full_audit_network_services
   full_audit_other_services
   full_audit_update_services
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     full_audit_osx_services
   fi
 }

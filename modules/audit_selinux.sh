@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_selinux
@@ -17,16 +17,16 @@
 #.
 
 audit_selinux () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "SELinux" "check"
     check_file_value "is" "/etc/selinux/config" "SELINUX"     "eq" "enforcing" "hash"
     check_file_value "is" "/etc/selinux/config" "SELINUXTYPE" "eq" "targeted"  "hash"
     check_file_perms "/etc/selinux/config"      "0400" "root" "root"
     for check_file in /etc/grub.conf /boot/grub/grub.cfg; do
-      if [ -e "$check_file" ]; then
-        check_file_perms "$check_file".     "0400"      "root" "root"
-        check_file_value "is" "$check_file" "selinux"   "eq"   "1" "hash"
-        check_file_value "is" "$check_file" "enforcing" "eq"   "1" "hash"
+      if [ -e "${check_file}" ]; then
+        check_file_perms "${check_file}".     "0400"      "root" "root"
+        check_file_value "is" "${check_file}" "selinux"   "eq"   "1" "hash"
+        check_file_value "is" "${check_file}" "enforcing" "eq"   "1" "hash"
       fi
     done
     check_linux_package "uninstall" "setroubleshoot"

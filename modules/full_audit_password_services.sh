@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # full_audit_password_services
@@ -22,7 +22,7 @@ full_audit_password_services () {
   audit_login_delay
   audit_pass_req
   audit_pam_wheel
-  audit_password_hashing "$password_hashing"
+  audit_password_hashing "${password_hashing}"
   audit_pam_deny
   audit_crypt_policy
   audit_account_lockout

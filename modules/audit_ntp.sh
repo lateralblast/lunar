@@ -2,8 +2,8 @@
 
 # -> Needs fixing
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_ntp
@@ -24,48 +24,48 @@
 #.
 
 audit_ntp () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "VMkernel" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Network Time Protocol" "check"
-    if [ "$os_name" = "SunOS" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/etc/inet/ntp.conf" "server" "space" "pool.ntp.org" "hash"
-      if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+      if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/network/ntp4:default" "enabled"
       fi
     fi
-    if [ "$os_name" = "Darwin" ]; then
+    if [ "${os_name}" = "Darwin" ]; then
       check_file_value   "is" "/private/etc/hostconfig" "TIMESYNC" "eq" "-YES-" "hash"
       check_launchctl_service "org.ntp.ntpd" "on"
       #check_file="/private/etc/ntp.conf"
-      if [ "$long_os_version" -ge 1009 ]; then
+      if [ "${long_os_version}" -ge 1009 ]; then
         check_file_value      "is" "/etc/ntp-restrict.conf" "restrict" "space" "lo interface ignore wildcard interface listen lo" "hash"
         check_osx_systemsetup "getusingnetworktime" "on"
-        timeserver="$country_suffix.pool.ntp.org"
-        check_osx_systemsetup "getnetworktimeserver" "$timeserver"
+        timeserver="${country_suffix}.pool.ntp.org"
+        check_osx_systemsetup "getnetworktimeserver" "${timeserver}"
       fi
     fi
-    if [ "$os_name" = "VMkernel" ]; then
+    if [ "${os_name}" = "VMkernel" ]; then
       check_linux_service "ntpd" "on"
       check_append_file   "/etc/ntp.conf" "restrict 127.0.0.1" "hash"
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/ntp.conf"
       log_file="ntp.log"
       do_chrony=0
-      if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" -ge 7 ]; then
+      if [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "CentOS" ] && [ "${os_version}" -ge 7 ]; then
         do_chrony=1
       fi
-      if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
+      if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 16 ]; then
         do_chrony=1
       fi
-      if [ "$os_vendor" = "Amazon" ]; then
+      if [ "${os_vendor}" = "Amazon" ]; then
         do_chrony=1
       fi
-      if [ "$do_chrony" -eq 1 ]; then
+      if [ "${do_chrony}" -eq 1 ]; then
         check_linux_package "install" "chrony"
         check_file_value    "is"      "/etc/sysconfig/chronyd" "OPTIONS" "eq" "\"-u chrony\"" "hash"
         for server_number in $( seq 0 3 ); do
-          ntp_server="$server_number.$country_suffix.pool.ntp.org"
-          check_file_value "is" "/etc/chrony/chrony.conf" "pool" "$ntp_server iburst" "space" "hash"
+          ntp_server="${server_number}.${country_suffix}.pool.ntp.org"
+          check_file_value "is" "/etc/chrony/chrony.conf" "pool" "${ntp_server} iburst" "space" "hash"
         done
       else
         check_linux_package "install" "ntp"
@@ -78,8 +78,8 @@ audit_ntp () {
           check_linux_service "ntp" "on"
         fi
         for server_number in $( seq 0 3 ); do
-          ntp_server="$server_number.$country_suffix.pool.ntp.org"
-          check_file_value "is" "/etc/ntp.conf" "server" "space" "$ntp_server" "hash"
+          ntp_server="${server_number}.${country_suffix}.pool.ntp.org"
+          check_file_value "is" "/etc/ntp.conf" "server" "space" "${ntp_server}" "hash"
         done
       fi
     fi

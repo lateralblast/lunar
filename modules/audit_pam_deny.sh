@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_pam_deny
@@ -13,10 +13,10 @@
 #.
 
 audit_pam_deny () {
-  if [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
      verbose_message "PAM Deny Weak Authentication Services" "check"
-    if [ "$os_name" = "FreeBSD" ]; then
-      if [ "$os_version" < 5 ]; then
+    if [ "${os_name}" = "FreeBSD" ]; then
+      if [ "${os_version}" -lt 5 ]; then
         check_append_file "/etc/pam.conf" "rexecd\tauth\trequired\tpam_deny.so" "hash"
         check_append_file "/etc/pam.conf" "rsh\tauth\trequired\tpam_deny.so"    "hash"
       else
@@ -25,7 +25,7 @@ audit_pam_deny () {
         # sed -i .preCIS -e 's/nologin/deny/g' /etc/pam.d/rsh /etc/pam.d/rexecd
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_append_file "/etc/pam.d/sshd" "auth\trequisite\tpam_deny.so" "hash"
     fi
   fi

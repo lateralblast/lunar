@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2009
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_kubernetes_controller
@@ -20,17 +21,17 @@
 #.
 
 audit_kubernetes_controller () {
-  if [ "$os_name" = "Linux" ] || [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kube-controller-manager" | grep -v grep )
-    if [ "$daemon_check" ]; then
+    if [ "${daemon_check}" ]; then
       verbose_message "Kubernetes Controller" "check"
       check_file="/etc/kubernetes/manifests/kube-controller-manager.yaml"
-      if [ -f "$check_file" ]; then
-        check_file_value "is"  "$check_file" "--terminated-pod-gc-threshold"      "eq" "10"   "hash"
-        check_file_value "is"  "$check_file" "--use-service-account-credentials"  "eq" "true" "hash"
-        check_file_value "set" "$check_file" "--service-account-private-key-file" "eq" "na"   "hash"
-        check_file_value "set" "$check_file" "--root-ca-file"  "eq" "na" "hash"
-        check_file_value "is"  "$check_file" "--feature-gates" "eq" "RotateKubeletServerCertificate=true" "hash" # yes
+      if [ -f "${check_file}" ]; then
+        check_file_value "is"  "${check_file}" "--terminated-pod-gc-threshold"      "eq" "10"   "hash"
+        check_file_value "is"  "${check_file}" "--use-service-account-credentials"  "eq" "true" "hash"
+        check_file_value "set" "${check_file}" "--service-account-private-key-file" "eq" "na"   "hash"
+        check_file_value "set" "${check_file}" "--root-ca-file"  "eq" "na" "hash"
+        check_file_value "is"  "${check_file}" "--feature-gates" "eq" "RotateKubeletServerCertificate=true" "hash" # yes
       fi
     fi
   fi

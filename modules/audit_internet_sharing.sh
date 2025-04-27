@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_internet_sharing
@@ -13,7 +13,7 @@
 #.
 
 audit_internet_sharing () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Internet Sharing" "check"
     check_osx_defaults_dict "/Library/Preferences/SystemConfiguration/com.apple.nat" "NAT" "Enabled" "dict" "0" "int"
     check_launchctl_service "com.apple.InternetSharing" "off"

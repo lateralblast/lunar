@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_power_management
@@ -12,51 +12,51 @@
 #.
 
 audit_power_management () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Power Management" "check"
-    if [ "$os_name" = "AIX" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       check_itab "pmd" "off"
     fi
-    if [ "$os_name" = "SunOS" ]; then
-      if [ "$os_version" = "10" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
+      if [ "${os_version}" = "10" ]; then
         check_file_value "is" "/etc/default/power" "PMCHANGEPERM"  "eq" "-" "hash"
         check_file_value "is" "/etc/default/power" "CPRCHANGEPERM" "eq" "-" "hash"
       fi
-      if [ "$os_version" = "11" ]; then
+      if [ "${os_version}" = "11" ]; then
         poweradm_test=$( poweradm list | grep suspend | awk '{print $2}' | cut -f2 -d"=" )
         log_file="poweradm.log"
-        if [ "$audit_mode" = 2 ]; then
-          restore_file="$restore_dir/#log_file"
-          if [ -f "$log_file" ]; then
-            restore_value=$( cat "$restore_file" )
-            if [ "$poweradm_test" != "$restore_value" ]; then
-              verbose_message "Power suspend to \"$restore_value\"" "restore"
-              eval "poweradm set suspend-enable=$restore_value"
+        if [ "${audit_mode}" = 2 ]; then
+          restore_file="${restore_dir}/#log_file"
+          if [ -f "${log_file}" ]; then
+            restore_value=$( cat "${restore_file}" )
+            if [ "${poweradm_test}" != "${restore_value}" ]; then
+              verbose_message "Power suspend to \"${restore_value}\"" "restore"
+              eval "poweradm set suspend-enable=${restore_value}"
               eval "poweradm update"
             fi
           fi
         fi
-        if [ "$poweradm_test" != "false" ]; then
-          if [ "$audit_mode" = 1 ]; then
+        if [ "${poweradm_test}" != "false" ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_insecure "Power suspend enabled"
             verbose_message    "poweradm set suspend-enable=false" "fix"
             verbose_message    "poweradm update"                   "fix"
           fi
-          if [ "$audit_mode" = 0 ]; then
-            backup_file="$work_dir/$log_file"
+          if [ "${audit_mode}" = 0 ]; then
+            backup_file="${work_dir}/${log_file}"
             verbose_message "Power suspend to disabled" "set"
-            echo "$poweradm_test" > "$backup_file"
+            echo "${poweradm_test}" > "${backup_file}"
             eval "poweradm set suspend-enable=false"
             eval "poweradm update"
           fi
         else
-          if [ "$audit_mode" = 1 ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_secure "Power suspend disabled"
           fi
         fi
       fi
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_linux_service "apmd" "off"
     fi
   fi

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_password_strength
@@ -15,9 +15,9 @@
 #.
 
 audit_password_strength () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Darwin" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Strong Password Creation Policies" "check"
-    if  [ "$os_name" = "SunOS" ]; then
+    if  [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/etc/default/passwd" "PASSLENGTH"   "eq" "8"    "hash"
       check_file_value "is" "/etc/default/passwd" "NAMECHECK"    "eq" "YES"  "hash"
       check_file_value "is" "/etc/default/passwd" "HISTORY"      "eq" "10"   "hash"
@@ -32,14 +32,14 @@ audit_password_strength () {
       check_file_value "is" "/etc/default/passwd" "DICTIONDBDIR" "eq" "/var/passwd"               "hash"
       check_file_value "is" "/etc/default/passwd" "DICTIONLIST"  "eq" "/usr/share/lib/dict/words" "hash"
     fi
-    if [ "$os_name" = "Darwin" ]; then
+    if [ "${os_name}" = "Darwin" ]; then
       check_pwpolicy "requiresAlpha" "1"
 #      check_pwpolicy "minimumAlphaCharacters" "1"
       check_pwpolicy "requiresSymbol" "1"
 #      check_pwpolicy "minimumSymbolCharacters" "1"
       check_pwpolicy "RequiresNumeric" "1"
 #      check_pwpolicy "minimumNumericCharacters" "1"
-      if [ "$long_os_version" -ge 1014 ]; then
+      if [ "${long_os_version}" -ge 1014 ]; then
         check_pwpolicy "requiresMixedCase" "1"
         check_pwpolicy "usingHistory"      "15"
       fi
@@ -49,7 +49,7 @@ audit_password_strength () {
       check_pwpolicy "minutesUntilFailedLoginReset"  "0"
       check_pwpolicy "policyAttributeMaximumFailedAuthentications" "15"
     fi
-    if [ "$os_name" = "FreeBSD" ]; then
+    if [ "${os_name}" = "FreeBSD" ]; then
       check_file_value "is" "/etc/login.conf" "passwd_format" "eq" "blf" "hash"
     fi
   fi

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_smbpasswd_perms
@@ -12,7 +12,7 @@
 #.
 
 audit_smbpasswd_perms () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "SMB Password File" "check"
     check_file_perms "/etc/sfw/private/smbpasswd" "0600" "root" "root"
   fi

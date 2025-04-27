@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_postfix_daemon
@@ -13,9 +13,9 @@
 #.
 
 audit_postfix_daemon () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Postfix Daemon" "check"
-    if [ "$os_vendor" = "SuSE" ]; then
+    if [ "${os_vendor}" = "SuSE" ]; then
       check_file_value "is" "/etc/sysconfig/mail"  "SMTPD_LISTEN_REMOTE" "eq" "no"        "hash"
     fi
     check_file_value   "is" "/etc/postfix/main.cf" "inet_interfaces"     "eq" "localhost" "hash"

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_wake_on_lan
@@ -12,7 +12,7 @@
 #.
 
 audit_wake_on_lan() {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Wake on Lan" "check"
     check_pmset     "womp" "off"
   fi

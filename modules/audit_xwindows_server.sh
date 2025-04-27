@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_xwindows_server
@@ -13,11 +13,11 @@
 #.
 
 audit_xwindows_server () {
-  if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+  if [ "${os_name}" = "Linux" ]; then
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       verbose_message "X Windows Server"
       no_rego=$( yum grouplist 2>&1 | grep "not registered" )
-      if [ -z "$no_rego" ]; then
+      if [ -z "${no_rego}" ]; then
         check_linux_package_with_group "uninstalled" "X Windows Server" "group"
       else
         verbose_message "Warning:   System not registered with a repository"

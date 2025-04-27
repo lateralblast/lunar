@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_root_path
@@ -21,37 +21,39 @@
 #.
 
 audit_root_path () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Root PATH Environment Integrity" "check"
-    if [ "$audit_mode" != 2 ]; then
-      if [ "$audit_mode" = 1 ]; then
-        if [ "$( echo $PATH | grep :: )" != "" ]; then
+    if [ "${audit_mode}" != 2 ]; then
+      if [ "${audit_mode}" = 1 ]; then
+        path_check=$( echo "$PATH" | grep "::" )
+        if [ "${path_check}" != "" ]; then
           increment_insecure "Empty directory in PATH"
         else
           increment_secure "No empty directory in PATH"
         fi
-        if [ "$( echo $PATH | grep :$ )"  != "" ]; then
+        path_check=$( echo "$PATH" | grep ":$" )
+        if [ "${path_check}"  != "" ]; then
           increment_insecure "Trailing : in PATH"
         else
           increment_secure "No trailing : in PATH"
         fi
         dir_list=$( echo "$PATH" | sed -e 's/::/:/' -e 's/:$//' -e 's/:/ /g' )
-        for dir_name in $dir_list$; do
-          if [ "$dir_name" = "." ]; then
+        for dir_name in ${dir_list}$; do
+          if [ "${dir_name}" = "." ]; then
             increment_insecure "PATH contains ."
           fi
-          if [ -d "$dir_name" ]; then
-            group_test=$(find $dir_name -maxdepth 1 -type f -writable \( -perm -g+w \)) 
-            if [ -n "$group_test" ]; then
-              increment_insecure "Group write permissions set on directory \"$dir_name\""
+          if [ -d "${dir_name}" ]; then
+            groupackage_test=$(find "${dir_name}" -maxdepth 1 -type f -writable \( -perm -g+w \)) 
+            if [ -n "${groupackage_test}" ]; then
+              increment_insecure "Group write permissions set on directory \"${dir_name}\""
             else
-              increment_secure   "Group write permission not set on directory \"$dir_name\""
+              increment_secure   "Group write permission not set on directory \"${dir_name}\""
             fi
-            other_test=$(find $dir_name -maxdepth 1 -type f -writable \( -perm -o+w \)) 
-            if [ -n "$other_test" ]; then
-              increment_insecure "Other write permissions set on directory \"$dir_name\""
+            other_test=$(find "${dir_name}" -maxdepth 1 -type f -writable \( -perm -o+w \)) 
+            if [ -n "${other_test}" ]; then
+              increment_insecure "Other write permissions set on directory \"${dir_name}\""
             else
-              increment_secure   "Other write permission not set on directory \"$dir_name\""
+              increment_secure   "Other write permission not set on directory \"${dir_name}\""
             fi
           fi
         done

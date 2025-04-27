@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_execshield
@@ -20,16 +20,16 @@
 #.
 
 audit_execshield () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "XD/NS Support" "check"
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      if [ "$os_version" -gt 4 ]; then
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
+      if [ "${os_version}" -gt 4 ]; then
         check_linux_package "install" "kernel-PAE"
         check_file_value    "is" "/etc/sysctl.conf" "kernel.exec-shield" "eq" "1" "hash"
         check_file_value    "is" "/etc/sysctl.conf" "fs.suid.dumpable"   "eq" "0" "hash"
       fi
     else
-      if [ "$os_vendor" = "SuSE" ]; then
+      if [ "${os_vendor}" = "SuSE" ]; then
         check_linux_package "install" "kernel-pae"
       fi
     fi

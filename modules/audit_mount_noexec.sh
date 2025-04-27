@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_mount_noexec
@@ -16,39 +16,39 @@
 #.
 
 audit_mount_noexec () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "No-exec on /tmp" "check"
     check_file="/etc/fstab"
-    if [ -e "$check_file" ]; then
+    if [ -e "${check_file}" ]; then
       verbose_message "Temp File Systems mounted with noexec" "check"
-      if [ "$audit_mode" != "2" ]; then
-        nodev_check=$( grep -v "^#" $check_file | grep "tmpfs" | grep -v noexec | head -1 | wc -l | sed "s/ //g" )
+      if [ "${audit_mode}" != "2" ]; then
+        nodev_check=$( grep -v "^#" ${check_file} | grep "tmpfs" | grep -v noexec | head -1 | wc -l | sed "s/ //g" )
         if [ "$nodev_check" = 1 ]; then
-          if [ "$audit_mode" = 1 ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_insecure "Found tmpfs filesystems that should be mounted noexec"
-            verbose_message    "cat $check_file | awk '( \$3 ~ /^tmpfs$/ ) { \$4 = \$4 \",noexec\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > $temp_file" "fix"
-            verbose_message    "cat $temp_file > $check_file" "fix"
-            verbose_message    "rm $temp_file" "fix"
+            verbose_message    "cat ${check_file} | awk '( \$3 ~ /^tmpfs$/ ) { \$4 = \$4 \",noexec\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
+            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
+            verbose_message    "rm ${temp_file}" "fix"
           fi
-          if [ "$audit_mode" = 0 ]; then
+          if [ "${audit_mode}" = 0 ]; then
             verbose_message "Setting:   Setting noexec on tmpfs"
-            backup_file $check_file
-            awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 ",noexec" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' < "$check_file" > "$temp_file"
-            cat "$temp_file" > "$check_file"
-            if [ -f "$temp_file" ]; then
-              rm "$temp_file"
+            backup_file ${check_file}
+            awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 ",noexec" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' < "${check_file}" > "${temp_file}"
+            cat "${temp_file}" > "${check_file}"
+            if [ -f "${temp_file}" ]; then
+              rm "${temp_file}"
             fi
           fi
         else
-          if [ "$audit_mode" = 1 ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_secure "No filesystem that should be mounted with noexec"
           fi
-          if [ "$audit_mode" = 2 ]; then
-            restore_file "$check_file" "$restore_dir"
+          if [ "${audit_mode}" = 2 ]; then
+            restore_file "${check_file}" "${restore_dir}"
           fi
         fi
       fi
-      check_file_perms "$check_file" "0644" "root" "root"
+      check_file_perms "${check_file}" "0644" "root" "root"
     fi
   fi
 }

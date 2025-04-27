@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_system_auth
@@ -16,16 +16,16 @@
 #.
 
 audit_system_auth () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "PAM Authentication" "check"
     check=0
-    if [ "$os_vendor" = "Amazon" ] && [ "$os_version" = "2016" ]; then
+    if [ "${os_vendor}" = "Amazon" ] && [ "${os_version}" = "2016" ]; then
       check=1
     fi
-    if [ "$os_vendor" = "Ubuntu" ] && [ "$os_version" -ge 16 ]; then
+    if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 16 ]; then
       check=1
     fi
-    if [ "$check" -eq 1 ]; then
+    if [ "${check}" -eq 1 ]; then
       check_file_value "is" "/etc/security/pwquality.conf" "minlen"  "eq" "14" "hash" 
       check_file_value "is" "/etc/security/pwquality.conf" "dcredit" "eq" "-1" "hash" 
       check_file_value "is" "/etc/security/pwquality.conf" "ocredit" "eq" "-1" "hash" 
@@ -34,9 +34,9 @@ audit_system_auth () {
       audit_system_auth_nullok
       audit_system_auth_unlock_time      "auth"     "unlock_time" "900"
       audit_system_auth_password_history "account"  "remember"    "5"
-      audit_system_auth_password_hashing "password" "$password_hashing"
+      audit_system_auth_password_hashing "password" "${password_hashing}"
     else
-      if [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "CentOS" ] && [ "$os_version" = "7" ]; then
+      if [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "CentOS" ] && [ "${os_version}" = "7" ]; then
         check_file_value "is" "/etc/security/pwquality.conf" "minlen"  "eq" "14" "hash"  
         check_file_value "is" "/etc/security/pwquality.conf" "dcredit" "eq" "-1" "hash"  
         check_file_value "is" "/etc/security/pwquality.conf" "ocredit" "eq" "-1" "hash"  
@@ -45,9 +45,9 @@ audit_system_auth () {
         audit_system_auth_nullok
         audit_system_auth_unlock_time      "auth"     "unlock_time" "900"
         audit_system_auth_password_history "account"  "remember"    "5"
-        audit_system_auth_password_hashing "password" "$password_hashing"
+        audit_system_auth_password_hashing "password" "${password_hashing}"
       else
-        if [ "$audit_mode" != 2 ]; then
+        if [ "${audit_mode}" != 2 ]; then
           audit_system_auth_nullok
           audit_system_auth_password_history  "account"  "remember"   "10"
           audit_system_auth_password_policy   "password" "minlen"     "9"

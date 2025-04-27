@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_routing_params
@@ -26,8 +26,8 @@
 #.
 
 audit_routing_params () {
-  if [ "$os_name" = "SunOS" ]; then
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
+    if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "IP Routing" "check"
       check_command_value "routeadm" "ipv4-routing"    "disabled"
       check_command_value "routeadm" "ipv6-routing"    "disabled"
@@ -36,7 +36,7 @@ audit_routing_params () {
       check_command_value "routeadm" "ipv6-forwarding" "disabled"
       check_file_exists   "/etc/notrouter" "yes"
     fi
-    if [ "$os_version" = "11" ]; then
+    if [ "${os_version}" = "11" ]; then
       verbose_message   "IP Routing" "check"
       audit_ipadm_value "_forward_src_routed" "ipv4" "0"
       audit_ipadm_value "_forward_src_routed" "ipv6" "0"

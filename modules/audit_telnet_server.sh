@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_telnet_server
@@ -16,8 +16,8 @@
 #.
 
 audit_telnet_server () {
-  if [ "$os_name" = "Linux" ]; then
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_name" = "Amazon" ]; then
+  if [ "${os_name}" = "Linux" ]; then
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_name}" = "Amazon" ]; then
       verbose_message     "Telnet Server Daemon" "check"
       check_linux_service "telnet.socket"        "off"
       check_linux_package "uninstall"            "telnet-server"

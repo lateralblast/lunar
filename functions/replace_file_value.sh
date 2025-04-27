@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # replace_file_value
@@ -21,55 +21,55 @@
 replace_file_value () {
   check_file="$1"
   check_value="$2"
-  new_check_value="$check_value"
+  new_check_value="${check_value}"
   correct_value="$3"
-  new_correct_value="$correct_value"
+  new_correct_value="${correct_value}"
   position="$4"
-  if [ "$position" = "start" ]; then
+  if [ "${position}" = "start" ]; then
     position="^"
   else
     position=""
   fi
-  string_check=$( expr "$check_value" : "\/" )
-  if [ "$string_check" = 1 ]; then
-    new_check_value=$( echo "$check_value" |sed 's,/,\\\/,g' )
+  string_check=$( expr "${check_value}" : "\/" )
+  if [ "${string_check}" = 1 ]; then
+    new_check_value=$( echo "${check_value}" |sed 's,/,\\\/,g' )
   fi
-  string_check=$( expr "$correct_value" : "\/" )
-  if [ "$string_check" = 1 ]; then
-    new_correct_value=$( echo "$correct_value" |sed 's,/,\\\/,g' )
+  string_check=$( expr "${correct_value}" : "\/" )
+  if [ "${string_check}" = 1 ]; then
+    new_correct_value=$( echo "${correct_value}" |sed 's,/,\\\/,g' )
   fi
-  new_check_value="$position$new_check_value"
-  if [ "$audit_mode" != 2 ]; then
-    string="File \"$check_file\" contains \"$correct_value\" rather than \"$check_value\""
-    verbose_message "$string" "check"
+  new_check_value="${position}${new_check_value}"
+  if [ "${audit_mode}" != 2 ]; then
+    string="File \"${check_file}\" contains \"${correct_value}\" rather than \"${check_value}\""
+    verbose_message "${string}" "check"
   fi
-  if [ -f "$check_file" ]; then
-    check_dfs=$( grep -c "$new_check_value" < "$check_file" | sed "s/ //g" )
+  if [ -f "${check_file}" ]; then
+    check_dfs=$( grep -c "${new_check_value}" < "${check_file}" | sed "s/ //g" )
   fi
-  if [ "$check_dfs" != 0 ]; then
-    if [ "$audit_mode" != 2 ]; then
-      if [ "$ansible" = 1 ]; then
+  if [ "${check_dfs}" != 0 ]; then
+    if [ "${audit_mode}" != 2 ]; then
+      if [ "${ansible}" = 1 ]; then
         echo ""
-        echo "- name: Checking $string"
+        echo "- name: Checking ${string}"
         echo "  lineinfile:"
-        echo "    path: $check_file"
-        echo "    regexp: '$new_check_value"
-        echo "    replace: '$new_correct_value"
+        echo "    path: ${check_file}"
+        echo "    regexp: '${new_check_value}"
+        echo "    replace: '${new_correct_value}"
         echo ""
       fi
-      increment_insecure "File \"$check_file\" contains \"$check_value\" rather than \"$correct_value\""
-      backup_file        "$check_file"
-      lockdown_command   "sed -e \"s/$new_check_value/$new_correct_value/\" < $check_file > $temp_file ; cp $temp_file $check_file ; rm $temp_file" "Setting:   Share entries in $check_file to be secure"
-      if [ "$os_version" != "11" ]; then
-        pkgchk -f -n -p "$check_file" 2> /dev/null
+      increment_insecure "File \"${check_file}\" contains \"${check_value}\" rather than \"${correct_value}\""
+      backup_file        "${check_file}"
+      lockdown_command   "sed -e \"s/${new_check_value}/${new_correct_value}/\" < ${check_file} > ${temp_file} ; cp ${temp_file} ${check_file} ; rm ${temp_file}" "Setting:   Share entries in ${check_file} to be secure"
+      if [ "${os_version}" != "11" ]; then
+        pkgchk -f -n -p "${check_file}" 2> /dev/null
       else
-        pkg_info=$( pkg search "$check_file" |grep pkg |awk '{print $4}' )
-        pkg fix "$pkg_info"
+        pkg_info=$( pkg search "${check_file}" |grep pkg |awk '{print $4}' )
+        pkg fix "${pkg_info}"
       fi
     else
-      restore_file "$check_file" "$restore_dir"
+      restore_file "${check_file}" "${restore_dir}"
     fi
   else
-    increment_secure "File $check_file contains \"$correct_value\" rather than \"$check_value\""
+    increment_secure "File ${check_file} contains \"${correct_value}\" rather than \"${check_value}\""
   fi
 }

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_prelink
@@ -19,19 +19,19 @@
 #.
 
 audit_prelink () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Prelinking" "check"
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ] || [ "$os_vendor" = "Amazon" ]; then
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       check_file="/etc/sysconfig/prelink"
     else
       check_file="/etc/default/prelink"
     fi
-    if [ -f "$check_file" ]; then
-      prelink_check=$( grep PRELINKING "$check_file" | cut -f2 -d= | sed 's/ //g' )
+    if [ -f "${check_file}" ]; then
+      prelink_check=$( grep PRELINKING "${check_file}" | cut -f2 -d= | sed 's/ //g' )
     else
       prelink_check="no"
     fi
-    if [ "$prelink_check" = "yes" ]; then
+    if [ "${prelink_check}" = "yes" ]; then
       lockdown_command "prelink -ua" "Prelink to disabled"
     fi
     check_linux_package "uninstall" "prelink"

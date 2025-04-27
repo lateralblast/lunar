@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_cups
@@ -18,10 +18,10 @@
 #.
 
 audit_cups () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Printing Services" "check"
     for service_name in cups cups-lpd cupsrenice; do
-      check_linux_service "$service_name" "off"
+      check_linux_service "${service_name}" "off"
     done
     check_file_perms "/etc/init.d/cups" "0744" "root" "root"
     check_file_perms "/etc/cups/client.conf" "0644" "root" "lp"

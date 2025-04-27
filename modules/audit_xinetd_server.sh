@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_xinetd_server
@@ -14,12 +14,12 @@
 #.
 
 audit_xinetd_server () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     service_name="xinetd"
-    check_linux_service "$service_name" "off"
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
+    check_linux_service "${service_name}" "off"
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       verbose_message     "Xinetd Server Daemon" "check"
-      check_linux_package "uninstall" "$service_name"
+      check_linux_package "uninstall" "${service_name}"
     fi
   fi
 }

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_sys_suspend
@@ -10,7 +10,7 @@
 #.
 
 audit_sys_suspend () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "System Suspend" "check"
     check_file_value "is" "/etc/default/sys-suspend" "PERMS" "eq" "-" "hash"
   fi

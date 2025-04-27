@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_account_switching
@@ -14,16 +14,16 @@
 #.
 
 audit_account_switching () {
-  if [ "$os_name" = "Darwin" ]; then
-    if [ "$long_os_version" -ge 1014 ]; then
+  if [ "${os_name}" = "Darwin" ]; then
+    if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Administrator Account Login to Another User Session" "check"
-      if [ "$audit_mode" != 2 ]; then
-        value="0"
-        check_value=$( /usr/bin/sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui' )
-        if [ "$check_value" = "$value" ]; then
-          increment_secure   "Administrator Account Login to Another User Session is set to \"$value\""
+      if [ "${audit_mode}" != 2 ]; then
+        correct_value="0"
+        current_value=$( /usr/bin/sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui' )
+        if [ "${current_value}" = "${correct_value}" ]; then
+          increment_secure   "Administrator Account Login to Another User Session is set to \"${correct_value}\""
         else
-          increment_insecure "Administrator Account Login to Another User Session is not set to \"$value\""
+          increment_insecure "Administrator Account Login to Another User Session is not set to \"${correct_value}\""
         fi
       fi
     fi

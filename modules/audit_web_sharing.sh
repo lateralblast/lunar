@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_web_sharing
@@ -14,7 +14,7 @@
 #.
 
 audit_web_sharing () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message   "Web sharing" "check"
     check_file_value "is" "/etc/apache2/httpd.conf" "ServerTokens"    "space" "Prod"     "hash"
     check_file_value "is" "/etc/apache2/httpd.conf" "ServerSignature" "space" "Off"      "hash"

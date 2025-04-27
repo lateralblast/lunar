@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_login_delay
@@ -11,7 +11,7 @@
 #.
 
 audit_login_delay () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "Delay between Failed Login Attempts" "check"
     check_file_value "is" "/etc/default/login" "SLEEPTIME" "eq" "4" "hash"
   fi

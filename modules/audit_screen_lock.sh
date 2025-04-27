@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_screen_lock
@@ -16,13 +16,13 @@
 #.
 
 audit_screen_lock () {
-  if [ "$os_name" = "Darwin" ]; then
-    if [ "$long_os_version" -ge 1014 ]; then
+  if [ "${os_name}" = "Darwin" ]; then
+    if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Screen Idle Time" "check"
-      if [ "$audit_mode" != 2 ]; then
+      if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
-        for user_name in $user_list; do
-          check_osx_defaults_user "com.apple.screensaver" "idleTime" "600" "int" "currentHost" "$user_name"
+        for user_name in ${user_list}; do
+          check_osx_defaults_user "com.apple.screensaver" "idleTime" "600" "int" "currentHost" "${user_name}"
         done
       fi
     fi
@@ -30,26 +30,26 @@ audit_screen_lock () {
     check_osx_defaults_host "com.apple.screensaver"  "askForPassword" "1"   "int"
     check_osx_defaults_host "com.apple.screensaver"  "idleTime"       "900" "int"
     check_append_file       "/etc/pam.d/screensaver" "account    required     pam_group.so no_warn group=admin,wheel fail_safe" "hash"
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       if [ -f "$HOME/Library/Preferences/com.apple.dock" ]; then
-        screen_test=$( defaults read ~/Library/Preferences/com.apple.dock | grep corner | grep 1 | wc -l | sed "s/ //g" )
+        screen_test=$( defaults read ~/Library/Preferences/com.apple.dock |grep corner |grep -c 1 |sed "s/ //g" )
         if [ "$screen_test" = "1" ]; then
-          if [ "$audit_mode" = 1 ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_insecure "Screensaver disable hot corner is enabled"
           fi
-          if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
+          if [ "${audit_mode}" = 1 ] || [ "${audit_mode}" = 0 ]; then
             verbose_message "Open System Preferences" "fix"
             verbose_message "Mission Control" "fix"
             verbose_message "Hot Corners" "fix"
             verbose_message "Remove any corners which are set to Disable Screen Saver" "fix"
           fi
         else
-          if [ "$audit_mode" = 1 ]; then
+          if [ "${audit_mode}" = 1 ]; then
             increment_secure "No screensaver disable hot corners enabled"
           fi
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_secure "No screensaver disable hot corners enabled"
         fi
       fi

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_rpc_bind
@@ -12,12 +12,12 @@
 #.
 
 audit_rpc_bind () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message "RPC Bind" check
-    if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+    if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       audit_svccfg_value "svc:/network/rpc/bind" "config/enable_tcpwrappers" "true"
     fi
-    if [ "$os_version" = "11" ]; then
+    if [ "${os_version}" = "11" ]; then
       check_sunos_service "svc:/network/rpc/bind" "disabled"
     fi
   fi

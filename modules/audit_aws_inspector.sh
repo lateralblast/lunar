@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_aws_inspector
@@ -15,24 +15,24 @@ audit_aws_inspector () {
   # check for templates
   verbose_message "Inspector" "check"
   templates=$( aws inspector list-assessment-templates 2> /dev/null --output text )
-  if [ -n "$templates" ]; then
+  if [ -n "${templates}" ]; then
     # check for subscriptions to templates
-    check=$( aws inspector list-event-subscriptions --region "$aws_region" --query subscriptions --output text )
-    if [ "$check" ]; then
+    check=$( aws inspector list-event-subscriptions --region "${aws_region}" --query subscriptions --output text )
+    if [ "${check}" ]; then
       increment_secure   "Inspectors have subscriptions"
     else
       increment_insecure "Inspectors do not have subscriptions"
     fi
-    for template in $templates; do
-      names=$( aws inspector describe-assessment-templates --region "$aws_region" --assessment-template-arns "$template" --query 'assessmentTemplates[].name' --output text )
-      for name in $names; do
-        instances=$( aws ec2 describe-instances --region "$aws_region" --query 'Reservations[].Instances[].InstanceId' --output text )
-        for instance in $instances; do
-          check=$( aws ec2 describe-instances --region "$aws_region" --instance-id "$instance" --query 'Reservations[].Instances[].Tags' | grep "$name" )
-          if [ -n "$check" ]; then
-            increment_secure   "Instance \"$instance\" has an inspector tag"
+    for template in ${templates}; do
+      names=$( aws inspector describe-assessment-templates --region "${aws_region}" --assessment-template-arns "${template}" --query 'assessmentTemplates[].name' --output text )
+      for name in ${name}s; do
+        instances=$( aws ec2 describe-instances --region "${aws_region}" --query 'Reservations[].Instances[].InstanceId' --output text )
+        for instance in ${instances}; do
+          check=$( aws ec2 describe-instances --region "${aws_region}" --instance-id "${instance}" --query 'Reservations[].Instances[].Tags' | grep "${name}" )
+          if [ -n "${check}" ]; then
+            increment_secure   "Instance \"${instance}\" has an inspector tag"
           else
-            increment_insecure "Instance \"$instance\" does not have an inspector tag"
+            increment_insecure "Instance \"${instance}\" does not have an inspector tag"
           fi
         done
       done

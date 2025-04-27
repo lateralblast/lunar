@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # check_command_output
@@ -10,82 +10,82 @@
 #.
 
 check_command_output () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     command_name=$1
-    if [ "$command_name" = "getcond" ]; then
+    if [ "${command_name}" = "getcond" ]; then
       get_command="auditconfig -getcond |cut -f2 -d'=' |sed 's/ //g'"
     fi
-    if [ "$command_name" = "getpolicy" ]; then
+    if [ "${command_name}" = "getpolicy" ]; then
       get_command="auditconfig -getpolicy |head -1 |cut -f2 -d'=' |sed 's/ //g'"
       correct_value="argv,cnt,zonename"
-      r_command="auditconfig -setpolicy"
+      audit_command="auditconfig -setpolicy"
     fi
-    if [ "$command_name" = "getnaflages" ]; then
+    if [ "${command_name}" = "getnaflages" ]; then
       get_command="auditconfig -getpolicy |head -1 |cut -f2 -d'=' |sed 's/ //g' |cut -f1 -d'('"
       correct_value="lo"
-      r_command="auditconfig -setnaflags"
+      audit_command="auditconfig -setnaflags"
     fi
-    if [ "$command_name" = "getflages" ]; then
+    if [ "${command_name}" = "getflages" ]; then
       get_command="auditconfig -getflags |head -1 |cut -f2 -d'=' |sed 's/ //g' |cut -f1 -d'('"
       correct_value="lck,ex,aa,ua,as,ss,lo,ft"
-      r_command="auditconfig -setflags"
+      audit_command="auditconfig -setflags"
     fi
-    if [ "$command_name" = "getplugin" ]; then
+    if [ "${command_name}" = "getplugin" ]; then
       get_command="auditconfig -getplugin audit_binfile |tail-1 |cut -f3 -d';'"
       correct_value="p_minfree=1"
-      r_command="auditconfig -setplugin audit_binfile active"
+      audit_command="auditconfig -setplugin audit_binfile active"
     fi
-    if [ "$command_name" = "userattr" ]; then
+    if [ "${command_name}" = "userattr" ]; then
       get_command="userattr audit_flags root"
       correct_value="lo,ad,ft,ex,lck:no"
-      r_command="auditconfig -setplugin audit_binfile active"
+      audit_command="auditconfig -setplugin audit_binfile active"
     fi
-    if [ "$command_name" = "getcond" ]; then
+    if [ "${command_name}" = "getcond" ]; then
       set_command="auditconfig -conf"
     else
-      if [ "$command_name" = "getflags" ]; then
-        set_command="$r_command lo,ad,ft,ex,lck"
+      if [ "${command_name}" = "getflags" ]; then
+        set_command="${audit_command} lo,ad,ft,ex,lck"
       else
-        set_command="$r_command $correct_value"
+        set_command="${audit_command} ${correct_value}"
       fi
     fi
-    log_file="$command_name.log"
-    check_value=$( $get_command )
-    if [ "$audit_mode" != 2 ]; then
-      string="Command \"$command_name\" returns \"$correct_value\""
-      verbose_message "$string" "check"
-       if [ "$ansible" = 1 ]; then
+    log_file="${command_name}.log"
+    check_value=$( ${get_command} )
+    if [ "${audit_mode}" != 2 ]; then
+      string="Command \"${command_name}\" returns \"${correct_value}\""
+      verbose_message "${string}" "check"
+       if [ "${ansible}" = 1 ]; then
         echo ""
-        echo "- name: Checking $string"
-        echo "  command: sh -c \"$get_command |grep '$correct_value'\""
+        echo "- name: Checking ${string}"
+        echo "  command: sh -c \"${get_command} |grep '${correct_value}'\""
         echo "  register: lssec_check"
         echo "  failed_when: lssec_check == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
-        echo "  when: ansible_facts['ansible_system'] == '$os_name'"
+        echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
-        echo "- name: Fixing $string"
-        echo "  command: sh -c \"$set_command\""
-        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '$os_name'"
+        echo "- name: Fixing ${string}"
+        echo "  command: sh -c \"${set_command}\""
+        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
-      if [ "$check_value" != "$correct_value" ]; then
-        increment_insecure "Command \"$command_name\" does not return correct value"
+      if [ "${check_value}" != "${correct_value}" ]; then
+        increment_insecure "Command \"${command_name}\" does not return correct value"
       else
-        increment_secure   "Command \"$command_name\" returns correct value"
+        increment_secure   "Command \"${command_name}\" returns correct value"
       fi
-      log_file="$work_dir/$log_file"
-      lockdown_command "echo \"$r_command\" > $log_file ; $set_command" "Command \"$command_name\" to correct value"
+      log_file="${work_dir}/${log_file}"
+      lockdown_command "echo \"${audit_command}\" > ${log_file} ; ${set_command}" "Command \"${command_name}\" to correct value"
     fi
-    if [ "$audit_mode" = 2 ]; then
-      restore_file="$restore_dir/$log_file"
-      if [ -f "$restore_file" ]; then
-        verbose_message "Restoring: Previous value for \"$command_name\""
-        if [ "$command_name" = "getcond" ]; then
-          eval "$r_command"
+    if [ "${audit_mode}" = 2 ]; then
+      restore_file="${restore_dir}/${log_file}"
+      if [ -f "${restore_file}" ]; then
+        verbose_message "Restoring: Previous value for \"${command_name}\""
+        if [ "${command_name}" = "getcond" ]; then
+          eval "${audit_command}"
         else
-          restore_string=$( cat "$restore_file" )
-          eval "$r_command $restore_string"
+          restore_string=$( cat "${restore_file}" )
+          eval "${audit_command} ${restore_string}"
         fi
       fi
     fi

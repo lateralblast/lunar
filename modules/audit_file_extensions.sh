@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_file_extensions
@@ -14,7 +14,7 @@
 #.
 
 audit_file_extensions() {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message        "File Extensions" "check"
     check_osx_defaults_int "NSGlobalDomain"  "AppleShowAllExtensions" "1"
   fi

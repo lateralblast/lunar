@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2046
 # shellcheck disable=SC2154
 
 # audit_groups_exist
@@ -20,22 +21,22 @@
 #.
 
 audit_groups_exist () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "User Groups" "check"
     check_file="/etc/group"
     group_fail=0
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       for group_id in $( getent passwd | cut -f4 -d ":" ); do
-        group_exists=$( grep -v "^#" "$check_file" | cut -f3 -d":" | grep -c "^$group_id$" | sed "s/ //g" )
+        group_exists=$( grep -v "^#" "${check_file}" | cut -f3 -d":" | grep -c "^${group_id}$" | sed "s/ //g" )
         if [ "$group_exists" = 0 ]; then
           group_fail=1
-          if [ "$audit_mode" = 1 ];then
-            increment_insecure "Group \"$group_id\" does not exist in group file \"$check_file\""
+          if [ "${audit_mode}" = 1 ];then
+            increment_insecure "Group \"${group_id}\" does not exist in group file \"${check_file}\""
           fi
         fi
       done
-      if [ "$group_fail" != 1 ]; then
-        if [ "$audit_mode" = 1 ];then
+      if [ "${group_fail}" != 1 ]; then
+        if [ "${audit_mode}" = 1 ];then
           increment_secure "No non existant group issues"
         fi
       fi

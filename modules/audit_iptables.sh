@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_iptables
@@ -17,18 +17,18 @@
 #.
 
 audit_iptables () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message     "IP Tables" "check"
     check_linux_package "install"   "iptables"
     check_linux_service "iptables"  "on"
     check_linux_service "ip6tables" "on"
-    if [ "$audit_mode" != 2 ]; then
-      check=$( command -v iptables 2> /dev/null )
-      if [ "$check" ]; then
-        if [ "$my_id" = "0" ]; then
-          check=$( iptables -L INPUT -v -n | grep "127.0.0.0" | grep "0.0.0.0" | grep DROP | uniq | wc -l | sed "s/ //g" )
+    if [ "${audit_mode}" != 2 ]; then
+      iptables_check=$( command -v iptables 2> /dev/null )
+      if [ "${iptables_check}" ]; then
+        if [ "${my_id}" = "0" ]; then
+          rules_check=$( iptables -L INPUT -v -n | grep "127.0.0.0" | grep "0.0.0.0" | grep DROP | uniq | wc -l | sed "s/ //g" )
         fi
-        if [ "$check" = "0" ]; then
+        if [ "${rules_check}" = "0" ]; then
           increment_insecure "All other devices allow trafic to the loopback network"
         else
           increment_secure   "All other devices deny trafic to the loopback network"

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 
@@ -25,32 +25,32 @@
 #.
 
 audit_password_fields () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Password Fields" "check"
     check_file="/etc/shadow"
-    if test -r "$check_file"; then
+    if test -r "${check_file}"; then
       empty_count=0
-      if [ "$audit_mode" != 2 ]; then
-        if [ "$os_name" = "AIX" ]; then
+      if [ "${audit_mode}" != 2 ]; then
+        if [ "${os_name}" = "AIX" ]; then
           user_list=$( pwdck –n ALL )
         else
-          user_list=$( cat /etc/shadow | awk -F':' '{print $1":"$2":"}' | grep "::$" | cut -f1 -d: )
+          user_list=$( awk -F':' '{print $1":"$2":"}' < /etc/shadow| grep "::$" | cut -f1 -d: )
         fi
-        for user_name in $user_list; do
+        for user_name in ${user_list}; do
           empty_count=1
-          if [ "$audit_mode" = 1 ]; then
-            increment_insecure "No password field for \"$user_name\" in \"$check_file\""
-            verbose_message    "passwd -d $user_name" "fix"
-            if [ "$os_name" = "SunOS" ]; then
-              verbose_message  "passwd -N $user_name" "fix"
+          if [ "${audit_mode}" = 1 ]; then
+            increment_insecure "No password field for \"${user_name}\" in \"${check_file}\""
+            verbose_message    "passwd -d ${user_name}" "fix"
+            if [ "${os_name}" = "SunOS" ]; then
+              verbose_message  "passwd -N ${user_name}" "fix"
             fi
           fi
-          if [ "$audit_mode" = 0 ]; then
-            backup_file     "$check_file"
-            verbose_message "No password for \"$user_name\"" "set"
-            passwd -d "$user_name"
-            if [ "$os_name" = "SunOS" ]; then
-              passwd -N $user_name
+          if [ "${audit_mode}" = 0 ]; then
+            backup_file     "${check_file}"
+            verbose_message "No password for \"${user_name}\"" "set"
+            passwd -d "${user_name}"
+            if [ "${os_name}" = "SunOS" ]; then
+              passwd -N "${user_name}"
             fi
           fi
         done
@@ -58,27 +58,27 @@ audit_password_fields () {
           increment_secure "No empty password entries"
         fi
         for check_file in /etc/passwd /etc/shadow; do
-          if test -r "$check_file"; then
-            legacy_check=$( grep '^+:' $check_file | head -1 | wc -l | sed "s/ //g" )
-            if [ "$legacy_check" != "0" ]; then
-              if [ "$audit_mode" = 1 ]; then
-                increment_insecure "Legacy field found in \"$check_file\""
-                verbose_message    "grep -v '^+:' : $check_file > $temp_file" fix
-                verbose_message    "cat $temp_file  > $check_file" fix
+          if test -r "${check_file}"; then
+            legacy_check=$( grep '^+:' ${check_file} | head -1 | wc -l | sed "s/ //g" )
+            if [ "${legacy_check}" != "0" ]; then
+              if [ "${audit_mode}" = 1 ]; then
+                increment_insecure "Legacy field found in \"${check_file}\""
+                verbose_message    "grep -v '^+:' : ${check_file} > ${temp_file}" fix
+                verbose_message    "cat ${temp_file}  > ${check_file}" fix
               fi
-              if [ "$audit_mode" = 0 ]; then
-                backup_file     "$check_file"
-                verbose_message "Legacy entries from \"$check_file\"" "remove"
-                grep -v "^+:" "$check_file" > $temp_file
-                cat "$temp_file"  > "$check_file"
+              if [ "${audit_mode}" = 0 ]; then
+                backup_file     "${check_file}"
+                verbose_message "Legacy entries from \"${check_file}\"" "remove"
+                grep -v "^+:" "${check_file}" > "${temp_file}"
+                cat "${temp_file}"  > "${check_file}"
               fi
             else
-              increment_secure "No legacy entries in \"$check_file\""
+              increment_secure "No legacy entries in \"${check_file}\""
             fi
           fi
         done
       else
-        restore_file "$check_file" "$restore_dir"
+        restore_file "${check_file}" "${restore_dir}"
       fi
     fi
   fi

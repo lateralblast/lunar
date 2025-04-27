@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_avahi_server
@@ -18,10 +18,10 @@
 #.
 
 audit_avahi_server () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Avahi Server" "check"
     for service_name in avahi avahi-autoipd avahi-daemon avahi-dnsconfd; do
-      check_linux_service "$service_name" "off"
+      check_linux_service "${service_name}" "off"
     done
   fi
 }

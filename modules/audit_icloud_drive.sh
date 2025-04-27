@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_icloud_drive
@@ -13,18 +13,20 @@
 #.
 
 audit_icloud_drive () {
-  if [ "$os_name" = "Darwin" ]; then
-    if [ "$long_os_version" -ge 1014 ]; then
+  if [ "${os_name}" = "Darwin" ]; then
+    if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "iCloud Drive" "check"
-      if [ "$audit_mode" != 2 ]; then
+      if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
-        for user_name in $user_list; do
+        for user_name in ${user_list}; do
           for dir_name in Documents Desktop; do
-            check_value=$( sudo -u "$user_name" ls -l /Users/$user_name/Library/Mobile\ Documents/com~apple~CloudDocs/$dir_name/ | grep total | wc -l | sed "s/ //g" )
-            if [ "$check_value" = "0" ]; then
-              increment_secure   "Documents in \"$dir_name\" for \"$user_name\" are not syncing "
-            else
-              increment_insecure "Documents in \"$dir_name\" for \"$user_name\" are syncing "
+            if [ -f "/Users/${user_name}/Library/Mobile\ Documents/com~apple~CloudDocs/${dir_name}" ]; then
+              check_value=$( sudo -u "${user_name}" sh -c "ls -l /Users/${user_name}/Library/Mobile\ Documents/com~apple~CloudDocs/${dir_name}/" | grep -c total | sed "s/ //g" )
+              if [ "${check_value}" = "0" ]; then
+                increment_secure   "Documents in \"${dir_name}\" for \"${user_name}\" are not syncing "
+              else
+                increment_insecure "Documents in \"${dir_name}\" for \"${user_name}\" are syncing "
+              fi
             fi
           done
         done

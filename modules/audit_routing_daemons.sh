@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_routing_daemons
@@ -15,10 +15,10 @@
 
 audit_routing_daemons () {
   if [ "$routed_disable" = "yes" ]; then
-    if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "AIX" ]; then
+    if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
       verbose_message "Routing Daemons" "check"
-      if [ "$os_name" = "SunOS" ]; then
-        if [ "$os_version" = "10" ] || [ "$os_version" = "11" ]; then
+      if [ "${os_name}" = "SunOS" ]; then
+        if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
           for service_name in "svc:/network/routing/zebra:quagga" \
             "svc:/network/routing/ospf:quagga" \
             "svc:/network/routing/rip:quagga" \
@@ -31,19 +31,19 @@ audit_routing_daemons () {
             "svc:/network/routing/rdisc:default" \
             "svc:/network/routing/route:default" \
             "svc:/network/routing/ndp:default"; do
-            check_sunos_service "$service_name" "disabled"
+            check_sunos_service "${service_name}" "disabled"
           done
         fi
       fi
-      if [ "$os_name" = "Linux" ]; then
+      if [ "${os_name}" = "Linux" ]; then
         for service_name in bgpd ospf6d ospfd ripd ripngd; do
-          check_linux_service "$service_name" "off"
+          check_linux_service "${service_name}" "off"
         done
       fi
     fi
-    if [ "$os_name" = "AIX" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       for service_name in gated mrouted routed; do
-        check_rctcp "$service_name" "off"
+        check_rctcp "${service_name}" "off"
       done
     fi
   fi

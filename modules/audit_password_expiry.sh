@@ -20,9 +20,9 @@
 #.
 
 audit_password_expiry () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ] || [ "$os_name" = "AIX" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Password Expiration Parameters on Active Accounts" "check"
-    if [ "$os_name" = "AIX" ]; then
+    if [ "${os_name}" = "AIX" ]; then
       check_chsec "/etc/security/user" "default" "mindiff"    "4"
       check_chsec "/etc/security/user" "default" "minage"     "1"
       check_chsec "/etc/security/user" "default" "maxage"     "13"
@@ -33,9 +33,9 @@ audit_password_expiry () {
       check_chsec "/etc/security/user" "default" "histexpire" "13"
       check_chsec "/etc/security/user" "default" "histsize"   "20"
       check_chsec "/etc/security/user" "default" "maxexpired" "2"
-      if [ "$os_version" > 4 ]; then
-        if [ "$os_version" = "5" ]; then
-          if [ "$os_update" > 3 ]; then
+      if [ "${os_version}" -gt 4 ]; then
+        if [ "${os_version}" = "5" ]; then
+          if [ "${os_update}" -gt 3 ]; then
             check_chsec "/etc/security/login.cfg" "usw" "pwd_algorithm" "ssha256"
           fi
         else
@@ -43,21 +43,21 @@ audit_password_expiry () {
         fi
       fi
     fi
-    if [ "$os_name" = "SunOS" ]; then
+    if [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/etc/default/passwd" "MAXWEEKS"    "eq" "13" "hash"
       check_file_value "is" "/etc/default/passwd" "MINWEEKS"    "eq" "1" "hash"
       check_file_value "is" "/etc/default/passwd" "WARNWEEKS"   "eq" "4" "hash"
       check_file_value "is" "/etc/default/login"  "DISABLETIME" "eq" "3600" "hash"
     fi
-    if [ "$os_name" = "Linux" ]; then
+    if [ "${os_name}" = "Linux" ]; then
       check_file_value "is" "/etc/login.defs" "PASS_MAX_DAYS" "eq" "90" "hash"
       check_file_value "is" "/etc/login.defs" "PASS_MIN_DAYS" "eq" "7" "hash"
       check_file_value "is" "/etc/login.defs" "PASS_WARN_AGE" "eq" "14" "hash"
       check_file_value "is" "/etc/login.defs" "PASS_MIN_LEN"  "eq" "9" "hash"
       check_file_perms "/etc/login.defs" "0640" "root" "root"
     fi
-    if [ "$os_name" = "FreeBSD" ]; then
-      if [ "$os_version" > 5 ]; then
+    if [ "${os_name}" = "FreeBSD" ]; then
+      if [ "${os_version}" -gt 5 ]; then
         check_file_value "is" "/etc/adduser.conf" "passwdtype" "eq" "yes" "hash"
         check_file_value "is" "/etc/adduser.conf" "upwexpire"  "eq" "91d" "hash"
       fi

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_tcp_strong_iss
@@ -21,13 +21,13 @@
 #.
 
 audit_tcp_strong_iss () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "TCP Sequence Number Generation" "check"
     check_file_value "is" "/etc/default/inetinit" "TCP_STRONG_ISS" "eq" "2" "hash"
-    if [ "$os_version" != "11" ]; then
+    if [ "${os_version}" != "11" ]; then
       audit_ndd_value "/dev/tcp" "tcp_strong_iss" "2"
     fi
-    if [ "$os_version" = "11" ]; then
+    if [ "${os_version}" = "11" ]; then
       audit_ipadm_value "_strong_iss" "tcp" "2"
     fi
   fi

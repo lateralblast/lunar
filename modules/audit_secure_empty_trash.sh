@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_secure_empty_trash
@@ -12,7 +12,7 @@
 #.
 
 audit_secure_empty_trash () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message        "Secure Empty Trash" "check"
     check_osx_defaults_int "com.apple.finder" "EmptyTrashSecurely" "1"
   fi

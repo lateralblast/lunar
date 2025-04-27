@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_file_vault
@@ -14,22 +14,22 @@
 #.
 
 audit_file_vault () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message "File Vault" "check"
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       actual_value=$( diskutil cs list )
-      if [ "$actual_value" = "No CoreStorage logical volume groups found" ]; then
-        if [ "$audit_mode" = 1 ]; then
+      if [ "${actual_value}" = "No CoreStorage logical volume groups found" ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_insecure "File Vault is not enabled"
         fi
-        if [ "$audit_mode" = 1 ] || [ "$audit_mode" = 0 ]; then
+        if [ "${audit_mode}" = 1 ] || [ "${audit_mode}" = 0 ]; then
           verbose_message "Open System Preferences"   "fix"
           verbose_message "Select Security & Privacy" "fix"
           verbose_message "Select FileVault"          "fix"
           verbose_message "Select Turn on FileVault"  "fix"
         fi
       else
-        if [ "$audit_mode" = 1 ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_secure "File Vault is enabled"
         fi
       fi

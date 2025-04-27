@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_user_dotfiles
@@ -20,13 +20,14 @@
 #.
 
 audit_user_dotfiles () {
-  if [ "$os_name" = "SunOS" ] || [ "$os_name" = "Linux" ] || [ "$os_name" = "FreeBSD" ]; then
+  if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "User Dot Files" "check"
-    home_dirs=$( cat /etc/passwd | cut -f6 -d":" | grep -v "^/$" )
-    for home_dir in $home_dirs; do
-      for check_file in $home_dir/.[A-Za-z0-9]*; do
-        if [ -f "$check_file" ]; then
-          check_file_perms "$check_file" "0600" "" ""
+    home_dirs=$( grep -v "^/$" < /ext/passwd | cut -f6 -d":" )
+    for home_dir in ${home_dirs}; do
+      file_list=$( find "${home_dir}" -name ".[A-Za-z0-9]*" -depth 1 )
+      for check_file in ${file_list}; do
+        if [ -f "${check_file}" ]; then
+          check_file_perms "${check_file}" "0600" "" ""
         fi
       done
     done

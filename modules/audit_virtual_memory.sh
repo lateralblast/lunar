@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_virtual_memory
@@ -14,10 +14,10 @@
 #.
 
 audit_virtual_memory () {
-  if [ "$os_name" = "Linux" ]; then
+  if [ "${os_name}" = "Linux" ]; then
     verbose_message "Randomised Virtual Memory Region Placement" "check"
-    if [ "$os_vendor" = "CentOS" ] || [ "$os_vendor" = "Red" ]; then
-      if [ "$os_version" > "5" ]; then
+    if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
+      if [ "${os_version}" -gt 5 ]; then
         check_file_value "is" "/etc/sysctl.conf" "kernel.randomize_va_space" "eq" "2" "hash"
       fi
     fi

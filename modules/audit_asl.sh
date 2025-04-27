@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_asl
@@ -13,7 +13,7 @@
 #.
 
 audit_asl () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message   "System Logging" "check"
     check_append_file "/etc/asl.conf"              "> system.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"                 "hash"
     check_append_file "/etc/asl.conf"              "> appfirewall.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"            "hash"

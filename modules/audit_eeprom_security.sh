@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_eeprom_security
@@ -13,26 +13,26 @@
 #.
 
 audit_eeprom_security () {
-  if [ "$os_name" = "SunOS" ]; then
+  if [ "${os_name}" = "SunOS" ]; then
     verbose_message "EEPROM Password" "check"
-    if [ "$audit_mode" = 2 ]; then
+    if [ "${audit_mode}" = 2 ]; then
       echo "EEPROM password to none" "restore"
       eeprom security-mode=none
     fi
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       eeprom_check=$( eeprom security-mode | awk -F= '{ print $2 }' )
-      if [ "$gdm_check" = "none" ]; then
-        if [ "$audit_mode" = 1 ]; then
+      if [ "${eeprom_check}" = "none" ]; then
+        if [ "${audit_mode}" = 1 ]; then
           increment_insecure "EEPROM password is not enabled"
           verbose_message    "eeprom security-mode=command" "fix"
           verbose_message    "eeprom security-#badlogins=0" "fix"
         fi
-        if [ "$audit_mode" = 0 ]; then
+        if [ "${audit_mode}" = 0 ]; then
           eeprom security-mode=command
           eeprom security-#badlogins=0
         fi
       else
-        if [ "$audit_mode" = 1 ];then
+        if [ "${audit_mode}" = 1 ];then
           increment_secure "EEPROM password is enabled"
         fi
       fi

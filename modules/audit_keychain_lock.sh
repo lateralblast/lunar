@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# shellcheck disable=SC2034
 # shellcheck disable=SC1090
+# shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
 # audit_keychain_lock
@@ -13,16 +13,16 @@
 #.
 
 audit_keychain_lock () {
-  if [ "$os_name" = "Darwin" ]; then
+  if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Keychain Lock" "check"
-    if [ "$audit_mode" != 2 ]; then
+    if [ "${audit_mode}" != 2 ]; then
       for check_value in "timeout=21600s" lock-on-sleep; do
-       verbose_message "Keychain has \"$check_value\" set" "check"
-        actual_value=$( security show-keychain-info 2> /dev/null | grep "$check_value" | wc -l | sed "s/ //g" )
-        if [ "$actual_value" = "0" ]; then
-          increment_insecure "Keychain does not have \"$check_value\" set"
+       verbose_message "Keychain has \"${check_value}\" set" "check"
+        actual_value=$( security show-keychain-info 2> /dev/null | grep -c "${check_value}" | sed "s/ //g" )
+        if [ "${actual_value}" = "0" ]; then
+          increment_insecure "Keychain does not have \"${check_value}\" set"
         else
-          increment_secure   "Keychain has \"$check_value\" set"
+          increment_secure   "Keychain has \"${check_value}\" set"
         fi
       done
     fi
