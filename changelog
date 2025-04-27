@@ -1847,3 +1847,5 @@
 # Documentation updates
 # 10.1.6: Sun 27 Apr 2025 18:53:29 AEST
 # Updated modprobe filesystem kernel modules check
+# 10.1.7: Sun Apr 27 07:58:25 PM AEST 2025
+# Updated filesystem checks
