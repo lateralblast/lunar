@@ -10,15 +10,16 @@
 # Warn of any users in group with UID greate than 100 and lock
 #
 # Refer to Section(s) 1.4 Page(s) 16-7  CIS Docker Benchmark 1.13.0
-# Refer to https://docs.docker.com/articles/security/#docker-daemon-attack-surface
-# Refer to https://www.andreas-jung.com/contents/on-docker-security-docker-group-considered-harmful
-# Refer to http://www.projectatomic.io/blog/2015/08/why-we-dont-let-non-root-users-run-docker-in-centos-fedora-or-rhel/
 # Refer to Section(s) 4.1 Page(s) 105-6 CIS Docker Benchmark 1.13.0
+#
 # Refer to https://github.com/docker/docker/issues/2918
 # Refer to https://github.com/docker/docker/pull/4572
 # Refer to https://github.com/docker/docker/issues/7906
 # Refer to https://www.altiscale.com/hadoop-blog/making-docker-work-yarn/
-# Refer to http://docs.docker.com/articles/security/
+# Refer to https://docs.docker.com/articles/security/
+# Refer to https://docs.docker.com/articles/security/#docker-daemon-attack-surface
+# Refer to https://www.andreas-jung.com/contents/on-docker-security-docker-group-considered-harmful
+# Refer to https://www.projectatomic.io/blog/2015/08/why-we-dont-let-non-root-users-run-docker-in-centos-fedora-or-rhel/
 #.
 
 audit_docker_users () {

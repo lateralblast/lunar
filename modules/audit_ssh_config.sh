@@ -8,17 +8,18 @@
 #
 # Check SSH config
 #
-# Refer to Section(s) 6.2.1-15 Page(s) 127-137 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 6.2.1-15 Page(s) 147-159 CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 6.2.1-15 Page(s) 1verbose_message "-141 CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 5.2.1-16 Page(s) 218-37  CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 9.2.1-15 Page(s) 121-131 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.4.14.9 Page(s) 57-60   CIS OS X 10.5 Benchmark v1.1.0
-# Refer to Section(s) 1.2      Page(s) 2-3     CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 6.3-7    Page(s) 47-51   CIS Solaris 11.1 Benchmark v1.0.0
-# Refer to Section(s) 6.1.1-11 Page(s) 78-87   CIS Solaris 10 Benchmark v5.1.0
-# Refer to Section(s) 5.2.1-16 Page(s) 201-18  CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 5.2.1-16 Page(s) 213-31  CIS Ubuntu 16.04 Benchmark v2.0.0
+# Refer to Section(s) 6.2.1-15 Page(s) 127-37 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.2.1-15 Page(s) 147-59 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 6.2.1-15 Page(s) 130-41 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 5.2.1-16 Page(s) 218-37 CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 9.2.1-15 Page(s) 121-31 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.4.14.9 Page(s) 57-60  CIS OS X 10.5 Benchmark v1.1.0
+# Refer to Section(s) 1.2      Page(s) 2-3    CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 6.3-7    Page(s) 47-51  CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 6.1.1-11 Page(s) 78-87  CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 5.2.1-16 Page(s) 201-18 CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 5.2.1-16 Page(s) 213-31 CIS Ubuntu 16.04 Benchmark v2.0.0
+#
 # Refer to http://pubs.vmware.com/vsphere-55/index.jsp?topic=%2Fcom.vmware.vsphere.security.doc%2FGUID-12E27BF3-3769-4665-8769-DA76C2BC9FFE.html
 # Refer to https://wiki.mozilla.org/Security/Guidelines/OpenSSH
 #.

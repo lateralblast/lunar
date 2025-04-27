@@ -9,8 +9,9 @@
 # Check Docker monitoring
 #
 # Refer to Section(s) 4.6  Page(s) 115 CIS Docker Benchmark 1.13.0
-# Refer to https://github.com/docker/docker/pull/22719
 # Refer to Section(s) 5.26 Page(s) 172 CIS Docker Benchmark 1.13.0
+#
+# Refer to https://github.com/docker/docker/pull/22719
 # Refer to https://github.com/docker/docker/pull/22719
 #.
 

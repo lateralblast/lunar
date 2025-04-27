@@ -13,7 +13,7 @@
 # Refer to Section(s) 1.7 Page(s)  23-24 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.8 Page(s)  25-26 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.9 Page(s)  27-28 CIS AWS Foundations Benchmark v1.1.0
-# Refer to Section(s) 1.10 Page(s) 29-verbose_message " CIS AWS Foundations Benchmark v1.1.0
+# Refer to Section(s) 1.10 Page(s) 29-30 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.11 Page(s) 31-32 CIS AWS Foundations Benchmark v1.1.0
 #.
 

@@ -8,7 +8,7 @@
 #
 # Check safe downloads
 #
-# Refer to Section(s) 2.6.3 Page(s) 29-verbose_message " CIS Apple OS X 10.8 Benchmark v1.0.0
+# Refer to Section(s) 2.6.3 Page(s) 29-30 CIS Apple OS X 10.8 Benchmark v1.0.0
 #.
 
 audit_safe_downloads () {

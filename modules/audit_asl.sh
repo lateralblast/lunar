@@ -8,8 +8,8 @@
 #
 # Check how long system logs are being kept for
 #
-# Refer to Section(s) 3.1.1-3,3.5 Page(s) 85-60,94-5 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 3.3         Page(s) 276-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 3.1.1-3,3.5 Page(s) 85-60,94-5  CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 3.3         Page(s) 276-7       CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_asl () {

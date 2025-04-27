@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 2.4.3   Page(s) 40   CIS Apple OS X 10.12 Benchmark v1.0.0
 # Refer to Section(s) 2.3.3.2 Page(s) 92-4 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+#
 # Refer to http://support.apple.com/kb/ph11151
 #.
 

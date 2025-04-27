@@ -8,9 +8,9 @@
 #
 # Check AWS IAM
 #
-# Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
 # Refer to Section(s) 1.1  Page(s) 10-1  CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.18 Page(s) 46-57 CIS AWS Foundations Benchmark v1.1.0
+# Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-group.html
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unused-iam-user.html
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/iam-user-policies.html

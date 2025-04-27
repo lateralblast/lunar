@@ -10,15 +10,16 @@
 #
 # Refer to Section(s) 2.1  Page(s) 36-7  CIS Docker Benchmark 1.13.0
 # Refer to Section(s) 2.3  Page(s) 39-40 CIS Docker Benchmark 1.13.0
-# Refer to https://docs.docker.com/articles/networking
 # Refer to Section(s) 2.19 Page(s) 69    CIS Docker Benchmark 1.13.0
-# Refer to https://docs.docker.com/engine/userguide/networking/overlay-security-model/
-# Refer to https://github.com/docker/docker/issues/24253
 # Refer to Section(s) 5.13 Page(s) 148-9 CIS Docker Benchmark 1.13.0
-# Refer to https://docs.docker.com/articles/networking/#binding-container-ports-to-the-host
 # Refer to Section(s) 5.29 Page(s) 177   CIS Docker Benchmark 1.13.0
-# Refer to https://github.com/nyantec/narwhal
+#
 # Refer to https://arxiv.org/pdf/1501.02967
+# Refer to https://github.com/nyantec/narwhal
+# Refer to https://github.com/docker/docker/issues/24253
+# Refer to https://docs.docker.com/articles/networking
+# Refer to https://docs.docker.com/engine/userguide/networking/overlay-security-model/
+# Refer to https://docs.docker.com/articles/networking/#binding-container-ports-to-the-host
 # Refer to https://docs.docker.com/engine/userguide/networking/dockernetworks/
 #.
 

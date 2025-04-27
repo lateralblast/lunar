@@ -8,7 +8,6 @@
 #
 # Check Security banner
 #
-# Refer to http://www.justice.gov/criminal/cybercrime/
 # Refer to Section(s) 7.4             Page(s) 25 CIS  CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.11.11,2.12.12 Page(s) 198,216 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 8.1.1           Page(s) 172-3   CIS RHEL 5 Benchmark v2.1.0

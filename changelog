@@ -1843,3 +1843,5 @@
 # Fixes recommended by Shellcheck
 # 10.1.4: Sun 27 Apr 2025 11:35:45 AEST
 # Fixed keychain sync check
+# 10.1.5: Sun 27 Apr 2025 17:17:40 AEST
+# Documentation updates
