@@ -8,13 +8,16 @@
 #
 # Gnome Display Manager should not be used on a server, but if it is it
 # should be locked down to disable root access.
-# Refer to Section(s) 1.8.10 Page(s) 193-4 CIS Ubuntu 22.04 Benchmaek v1.0.0
+#
+# Refer to Section(s) 1.8.10  Page(s) 193-4 CIS Ubuntu 22.04 Benchmaek v1.0.0
+# Refer to Section(s) 1.7.1   Page(s) 197-8 CIS Ubuntu 24.04 Benchmaek v1.0.0
 #.
 
 audit_gdm_conf () {
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/X11/gdm/gdm.conf"
     if [ -e "${check_file}" ]; then
+      check_linux_package "uninstall" "gdm3"
       verbose_message  "GDM X11 Allow Configuration" "chek"
       check_file_value "is" "${check_file}" "AllowRoot"       "eq" "false" "hash"
       check_file_value "is" "${check_file}" "AllowRemoteRoot" "eq" "false" "hash"

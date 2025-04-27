@@ -8,7 +8,8 @@
 #
 # Check Automatic Error Reporting
 #
-# Refer to Section(s) 1.5.3 Page(s) 124 CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 1.5.3 Page(s) 124   CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 1.5.5 Page(s) 181-2 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_apport () {

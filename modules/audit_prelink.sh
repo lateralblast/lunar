@@ -14,6 +14,7 @@
 # Refer to Section(s) 1.3.1-2,1.5.4 Page(s) 54-6,66 CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 1.3.1-2       Page(s) 49-52   CIS Ubuntu LTS 16.04 Benchmark v1.0.0
 # Refer to Section(s) 1.5.2         Page(s) 122-3   CIS Ubuntu LTS 22.04 Benchmark v1.0.0
+# Refer to Section(s) 1.5.4         Page(s) 179-80  CIS Ubuntu LTS 24.04 Benchmark v1.0.0
 # Refer to Section(s) 8.3.1-2       Page(s) 112-3   CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.3.1-2       Page(s) 47-9    CIS Amazon Linux Benchmark v2.0.0
 #.
