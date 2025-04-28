@@ -4,6 +4,32 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
+# funct_audit_aws
+#
+# Audit AWS
+#.
+
+funct_audit_aws () {
+  audit_mode=$1
+  check_environment
+  check_aws
+  audit_aws_all
+  print_results
+}
+
+# funct_audit_aws
+#
+# Audit AWS
+#.
+
+funct_audit_aws_rec () {
+  audit_mode=$1
+  check_environment
+  check_aws
+  audit_aws_rec_all
+  print_results
+}
+
 # audit_aws_all
 #
 # Audit AWS

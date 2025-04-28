@@ -21,3 +21,14 @@ audit_docker_all () {
   audit_docker_security
 }
 
+# funct_audit_aws
+#
+# Audit AWS
+#.
+
+funct_audit_docker () {
+  audit_mode=$1
+  check_environment
+  audit_docker_all
+  print_results
+}

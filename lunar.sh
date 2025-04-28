@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.2.1
+# Version:      10.2.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -104,6 +104,7 @@ docker_group="docker"
 reboot=0
 verbose=0
 ansible=0
+core_dir="${app_dir}/core"
 functions_dir="${app_dir}/functions"
 modules_dir="${app_dir}/modules"
 private_dir="${app_dir}/private"
@@ -243,6 +244,22 @@ if [ ! "${id_check}" = 0 ]; then
   work_dir="${base_dir}/${date_suffix}"
 fi
 
+# Load core functions from core directory
+if [ -d "${core_dir}" ]; then
+  if [ "${verbose}" = "1" ]; then
+    echo ""
+    echo "Loading core functions"
+    echo ""
+  fi
+  file_list=$( ls "${core_dir}"/*.sh )
+  for file_name in ${file_list}; do
+    . "${file_name}"
+    if [ "${verbose}" = "1" ]; then
+      verbose_message "\"${file_name}\"" "load"
+    fi
+  done
+fi
+
 # Install packages
 
 install_rsyslog="no"
@@ -298,314 +315,6 @@ check_virtual_platform () {
   fi
   echo "Platform:   ${virtual}"
 }
-
-# get_ubuntu_codename
-#
-# Get Ubuntu Codename 
-#.
-
-get_ubuntu_codename () {
-  case "$1" in
-    "20.04")
-      ubuntu_codename="focal"
-      ;;
-    "22.04")
-      ubuntu_codename="focal"
-      ;;
-    "24.04")
-      ubuntu_codename="noble"
-      ;;
-    *)
-      ubuntu_codename="lts"    
-      ;;
-  esac
-}
-
-# check_os_release
-#
-# Get OS release information
-#.
-
-check_os_release () {
-  echo ""
-  echo "# SYSTEM INFORMATION:"
-  echo ""
-  os_codename=""
-  os_minorrev=""
-  os_name=$( uname )
-  if [ "${os_name}" = "Darwin" ]; then
-    os_release=$( sw_vers |grep ProductVersion |awk '{print $2}' )
-    os_version=$( echo "${os_release}" |cut -f1 -d. )
-    os_update=$( echo "${os_release}" |cut -f2 -d. )
-    os_vendor="Apple"
-    if [ "${os_update}" = "" ]; then
-      os_update=$( sw_vers |grep ^BuildVersion |awk '{print $2}' )
-    fi
-  fi
-  if [ "${os_name}" = "Linux" ]; then
-    os_release=$(lsb_release -r 2> /dev/null |awk '{print $2}')
-    if [ -f "/etc/redhat-release" ]; then
-      os_version=$( awk '{print $3}' < /etc/redhat-release | cut -f1 -d. )
-      if [ "${os_version}" = "Enterprise" ]; then
-        os_version=$( awk '{print $7}' < /etc/redhat-release | cut -f1 -d. )
-        if [ "${os_version}" = "Beta" ]; then
-          os_version=$( awk '{print $6}' < /etc/redhat-release | cut -f1 -d. )
-          os_update=$( awk '{print $6}' < /etc/redhat-release | cut -f2 -d. )
-        else
-          os_update=$( awk '{print $7}' < /etc/redhat-release | cut -f2 -d. )
-        fi
-      else
-        if [ "${os_version}" = "release" ]; then
-          os_version=$( awk '{print $4}' < /etc/redhat-release | cut -f1 -d. )
-          os_update=$( awk '{print $4}' < /etc/redhat-release | cut -f2 -d. )
-        else
-          os_update=$( awk '{print $3}' < /etc/redhat-release | cut -f2 -d. )
-        fi
-      fi
-      os_vendor=$( awk '{print $1}' < /etc/redhat-release )
-      linux_dist="redhat"
-    else
-      if [ -f "/etc/debian_version" ]; then
-        if [ -f "/etc/lsb-release" ]; then
-          os_version=$( grep "DISTRIB_RELEASE" /etc/lsb-release | cut -f2 -d= | cut -f1 -d. )
-          os_update=$( grep "DISTRIB_RELEASE" /etc/lsb-release | cut -f2 -d= | cut -f2 -d. )
-          os_vendor=$( grep "DISTRIB_ID" /etc/lsb-release | cut -f2 -d= )
-          os_codename=$( grep "DISTRIB_CODENAME" /etc/lsb-release | cut -f2 -d= )
-          os_minorrev=$(lsb_release -d |awk '{print $3}' |cut -f3 -d. )
-        else
-          if [ -f "/etc/debian_version" ]; then
-            os_version=$( cut -f1 -d. /etc/debian_version )
-            os_update=$( cut -f2 -d. /etc/debian_version )
-            os_vendor="Debian"
-          else
-            os_version=$( lsb_release -r | awk '{print $2}' | cut -f1 -d. )
-            os_update=$( lsb_release -r | awk '{print $2}' | cut -f2 -d. )
-            os_vendor=$( lsb_release -i | awk '{print $3}' )
-          fi
-        fi
-        linux_dist="debian"
-        os_test=$( echo "${os_version}" | grep "[0-9]" )
-        if [ -n "$os_test" ]; then 
-          if [ ! -f "/usr/sbin/sysv-rc-conf" ] && [ "${os_version}" -lt 16 ]; then
-            echo "Notice:    The sysv-rc-conf package may be required by this script but is not present"
-          fi
-        fi
-        if [ ! -f "/usr/bin/bc" ]; then
-          use_expr="yes"
-        fi
-        if [ ! -f "/usr/bin/finger" ]; then
-          use_finger="no"
-        fi
-      else
-        if [ -f "/etc/SuSE-release" ]; then
-          os_version=$( grep '^VERSION' /etc/SuSe-release | awk '{print $3}' | cut -f1 -d. )
-          os_update=$( grep '^VERSION' /etc/SuSe-release | awk '{print $3}' | cut -f2 -d. )
-          os_vendor="SuSE"
-          linux_dist="suse"
-        else
-          if [ -f "/etc/os-release" ]; then
-            os_vendor="Amazon"
-            os_version=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f1 -d. )
-            os_update=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f2 -d. )
-          fi
-        fi
-      fi
-    fi
-  fi
-  if [ "${os_name}" = "SunOS" ]; then
-    os_vendor="Oracle Solaris"
-    os_version=$( uname -r |cut -f2 -d"." )
-    if [ "${os_version}" = "11" ]; then
-      os_update=$( grep Solaris /etc/release | awk '{print $3}' | cut -f2 -d. )
-    fi
-    if [ "${os_version}" = "10" ]; then
-      os_update=$( grep Solaris /etc/release | awk '{print $5}' | cut -f2 -d_ | sed 's/[A-z]//g' )
-    fi
-    if [ "${os_version}" = "9" ]; then
-      os_update=$( grep Solaris /etc/release | awk '{print $4}' | cut -f2 -d_ | sed 's/[A-z]//g' )
-    fi
-  fi
-  if [ "${os_name}" = "FreeBSD" ]; then
-    os_version=$( uname -r | cut -f1 -d. )
-    os_update=$( uname -r | cut -f2 -d. )
-    os_vendor=${os_name}
-  fi
-  if [ "${os_name}" = "AIX" ]; then
-    os_vendor="IBM"
-    os_version=$( oslevel | cut -f1 -d. )
-    os_update=$( oslevel | cut -f2 -d. )
-  fi
-  if [ "${os_name}" = "VMkernel" ]; then
-    os_version=$( uname -r )
-    os_update=$( uname -v | awk '{print $4}' )
-    os_vendor="VMware"
-  fi
-  if [ "${os_name}" != "Linux" ] && [ "${os_name}" != "SunOS" ] && [ "${os_name}" != "Darwin" ] && [ "${os_name}" != "FreeBSD" ] && [ "${os_name}" != "AIX" ] && [ "${os_name}" != "VMkernel" ]; then
-    echo "OS not supported"
-    exit
-  fi
-  if [ "${os_name}" = "Linux" ]; then
-    os_platform=$( grep model < /proc/cpuinfo |tail -1 |cut -f2 -d: |sed "s/^ //g" )
-  else
-    if [ "${os_name}" = "Darwin" ]; then
-      os_platform=$( system_profiler SPHardwareDataType |grep Chip |cut -f2 -d: |sed "s/^ //g" )
-    else
-      os_platform=$( uname -p )
-    fi
-  fi
-  os_machine=$( uname -m )
-  check_virtual_platform
-  if [ "${os_platform}" = "" ]; then
-    os_platform=$( uname -p )
-  fi
-  echo "Processor:  ${os_platform}"
-  echo "Machine:    ${os_machine}"
-  echo "Vendor:     ${os_vendor}"
-  echo "Name:       ${os_name}"
-  if [ ! "${os_release}" = "" ]; then
-    echo "Release:    ${os_release}"
-  fi
-  echo "Version:    ${os_version}"
-  echo "Update:     ${os_update}"
-  if [ ! "${os_minorrev}" = "" ]; then
-    echo "Minor Rev:  ${os_minorrev}"
-  fi
-  if [ ! "${os_codename}" = "" ]; then
-    echo "Codename:   ${os_codename}"
-  fi
-  if [ "${os_name}" = "Darwin" ]; then
-    if [ "${os_update}" -lt 10 ]; then
-      long_update="0${os_update}"
-    else
-      long_update="${os_update}"
-    fi
-    long_os_version="${os_version}${long_update}"
-    #echo "XRelease:  ${long_os_version}"
-  fi
-}
-
-# check_environment
-#
-# Do some environment checks
-# Create base and temporary directory
-#.
-
-check_environment () {
-  check_os_release
-  if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "" ""
-    verbose_message "If node is managed" "check"
-    managed_node=$( sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d: )
-    if [ "${managed_node}" = "Error" ]; then
-      verbose_message "Node is not managed" "notice"
-    else
-      verbose_message "Node is managed" "notice"
-    fi
-    verbose_message "" ""
-  fi
-  # Load functions from functions directory
-  if [ -d "${functions_dir}" ]; then
-    if [ "${verbose}" = "1" ]; then
-      echo ""
-      echo "Loading Functions"
-      echo ""
-    fi
-    file_list=$( ls "${functions_dir}"/*.sh )
-    for file_name in ${file_list}; do
-      if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] ||  [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
-        . "${file_name}"
-      else
-        source "${file_name}"
-      fi
-      if [ "${verbose}" = "1" ]; then
-        verbose_message "\"${file_name}\"" "load"
-      fi
-    done
-  fi
-  # Load modules for modules directory
-  if [ -d "${modules_dir}" ]; then
-    if [ "${verbose}" = "1" ]; then
-      echo ""
-      echo "Loading Modules"
-      echo ""
-    fi
-    file_list=$( ls "${modules_dir}"/*.sh )
-    for file_name in ${file_list}; do
-      if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
-        . "${file_name}"
-      else
-        if [ "${file_name}" = "modules/audit_ftp_users.sh" ]; then
-          if [ "${os_name}" != "VMkernel" ]; then
-             source "${file_name}"
-          fi
-        else
-          source "${file_name}"
-        fi
-      fi
-      if [ "${verbose}" = "1" ]; then
-        verbose_message "\"${file_name}\"" "load"
-      fi
-    done
-  fi
-  # Private modules for customers
-  if [ -d "${private_dir}" ]; then
-      echo ""
-      echo "Loading Customised Modules"
-      echo ""
-    if [ "${verbose}" = "1" ]; then
-      echo ""
-    fi
-    file_list=$( ls "${private_dir}"/*.sh )
-    for file_name in ${file_list}; do
-      if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] ||  [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
-        . "${file_name}"
-      else
-        source "${file_name}"
-      fi
-    done
-    if [ "${verbose}" = "1" ]; then
-      echo "Loading:   ${file_name}"
-    fi
-  fi
-  if [ ! -d "${base_dir}" ]; then
-    mkdir -p "${base_dir}"
-    chmod 700 "${base_dir}"
-  fi
-  if [ ! -d "${temp_dir}" ]; then
-    mkdir -p "${temp_dir}"
-  fi
-  if [ "${audit_mode}" = 0 ]; then
-    if [ ! -d "${work_dir}" ]; then
-      mkdir -p "${work_dir}"
-    fi
-  fi
-}
-
-# check_shellcheck
-# 
-# Run shellcheck against script
-#.
-
-check_shellcheck () {
-  bin_test=$( command -v shellcheck | grep -c shellcheck )
-  if [ ! "$bin_test" = "0" ]; then
-    echo "Checking $0"
-    shellcheck "$0"
-  fi
-  for dir_name in "${functions_dir}" "${modules_dir}"; do
-    if [ -d "${dir_name}" ]; then
-      file_list=$( ls "${dir_name}"/*.sh )
-      for file_name in ${file_list}; do
-        if [ "${verbose}" = "1" ]; then
-          verbose_message "\"${file_name}\"" "load"
-        fi
-        echo "Checking ${file_name}"
-        shellcheck "${file_name}"
-      done
-    fi
-  done
-}
-
 
 # lockdown_command
 #
@@ -724,80 +433,6 @@ increment_insecure () {
   fi
 }
 
-# print_previous
-#
-# Print previous changes
-#.
-
-print_previous () {
-  if [ -d "${base_dir}" ]; then
-    echo ""
-    echo "Printing previous settings:"
-    echo ""
-    if [ -d "${base_dir}" ]; then
-      find "${base_dir}" -type f -print -exec cat -n {} \;
-    fi
-  fi
-}
-
-# handle_output
-#
-# Handle output
-#.
-
-handle_output () {
-  text="$1"
-  echo "$1"
-}
-
-# checking_message
-#
-# Checking message
-#.
-
-checking_message () {
-  verbose_message "$1" "check"
-}
-
-# setting_message
-#
-# Setting message
-#.
-
-setting_message () {
-  verbose_message "$1" "set"
-}
-
-# print_changes
-#
-# Do a diff between previous file (saved) and existing file
-#.
-
-print_changes () {
-  if [ -f "${base_dir}" ]; then
-    echo ""
-    echo "Printing changes:"
-    echo ""
-    file_list=$( find "${base_dir}" -type f -print )
-    for saved_file in ${file_list}; do
-      check_file=$( echo "${saved_file}" | cut -f 5- -d"/" )
-      top_dir=$( echo "${saved_file}" | cut -f 1-4 -d"/" )
-      echo "Directory: \"${top_dir}\""
-      log_test=$( echo "${check_file}" |grep "log$" )
-      if [ -n "${log_test}" ]; then
-        echo "Original system parameters:"
-        sed "s/,/ /g" < "${saved_file}"
-      else
-        echo "Changes to \"/${check_file}\":"
-        diff "${saved_file}" "/${check_file}"
-      fi
-    done
-  else
-    echo "No changes made recently"
-  fi
-}
-
-
 # check_aws
 #
 # Check AWS CLI etc is installed
@@ -826,146 +461,7 @@ check_aws () {
   fi
 }
 
-# funct_audit_kubernetes
-#
-# Audit Kubernetes
-#.
 
-funct_audit_kubernetes () {
-  audit_mode=$1
-  check_environment
-  audit_kubernetes_all
-  print_results
-}
-
-# funct_audit_aws
-#
-# Audit AWS
-#.
-
-funct_audit_docker () {
-  audit_mode=$1
-  check_environment
-  audit_docker_all
-  print_results
-}
-
-# funct_audit_aws
-#
-# Audit AWS
-#.
-
-funct_audit_aws () {
-  audit_mode=$1
-  check_environment
-  check_aws
-  audit_aws_all
-  print_results
-}
-
-# funct_audit_aws
-#
-# Audit AWS
-#.
-
-funct_audit_aws_rec () {
-  audit_mode=$1
-  check_environment
-  check_aws
-  audit_aws_rec_all
-  print_results
-}
-
-# funct_audit_system
-#
-# Audit System
-#.
-
-funct_audit_system () {
-  audit_mode=$1
-  check_environment
-  if [ "${audit_mode}" = 0 ]; then
-    if [ ! -d "${work_dir}" ]; then
-      mkdir -p "${work_dir}"
-      if [ "${os_name}" = "SunOS" ]; then
-        echo "Creating:  Alternate Boot Environment ${date_suffix}"
-        if [ "${os_version}" = "11" ]; then
-          beadm create "audit_${date_suffix}"
-        fi
-        if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-          if [ "${os_platform}" != "i386" ]; then
-            lucreate -n "audit_${date_suffix}"
-          fi
-        fi
-      else
-        :
-        # Add code to do LVM snapshot
-      fi
-    fi
-  fi
-  if [ "${audit_mode}" = 2 ]; then
-    restore_dir="${base_dir}/${restore_date}"
-    if [ ! -d "${restore_dir}" ]; then
-      echo "Restore directory \"${restore_dir}\" does not exit"
-      exit
-    else
-      verbose_message "Restore directory to \"${restore_dir}\"" "set"
-    fi
-  fi
-  audit_system_all
-  if [ "${do_fs}" = 1 ]; then
-    audit_search_fs
-  fi
-  #audit_test_subset
-  sparc_test=$( echo "${os_platform}" |grep -c "sparc" )
-  if [ "${sparc_test}" = "0" ]; then
-    audit_system_x86
-  else
-    audit_system_sparc
-  fi
-  print_results
-}
-
-# funct_audit_select
-#
-# Selective Audit
-#.
-
-funct_audit_select () {
-  audit_mode=$1
-  function=$2
-  check_environment
-  module_test=$( echo "${function}" |grep -c aws )
-  if [ "$module_test" = "1" ]; then
-    check_aws
-  fi
-  suffix_test=$( echo "${function}" |grep -c "\\.sh" )
-  if [ "${suffix_test}" = "1" ]; then
-    function=$( echo "${function}" |cut -f1 -d. )
-  fi
-  module_test=$( echo "${function}" | grep -c "full" )
-  if [ "$module_test" = "0" ]; then  
-    function_test=$( echo "${function}" | grep -c "audit_" )
-    if [ "${function_test}" = "0" ]; then
-      function="audit_${function}"
-    fi
-  fi
-  module_test=$( echo "${function}" | grep "audit" )
-  if [ -n "$module_test" ]; then
-    if [ -f "${modules_dir}/${function}.sh" ]; then
-      print_audit_info "${function}"
-      eval "${function}"
-    else
-      verbose_message "Audit function \"${function}\" does not exist" "warn"
-      verbose_message "" ""
-      exit
-    fi 
-    print_results
-  else
-    verbose_message "Audit function \"${function}\" does not exist" "warn"
-    verbose_message "" ""
-  fi
-}
 
 # Get the path the script starts from
 
@@ -996,80 +492,6 @@ secure_baseline () {
   :
 }
 
-# print_results
-#
-# Print Results
-#.
-
-print_results () {
-  echo ""
-  if [ "${reboot}" = 1 ]; then
-    reboot="Required"
-  else
-    reboot="Not Required"
-  fi
-  if [ ! "${audit_mode}" = 2 ]; then
-    if [ "${no_cat}" = "1" ]; then
-      echo "Tests:      ${total}"
-      echo "Passes:     ${secure}"
-      echo "Warnings:   ${insecure}"
-    else
-      echo " \    /\    Tests:      ${total}"
-      echo "  )  ( ')   Passes:     ${secure}"
-      echo " (  /  )    Warnings:   ${insecure}"
-      echo "  \(__)|    Reboot:     ${reboot}"
-    fi
-  fi
-  if [ "${audit_mode}" != 1 ]; then
-    echo "Reboot:     ${reboot}"
-  fi
-  if [ "${audit_mode}" = 0 ]; then
-    echo "Backup:     ${work_dir}"
-    echo "Restore:    $0 -u ${date_suffix}"
-  fi
-  echo ""
-}
-
-# print_tests
-#
-# Print Tests
-#. 
-
-print_tests () {
-  test_string="$1"
-  echo ""
-  if [ "${test_string}" = "UNIX" ]; then
-    grep_string="-v aws"
-  else
-    grep_string="${test_string}"
-  fi
-  echo "${test_string} Security Tests:"
-  echo ""
-  dir_list=$( ls "${modules_dir}" ) 
-  for dir_entry in ${dir_list} ; do
-    case ${test_string} in
-      AWS|aws)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "aws" |sed "s/\.sh//g" )
-        ;;
-      Docker|docker)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "docker" |sed "s/\.sh//g" )
-        ;;
-      Kubernetes|kubernetes|k8s)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "kubernetes" |sed "s/\.sh//g" )
-        ;;
-      All|all)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |sed "s/\.sh//g" )
-        ;;
-      *)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "${test_string}" |sed "s/\.sh//g" )
-        ;;
-    esac
-    if [ -n "${module_name}" ]; then
-      echo "${module_name}"
-    fi
-  done
-  echo ""
-}
 
 # Handle command line arguments
 
@@ -1081,103 +503,6 @@ do_select=0
 do_aws=0
 do_aws_rec=0
 do_docker=0
-
-# print_version
-#
-# Print version information
-#.
-
-print_version () {
-  echo "${script_version}"
-}
-
-print_info () {
-  info="$1"
-  echo ""
-  echo "Usage: $0 -${info}|--${info}"
-  echo ""
-  echo "${info}(s):"
-  echo "---------"
-  while read -r line; do
-    test=$( echo "${line}" | grep "# ${info}" )
-    if [ "${test}" ]; then
-      switch=$( echo "$line" |cut -f1 -d# )
-      desc=$( echo "$line" |cut -f2 -d# |sed "s/ ${info} - //g")
-      echo "${switch}"
-      echo "  ${desc}"
-    fi
-  done < "$0"
-  echo ""
-}
-
-# print_help
-#
-# If given a -h or no valid switch print usage information
-#.
-
-print_help () {
-  print_info "switch"
-}
-
-# print_usage
-#
-# Print usage information
-# If given -H print some examples
-#.
-
-print_usage () {
-  echo ""
-  echo "Examples:"
-  echo ""
-  echo "Run AWS CLI audit"
-  echo ""
-  echo "$0 -w"
-  echo ""
-  echo "Run Docker audit"
-  echo ""
-  echo "$0 -d"
-  echo ""
-  echo "Run in Audit Mode (for Operating Systems)"
-  echo ""
-  echo "$0 -a"
-  echo ""
-  echo "Run in Audit Mode and provide more information (for Operating Systems)"
-  echo ""
-  echo "$0 -a -v"
-  echo ""
-  echo "Display previous backups:"
-  echo ""
-  echo "$0 -b"
-  echo "Previous backups:"
-  echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25"
-  echo ""
-  echo "Restore from previous backup:"
-  echo ""
-  echo "$0 -u 21_12_2012_19_45_05"
-  echo ""
-  echo "List tests:"
-  echo ""
-  echo "$0 -S"
-  echo ""
-  echo "Only run shell based tests:"
-  echo ""
-  echo "$0 -s audit_shell_services"
-  echo ""
-}
-
-# print_backups
-#
-# Print backups
-#.
-
-print_backups () {
-  echo ""
-  echo "Previous backups:"
-  echo ""
-  if [ -d "${base_dir}" ]; then
-    find "${base_dir}" -maxdepth 1
-  fi
-}
 
 # If given no command line arguments print usage information
 
@@ -1513,6 +838,8 @@ if [ "$do_remote" = 1 ]; then
   ssh "$ext_host" "sudo /tmp/lunar.sh -a"
   exit
 fi
+
+check_environment
 
 # Run in docker or multipass
 

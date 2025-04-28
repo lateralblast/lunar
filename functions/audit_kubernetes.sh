@@ -19,3 +19,14 @@ audit_kubernetes_all () {
   audit_kubernetes_kubelet
 }
 
+# funct_audit_kubernetes
+#
+# Audit Kubernetes
+#.
+
+funct_audit_kubernetes () {
+  audit_mode=$1
+  check_environment
+  audit_kubernetes_all
+  print_results
+}
