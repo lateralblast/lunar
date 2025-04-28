@@ -11,20 +11,27 @@
 #
 # Check system accounting
 #
-# Refer to Section(s) 4.2.1.1-18         Page(s) 77-96        CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 5.3.1.1-21         Page(s) 113-136      CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 5.2.1.1-18         Page(s) 86-9,100-120 CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 4.1.1.1-3,4.2.1-18 Page(s) 164-191      CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 8.1.1.1-18         Page(s) 86-106       CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 5.2                Page(s) 18           CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 2.11.4-5,17        Page(s) 194-5,202    CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 4.8                Page(s) 71-2         CIS Solaris 10 Benchmark v5.1.0
-# Refer to Section(s) 4.1.1.1-3,4.2.1-18 Page(s) 148-75       CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 4.1.1.1-3,4.1.2-18 Page(s) 159-86       CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.2.1-3-4.1.3.29 Page(s) 440-527      CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 4.2.1.1-18            Page(s) 77-96         CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 5.3.1.1-21            Page(s) 113-136       CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 5.2.1.1-18            Page(s) 86-9,100-120  CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 4.1.1.1-3,4.2.1-18    Page(s) 164-191       CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 8.1.1.1-18            Page(s) 86-106        CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 5.2                   Page(s) 18            CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 2.11.4-5,17           Page(s) 194-5,202     CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 4.8                   Page(s) 71-2          CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 4.1.1.1-3,4.2.1-18    Page(s) 148-75        CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 4.1.1.1-3,4.1.2-18    Page(s) 159-86        CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.2.1-3-4.1.3.29    Page(s) 440-527       CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.2.1-3-4.1.3.29    Page(s) 440-527       CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 6.2.2.1-4,6.2.3.1-21  Page(s) 807-97        CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_system_accounting () {
+  max_log_file="8"
+  max_log_file_action="keep_logs"
+  disk_full_action="single"
+  disk_error_action="single"
+  space_left_action="single"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "System Accounting" "check"
     if [ "${os_name}" = "AIX" ]; then
@@ -175,12 +182,13 @@ audit_system_accounting () {
       check_append_file "${check_file}" "-a always,exit -F arch=b32 -S mount -F auid>=500 -F auid!=4294967295 -k mounts"   "hash"
       #check_append_file "${check_file}" "" "hash"
       #- Manage and retain logs
-      check_append_file "${check_file}" "space_left_action = email"       "hash"
+      check_append_file "${check_file}" "space_left_action = ${space_left_action}"       "hash"
       check_append_file "${check_file}" "action_mail_acct = email"        "hash"
-      check_append_file "${check_file}" "admin_space_left_action = email" "hash"
-      #check_append_file "${check_file}" "" hash
-      check_append_file "${check_file}" "max_log_file = 8" "hash"
-      check_append_file "${check_file}" "max_log_file_action = keep_logs" "hash"
+      check_append_file "${check_file}" "admin_space_left_action = ${admin_space_left_action}" "hash"
+      check_append_file "${check_file}" "disk_full_action = ${disk_full_action}" hash
+      check_append_file "${check_file}" "disk_error_action= ${disk_error_action}" hash
+      check_append_file "${check_file}" "max_log_file = ${max_log_file}" "hash"
+      check_append_file "${check_file}" "max_log_file_action = ${max_log_file_action}" "hash"
       #- Make file immutable - MUST BE LAST!
       check_append_file "${check_file}" "-e 2" "hash"
       for service_name in sysstat auditd; do

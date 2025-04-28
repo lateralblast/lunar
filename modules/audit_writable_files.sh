@@ -18,6 +18,7 @@
 # Refer to Section(s) 5.1,9.22 Page(s) 45,88   CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.22     Page(s) 134     CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.1.10   Page(s) 261     CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 7.1.11   Page(s) 954-7   CIS Ubuntu 24.04 Benchmark v1.0.0
 # Refer to Section(s) 5.1.3-4  Page(s) 110-1   CIS Apple OS X 10.12 Benchmark v1.0.0
 # Refer to Section(s) 5.1.7    Page(s) 311-4   CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.

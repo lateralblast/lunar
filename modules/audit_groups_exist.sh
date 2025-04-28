@@ -17,7 +17,8 @@
 # Refer to Section(s) 9.11   Page(s) 80    CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.11   Page(s) 124-5 CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.2.15 Page(s) 269   CIS Amazon Linux Benchmark v2.1.0
-# Refer to Section(s) 6.2.15 Page(s) 282   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 6.2.15 Page(s) 282   CIS Ubuntu 16.04 Benchmark v1.0.0       
+# Refer to Section(s) 7.2.3  Page(s) 970-1 CIS Ubuntu 24.04 Benchmark v1.0.0       
 #.
 
 audit_groups_exist () {

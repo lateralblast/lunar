@@ -8,11 +8,13 @@
 #
 # Check auditd is installed - Required for various other tests like docker
 #
-# Refer to Section(s) 4.1       Page(s) 157-8      CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.1.1-4 Page(s) 278-83     CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.1.4.3,8 Page(s) 535-6,47-8 CIS Ubuntu 22.04 Benchmark v1.0.0
-# Refer to Section(s) 3.2       Page(s) 91         CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 3.1       Page(s) 272-3      CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 4.1         Page(s) 157-8       CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.1.1-4   Page(s) 278-83      CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 4.1.4.3,8   Page(s) 535-6,47-8  CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 6.2.4.1-10, Page(s) 799-806     CIS Ubuntu 24.04 Benchmark v1.0.0
+#                     6.2.1.1-4           899-922     
+# Refer to Section(s) 3.2         Page(s) 91          CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 3.1         Page(s) 272-3       CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_auditd () {
@@ -101,6 +103,9 @@ audit_auditd () {
     if [ "${os_name}" = "Darwin" ]; then
       check_launchctl_service "com.apple.auditd" "on"
     fi
+    if [ "${os_name}" = "Linux" ]; then
+      check_systemctl_service "enable" "auditd"_
+    fi
     check_file="/etc/audit/auditd.conf"
     check_file_value "is" "${check_file}" "log_group" "eq" "adm" "hash"
     for check_file in /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules; do
@@ -108,5 +113,15 @@ audit_auditd () {
         check_file_perms "${check_file}" "0750" "root" "root"
       fi
     done
+    if [ -d "/etc/audit" ]; then
+      file_list=$( find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) )
+      for check_file in ${file_list}; do
+        check_file_perms "${check_file}" "0640" "root" "root"
+      done
+    fi
+    check_file="/var/log/audit/audit.log"
+    if [ -f "${check_file}" ]; then
+      check_file_perms "${check_file}" "0640" "root" "root"
+    fi
   fi
 }

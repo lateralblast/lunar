@@ -19,6 +19,7 @@
 # Refer to Section(s) 9.23     Page(s) 88-9  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.1.12-4 Page(s) 250-2 CIS Amazon Linux Benchmark v1.0.0
 # Refer to Section(s) 6.1.13-4 Page(s) 264-5 CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 7.1.13   Page(s) 961-3 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_suid_files () {

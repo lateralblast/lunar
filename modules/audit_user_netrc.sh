@@ -18,6 +18,7 @@
 # Refer to Section(s) 1.5.1    Page(s) 101-2       CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 9.9,20   Page(s) 78-9,86     CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.9,20   Page(s) 122-3,132-3 CIS Solaris 10 Benchmark v1.1.0
+# Refer to Section(s) 7.2.10   Page(s) 986-92      CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_user_netrc () {

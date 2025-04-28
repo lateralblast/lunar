@@ -19,6 +19,7 @@
 # Refer to Section(s) 9.10   Page(s) 124    CIS Solaris 10 Benchmark v1.1.0
 # Refer to Section(s) 6.2.14 Page(s) 267-8  CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 6.2.14 Page(s) 281    CIS Ubuntu 16.04 Benchmark v2.0.0
+# Refer to Section(s) 7.2.10 Page(s) 986-92 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_user_rhosts () {

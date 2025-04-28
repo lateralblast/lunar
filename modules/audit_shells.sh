@@ -7,6 +7,8 @@
 # audit_shells
 #
 # Check that shells in /etc/shells exist
+#
+# Refer to Section(s) 7.1.9   Page(s) 950-1   CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_shells () {

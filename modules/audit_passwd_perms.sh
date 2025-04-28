@@ -15,6 +15,7 @@
 # Refer to Section(s) 6.1      Page(s) 21      CIS FreeBSD Benchmark v1.0.5
 # Refer to Section(s) 2.11.1-3 Page(s) 192-4   CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 6.1.2-9  Page(s) 253-60  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 7.1.1-8  Page(s) 934-49  CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_passwd_perms () {
