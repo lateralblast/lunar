@@ -8,16 +8,17 @@
 #
 # Check root path
 #
-# Refer to Section(s) 9.2.6   Page(s) 165-166 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 9.2.6   Page(s) 191-2   CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 9.2.6   Page(s) 167     CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 6.2.6   Page(s) 279-80  CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 13.6    Page(s) 157-8   CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.12.20 Page(s) 223     CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 9.6     Page(s) 76-7    CIS Solaris 11.1 Benchmark v1.0.0
-# Refer to Section(s) 9.6     Page(s) 120-1   CIS Solaris 10 Benchmark v1.1.0
-# Refer to Section(s) 6.2.6   Page(s) 257-8   CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 6.2.6   Page(s) 271-2   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 9.2.6         Page(s) 165-166       CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 9.2.6         Page(s) 191-2         CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 9.2.6         Page(s) 167           CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 6.2.6         Page(s) 279-80        CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 13.6          Page(s) 157-8         CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.12.20       Page(s) 223           CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 9.6           Page(s) 76-7          CIS Solaris 11.1 Benchmark v1.0.0
+# Refer to Section(s) 9.6           Page(s) 120-1         CIS Solaris 10 Benchmark v1.1.0
+# Refer to Section(s) 6.2.6         Page(s) 257-8         CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 6.2.6         Page(s) 271-2         CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 5.4.2.5,6.2.6 Page(s) 702-4,271-2   CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_root_path () {
