@@ -35,7 +35,7 @@ audit_password_fields () {
         increment_secure "No non root users have UID 0"
       else
         for user_name in ${user_list}; do
-          if [ "$user_name" != "root" ]; then
+          if [ "${user_name}" != "root" ]; then
             increment_insecure "Non root user ${user_name} has UID 0"
           fi
         done
