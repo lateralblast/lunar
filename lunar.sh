@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.2.6
+# Version:      10.2.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -411,7 +411,6 @@ increment_total () {
 #.
 
 increment_secure () {
-  echo "got here"
   if [ "${audit_mode}" != 2 ]; then
     total=$((total+1))
     secure=$((secure+1))

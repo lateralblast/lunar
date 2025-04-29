@@ -8,7 +8,7 @@
 #
 # Check that shells in /etc/shells exist
 #
-# Refer to Section(s) 7.1.9   Page(s) 950-1   CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 5.4.2.8-5.4.3.1,7.1.9   Page(s) 711-5,950-1   CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_shells () {
@@ -19,6 +19,12 @@ audit_shells () {
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
       else
+        nologin_check=$( grep nologin < "${check_file}" | grep -cv "^#" )
+        if [ "${nologin_check}" = "0" ]; then
+          increment_secure "Shell \"${check_shell}\" is not in \"${check_file}\""
+        else
+          increment_insecure "Shell \"${check_shell}\" is in \"${check_file}\""
+        fi
         check_shells=$( grep -v '^#' "${check_file}" )
         for check_shell in ${check_shells}; do
           if [ ! -f "${check_shell}" ]; then
