@@ -1875,3 +1875,5 @@
 # Added root access test
 # 10.3.0: Tue Apr 29 20:18:09 AEST 2025
 # Added non root UID 0 test
+# 10.3.1: Tue Apr 29 20:50:36 AEST 2025
+# Added non root GID 0 test
