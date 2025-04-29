@@ -8,11 +8,12 @@
 #
 # Check that password hashing is set to SHA512.
 #
-# Refer to Section(s) 6.3.1 Page(s) 138-9 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 6.3.4 Page(s) 162-3 CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 6.3.1 Page(s) 141-2 CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 5.3.4 Page(s) 234-5 CIS RHEL 7 Benchmark v1.2.0
-# Refer to Section(s) 5.3.4 Page(s) 224-5 CIS Amazon Linux Benchmark v1.2.0
+# Refer to Section(s) 6.3.1   Page(s) 138-9 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.3.4   Page(s) 162-3 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 6.3.1   Page(s) 141-2 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 5.3.4   Page(s) 234-5 CIS RHEL 7 Benchmark v1.2.0
+# Refer to Section(s) 5.3.4   Page(s) 224-5 CIS Amazon Linux Benchmark v1.2.0
+# Refer to Section(s) 5.4.1.4 Page(s) 666-8 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_password_hashing () {

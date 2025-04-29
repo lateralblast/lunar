@@ -1881,3 +1881,5 @@
 # Added password history test
 # 10.3.3: Tue Apr 29 22:10:06 AEST 2025
 # Added inactive password lock test
+# 10.3.4: Tue Apr 29 22:17:53 AEST 2025
+# Updated documentation

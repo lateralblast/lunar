@@ -17,6 +17,7 @@
 # Refer to Section(s) 7.2       Page(s) 101-3   CIS Solaris 10 Benchmark v5.1.0
 # Refer to Section(s) 5.4.1.1-4 Page(s) 226-30  CIS Amazon Linux v2.0.0
 # Refer to Section(s) 5.4.1.1-4 Page(s) 238-43  CIS Ubuntu 16.04 v1.0.0
+# Refer to Section(s) 5.4.1.1-3 Page(s) 677-85  CIS Ubuntu 24.04 v1.0.0
 #.
 
 audit_password_expiry () {
