@@ -31,7 +31,7 @@ audit_aide () {
     if [ "${os_release}" -lt 24 ]; then
       check_append_file   "/etc/cron.d/aide" "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check" "hash"
     else
-      check_systemctl_service "enable" "dailyaidecheck.timer"
+      check_linux_service "dailyaidecheck.timer" "om"
     fi
   fi
 }

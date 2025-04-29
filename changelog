@@ -1863,3 +1863,5 @@
 # Updated audit tests and documentation
 # 10.2.4: Tue Apr 29 10:00:28 AEST 2025
 # Updated rsyslog log rotate test
+# 10.2.5: Tue Apr 29 13:07:05 AEST 2025
+# Updated journald test

@@ -411,10 +411,10 @@ increment_total () {
 #.
 
 increment_secure () {
+  echo "got here"
   if [ "${audit_mode}" != 2 ]; then
-    message="$1"
     total=$((total+1))
-    secure=$((insecure+1))
+    secure=$((secure+1))
     echo "Secure:     ${message} [${secure} Passes]"
   fi
 }
