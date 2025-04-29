@@ -8,9 +8,9 @@
 #
 # Check shadow group
 #
-# Refer to Section(s) 13.20  Page(s) 168-9  CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 6.2.20 Page(s) 287    CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 7.2.4  Page(s) 972-3  CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 13.20   Page(s) 168-9 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 6.2.20  Page(s) 287   CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 7.2.4   Page(s) 972-3 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_shadow_group () {

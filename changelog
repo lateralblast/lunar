@@ -1873,3 +1873,5 @@
 # Updated documentation
 # 10.2.9: Tue Apr 29 18:19:12 AEST 2025
 # Added root access test
+# 10.3.0: Tue Apr 29 20:18:09 AEST 2025
+# Added non root UID 0 test

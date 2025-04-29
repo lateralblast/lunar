@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.2.9
+# Version:      10.3.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -412,9 +412,14 @@ increment_total () {
 
 increment_secure () {
   if [ "${audit_mode}" != 2 ]; then
+    message="$1"
     total=$((total+1))
     secure=$((secure+1))
-    echo "Secure:     ${message} [${secure} Passes]"
+    if [ "${secure}" -eq 1 ]; then
+      echo "Secure:     ${message} [${secure} Pass]"
+    else
+      echo "Secure:     ${message} [${secure} Passes]"
+    fi
   fi
 }
 
@@ -428,7 +433,11 @@ increment_insecure () {
     message="$1"
     total=$((total+1))
     insecure=$((insecure+1))
-    verbose_message "${message} [${insecure} Warnings]" "warn"
+    if [ "${insecure}" -eq 1 ]; then
+      verbose_message "${message} [${insecure} Warning]" "warn"
+    else
+      verbose_message "${message} [${insecure} Warnings]" "warn"
+    fi
   fi
 }
 
