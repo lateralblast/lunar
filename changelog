@@ -1865,3 +1865,5 @@
 # Updated rsyslog log rotate test
 # 10.2.5: Tue Apr 29 13:07:05 AEST 2025
 # Updated journald test
+# 10.2.6: Tue Apr 29 13:27:54 AEST 2025
+# Added shell timeout check

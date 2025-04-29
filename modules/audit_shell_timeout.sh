@@ -8,6 +8,8 @@
 #
 # Check Shell Timeout settings
 #
+# Refer to Section(s) 5.4.3.2 Page(s) 714-8 CIS Ubuntu 24.04 Benchmark v1.0.0
+#
 # Refer to: http://pubs.vmware.com/vsphere-55/topic/com.vmware.wssdk.apiref.doc/vim.option.OptionManager.html
 #.
 
@@ -45,5 +47,12 @@ audit_shell_timeout () {
         fi
       fi
     done
+  else
+    if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
+      for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/csh.login /etc/csh.cshrc \
+        /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc /etc/bashrc /etc/skel/.bashrc /etc/login.defs; do
+        check_file_value "is" "${check_file}" "TMOUT" "eq" "900" "hash"
+      done
+    fi 
   fi
 }
