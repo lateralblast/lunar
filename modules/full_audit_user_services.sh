@@ -10,7 +10,9 @@
 #.
 
 full_audit_user_services () {
+  audit_root_access
   audit_root_home
+  audit_root_path
   audit_root_primary_group
   audit_root_ssh_keys
   audit_mesgn
@@ -22,7 +24,6 @@ full_audit_user_services () {
   audit_duplicate_groups
   audit_user_dotfiles
   audit_forward_files
-  audit_root_path
   audit_default_umask
   audit_password_fields
   audit_reserved_ids
