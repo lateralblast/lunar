@@ -30,7 +30,7 @@ audit_password_fields () {
     verbose_message "Password Fields" "check"
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/passwd"
-      user_list=$( awk -F: '($3 == 0) { print $1 }' /etc/passwd | grep -v root )
+      user_list=$( awk -F: '($3 == 0) { print $1 }' "${check_file}" | grep -v root )
       if [ "$user_list" = "" ]; then
         increment_secure "No non root users have UID 0"
       else
