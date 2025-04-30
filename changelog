@@ -1885,3 +1885,5 @@
 # Updated documentation
 # 10.3.5: Wed Apr 30 12:03:09 AEST 2025
 # Started adding addition pam checks
+# 10.3.6: Wed 30 Apr 2025 21:52:52 AEST
+# Cleaned up PAM tests and added authtok test

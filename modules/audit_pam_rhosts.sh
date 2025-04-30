@@ -15,7 +15,8 @@
 
 audit_pam_rhosts () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    check_string="PAM RHosts Configuration"
+    pam_module="pam_rhosts_auth"
+    check_string="PAM ${pam_module} Configuration"
     verbose_message "${check_string}" "check"
     if [ "${os_name}" = "SunOS" ]; then
       check_file="/etc/pam.conf"
@@ -23,26 +24,26 @@ audit_pam_rhosts () {
         restore_file "${check_file}" "${restore_dir}"
       else
         if [ -f "${check_file}" ]; then
-          pam_check=$( grep -v "^#" ${check_file} | grep "pam_rhosts_auth" | head -1 | wc -l | sed "s/ //g" )
+          pam_check=$( grep -v "^#" ${check_file} | grep "${pam_module}" | head -1 | wc -l | sed "s/ //g" )
           if [ "${ansible}" = 1 ]; then
             echo ""
             echo "- name: Checking ${check_string}"
-            echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep 'pam_rhosts_auth' |head -1 |wc -l | sed 's/ //g'\""
-            echo "  register: pam_rhosts_auth_check"
-            echo "  failed_when: pam_rhosts_auth_check == 1"
+            echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep '${pam_module}' |head -1 |wc -l | sed 's/ //g'\""
+            echo "  register: ${pam_module}_check"
+            echo "  failed_when: ${pam_module}_check == 1"
             echo "  changed_when: false"
             echo "  ignore_errors: true"
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
             echo "- name: Fixing ${check_string}"
-            echo "  command: sh -c \"sed -i 's/^.*pam_rhosts_auth/#&/' ${check_file}\""
-            echo "  when: pam_rhosts_auth_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+            echo "  command: sh -c \"sed -i 's/^.*${pam_module}/#&/' ${check_file}\""
+            echo "  when: ${pam_module}_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           fi
           if [ "${pam_check}" = "1" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Rhost authentication enabled in \"${check_file}\""
-              verbose_message    "sed -e 's/^.*pam_rhosts_auth/#&/' < ${check_file} > ${temp_file}" "fix"
+              verbose_message    "sed -e 's/^.*${pam_module}/#&/' < ${check_file} > ${temp_file}" "fix"
               verbose_message    "cat ${temp_file} > ${check_file}" "fix"
               verbose_message    "rm ${temp_file}" "fix"
             else
@@ -52,7 +53,7 @@ audit_pam_rhosts () {
                 find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
               fi
               verbose_message "Rhost authentication to disabled in ${check_file}" "set"
-              sed -e 's/^.*pam_rhosts_auth/#&/' "${check_file}" > "${temp_file}"
+              sed -e "s/^.*${pam_module}/#&/" "${check_file}" > "${temp_file}"
               cat "${temp_file}" > "${check_file}"
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
@@ -82,15 +83,15 @@ audit_pam_rhosts () {
               echo ""
               echo "- name: Checking ${check_string}"
               echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep 'rhosts_auth' |head -1 |wc -l | sed 's/ //g'\""
-              echo "  register: pam_rhosts_auth_check"
-              echo "  failed_when: pam_rhosts_auth_check == 1"
+              echo "  register: ${pam_module}_check"
+              echo "  failed_when: ${pam_module}_check == 1"
               echo "  changed_when: false"
               echo "  ignore_errors: true"
               echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
               echo ""
               echo "- name: Fixing ${check_string}"
               echo "  command: sh -c \"sed -i 's/^.*rhosts_auth/#&/' ${check_file}\""
-              echo "  when: pam_rhosts_auth_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+              echo "  when: ${pam_module}_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
               echo ""
             fi
             if [ "${pam_check}" = "1" ]; then

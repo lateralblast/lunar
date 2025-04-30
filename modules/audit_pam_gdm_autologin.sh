@@ -14,10 +14,11 @@
 audit_pam_gdm_autologin () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
+      pam_module="gdm-autologin"
       check_string="Gnome Autologin"
       verbose_message "${check_string}" "check"
-      check_file="/etc/pam.d/gdm-autologin"
-      temp_file="${temp_dir}/gdm-autologin"
+      check_file="/etc/pam.d/${pam_module}"
+      temp_file="${temp_dir}/${pam_module}"
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
       fi
@@ -25,29 +26,29 @@ audit_pam_gdm_autologin () {
         if [ "${ansible}" = 1 ]; then
           echo ""
           echo "- name: Checking ${check_string}"
-          echo "  command:  sh -c \"cat ${check_file} |grep -v '^#' |grep '^gdm-autologin' |head -1 |wc -l\""
-          echo "  register: gdm_autologin_check"
-          echo "  failed_when: gdm_autologin_check == 1"
+          echo "  command:  sh -c \"cat ${check_file} |grep -v '^#' |grep '^${pam_module}' |head -1 |wc -l\""
+          echo "  register: ${pam_module}_check"
+          echo "  failed_when: ${pam_module}_check == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${check_string}"
-          echo "  command: sh -c \"sed -i 's/^gdm-autologin/#&/g' ${check_file}\""
-          echo "  when: gdm_autologin_check .rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  command: sh -c \"sed -i 's/^${pam_module}/#&/g' ${check_file}\""
+          echo "  when: ${pam_module}_check .rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
-        gdm_check=$( grep -v "^#" "${check_file}" | grep "^gdm-autologin" | head -1 | wc -l | sed "s/ //g" )
+        gdm_check=$( grep -v "^#" "${check_file}" | grep "^${pam_module}" | head -1 | wc -l | sed "s/ //g" )
         if [ "${gdm_check}" != 0 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Gnome Autologin is enabled"
-            verbose_message    "cat ${check_file} |sed 's/^gdm-autologin/#&/g' > ${temp_file}" "fix"
+            increment_insecure "${check_string} is enabled"
+            verbose_message    "cat ${check_file} |sed 's/^${pam_module}/#&/g' > ${temp_file}" "fix"
             verbose_message    "cat ${temp_file} > ${check_file}" "fix"
             verbose_message    "rm ${temp_file}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file "${check_file}"
-            sed 's/^gdm-autologin/#&/g' "${check_file}" > "${temp_file}"
+            sed "s/^${pam_module}/#&/g" "${check_file}" > "${temp_file}"
             cat "${temp_file}" > "${check_file}"
             if [ -f "${temp_file}" ]; then
               rm "${temp_file}"
@@ -55,7 +56,7 @@ audit_pam_gdm_autologin () {
           fi
         else
           if [ "${audit_mode}" = 1 ];then
-            increment_secure "No members in shadow group"
+            increment_secure "${check_string} is disabled"
           fi
         fi
       fi
