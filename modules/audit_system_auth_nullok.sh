@@ -7,6 +7,8 @@
 # audit_system_auth_nullok
 #
 # Ensure null passwords are not accepted
+#
+# Refer to Section(s) 5.3.3.4.1 Page(s) 664-6  CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_system_auth_nullok () {
