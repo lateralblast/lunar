@@ -1883,3 +1883,5 @@
 # Added inactive password lock test
 # 10.3.4: Tue Apr 29 22:17:53 AEST 2025
 # Updated documentation
+# 10.3.5: Wed Apr 30 12:03:09 AEST 2025
+# Started adding addition pam checks
