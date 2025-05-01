@@ -16,6 +16,7 @@
 # Refer to Section(s) 2.11.8-10,2.12.13-4 Page(s) 196-8,217-8 CIS AIX Benchmark v1.1.0
 # Refer to Section(s) 6.13                Page(s) 56-7        CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 6.9                 Page(s) 93-4        CIS Solaris 10 Benchmark v5.1.0
+# Refer to Section(s) 2.4.1.8-2.1         Page(s) 343-51      CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_cron_allow () {

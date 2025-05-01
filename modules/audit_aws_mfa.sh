@@ -11,6 +11,7 @@
 # Refer to Section(s) 1.2  Page(s) 12-4 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.13 Page(s) 35-6 CIS AWS Foundations Benchmark v1.1.0
 # Refer to Section(s) 1.14 Page(s) 37-8 CIS AWS Foundations Benchmark v1.1.0
+#
 # Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
 # Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html
 # Refer to http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_physical.html#enable-hw-mfa-for-root

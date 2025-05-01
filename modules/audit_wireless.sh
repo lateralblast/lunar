@@ -8,9 +8,10 @@
 #
 # Wireless checks
 #
-# Refer to Section(s) 4.2   Page(s) 98-9  CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 3.1.2 Page(s) 177-9 CIS Ubuntu 22.04 Benchmark v1.0.0
-# Refer to Section(s) 2.4.1 Page(s) 133-6 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 4.2   Page(s) 98-9    CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 3.1.2 Page(s) 177-9   CIS Ubuntu 22.04 Benchmark v1.0.0
+# Refer to Section(s) 3.1.2 Page(s) 357-60  CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 2.4.1 Page(s) 133-6   CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_wireless () {

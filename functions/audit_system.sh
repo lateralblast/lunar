@@ -78,7 +78,7 @@ audit_system_all () {
   full_audit_print_services
   full_audit_routing_services
   full_audit_windows_services
-  full_audit_startup_services
+  full_audit_other_daemons
   full_audit_log_services
   full_audit_network_services
   full_audit_other_services

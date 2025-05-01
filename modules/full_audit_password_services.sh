@@ -22,7 +22,7 @@ full_audit_password_services () {
   audit_login_delay
   audit_pass_req
   audit_pam_wheel
-  audit_pam_authok
+  audit_pam_authtok
   audit_password_hashing "${password_hashing}"
   audit_pam_deny
   audit_crypt_policy

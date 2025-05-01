@@ -9,6 +9,7 @@
 # Check AWS KMS Keyd
 #
 # Refer to Section(s) 2.8 Page(s) 85-6 CIS AWS Foundations Benchmark v1.1.0
+#
 # Refer to https://www.cloudconformity.com/conformity-rules/IAM/unnecessary-ssh-public-keys.html
 # Refer to https://www.cloudconformity.com/conformity-rules/KMS/key-rotation-enabled.html
 # Refer to https://www.cloudconformity.com/conformity-rules/KMS/unused-customer-master-key.html

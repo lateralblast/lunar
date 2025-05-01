@@ -10,7 +10,7 @@
 #.
 
 full_audit_osx_services () {
-  audit_bt_sharing
+  audit_bluetooth
   audit_guest_sharing
   audit_file_sharing
   audit_web_sharing

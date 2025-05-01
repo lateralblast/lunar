@@ -10,6 +10,7 @@
 #.
 
 full_audit_other_services () {
+  audit_bluetooth
   audit_postgresql
   audit_encryption_kit
   audit_biosdevname

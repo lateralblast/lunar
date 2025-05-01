@@ -27,8 +27,8 @@ full_audit_user_services () {
   audit_default_umask
   audit_password_fields
   audit_password_lock
+  audit_password_history
   audit_group_fields
-  audit_group_history
   audit_reserved_ids
   audit_super_users
   audit_daemon_umask

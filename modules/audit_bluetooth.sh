@@ -4,16 +4,17 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_bt_sharing
+# audit_bluetooth
 #
-# Check BT sharing
+# Check bluetooth
 #
 # Refer to Section(s) 2.1.1           Page(s) 8-11        CIS Apple OS X 10.8 Benchmark v1.0.0
 # Refer to Section(s) 2.1.1-3         Page(s) 21-5        CIS Apple OS X 10.12 Benchmark v1.0.0
 # Refer to Section(s) 2.3.3.11,2.4.4  Page(s) 118-20,37-9 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 3.1.3           Page(s) 361-3       CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
-audit_bt_sharing () {
+audit_bluetooth () {
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Bluetooth services and file sharing"      "check"
     check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0"
@@ -45,6 +46,11 @@ audit_bt_sharing () {
       else
         increment_insecure "Bluetooth status menu is not enabled"
       fi
+    fi
+  else
+    if [ "${os_name}" = "Linux" ]; then
+      check_linux_service "bluez"     "off"
+      check_linux_package "uninstall" "bluez"
     fi
   fi
 }
