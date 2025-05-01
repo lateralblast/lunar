@@ -19,11 +19,14 @@ audit_java () {
       if [ -n "$java_bin" ]; then
         verbose_message "Java version" "check"
         version_value=$( java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -f1 -d. )
-        if [ "${version_value}" -ge "${minimum_value}" ]; then
-          increment_secure   "Java version is greater than \"${minimum_value}\""
-        else
-          increment_insecure "Java version is less than \"${minimum_value}\""
+        if [ -n "${version_value}" ]; then
+          if [ "${version_value}" -ge "${minimum_value}" ]; then
+            increment_secure   "Java version is greater than \"${minimum_value}\""
+          else
+            increment_insecure "Java version is less than \"${minimum_value}\""
+          fi
         fi
+        increment_secure   "Java not installed"
       fi
     fi
   fi
