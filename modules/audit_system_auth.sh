@@ -13,7 +13,7 @@
 # Refer to Section(s) 5.3.1-2       Page(s) 238-41  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.1-2       Page(s) 220-1   CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 5.3.1-4       Page(s) 232-6   CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 5.3.3.2.8-3.1 Page(s) 648-56  CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 5.3.3.2.1-3.1 Page(s) 625-56  CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_system_auth () {
@@ -28,7 +28,7 @@ audit_system_auth () {
       check=1
     fi
     if [ "${check}" -eq 1 ]; then
-      check_file_value "is" "${check_file}" "minlen"  "eq" "14" "hash" 
+      check_file_value "is" "${check_file}" "minlen"  "eq" "8"  "hash" 
       check_file_value "is" "${check_file}" "dcredit" "eq" "-1" "hash" 
       check_file_value "is" "${check_file}" "ocredit" "eq" "-1" "hash" 
       check_file_value "is" "${check_file}" "ucredit" "eq" "-1" "hash" 
@@ -39,7 +39,7 @@ audit_system_auth () {
       audit_system_auth_password_hashing "password" "${password_hashing}"
     else
       if [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "CentOS" ] && [ "${os_version}" = "7" ]; then
-        check_file_value "is" "${check_file}" "minlen"  "eq" "14" "hash"  
+        check_file_value "is" "${check_file}" "minlen"  "eq" "8"  "hash"  
         check_file_value "is" "${check_file}" "dcredit" "eq" "-1" "hash"  
         check_file_value "is" "${check_file}" "ocredit" "eq" "-1" "hash"  
         check_file_value "is" "${check_file}" "ucredit" "eq" "-1" "hash"  
@@ -52,7 +52,7 @@ audit_system_auth () {
         if [ "${audit_mode}" != 2 ]; then
           audit_system_auth_nullok
           audit_system_auth_password_history  "account"  "remember"   "10"
-          audit_system_auth_password_policy   "password" "minlen"     "9"
+          audit_system_auth_password_policy   "password" "minlen"     "8"
           audit_system_auth_password_policy   "password" "dcredit"    "-1"
           audit_system_auth_password_policy   "password" "lcredit"    "-1"
           audit_system_auth_password_policy   "password" "ocredit"    "-1"
@@ -66,9 +66,12 @@ audit_system_auth () {
     fi
     if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 24 ]; then
       check_file="/etc/security/pwquality.conf"
-      check_file_value  "is"  "${check_file}" "lcredit"   "eq" "0" "hash"  
-      check_file_value  "not" "${check_file}" "enforcing" "eq" "0" "hash"  
-      check_append_file "${check_file}" "enforce_for_root" "hash"
+      check_file_value  "is"  "${check_file}" "maxsequence" "eq" "3" "hash" 
+      check_file_value  "is"  "${check_file}" "difok"       "eq" "2" "hash" 
+      check_file_value  "is"  "${check_file}" "dictcheck"   "eq" "0" "hash" 
+      check_file_value  "is"  "${check_file}" "lcredit"     "eq" "0" "hash"  
+      check_file_value  "not" "${check_file}" "enforcing"   "eq" "0" "hash"  
+      check_append_file "${check_file}" "enforce_for_root"  "hash"
     fi
   fi
 }
