@@ -17,6 +17,7 @@
 # Refer to Section(s) 1.13        Page(s) 43-4       CIS ESX Server 4 Benchmark v1.1.0
 # Refer to Section(s) 2.2.14      Page(s) 106        CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 2.2.14      Page(s) 114        CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 2.1.15      Page(s) 267-9      CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_snmp () {

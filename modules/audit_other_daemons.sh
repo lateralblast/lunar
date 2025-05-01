@@ -4,18 +4,19 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_chkconfig
+# audit_other_daemons
 #
-# Check chkconfig
+# Check chkconfig and other daemons
 #
-# Refer to Section(s) 1.2.4-5      Page(s) 36-7   CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 1.2.4-5      Page(s) 34-5   CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 1.2.5,2.2.11 Page(s) 53,122 CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 6.16         Page(s) 63-4   CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.2.11       Page(s) 103    CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 1.2.4-5       Page(s) 36-7    CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 1.2.4-5       Page(s) 34-5    CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 1.2.5,2.2.11  Page(s) 53,122  CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 6.16          Page(s) 63-4    CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.2.11        Page(s) 103     CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.1.13        Page(s) 264-4   CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
-audit_chkconfig () {
+audit_other_daemons () {
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Miscellaneous Services" "check"
     for service_name in wu-ftpd ftp vsftpd aaeventd\

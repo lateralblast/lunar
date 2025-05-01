@@ -1891,3 +1891,5 @@
 # Updated documentation and password quality tests
 # 10.3.8: Thu  1 May 2025 11:19:34 AEST
 # Updated tests and documentation
+# 10.3.9: Thu  1 May 2025 12:00:56 AEST
+# Renamed chkconfig test to make it more generic and updated documentation

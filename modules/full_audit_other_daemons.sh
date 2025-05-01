@@ -4,14 +4,14 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# full_audit_startup_services
+# full_audit_other_daemons
 #
-# Audit startup services
+# Audit other daemons and startup services
 #.
 
-full_audit_startup_services () {
+full_audit_other_daemons () {
   audit_xinetd
-  audit_chkconfig
+  audit_other_daemons
   audit_legacy
   audit_inetd
   audit_inetd_logging

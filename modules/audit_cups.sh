@@ -8,13 +8,14 @@
 #
 # Check CUPS
 #
-# Refer to Section(s) 3.4   Page(s) 61   CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.4   Page(s) 73-4 CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 3.4   Page(s) 64   CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 2.2.4 Page(s) 104  CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 6.3   Page(s) 53-4 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 2.2.4 Page(s) 96   CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 2.2.3 Page(s) 104  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 3.4     Page(s) 61    CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.4     Page(s) 73-4  CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 3.4     Page(s) 64    CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.4   Page(s) 104   CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 6.3     Page(s) 53-4  CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 2.2.4   Page(s) 96    CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.3   Page(s) 104   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 2.1.11  Page(s) 257-9 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_cups () {

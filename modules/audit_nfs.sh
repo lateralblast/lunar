@@ -8,17 +8,18 @@
 #
 # Check NFS
 #
-# Refer to Section(s) 3.8    Page(s) 64-5  CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 3.8    Page(s) 77    CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 3.8    Page(s) 67-8  CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 2.2.7  Page(s) 107   CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 6.7    Page(s) 57-8  CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 3.7-11 Page(s) 11-3  CIS FreeBSD Benchmark v1.0.5
-# Refer to Section(s) 1.3.5  Page(s) 39    CIS AIX Benchmark v1.1.0
-# Refer to Section(s) 2.2.7  Page(s) 99    CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 2.2.7  Page(s) 107   CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 4.6    Page(s) 105-6 CIS Apple OS X 10.12 Benchmark v1.0.0
-# Refer to Section(s) 4.3    Page(s) 294-5 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 3.8       Page(s) 64-5        CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 3.8       Page(s) 77          CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 3.8       Page(s) 67-8        CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 2.2.7     Page(s) 107         CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 6.7       Page(s) 57-8        CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 3.7-11    Page(s) 11-3        CIS FreeBSD Benchmark v1.0.5
+# Refer to Section(s) 1.3.5     Page(s) 39          CIS AIX Benchmark v1.1.0
+# Refer to Section(s) 2.2.7     Page(s) 99          CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 2.2.7     Page(s) 107         CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 2.1.9,12  Page(s) 251-3,60-2  CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 4.6       Page(s) 105-6       CIS Apple OS X 10.12 Benchmark v1.0.0
+# Refer to Section(s) 4.3       Page(s) 294-5       CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
 audit_nfs () {
