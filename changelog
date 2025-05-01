@@ -1907,3 +1907,5 @@
 # Documentation and test updates
 # 10.4.6: Fri  2 May 2025 09:03:49 AEST
 # Added sudo authenticate test
+# 10.4.7: Fri  2 May 2025 09:22:59 AEST
+# Added sudo NOPASSWD test

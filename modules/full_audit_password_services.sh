@@ -30,4 +30,5 @@ full_audit_password_services () {
   audit_sudo_timeout
   audit_sudo_timestamp
   audit_sudo_authenticate
+  audit_sudo_nopassword
 }

@@ -66,6 +66,7 @@ full_audit_osx_services () {
   audit_sudo_timeout
   audit_sudo_timestamp
   audit_sudo_authenticate
+  audit_sudo_nopassword
   audit_safari_auto_run
   audit_safari_history
   audit_safari_warn
