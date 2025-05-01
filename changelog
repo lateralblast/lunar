@@ -1905,3 +1905,5 @@
 # Updated password quality documentation and tests
 # 10.4.5: Thu  1 May 2025 22:20:53 AEST
 # Documentation and test updates
+# 10.4.6: Fri  2 May 2025 09:03:49 AEST
+# Added sudo authenticate test

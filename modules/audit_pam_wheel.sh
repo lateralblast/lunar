@@ -8,13 +8,14 @@
 #
 # PAM Wheel group membership. Make sure wheel group membership is required to su.
 #
-# Refer to Section(s) 6.5 Page(s) 142-3 CIS CentOS Linux 6 Benchmark v1.0.0
-# Refer to Section(s) 6.5 Page(s) 165-6 CIS RHEL 5 Benchmark v2.1.0
-# Refer to Section(s) 6.5 Page(s) 145-6 CIS RHEL 6 Benchmark v1.2.0
-# Refer to Section(s) 5.6 Page(s) 257-8 CIS RHEL 7 Benchmark v2.1.0
-# Refer to Section(s) 9.5 Page(s) 135-6 CIS SLES 11 Benchmark v1.0.0
-# Refer to Section(s) 5.5 Page(s) 235-6 CIS Amazon Linux Benchmark v2.0.0
-# Refer to Section(s) 5.6 Page(s) 249   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 6.5   Page(s) 142-3 CIS CentOS Linux 6 Benchmark v1.0.0
+# Refer to Section(s) 6.5   Page(s) 165-6 CIS RHEL 5 Benchmark v2.1.0
+# Refer to Section(s) 6.5   Page(s) 145-6 CIS RHEL 6 Benchmark v1.2.0
+# Refer to Section(s) 5.6   Page(s) 257-8 CIS RHEL 7 Benchmark v2.1.0
+# Refer to Section(s) 9.5   Page(s) 135-6 CIS SLES 11 Benchmark v1.0.0
+# Refer to Section(s) 5.5   Page(s) 235-6 CIS Amazon Linux Benchmark v2.0.0
+# Refer to Section(s) 5.6   Page(s) 249   CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 5.2.7 Page(s) 594-5 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_pam_wheel () {
