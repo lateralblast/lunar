@@ -1889,3 +1889,5 @@
 # Cleaned up PAM tests and added authtok test
 # 10.3.7: Thu  1 May 2025 09:48:32 AEST
 # Updated documentation and password quality tests
+# 10.3.8: Thu  1 May 2025 11:19:34 AEST
+# Updated tests and documentation

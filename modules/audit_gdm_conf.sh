@@ -9,8 +9,8 @@
 # Gnome Display Manager should not be used on a server, but if it is it
 # should be locked down to disable root access.
 #
-# Refer to Section(s) 1.8.10  Page(s) 193-4 CIS Ubuntu 22.04 Benchmaek v1.0.0
-# Refer to Section(s) 1.7.1   Page(s) 197-8 CIS Ubuntu 24.04 Benchmaek v1.0.0
+# Refer to Section(s) 1.8.10    Page(s) 193-4       CIS Ubuntu 22.04 Benchmaek v1.0.0
+# Refer to Section(s) 1.7.1,10  Page(s) 197-8,223-5 CIS Ubuntu 24.04 Benchmaek v1.0.0
 #.
 
 audit_gdm_conf () {
@@ -29,10 +29,11 @@ audit_gdm_conf () {
       verbose_message  "GDM3 Greeter User List Configuration" "check"
       check_file_value "is" "${check_file}" "disable-user-list" "eq" "true" "hash"
     fi
-    check_file="/etc/gdm3/custom.conf"
-    if [ -e "${check_file}" ]; then
-      verbose_message  "GDM3 XDMCP Configuration" "check"
-      check_file_value_with_position "is" "${check_file}" "Enable" "eq" "false" "hash" "after" "xdmcp"
-    fi
+    for check_file in /etc/gdm/custom.conf /etc/gdm3/custom.conf /etc/gdm/daemon.conf /etc/gdm3/daemon.conf; do
+      if [ -e "${check_file}" ]; then
+        verbose_message  "GDM3 XDMCP Configuration" "check"
+        check_file_value_with_position "is" "${check_file}" "Enable" "eq" "false" "hash" "after" "xdmcp"
+      fi
+    done
   fi
 }
