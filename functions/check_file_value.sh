@@ -90,8 +90,8 @@ check_file_value_with_position () {
       sed_command="sudo sed"
       echo_command="sudo echo"
     fi
-    if [ "${check_file}" = "/etc/audit/auditd.conf" ]; then
-      spacer=" ${space}r "
+    if [ "${check_file}" = "/etc/audit/auditd.conf" ] || [ "${check_file}" = "/etc/security/faillock.conf" ] || [ "${check_file}" = "/etc/security/pwquality.conf" ]; then
+      spacer=" ${spacer} "
     fi
     if [ "${audit_mode}" = 2 ]; then
       restore_file "${check_file}" "${restore_dir}"
@@ -225,9 +225,9 @@ check_file_value_with_position () {
               fi
             else
               if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ]; then
-                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${space}r\"${correct_value}\"/\" ${check_file} > ${temp_file}" "fix"
+                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\"${correct_value}\"/\" ${check_file} > ${temp_file}" "fix"
               else
-                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${space}r${correct_value}/\" ${check_file} > ${temp_file}" "fix"
+                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file}" "fix"
               fi
               verbose_message "${cat_command} ${temp_file} > ${check_file}" "fix"
             fi
@@ -255,9 +255,9 @@ check_file_value_with_position () {
                 fi
               else
                 if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ]; then
-                  eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${space}r\\"${correct_value}\\"/\" ${check_file} > ${temp_file}"
+                  eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\\"${correct_value}\\"/\" ${check_file} > ${temp_file}"
                 else
-                  eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${space}r${correct_value}/\" ${check_file} > ${temp_file}"
+                  eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file}"
                 fi
                 cat "${temp_file}" > "${check_file}"
                 if [ "${os_name}" = "SunOS" ]; then

@@ -13,7 +13,7 @@
 # Refer to Section(s) 5.3.1-2       Page(s) 238-41  CIS RHEL 7 Benchmark v2.1.0
 # Refer to Section(s) 5.3.1-2       Page(s) 220-1   CIS Amazon Linux Benchmark v2.0.0
 # Refer to Section(s) 5.3.1-4       Page(s) 232-6   CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 5.3.3.2.1-3.1 Page(s) 625-56  CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 5.3.1.1.1-3.1 Page(s) 598-656 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_system_auth () {
@@ -25,6 +25,8 @@ audit_system_auth () {
       check=1
     fi
     if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 16 ]; then
+      check_linux_package "install" "libpam-runtime"
+      check_linux_package "install" "libpam-modules"
       check=1
     fi
     if [ "${check}" -eq 1 ]; then
@@ -65,6 +67,7 @@ audit_system_auth () {
       fi
     fi
     if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 24 ]; then
+      check_linux_package "install" "libpam-pwquality"
       check_file="/etc/security/pwquality.conf"
       check_file_value  "is"  "${check_file}" "maxsequence" "eq" "3" "hash" 
       check_file_value  "is"  "${check_file}" "difok"       "eq" "2" "hash" 
@@ -72,6 +75,11 @@ audit_system_auth () {
       check_file_value  "is"  "${check_file}" "lcredit"     "eq" "0" "hash"  
       check_file_value  "not" "${check_file}" "enforcing"   "eq" "0" "hash"  
       check_append_file "${check_file}" "enforce_for_root"  "hash"
+      check_file="/etc/security/faillock.conf"
+      check_append_file "${check_file}" "even_deny_root" "hash"
+      check_file_value  "is" "${check_file}" "root_unlock_time" "eq" "60"  "hash"  
+      check_file_value  "is" "${check_file}" "unlock_time"      "eq" "900" "hash"  
+      check_file_value  "is" "${check_file}" "deny"             "eq" "5"   "hash"  
     fi
   fi
 }
