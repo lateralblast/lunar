@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 3.11,14       Page(s) 66-9        CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.2.10        Page(s) 110         CIS Ubuntu Linux 16.04 Benchmark v1.0.0
+# Refer to Section(s) 2.1.17-8      Page(s) 273-9       CIS Ubuntu Linux 24.04 Benchmark v1.0.0
 # Refer to Section(s) 3.11,14       Page(s) 79-81       CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 3.11,14       Page(s) 69-71       CIS RHEL 6 Benchmark v1.2.0
 # Refer to Section(s) 2.2.10,13     Page(s) 110,113     CIS RHEL 7 Benchmark v2.1.0
@@ -38,7 +39,7 @@ audit_apache () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      for service_name in httpd apache apache2 tomcat5 squid prixovy; do
+      for service_name in httpd apache apache2 tomcat5 squid prixovy nginx; do
         check_linux_service "${service_name}" "off"
         check_linux_package "uninstall" "${service_name}" 
       done

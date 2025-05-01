@@ -1895,3 +1895,6 @@
 # Renamed chkconfig test to make it more generic and updated documentation
 # 10.4.0: Thu  1 May 2025 12:06:10 AEST
 # Updated java test
+# 10.4.1: Thu  1 May 2025 13:35:33 AEST
+# Updated tests and documentation and add ftp client package test
+
