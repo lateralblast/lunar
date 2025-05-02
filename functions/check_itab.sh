@@ -37,7 +37,7 @@ check_itab() {
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Service \"${service_name}\" is \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            verbose_message "rmitab $( lsitab |grep \"^${service_name}\" )" "fix"
+            verbose_message "rmitab $( lsitab | grep \"^${service_name}\" )" "fix"
           else
             verbose_message "chitab \"${correct_value}\"" "fix"
           fi

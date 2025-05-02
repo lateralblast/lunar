@@ -16,10 +16,10 @@
 audit_web_sharing () {
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message   "Web sharing" "check"
-    check_file_value "is" "/etc/apache2/httpd.conf" "ServerTokens"    "space" "Prod"     "hash"
-    check_file_value "is" "/etc/apache2/httpd.conf" "ServerSignature" "space" "Off"      "hash"
-    check_file_value "is" "/etc/apache2/httpd.conf" "UserDir"         "space" "Disabled" "hash"
-    check_file_value "is" "/etc/apache2/httpd.conf" "TraceEnable"     "space" "Off"      "hash"
-    check_launchctl_service "org.apache.httpd" "off"
+    check_file_value "is"   "/etc/apache2/httpd.conf" "ServerTokens"    "space" "Prod"     "hash"
+    check_file_value "is"   "/etc/apache2/httpd.conf" "ServerSignature" "space" "Off"      "hash"
+    check_file_value "is"   "/etc/apache2/httpd.conf" "UserDir"         "space" "Disabled" "hash"
+    check_file_value "is"   "/etc/apache2/httpd.conf" "TraceEnable"     "space" "Off"      "hash"
+    check_launchctl_service "org.apache.httpd"        "off"
   fi
 }

@@ -14,7 +14,7 @@
 audit_vopied () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "VOPIE Daemon" "check"
+      verbose_message     "VOPIE Daemon"                    "check"
       check_sunos_service "svc:/network/vopied/tcp:default" "disabled"
     fi
   fi

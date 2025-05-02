@@ -15,8 +15,8 @@
 audit_aws_cf () {
   # Check Cloud Formation stacks are using SNS
   verbose_message "CloudFormation" "check"
-  stack_list=$( aws cloudformation list-stacks --region "${aws_region}" --query 'StackSummaries[].StackId' --output text )
-  for stack in ${stack_list}; do 
+  stacks=$( aws cloudformation list-stacks --region "${aws_region}" --query 'StackSummaries[].StackId' --output text )
+  for stack in ${stacks}; do 
     check=$( aws cloudformation describe-stacks --region "${aws_region}" --stack-name "${stack}" --query 'Stack[].NotificationARNs' --output text )
     stack=$( echo "$stack" | cut -f2 -d/ )
     if [ "${check}" ]; then
@@ -26,8 +26,8 @@ audit_aws_cf () {
     fi
   done
   # Check stacks have a policy
-  stack_list=$( aws cloudformation list-stacks --region "${aws_region}" --query 'StackSummaries[].StackName' --output text )
-    for stack in ${stack_list}; do 
+  stacks=$( aws cloudformation list-stacks --region "${aws_region}" --query 'StackSummaries[].StackName' --output text )
+    for stack in ${stacks}; do 
     check=$( aws cloudformation get-stack-policy --region "${aws_region}" --stack-name "${stack}" --query 'StackPolicyBody' --output text 2> /dev/null )
     if [ "${check}" ]; then
       increment_secure   "CloudFormation stack \"${stack}\" has a policy"

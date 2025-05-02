@@ -13,13 +13,13 @@ funct_audit_select () {
   audit_mode=$1
   function=$2
   check_environment
-  module_test=$( echo "${function}" |grep -c aws )
+  module_test=$( echo "${function}" | grep -c aws )
   if [ "$module_test" = "1" ]; then
     check_aws
   fi
-  suffix_test=$( echo "${function}" |grep -c "\\.sh" )
+  suffix_test=$( echo "${function}" | grep -c "\\.sh" )
   if [ "${suffix_test}" = "1" ]; then
-    function=$( echo "${function}" |cut -f1 -d. )
+    function=$( echo "${function}" | cut -f1 -d. )
   fi
   module_test=$( echo "${function}" | grep -c "full" )
   if [ "$module_test" = "0" ]; then  

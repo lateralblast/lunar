@@ -17,7 +17,7 @@ print_audit_info () {
     module="$1"
     comment_text=0
     dir_name=$( pwd )
-    check=$( echo "${module}" |grep "audit" )
+    check=$( echo "${module}" | grep "audit" )
     if [ -z "${check}" ]; then
       module="audit_${module}" 
     fi

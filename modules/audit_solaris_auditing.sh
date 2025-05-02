@@ -37,7 +37,7 @@ audit_solaris_auditing () {
             echo "0 * * * * /usr/sbin/audit -n" >> "${check_file}"
             chown root:root /var/audit
             chmod 750 /var/audit
-            pkg fix $( pkg search "${check_file}" |grep pkg |awk '{print $4}' )
+            pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
           fi
         fi
       fi

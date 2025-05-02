@@ -24,8 +24,8 @@ audit_xlogin () {
        verbose_message "XDMCP Listening"
       fi
       if [ "${os_version}" = "10" ]; then
-        check_sunos_service "svc:/application/gdm2-login"                "disabled"
-        check_sunos_service "svc:/application/graphical-login/cde-login" "disabled"
+        check_sunos_service "svc:/application/gdm2-login"                  "disabled"
+        check_sunos_service "svc:/application/graphical-login/cde-login"   "disabled"
       fi
       if [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/application/graphical_login/gdm:default" "disabled"

@@ -24,7 +24,7 @@ audit_syslog_conf () {
       if [ -f "/etc/rsyslog.conf" ]; then
         systemd_check=$(command -v systemctl 2> /dev/null )
         if [ -n "$systemd_check" ]; then
-          rsyslog_check=$( sudo systemctl |grep rsyslog |grep active |awk '{print $1}' )
+          rsyslog_check=$( sudo systemctl | grep rsyslog | grep active | awk '{print $1}' )
           if [ "$rsyslog_check" = "rsyslog.service" ]; then
             if [ -f "/etc/rsyslog.d/90-cis.conf" ]; then
               check_file="/etc/rsyslog.d/90-cis.conf"

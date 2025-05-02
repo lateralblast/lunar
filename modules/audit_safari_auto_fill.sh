@@ -16,7 +16,7 @@ audit_safari_auto_fill () {
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Safari Auto Fill" "check"
       if [ "${audit_mode}" != 2 ]; then
-        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
           for parameter in AutoFillFromAddressBook AutoFillPasswords AutoFillCreditCardData AutoFillMiscellaneousForms; do
             check_osx_defaults_user "com.apple.Safari" "${parameter}" "0" "bool" "${user_name}"

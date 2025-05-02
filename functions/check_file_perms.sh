@@ -86,10 +86,10 @@ check_file_perms () {
       fi
       verbose_message "File \"${check_file}\" to have correct permissions" "set"
       echo "${check_file},${file_perms},${file_owner}" >> "${log_file}"
-      chmod "${check_perms}" "${check_file}"
+      sudo chmod "${check_perms}" "${check_file}"
       if [ "${check_owner}" != "" ]; then
         if [ "${check_result}" != "${check_file}" ]; then
-          chown "${check_owner}:${check_group}" "${check_file}"
+          sudo chown "${check_owner}:${check_group}" "${check_file}"
         fi
       fi
     fi
@@ -108,10 +108,10 @@ check_file_perms () {
         restore_owner=$( echo "${restore_info}" | cut -f3 -d"," )
         restore_group=$( echo "${restore_info}" | cut -f4 -d"," )
         verbose_message "File \"${check_file}\" to previous permissions" "restore"
-        chmod "${restore_perms}" "${check_file}"
+        sudo chmod "${restore_perms}" "${check_file}"
         if [ "${check_owner}" != "" ]; then
           if [ "${check_result}" != "${check_file}" ]; then
-            chown "${restore_owner}:${restore_group}" "${check_file}"
+            sudo chown "${restore_owner}:${restore_group}" "${check_file}"
           fi
         fi
       fi

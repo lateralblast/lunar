@@ -21,7 +21,7 @@ check_launchctl_service () {
       required_status="disabled"
       change_status="unload"
     fi
-    check_value=$( launchctl list |grep "${launchctl_service}" | awk '{print $3}' )
+    check_value=$( launchctl list | grep "${launchctl_service}" | awk '{print $3}' )
     if [ "${check_value}" = "${launchctl_service}" ]; then
       actual_status="enabled"
     else

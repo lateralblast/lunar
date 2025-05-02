@@ -15,8 +15,8 @@
 audit_sudo_timestamp () {
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo timestamp" "check"
-    major_ver=$( sudo --version |head -1 |awk '{print $3}' |cut -f1 -d. )
-    minor_ver=$( sudo --version |head -1 |awk '{print $3}' |cut -f2 -d. )
+    major_ver=$( sudo --version | head -1 | awk '{print $3}' | cut -f1 -d. )
+    minor_ver=$( sudo --version | head -1 | awk '{print $3}' | cut -f2 -d. )
     check_sudo="0"
     if [ "$major_ver" -gt 1 ]; then
       check_sudo="1"

@@ -29,9 +29,9 @@ audit_bluetooth () {
           check_osx_defaults_user "com.apple.controlcenter.plist" "Bluetooth"              "18" "int"  "${user_name}"
         done
       fi
-      bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i power |cut -f2 -d: |sed "s/ //g" )
+      bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i power | cut -f2 -d: | sed "s/ //g" )
       if [ ! "${bt_check}" = "Off" ]; then
-        bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType |grep -i discoverable |cut -f2 -d: |sed "s/ //g" )
+        bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable | cut -f2 -d: | sed "s/ //g" )
         if [ "${bt_check}" = "Off" ]; then
           increment_secure   "Bluetooth is not discoverable"
         else

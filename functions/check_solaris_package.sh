@@ -41,7 +41,7 @@ funct_check_pkg () {
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
-      package_test=$( echo "${package_check}" |grep "ERROR" )
+      package_test=$( echo "${package_check}" | grep "ERROR" )
       if [ -z "${package_test}" ]; then
         increment_secure "Package \"${package_name}\" is already installed"
       else
@@ -56,7 +56,7 @@ funct_check_pkg () {
               pkgadd -d "${base_dir}/pkg" "${package_name}"
               package_check=$( pkginfo "$1" )
             fi
-            package_test=$( echo "${package_check}" |grep "ERROR" )
+            package_test=$( echo "${package_check}" | grep "ERROR" )
             if [ -z "${package_check}" ]; then
               verbose_message "${package_name}" >> "${log_file}" "fix"
             fi

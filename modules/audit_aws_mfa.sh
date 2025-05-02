@@ -42,11 +42,11 @@ audit_aws_mfa () {
       fi
     fi
   done
-  mfa_check=$( aws iam get-account-summary | grep "AccountMFAEnabled" | cut -f1 -d: | sed "s/ //g" | sed "s/,//g" )
-  if [ "${mfa_check}" = "1" ]; then
+  check=$( aws iam get-account-summary | grep "AccountMFAEnabled" | cut -f1 -d: | sed "s/ //g" | sed "s/,//g" )
+  if [ "${check}" = "1" ]; then
     increment_secure "The root account has MFA enabled"
-    mfa_check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep -c "root_account" )
-    if [ "${mfa_check}" = "0" ]; then
+    check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep -c "root_account" )
+    if [ "${check}" = "0" ]; then
       increment_secure   "The root account does not have a virtual MFA"
     else
       increment_insecure "The root account does not have a hardware MFA"

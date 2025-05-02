@@ -28,7 +28,7 @@ audit_logrotate () {
           else
             search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
           fi
-          check_value=$( grep "${search_string}" "${check_file}" |sed 's/ {//g' )
+          check_value=$( grep "${search_string}" "${check_file}" | sed 's/ {//g' )
           if [ "${check_value}" != "${search_string}" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Log rotate is not configured for ${search_string}"

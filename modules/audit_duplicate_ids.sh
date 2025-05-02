@@ -29,7 +29,7 @@ audit_duplicate_ids () {
     check_file="$4"
     duplicate=0
     if [ "${audit_mode}" != 2 ]; then
-      file_list=$( cut -f"$field" -d: < "${check_file}" | sort -n | uniq -c |awk '{ print $1":"$2 }' )
+      file_list=$( cut -f"$field" -d: < "${check_file}" | sort -n | uniq -c | awk '{ print $1":"$2 }' )
       for file_info in ${file_list}; do
         file_check=$( expr "${file_info}" : "[A-z,0-9]" )
         if [ "${file_check}" = 1 ]; then

@@ -17,7 +17,7 @@ audit_ad_tracking () {
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Ad Tracking" "check"
       if [ "${audit_mode}" != 2 ]; then
-        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.AdLib.plist" "allowApplePersonalizedAdvertising" "0" "bool" "${user_name}"
         done

@@ -46,4 +46,3 @@ audit_aws_rec_inspector () {
     increment_insecure "No inspector templates exist"
   fi
 }
-

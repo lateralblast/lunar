@@ -32,11 +32,11 @@ replace_file_value () {
   fi
   string_check=$( expr "${check_value}" : "\/" )
   if [ "${string_check}" = 1 ]; then
-    new_check_value=$( echo "${check_value}" |sed 's,/,\\\/,g' )
+    new_check_value=$( echo "${check_value}" | sed 's,/,\\\/,g' )
   fi
   string_check=$( expr "${correct_value}" : "\/" )
   if [ "${string_check}" = 1 ]; then
-    new_correct_value=$( echo "${correct_value}" |sed 's,/,\\\/,g' )
+    new_correct_value=$( echo "${correct_value}" | sed 's,/,\\\/,g' )
   fi
   new_check_value="${position}${new_check_value}"
   if [ "${audit_mode}" != 2 ]; then
@@ -63,7 +63,7 @@ replace_file_value () {
       if [ "${os_version}" != "11" ]; then
         pkgchk -f -n -p "${check_file}" 2> /dev/null
       else
-        pkg_info=$( pkg search "${check_file}" |grep pkg |awk '{print $4}' )
+        pkg_info=$( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
         pkg fix "${pkg_info}"
       fi
     else

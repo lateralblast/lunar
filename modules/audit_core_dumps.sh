@@ -29,7 +29,7 @@ audit_core_dumps () {
       if [ "${os_version}" != "6" ]; then
         cores_dir="/var/cores"
         check_file="/etc/coreadm.conf"
-        cores_check=$( coreadm | head -1 | awk '{print $5}' |grep "/var/cores" )
+        cores_check=$( coreadm | head -1 | awk '{print $5}' | grep "/var/cores" )
         if [ -z "${cores_check}" ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure "Cores are not restricted to a private directory"

@@ -14,16 +14,16 @@ audit_volfs () {
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Volume Management Daemons" "check"
     if [ "${os_version}" = "10" ]; then
-      check_sunos_service "svc:/system/filesystem/volfs" "disabled"
+      check_sunos_service "svc:/system/filesystem/volfs"    "disabled"
     fi
     if [ "${os_version}" = "11" ]; then
       check_sunos_service "svc:/system/filesystem/rmvolmgr" "disabled"
     fi
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      check_sunos_service "svc:/network/rpc/smserver" "disabled"
+      check_sunos_service "svc:/network/rpc/smserver"       "disabled"
     fi
     if [ "${os_version}" = "10" ]; then
-      check_sunos_service "volmgt" "disabled"
+      check_sunos_service "volmgt"                          "disabled"
     fi
   fi
 }

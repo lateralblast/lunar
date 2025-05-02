@@ -28,7 +28,7 @@ audit_mount_setuid () {
       if [ "${os_version}" = "10" ]; then
         check_file="/etc/rmmount.conf"
         if [ -f "${check_file}" ]; then
-          nosuid_check=$( grep -v "^#" "${check_file}" |grep "\-o nosuid" )
+          nosuid_check=$( grep -v "^#" "${check_file}" | grep "\-o nosuid" )
           log_file="${work_dir}/${check_file}"
           if [ -n "$nosuid_check" ]; then
             if [ "${audit_mode}" = 1 ]; then

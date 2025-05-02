@@ -20,7 +20,7 @@ audit_asset_cache () {
     if [ "${long_os_version}" -ge 1013 ]; then
       verbose_message "Asset Cache" "check"
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( /usr/bin/sudo /usr/bin/AssetCacheManagerUtil status 2>&1 |grep Activated |awk '{print $2}' )
+        check_value=$( sudo AssetCacheManagerUtil status 2>&1 | grep Activated | awk '{print $2}' )
         if [ "${check_value}" = "${asset_cache}" ]; then
           increment_secure   "Content Caching is set to \"${asset_cache}\""
         else

@@ -19,7 +19,7 @@ audit_xinetd_server () {
     check_linux_service "${service_name}" "off"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       verbose_message     "Xinetd Server Daemon" "check"
-      check_linux_package "uninstall" "${service_name}"
+      check_linux_package "uninstall"            "${service_name}"
     fi
   fi
 }

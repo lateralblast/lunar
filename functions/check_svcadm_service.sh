@@ -16,12 +16,12 @@ check_svcadm_service () {
   if [ "${os_name}" = "SunOS" ]; then
     service_name="$1"
     correct_status="$2"
-    service_exists=$( svcs -a |grep "${service_name}" | awk '{print $3}' )
+    service_exists=$( svcs -a | grep "${service_name}" | awk '{print $3}' )
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${file_header}.log"
       if [ -f "${restore_file}" ]; then
         restore_status=$( grep "^${service_name}" "${restore_file}" | cut -f2 -d"," )
-        restore_test=$( echo "${restore_status}" |grep "[A-z]" )
+        restore_test=$( echo "${restore_status}" | grep "[A-z]" )
         if [ -n "${restore_test}" ]; then
           if [ "${restore_status}" != "${service_status}" ]; then
             restore_status=$( echo "${restore_status}" | sed "s/online/enable/g" | sed "s/offline/disable/g" )

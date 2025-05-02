@@ -17,32 +17,32 @@
 audit_aws_cdn () {
   verbose_message "Cloudfront" "check"
   aws configure set preview.cloudfront true
-  cdn_list=$( aws cloudfront list-distributions --query 'DistributionList.Items[].Id' --output text | grep -v null )
-  for cdn in ${cdn_list}; do 
+  cdns=$( aws cloudfront list-distributions --query 'DistributionList.Items[].Id' --output text | grep -v null )
+  for cdn in ${cdns}; do 
     # Check Cloudfront is using WAF
-    cf_check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.WebACLId' --output text )
-    if [ "${cf_check}" ]; then
+    check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.WebACLId' --output text )
+    if [ "${check}" ]; then
       increment_secure   "Cloudfront CDN \"${cdn}\" is WAF integration enabled"
     else
       increment_insecure "Cloudfront CDN \"${cdn}\" is not WAF integration enabled"
     fi
     # Check logging is enabled
-    cf_check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.Logging.Enabled' | grep true )
-    if [ "${cf_check}" ]; then
+    check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.Logging.Enabled' | grep true )
+    if [ "${check}" ]; then
       increment_secure   "Cloudfront CDN \"${cdn}\" has logging enabled"
     else
       increment_insecure "Cloudfront CDN \"${cdn}\" does not have logging enabled"
     fi
     # check SSL protocol versions being used against deprecated ones
-    cf_check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' | grep -E "SSLv3|SSLv2" )
-    if [ ! "${cf_check}" ]; then
+    check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' | grep -E "SSLv3|SSLv2" )
+    if [ ! "${check}" ]; then
       increment_secure   "Cloudfront CDN \"${cdn}\" is not using a deprecated version of SSL"
     else
       increment_insecure "Cloudfront CDN \"${cdn}\" is using a deprecated verions of SSL"
     fi
     # check if HTTP only being used 
-    cf_check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginProtocolPolicy' | grep -E "http-only" )
-    if [ ! "${cf_check}" ]; then
+    check=$( aws cloudfront get-distribution --id "${cdn}" --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginProtocolPolicy' | grep -E "http-only" )
+    if [ ! "${check}" ]; then
       increment_secure   "Cloudfront CDN \"${cdn}\" is not using HTTP only"
     else
       increment_insecure "Cloudfront CDN \"${cdn}\" is using HTTP only"

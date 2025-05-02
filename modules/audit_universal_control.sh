@@ -18,7 +18,7 @@ audit_universal_control () {
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Universal Control" "check"
       if [ "${audit_mode}" != 2 ]; then
-        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
           for parameter in Disable DisableMagicEdges; do
             check_osx_defaults_user "com.apple.universalcontrol" "${parameter}" "1" "bool" "${user_name}"

@@ -16,7 +16,7 @@ audit_amfi () {
     if [ "${long_os_version}" -ge 1012 ]; then
       verbose_message "Apple Mobile File Integrity" "check"
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( sudo nvram -p > /dev/null 2>&1 |grep -c amfi |sed "s/ //g" )
+        check_value=$( sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed "s/ //g" )
         if [ "${check_value}" = "0" ]; then
           increment_secure   "Apple Mobile File Integrity is not \"disabled\""
         else

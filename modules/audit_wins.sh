@@ -12,7 +12,7 @@
 audit_wins () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "WINS Daemon" "check"
+      verbose_message     "WINS Daemon"               "check"
       check_sunos_service "svc:/network/wins:default" "disabled"
     fi
   fi

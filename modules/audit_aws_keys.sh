@@ -17,9 +17,9 @@
 
 audit_aws_keys () {
   verbose_message "KMS Keys" "check"
-  key_list=$( aws kms list-keys --query Keys --output text )
-  if [ "${key_list}" ]; then
-    for key in ${key_list}; do
+  keys=$( aws kms list-keys --query Keys --output text )
+  if [ "${keys}" ]; then
+    for key in ${keys}; do
       # Check key is enabled
       check=$( aws kms get-key-rotation-status --key-id "${key}" --query 'KeyMetadata' | grep Enabled | grep true )
       if [ ! "${check}" ]; then
@@ -42,8 +42,8 @@ audit_aws_keys () {
     increment_insecure "No Keys are being used"
   fi
   # Check for SSH keys
-  user_list=$( aws iam list-users --query 'Users[].UserName' --output text )
-  for user in ${user_list}; do
+  users=$( aws iam list-users --query 'Users[].UserName' --output text )
+  for user in ${users}; do
     check=$( aws iam list-ssh-public-keys --region "${aws_region}" --user-name "${user}" | grep -c Active )
     if [ "${check}" -gt 1 ]; then
       increment_insecure "User \"${user}\" does has more than one active SSH key"

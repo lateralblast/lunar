@@ -46,7 +46,7 @@ check_systemctl_service () {
   fi
   if [ "${use_systemctl}" = "yes" ]; then
     log_file="systemctl.log"
-    alias_check=$( systemctl is-enabled "${service_name}" |grep -c "alias" | sed "s/ //g" )
+    alias_check=$( systemctl is-enabled "${service_name}" | grep -c "alias" | sed "s/ //g" )
     if [ "$alias_check" = "1" ]; then
       service_name=$( systemctl status "${service_name}" | head -1 | awk '{print $2}' )
     fi
@@ -58,7 +58,7 @@ check_systemctl_service () {
       if [ "$en_status" = "1" ]; then
         actual_status="enabled"
       else
-        en_status=$( systemctl is-enabled "${service_name}" |grep -cE "disabled" | sed "s/ //g" )
+        en_status=$( systemctl is-enabled "${service_name}" | grep -cE "disabled" | sed "s/ //g" )
         if [ "$en_status" = "1" ]; then
           actual_status="disabled"
         fi

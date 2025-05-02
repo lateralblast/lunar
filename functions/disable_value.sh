@@ -33,14 +33,14 @@ disable_value () {
     else
       verbose_message "Parameter \"${parameter_name}\" in \"${check_file}\" is disabled" "check"
       if [ "${separator}" = "tab" ]; then
-        param_hyphen=$( echo "${parameter_name}" |grep "^[\-]" )
+        param_hyphen=$( echo "${parameter_name}" | grep "^[\-]" )
         if [ "${param_hyphen}" ]; then
           parameter_name="\\${parameter_name}"
         fi
         check_value=$( grep -v "^${comment_value}" "${check_file}" | grep "${parameter_name}" | uniq )
-        param_hyphen=$( echo "${parameter_name}" |grep "^[\\]" )
+        param_hyphen=$( echo "${parameter_name}" | grep "^[\\]" )
         if [ "${param_hyphen}" ]; then
-          parameter_name=$( echo "${parameter_name}" |sed "s/^[\\]//g" )
+          parameter_name=$( echo "${parameter_name}" | sed "s/^[\\]//g" )
         fi
         if [ "${check_value}" != "${parameter_name}" ]; then
           increment_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\" in ${check_file}"

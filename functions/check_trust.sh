@@ -14,7 +14,7 @@ check_trust() {
     parameter_name="$1"
     correct_value="$2"
     log_file="trustchk_${parameter_name}.log"
-    actual_value=$( trustchk -p "${parameter_name}" |cut -f2 -d= )
+    actual_value=$( trustchk -p "${parameter_name}" | cut -f2 -d= )
     policy_command="trustchk -p ${parameter_name} | cut -f2 -d= | grep ${correct_value}"
     lockdown_command="trustchk -p ${parameter_name}=${correct_value}"
     if [ "${audit_mode}" != 2 ]; then
