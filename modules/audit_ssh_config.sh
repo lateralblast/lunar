@@ -182,25 +182,4 @@ audit_ssh_config () {
       fi
     done
   fi
-  verbose_message "SSH Permissions" "check"
-  for check_dir in /etc/ssh /usr/local/etc/ssh; do
-    if [ -d "${check_dir}" ]; then
-      file_list=$( find "${check_dir}" -name "*_key" -type f )
-      for check_file in ${file_list}; do
-        check_file_perms "${check_file}" "0600" "root" "root"
-      done
-      file_list=$( find "${check_dir}" -name "*.pub" -type f )
-      for check_file in ${file_list}; do
-        check_file_perms "${check_file}" "0640" "root" "root"
-      done
-    fi
-  done
-    #
-    # Additional options:
-    # Review these options if required, eg using PAM or Kerberos/AD
-    #
-    #
-    #
-    # Enable on new machines
-    # check_file_value is ${check_file} Cipher space "aes128-ctr,aes192-ctr,aes256-ctr" hash
 }

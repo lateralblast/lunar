@@ -12,6 +12,7 @@
 full_audit_shell_services () {
   audit_issue_banner
   audit_ssh_config
+  audit_ssh_perms
   audit_remote_consoles
   audit_ssh_forwarding
   audit_remote_shell
