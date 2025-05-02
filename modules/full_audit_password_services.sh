@@ -31,4 +31,7 @@ full_audit_password_services () {
   audit_sudo_timestamp
   audit_sudo_authenticate
   audit_sudo_nopassword
+  audit_sudo_logfile
+  audit_sudo_usepty
+  audit_sudo_perms
 }

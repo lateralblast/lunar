@@ -28,7 +28,7 @@ audit_syslog_server () {
       if [ "${os_version}" -lt 5 ]; then
         check_file_value  "is" "/etc/syslog.conf" "daemon.debug" "tab" "/var/log/daemon.log" "hash"
         check_file_exists "/var/log/daemon.log" "file" "yes"
-        funct_file_perms  "/var/log/daemon.log" "600"  "root" "wheel"
+        funct_file_perms  "/var/log/daemon.log" "600"  "root" "${wheel_group}"
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then

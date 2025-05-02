@@ -25,7 +25,7 @@ audit_cron_allow () {
     if [ "${os_name}" = "FreeBSD" ]; then
       cron_base_dir="/var/cron"
       at_base_dir="/var/at"
-      cron_group="wheel"
+      cron_group="${wheel_group}"
       check_file="/etc/crontab"
       check_file_perms "${check_file}" "0640" "root" "${cron_group}"
     else

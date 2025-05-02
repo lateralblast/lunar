@@ -43,8 +43,8 @@ audit_kernel_accounting () {
         fi
       fi
     else
-      check_file_perms "/etc/security/audit_control"      "0750"  "root"  "wheel"
-      check_file_perms "/var/audit" "0750" "root" "wheel"
+      check_file_perms "/etc/security/audit_control"      "0750"  "root"  "${wheel_group}"
+      check_file_perms "/var/audit" "0750" "root" "${wheel_group}"
       check_file_value "is" "/etc/security/audit_control" "flags" "colon" "lo,ad,fd,fm,-all" "hash"
       if [ "${os_version}" -ge 14 ]; then
         check_file_value "is" "/etc/security/audit_control" "expire-after" "colon" "60d" "hash"

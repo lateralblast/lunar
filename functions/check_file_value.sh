@@ -101,7 +101,7 @@ check_file_value_with_position () {
       if [ ! -f "${check_file}" ]; then
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
-          if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ]; then
+          if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/sudoers" ]; then
             line="${parameter_name}${separator}\"${correct_value}\""
             verbose_message "echo \"${parameter_name}${separator}\"${correct_value}\" >> ${check_file}" "fix"
           else
@@ -120,7 +120,7 @@ check_file_value_with_position () {
               verbose_message "Service restart required for SSH" "notice"
             fi
             backup_file "${check_file}"
-            if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ]; then
+            if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
               echo "${parameter_name}${separator}\"${correct_value}\"" >> "${check_file}"
             else
               echo "${parameter_name}${separator}${correct_value}" >> "${check_file}"
@@ -224,7 +224,7 @@ check_file_value_with_position () {
                 fi
               fi
             else
-              if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ]; then
+              if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
                 verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\"${correct_value}\"/\" ${check_file} > ${temp_file}" "fix"
               else
                 verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file}" "fix"
@@ -254,7 +254,7 @@ check_file_value_with_position () {
                   fi
                 fi
               else
-                if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ]; then
+                if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
                   eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\\"${correct_value}\\"/\" ${check_file} > ${temp_file}"
                 else
                   eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file}"
@@ -280,5 +280,13 @@ check_file_value_with_position () {
 }
 
 check_file_value () {
-  check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "" ""
+  if [ -n "$7" ]; then
+    check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "$7" ""
+  else
+    if [ -n "$8" ]; then
+      check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8"
+    else
+      check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "" ""
+    fi
+  fi
 }

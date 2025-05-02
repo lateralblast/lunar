@@ -8,7 +8,7 @@
 #
 # Check sudo NOPASSWD
 #
-# Refer to Section(s) 5.2.5 Page(s) 592-3 CIS Ubuntu 24.04 Benchmark v1.0.0
+# Refer to Section(s) 5.2.4 Page(s) 588-9 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_sudo_nopassword () {
@@ -22,7 +22,7 @@ audit_sudo_nopassword () {
       else
         increment_secure "No NOPASSWD entry for sudo in ${check_file}"
       fi
-      check_file_perms "${check_file}" "440" "root"       "wheel" 
+      check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
     fi
     if [ -d "/etc/sudoers.d" ]; then
       file_list=$( find /etc/sudoers.d -type file )
@@ -33,7 +33,7 @@ audit_sudo_nopassword () {
         else
           increment_secure "No NOPASSWD entry for sudo in ${check_file}"
         fi
-        check_file_perms "${check_file}" "440" "root"       "wheel" 
+        check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
       done
     fi
   fi

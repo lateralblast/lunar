@@ -39,11 +39,11 @@ audit_passwd_perms () {
       check_file_perms "/etc/gshadow-" "0600" "root" "root"
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
-      check_file_perms "/etc/passwd"        "0644" "root" "wheel"
-      check_file_perms "/etc/group"         "0644" "root" "wheel"
-      check_file_perms "/etc/pwd.db_file"   "0644" "root" "wheel"
-      check_file_perms "/etc/master.passwd" "0600" "root" "wheel"
-      check_file_perms "/etc/spwd.db"       "0600" "root" "wheel"
+      check_file_perms "/etc/passwd"        "0644" "root" "${wheel_group}"
+      check_file_perms "/etc/group"         "0644" "root" "${wheel_group}"
+      check_file_perms "/etc/pwd.db_file"   "0644" "root" "${wheel_group}"
+      check_file_perms "/etc/master.passwd" "0600" "root" "${wheel_group}"
+      check_file_perms "/etc/spwd.db"       "0600" "root" "${wheel_group}"
     fi
   fi
 }

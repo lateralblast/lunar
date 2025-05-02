@@ -8,7 +8,8 @@
 #
 # Check sudo timestamp
 #
-# Refer to Section(s) 5.5 Page(s) 346-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 5.5   Page(s) 346-7 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
+# Refer to Section(s) 5.2.6 Page(s) 592-3 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_sudo_timestamp () {
@@ -36,6 +37,6 @@ audit_sudo_timestamp () {
       fi
     fi
     check_file_value_with_position "is"  "${check_file}" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
-    check_file_perms "${check_file}" "440" "root"        "wheel" 
+    check_file_perms "${check_file}" "440" "root"        "${wheel_group}" 
   fi
 }

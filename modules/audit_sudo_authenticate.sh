@@ -22,7 +22,7 @@ audit_sudo_authenticate () {
       else
         increment_secure "Re-authentication is disabled for sudo in ${check_file}"
       fi
-      check_file_perms "${check_file}" "440" "root"       "wheel" 
+      check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
     fi
     if [ -d "/etc/sudoers.d" ]; then
       file_list=$( find /etc/sudoers.d -type file )
@@ -33,7 +33,7 @@ audit_sudo_authenticate () {
         else
           increment_secure "Re-authentication is disabled for sudo in ${check_file}"
         fi
-        check_file_perms "${check_file}" "440" "root"       "wheel" 
+        check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
       done
     fi
   fi
