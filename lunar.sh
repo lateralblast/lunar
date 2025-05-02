@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.4.8
+# Version:      10.4.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -84,6 +84,15 @@ asset_cache="false"
 wifi_status="2"
 touchid_timeout="86400"
 
+# Defaults for SSH
+
+ssh_protocol="2"
+ssh_key_size="4096"
+ssh_allowusers=""
+ssh_allowgroups=""
+ssh_denyusers=""
+ssh_denygroups=""
+
 # Set up some global variables/defaults
 
 app_dir=$( dirname "$0" )
@@ -124,8 +133,6 @@ do_shell=0
 do_remote=0
 my_id=$(id -u)
 tcpd_allow="sshd"
-ssh_protocol="2"
-ssh_key_size="4096"
 do_audit=0
 do_fs=0
 audit_mode=1
