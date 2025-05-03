@@ -24,10 +24,10 @@ audit_cups () {
     for service_name in cups cups-lpd cupsrenice; do
       check_linux_service "${service_name}" "off"
     done
-    check_file_perms "/etc/init.d/cups" "0744" "root" "root"
-    check_file_perms "/etc/cups/client.conf" "0644" "root" "lp"
-    check_file_perms "/etc/cups/cupsd.conf" "0600" "lp" "sys"
-    check_file_value "is" "/etc/cups/cupsd.conf" "User"  "space" "lp"  "hash"
-    check_file_value "is" "/etc/cups/cupsd.conf" "Group" "space" "sys" "hash"
+    check_file_perms "/etc/init.d/cups"           "0744"  "root"  "root"
+    check_file_perms "/etc/cups/client.conf"      "0644"  "root"  "lp"
+    check_file_perms "/etc/cups/cupsd.conf"       "0600"  "lp"    "sys"
+    check_file_value "is" "/etc/cups/cupsd.conf"  "User"  "space" "lp"    "hash"
+    check_file_value "is" "/etc/cups/cupsd.conf"  "Group" "space" "sys"   "hash"
   fi
 }

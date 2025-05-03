@@ -26,8 +26,8 @@ audit_system_auth_password_strength () {
               verbose_message    "rm ${temp_file}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file      "${check_file}"
-              verbose_message  "Password minimum length in \"${check_file}\"" "set"
+              backup_file        "${check_file}"
+              verbose_message    "Password minimum length in \"${check_file}\"" "set"
               cp "${check_file}" "${temp_file}"
               sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' < "${temp_file}" > "${check_file}"
               if [ -f "${temp_file}" ]; then

@@ -20,10 +20,10 @@ audit_kernel_accounting () {
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         if [ -f "${check_file}" ]; then
-          verbose_message "Kernel and Process Accounting" "check"
+          verbose_message     "Kernel and Process Accounting" "check"
           check_acc=$( grep -v "^\*" "${check_file}" | grep "c2audit:audit_load" )
           if [ -z "$check_acc" ]; then
-            check_file_value "is" "${check_file}" "c2audit" "colon" "audit_load" "star"
+            check_file_value  "is" "${check_file}" "c2audit"  "colon" "audit_load"  "star"
             if [ "${audit_mode}" = 0 ]; then
               log_file="${work_dir}/bsmconv.log"
               echo "y" >> "${log_file}"
@@ -36,18 +36,18 @@ audit_kernel_accounting () {
               echo "y" | /etc/security/bsmunconv
             fi
           fi
-          check_file_value "is" "/etc/security/audit_control" "flags"   "colon" "lo,ad,cc" "hash"
-          check_file_value "is" "/etc/security/audit_control" "naflags" "colon" "lo,ad,ex" "hash"
-          check_file_value "is" "/etc/security/audit_control" "minfree" "colon"  "20"      "hash"
-          check_file_value "is" "/etc/security/audit_user"    "root"    "colon" "lo,ad:no" "hash"
+          check_file_value "is" "/etc/security/audit_control" "flags"         "colon" "lo,ad,cc" "hash"
+          check_file_value "is" "/etc/security/audit_control" "naflags"       "colon" "lo,ad,ex" "hash"
+          check_file_value "is" "/etc/security/audit_control" "minfree"       "colon"  "20"      "hash"
+          check_file_value "is" "/etc/security/audit_user"    "root"          "colon" "lo,ad:no" "hash"
         fi
       fi
     else
-      check_file_perms "/etc/security/audit_control"      "0750"  "root"  "${wheel_group}"
+      check_file_perms "/etc/security/audit_control"          "0750"  "root"  "${wheel_group}"
       check_file_perms "/var/audit" "0750" "root" "${wheel_group}"
-      check_file_value "is" "/etc/security/audit_control" "flags" "colon" "lo,ad,fd,fm,-all" "hash"
+      check_file_value "is" "/etc/security/audit_control"     "flags" "colon" "lo,ad,fd,fm,-all"  "hash"
       if [ "${os_version}" -ge 14 ]; then
-        check_file_value "is" "/etc/security/audit_control" "expire-after" "colon" "60d" "hash"
+        check_file_value "is" "/etc/security/audit_control"    "expire-after" "colon" "60d"       "hash"
       fi
     fi
   fi

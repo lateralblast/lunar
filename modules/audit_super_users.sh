@@ -37,7 +37,7 @@ audit_super_users () {
           if [ "${audit_mode}" = 0 ]; then
             backup_file "/etc/shadow"
             backup_file "/etc/passwd"
-            echo "Removing:  Account ${user_name} it UID 0"
+            echo     "Removing:  Account ${user_name} it UID 0"
             userdel "${user_name}"
           fi
         done

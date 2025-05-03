@@ -29,14 +29,14 @@ audit_mount_nodev () {
         nodev_check=$( grep -v "^#" "${check_file}" | grep -E "ext2|ext3|swap|tmpfs" | grep -v '/ ' | grep -cv '/boot' | sed "s/ //g" )
         if [ "$nodev_check" = 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Found filesystems that should be mounted nodev"
-            verbose_message    "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nodev\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
-            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            increment_insecure  "Found filesystems that should be mounted nodev"
+            verbose_message     "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nodev\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
+            verbose_message     "cat ${temp_file} > ${check_file}" "fix"
+            verbose_message     "rm ${temp_file}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Setting:   Setting nodev on filesystems"
-            backup_file     "${check_file}"
+            verbose_message     "Setting:   Setting nodev on filesystems"
+            backup_file         "${check_file}"
             awk '( $3 ~ /^ext[2,3,4]|tmpf$/ && $2 != "/" ) { $4 = $4 ",nodev" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' < "${check_file}" > "${temp_file}"
             cat "${temp_file}" > "${check_file}"
             if [ -f "${temp_file}" ]; then
@@ -48,11 +48,11 @@ audit_mount_nodev () {
             increment_secure "No filesystem that should be mounted with nodev"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            restore_file "${check_file}" "${restore_dir}"
+            restore_file  "${check_file}" "${restore_dir}"
           fi
         fi
       fi
-      check_file_perms "${check_file}" "0644" "root" "root"
+      check_file_perms    "${check_file}" "0644" "root" "root"
     fi
   fi
 }

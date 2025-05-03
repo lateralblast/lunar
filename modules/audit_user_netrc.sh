@@ -35,7 +35,7 @@ audit_user_netrc () {
     done
     if [ "${check_fail}" != 1 ]; then
       if [ "${audit_mode}" = 1 ]; then
-        increment_secure "No user netrc files exist"
+        increment_secure   "No user netrc files exist"
       else
         increment_insecure "User netrc files exist"
       fi

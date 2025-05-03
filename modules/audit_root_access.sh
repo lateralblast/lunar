@@ -19,7 +19,7 @@ audit_root_access () {
     if [ "${access_test}" = "0" ]; then
       increment_insecure "Root account is not locked"
     else
-      increment_secure "Root account is locked"
+      increment_secure   "Root account is locked"
     fi
   fi
 }

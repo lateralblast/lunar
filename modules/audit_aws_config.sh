@@ -12,7 +12,7 @@
 #.
 
 audit_aws_config () {
-  verbose_message "Config" "check"
+  verbose_message      "Config" "check"
 	check=$( aws configservice describe-configuration-recorders --region "${aws_region}" )
   if [ ! "${check}" ]; then
     increment_insecure "AWS Configuration Recorder not enabled"

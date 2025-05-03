@@ -33,24 +33,24 @@ audit_bluetooth () {
       if [ ! "${bt_check}" = "Off" ]; then
         bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable | cut -f2 -d: | sed "s/ //g" )
         if [ "${bt_check}" = "Off" ]; then
-          increment_secure   "Bluetooth is not discoverable"
+          increment_secure    "Bluetooth is not discoverable"
         else
-          increment_insecure "Bluetooth is discoverable"
+          increment_insecure  "Bluetooth is discoverable"
         fi
       else
-        increment_secure "Bluetooth is turned off"
+        increment_secure      "Bluetooth is turned off"
       fi
       defaults_check=$( defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed "s/[ ,\",\,]//g" )
       if [ "${defaults_check}" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
-        increment_secure   "Bluetooth status menu is enabled"
+        increment_secure      "Bluetooth status menu is enabled"
       else
-        increment_insecure "Bluetooth status menu is not enabled"
+        increment_insecure    "Bluetooth status menu is not enabled"
       fi
     fi
   else
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "bluez"     "off"
-      check_linux_package "uninstall" "bluez"
+      check_linux_service     "bluez"     "off"
+      check_linux_package     "uninstall" "bluez"
     fi
   fi
 }

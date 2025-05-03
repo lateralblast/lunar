@@ -37,7 +37,7 @@ audit_svccfg_value () {
     if [ "${current_value}" != "${correct_value}" ]; then
       if [ "${audit_mode}" = 1 ]; then
         increment_insecure "Service \"${service_name}\" Property \"${service_property}\" not set to \"${correct_value}\""
-        verbose_message "svccfg -s ${service_name} setprop ${service_property} = ${correct_value}" "fix"
+        verbose_message    "svccfg -s ${service_name} setprop ${service_property} = ${correct_value}" "fix"
       else
         if [ "${audit_mode}" = 0 ]; then
           verbose_message "${service_name} ${service_property} to ${correct_value}" "set"

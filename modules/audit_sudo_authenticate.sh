@@ -18,9 +18,9 @@ audit_sudo_authenticate () {
     if [ -f "${check_file}" ]; then
       auth_test=$( grep "^[^#].*\!authenticate" < "${check_file}" )
       if [ -n "${auth_test}" ]; then
-        increment_insecure "Re-authentication is not disabled for sudo in ${check_file}"
+        increment_insecure  "Re-authentication is not disabled for sudo in ${check_file}"
       else
-        increment_secure "Re-authentication is disabled for sudo in ${check_file}"
+        increment_secure    "Re-authentication is disabled for sudo in ${check_file}"
       fi
       check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
     fi
@@ -29,9 +29,9 @@ audit_sudo_authenticate () {
       for check_file in ${file_list}; do
         auth_test=$( grep "^[^#].*\!authenticate" < "${check_file}" )
         if [ -n "${auth_test}" ]; then
-          increment_insecure "Re-authentication is not disabled for sudo in ${check_file}"
+          increment_insecure  "Re-authentication is not disabled for sudo in ${check_file}"
         else
-          increment_secure "Re-authentication is disabled for sudo in ${check_file}"
+          increment_secure    "Re-authentication is disabled for sudo in ${check_file}"
         fi
         check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
       done

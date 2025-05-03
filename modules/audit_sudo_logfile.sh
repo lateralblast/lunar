@@ -16,8 +16,8 @@ audit_sudo_logfile () {
     verbose_message "Sudo logfile" "check"
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
-      check_file_value_with_position "is" "${check_file}" "Defaults logfile" "eq" "/var/log/sudo.log" "hash" "after" "# Defaults specification"
-      check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
+      check_file_value_with_position   "is"  "${check_file}" "Defaults logfile" "eq" "/var/log/sudo.log" "hash" "after" "# Defaults specification"
+      check_file_perms "${check_file}" "440" "root"          "${wheel_group}" 
     fi
   fi
 }

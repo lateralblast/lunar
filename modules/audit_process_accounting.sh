@@ -17,18 +17,18 @@ audit_process_accounting () {
     log_file="${work_dir}/acct.log"
     if [ ! -f "${check_file}" ]; then
       if [ "${audit_mode}" = 1 ]; then
-        increment_insecure "Process accounting not enabled"
+        increment_insecure  "Process accounting not enabled"
       fi
       if [ "${audit_mode}" = 0 ]; then
-        verbose_message "Process accounting to enabled" "set"
+        verbose_message     "Process accounting to enabled" "set"
         echo "disabled" > "${log_file}"
         ln -s "${init_file}" "${check_file}"
-        verbose_message "Starting Process accounting" "notice"
+        verbose_message     "Starting Process accounting" "notice"
         eval "${init_file} start > /dev/null 2>&1"
       fi
     else
       if [ "${audit_mode}" = 1 ]; then
-        increment_secure "Process accounting not enabled"
+        increment_secure    "Process accounting not enabled"
       fi
       if [ "${audit_mode}" = 2 ]; then
         log_file="${restore_dir}/acct.log"
@@ -36,8 +36,8 @@ audit_process_accounting () {
           if [ -f "${check_file}" ]; then
             rm "${check_file}"
           fi
-          verbose_message "Process accounting to disabled" "restore"
-          verbose_message "Stoping Process accounting"     "notice"
+          verbose_message   "Process accounting to disabled" "restore"
+          verbose_message   "Stoping Process accounting"     "notice"
           eval "${init_file} stop > /dev/null 2>&1"
         fi
       fi

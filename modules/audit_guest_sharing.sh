@@ -20,7 +20,7 @@ audit_guest_sharing () {
     check_osx_defaults_bool  "/Library/Preferences/com.apple.AppleFileServer"                "guestAccess"      "no"
     check_osx_defaults_bool  "/Library/Preferences/SystemConfiguration/com.apple.smb.server" "AllowGuestAccess" "no"
     if [ "${long_os_version}" -ge 1014 ]; then
-      check_sysadminctl "smbGuestAccess" "off"
+      check_sysadminctl       "smbGuestAccess" "off"
     fi
   fi
 }

@@ -12,7 +12,7 @@
 audit_tname () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "Tname Daemon" "check"
+      verbose_message     "Tname Daemon"               "check"
       check_sunos_service "svc:/network/tname:default" "disabled"
     fi
   fi

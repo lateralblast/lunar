@@ -20,7 +20,7 @@ audit_ldap_cache () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "ldap" "off"
+      check_linux_service   "ldap" "off"
     fi
   fi
 }

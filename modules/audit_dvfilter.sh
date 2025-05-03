@@ -25,12 +25,12 @@ audit_dvfilter () {
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d
         fi
         if [ "${audit_mode}" = "1" ]; then
-          increment_insecure "Dvfilter enabled"
-          verbose_message "esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d" "fix"
+          increment_insecure  "Dvfilter enabled"
+          verbose_message     "esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -d" "fix"
         fi
       else
         if [ "${audit_mode}" = "1" ]; then
-          increment_secure "Dvfilter disabled"
+          increment_secure    "Dvfilter disabled"
         fi
       fi
     else
@@ -38,7 +38,7 @@ audit_dvfilter () {
       if [ -f "${restore_file}" ]; then
         previous_value=$( cat "${restore_file}" )
         if [ "${previous_value}" != "${current_value}" ]; then
-          verbose_message "Restoring: Dvfilter to \"${previous_value}\""
+          verbose_message     "Restoring: Dvfilter to \"${previous_value}\""
           esxcli system settings advanced set -o /Net/DVFilterBindIpAddress -i "${previous_value}"
         fi
       fi

@@ -71,7 +71,7 @@ check_pwpolicy() {
         previous_value=$( cat "${log_file}" )
         if [ "${previous_value}" != "${actual_value}" ]; then
           if [ "${os_version}" -ge 12 ]; then
-            restore_command "sudo pwpolicy -setglobalpolicy ${parameter_name}=${previous_value}" "Password Policy for \"${parameter_name}\" to \"${correct_value}\""
+            restore_command   "sudo pwpolicy -setglobalpolicy ${parameter_name}=${previous_value}" "Password Policy for \"${parameter_name}\" to \"${correct_value}\""
           else
             if [ "${managed_node}" = "Error" ]; then
               restore_command "sudo pwpolicy -n /Local/Default -setglobalpolicy ${parameter_name}=${previous_value}" "Password Policy for \"${parameter_name}\" to \"${previous_value}\""

@@ -39,10 +39,10 @@ audit_pam_authtok () {
         fi
         if [ "${pam_check}" = "0" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "PAM ${pam_module} not enabled in \"${check_file}\""
-            verbose_message "sed \"s/\(^password.*pam_unix\.so\)\(.*\)/\1 ${pam_module} \2/g\" < ${check_file} > ${temp_file}" "fix"
-            verbose_message "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message "rm ${temp_file}" "fix"
+            increment_insecure  "PAM ${pam_module} not enabled in \"${check_file}\""
+            verbose_message     "sed \"s/\(^password.*pam_unix\.so\)\(.*\)/\1 ${pam_module} \2/g\" < ${check_file} > ${temp_file}" "fix"
+            verbose_message     "cat ${temp_file} > ${check_file}" "fix"
+            verbose_message     "rm ${temp_file}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file     "${check_file}"

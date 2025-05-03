@@ -22,7 +22,7 @@ check_linux_service () {
       else
         correct_status="disable"
       fi
-      check_systemctl_service "${correct_status}" "${service_name}"
+      check_systemctl_service "${correct_status}"   "${service_name}"
     else
       check_chkconfig_service "${service_name}" "3" "${correct_status}"
       check_chkconfig_service "${service_name}" "5" "${correct_status}"

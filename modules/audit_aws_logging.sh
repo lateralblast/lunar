@@ -111,7 +111,7 @@ audit_aws_logging () {
       if [ -z "${check}" ]; then
         increment_insecure "CloudTrail \"${trail}\" does not have a Last log file delivered timestamp"
       else
-        increment_secure "CloudTrail \"${trail}\" has a last log file delivered timestamp"
+        increment_secure   "CloudTrail \"${trail}\" has a last log file delivered timestamp"
       fi
       # Check CloudTrail has key enabled for bucket
       check=$( aws cloudtrail get-trail-status --region "${aws_region}" --name "${bucket}" | grep KmsKeyId )

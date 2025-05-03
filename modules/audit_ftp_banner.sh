@@ -23,16 +23,16 @@ audit_ftp_banner () {
         if [ "${audit_mode}" != 2 ]; then
           if [ "${actual_value}" != "Authorised" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure "FTP warning message isn't enabled"
-              verbose_message "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp" fix
-              verbose_message "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" /tmp/ftpd.tmp > /tmp/ftpd.msg" fix
-              verbose_message "gencat /usr/lib/nls/msg/en_US/ftpd.cat /tmp/ftpd.msg" fix
-              verbose_message "rm /tmp/ftpd.tmp /tmp/ftpd.msg" fix
+              increment_secure  "FTP warning message isn't enabled"
+              verbose_message   "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp" fix
+              verbose_message   "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" /tmp/ftpd.tmp > /tmp/ftpd.msg" fix
+              verbose_message   "gencat /usr/lib/nls/msg/en_US/ftpd.cat /tmp/ftpd.msg" fix
+              verbose_message   "rm /tmp/ftpd.tmp /tmp/ftpd.msg" fix
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${message_file}"
               dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp
-              sed "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" /tmp/ftpd.tmp > /tmp/ftpd.msg
+              sed    "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" /tmp/ftpd.tmp > /tmp/ftpd.msg
               gencat /usr/lib/nls/msg/en_US/ftpd.cat /tmp/ftpd.msg
               rm /tmp/ftpd.tmp /tmp/ftpd.msg
             fi
@@ -42,7 +42,7 @@ audit_ftp_banner () {
             fi
           fi
         else
-          restore_file "${message_file}" "${restore_dir}"
+          restore_file  "${message_file}" "${restore_dir}"
         fi
       else
         verbose_message "Package \"${package_name}\" is not installed" fix

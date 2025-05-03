@@ -28,8 +28,8 @@ audit_shell_timeout () {
             esxcli system settings advanced set -o "/UserVars/${test}" -i "${timeout}"
           fi
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Timeout value for ${test} not set to ${timeout}"
-            verbose_message    "esxcli system settings advanced set -o /UserVars/${test} -i ${timeout}" "fix"
+            increment_insecure  "Timeout value for ${test} not set to ${timeout}"
+            verbose_message     "esxcli system settings advanced set -o /UserVars/${test} -i ${timeout}" "fix"
           fi
         else
           if [ "${audit_mode}" = "1" ]; then

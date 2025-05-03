@@ -34,10 +34,10 @@ audit_solaris_auditing () {
               verbose_message "File ${check_file} to ${work_dir}${check_file}" "save"
               find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
             fi
-            echo "0 * * * * /usr/sbin/audit -n" >> "${check_file}"
+            echo  "0 * * * * /usr/sbin/audit -n" >> "${check_file}"
             chown root:root /var/audit
             chmod 750 /var/audit
-            pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
+            pkg   fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
           fi
         fi
       fi

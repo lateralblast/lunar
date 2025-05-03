@@ -36,7 +36,7 @@ audit_sudo_timestamp () {
         fi
       fi
     fi
-    check_file_value_with_position "is"  "${check_file}" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
-    check_file_perms "${check_file}" "440" "root"        "${wheel_group}" 
+    check_file_value_with_position   "is"  "${check_file}" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
+    check_file_perms "${check_file}" "440" "root"          "${wheel_group}" 
   fi
 }

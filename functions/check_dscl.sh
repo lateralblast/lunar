@@ -43,13 +43,13 @@ check_dscl () {
         increment_insecure "Parameter \"${param}\" not set to \"${value}\" in \"${file}\""
         verbose_message    "sudo dscl . -create ${file} ${param} \"${value}\"" "fix"
         if [ "${audit_mode}" = 0 ]; then
-          funct_backup_file "${dir}${file}"
-          verbose_message   "Parameter \"${param}\" to \"${value}\" in ${file}" "set"
+          funct_backup_file   "${dir}${file}"
+          verbose_message     "Parameter \"${param}\" to \"${value}\" in ${file}" "set"
           sudo dscl . -create "${file}" "${param}" "${value}"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
+          increment_secure    "Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
         fi
       fi
     else

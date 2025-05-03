@@ -26,7 +26,7 @@ audit_java () {
             increment_insecure "Java version is less than \"${minimum_value}\""
           fi
         fi
-        increment_secure   "Java not installed"
+        increment_secure "Java not installed"
       fi
     fi
   fi

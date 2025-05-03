@@ -20,41 +20,41 @@ create_nddscript () {
       if [ "${audit_mode}" = 0 ]; then
         if [ ! -f "${check_file}" ]; then
           echo "Creating:  Init script \"${check_file}\""
-          printf "#!/sbin/sh" > "${check_file}"
-          printf "case \"\$1\" in" >> "${check_file}"
-          printf "start)" >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0" >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_forwarding 0"         >> "${check_file}"
+          printf "#!/sbin/sh"       > "${check_file}"
+          printf "case \"\$1\" in"  >> "${check_file}"
+          printf "start)"           >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0"                 >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_forwarding 0"                         >> "${check_file}"
           if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-            printf "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0" >> "${check_file}"
-            printf "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0"    >> "${check_file}"
-            printf "\t/usr/sbin/ndd -set /dev/ip ip6_forwarding 0"         >> "${check_file}"
+            printf "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0"              >> "${check_file}"
+            printf "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0"                 >> "${check_file}"
+            printf "\t/usr/sbin/ndd -set /dev/ip ip6_forwarding 0"                      >> "${check_file}"
           fi
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_forward_directed_broadcasts 0"       >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q0 4096"              >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q 1024"               >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp 0"              >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp_broadcast 0"    >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_address_mask_broadcast 0" >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_multicast 0"         >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_forward_directed_broadcasts 0"        >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q0 4096"               >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q 1024"                >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp 0"               >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_timestamp_broadcast 0"     >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_address_mask_broadcast 0"  >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_multicast 0"          >> "${check_file}"
           if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-            printf "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0" >> "${check_file}"
+            printf "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0"       >> "${check_file}"
           fi
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0" >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000"    >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000"      >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1"           >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0"          >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000"             >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000"               >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1"                    >> "${check_file}"
           if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-            printf "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1" >> "${check_file}"
+            printf "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1"                 >> "${check_file}"
           fi
-          printf "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112" >> "${check_file}"
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1"    >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112"          >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1"             >> "${check_file}"
           if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-            printf "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1" >> ${check_file}
+            printf "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1"          >> ${check_file}
           fi
-          printf "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0"    >> "${check_file}"
+          printf "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0"                     >> "${check_file}"
           if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-            printf "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0" >> "${check_file}"
+            printf "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0"                  >> "${check_file}"
           fi
           printf "esac"   >> ${check_file}
           printf "exit 0" >> ${check_file}
@@ -71,12 +71,12 @@ create_nddscript () {
             verbose_message "#!/sbin/sh"      "fix"
             verbose_message "case \"\$1\" in" "fix"
             verbose_message "start)"          "fix"
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0" "fix"
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forwarding 0"         "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forward_src_routed 0"                "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forwarding 0"                        "fix"
             if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0" "fix"
-              verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0"    "fix"
-              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_forwarding 0"         "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_forward_src_routed 0"             "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_rev_src_routes 0"                "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_forwarding 0"                     "fix"
             fi
             verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_forward_directed_broadcasts 0"       "fix"
             verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max_q0 4096"              "fix"
@@ -86,23 +86,23 @@ create_nddscript () {
             verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_address_mask_broadcast 0" "fix"
             verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_multicast 0"         "fix"
             if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0" "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_respond_to_echo_multicast 0"      "fix"
             fi
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0" "fix"
-            verbose_message "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000"    "fix"
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000"      "fix"
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1"           "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_respond_to_echo_broadcast 0"         "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/arp arp_cleanup_interval 60000"            "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_ire_arp_interval 60000"              "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_ignore_redirect 1"                   "fix"
             if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1" "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_ignore_redirect 1"                "fix"
             fi
-            verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112" "fix"
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1"    "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/tcp tcp_extra_priv_ports_add 6112"         "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_strict_dst_multihoming 1"            "fix"
             if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1" "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_strict_dst_multihoming 1"         "fix"
             fi
-            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0" "fix"
+            verbose_message "\t/usr/sbin/ndd -set /dev/ip ip_send_redirects 0"                    "fix"
             if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0"         "fix"
+              verbose_message "\t/usr/sbin/ndd -set /dev/ip ip6_send_redirects 0"                 "fix"
             fi
             verbose_message "esac"   "fix"
             verbose_message "exit 0" "fix"

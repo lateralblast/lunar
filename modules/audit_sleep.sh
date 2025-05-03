@@ -45,9 +45,9 @@ audit_sleep () {
         check_pmset "hibernatemode"         "25"
         check_pmset "powernap"              "0"
       fi
-      check_pmset "destroyfvkeyonstandby" "1"
+      check_pmset   "destroyfvkeyonstandby" "1"
     else
-      check_pmset "sleep" "off"
+      check_pmset   "sleep" "off"
     fi
   fi
 }

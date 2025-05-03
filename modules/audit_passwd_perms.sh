@@ -29,14 +29,14 @@ audit_passwd_perms () {
       check_file_perms ${check_dir} 0750 root security
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_file_perms "/etc/passwd"   "0644" "root" "root"
-      check_file_perms "/etc/group"    "0644" "root" "root"
-      check_file_perms "/etc/shadow"   "0600" "root" "root"
-      check_file_perms "/etc/gshadow"  "0600" "root" "root"
-      check_file_perms "/etc/group-"   "0600" "root" "root"
-      check_file_perms "/etc/passwd-"  "0600" "root" "root"
-      check_file_perms "/etc/shadow-"  "0600" "root" "root"
-      check_file_perms "/etc/gshadow-" "0600" "root" "root"
+      check_file_perms "/etc/passwd"        "0644" "root" "root"
+      check_file_perms "/etc/group"         "0644" "root" "root"
+      check_file_perms "/etc/shadow"        "0600" "root" "root"
+      check_file_perms "/etc/gshadow"       "0600" "root" "root"
+      check_file_perms "/etc/group-"        "0600" "root" "root"
+      check_file_perms "/etc/passwd-"       "0600" "root" "root"
+      check_file_perms "/etc/shadow-"       "0600" "root" "root"
+      check_file_perms "/etc/gshadow-"      "0600" "root" "root"
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file_perms "/etc/passwd"        "0644" "root" "${wheel_group}"

@@ -37,8 +37,8 @@ audit_ipadm_value () {
       if [ "${current_value}" -ne "${correct_value}" ]; then
         command_line="ipadm set-prop -p ${ipadm_name}=${correct_value} ${ipadm_property}"
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Value of \"${ipadm_name} ${ipadm_property}\" not set to \"${correct_value}\""
-          verbose_message "${command_line}" "fix"
+          increment_insecure  "Value of \"${ipadm_name} ${ipadm_property}\" not set to \"${correct_value}\""
+          verbose_message     "${command_line}" "fix"
         else
           if [ "${audit_mode}" = 0 ]; then
             verbose_message "Value of \"${ipadm_name} ${ipadm_property}\" to \"${correct_value}\"" "set"
@@ -49,7 +49,7 @@ audit_ipadm_value () {
       else
         if [ "${audit_mode}" != 2 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Value of \"${ipadm_name} ${ipadm_property}\" already set to \"${correct_value}\""
+            increment_secure  "Value of \"${ipadm_name} ${ipadm_property}\" already set to \"${correct_value}\""
           fi
         fi
       fi

@@ -30,18 +30,18 @@ audit_inactive_users () {
           user_name=$( echo "${user_check}" | cut -f 1 -d: )
           if [ "$inactive_check" = "" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Inactive lockout not set for \"${user_name}\""
-              verbose_message "usermod -f 35 ${user_name}" "fix"
+              increment_insecure  "Inactive lockout not set for \"${user_name}\""
+              verbose_message     "usermod -f 35 ${user_name}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "File \"${check_file}\" to \"${work_dir}${check_file}\"" "save"
               find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
-              verbose_message "Inactive lockout for \"${user_name}\"" "set"
+              verbose_message     "Inactive lockout for \"${user_name}\"" "set"
               usermod -f 35 "${user_name}"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure "Inactive lockout set for user \"${user_name}\""
+              increment_secure    "Inactive lockout set for user \"${user_name}\""
             fi
           fi
         done

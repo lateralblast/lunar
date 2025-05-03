@@ -38,7 +38,7 @@ audit_aws_mfa () {
           increment_secure   "Account \"${user}\" has MFA enabled"
         fi
       else
-        increment_secure "Account \"${user}\" does not log into console"
+        increment_secure  "Account \"${user}\" does not log into console"
       fi
     fi
   done
@@ -47,12 +47,12 @@ audit_aws_mfa () {
     increment_secure "The root account has MFA enabled"
     check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep -c "root_account" )
     if [ "${check}" = "0" ]; then
-      increment_secure   "The root account does not have a virtual MFA"
+      increment_secure    "The root account does not have a virtual MFA"
     else
-      increment_insecure "The root account does not have a hardware MFA"
+      increment_insecure  "The root account does not have a hardware MFA"
     fi
   else
-    increment_insecure "The root account does not have MFA enabled"
-    increment_insecure "The root account does not a hardware MFA"
+    increment_insecure    "The root account does not have MFA enabled"
+    increment_insecure    "The root account does not a hardware MFA"
   fi
 }

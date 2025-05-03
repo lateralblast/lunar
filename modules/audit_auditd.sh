@@ -104,7 +104,7 @@ audit_auditd () {
       check_launchctl_service "com.apple.auditd" "on"
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "auditd" "on"
+      check_linux_service     "auditd" "on"
     fi
     check_file="/etc/audit/auditd.conf"
     check_file_value "is" "${check_file}" "log_group" "eq" "adm" "hash"

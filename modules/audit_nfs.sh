@@ -52,18 +52,18 @@ audit_nfs () {
         done
       fi
       if [ "${os_name}" = "FreeBSD" ]; then
-        check_file_value "is" "/etc/rc.conf" "nfs_reserved_port_only"     "eq" "YES" "hash"
-        check_file_value "is" "/etc/rc.conf" "weak_mountd_authentication" "eq" "NO"  "hash"
-        check_file_value "is" "/etc/rc.conf" "rpc_lockd_enable"           "eq" "NO"  "hash"
-        check_file_value "is" "/etc/rc.conf" "rpc_statd_enable"           "eq" "NO"  "hash"
+        check_file_value    "is" "/etc/rc.conf" "nfs_reserved_port_only"      "eq" "YES" "hash"
+        check_file_value    "is" "/etc/rc.conf" "weak_mountd_authentication"  "eq" "NO"  "hash"
+        check_file_value    "is" "/etc/rc.conf" "rpc_lockd_enable"            "eq" "NO"  "hash"
+        check_file_value    "is" "/etc/rc.conf" "rpc_statd_enable"            "eq" "NO"  "hash"
         if [ "${os_version}" -lt 5 ]; then
-          check_file_value "is" "/etc/rc.conf" "portmap_enable"       "eq" "NO" "hash"
-          check_file_value "is" "/etc/rc.conf" "nfs_server_enable"    "eq" "NO" "hash"
-          check_file_value "is" "/etc/rc.conf" "single_mountd_enable" "eq" "NO" "hash"
+          check_file_value  "is" "/etc/rc.conf" "portmap_enable"              "eq" "NO" "hash"
+          check_file_value  "is" "/etc/rc.conf" "nfs_server_enable"           "eq" "NO" "hash"
+          check_file_value  "is" "/etc/rc.conf" "single_mountd_enable"        "eq" "NO" "hash"
         else
-          check_file_value "is" "/etc/rc.conf" "rpcbind_enable"       "eq" "NO" "hash"
-          check_file_value "is" "/etc/rc.conf" "nfs_server_enable"    "eq" "NO" "hash"
-          check_file_value "is" "/etc/rc.conf" "mountd_enable"        "eq" "NO" "hash"
+          check_file_value  "is" "/etc/rc.conf" "rpcbind_enable"              "eq" "NO" "hash"
+          check_file_value  "is" "/etc/rc.conf" "nfs_server_enable"           "eq" "NO" "hash"
+          check_file_value  "is" "/etc/rc.conf" "mountd_enable"               "eq" "NO" "hash"
         fi
       fi
     fi

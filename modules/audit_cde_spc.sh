@@ -12,8 +12,8 @@
 audit_cde_spc () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "Subprocess control" "check"
-      check_sunos_service "svc:/network/cde-spc:default" "disabled"
+      verbose_message     "Subprocess control"            "check"
+      check_sunos_service "svc:/network/cde-spc:default"  "disabled"
     fi
   fi
 }

@@ -21,9 +21,9 @@ audit_auto_login() {
     if [ ! "${audit_mode}" != 2 ]; then
       defaults_check=$( defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser )
       if [ "${defaults_check}" ]; then
-        increment_insecure "Autologin enabled"
+        increment_insecure  "Autologin enabled"
       else
-        increment_secure   "Autologin disabled"
+        increment_secure    "Autologin disabled"
       fi
     fi
   fi

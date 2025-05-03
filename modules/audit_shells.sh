@@ -21,9 +21,9 @@ audit_shells () {
       else
         nologin_check=$( grep nologin < "${check_file}" | grep -cv "^#" )
         if [ "${nologin_check}" = "0" ]; then
-          increment_secure "Shell \"${check_shell}\" is not in \"${check_file}\""
+          increment_secure    "Shell \"${check_shell}\" is not in \"${check_file}\""
         else
-          increment_insecure "Shell \"${check_shell}\" is in \"${check_file}\""
+          increment_insecure  "Shell \"${check_shell}\" is in \"${check_file}\""
         fi
         check_shells=$( grep -v '^#' "${check_file}" )
         for check_shell in ${check_shells}; do
@@ -35,7 +35,7 @@ audit_shells () {
               temp_file="${temp_dir}/shells"
               backup_file "${check_file}"
               grep -v "^${check_shell}" ${check_file} > "${temp_file}"
-              cat "${temp_file}" > "${check_file}"
+              cat  "${temp_file}" > "${check_file}"
             fi
           fi
         done

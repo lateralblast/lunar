@@ -26,14 +26,14 @@ audit_kubernetes_etcd () {
     if [ "${daemon_check}" ]; then
       check_file="/etc/kubernetes/manifests/etcd.yaml"
       if [ -f "${check_file}" ]; then
-        verbose_message "Kubernetes etcd" "check"
-        check_file_perms "${check_file}" "0644" "root" "root"
-        check_file_value "is"  "${check_file}" "--client-cert-auth"      "eq" "true"  "hash"
-        check_file_value "set" "${check_file}" "--cert-file"             "eq" "na"    "hash"
-        check_file_value "set" "${check_file}" "--key-file"              "eq" "na"    "hash"
-        check_file_value "is"  "${check_file}" "--peer-client-cert-auth" "eq" "true"  "hash"
-        check_file_value "is"  "${check_file}" "--peer-auto-tls"         "eq" "false" "hash"
-        check_file_value "set" "${check_file}" "--trusted-ca-file"       "eq" "na"    "hash"
+        verbose_message   "Kubernetes etcd"     "check"
+        check_file_perms  "${check_file}"       "0644" "root" "root"
+        check_file_value  "is"  "${check_file}" "--client-cert-auth"      "eq" "true"  "hash"
+        check_file_value  "set" "${check_file}" "--cert-file"             "eq" "na"    "hash"
+        check_file_value  "set" "${check_file}" "--key-file"              "eq" "na"    "hash"
+        check_file_value  "is"  "${check_file}" "--peer-client-cert-auth" "eq" "true"  "hash"
+        check_file_value  "is"  "${check_file}" "--peer-auto-tls"         "eq" "false" "hash"
+        check_file_value  "set" "${check_file}" "--trusted-ca-file"       "eq" "na"    "hash"
       fi
     fi
   fi

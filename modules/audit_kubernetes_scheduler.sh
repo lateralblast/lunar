@@ -27,7 +27,7 @@ audit_kubernetes_scheduler () {
       verbose_message "Kubernetes scheduler" "check"
       check_file="/etc/kubernetes/manifests/kube-scheduler.yaml"
       if [ -f "${check_file}" ]; then
-        check_file_perms "${check_file}" "0644" "root" "root"
+        check_file_perms "${check_file}"      "0644"  "root" "root"
         check_file_value "is" "${check_file}" "--audit-policy-file" "eq" "/etc/kubernetes/audit-policy.yaml" "hash"
         check_file_value "is" "${check_file}" "--request-timeout"   "eq" "300s"                              "hash"
         check_file_value "is" "${check_file}" "--address"           "eq" "127.0.0.1"                         "hash"

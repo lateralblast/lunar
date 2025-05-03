@@ -42,50 +42,50 @@ audit_kernel_params () {
       check_no "nfs_use_reserved_ports" "1"
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
-      check_file_value "is" "/etc/sysctl.conf" "kern.securelevel"         "eq" "1" "hash"
-      check_file_value "is" "/etc/sysctl.conf" "net.inet.tcp.log_in_vain" "eq" "1" "hash"
-      check_file_value "is" "/etc/sysctl.conf" "net.inet.udp.log_in_vain" "eq" "1" "hash"
+      check_file_value    "is" "/etc/sysctl.conf" "kern.securelevel"            "eq"  "1" "hash"
+      check_file_value    "is" "/etc/sysctl.conf" "net.inet.tcp.log_in_vain"    "eq"  "1" "hash"
+      check_file_value    "is" "/etc/sysctl.conf" "net.inet.udp.log_in_vain"    "eq"  "1" "hash"
       if [ "${os_version}" -gt 5 ]; then
-        check_file_value "is" "/etc/sysctl.conf" "security.bsd.see_other_uids" "0" "hash"
-        check_file_value "is" "/etc/sysctl.conf" "security.bsd.see_other_gids" "0" "hash"
+        check_file_value  "is" "/etc/sysctl.conf" "security.bsd.see_other_uids" "0"   "hash"
+        check_file_value  "is" "/etc/sysctl.conf" "security.bsd.see_other_gids" "0"   "hash"
       fi
     fi
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" != "11" ]; then
         create_nddscript
         check_file="/etc/init.d/ndd-netconfig"
-        audit_ndd_value "/dev/ip" "ip_forward_src_routed" "0"
-        audit_ndd_value "/dev/ip" "ip_forwarding"         "0"
+        audit_ndd_value   "/dev/ip" "ip_forward_src_routed"                 "0"
+        audit_ndd_value   "/dev/ip" "ip_forwarding"                         "0"
         if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-          audit_ndd_value "/dev/ip"  "ip6_forward_src_routed" "0"
-          audit_ndd_value "/dev/tcp" "tcp_rev_src_routes"     "0"
-          audit_ndd_value "/dev/ip"  "ip6_forwarding"         "0"
+          audit_ndd_value "/dev/ip"  "ip6_forward_src_routed"               "0"
+          audit_ndd_value "/dev/tcp" "tcp_rev_src_routes"                   "0"
+          audit_ndd_value "/dev/ip"  "ip6_forwarding"                       "0"
         fi
-        audit_ndd_value "/dev/ip"  "ip_forward_directed_broadcasts"       "0"
-        audit_ndd_value "/dev/tcp" "tcp_conn_req_max_q0"                  "4096"
-        audit_ndd_value "/dev/tcp" "tcp_conn_req_max_q"                   "1024"
-        audit_ndd_value "/dev/ip"  "ip_respond_to_timestamp"              "0"
-        audit_ndd_value "/dev/ip"  "ip_respond_to_timestamp_broadcast"    "0"
-        audit_ndd_value "/dev/ip"  "ip_respond_to_address_mask_broadcast" "0"
-        audit_ndd_value "/dev/ip"  "ip_respond_to_echo_multicast"         "0"
+        audit_ndd_value   "/dev/ip"  "ip_forward_directed_broadcasts"       "0"
+        audit_ndd_value   "/dev/tcp" "tcp_conn_req_max_q0"                  "4096"
+        audit_ndd_value   "/dev/tcp" "tcp_conn_req_max_q"                   "1024"
+        audit_ndd_value   "/dev/ip"  "ip_respond_to_timestamp"              "0"
+        audit_ndd_value   "/dev/ip"  "ip_respond_to_timestamp_broadcast"    "0"
+        audit_ndd_value   "/dev/ip"  "ip_respond_to_address_mask_broadcast" "0"
+        audit_ndd_value   "/dev/ip"  "ip_respond_to_echo_multicast"         "0"
         if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-          audit_ndd_value "/dev/ip" "ip6_respond_to_echo_multicast" "0"
+          audit_ndd_value "/dev/ip" "ip6_respond_to_echo_multicast"         "0"
         fi
-        audit_ndd_value "/dev/ip"  "ip_respond_to_echo_broadcast" "0"
-        audit_ndd_value "/dev/arp" "arp_cleanup_interval"         "60000"
-        audit_ndd_value "/dev/ip"  "ip_ire_arp_interval"          "60000"
-        audit_ndd_value "/dev/ip"  "ip_ignore_redirect"           "1"
+        audit_ndd_value   "/dev/ip"  "ip_respond_to_echo_broadcast"         "0"
+        audit_ndd_value   "/dev/arp" "arp_cleanup_interval"                 "60000"
+        audit_ndd_value   "/dev/ip"  "ip_ire_arp_interval"                  "60000"
+        audit_ndd_value   "/dev/ip"  "ip_ignore_redirect"                   "1"
         if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-          audit_ndd_value "/dev/ip" "ip6_ignore_redirect" "1"
+          audit_ndd_value "/dev/ip"  "ip6_ignore_redirect" "1"
         fi
-        audit_ndd_value "/dev/tcp" "tcp_extra_priv_ports_add"  "6112"
-        audit_ndd_value "/dev/ip"  "ip_strict_dst_multihoming" "1"
+        audit_ndd_value   "/dev/tcp" "tcp_extra_priv_ports_add"             "6112"
+        audit_ndd_value   "/dev/ip"  "ip_strict_dst_multihoming"            "1"
         if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-          audit_ndd_value "/dev/ip" "ip6_strict_dst_multihoming" "1"
+          audit_ndd_value "/dev/ip"  "ip6_strict_dst_multihoming"           "1"
         fi
-        audit_ndd_value "/dev/ip" "ip_send_redirects" "0"
+        audit_ndd_value   "/dev/ip"  "ip_send_redirects"                    "0"
         if [ "${os_version}" = "8" ] || [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ]; then
-          audit_ndd_value "/dev/ip" "ip6_send_redirects" "0"
+          audit_ndd_value "/dev/ip"  "ip6_send_redirects"                   "0"
         fi
       fi
       if [ "${audit_mode}" = 2 ]; then

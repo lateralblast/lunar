@@ -39,9 +39,9 @@ audit_aws_rec_vpcs () {
   for tunnel in ${tunnels}; do
     check=$( aws ec2 describe-vpn-connections --region "${aws_region}" --vpc-connection-ids "${tunnel}" --query "VpnConnections[].VgwTelemetry[].Status" |grep "DOWN" )
     if [ -n "${check}" ]; then
-      increment_insecure "AWS VPC \"${vpc}\" does not have VPN tunnel redundancy"
+      increment_insecure   "AWS VPC \"${vpc}\" does not have VPN tunnel redundancy"
     else
-      increment_secure   "AWS VPC \"${vpc}\" has VPN tunnel redundancy"
+      increment_secure     "AWS VPC \"${vpc}\" has VPN tunnel redundancy"
     fi
   done
 }

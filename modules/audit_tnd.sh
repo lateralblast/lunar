@@ -12,7 +12,7 @@
 audit_tnd () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "TN Daemon" "check"
+      verbose_message     "TN Daemon"                "check"
       check_sunos_service "svc:/network/tnd:default" "disabled"
     fi
   fi

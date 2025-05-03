@@ -31,7 +31,7 @@ audit_ftp_server () {
       check_linux_package "uninstall" "vsftpd"
     fi
     if [ "${os_name}" = "Darwin" ]; then
-      check_launchctl "ftp" "off"
+      check_launchctl     "ftp" "off"
     fi
   fi
 }

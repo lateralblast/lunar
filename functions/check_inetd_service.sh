@@ -40,7 +40,7 @@ check_inetd_service () {
           increment_insecure "Service \"${service_name}\" does not have \"${parameter_name}\" set to \"${correct_status}\""
           backup_file        "${check_file}"
           if [ "${correct_status}" = "disable" ]; then
-            disable_value "${check_file}" "${service_name}" "hash"
+            disable_value    "${check_file}" "${service_name}" "hash"
           else
             :
           fi

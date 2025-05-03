@@ -25,7 +25,7 @@ audit_unconfined_daemons () {
       fi
     else
       if [ "${audit_mode}" = 1 ]; then
-        increment_secure "No unconfined daemons"
+        increment_secure   "No unconfined daemons"
       fi
     fi
   fi

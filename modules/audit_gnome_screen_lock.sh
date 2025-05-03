@@ -52,10 +52,10 @@ audit_gnome_screen_lock () {
               verbose_message "dconf update" "fix"
             fi 
             if [ "${audit_mode}" = 0 ]; then
-              echo "[org/gnome/desktop/session]"      > "${check_file}"
-              echo "idle-delay=uint32 900"           >> "${check_file}"
-              echo "[org/gnome/desktop/screensaver]" >> "${check_file}"
-              echo "lock-delay=uint32 5"             >> "${check_file}"
+              echo  "[org/gnome/desktop/session]"      > "${check_file}"
+              echo  "idle-delay=uint32 900"           >> "${check_file}"
+              echo  "[org/gnome/desktop/screensaver]" >> "${check_file}"
+              echo  "lock-delay=uint32 5"             >> "${check_file}"
               dconf update
             fi          
             if [ "${audit_mode}" = 2 ]; then

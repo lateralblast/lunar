@@ -24,9 +24,9 @@ audit_aws_vpcs () {
   for endpoint in ${endpoint_list}; do
     vpc=$( aws ec2 describe-vpc-endpoints --region "${aws_region}" --vpc-endpoint-ids "$endpoint" --query 'VpcEndpoints[].PolicyDocument' |grep Principal |grep -E "\*|{\"AWS\":\"\*\"}" )
     if [ -n "${vpc}" ]; then
-      increment_insecure "VPC \"${vpc}\" has en exposed enpoint"
+      increment_insecure    "VPC \"${vpc}\" has en exposed enpoint"
     else
-      increment_secure   "VPC \"${vpc}\" does not have an exposed endpoint"
+      increment_secure      "VPC \"${vpc}\" does not have an exposed endpoint"
     fi
   done
   # Check for VPC peering
@@ -38,11 +38,11 @@ audit_aws_vpcs () {
     for vpc in ${vpcs}; do
       check=$( aws ec2 describe-route-tables --region "${aws_region}" --filter "Name=vpc-id,Values=${vpc}" --query "RouteTables[*].{RouteTableId:RouteTableId, VpcId:VpcId, Routes:Routes,AssociatedSubnets:Associations[*].SubnetId}" | grep GatewayID | grep pcx- )
       if [ -z "${check}" ]; then
-        increment_secure   "VPC \"${vpc}\" does not have a peer as it's gateway"
+        increment_secure    "VPC \"${vpc}\" does not have a peer as it's gateway"
       else
-        increment_insecure "VPC peering is being used review VPC: \"${vpc}\""
-        verbose_message    "aws ec2 delete-route --region ${aws_region} --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" "fix"
-        verbose_message    "aws ec2 create-route --region ${aws_region} --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" "fix"
+        increment_insecure  "VPC peering is being used review VPC: \"${vpc}\""
+        verbose_message     "aws ec2 delete-route --region ${aws_region} --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" "fix"
+        verbose_message     "aws ec2 create-route --region ${aws_region} --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" "fix"
       fi
     done
   fi
@@ -55,12 +55,12 @@ audit_aws_vpcs () {
       if [ "${vpc_check}" ]; then
         active_check=$( aws ec2 describe-flow-logs --region "${aws_region}" --filter "Name=resource-id,Values=${vpc}" | grep FlowLogStatus | grep ACTIVE )
         if [ -n "${active_check}" ]; then
-          increment_secure   "VPC \"${vpc}\" has active flow logs"
+          increment_secure    "VPC \"${vpc}\" has active flow logs"
         else
-          increment_insecure "VPC \"${vpc}\" has flow logs but they are not active"
+          increment_insecure  "VPC \"${vpc}\" has flow logs but they are not active"
         fi
       else
-        increment_insecure "VPC \"${vpc}\" does not have flow logs"
+        increment_insecure    "VPC \"${vpc}\" does not have flow logs"
       fi
     done
   else

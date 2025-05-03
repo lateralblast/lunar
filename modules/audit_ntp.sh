@@ -64,34 +64,34 @@ audit_ntp () {
       fi
       if [ "${do_chrony}" -eq 1 ] && [ "${ntp_package}" = "chrony" ]; then
         old_package="systemd-timesyncd"
-        check_linux_package "uninstall"       "${old_package}"
-        check_linux_service "${old_package}"  "off"
-        check_linux_package "install"         "${ntp_package}"
-        check_linux_service "${ntp_package}"  "on"
-        check_file_value    "is"      "/etc/sysconfig/chronyd" "OPTIONS" "eq" "\"-u chrony\"" "hash"
+        check_linux_package     "uninstall"       "${old_package}"
+        check_linux_service     "${old_package}"  "off"
+        check_linux_package     "install"         "${ntp_package}"
+        check_linux_service     "${ntp_package}"  "on"
+        check_file_value        "is"      "/etc/sysconfig/chronyd" "OPTIONS" "eq" "\"-u chrony\"" "hash"
         for server_number in $( seq 0 3 ); do
           ntp_server="${server_number}.${country_suffix}.pool.ntp.org"
-          check_file_value "is" "/etc/chrony/chrony.conf" "pool" "${ntp_server} iburst" "space" "hash"
+          check_file_value      "is" "/etc/chrony/chrony.conf" "pool" "${ntp_server} iburst" "space" "hash"
         done
       else
         if [ "${ntp_package}" = "systemd-timesyncd" ]; then
           old_package="chrony"
-          check_linux_package "uninstall"       "${old_package}"
-          check_linux_service "${old_package}"  "off"
-          check_linux_package "install"         "${ntp_package}"
-          check_linux_service "${ntp_package}" "on"
+          check_linux_package   "uninstall"       "${old_package}"
+          check_linux_service   "${old_package}"  "off"
+          check_linux_package   "install"         "${ntp_package}"
+          check_linux_service   "${ntp_package}"  "on"
           comf_file="/etc/systemd/timesyncd.conf"
           ntp_server="0.${country_suffix}.pool.ntp.org"
-          check_file_value "is" "${conf_file}" "NTP" "eq" "${ntp_server}" "hash"
+          check_file_value      "is" "${conf_file}" "NTP" "eq"              "${ntp_server}" "hash"
           ntp_server="1.${country_suffix}.pool.ntp.org"
-          check_file_value "is" "${conf_file}" "FallbackNTP" "eq" "${ntp_server}" "hash"
+          check_file_value      "is" "${conf_file}" "FallbackNTP" "eq"      "${ntp_server}" "hash"
         else
-          check_linux_package "install" "ntp"
+          check_linux_package   "install" "ntp"
           if [ -f "/usr/bin/systemctl" ]; then
-            check_append_file "/usr/lib/systemd/system/ntpd.service"      "restrict default kod nomodify nopeer notrap noquery"    "hash"
-            check_append_file "/usr/lib/systemd/system/ntpd.service"      "restrict -6 default kod nomodify nopeer notrap noquery" "hash"
-            check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "OPTIONS"   "eq" "\"-u ntp:ntp -p /var/run/ntpd.pid\""   "hash"
-            check_file_value  "is" "/usr/lib/systemd/system/ntpd.service" "ExecStart" "eq" "/usr/sbin/ntpd -u ntp:ntp \$OPTIONS"   "hash"
+            check_append_file   "/usr/lib/systemd/system/ntpd.service"      "restrict default kod nomodify nopeer notrap noquery"    "hash"
+            check_append_file   "/usr/lib/systemd/system/ntpd.service"      "restrict -6 default kod nomodify nopeer notrap noquery" "hash"
+            check_file_value    "is" "/usr/lib/systemd/system/ntpd.service" "OPTIONS"   "eq" "\"-u ntp:ntp -p /var/run/ntpd.pid\""   "hash"
+            check_file_value    "is" "/usr/lib/systemd/system/ntpd.service" "ExecStart" "eq" "/usr/sbin/ntpd -u ntp:ntp \$OPTIONS"   "hash"
           else
             check_linux_service "ntp" "on"
           fi

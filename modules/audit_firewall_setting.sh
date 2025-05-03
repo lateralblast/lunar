@@ -32,21 +32,21 @@ audit_firewall_setting () {
         increment_secure   "Firewall stealth mode enabled"
       else
         increment_insecure "Firewall stealth mode is not enabled"
-        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on" "Stealth mode on"
+        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on"     "Stealth mode on"
       fi
       check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode | grep -cE "enabled|on" | sed "s/ //g" )
       if [ "${check}" = "1" ]; then
         increment_secure   "Firewall logging mode enable"
       else
         increment_insecure "Firewall logging mode is not enabled"
-        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on" "Logging mode on"
+        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on"     "Logging mode on"
       fi
       check=$( sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingopt | grep -c detail | sed "s/ //g" )
       if [ "${check}" = "1" ]; then
         increment_secure   "Firewall logging option detailed"
       else
         increment_insecure "Firewall logging option is not detailed"
-        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail" "Logging output detail"
+        lockdown_command   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail"  "Logging output detail"
       fi
     fi
   fi

@@ -37,7 +37,7 @@ audit_mob () {
         fi
       else
         if [ "${audit_mode}" = "1" ]; then
-          increment_secure "Managed Object Browser disabled"
+          increment_secure  "Managed Object Browser disabled"
         fi
       fi
     else
@@ -45,7 +45,7 @@ audit_mob () {
       if [ -f "${restore_file}" ]; then
         previous_value=$( cat "${restore_file}" )
         if [ "${previous_value}" = "enabled" ]; then
-          verbose_message "Restoring: Managed Object Browser to enabled"
+          verbose_message   "Restoring: Managed Object Browser to enabled"
           vim-cmd proxysvc/add_np_service "/mob" httpsWithRedirect /var/run/vmware/proxy-mob
         fi
       fi

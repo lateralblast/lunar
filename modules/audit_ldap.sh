@@ -23,8 +23,8 @@ audit_ldap () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_package "uninstall" "openldap-clients"
-      check_linux_package "uninstall" "ldap-utils"
+      check_linux_package   "uninstall" "openldap-clients"
+      check_linux_package   "uninstall" "ldap-utils"
     fi
   fi
 }

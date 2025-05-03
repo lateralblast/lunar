@@ -17,14 +17,14 @@ audit_ftp_umask () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Default umask for FTP Users" "check"
     if [ "${os_name}" = "AIX" ]; then
-      check_file_value "is" "/etc/inetd.conf" "/usr/sbin/ftpd space" "ftpd -l -u077" "hash"
+      check_file_value    "is" "/etc/inetd.conf"      "/usr/sbin/ftpd"  "space" "ftpd -l -u077" "hash"
     fi
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
-        check_file_value "is" "/etc/ftpd/ftpaccess" "defumask" "space" "077" "hash"
+        check_file_value  "is" "/etc/ftpd/ftpaccess"  "defumask"        "space" "077"           "hash"
       fi
       if [ "${os_version}" = "11" ]; then
-        check_file_value "is" "/etc/proftpd.conf" "Umask" "space" "027" "hash"
+        check_file_value  "is" "/etc/proftpd.conf"    "Umask"           "space" "027"           "hash"
       fi
     fi
   fi

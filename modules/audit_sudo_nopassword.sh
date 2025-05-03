@@ -20,9 +20,9 @@ audit_sudo_nopassword () {
       if [ -n "${auth_test}" ]; then
         increment_insecure "NOPASSWD entry for sudo in ${check_file}"
       else
-        increment_secure "No NOPASSWD entry for sudo in ${check_file}"
+        increment_secure   "No NOPASSWD entry for sudo in ${check_file}"
       fi
-      check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
+      check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
     fi
     if [ -d "/etc/sudoers.d" ]; then
       file_list=$( find /etc/sudoers.d -type file )
@@ -31,9 +31,9 @@ audit_sudo_nopassword () {
         if [ -n "${auth_test}" ]; then
           increment_insecure "NOPASSWD entry for sudo in ${check_file}"
         else
-          increment_secure "No NOPASSWD entry for sudo in ${check_file}"
+          increment_secure   "No NOPASSWD entry for sudo in ${check_file}"
         fi
-        check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
+        check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
       done
     fi
   fi

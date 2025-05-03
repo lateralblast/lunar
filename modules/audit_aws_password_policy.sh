@@ -22,14 +22,14 @@ audit_aws_password_policy () {
   policy=$( aws iam get-account-password-policy 2> /dev/null )
   length=$( echo "${policy}" | wc -l | sed "s/ //g" )
   if [ "${length}" = "0" ]; then
-    increment_insecure "No password policy ${exists}"
-    verbose_message "aws iam update-account-password-policy --require-uppercase-characters" "fix"
-    verbose_message "aws iam update-account-password-policy --require-lowercase-characters" "fix"
-    verbose_message "aws iam update-account-password-policy --require-symbols" "fix"
-    verbose_message "aws iam update-account-password-policy --require-numbers" "fix"
-    verbose_message "aws iam update-account-password-policy --minimum-password-length 14" "fix"
-    verbose_message "aws iam update-account-password-policy --password-reuse-prevention 24" "fix"
-    verbose_message "aws iam update-account-password-policy --max-password-age 90" "fix"
+    increment_insecure  "No password policy ${exists}"
+    verbose_message     "aws iam update-account-password-policy --require-uppercase-characters"  "fix"
+    verbose_message     "aws iam update-account-password-policy --require-lowercase-characters"  "fix"
+    verbose_message     "aws iam update-account-password-policy --require-symbols"               "fix"
+    verbose_message     "aws iam update-account-password-policy --require-numbers"               "fix"
+    verbose_message     "aws iam update-account-password-policy --minimum-password-length 14"    "fix"
+    verbose_message     "aws iam update-account-password-policy --password-reuse-prevention 24"  "fix"
+    verbose_message     "aws iam update-account-password-policy --max-password-age 90"           "fix"
   else
     check_aws_password_policy "RequireUppercaseCharacters" "true" "--require-uppercase-characters"
     check_aws_password_policy "RequireLowercaseCharacters" "true" "--require-lowercase-characters"

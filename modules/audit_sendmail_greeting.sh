@@ -52,10 +52,10 @@ audit_sendmail_greeting () {
           if [ "${audit_mode}" = 0 ]; then
             backup_file      "${check_file}"
             verbose_message  "Sendmail to have no help information" "set"
-            cp "${check_file}" "${temp_file}"
+            cp  "${check_file}" "${temp_file}"
             sed 's/^O HelpFile=/#O HelpFile=/' < "${temp_file}" > "${check_file}"
             if [ -f "${temp_file}" ]; then
-              rm  "${temp_file}"
+              rm "${temp_file}"
             fi
           fi
         else
@@ -64,7 +64,7 @@ audit_sendmail_greeting () {
           fi
         fi
       else
-        restore_file "${check_file}" "${restore_dir}"
+        restore_file   "${check_file}" "${restore_dir}"
       fi
       check_file_perms "${check_file}" "0444" "root" "root"
     fi

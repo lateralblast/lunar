@@ -19,10 +19,10 @@ audit_create_class () {
       class_check=$( grep "Security Lockdown" "${check_file}" |grep "[A-z]" )
       if [ -n "$class_check" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Audit class not enabled"
+          increment_insecure  "Audit class not enabled"
         else
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Setting:   Audit class to enabled"
+            verbose_message   "Setting:   Audit class to enabled"
             if [ ! -f "${work_dir}${check_file}" ]; then
               verbose_message "Saving:    File \"${check_file}\" to \"${work_dir}${check_file}\""
               find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null

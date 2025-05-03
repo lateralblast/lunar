@@ -22,7 +22,7 @@ audit_password_history () {
         if [ "${change_date}" -gt "${current_date}" ]; then
           increment_insecure "User ${user_name} has a last password change date in the future"
         else
-          increment_secure "User ${user_name} has a last password change date in the past"
+          increment_secure   "User ${user_name} has a last password change date in the past"
         fi
       done
     else

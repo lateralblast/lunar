@@ -117,26 +117,26 @@ audit_docker_daemon () {
       for check_file in ${tlscert_file} ${tlscacert_file} ${tlskey_file}; do
         check_file_perms "${check_file}" "400" "root" "root"
       done
-      check_dockerd     "unused"      "daemon" "insecure-registry"       ""
-      check_dockerd     "unused"      "daemon" "storage-driver"          "aufs"
-      check_dockerd     "unused"      "daemon" "net host"                ""
-      check_dockerd     "unused"      "info"   "Storage Driver"          "aufs"
-      check_dockerd     "used"        "daemon" "tlsverify"               ""
-      check_dockerd     "used"        "daemon" "tlscacert"               ""
-      check_dockerd     "used"        "daemon" "tlscert"                 ""
-      check_dockerd     "used"        "daemon" "tlskey"                  ""
-      check_dockerd     "used"        "daemon" "default-ulimit"          ""
-      check_dockerd     "used"        "daemon" "cgroup-parent"           ""
-      check_dockerd     "used"        "daemon" "userns-remap"            ""
+      check_dockerd     "unused"      "daemon" "insecure-registry"        ""
+      check_dockerd     "unused"      "daemon" "storage-driver"           "aufs"
+      check_dockerd     "unused"      "daemon" "net host"                 ""
+      check_dockerd     "unused"      "info"   "Storage Driver"           "aufs"
+      check_dockerd     "used"        "daemon" "tlsverify"                ""
+      check_dockerd     "used"        "daemon" "tlscacert"                ""
+      check_dockerd     "used"        "daemon" "tlscert"                  ""
+      check_dockerd     "used"        "daemon" "tlskey"                   ""
+      check_dockerd     "used"        "daemon" "default-ulimit"           ""
+      check_dockerd     "used"        "daemon" "cgroup-parent"            ""
+      check_dockerd     "used"        "daemon" "userns-remap"             ""
       check_file_exists "/etc/subuid" "yes"
       check_file_exists "/etc/subgid" "yes"
       check_dockerd     "unused"      "daemon" "storage-opt"
-      check_dockerd     "used"        "daemon" "authorization-plugin"    ""
-      check_dockerd     "used"        "daemon" "disable-legacy-registry" ""
-      check_dockerd     "used"        "daemon" "live-restore"            ""
-      check_dockerd     "used"        "daemon" "userland-proxy"          "false"
-      check_dockerd     "used"        "daemon" "seccomp-profile"         ""
-      check_dockerd     "unused"      "daemon" "experimental"            ""
+      check_dockerd     "used"        "daemon" "authorization-plugin"     ""
+      check_dockerd     "used"        "daemon" "disable-legacy-registry"  ""
+      check_dockerd     "used"        "daemon" "live-restore"             ""
+      check_dockerd     "used"        "daemon" "userland-proxy"           "false"
+      check_dockerd     "used"        "daemon" "seccomp-profile"          ""
+      check_dockerd     "unused"      "daemon" "experimental"             ""
       if [ "${audit_mode}" != 2 ]; then
         check=$( docker swarm unlock-key 2> /dev/null )
         if [ "${check}" = "no unlock key is set" ]; then
@@ -144,12 +144,12 @@ audit_docker_daemon () {
         else
           increment_secure   "Docker swarm unlock key is not set or swarm is not running"
         fi
-        check_dockerd "notequal" "config" "Memory"             "0"
-        check_dockerd "notequal" "config" "CpuShares"          "0"
-        check_dockerd "notequal" "config" "CpuShares"          "1024"
-        check_dockerd "notequal" "config" "RestartPolicy.Name" "always"
-        check_dockerd "equal"    "config" "RestartPolicy.Name" "on-failure"
-        check_dockerd "equal"    "config" "MaximumRetryCount"  "5"
+        check_dockerd   "notequal"    "config" "Memory"                   "0"
+        check_dockerd   "notequal"    "config" "CpuShares"                "0"
+        check_dockerd   "notequal"    "config" "CpuShares"                "1024"
+        check_dockerd   "notequal"    "config" "RestartPolicy.Name"       "always"
+        check_dockerd   "equal"       "config" "RestartPolicy.Name"       "on-failure"
+        check_dockerd   "equal"       "config" "MaximumRetryCount"        "5"
       fi
     fi
   fi

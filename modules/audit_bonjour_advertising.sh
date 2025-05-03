@@ -42,10 +42,10 @@ audit_bonjour_advertising() {
         fi 
         if [ -n "$multicast_test" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Bonjour Multicast Advertising enabled"
-            verbose_message    "sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | < ${check_file} | tr X '\n' > ${temp_file}" "fix"
-            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            increment_insecure  "Bonjour Multicast Advertising enabled"
+            verbose_message     "sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | < ${check_file} | tr X '\n' > ${temp_file}" "fix"
+            verbose_message     "cat ${temp_file} > ${check_file}" "fix"
+            verbose_message     "rm ${temp_file}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file "${check_file}"
@@ -57,14 +57,14 @@ audit_bonjour_advertising() {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure   "Bonjour Multicast Advertising disabled"
+            increment_secure    "Bonjour Multicast Advertising disabled"
           fi
         fi
       fi
     fi
     if [ "$osx_mdns_enable" != "yes" ]; then
-      check_launchctl_service "com.apple.mDNSResponder"       "off"
-      check_launchctl_service "com.apple.mDNSResponderHelper" "off"
+      check_launchctl_service   "com.apple.mDNSResponder"       "off"
+      check_launchctl_service   "com.apple.mDNSResponderHelper" "off"
     fi
   fi
 }

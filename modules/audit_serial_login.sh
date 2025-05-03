@@ -43,7 +43,7 @@ audit_serial_login () {
               verbose_message    "chitab \"${new_value}\"" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              echo "${actual_value}" > "${log_file}"
+              echo   "${actual_value}" > "${log_file}"
               chitab "${new_value} ${tty_name}"
             fi
           else

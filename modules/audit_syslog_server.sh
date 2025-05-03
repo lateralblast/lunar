@@ -26,16 +26,16 @@ audit_syslog_server () {
     verbose_message "Syslog Daemon" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
       if [ "${os_version}" -lt 5 ]; then
-        check_file_value  "is" "/etc/syslog.conf" "daemon.debug" "tab" "/var/log/daemon.log" "hash"
-        check_file_exists "/var/log/daemon.log" "file" "yes"
-        funct_file_perms  "/var/log/daemon.log" "600"  "root" "${wheel_group}"
+        check_file_value  "is" "/etc/syslog.conf" "daemon.debug" "tab"  "/var/log/daemon.log" "hash"
+        check_file_exists "/var/log/daemon.log"   "file"         "yes"
+        funct_file_perms  "/var/log/daemon.log"   "600"          "root" "${wheel_group}"
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
       if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
         check_linux_package "install" "systemd-journal-remote"
         if [ "${syslog_server}" != "" ]; then
-          check_file_value "is" "/etc/systemd/journal-upload.conf" "URL" "eq" "${syslog_server}" "hash"
+          check_file_value "is" "/etc/systemd/journal-upload.conf"  "URL" "eq" "${syslog_server}" "hash"
         fi
         check_file_value    "is" "/etc/systemd/journal-upload.conf" "ServerKeyFile"           "eq" "/etc/ssl/private/journal-upload.pem" "hash"
         check_file_value    "is" "/etc/systemd/journal-upload.conf" "ServerCertificateFile"   "eq" "/etc/ssl/certs/journal-upload.pem"   "hash"
@@ -94,26 +94,26 @@ audit_syslog_server () {
       else
         if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "SuSE" ] || [ "${os_vendor}" = "Amazon" ]; then
           if [ "${os_version}" -lt 4 ]; then
-            check_file_value    "is" "${conf_file}" "*.emerg"                 "tab" ":omusrmsg:*"         "hash"
-            check_file_value    "is" "${conf_file}" "mail.*"                  "tab" "/var/log/mail"       "hash"
-            check_file_value    "is" "${conf_file}" "cron.*"                  "tab" "/var/log/cron"       "hash"
-            check_file_value    "is" "${conf_file}" "*.crit"                  "tab" "/var/log/warn"       "hash"
-            check_file_value    "is" "${conf_file}" "kern.*"                  "tab" "/var/log/kern.log"   "hash"
-            check_file_value    "is" "${conf_file}" "daemon.*"                "tab" "/var/log/daemon.log" "hash"
-            check_file_value    "is" "${conf_file}" "syslog.*"                "tab" "/var/log/syslog"     "hash"
-            check_file_value    "is" "${conf_file}" "auth,user.*"             "tab" "/var/log/auth.log"   "hash"
-            check_file_value    "is" "${conf_file}" "auth,authpriv.*"         "tab" "/var/log/secure"     "hash"
-            check_file_value    "is" "${conf_file}" "*.=warning;*.=err"       "tab" "/var/log/warn"       "hash"
-            check_file_value    "is" "${conf_file}" "*.*;mail.none;news.none" "tab" "/var/log/messages"   "hash"
-            check_file_value    "is" "${conf_file}" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/localmessages" "hash"
-            funct_file_perms    "${conf_file}"      "0600" "root" "root"
+            check_file_value   "is" "${conf_file}" "*.emerg"                 "tab" ":omusrmsg:*"         "hash"
+            check_file_value   "is" "${conf_file}" "mail.*"                  "tab" "/var/log/mail"       "hash"
+            check_file_value   "is" "${conf_file}" "cron.*"                  "tab" "/var/log/cron"       "hash"
+            check_file_value   "is" "${conf_file}" "*.crit"                  "tab" "/var/log/warn"       "hash"
+            check_file_value   "is" "${conf_file}" "kern.*"                  "tab" "/var/log/kern.log"   "hash"
+            check_file_value   "is" "${conf_file}" "daemon.*"                "tab" "/var/log/daemon.log" "hash"
+            check_file_value   "is" "${conf_file}" "syslog.*"                "tab" "/var/log/syslog"     "hash"
+            check_file_value   "is" "${conf_file}" "auth,user.*"             "tab" "/var/log/auth.log"   "hash"
+            check_file_value   "is" "${conf_file}" "auth,authpriv.*"         "tab" "/var/log/secure"     "hash"
+            check_file_value   "is" "${conf_file}" "*.=warning;*.=err"       "tab" "/var/log/warn"       "hash"
+            check_file_value   "is" "${conf_file}" "*.*;mail.none;news.none" "tab" "/var/log/messages"   "hash"
+            check_file_value   "is" "${conf_file}" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/localmessages" "hash"
+            funct_file_perms   "${conf_file}"      "0600" "root" "root"
             if [ "${audit_mode}" != 2 ]; then
               remote_check=$( grep -v '#' "${check_file}" | grep "*.* @@" | grep -v localhost | grep -c "[A-Z]|[a-z]" )
               if [ "${remote_check}" != "1" ]; then
                 if [ "${audit_mode}" = 1 ] || [ "${audit_mode}" = 0 ]; then
                   increment_insecure "Rsyslog is not sending messages to a remote server"
-                  verbose_message "Add a server entry to ${check_file}, eg:" "fix"
-                  verbose_message "*.* @@loghost.example.com" "fix"
+                  verbose_message    "Add a server entry to ${check_file}, eg:" "fix"
+                  verbose_message    "*.* @@loghost.example.com" "fix"
                 fi
               else
                 increment_secure "Rsyslog is sending messages to a remote server"
@@ -126,9 +126,9 @@ audit_syslog_server () {
       if [ -f "${conf_file}" ]; then
         server_check=$( grep -E "imtcp|imudp" < "${conf_file}" | grep -cv "^#" | sed "s/ //g" )
         if [ "${serial_check}" = "0" ]; then
-          increment_secure "Rsyslog is not running in server mode"
+          increment_secure    "Rsyslog is not running in server mode"
         else
-          increment_insecure "Rsyslog is running in server mode"
+          increment_insecure  "Rsyslog is running in server mode"
         fi
         check_file_value "is" "${conf_file}" "\$FileCreateMode" "space" "0640" "hash"
       fi

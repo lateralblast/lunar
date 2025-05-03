@@ -27,8 +27,8 @@ audit_system_auth_nullok () {
               verbose_message    "rm ${temp_file}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file      "${check_file}"
-              verbose_message  "Removing \"nullok\" entries from \"${check_file}\"" "set"
+              backup_file        "${check_file}"
+              verbose_message    "Removing \"nullok\" entries from \"${check_file}\"" "set"
               cp "${check_file}" "${temp_file}"
               sed 's/ nullok//' < "${temp_file}" > "${check_file}"
               if [ -f "${temp_file}" ]; then

@@ -14,9 +14,9 @@
 audit_encryption_kit () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message       "Encryption Toolkit" "check"
-      check_solaris_package "SUNWcry"
-      check_solaris_package "SUNWcryr"
+      verbose_message         "Encryption Toolkit" "check"
+      check_solaris_package   "SUNWcry"
+      check_solaris_package   "SUNWcryr"
       if [ "${os_update}" -le 4 ]; then
         check_solaris_package "SUNWcryman"
       fi

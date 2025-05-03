@@ -13,7 +13,7 @@ audit_login_records () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message    "Login Records" "check"
-      audit_logadm_value "loginlog" "none"
+      audit_logadm_value "loginlog"      "none"
     fi
   fi
 }

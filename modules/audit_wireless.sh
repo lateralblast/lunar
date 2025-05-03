@@ -29,14 +29,14 @@ audit_wireless () {
       else
         check=$( command -v nmcli 2> /dev/null | sed "s/ //g" )
         if [ "${check}" = "1" ]; then
-          check=$(nmcli radio all |grep -c enabled )
+          check=$(nmcli radio all | grep -c enabled )
         else
           check=$(find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
         fi
         answer="0"
       fi
       if [ "${check}" = "$answer" ]; then
-        increment_secure "Wireless status menu is enabled"
+        increment_secure   "Wireless status menu is enabled"
       else
         increment_insecure "Wireless status menu is not enabled"
       fi

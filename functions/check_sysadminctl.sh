@@ -42,9 +42,9 @@ check_sysadminctl () {
         increment_insecure "Parameter \"${param}\" not set to \"${value}\""
         verbose_message    "sudo sysadminctl -${param} ${value}" "fix"
         if [ "${audit_mode}" = 0 ]; then
-          backup_file    "${dir}${file}"
-          verbose_message "Parameter \"${param}\" to \"${value}\"" "set"
-          verbose_message "sudo sysadminctl -${param} ${value}"
+          backup_file      "${dir}${file}"
+          verbose_message  "Parameter \"${param}\" to \"${value}\"" "set"
+          verbose_message  "sudo sysadminctl -${param} ${value}"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then

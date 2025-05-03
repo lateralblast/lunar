@@ -14,7 +14,7 @@
 audit_cde_ttdb () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "CDE ToolTalk Database Server" "check"
+      verbose_message     "CDE ToolTalk Database Server"        "check"
       check_sunos_service "svc:/network/rpc/cde-ttdbserver:tcp" "disabled"
     fi
   fi

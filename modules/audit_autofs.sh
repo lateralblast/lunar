@@ -26,7 +26,7 @@ audit_autofs () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "autofs" "off"
+      check_linux_service   "autofs" "off"
     fi
   fi
 }

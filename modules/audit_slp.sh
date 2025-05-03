@@ -12,8 +12,8 @@
 audit_slp () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "SLP Daemon" "check"
-      check_sunos_service "svc:/network/slp:default" "disabled"
+      verbose_message     "SLP Daemon"                "check"
+      check_sunos_service "svc:/network/slp:default"  "disabled"
     fi
   fi
 }

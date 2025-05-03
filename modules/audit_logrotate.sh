@@ -38,9 +38,9 @@ audit_logrotate () {
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${check_file}"
-              echo "Removing:  Configuring logrotate"
-              sed "s,.*{,${search_string} {," "${check_file}" > "${temp_file}"
-              cat "${temp_file}" > "${check_file}"
+              echo  "Removing:  Configuring logrotate"
+              sed   "s,.*{,${search_string} {," "${check_file}" > "${temp_file}"
+              cat   "${temp_file}" > "${check_file}"
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi

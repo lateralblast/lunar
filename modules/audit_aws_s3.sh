@@ -20,9 +20,9 @@ audit_aws_s3 () {
     for user in http://acs.amazonaws.com/groups/global/AllUsers http://acs.amazonaws.com/groups/global/AuthenticatedUsers; do
       grants=$( aws s3api get-bucket-acl --region "${aws_region}" --bucket "${bucket}" | grep URI | grep "${user}" )
       if [ -n "${grants}" ]; then
-        increment_insecure "Bucket \"${bucket}\" grants access to Principal \"${user}\""
+        increment_insecure  "Bucket \"${bucket}\" grants access to Principal \"${user}\""
       else
-        increment_secure   "Bucket \"${bucket}\" does not grant access to Principal \"${user}\""
+        increment_secure    "Bucket \"${bucket}\" does not grant access to Principal \"${user}\""
       fi
     done
     check=$( aws s3api get-bucket-logging --region "${aws_region}" --bucket "${bucket}" )

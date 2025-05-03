@@ -115,10 +115,10 @@ audit_cron_allow () {
     check_file_perms "${check_file}" "0640" "root" "root"
     if [ "${os_name}" = "Linux" ]; then
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
-        check_file_perms "${dir_name}" "0700" "root" "root"
+        check_file_perms "${dir_name}"    "0700" "root" "root"
       done
       for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
-        check_file_perms "${check_file}" "0600" "root" "root"
+        check_file_perms "${check_file}"  "0600" "root" "root"
       done
     fi
   fi

@@ -12,7 +12,7 @@
 audit_ocfserv () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "OCF Service" "check"
+      verbose_message     "OCF Service"                      "check"
       check_sunos_service "svc:/network/rpc/ocfserv:default" "disabled"
     fi
   fi

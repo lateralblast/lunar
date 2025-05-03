@@ -62,15 +62,15 @@ audit_docker_users () {
               lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
               if [ "${lock_test}" = "${user_name}" ]; then
                 if [ "${audit_mode}" = 1 ]; then
-                  increment_insecure "User \"${user_name}\" is in group \"${docker_group}\" has and ID greater than \"${max_super_user_id}\" and their account is not locked"
+                  increment_insecure  "User \"${user_name}\" is in group \"${docker_group}\" has and ID greater than \"${max_super_user_id}\" and their account is not locked"
                 fi
                 if [ "${audit_mode}" = 0 ]; then
-                  backup_file     "${check_file}"
-                  verbose_message "User \"${user_name}\" to locked" "set"
+                  backup_file         "${check_file}"
+                  verbose_message     "User \"${user_name}\" to locked" "set"
                   passwd -l "${user_name}"
                 fi
               else
-                increment_secure "User \"${user_name}\" in group \"${docker_group}\" has an id less than \"${max_super_user_id}\" and their account is locked"
+                increment_secure  "User \"${user_name}\" in group \"${docker_group}\" has an id less than \"${max_super_user_id}\" and their account is locked"
               fi
             fi
           fi

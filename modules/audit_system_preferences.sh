@@ -19,7 +19,7 @@ audit_system_preferences () {
       if [ "${check}" ]; then
         increment_insecure "An Administrator password is not required to access system-wide preferences"
       else
-        increment_secure "An Administrator password is required to access system-wide preferences"
+        increment_secure   "An Administrator password is required to access system-wide preferences"
       fi
     fi
   fi

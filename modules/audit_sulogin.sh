@@ -74,7 +74,7 @@ audit_sulogin () {
             increment_secure "Single usermode requires authentication"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            restore_file "${check_file}" "${restore_dir}"
+            restore_file   "${check_file}" "${restore_dir}"
           fi
           check_file_perms "${check_file}" "0600" "root" "root"
         fi
@@ -83,7 +83,7 @@ audit_sulogin () {
         check_file_value "is" "/etc/sysconfig/init" "PROMPT" "eq"   "no"            "hash"
         check_file_perms "/etc/sysconfig/init"      "0600"   "root" "root"
       fi
-      check_file_value "is" "/etc/sysconfig/boot" "PROMPT_FOR_CONFIRM" "eq" "no" "hash"
+      check_file_value   "is" "/etc/sysconfig/boot" "PROMPT_FOR_CONFIRM" "eq" "no" "hash"
     fi
   fi
 }

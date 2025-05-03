@@ -19,8 +19,8 @@ audit_talk_server () {
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       verbose_message     "Talk Server Daemon" "check"
-      check_linux_service "ntalk"     "off"
-      check_linux_package "uninstall" "talk-server"
+      check_linux_service "ntalk"              "off"
+      check_linux_package "uninstall"          "talk-server"
     fi
   fi
 }

@@ -26,8 +26,8 @@ audit_kubernetes_kubelet () {
     if [ "${daemon_check}" ]; then
       check_file="/etc/systemd/system/kubelet.service.d/10-kubeadm.conf"
       if [ -f "${check_file}" ]; then
-        verbose_message  "Kubernetes kubelet" "check"
-        check_file_perms "${check_file}" "0755" "root" "root"
+        verbose_message  "Kubernetes kubelet"   "check"
+        check_file_perms "${check_file}"        "0755" "root" "root"
         check_file_value "is"  "${check_file}"  "KUBELET_SYSTEM_PODS_ARGS" "eq" "--anonymous-auth=false"                 "hash"
         check_file_value "is"  "${check_file}"  "KUBELET_AUTHZ_ARGS"       "eq" "--authorization-mode=Webhook"           "hash"
         check_file_value "is"  "${check_file}"  "KUBELET_AUTHZ_ARGS"       "eq" "--client-ca-file=[A-Z,a-z]"             "hash"

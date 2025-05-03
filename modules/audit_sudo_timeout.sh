@@ -19,8 +19,8 @@ audit_sudo_timeout () {
     verbose_message "Sudo timeout" "check"
     for check_file in /etc/sudoers /etc/sudoers.d/sudoers_timeout; do
       if [ -f "${check_file}" ]; then
-        check_file_value_with_position "is" "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash" "after" "# Defaults specification"
-        check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
+        check_file_value_with_position   "is"  "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash" "after" "# Defaults specification"
+        check_file_perms "${check_file}" "440" "root"          "${wheel_group}" 
       fi
     done
   fi

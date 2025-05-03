@@ -24,8 +24,8 @@ audit_eeprom_security () {
       if [ "${eeprom_check}" = "none" ]; then
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "EEPROM password is not enabled"
-          verbose_message    "eeprom security-mode=command" "fix"
-          verbose_message    "eeprom security-#badlogins=0" "fix"
+          verbose_message    "eeprom security-mode=command"   "fix"
+          verbose_message    "eeprom security-#badlogins=0"   "fix"
         fi
         if [ "${audit_mode}" = 0 ]; then
           eeprom security-mode=command
@@ -33,7 +33,7 @@ audit_eeprom_security () {
         fi
       else
         if [ "${audit_mode}" = 1 ];then
-          increment_secure "EEPROM password is enabled"
+          increment_secure   "EEPROM password is enabled"
         fi
       fi
     fi

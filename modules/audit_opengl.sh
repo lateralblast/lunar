@@ -12,7 +12,7 @@
 audit_opengl () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "OpenGL" "check"
+      verbose_message     "OpenGL"                                     "check"
       check_sunos_service "svc:/application/opengl/ogl-select:default" "disabled"
     fi
   fi

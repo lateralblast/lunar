@@ -13,10 +13,10 @@
 audit_service_tags () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "Service Tags Daemons" "check"
-      check_sunos_service "svc:/network/stdiscover:default"  "disabled"
-      check_sunos_service "svc:/network/stlisten:default"    "disabled"
-      check_sunos_service "svc:/application/stosreg:default" "disabled"
+      verbose_message     "Service Tags Daemons"              "check"
+      check_sunos_service "svc:/network/stdiscover:default"   "disabled"
+      check_sunos_service "svc:/network/stlisten:default"     "disabled"
+      check_sunos_service "svc:/application/stosreg:default"  "disabled"
     fi
   fi
 }

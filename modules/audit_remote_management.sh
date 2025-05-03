@@ -19,17 +19,17 @@ audit_remote_management () {
     if [ "${audit_mode}" != 2 ]; then
       actual_value=$( launchctl list |awk '{print $3}' |grep -c ARDAgent |sed "s/ //g" )
       if [ "${actual_value}" = "1" ]; then
-        increment_insecure "Remote Management is enabled"
-        verbose_message    "Open System Preferences"   "fix"
-        verbose_message    "Select Sharing"            "fix"
-        verbose_message    "Uncheck Remote Management" "fix"
+        increment_insecure  "Remote Management is enabled"
+        verbose_message     "Open System Preferences"     "fix"
+        verbose_message     "Select Sharing"              "fix"
+        verbose_message     "Uncheck Remote Management"   "fix"
       else
-        increment_secure "Remote Management is disabled"
+        increment_secure    "Remote Management is disabled"
       fi
     else
-      verbose_message "Open System Preferences"   "fix"
-      verbose_message "Select Sharing"            "fix"
-      verbose_message "Uncheck Remote Management" "fix"
+      verbose_message       "Open System Preferences"     "fix"
+      verbose_message       "Select Sharing"              "fix"
+      verbose_message       "Uncheck Remote Management"   "fix"
     fi
   fi
 }

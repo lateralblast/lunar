@@ -34,10 +34,10 @@ audit_file_vault () {
         fi
       fi
     else
-      verbose_message "Open System Preferences"   "fix"
-      verbose_message "Select Security & Privacy" "fix"
-      verbose_message "Select FileVault"          "fix"
-      verbose_message "Select Turn on FileVault"  "fix"
+      verbose_message     "Open System Preferences"   "fix"
+      verbose_message     "Select Security & Privacy" "fix"
+      verbose_message     "Select FileVault"          "fix"
+      verbose_message     "Select Turn on FileVault"  "fix"
     fi
   fi
 }

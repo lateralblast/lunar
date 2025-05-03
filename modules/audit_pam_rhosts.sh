@@ -96,10 +96,10 @@ audit_pam_rhosts () {
             fi
             if [ "${pam_check}" = "1" ]; then
               if [ "${audit_mode}" = 1 ]; then
-                increment_insecure "Rhost authentication enabled in \"${check_file}\""
-                verbose_message "sed -e 's/^.*rhosts_auth/#&/' < ${check_file} > ${temp_file}" "fix"
-                verbose_message "cat ${temp_file} > ${check_file}" "fix"
-                verbose_message "rm ${temp_file}" "fix"
+                increment_insecure  "Rhost authentication enabled in \"${check_file}\""
+                verbose_message     "sed -e 's/^.*rhosts_auth/#&/' < ${check_file} > ${temp_file}" "fix"
+                verbose_message     "cat ${temp_file} > ${check_file}" "fix"
+                verbose_message     "rm ${temp_file}" "fix"
               fi
               if [ "${audit_mode}" = 0 ]; then
                 backup_file     "${check_file}"

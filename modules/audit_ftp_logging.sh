@@ -53,15 +53,15 @@ audit_ftp_logging () {
     if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/vsftpd.conf"
       if [ -f "${check_file}" ]; then
-        check_file_value "is" "${check_file}" "log_ftp_protocol" "eq" "YES" "hash"
-        check_file_value "is" "${check_file}" "ftpd_banner"      "eq" "Authorized users only. All activity may be monitored and reported." "hash"
-        check_file_perms      "${check_file}" "0600" "root"      "root"
+        check_file_value "is" "${check_file}" "log_ftp_protocol"  "eq" "YES" "hash"
+        check_file_value "is" "${check_file}" "ftpd_banner"       "eq" "Authorized users only. All activity may be monitored and reported." "hash"
+        check_file_perms      "${check_file}" "0600" "root" "root"
       fi
       check_file="/etc/vsftpd/vsftpd.conf"
       if [ -f "${check_file}" ]; then
-        check_file_value "is" "${check_file}" "log_ftp_protocol" "eq" "YES" "hash"
-        check_file_value "is" "${check_file}" "ftpd_banner"      "eq" "Authorized users only. All activity may be monitored and reported." "hash"
-        check_file_perms      "${check_file}" "0600" "root"      "root"
+        check_file_value "is" "${check_file}" "log_ftp_protocol"  "eq" "YES" "hash"
+        check_file_value "is" "${check_file}" "ftpd_banner"       "eq" "Authorized users only. All activity may be monitored and reported." "hash"
+        check_file_perms      "${check_file}" "0600" "root" "root"
       fi
     fi
   fi

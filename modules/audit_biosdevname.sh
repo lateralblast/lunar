@@ -14,8 +14,8 @@
 audit_biosdevname () {
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "SuSE" ]; then
-      verbose_message "BIOS Devname" "check"
-      check_linux_package "uninstall" "biosdevname"
+      verbose_message     "BIOS Devname"  "check"
+      check_linux_package "uninstall"     "biosdevname"
     fi
   fi
 }

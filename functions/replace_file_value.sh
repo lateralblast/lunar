@@ -67,9 +67,9 @@ replace_file_value () {
         pkg fix "${pkg_info}"
       fi
     else
-      restore_file "${check_file}" "${restore_dir}"
+      restore_file    "${check_file}" "${restore_dir}"
     fi
   else
-    increment_secure "File ${check_file} contains \"${correct_value}\" rather than \"${check_value}\""
+    increment_secure  "File ${check_file} contains \"${correct_value}\" rather than \"${check_value}\""
   fi
 }

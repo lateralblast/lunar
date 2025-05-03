@@ -83,7 +83,7 @@ audit_xlogin () {
               increment_insecure "File ${check_file} does not have a security message"
               verbose_message "awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"${greet_mesg}\" < ${check_file} > ${temp_file}" "fix"
               verbose_message "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message "rm ${temp_file}"                "fix"
+              verbose_message "rm ${temp_file}"                  "fix"
             else
               verbose_message "Security message in ${check_file}" "set"
               backup_file ${check_file}
@@ -112,7 +112,7 @@ audit_xlogin () {
                increment_insecure "File ${check_file} does not have a security message"
                verbose_message "cat ${check_file} |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"${greet_mesg}\" > ${temp_file}" "fix"
                verbose_message "cat ${temp_file} > ${check_file}" "fix"
-               verbose_message "rm ${temp_file}"                "fix"
+               verbose_message "rm ${temp_file}"                  "fix"
              else
                verbose_message "Security message in ${check_file}" "set"
                backup_file ${check_file}
@@ -141,7 +141,7 @@ audit_xlogin () {
               verbose_message    "awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}" "fix"
               verbose_message    "awk '( $1 !~ /^#/ && $3 == \"/usr/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}"       "fix"
               verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message    "rm ${temp_file}"                "fix"
+              verbose_message    "rm ${temp_file}"                  "fix"
             else
               verbose_message "Security message in file \"${check_file}\"" "set"
               backup_file     "${check_file}"

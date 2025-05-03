@@ -31,9 +31,9 @@ audit_apparmor () {
     if [ "${do_app_test}" = 1 ]; then
       profile_test=$( apparmor_status |grep "unconfined mode" |awk '{print $1}' )
       if [ "${profile_test}" = "0" ]; then
-        increment_secure "There are no unconfined applications"
+        increment_secure    "There are no unconfined applications"
       else
-        increment_insecure "There are unconfined applications"
+        increment_insecure  "There are unconfined applications"
       fi
     fi
     for check_file in ${check_list}; do

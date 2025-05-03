@@ -13,13 +13,13 @@
 
 audit_inetd_logging () {
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Logging for inetd" "check"
-    check_file_value "is" "/etc/default/syslogd" "LOG_FROM_REMOTE" "eq" "NO" "hash"
+    verbose_message "Logging for inetd"  "check"
+    check_file_value "is" "/etc/default/syslogd"    "LOG_FROM_REMOTE" "eq" "NO" "hash"
     if [ "${os_version}" = "10" ]; then
-      check_command_value "inetadm" "tcp_trace" "TRUE" "tcp"
+      check_command_value "inetadm" "tcp_trace"     "TRUE" "tcp"
     fi
     if [ "${os_version}" = "9" ]; then
-      check_file_value "is" "/etc/default/inetd" "ENABLE_CONNECTION_LOGGING" "eq" "YES" "hash"
+      check_file_value    "is" "/etc/default/inetd" "ENABLE_CONNECTION_LOGGING" "eq" "YES" "hash"
     fi
   fi
 }

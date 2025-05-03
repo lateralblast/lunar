@@ -91,9 +91,9 @@ audit_snmp () {
       if [ "${os_name}" = "AIX" ]; then
         for check_file in /var/tmp/snmpd.log /var/tmp/hostmibd.log \
         /var/tmp/dpid2.log /var/ct/RMstart.log /smit.log; do
-          check_file_perms "${check_file}" "0640" "root" "system"
+          check_file_perms  "${check_file}" "0640" "root" "system"
         done
-        check_file_perms "/var/adm/ras" "0700" "root" "system"
+        check_file_perms    "/var/adm/ras"  "0700" "root" "system"
       fi
     fi
   fi

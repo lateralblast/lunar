@@ -21,7 +21,7 @@ audit_email_daemons () {
     verbose_message "Mail Daemons" "check"
     for service_name in cyrus imapd qpopper dovecot; do
       check_linux_service "${service_name}" "off"
-      check_linux_package "uninstall"     "${service_name}"
+      check_linux_package "uninstall"       "${service_name}"
     done
   fi
 }

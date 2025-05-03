@@ -14,7 +14,7 @@ audit_debug_logging () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message    "Connection Logging" "check"
-      audit_logadm_value "connlog" "daemon.debug"
+      audit_logadm_value "connlog"            "daemon.debug"
     fi
   fi
 }

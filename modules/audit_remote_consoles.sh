@@ -28,13 +28,13 @@ audit_remote_consoles () {
         fi
         if [ "${audit_mode}" = 0 ]; then
           echo "${console_device}" >> "${log_file}"
-          verbose_message "Console disabled on \"${console_device}\"" "set"
+          verbose_message   "Console disabled on \"${console_device}\""   "set"
           consadm -d "${console_device}"
         fi
       done
       if [ "${disable_ttys}" = 0 ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "No remote consoles enabled"
+          increment_secure  "No remote consoles enabled"
         fi
       fi
     else
@@ -42,7 +42,7 @@ audit_remote_consoles () {
       if [ -f "${restore_file}" ]; then
         restore_list=$( cat "${restore_file}" )
         for console_device in ${restore_list}; do
-          verbose_message "Console to enabled on \"${console_device}\"" "restore"
+          verbose_message   "Console to enabled on \"${console_device}\"" "restore"
           consadm -a "${console_device}"
         done
       fi

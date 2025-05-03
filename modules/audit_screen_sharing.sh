@@ -16,7 +16,7 @@
 
 audit_screen_sharing () {
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Screen Sharing" "check"
+    verbose_message         "Screen Sharing"          "check"
     check_launchctl_service "com.apple.screensharing" "off"
   fi
 }

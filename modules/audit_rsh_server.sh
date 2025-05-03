@@ -20,9 +20,9 @@ audit_rsh_server () {
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       verbose_message "RSH Server Daemon" "check"
       for service_name in rsh.socket rlogin.socket rexec.socket; do
-        check_linux_service "${service_name}" "off"
+        check_linux_service "${service_name}"  "off"
       done
-      check_linux_package "uninstall" "rsh-server"
+      check_linux_package   "uninstall" "rsh-server"
     fi
   fi
 }

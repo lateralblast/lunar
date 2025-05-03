@@ -12,7 +12,7 @@
 audit_ticotsord () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "Ticotsor Daemon" "check"
+      verbose_message     "Ticotsor Daemon"                                 "check"
       check_sunos_service "svc:/network/rpc-100235_1/rpc_ticotsord:default" "disabled"
     fi
   fi

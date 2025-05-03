@@ -63,13 +63,13 @@ check_rctcp() {
             stopsrc -s "${service_name}"
             sed "/${service_name} /s/^/#/g" < /etc/rc.tcpip > "${temp_file}"
             cat "${temp_file}" > /etc/rc.tcpip
-            rm "${temp_file}"
+            rm  "${temp_file}"
           else
             chrctcp -a "${service_name}"
             startsrc -s "${service_name}"
             sed "/${service_name} /s/^#.//g" < /etc/rc.tcpip > "${temp_file}"
             cat "${temp_file}" > /etc/rc.tcpip
-            rm "${temp_file}"
+            rm  "${temp_file}"
           fi
         fi
       else
@@ -88,13 +88,13 @@ check_rctcp() {
             stopsrc -s "${service_name}"
             sed "/${service_name} /s/^/#/g" < /etc/rc.tcpip > "${temp_file}"
             cat "${temp_file}" > /etc/rc.tcpip
-            rm "${temp_file}"
+            rm  "${temp_file}"
           else
             chrctcp -a "${service_name}"
             startsrc -s "${service_name}"
             sed "/${service_name} /s/^#.//g" < /etc/rc.tcpip > "${temp_file}"
             cat "${temp_file}" > /etc/rc.tcpip
-            rm "${temp_file}"
+            rm  "${temp_file}"
           fi
         fi
       fi

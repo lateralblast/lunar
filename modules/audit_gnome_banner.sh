@@ -61,19 +61,19 @@ audit_gnome_banner () {
     if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/dconf/profile/gdm"
       if [ -f "${check_file}" ]; then
-        check_file_value "is" "${check_file}" "user-db"   "colon" "user" "hash"
-        check_file_value "is" "${check_file}" "system-db" "colon" "gdm" "hash"
-        check_file_value "is" "${check_file}" "file-db"   "colon" "/usr/share/gdm/greeter-dconf-defaults" "hash"
+        check_file_value "is" "${check_file}" "user-db"               "colon" "user"  "hash"
+        check_file_value "is" "${check_file}" "system-db"             "colon" "gdm"   "hash"
+        check_file_value "is" "${check_file}" "file-db"               "colon" "/usr/share/gdm/greeter-dconf-defaults" "hash"
       fi
       check_file="/etc/dconf/db/gdm.d/01-banner-message"
       if [ -f "${check_file}" ]; then
-        check_file_value "is" "${check_file}" "banner-message-enable" "eq" "true" "hash"
-        check_file_value "is" "${check_file}" "banner-message-text"   "eq" "Authorized uses only. All activity may be monitored and reported." "hash"
+        check_file_value "is" "${check_file}" "banner-message-enable" "eq"    "true"  "hash"
+        check_file_value "is" "${check_file}" "banner-message-text"   "eq"    "Authorized uses only. All activity may be monitored and reported." "hash"
       fi
       check_file="/etc/gdm3/greeter.dconf-defaults"
       if [ -f "${check_file}" ]; then
-        check_file_value "is" "${check_file}" "banner-message-enable" "eq" "true" "hash"
-        check_file_value "is" "${check_file}" "banner-message-text"   "eq" "Authorized uses only. All activity may be monitored and reported." "hash"
+        check_file_value "is" "${check_file}" "banner-message-enable" "eq"    "true"  "hash"
+        check_file_value "is" "${check_file}" "banner-message-text"   "eq"    "Authorized uses only. All activity may be monitored and reported." "hash"
       fi
     fi
     gconf_test=$( command -v gconftool 2> /dev/null | wc -l | sed "s/ //g" )

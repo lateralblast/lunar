@@ -27,7 +27,7 @@ audit_print () {
       fi
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
-      check_file_value "is" "/etc/rc.conf" "lpd_enable" "eq" "NO" "hash"
+      check_file_value      "is" "/etc/rc.conf" "lpd_enable" "eq" "NO"    "hash"
     fi
   fi
 }

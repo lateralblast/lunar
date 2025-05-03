@@ -18,7 +18,7 @@ audit_bootparams () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "bootparamd" "off"
+      check_linux_service   "bootparamd" "off"
     fi
   fi
 }

@@ -14,7 +14,7 @@
 audit_nisplus () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "NIS+ Daemons" "check"
+      verbose_message     "NIS+ Daemons"             "check"
       check_sunos_service "svc:/network/rpc/nisplus" "disabled"
     fi
   fi

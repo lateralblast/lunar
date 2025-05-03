@@ -25,17 +25,17 @@ audit_printer_sharing () {
         printer_test=$( system_profiler SPPrintersDataType | grep Shared | awk '{print $2}' | grep -c 'Yes' | sed "s/ //g" )
       fi
       if [ "${printer_test}" = "0" ]; then
-        increment_insecure "Printer sharing is enabled"
-        verbose_message    "Open System Preferences" "fix"
-        verbose_message    "Select Sharing"          "fix"
-        verbose_message    "Uncheck Printer Sharing" "fix"
+        increment_insecure  "Printer sharing is enabled"
+        verbose_message     "Open System Preferences"   "fix"
+        verbose_message     "Select Sharing"            "fix"
+        verbose_message     "Uncheck Printer Sharing"   "fix"
       else
-        increment_secure "Printer Sharing is disabled"
+        increment_secure    "Printer Sharing is disabled"
       fi
     else
-      verbose_message "Open System Preferences" "fix"
-      verbose_message "Select Sharing"          "fix"
-      verbose_message "Uncheck Printer Sharing" "fix"
+      verbose_message       "Open System Preferences"   "fix"
+      verbose_message       "Select Sharing"            "fix"
+      verbose_message       "Uncheck Printer Sharing"   "fix"
     fi
   fi
 }

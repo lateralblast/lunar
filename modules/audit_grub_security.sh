@@ -21,13 +21,13 @@ audit_grub_security () {
     verbose_message "Grub Menu Security" "check"
     if [ "${os_name}" = "Linux" ]; then
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
-        check_file_perms "${check_file}" "0600" "root" "root"
+        check_file_perms "${check_file}" "0600"   "root" "root"
       done
-      check_file_value "is" "/boot/grub/grub.cfg" "set superusers"  "eq"    "root" "hash"
-      check_file_value "is" "/boot/grub/grub.cfg" "password_pbkdf2" "space" "root" "hash"
-      check_file_value "is" "/boot/grub/grub.cfg" "selinux"         "eq"     "1"   "hash"
-      check_file_value "is" "/boot/grub/grub.cfg" "enforcing"       "eq"     "1"   "hash"
-      check_file_value "is" "/etc/default/grub"   "audit"           "eq"     "1"   "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "set superusers"  "eq"      "root"  "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "password_pbkdf2" "space"   "root"  "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "selinux"         "eq"      "1"     "hash"
+      check_file_value "is" "/boot/grub/grub.cfg" "enforcing"       "eq"      "1"     "hash"
+      check_file_value "is" "/etc/default/grub"   "audit"           "eq"      "1"     "hash"
     fi
 #  if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
 #    check_file="/boot/grub/menu.lst"

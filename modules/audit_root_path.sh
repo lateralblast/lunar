@@ -28,15 +28,15 @@ audit_root_path () {
       if [ "${audit_mode}" = 1 ]; then
         path_check=$( echo "$PATH" | grep "::" )
         if [ "${path_check}" != "" ]; then
-          increment_insecure "Empty directory in PATH"
+          increment_insecure  "Empty directory in PATH"
         else
-          increment_secure "No empty directory in PATH"
+          increment_secure    "No empty directory in PATH"
         fi
         path_check=$( echo "$PATH" | grep ":$" )
         if [ "${path_check}"  != "" ]; then
-          increment_insecure "Trailing : in PATH"
+          increment_insecure  "Trailing : in PATH"
         else
-          increment_secure "No trailing : in PATH"
+          increment_secure    "No trailing : in PATH"
         fi
         dir_list=$( echo "$PATH" | sed -e 's/::/:/' -e 's/:$//' -e 's/:/ /g' )
         for dir_name in ${dir_list}$; do
