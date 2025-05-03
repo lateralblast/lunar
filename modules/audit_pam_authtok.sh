@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # shellcheck disable=SC1090
+# shellcheck disable=SC2028
 # shellcheck disable=SC2034
 # shellcheck disable=SC2046
 # shellcheck disable=SC2154
@@ -25,7 +26,7 @@ audit_pam_authtok () {
         if [ "${ansible}" = 1 ]; then
           echo ""
           echo "- name: Checking ${check_string}"
-          echo "  command: sh -c \"grep -cPH -- \\"^\h*password\h+\([^#\n\r]+\)\h+pam_unix\.so\h+\([^#\n\r]+\h+\)?${pam_module}\b\\" < ${check_file}\"" 
+          echo "  command: sh -c \"grep -cPH -- '^\h*password\h+\([^#\n\r]+\)\h+pam_unix\.so\h+\([^#\n\r]+\h+\)?${pam_module}\b' < ${check_file}\"" 
           echo "  register: ${pam_module}_check"
           echo "  failed_when: ${pam_module}_check == 0"
           echo "  changed_when: false"
@@ -33,7 +34,7 @@ audit_pam_authtok () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${check_string}"
-          echo "  command: sh -c \"sed \\"s/\(^password.*pam_unix\.so\)\(.*\)/\1 ${pam_module} \2/g\\" ${check_file}\""
+          echo "  command: sh -c \"sed \\"s/\(^password.*pam_unix\.so\)\(.*\)/\\1 ${pam_module} \\2/g\\" ${check_file}\""
           echo "  when: ${pam_module}_check.rc == 0 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi

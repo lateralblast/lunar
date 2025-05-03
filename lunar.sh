@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.5.3
+# Version:      10.5.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -145,6 +145,7 @@ do_debug=0
 do_select=0
 function=""
 no_cat=0
+ubuntu_codename=""
 
 # Disable daemons
 
@@ -390,7 +391,7 @@ restore_state () {
     restore_name="$1"
     current_value="$2"
     restore_command="$3"
-    restore_file="${restore_dir}/$restore_name"
+    restore_file="${restore_dir}/${restore_name}"
     if [ -f "${restore_file}" ]; then
       restore_value=$( cat "${restore_file}" )
       if [ "${current_value}" != "${restore_value}" ]; then
@@ -834,6 +835,7 @@ do
   esac
 done
 
+restore_dir="${base_dir}/${restore_date}"
 function=$(echo "${function}" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g" )
 
 # check arguments

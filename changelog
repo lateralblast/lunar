@@ -1921,3 +1921,5 @@ G# Changes:
 # More formatting cleanup
 # 10.5.3: Sat  3 May 2025 16:33:59 AEST
 # Moved shellcheck function to core
+# 10.5.4: Sat  3 May 2025 17:09:16 AEST
+# Shellcheck fixes

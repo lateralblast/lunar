@@ -18,7 +18,7 @@ audit_password_history () {
       current_date=$( date +%s )
       user_list=$( awk -F: '$2~/^\$.+\$/{print $1}' "${check_file}" )
       for user_name in ${user_list}; do
-        change_date=$( date -d "$(chage --list ${user_name} | grep '^Last password change' | cut -d: -f2 | grep -v 'never$')" +%s )
+        change_date=$( date -d "$(chage --list "${user_name}" | grep '^Last password change' | cut -d: -f2 | grep -v 'never$')" +%s )
         if [ "${change_date}" -gt "${current_date}" ]; then
           increment_insecure "User ${user_name} has a last password change date in the future"
         else

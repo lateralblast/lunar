@@ -70,29 +70,29 @@ audit_ssh_config () {
           check_file_value    "is"  "${check_file}" "AllowUsers"                        "space" "${ssh_allowusers}"  "hash"
         fi
         if [ ! "${ssh_allowgroups}" = "" ]; then
-                  check_file_value    "is"  "${check_file}" "AllowUsers"                "space" "${ssh_allowgroups}" "hash"
+          check_file_value    "is"  "${check_file}" "AllowUsers"                        "space" "${ssh_allowgroups}" "hash"
         fi
-                if [ ! "${ssh_denyusers}" = "" ]; then
+        if [ ! "${ssh_denyusers}" = "" ]; then
           check_file_value    "is"  "${check_file}" "DenyUsers"                         "space" "${ssh_denyusers}"    "hash"
         fi
         if [ ! "${ssh_denygroups}" = "" ]; then
-                  check_file_value    "is"  "${check_file}" "DenyGroups"                "space" "${ssh_denygroups}"   "hash"
+          check_file_value    "is"  "${check_file}" "DenyGroups"                        "space" "${ssh_denygroups}"   "hash"
         fi
-                        if [ "$ssh_sandbox" = "yes" ]; then
+        if [ "$ssh_sandbox" = "yes" ]; then
           check_file_value    "is"  "${check_file}" "UsePrivilegeSeparation"            "space" "sandbox"             "hash"
-                else
+        else
            check_file_value    "is"  "${check_file}" "UsePrivilegeSeparation"           "space" "yes"                 "hash"
-        f i
-        check_file_value      "is"  "${check_file}" "LoginGraceTime"                    "space" "60"                  "hash"
-        if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 24 ]; the n
+        fi
+        if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 24 ]; then
           check_file_value    "is"  "${check_file}" "MaxStartups"                       "space" "10:30:60"            "hash"
           check_file_value    "is"  "${check_file}" "MaxSessions"                       "space" "10"                  "hash"
-        f i
+        fi
+        check_file_value      "is"  "${check_file}" "LoginGraceTime"                    "space" "60"                  "hash"
         # Check for kerbero s
-        check_file="/etc/krb5/krb5.conf   "
-        if [ -f "${check_file}" ]; the    n
-          admin_check=$( grep -v '^#' ${check _file} | grep "admin_server" | cut -f2 -d= | sed 's/ //g' | wc -l | sed 's/ //g' )
-          if [ "$admin_server" != "0" ]; the  n
+        check_file="/etc/krb5/krb5.conf"
+        if [ -f "${check_file}" ]; then
+          admin_check=$( grep -v '^#' "${check _file}" | grep "admin_server" | cut -f2 -d= | sed 's/ //g' | wc -l | sed 's/ //g' )
+          if [ "$admin_server" != "0" ]; then
             check_file="/etc/ssh/sshd_config"
             check_file_value  "is"  "${check_file}"  "UsePAM"                           "space" "yes"                 "hash"
             check_file_value  "is"  "${check_file}"  "GSSAPIAuthentication"             "space" "yes"                 "hash"

@@ -14,7 +14,7 @@
 
 audit_pam_deny () {
   if [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
-    pam_module="${pam_module}"
+    pam_module="pam_deny"
      verbose_message "PAM Deny Weak Authentication Services" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
       if [ "${os_version}" -lt 5 ]; then
