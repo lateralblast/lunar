@@ -15,30 +15,35 @@
 #.
 
 audit_wireless () {
-  if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Wifi information menu" "check"
+  if [ "${os_name}" = "Darwin" ]; then
+    string="Wifi information menu"
+    verbose_message "${string}" "check"
     if [ "${os_name}" = "Darwin" ] && [ "${os_version}" -ge 14 ]; then
       user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
       for user_name in ${user_list}; do
         check_osx_defaults_user "com.apple.controlcenter.plist" "WiFi" "2" "int" "currentHost" "${user_name}"
       done
     else
-      if [ "${os_name}" = "Darwin" ]; then
-        check=$( defaults read com.apple.systemuiserver menuExtras | grep AirPort.menu | sed "s/[ ,\",\,]//g" )
-        answer="/System/Library/CoreServices/MenuExtras/AirPort.menu"
+      # answer="/System/Library/CoreServices/MenuExtras/AirPort.menu"
+      check=$( defaults read com.apple.systemuiserver menuExtras 2> /dev/null | grep "AirPort.menu" | sed "s/[ ,\",\,]//g" | grep -c "AirPort" |sed "s/ //g" )
+      if [ "${check}" = "0" ]; then
+        increment_secure   "Wireless status menu is not enabled"
       else
-        check=$( command -v nmcli 2> /dev/null | sed "s/ //g" )
-        if [ "${check}" = "1" ]; then
-          check=$(nmcli radio all | grep -c enabled )
-        else
-          check=$(find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
-        fi
-        answer="0"
+        increment_insecure "Wireless status menu is enabled"
       fi
-      if [ "${check}" = "$answer" ]; then
-        increment_secure   "Wireless status menu is enabled"
+    fi
+  else
+    if [ "${os_name}" = "Linux" ]; then
+      check=$( command -v nmcli 2> /dev/null | sed "s/ //g" )
+      if [ "${check}" = "1" ]; then
+        check=$(nmcli radio all | grep -c enabled )
       else
-        increment_insecure "Wireless status menu is not enabled"
+        check=$(find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
+      fi
+      if [ "${check}" = "0" ]; then
+        increment_secure   "Wireless is enabled"
+      else
+        increment_insecure "Wireless not enabled"
       fi
     fi
   fi

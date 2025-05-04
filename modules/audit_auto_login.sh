@@ -16,14 +16,32 @@
 
 audit_auto_login() {
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Autologin" "check"
+    string="Autologin"
+    verbose_message         "${string}" "check"
     check_osx_defaults_bool "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes"
     if [ ! "${audit_mode}" != 2 ]; then
-      defaults_check=$( defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser )
-      if [ "${defaults_check}" ]; then
-        increment_insecure  "Autologin enabled"
+      defaults_check=$( defaults read /Library/Preferences/com.apple.loginwindow | grep -c autoLoginUser sed 's/ //g' )
+      if [ "${defaults_check}" = "0" ]; then
+        increment_insecure  "${string} Disabled"
       else
-        increment_secure    "Autologin disabled"
+        increment_secure    "${string} Enabled"
+      fi
+      if [ "${ansible}" = 1 ]; then
+        echo ""
+        echo "- name: Checking ${string}"
+        echo "  command: sh -c \"defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser | wc -l | sed 's/ //g'\""
+        echo "  register: audit_auto_login_check"
+        echo "  failed_when: audit_auto_login_check != 0"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+        echo ""
+        echo "- name: Fixing ${string}"
+        echo "  command: sh -c \"sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser\""
+        echo "  when: audit_auto_login_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo ""
+      else
+        lockdown_command "sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser" "Disable ${string}"
       fi
     fi
   fi

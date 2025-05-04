@@ -18,13 +18,31 @@
 audit_asset_cache () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1013 ]; then
-      verbose_message "Asset Cache" "check"
+      string="Asset Cache Activation"
+      verbose_message "${string}" "check"
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( sudo AssetCacheManagerUtil status 2>&1 | grep Activated | awk '{print $2}' )
-        if [ "${check_value}" = "${asset_cache}" ]; then
-          increment_secure   "Content Caching is set to \"${asset_cache}\""
+        check_value=$( sudo AssetCacheManagerUtil status 2>&1 | grep Activated | awk '{print $2}' | grep -ci false | sed 's/ //g' )
+        if [ "${check_value}" = "0" ]; then
+          increment_secure   "Content Caching is not activated"
         else
-          increment_insecure "Content Caching is not set to \"${asset_cache}\""
+          increment_insecure "Content Caching is activated"
+        fi
+        if [ "${ansible}" = 1 ]; then
+          echo ""
+          echo "- name: Checking ${string}"
+          echo "  command: sh -c \"sudo AssetCacheManagerUtil status 2>&1 | grep Activated | awk '{print \$2}' | grep -ci false | sed 's/ //g'\""
+          echo "  register: audit_asset_cache_check"
+          echo "  failed_when: audit_asset_cache_check != 0"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+          echo ""
+          echo "- name: Fixing ${string}"
+          echo "  command: sh -c \"sudo /usr/bin/AssetCacheManagerUtil deactivate\""
+          echo "  when: audit_asset_cache_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo ""
+        else
+          lockdown_command "sudo /usr/bin/AssetCacheManagerUtil deactivate" "Disable ${string}"
         fi
       fi
     fi

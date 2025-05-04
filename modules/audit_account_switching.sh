@@ -16,14 +16,32 @@
 audit_account_switching () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Administrator Account Login to Another User Session" "check"
+      string="Administrator Account Login to Another User Session"
+      verbose_message "${string}"
       if [ "${audit_mode}" != 2 ]; then
         correct_value="0"
-        current_value=$( /usr/bin/sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui' )
+        current_value=$( sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui' )
         if [ "${current_value}" = "${correct_value}" ]; then
           increment_secure   "Administrator Account Login to Another User Session is set to \"${correct_value}\""
         else
           increment_insecure "Administrator Account Login to Another User Session is not set to \"${correct_value}\""
+        fi
+        if [ "${ansible}" = 1 ]; then
+          echo ""
+          echo "- name: Checking ${string}"
+          echo "  command: sh -c \"sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui'\""
+          echo "  register: audit_account_switching_check"
+          echo "  failed_when: audit_account_switching_check != 0"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+          echo ""
+          echo "- name: Fixing ${string}"
+          echo "  command: sh -c \"sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui\""
+          echo "  when: audit_account_switching_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo ""
+        else
+          lockdown_command "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"
         fi
       fi
     fi

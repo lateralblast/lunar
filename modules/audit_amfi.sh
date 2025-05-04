@@ -14,13 +14,31 @@
 audit_amfi () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1012 ]; then
-      verbose_message "Apple Mobile File Integrity" "check"
+      string="Apple Mobile File Integrity"
+      verbose_message "${string}" "check"
       if [ "${audit_mode}" != 2 ]; then
         check_value=$( sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed "s/ //g" )
         if [ "${check_value}" = "0" ]; then
           increment_secure   "Apple Mobile File Integrity is not \"disabled\""
         else
           increment_insecure "Apple Mobile File Integrity is set to \"${check_value}\""
+        fi
+        if [ "${ansible}" = 1 ]; then
+          echo ""
+          echo "- name: Checking ${string}"
+          echo "  command: sh -c \"sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed 's/ //g'\""
+          echo "  register: audit_amfi_check"
+          echo "  failed_when: audit_amfi_check != 0"
+          echo "  changed_when: false"
+          echo "  ignore_errors: true"
+          echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+          echo ""
+          echo "- name: Fixing ${string}"
+          echo "  command: sh -c \"sudo /usr/sbin/nvram boot-args=\\\"\\\"\""
+          echo "  when: audit_amfi_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo ""
+        else
+          lockdown_command "sudo /usr/sbin/nvram boot-args=\"\"" "Enable ${string}"
         fi
       fi
     fi
