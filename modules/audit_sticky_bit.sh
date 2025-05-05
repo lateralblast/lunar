@@ -6,7 +6,7 @@
 
 # audit_sticky_bit
 #
-# Check sticky bitss set of files
+# Check sticky bits set of files
 #
 # Refer to Section(s) 1.17   Page(s) 26    CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 1.1.21 Page(s) 46    CIS RHEL 7 Benchmark v2.1.0
@@ -21,7 +21,8 @@
 audit_sticky_bit () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = 1 ]; then
-      verbose_message "World Writable Directories and Sticky Bits" "check"
+      string="World Writable Directories and Sticky Bits"
+      verbose_message "${string}" "check"
       if [ "${os_version}" = "10" ]; then
         log_file="${work_dir}/sticky_bits"
         file_list=$( find / \( -fstype nfs -o -fstype cachefs \
@@ -37,8 +38,18 @@ audit_sticky_bit () {
           fi
           if [ "${audit_mode}" = 0 ]; then
             verbose_message "Sticky bit on \"${check_dir}\"" "set"
-            chmod +t "${check_dir}"
+            sudo chmod +t "${check_dir}"
             echo "${check_dir}" >> "${log_file}"
+          fi
+          if [ "${ansible}" = 1 ]; then
+            echo ""
+            echo "- name: Checking ${string} on ${check_dir}"
+            echo "  command: sh -c \"sudo chmod +t ${check_dir}\""
+            echo "  ignore_errors: true"
+            echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+            echo ""
+          else
+            lockdown_command "sudo chmod +t ${check_dir}" "Disable ${string}"
           fi
         done
         if [ "${audit_mode}" = 2 ]; then
@@ -48,7 +59,7 @@ audit_sticky_bit () {
             for check_dir in ${check_dirs}; do
               if [ -d "${check_dir}" ]; then
                 verbose_message "Removing sticky bit from \"${check_dir}\"" "restore"
-                chmod -t "${check_dir}"
+                sudo chmod -t "${check_dir}"
               fi
             done
           fi

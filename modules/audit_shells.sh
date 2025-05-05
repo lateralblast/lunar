@@ -19,12 +19,14 @@ audit_shells () {
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
       else
-        nologin_check=$( grep nologin < "${check_file}" | grep -cv "^#" )
+        check_shell="nologin" 
+        nologin_check=$( grep "${check_shell}" < "${check_file}" | grep -cv "^#" )
         if [ "${nologin_check}" = "0" ]; then
           increment_secure    "Shell \"${check_shell}\" is not in \"${check_file}\""
         else
           increment_insecure  "Shell \"${check_shell}\" is in \"${check_file}\""
         fi
+        check_file_comment "$check_file" "nologin" "hash"
         check_shells=$( grep -v '^#' "${check_file}" )
         for check_shell in ${check_shells}; do
           if [ ! -f "${check_shell}" ]; then
