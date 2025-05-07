@@ -1929,3 +1929,5 @@ G# Changes:
 # Added file comment function and updated ansible in some tests
 # 10.5.7: Wed  7 May 2025 15:07:01 AEST
 # Updated touch ID test
+# 10.5.8: Wed  7 May 2025 15:41:38 AEST
+# Updated Solaris audit class check
