@@ -15,6 +15,8 @@
 
 audit_bonjour_advertising() {
   if [ "${os_name}" = "Darwin" ]; then
+    ansible_counter=$((ansible_counter+1))
+    name="audit_bonjour_advertising_${ansible_counter}"
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     if [ "${long_os_version}" -ge 1014 ]; then
       check_osx_defaults_bool "/Library/Preferences/com.apple.mDNSResponder.plist" "NoMulticastAdvertisements" "1"
@@ -29,15 +31,15 @@ audit_bonjour_advertising() {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"cat ${check_file} |grep NoMulticastAdvertisements\""
-          echo "  register: mcast_check"
-          echo "  failed_when: mcast_check == 1"
+          echo "  register: ${name}"
+          echo "  failed_when: ${name} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
           echo "  command: sh -c \"cat ${check_file} |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | tr X '\n' > ${temp_file} ; cat ${temp_file} > ${check_file}\""
-          echo "  when: mcast_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi 
         if [ -n "$multicast_test" ]; then

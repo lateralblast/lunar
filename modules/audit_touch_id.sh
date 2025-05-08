@@ -15,6 +15,8 @@
 audit_touch_id () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
+      ansible_counter=$((ansible_counter+1))
+      name="audit_touch_id_${ansible_counter}"
       string="Touch ID"
       verbose_message "${string}" "check"
       if [ "${audit_mode}" != 2 ]; then
@@ -28,15 +30,15 @@ audit_touch_id () {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"sudo bioutil -r -s | grep timeout | head -1 | cut -f2 -d: | grep -c ${touchid_timeout} | sed 's/ //g'\""
-          echo "  register: audit_touch_id_check"
-          echo "  failed_when: audit_touch_id_check != 1"
+          echo "  register: ${name}"
+          echo "  failed_when: ${name} != 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
           echo "  command: sh -c \"/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}\""
-          echo "  when: audit_touch_id_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
           lockdown_command "/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}" " ${string}"

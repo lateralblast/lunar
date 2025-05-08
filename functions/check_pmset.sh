@@ -26,6 +26,8 @@ check_pmset() {
     if [ "${value}" = "1" ]; then
       state="on"
     fi
+    ansible_counter=$((ansible_counter+1))
+    name="check_pmset_${ansible_counter}"
     log_file="pmset_${service}.log"
     actual_test=$( pmset -g | grep "${service}" | awk '{print $2}' | grep -c "${value}" | sed "s/ //g" )
     if [ "$actual_test" = "0" ]; then
@@ -40,15 +42,15 @@ check_pmset() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"pmset -g | grep ${service} |awk '{print \$2}' |grep ${value}\""
-        echo "  register: pmset_check"
-        echo "  failed_when: pmset_check == 1"
+        echo "  register: ${name}"
+        echo "  failed_when: ${name} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"pmset -c ${service} ${value}\""
-        echo "  when: pmset_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       if [ ! "${actual_value}" = "${value}" ]; then

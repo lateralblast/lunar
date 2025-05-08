@@ -13,6 +13,8 @@
 
 audit_core_limit () {
   if [ "${os_name}" = "Darwin" ]; then
+    ansible_counter=$((ansible_counter+1))
+    name="audit_core_limit_${ansible_counter}"
     string="Core dump limits"
     verbose_message "${string}" "check"
     log_file="corelimit"
@@ -23,15 +25,15 @@ audit_core_limit () {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command:  sh -c \"launchctl limit core | awk '{print \$3}'\""
-        echo "  register: corelimit_check"
-        echo "  failed_when: corelimit_check == 1"
+        echo "  register: ${name}"
+        echo "  failed_when: ${name} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"launchctl limit core 0\""
-        echo "  when: corelimit_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       if [ "${current_value}" != "0" ]; then

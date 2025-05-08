@@ -1931,3 +1931,5 @@ G# Changes:
 # Updated touch ID test
 # 10.5.8: Wed  7 May 2025 15:41:38 AEST
 # Updated Solaris audit class check
+# 10.5.9: Thu  8 May 2025 10:50:22 AEST
+# Updated some ansible stanzas

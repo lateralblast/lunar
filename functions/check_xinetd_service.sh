@@ -17,6 +17,8 @@ audit_xinetd_service () {
     service_name="$1"
     parameter_name="$2"
     correct_status="$3"
+    ansible_counter=$((ansible_counter+1))
+    name="audit_xinetd_service_${ansible_counter}"
     check_file="/etc/xinetd.d/${service_name}"
     log_file="${work_dir}/${service_name}.log"
     if [ -f "${check_file}" ]; then
@@ -42,15 +44,15 @@ audit_xinetd_service () {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command:  sh -c \"cat ${check_file} |grep ${parameter_name} |awk '{print \$3}'\""
-          echo "  register: pwpolicy_check"
-          echo "  failed_when: pwpolicy_check == 1"
+          echo "  register: ${name}"
+          echo "  failed_when: ${name} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
           echo "  command: sh -c \"${lockdown_command}\""
-          echo "  when: pwpolicy_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
       else

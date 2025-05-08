@@ -30,6 +30,8 @@ check_osx_defaults () {
       defaults_user="${defaults_host}"
       defaults_host=""
     fi
+    ansible_counter=$((ansible_counter+1))
+    name="check_osx_defaults_${ansible_counter}"
     if [ "${defaults_user}" = "" ]; then
       defaults_command="sudo defaults"
     else
@@ -138,15 +140,15 @@ check_osx_defaults () {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2>&1 |grep ${defaults_value}\""
-          echo "  register: defaults_check"
-          echo "  failed_when: defaults_check == 1"
+          echo "  register: ${name}"
+          echo "  failed_when: ${name} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
           echo "  command: sh -c \"${command}\""
-          echo "  when: defaults_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
       else

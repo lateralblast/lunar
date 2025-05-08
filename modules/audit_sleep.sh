@@ -47,7 +47,7 @@ audit_sleep () {
       fi
       check_pmset   "destroyfvkeyonstandby" "1"
     else
-      check_pmset   "sleep" "off"
+      check_pmset   "sleep"                 "off"
     fi
   fi
 }

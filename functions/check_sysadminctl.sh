@@ -13,6 +13,8 @@ check_sysadminctl () {
   if [ "${os_name}" = "Darwin" ]; then
     param="$1"
     value="$2"
+    ansible_counter=$((ansible_counter+1))
+    name="check_sysadminctl_${ansible_counter}"
     if [ "${value}" = "off" ]; then
       search_value="disabled"
     fi
@@ -26,15 +28,15 @@ check_sysadminctl () {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}\""
-        echo "  register: sysadminctl_check"
-        echo "  failed_when: \"${search_value}\" not in sysadminctl_check"
+        echo "  register: ${name}"
+        echo "  failed_when: \"${search_value}\" not in ${name}"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"sudo sysadminctl -${param} ${value}\""
-        echo "  when: sysadminctl_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       check=$( eval "sudo sysadminctl -${param} status > /dev/null 2>&1 | grep ${search_value} | wc -l | sed 's/ //g'" )

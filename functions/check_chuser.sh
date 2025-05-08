@@ -17,6 +17,8 @@ check_chuser() {
     group_name="$4"
     group_value="$5"
     user_name="$6"
+    ansible_counter=$((ansible_counter+1))
+    name="check_chuser_${ansible_counter}"
     log_file="${sec_file}_${parameter_name}_${group_name}.log"
     if [ "${audit_mode}" != 2 ]; then
       string="Security Policy for \"${parameter_name}\" is set to \"${correct_value}\""
@@ -25,15 +27,15 @@ check_chuser() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d=\""
-        echo "  register: lssec_check"
-        echo "  failed_when: lssec_check == 1"
+        echo "  register: ${name}"
+        echo "  failed_when: ${name} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}\""
-        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       actual_value=$( lssec -f "${sec_file}" -s "${user_name}" -a "${group_name}" -a "${parameter_name}" | awk '{print $3}' | cut -f2 -d= )

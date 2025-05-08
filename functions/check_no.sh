@@ -13,6 +13,8 @@ check_no() {
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="$1"
     correct_value="$2"
+    ansible_counter=$((ansible_counter+1))
+    name="check_no_${ansible_counter}"
     log_file="${parameter_name}.log"
     actual_value=$( no -a | grep "${parameter_name} " | cut -f2 -d= | sed "s/ //g" )
     if [ "${audit_mode}" != 2 ]; then
@@ -22,15 +24,15 @@ check_no() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"no -a |grep '${parameter_name} ' |cut -f2 -d= |sed 's/ //g' |grep '${correct_value}'\""
-        echo "  register: no_check"
-        echo "  failed_when: no_check == 1"
+        echo "  register: ${name}"
+        echo "  failed_when: ${name} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"no -p -o ${parameter_name}=${correct_value}\""
-        echo "  when: no_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       if [ "${actual_value}" != "${correct_value}" ]; then

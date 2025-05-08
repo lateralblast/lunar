@@ -20,7 +20,8 @@ audit_docker_monitoring () {
     if [ "${audit_mode}" != 2 ]; then
       docker_bin=$( command -v docker )
       if [ "${docker_bin}" ]; then
-        verbose_message "Docker Healthcheck" "check"
+        string="Docker Healthcheck"
+        verbose_message "${string}" "check"
         check_dockerd equal config Health ""
         docker_ids=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}' 2> /dev/null )
         for docker_id in ${docker_ids}; do

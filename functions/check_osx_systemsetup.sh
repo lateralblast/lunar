@@ -14,6 +14,8 @@ check_osx_systemsetup () {
     if [ "${os_version}" -ge 12 ]; then
       param="$1"
       value="$2"
+      ansible_counter=$((ansible_counter+1))
+      name="check_osx_systemsetup_${ansible_counter}"
       backup_file="systemsetup_${param}"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
@@ -22,15 +24,15 @@ check_osx_systemsetup () {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"sudo systemsetup -${param} |cut -f2 -d: |sed 's/ //g' |tr '[:upper:]' '[:lower:]'\""
-          echo "  register: systemsetup_check"
-          echo "  failed_when: systemsetup_check == 1"
+          echo "  register: ${name}"
+          echo "  failed_when: ${name} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
           echo "  command: sudo systemsetup -${param} ${value}"
-          echo "  when: systemsetup_check.rc == 0 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${name}.rc == 0 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
         check=$( eval "sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'" )

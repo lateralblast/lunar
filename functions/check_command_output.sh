@@ -11,7 +11,9 @@
 
 check_command_output () {
   if [ "${os_name}" = "SunOS" ]; then
-    command_name=$1
+    command_name="$1"
+    ansible_counter=$((ansible_counter+1))
+    name="check_command_output_${command_name}_${ansible_counter}"
     if [ "${command_name}" = "getcond" ]; then
       get_command="auditconfig -getcond |cut -f2 -d'=' |sed 's/ //g'"
     fi
@@ -58,15 +60,15 @@ check_command_output () {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command} |grep '${correct_value}'\""
-        echo "  register: lssec_check"
-        echo "  failed_when: lssec_check == 1"
+        echo "  register: ${name}"
+        echo "  failed_when: ${name} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"${set_command}\""
-        echo "  when: lssec_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       if [ "${check_value}" != "${correct_value}" ]; then
