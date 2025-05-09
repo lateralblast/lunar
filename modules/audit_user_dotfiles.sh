@@ -23,7 +23,7 @@
 audit_user_dotfiles () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "User Dot Files" "check"
-    home_dirs=$( grep -v "^/$" < /ext/passwd | cut -f6 -d":" )
+    home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d":" )
     for home_dir in ${home_dirs}; do
       file_list=$( find "${home_dir}" -name ".[A-Za-z0-9]*" -depth 1 )
       for check_file in ${file_list}; do

@@ -1935,3 +1935,5 @@ G# Changes:
 # Updated some ansible stanzas
 # 10.6.0: Fri  9 May 2025 15:49:24 AEST
 # Updated AppArmor test
+# 10.6.1: Fri  9 May 2025 15:51:10 AEST
+# Fixed dot files test
