@@ -10,15 +10,19 @@
 #
 # Refer to Section(s) 4.5           Page(s) 38-9        CIS SLES 11 Benchmark v1.0.0
 # Refer to Section(s) 1.6.2.1,1.6.3 Page(s) 69-70,73-4  CIS Ubuntu 16.04 Benchmark v1.0.0
-# Refer to Section(s) 1.3.1.1-2     Page(s) 151-4  CIS Ubuntu 16.04 Benchmark v1.0.0
+# Refer to Section(s) 1.3.1.1-2     Page(s) 151-4       CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
 audit_apparmor () {
   if [ "${os_name}" = "Linux" ]; then
     do_grub_test=0
-    do_app_test=0
+    do_app_test=1
     package_name="apparmor"
     app_name="AppArmor"
+    ansible_counter=$((ansible_counter+1))
+    name="apparmor_check_${ansible_counter}"
+    string="AppArmor Unconfined Applications"
+    verbose_message "${string}" "check"
     if [ "${os_vendor}" = "SuSE" ]; then 
       check_list="/boot/grub/menu.lst"
       do_test=1
@@ -35,10 +39,30 @@ audit_apparmor () {
       else
         increment_insecure  "There are unconfined applications"
       fi
+      if [ "${ansible}" = 1 ]; then
+        echo ""
+        echo "- name: Checking ${string}"
+        echo "  command: sh -c \"apparmor_status |grep 'unconfined mode' |awk '{print \$1}''\""
+        echo "  register: ${name}"
+        echo "  failed_when: ${name} != 0"
+        echo "  changed_when: false"
+        echo "  ignore_errors: true"
+        echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+        echo ""
+        echo "- name: Fixing ${string}"
+        echo "  command: sh -c \"sudo aa-enforce /etc/apparmor.d/*\""
+        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo ""
+      else
+        lockdown_command "sudo aa-enforce /etc/apparmor.d/*" "Confine AppArmor Applications"
+      fi
     fi
     for check_file in ${check_list}; do
       if [ "${do_grub_test}" = 1 ]; then
-        verbose_message "Package \"${app_name}\"" "check"
+        ansible_counter=$((ansible_counter+1))
+        string="Package \"${app_name}\""
+        name="apparmor_check_${ansible_counter}"
+        verbose_message "${string}" "check"
         check_linux_package "install" "${package_name}"
         if [ "${audit_mode}" = 2 ]; then
           restore_file "${check_file}" "${restore_dir}"
@@ -54,13 +78,22 @@ audit_apparmor () {
             increment_insecure "Application \"${app_name}\" is disabled in \"${check_file}\""
             temp_file="${temp_dir}/${package_name}"
             backup_file "${check_file}"
-            if [ "${os_vendor}" = "SuSE" ]; then 
-              lockdown_command "cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; enforce /etc/${package_name}.d/*" "Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
-            else
-              lockdown_command "cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*" "Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
-            fi 
-          else
-            increment_secure "Application \"${app_name}\" is not disabled in \"${check_file}\""
+            lockdown_command "cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*" "Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
+          fi
+          if [ "${ansible}" = 1 ]; then
+            echo ""
+            echo "- name: Checking ${string}"
+            echo "  command: sh -c \"grep '${package_name}=0' '${check_file}' | head -1 | wc -l | sed 's/ //g'\""
+            echo "  register: ${name}"
+            echo "  failed_when: ${name} != 0"
+            echo "  changed_when: false"
+            echo "  ignore_errors: true"
+            echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+            echo ""
+            echo "- name: Fixing ${string}"
+            echo "  command: sh -c \"sudo cat ${check_file} |sed -i 's/${package_name}=0//g ; sudo aa-enforce /etc/apparmor.d/*\""
+            echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+            echo ""
           fi
           if [ "${package_enabled_test}" = "1" ]; then
             increment_secure "Application \"${app_name}\" is enabled in \"${check_file}\""

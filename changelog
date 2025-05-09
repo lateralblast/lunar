@@ -1933,3 +1933,5 @@ G# Changes:
 # Updated Solaris audit class check
 # 10.5.9: Thu  8 May 2025 10:50:22 AEST
 # Updated some ansible stanzas
+# 10.6.0: Fri  9 May 2025 15:49:24 AEST
+# Updated AppArmor test
