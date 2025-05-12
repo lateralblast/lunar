@@ -26,11 +26,13 @@ audit_bonjour_advertising() {
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
       else
+        get_command="cat ${check_file} |grep NoMulticastAdvertisements"
+        set_command="sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' < ${check_file} | tr X '\n' > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
         multicast_test=$( grep -c "NoMulticastAdvertisements" "${check_file}" )
         if [ -n "${ansible}" ]; then
           echo ""
           echo "- name: Checking ${string}"
-          echo "  command: sh -c \"cat ${check_file} |grep NoMulticastAdvertisements\""
+          echo "  command: sh -c \"${get_command}\""
           echo "  register: ${name}"
           echo "  failed_when: ${name} == 1"
           echo "  changed_when: false"
@@ -38,24 +40,20 @@ audit_bonjour_advertising() {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
-          echo "  command: sh -c \"cat ${check_file} |sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | tr X '\n' > ${temp_file} ; cat ${temp_file} > ${check_file}\""
+          echo "  command: sh -c \"${set_command}\""
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi 
         if [ -n "$multicast_test" ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure  "Bonjour Multicast Advertising enabled"
-            verbose_message     "sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' | < ${check_file} | tr X '\n' > ${temp_file}" "fix"
-            verbose_message     "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message     "rm ${temp_file}" "fix"
+            verbose_message     "${set_command}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file "${check_file}"
-            sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' < "${check_file}" | tr X '\n' > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
-            if [ -f "${temp_file}" ]; then
-              rm "${temp_file}"
-            fi
+            lockdown_message="Bonjour Multicast Advertising disabled"
+            lockdown_command="${set_command}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
