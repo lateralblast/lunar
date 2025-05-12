@@ -23,6 +23,10 @@ audit_apparmor () {
     name="apparmor_check_${ansible_counter}"
     string="AppArmor Unconfined Applications"
     verbose_message "${string}" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     if [ "${os_vendor}" = "SuSE" ]; then 
       check_list="/boot/grub/menu.lst"
       do_test=1
@@ -33,7 +37,9 @@ audit_apparmor () {
       do_app_test=1
     fi
     if [ "${do_app_test}" = 1 ]; then
-      profile_test=$( apparmor_status |grep "unconfined mode" |awk '{print $1}' )
+      get_command="apparmor_status |grep "unconfined mode" |awk '{print \$1}'"
+      set_command="sudo aa-enforce /etc/apparmor.d/*"
+      profile_test=$( eval "${get_command}" )
       if [ "${profile_test}" = "0" ]; then
         increment_secure    "There are no unconfined applications"
       else
@@ -42,7 +48,7 @@ audit_apparmor () {
       if [ "${ansible}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
-        echo "  command: sh -c \"apparmor_status |grep 'unconfined mode' |awk '{print \$1}''\""
+        echo "  command: sh -c \"${get_command}\""
         echo "  register: ${name}"
         echo "  failed_when: ${name} != 0"
         echo "  changed_when: false"
@@ -50,11 +56,13 @@ audit_apparmor () {
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
-        echo "  command: sh -c \"sudo aa-enforce /etc/apparmor.d/*\""
+        echo "  command: sh -c \"${set_command}\""
         echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       else
-        execute_lockdown "sudo aa-enforce /etc/apparmor.d/*" "Confine AppArmor Applications"
+        lockdown_command="${set_command}"
+        lockdown_message="Confine AppArmor Applications"
+        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     fi
     for check_file in ${check_list}; do
@@ -68,6 +76,7 @@ audit_apparmor () {
           restore_file "${check_file}" "${restore_dir}"
         else
           if [ -f "${check_file}" ]; then
+            disabled_get_command="grep '${package_name}=0' ${check_file} | head -1 | wc -l | sed 's/ //g'"
             package_disabled_test=$( grep "${package_name}=0" "${check_file}" | head -1 | wc -l | sed "s/ //g" )
             package_enabled_test=$( grep "${package_name}=1" "${check_file}" | head -1 | wc -l | sed "s/ //g" )
           else
@@ -77,23 +86,24 @@ audit_apparmor () {
           if [ "${package_disabled_test}" = "1" ]; then
             increment_insecure "Application \"${app_name}\" is disabled in \"${check_file}\""
             temp_file="${temp_dir}/${package_name}"
-            backup_file "${check_file}"
-            execute_lockdown "cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*" "Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
-          fi
-          if [ "${ansible}" = 1 ]; then
-            echo ""
-            echo "- name: Checking ${string}"
-            echo "  command: sh -c \"grep '${package_name}=0' '${check_file}' | head -1 | wc -l | sed 's/ //g'\""
-            echo "  register: ${name}"
-            echo "  failed_when: ${name} != 0"
-            echo "  changed_when: false"
-            echo "  ignore_errors: true"
-            echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
-            echo ""
-            echo "- name: Fixing ${string}"
-            echo "  command: sh -c \"sudo cat ${check_file} |sed -i 's/${package_name}=0//g ; sudo aa-enforce /etc/apparmor.d/*\""
-            echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
-            echo ""
+            backup_file      "${check_file}"
+            lockdown_command="cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*"
+            lockdown_message="Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
+            if [ "${ansible}" = 1 ]; then
+              echo ""
+              echo "- name: Checking ${string}"
+              echo "  command: sh -c \"${disabled_get_command}\""
+              echo "  register: ${name}"
+              echo "  failed_when: ${name} != 0"
+              echo "  changed_when: false"
+              echo "  ignore_errors: true"
+              echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
+              echo ""
+              echo "- name: Fixing ${string}"
+              echo "  command: sh -c \"${lockdown_command}\""
+              echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+              echo ""
+            fi
           fi
           if [ "${package_enabled_test}" = "1" ]; then
             increment_secure "Application \"${app_name}\" is enabled in \"${check_file}\""
@@ -106,15 +116,23 @@ audit_apparmor () {
               if [ -n "${line_check}" ]; then
                 existing_value=$( grep "^GRUB_CMDLINE_LINUX" < "${check_file}" |cut -f2 -d= |sed "s/\"//g" )
                 new_value="GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor ${existing_value}\""
-                execute_lockdown "cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file}" "Disabled Application/Package \"${app_name}\" removed"
+                lockdown_command="cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file}"
+                lockdown_message="Disabled Application/Package \"${app_name}\" removed"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               else
-                execute_lockdown "echo 'GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor\"' >> ${check_file}"
+                lockdown_command="echo 'GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor\"' >> ${check_file}"
+                lockdown_message="Enabled ${app_name}"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             else
               if [ "${check_file}" = "/boot/grub/grub.cfg" ]; then
-                execute_lockdown "cat ${check_file} |sed 's/^\s*linux.*/& apparmor=1 security=apparmor/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*" "Application/Package \"${app_name}\" in \"${check_file}\" to enabled"
+                lockdown_command="cat ${check_file} |sed 's/^\s*linux.*/& apparmor=1 security=apparmor/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*"
+                lockdown_message="Application/Package \"${app_name}\" in \"${check_file}\" to enabled"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               else
-                execute_lockdown "cat ${check_file} |sed 's/^\s*kernel.*/& apparmor=1 security=apparmor/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; enforce /etc/${package_name}.d/*" "Application/Package \"${app_name}\" in \"${check_file}\" to enabled"
+                lockdown_command="cat ${check_file} |sed 's/^\s*kernel.*/& apparmor=1 security=apparmor/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; enforce /etc/${package_name}.d/*"
+                lockdown_message="Application/Package \"${app_name}\" in \"${check_file}\" to enabled"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             fi
           fi

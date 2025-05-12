@@ -18,6 +18,12 @@ audit_amfi () {
       name="audit_amfi_${ansible_counter}"
       string="Apple Mobile File Integrity"
       verbose_message "${string}" "check"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
+      get_command="sh -c \"sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed 's/ //g'"
+      set_command="sudo /usr/sbin/nvram boot-args=\\\"\\\""
       if [ "${audit_mode}" != 2 ]; then
         check_value=$( sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed "s/ //g" )
         if [ "${check_value}" = "0" ]; then
@@ -28,7 +34,7 @@ audit_amfi () {
         if [ "${ansible}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
-          echo "  command: sh -c \"sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed 's/ //g'\""
+          echo "  command: sh -c \"${get_command}'\""
           echo "  register: ${name}"
           echo "  failed_when: ${name} != 0"
           echo "  changed_when: false"
@@ -36,11 +42,13 @@ audit_amfi () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
-          echo "  command: sh -c \"sudo /usr/sbin/nvram boot-args=\\\"\\\"\""
+          echo "  command: sh -c \"${set_command}\""
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          execute_lockdown "sudo /usr/sbin/nvram boot-args=\"\"" "Enable ${string}"
+          lockdown_command="sudo /usr/sbin/nvram boot-args=\"\""
+          lockdown_message="Enable ${string}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi

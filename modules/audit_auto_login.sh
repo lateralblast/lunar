@@ -22,7 +22,9 @@ audit_auto_login() {
     verbose_message         "${string}" "check"
     check_osx_defaults_bool "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes"
     if [ ! "${audit_mode}" != 2 ]; then
-      defaults_check=$( defaults read /Library/Preferences/com.apple.loginwindow | grep -c autoLoginUser sed 's/ //g' )
+      get_command="defaults read /Library/Preferences/com.apple.loginwindow | grep -c autoLoginUser | sed 's/ //g'"
+      set_command="sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser"
+      defaults_check=$( eval "${get_command}" ) 
       if [ "${defaults_check}" = "0" ]; then
         increment_insecure  "${string} Disabled"
       else
@@ -31,7 +33,7 @@ audit_auto_login() {
       if [ "${ansible}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
-        echo "  command: sh -c \"defaults read /Library/Preferences/com.apple.loginwindow | grep autoLoginUser | wc -l | sed 's/ //g'\""
+        echo "  command: sh -c \"${get_command}\""
         echo "  register: ${name}"
         echo "  failed_when: ${name} != 0"
         echo "  changed_when: false"
@@ -39,11 +41,13 @@ audit_auto_login() {
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
-        echo "  command: sh -c \"sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser\""
+        echo "  command: sh -c \"${set_command}\""
         echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       else
-        execute_lockdown "sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser" "Disable ${string}"
+        lockdown_command="${set_command}"
+        lockdown_message="Disable ${string}"
+        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     fi
   fi

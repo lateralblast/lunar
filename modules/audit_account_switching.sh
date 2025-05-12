@@ -20,9 +20,15 @@ audit_account_switching () {
       name="audit_account_switching_${ansible_counter}"
       string="Administrator Account Login to Another User Session"
       verbose_message "${string}"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
       if [ "${audit_mode}" != 2 ]; then
         correct_value="0"
-        current_value=$( sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui' )
+        get_command="sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui'"
+        set_command="sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui"
+        current_value=$( eval "${get_command}" )
         if [ "${current_value}" = "${correct_value}" ]; then
           increment_secure   "Administrator Account Login to Another User Session is set to \"${correct_value}\""
         else
@@ -31,7 +37,7 @@ audit_account_switching () {
         if [ "${ansible}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
-          echo "  command: sh -c \"sudo /usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c 'use-login-window-ui'\""
+          echo "  command: sh -c \"${get_command}\""
           echo "  register: ${name}"
           echo "  failed_when: ${name} != 0"
           echo "  changed_when: false"
@@ -39,11 +45,13 @@ audit_account_switching () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
-          echo "  command: sh -c \"sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui\""
+          echo "  command: sh -c \"${set_command}\""
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          execute_lockdown "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"
+          lockdown_command="${set_command}"
+          lockdown_message="Disable ${string}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi

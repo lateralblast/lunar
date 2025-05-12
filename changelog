@@ -1939,3 +1939,5 @@
 # Fixed dot files test
 # 10.6.2: Mon 12 May 2025 10:57:47 AEST
 # Updated lockdown and restore commands in functions
+# 10.6.3: Mon 12 May 2025 14:03:15 AEST
+# Updated lockdown and restore commands in some modules
