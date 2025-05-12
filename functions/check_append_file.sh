@@ -38,7 +38,9 @@ check_append_file () {
       verbose_message "${secure_string}" "check"
       if [ ! -f "${check_file}" ]; then
         increment_insecure "Parameter \"${parameter}\" does not exist in \"${check_file}\""
-        lockdown_command   "echo \"${parameter}\" >> ${check_file}" "Parameter \"${parameter}\" in \"${check_file}\""
+        lockdown_command="echo \"${parameter}\" >> ${check_file}"
+        lockdown_message="Parameter \"${parameter}\" in \"${check_file}\""
+        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         if [ "${parameter}" ]; then
           if [ "${ansible}" = 1 ]; then
             echo ""
@@ -64,7 +66,9 @@ check_append_file () {
           if [ "${check_value}" != "1" ]; then
             increment_insecure "${insecure_string}"
             backup_file        "${check_file}"
-            lockdown_command   "echo \"${parameter}\" >> ${check_file}" "Parameter \"${parameter}\" in \"${check_file}\""
+            lockdown_command="echo \"${parameter}\" >> ${check_file}"
+            lockdown_message="Parameter \"${parameter}\" in \"${check_file}\""
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             increment_secure   "${secure_string}"
           fi

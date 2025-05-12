@@ -50,11 +50,14 @@ check_initd_service () {
       fi
       if [ "${actual_status}" != "${correct_status}" ]; then
         increment_insecure "Service \"${service_name}\" is not \"${correct_status}\""
-        log_file="${work_dir}/${log_file}"
+        update_log_file  "${log_file}" "${service_name},${actual_status}"
+        lockdown_message="Service ${service_name} to ${correct_status}"
         if [ "${correct_status}" = "disabled" ]; then
-          lockdown_command "echo \"${service_name},${actual_status}\" >> ${log_file} ; /etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}" "Service ${service_name} to ${correct_status}"
+          lockdown_command="/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          lockdown_command "echo \"${service_name},${actual_status}\" >> ${log_file} ; mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start" "Service ${service_name} to ${correct_status}"
+          lockdown_command="mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 2 ]; then
@@ -63,10 +66,13 @@ check_initd_service () {
             check_name=$( grep "${service_name}" "${restore_file}" | cut -f1 -d"," )
             if [ "$check_name" = "${service_name}" ]; then
               check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d"," )
+              restore_message="Service ${service_name} to ${check_status}"
               if [ "${check_status}" = "disabled" ]; then
-                restore_command "/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}" "Service ${service_name} to ${check_status}"
+                restore_command="/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}"
+                execute_restore "${restore_command}" "${restore_message}"
               else
-                restore_command "mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start" "Service ${service_name} to ${check_status}"
+                restore_command="mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start"
+                execute_restore "${restore_command}" "${restore_message}"
               fi
             fi
           fi

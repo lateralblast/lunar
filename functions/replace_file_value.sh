@@ -59,7 +59,8 @@ replace_file_value () {
       fi
       increment_insecure "File \"${check_file}\" contains \"${check_value}\" rather than \"${correct_value}\""
       backup_file        "${check_file}"
-      lockdown_command   "sed -e \"s/${new_check_value}/${new_correct_value}/\" < ${check_file} > ${temp_file} ; cp ${temp_file} ${check_file} ; rm ${temp_file}" "Setting:   Share entries in ${check_file} to be secure"
+      lockdown_command="sed -e \"s/${new_check_value}/${new_correct_value}/\" < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+      execute_lockdown "${lockdown_command}" "Share entries in ${check_file} to be secure" "sudo"
       if [ "${os_version}" != "11" ]; then
         pkgchk -f -n -p "${check_file}" 2> /dev/null
       else

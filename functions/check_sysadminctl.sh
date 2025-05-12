@@ -14,20 +14,25 @@ check_sysadminctl () {
     param="$1"
     value="$2"
     ansible_counter=$((ansible_counter+1))
+    log_file="sysadminctl.log"
     name="check_sysadminctl_${ansible_counter}"
     if [ "${value}" = "off" ]; then
       search_value="disabled"
+      other_value="on"
     fi
     if [ "${value}" = "on" ]; then
       search_value="enabled"
+      other_value="off"
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\""
-      verbose_message "${string}" "check"
+      verbose_message  "${string}" "check"
+      get_command="sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}"
+      set_command="sudo sysadminctl -${param} ${value}"
       if [ "${ansible}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
-        echo "  command: sh -c \"sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}\""
+        echo "  command: sh -c \"${get_command}\""
         echo "  register: ${name}"
         echo "  failed_when: \"${search_value}\" not in ${name}"
         echo "  changed_when: false"
@@ -35,7 +40,7 @@ check_sysadminctl () {
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
-        echo "  command: sh -c \"sudo sysadminctl -${param} ${value}\""
+        echo "  command: sh -c \"${set_command}\""
         echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
@@ -44,9 +49,10 @@ check_sysadminctl () {
         increment_insecure "Parameter \"${param}\" not set to \"${value}\""
         verbose_message    "sudo sysadminctl -${param} ${value}" "fix"
         if [ "${audit_mode}" = 0 ]; then
-          backup_file      "${dir}${file}"
-          verbose_message  "Parameter \"${param}\" to \"${value}\"" "set"
-          verbose_message  "sudo sysadminctl -${param} ${value}"
+          update_log_file  "${log_file}" "${param},${other_value}"
+          lockdown_message="Parameter \"${param}\" to \"${value}\"" "set"
+          lockdown_command="${set_command}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
@@ -54,7 +60,11 @@ check_sysadminctl () {
         fi
       fi
     else
-      funct_restore_file "${dir}${file}" "${restore_dir}"
+      restore_file="${restore_dir}/${log_file}"
+      restore_value=$( grep "^${param}" "${restore_file}" |cut -f2 -d, )
+      verbose_message "Parameter \"${param}\" to \"${restore_value}\"" "set"
+      restore_command="sudo sysadminctl -${param} ${restore_value}"
+      execute_restore "${restore_command}" "Restoring Parameter \"${param}\" to \"${restore_value}\"" "sudo"
     fi
   fi
 }

@@ -55,17 +55,20 @@ check_pmset() {
       fi
       if [ ! "${actual_value}" = "${value}" ]; then
         increment_insecure "Service \"${service}\" is not \"${state}\""
-        lockdown_command   "echo \"${state}\" > ${work_dir}/${log_file} ; pmset -c ${service} ${value}" "Service \"${service}\" to \"${state}\""
+        lockdown_command="echo \"${state}\" > ${work_dir}/${log_file} ; pmset -c ${service} ${value}"
+        lockdown_message="Service \"${service}\" to \"${state}\""
+        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        increment_secure   "Service \"${service}\" is \"${state}\""
+        increment_secure "Service \"${service}\" is \"${state}\""
       fi
     else
       restore_file=$retore_dir/${log_file}
       if [ -f "${restore_file}" ]; then
         restore_value=$( cat "${restore_file}" )
         if [ "${restore_value}" != "${actual_value}" ]; then
-          verbose_message "Wake on lan to enabled" "restore"
-          eval "pmset -c ${service} ${restore_value}"
+          restore_message="Wake on lan to enabled"
+          restore_command="pmset -c ${service} ${restore_value}"
+          execute_restore "${restore_command}" "${restore_message}" "sudo"
         fi
       fi
     fi

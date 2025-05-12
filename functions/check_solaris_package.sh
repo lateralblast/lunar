@@ -23,9 +23,9 @@ funct_check_pkg () {
         restore_check=$( grep "^${package_name}$" < "${restore_file}" | head -1 )
         if [ "$restore_check" = "${package_name}" ]; then
           if [ "${os_version}" = "11" ]; then
-            restore_command "pkg uninstall ${package_name}" "Package \"${package_name}\""
+            execute_restore "pkg uninstall ${package_name}" "Package \"${package_name}\"" "sudo"
           else
-            restore_command "pkgrm ${package_name}" "Package \"${package_name}\""
+            execute_restore "pkgrm ${package_name}" "Package \"${package_name}\"" "sudo"
           fi
         fi
       fi

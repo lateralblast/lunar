@@ -84,7 +84,7 @@ check_command_value () {
     echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
     echo ""
   fi
-  log_file="${work_dir}/${command_name}.log"
+  log_file="${command_name}.log"
   if [ "${current_value}" != "${correct_value}" ]; then
     if [ "${audit_mode}" = 1 ]; then
       increment_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\""
@@ -94,23 +94,27 @@ check_command_value () {
         else
           set_command="routeadm -e"
         fi
-        verbose_message "${set_command} ${parameter_name}" "fix"
+        lockdown_command="${set_command} ${parameter_name}"
+        verbose_message  "${lockdown_command}" "fix"
       else
-        verbose_message "${set_command} ${parameter_name}=${correct_value}" "fix"
+        lockdown_command="${set_command} ${parameter_name}=${correct_value}"
+        verbose_message  "${lockdown_command}" "fix"
       fi
     else
       if [ "${audit_mode}" = 0 ]; then
-        verbose_message "Setting:   ${parameter_name} to ${correct_value}"
-        echo "${parameter_name},${current_value}" >> "${log_file}"
+        update_log_file  "${log_file}" "${parameter_name},${current_value}"
+        lockdown_message="Parameter ${parameter_name} to ${correct_value}"
         if [ "${command_name}" = "routeadm" ]; then
           if [ "${correct_value}" = "disabled" ]; then
             set_command="routeadm -d"
           else
             set_command="routeadm -e"
           fi
-          eval "${set_command} ${parameter_name}"
+          lockdown_command="${set_command} ${parameter_name}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          eval "${set_command} ${parameter_name}=${correct_value}"
+          lockdown_command="${set_command} ${parameter_name}=${correct_value}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi 
       fi
     fi

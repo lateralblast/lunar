@@ -49,7 +49,7 @@ audit_sticky_bit () {
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           else
-            lockdown_command "sudo chmod +t ${check_dir}" "Disable ${string}"
+            execute_lockdown "sudo chmod +t ${check_dir}" "Disable ${string}"
           fi
         done
         if [ "${audit_mode}" = 2 ]; then

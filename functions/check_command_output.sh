@@ -76,18 +76,22 @@ check_command_output () {
       else
         increment_secure   "Command \"${command_name}\" returns correct value"
       fi
-      log_file="${work_dir}/${log_file}"
-      lockdown_command "echo \"${audit_command}\" > ${log_file} ; ${set_command}" "Command \"${command_name}\" to correct value"
+      update_log_file  "${log_file}" "${audit_command}"
+      lockdown_message="Command \"${command_name}\" to correct value"
+      lockdown_command="${set_command}"
+      execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
     fi
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"
       if [ -f "${restore_file}" ]; then
-        verbose_message "Restoring: Previous value for \"${command_name}\""
+        restore_message="Restoring: Previous value for \"${command_name}\""
         if [ "${command_name}" = "getcond" ]; then
-          eval "${audit_command}"
+          restore_command="${audit_command}"
+          execute_restore "${restore_command}" "${restore_message}" "sudo"
         else
           restore_string=$( cat "${restore_file}" )
-          eval "${audit_command} ${restore_string}"
+          restore_command="${audit_command} ${restore_string}"
+          execute_restore "${restore_command}" "${restore_message}" "sudo"
         fi
       fi
     fi

@@ -43,7 +43,7 @@ audit_auto_login() {
         echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       else
-        lockdown_command "sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser" "Disable ${string}"
+        execute_lockdown "sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser" "Disable ${string}"
       fi
     fi
   fi

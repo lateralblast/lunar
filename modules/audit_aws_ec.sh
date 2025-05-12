@@ -20,7 +20,7 @@ audit_aws_ec () {
       increment_secure   "ElastiCache \"${cache}\" is Multi-AZ enabled"
     else
       increment_insecure "ElastiCache \"${cache}\" is not Multi-AZ enabled"
-      lockdown_command   "aws elasticache modify-replication-group --region ${aws_region} --replication-group-id ${cache} --automatic-failover-enabled --apply-immediately" "ElastiCache \"${cache}\" Multi-AZ to enabled"
+      execute_lockdown   "aws elasticache modify-replication-group --region ${aws_region} --replication-group-id ${cache} --automatic-failover-enabled --apply-immediately" "ElastiCache \"${cache}\" Multi-AZ to enabled"
     fi
   done
 }

@@ -45,7 +45,7 @@ funct_audit_system () {
     audit_search_fs
   fi
   #audit_test_subset
-  sparc_test=$( echo "${os_platform}" | grep -c "sparc" )
+  sparc_test=$( echo "${os_platform}" | grep -c "sparc" | sed "s/ //g" )
   if [ "${sparc_test}" = "0" ]; then
     audit_system_x86
   else

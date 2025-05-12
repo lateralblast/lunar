@@ -27,8 +27,9 @@ check_chkconfig_service () {
         check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d"," )
         if [ "${check_status}" = "on" ] || [ "${check_status}" = "off" ]; then
           if [ "${check_status}" != "${actual_status}" ]; then
-            verbose_message "Restoring: Service \"${service_name}\" at run level \"${service_level}\" to \"${check_status}\""
-            ${chk_config} --level "${service_level}" "${service_name}" "${check_status}"
+            restore_command="${chk_config} --level ${service_level} ${service_name} ${check_status}"
+            restore_message="Restoring: Service \"${service_name}\" at run level \"${service_level}\" to \"${check_status}\""
+            execute_restore "${restore_command}" "${restore_message}" "sudo"
           fi
         fi
       fi
@@ -37,11 +38,13 @@ check_chkconfig_service () {
        string="Service \"${service_name}\" is \"${correct_status}\""
        verbose_message "${string}" "check"
         if [ "${actual_status}" != "${correct_status}" ]; then
-          log_file="${work_dir}/${log_file}"
           increment_insecure "Service \"${service_name}\" is not \"${correct_status}\""
-          lockdown_command   "echo \"${service_name},${actual_status}\" >> ${log_file} ; ${chk_config} ${service_name} ${correct_status}" "Service \"${service_name}\" to \"${correct_status}\""
+          update_log_file  "${log_file}" "${service_name},${actual_status}"
+          lockdown_command="${chk_config} ${service_name} ${correct_status}"
+          lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure   "${string}"
+          increment_secure  "${string}"
         fi
       fi
     fi
@@ -79,8 +82,9 @@ check_chkconfig_service () {
         check_status=$( grep "${service_name}" "${restore_file}" | grep ",${service_level}," | cut -f3 -d"," )
         if [ "${check_status}" = "on" ] || [ "${check_status}" = "off" ]; then
           if [ "${check_status}" != "${actual_status}" ]; then
-            verbose_message "Restoring: Service \"${service_name}\" at run level \"${service_level}\" to \"${check_status}\""
-            ${chk_config} --level "${service_level}" "${service_name}" "${check_status}"
+            restore_command="${chk_config} --level ${service_level} ${service_name} ${check_status}"
+            restore_message="Restoring: Service \"${service_name}\" at run level \"${service_level}\" to \"${check_status}\""
+            execute_restore "${restore_command}" "${restore_message}"
           fi
         fi
       fi
@@ -95,11 +99,13 @@ check_chkconfig_service () {
           echo ""
         fi
         if [ "${actual_status}" != "${correct_status}" ]; then
-          log_file="${work_dir}/${log_file}"
           increment_insecure "${insecure_string}"
-          lockdown_command   "echo \"${service_name},${service_level},${actual_status}\" >> ${log_file} ; ${chk_config} --level ${service_level} ${service_name} ${correct_status}" "Service ${service_name} at run level ${service_level} to ${correct_status}"
+          update_log_file "${log_file}" "${service_name},${service_level},${actual_status}"
+          lockdown_command="${chk_config} --level ${service_level} ${service_name} ${correct_status}"
+          lockdown_message="Service ${service_name} at run level ${service_level} to ${correct_status}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure   "${secure_string}"
+          increment_secure "${secure_string}"
         fi
       fi
     fi

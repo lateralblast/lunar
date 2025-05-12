@@ -16,7 +16,7 @@ check_osx_systemsetup () {
       value="$2"
       ansible_counter=$((ansible_counter+1))
       name="check_osx_systemsetup_${ansible_counter}"
-      backup_file="systemsetup_${param}"
+      log_file="systemsetup_${param}.log"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
         verbose_message "${string}" "check"
@@ -37,20 +37,23 @@ check_osx_systemsetup () {
         fi
         check=$( eval "sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'" )
         if [ "${check}" != "${value}" ]; then
-          backup_file="${work_dir}/${backup_file}"
           increment_insecure "Parameter \"${param}\" not set to \"${value}\""
-          lockdown_command   "echo \"$check\" > ${backup_file} ; sudo systemsetup -${param} ${value}" "Parameter \"${param}\" to \"${value}\""
+          update_log_file  "${log_file}" "${check_file}"
+          lockdown_command="systemsetup -${param} ${value}"
+          lockdown_message="Parameter \"${param}\" to \"${value}\""
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure   "Parameter \"${param}\" is set to \"${value}\""
+          increment_secure "Parameter \"${param}\" is set to \"${value}\""
         fi
       else
-        restore_file="${restore_dir}/${backup_file}"
+        restore_file="${restore_dir}/${log_file}"
         if [ -f "${restore_file}" ]; then
           now=$( eval "sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'" )
           old=$( cat "${restore_file}" )
           if [ "${now}" != "${old}" ]; then
-            verbose_message "Parameter \"${param}\" back to \"${old}\"" "set"
-            eval "sudo systemsetup -${param} ${old}"
+            restore_command="systemsetup -${param} ${old}"
+            restore_message="Parameter \"${param}\" back to \"${old}\"" "set"
+            execute_restore "${restore_command}" "${restore_message}" "sudo"
           fi
         fi
       fi

@@ -43,7 +43,7 @@ audit_account_switching () {
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          lockdown_command "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"
+          execute_lockdown "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"
         fi
       fi
     fi

@@ -44,7 +44,7 @@ audit_asset_cache () {
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          lockdown_command "sudo /usr/bin/AssetCacheManagerUtil deactivate" "Disable ${string}"
+          execute_lockdown "sudo /usr/bin/AssetCacheManagerUtil deactivate" "Disable ${string}"
         fi
       fi
     fi

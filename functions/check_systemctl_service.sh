@@ -96,12 +96,14 @@ check_systemctl_service () {
       fi
       if [ "${actual_status}" = "is-enabled" ] || [ "${actual_status}" = "disabled" ] || [ "${actual_status}" = "not-found" ] || [ "${actual_status}" = "enabled" ]; then
         if [ "${correct_status}" = "enabled" ] && [ "${actual_status}" = "not-found" ]; then
-          increment_insecure "Service \"${service_name}\" is not \"${correct_status}\""
+          increment_insecure "Service \"${service_name}\" is \"${actual_status}\""
         else
           if [ "${actual_status}" != "${correct_status}" ] && [ ! "${actual_status}" = "not-found" ]; then
-            log_file="${work_dir}/${log_file}"
             increment_insecure "Service \"${service_name}\" is not \"${correct_status}\""
-            lockdown_command   "echo \"${service_name},${actual_status}\" >> ${log_file} ; systemctl ${service_switch} ${service_name}" "Service \"${service_name}\" to \"${correct_status}\""
+            update_log_file  "${log_file}" "${service_name},${actual_status}"
+            lockdown_command="systemctl ${service_switch} ${service_name}"
+            lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
+            execute_lockdown "${lockdown_command}"  "${lockdown_message}" "sudo"
           else
             if [ "${actual_status}" = "not-found" ]; then
               increment_secure "Service \"${service_name}\" is \"${actual_status}\""

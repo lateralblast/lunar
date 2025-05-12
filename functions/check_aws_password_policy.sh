@@ -25,6 +25,8 @@ check_aws_password_policy () {
     increment_secure   "${secure_string}"
   else
     increment_insecure "${insecure_string}"
-    lockdown_command   "${cli_fix}" "IAM Account password policy parameter \"${param}\" to \"${value}\""
+    lockdown_command="${cli_fix}"
+    lockdown_message="IAM Account password policy parameter \"${param}\" to \"${value}\""
+    execute_lockdown "${lockdown_command}" "${lockdown_message}"
   fi
 }

@@ -44,17 +44,20 @@ check_itab() {
         fi
         if [ "${audit_mode}" = 0 ]; then
           log_file="${work_dir}/${log_file}"
-          verbose_message "Service \"${service_name}\" to \"${correct_value}\"" "set"
+          lockdown_message="Service \"${service_name}\" to \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            lsitab > "${log_file}"
-            rmitab "${service_name}"
+            update_log_file  "${log_file}" "${actual_value}"
+            lockdown_command="rmitab ${service_name}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             if [ "${actual_value}" = "off" ]; then
-              echo "off" > "${log_file}"
-              mkitab "${correct_value}"
+              update_log_file  "${log_file}" "off"
+              lockdown_command="mkitab ${correct_value}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             else
-              lsitab > "${log_file}"
-              chitab "${correct_value}"
+              update_log_file  "${log_file}" "${actual_value}"
+              lockdown_command="chitab ${correct_value}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           fi
         fi
@@ -66,16 +69,17 @@ check_itab() {
       if [ -f "${log_file}" ]; then
         previous_value=$( cat "${log_file}" )
         if [ "${previous_value}" != "${actual_value}" ]; then
-          verbose_message "Service \"${service_name}\" to \"${previous_value}\"" "restore"
+          restore_message="Service \"${service_name}\" to \"${previous_value}\""
           if [ "${previous_value}" = "off" ]; then
-            rmitab "${service_name}"
+            restore_command="rmitab ${service_name}"
           else
             if [ "${actual_status}" = "off" ]; then
-              mkitab "${service_name}" "${previous_value}"
+              restore_command="mkitab ${service_name} ${previous_value}"
             else
-              chitab "${service_name}" "${previous_value}"
+              restore_command="chitab ${service_name} ${previous_value}"
             fi
           fi
+          execute_restore "${restore_command}" "${restore_message}" "sudo"
         fi
       fi
     fi

@@ -45,9 +45,10 @@ check_dscl () {
         increment_insecure "Parameter \"${param}\" not set to \"${value}\" in \"${file}\""
         verbose_message    "sudo dscl . -create ${file} ${param} \"${value}\"" "fix"
         if [ "${audit_mode}" = 0 ]; then
-          funct_backup_file   "${dir}${file}"
-          verbose_message     "Parameter \"${param}\" to \"${value}\" in ${file}" "set"
-          sudo dscl . -create "${file}" "${param}" "${value}"
+          backup_file      "${dir}/${file}"
+          lockdown_message="Parameter \"${param}\" to \"${value}\" in ${file}"
+          lockdown_message="dscl . -create ${file} ${param} ${value}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
@@ -55,7 +56,7 @@ check_dscl () {
         fi
       fi
     else
-      funct_restore_file "${dir}${file}" "${restore_dir}"
+      restore_file "${dir}/${file}" "${restore_dir}"
     fi
   fi
 }

@@ -23,7 +23,9 @@ check_launchctl_service () {
       required_status="disabled"
       change_status="unload"
     fi
-    check_value=$( launchctl list | grep "${launchctl_service}" | awk '{print $3}' )
+    get_command="launchctl list |grep ${launchctl_service} |awk '{print \$3}'"
+    set_command="sudo launchctl ${change_status} -w ${launchctl_service}.plist"
+    check_value=$( eval "${get_command}" )
     if [ "${check_value}" = "${launchctl_service}" ]; then
       actual_status="enabled"
     else
@@ -35,7 +37,7 @@ check_launchctl_service () {
       if [ "${ansible}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
-        echo "  command: sh -c \"launchctl list |grep ${launchctl_service} |awk '{print \$3}'\""
+        echo "  command: sh -c \"${get_command}\""
         echo "  register: ${name}"
         echo "  failed_when: ${name} == 1"
         echo "  changed_when: false"
@@ -43,16 +45,18 @@ check_launchctl_service () {
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
-        echo "  command: sh -c \"sudo launchctl ${change_status} -w ${launchctl_service}.plist\""
+        echo "  command: sh -c \"${set_command}\""
         echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       if [ "${actual_status}" != "${required_status}" ]; then
-        log_file="${work_dir}/${log_file}"
         increment_insecure "Service \"${launchctl_service}\" is \"${actual_status}\""
-        lockdown_command   "echo \"${actual_status}\" > ${log_file} ; sudo launchctl ${change_status} -w ${launchctl_service}.plist" "Service ${launchctl_service} to ${required_status}"
+        lockdown_command="sudo launchctl ${change_status} -w ${launchctl_service}.plist"
+        lockdown_message="Service ${launchctl_service} to ${required_status}"
+        update_log_file  "${log_file}" "${actual_status}"
+        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        increment_secure   "Service \"${launchctl_service}\" is \"${required_status}\""
+        increment_secure "Service \"${launchctl_service}\" is \"${required_status}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"
@@ -64,7 +68,9 @@ check_launchctl_service () {
           change_status="unload"
         fi
         if [ "${restore_status}" != "${actual_status}" ]; then
-          sudo launchctl "${change_status}" -w "${launchctl_service}.plist"
+          restore_message="Restoring ${launchctl_service} to ${change_status}"
+          restore_command="launchctl ${change_status} -w ${launchctl_service}.plist"
+          execute_restore "${restore_command}" "${restore_message}" "sudo"
         fi
       fi
     fi

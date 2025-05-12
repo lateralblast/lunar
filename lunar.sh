@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.6.1
+# Version:      10.6.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -100,6 +100,7 @@ args="$@"
 secure=0
 insecure=0
 total=0
+use_sudo=0
 syslog_server=""
 syslog_logdir=""
 pkg_suffix="lunar"
@@ -328,42 +329,64 @@ check_virtual_platform () {
   echo "Platform:   ${virtual}"
 }
 
-# lockdown_command
+# execute_lockdown
 #
 # Run a lockdown command
 # Check that we are in lockdown mode
 # If not in lockdown mode output a verbose message
 #.
 
-lockdown_command () {
+execute_lockdown () {
   command="$1"
   message="$2"
+  privilege="$3"
   if [ "${audit_mode}" = 0 ]; then
     if [ "${message}" ]; then
       verbose_message "${message}" "set"
     fi
     verbose_message "${command}" "execute"
-    eval "${command}"
+    if [ "${privilege}" = "" ]; then
+      eval "${command}"
+    else
+      if [ "$my_id" = "0" ]; then
+        eval "${command}"
+      else
+        if [ "${use_sudo}" = "1" ]; then
+          eval "${command}"
+        fi
+      fi
+    fi
   else
     verbose_message "${command}" "fix"
   fi
 }
 
-# restore_command
+# execute_restore
 #
-# Restore command
+# Run restore command
 # Check we are running in restore mode run a command
 #.
 
-restore_command () {
+execute_restore () {
   command="$1"
   message="$2"
+  privilege="$3"
   if [ "${audit_mode}" = 0 ]; then
     if [ "${message}" ]; then
       verbose_message "${message}" "restore"
     fi
     verbose_message "${command}" "execute"
-    eval "${command}"
+    if [ "${privilege}" = "" ]; then
+      eval "${command}"
+    else
+      if [ "$my_id" = "0" ]; then
+        eval "${command}"
+      else
+        if [ "${use_sudo}" = "1" ]; then
+          eval "${command}"
+        fi
+      fi
+    fi
   else
     verbose_message "${command}" "fix"
   fi
@@ -563,6 +586,10 @@ do
         shift 2
       fi
       exit
+      ;;
+    -8|--usesudo)                   # switch - Use sudo
+      use_sudo=1
+      shift
       ;;
     -9|--shellcheck)                # switch - Run shellcheck against script
       check_shellcheck

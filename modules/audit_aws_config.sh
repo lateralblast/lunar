@@ -16,7 +16,7 @@ audit_aws_config () {
 	check=$( aws configservice describe-configuration-recorders --region "${aws_region}" )
   if [ ! "${check}" ]; then
     increment_insecure "AWS Configuration Recorder not enabled"
-    lockdown_command   "aws configservice start-configuration-recorder" "Configuration Recorder Service to enabled"
+    execute_lockdown   "aws configservice start-configuration-recorder" "Configuration Recorder Service to enabled"
   else
     increment_secure   "AWS Configuration Recorder enabled"
   fi

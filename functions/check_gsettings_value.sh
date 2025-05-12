@@ -23,6 +23,7 @@ check_gsettings_value () {
   parameter_name="$2" 
   correct_value="$3"
   command_name="gsettings"
+  log_file="${command_name}.log"
   check=$( command -v gsettings 2> /dev/null | wc -l | sed "s/ //g" )
   if [ "${check}" = "1" ]; then
     string="Parameter \"${parameter_name}\" to \"${correct_value}\""
@@ -31,15 +32,16 @@ check_gsettings_value () {
     get_command="gsettings get"
     if [ "${os_name}" = "Linux" ]; then
       if [ "${audit_mode}" = 2 ]; then
-        restore_file="${restore_dir}/${command_name}.log"
+        restore_file="${restore_dir}/${log_file}"
         if [ -f "${restore_file}" ]; then
           parameter_root=$( grep "${parameter_name}" "${restore_file}" | cut -f1 -d',' )
           parameter_name=$( grep "${parameter_name}" "${restore_file}" | cut -f2 -d',' )
           correct_value=$( grep "${parameter_name}" "${restore_file}" | cut -f3 -d',' )
           package_test=$( echo "${parameter_name}" | grep "[A-z]" )
           if [ -n "${package_test}" ]; then
-            verbose_message "Parameter \"${parameter_name}\" to \"${correct_value}\"" "restore"
-            eval "${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
+            restore_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
+            restore_command="${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
+            execute_restore "${restore_command}" "${restore_message}" "sudo"
           fi
         fi
       else
@@ -59,10 +61,10 @@ check_gsettings_value () {
           else
             current_value=$( gsettings get "${parameter_root}" "${parameter_name}" 2> /dev/null )
             if [ "${audit_mode}" = 0 ]; then
-              log_file="${restore_dir}/${command_name}.log"
-              verbose_message "Parameter \"${parameter_name}\" to \"${correct_value}\"" "set"
-              echo "${parameter_root},${parameter_name},${current_value}" >> "${log_file}"
-              eval "${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
+              update_log_file "${log_file}" "${parameter_root},${parameter_name},${current_value}"
+              lockdown_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
+              lockdown_command="${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           fi
         else

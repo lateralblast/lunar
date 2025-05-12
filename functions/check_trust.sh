@@ -23,11 +23,12 @@ check_trust() {
       string="Trusted Execution setting for \"${parameter_name}\" is set to \"${correct_value}\""
       verbose_message "${string}" "check"
       if [ "${actual_value}" != "${correct_value}" ]; then
-        log_file="${work_dir}/${log_file}"
         increment_insecure "Trusted Execution setting for \"${parameter_name}\" is not set to \"${correct_value}\""
-        lockdown_command   "echo \"trustchk-p ${parameter_name}=${actual_value}\" > ${log_file} ; trustchk -p ${parameter_name}=${correct_value}" "Trusted Execution setting for \"${parameter_name}\" to \"${correct_value}\""
+        update_log_file  "${log_file}" "trustchk-p ${parameter_name}=${actual_value}"
+        lockdown_message="Trusted Execution setting for \"${parameter_name}\" to \"${correct_value}\""
+        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        increment_secure   "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
+        increment_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       fi
       if [ "${ansible}" = 1 ]; then
         echo ""
@@ -49,8 +50,9 @@ check_trust() {
       if [ -f "${log_file}" ]; then
         previous_value=$( cut -f2 -d= "${log_file}" )
         if [ "${previous_value}" != "${actual_value}" ]; then
-          verbose_message "Password Policy for \"${parameter_name}\" to \"${previous_value}\"" "restore"
-          sh < "${log_file}"
+          restore_command="sh < ${log_file}"
+          restore_message="Password Policy for \"${parameter_name}\" to \"${previous_value}\""
+          execute_restore "${restore_command}" "${restore_message}" "sudo"
         fi
       fi
     fi

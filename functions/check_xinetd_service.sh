@@ -32,11 +32,11 @@ audit_xinetd_service () {
           else
             command="chkconfig ${service_name} ${correct_status}"
           fi
-          log_file="${work_dir}/${log_file}"
           increment_insecure "Service \"${service_name}\" does not have \"${parameter_name}\" set to \"${correct_status}\""
-          backup_file        "${check_file}"
-          lockdown_command   "echo \"${parameter_name},${actual_status}\" >> ${log_file} ; cat ${check_file} |sed 's/${parameter_name}.*/${parameter_name} = ${correct_status}/g' > ${temp_file} ; cp ${temp_file} ${check_file} ; ${command}" "Service to ${parameter_name}"
-          lockdown_command   "cat ${check_file} |sed 's/${parameter_name}.*/${parameter_name} = ${correct_status}/g' > ${temp_file} ; cp ${temp_file} ${check_file} ; ${command}"
+          lockdown_command="${check_file} |sed 's/${parameter_name}.*/${parameter_name} = ${correct_status}/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; ${command}"
+          backup_file      "${check_file}"
+          update_log_file  "${log_file}" "${parameter_name},${actual_status}"
+          execute_lockdown "${lockdown_command}" "Service to ${parameter_name}" "sudo"
         else
           increment_secure   "Service \"${service_name}\" has \"${parameter_name}\" set to \"${correct_status}\""
         fi

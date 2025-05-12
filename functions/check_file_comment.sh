@@ -36,14 +36,14 @@ check_file_comment () {
           echo "    create: yes"
           echo ""
         else
-          lockdown_command "sed 's/${line}/${comment}\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+          execute_lockdown "sed 's/${line}/${comment}\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
         fi
         if [ "${audit_mode}" = 0 ]; then
-          backup_file     "${check_file}"
-          verbose_message "File \"${check_file}\"" "update"
-          echo "${check_file},sed" >> "${log_file}"
-          sed  "s/${line}/${comment}\1/g" < "${check_file}" > "${temp_file}"
-          cat  "${temp_file}" > "${check_file}"
+          backup_file      "${check_file}"
+          update_log_file  "${log_file}" "${check_file},sed"
+          lockdown_message="File \"${check_file}\""
+          lockdown_command="sed  \"s/${line}/${comment}\1/g\" < ${check_file} > ${temp_file} ; cat  ${temp_file} > ${check_file}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi

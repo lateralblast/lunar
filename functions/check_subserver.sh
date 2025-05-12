@@ -37,19 +37,22 @@ check_subserver() {
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Service \"${service_name}\" Protocol \"${protocol_name}\" is not \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            verbose_message "chsubserver -r inetd -C /etc/inetd.conf -d -v \"${service_name}\" -p \"${protocol_name}\"" "fix"
+            fix_command="chsubserver -r inetd -C /etc/inetd.conf -d -v \"${service_name}\" -p \"${protocol_name}\""
+            verbose_message "${fix_command}" "fix"
           else
-            verbose_message "chsubserver -r inetd -C /etc/inetd.conf -a -v \"${service_name}\" -p \"${protocol_name}\"" "fix"
+            fix_command="chsubserver -r inetd -C /etc/inetd.conf -a -v \"${service_name}\" -p \"${protocol_name}\""
+            verbose_message "${fix_command}" "fix"
           fi
         fi
         if [ "${audit_mode}" = 0 ]; then
-          log_file="${work_dir}/${log_file}"
-          verbose_message "Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${correct_value}\"" "set"
-          echo "${actual_value}" > "${log_file}"
+          update_log_file  "${log_file}" "${actual_value}"
+          lockdown_message="Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            eval "chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
+            lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
-            eval "chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
+            lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         fi
       else
@@ -60,11 +63,13 @@ check_subserver() {
       if [ -f "${log_file}" ]; then
         previous_value=$( cat "${log_file}" )
         if [ "${previous_value}" != "${actual_value}" ]; then
-          verbose_message "Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${previous_value}\"" "restore"
+          restore_message="Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${previous_value}\""
           if [ "${previous_value}" = "off" ]; then
-            eval "chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
+            restore_command="chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
+            execute_restore "${restore_command}" "${restore_message}" "sudo"
           else
-            eval "chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
+            restore_command="chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
+            execute_restore "${restore_command}" "${restore_message}" "sudo"
           fi
         fi
       fi

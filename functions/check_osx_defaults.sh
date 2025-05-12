@@ -78,29 +78,29 @@ check_osx_defaults () {
         fi
         if [ "${defaults_value}" = "" ]; then
           verbose_message "${defaults_command} delete ${defaults_file} ${defaults_parameter}" "fix"
-          command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
+          set_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
         else
           if [ "${defaults_type}" = "bool" ]; then
             verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\"" "fix"
-            command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\""
+            set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\""
           else
             if [ "${defaults_type}" = "int" ]; then
               verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}" "fix"
-              command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
+              set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
             else
               if [ "${defaults_type}" = "dict" ]; then
                 if [ "${defaults_second_type}" = "bool" ]; then
                   verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}" "fix"
-                  command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
+                  set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
                 else
                   if [ "${defaults_second_type}" = "int" ]; then
                     verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}" "fix"
-                    command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
+                    set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
                   fi
                 fi
               else
                 verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\"" "fix"
-                command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
+                set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
               fi
             fi
           fi
@@ -108,38 +108,45 @@ check_osx_defaults () {
         if [ "${audit_mode}" = 0 ]; then
           backup_file "${backup_file}"
           string="Parameter ${defaults_parameter} to ${defaults_value} in ${defaults_file}"
-          verbose_message "${string}" "set"
+          lockdown_message="${string}"
           if [ "${defaults_value}" = "" ]; then
-            eval "${defaults_command} delete ${defaults_file} ${defaults_parameter}"
+            lockdown_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             if [ "${defaults_type}" = "bool" ]; then
-              eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
+              lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             else
               if [ "${defaults_type}" = "int" ]; then
-                eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
+                lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                 if [ "${defaults_file}" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
               else
                 if [ "${defaults_type}" = "dict" ]; then
                   if [ "${defaults_second_type}" = "bool" ]; then
-                    eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
+                    lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
+                    execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                   else
                     if [ "${defaults_second_type}" = "int" ]; then
-                      eval "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
+                      lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
+                      execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                     fi
                   fi
                 else
-                  eval "${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
+                  lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
+                  execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                 fi
               fi
             fi
           fi
         fi
+        get_command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2>&1 |grep ${defaults_value}"
         if [ "${ansible}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
-          echo "  command: sh -c \"${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2>&1 |grep ${defaults_value}\""
+          echo "  command: sh -c \"${get_command}\""
           echo "  register: ${name}"
           echo "  failed_when: ${name} == 1"
           echo "  changed_when: false"
@@ -147,7 +154,7 @@ check_osx_defaults () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
-          echo "  command: sh -c \"${command}\""
+          echo "  command: sh -c \"${set_command}\""
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
