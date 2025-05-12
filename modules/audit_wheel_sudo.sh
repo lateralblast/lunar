@@ -31,13 +31,15 @@ audit_wheel_sudo () {
                 echo "    replace: '#\1'"
                 echo ""
               fi
+              lockdown_command="sed 's/^\(%.*NOPASSWD.*\)/#\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+              lockdown_message="Disabling group \"${wheel_group}\" NOPASSWD entry"
               if [ "${audit_mode}" = 1 ]; then
                 increment_insecure "Group ${wheel_group} does not require password to escalate privileges"
-                verbose_message    "sed 's/^\(%.*NOPASSWD.*\)/#\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}" "fix"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                backup_file     "${check_file}"
-                verbose_message "Disabling group \"${wheel_group}\" NOPASSWD entry" "set"
+                backup_file      "${check_file}"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             done
           else
@@ -60,13 +62,15 @@ audit_wheel_sudo () {
               echo "    replace: '#\1'"
               echo ""
             fi
+            lockdown_command="sed 's/^\(%.*NOPASSWD.*\)/#\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+            lockdown_message="Disabling group \"${wheel_group}\" NOPASSWD entry"
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Group \"${wheel_group}\" does not require password to escalate privileges"
-              verbose_message    "sed 's/^\(%.*NOPASSWD.*\)/#\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}" "fix"
+              execute_lockdown   "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file     "${check_file}"
-              verbose_message "Disabling ${wheel_group} NOPASSWD entry" "set"
+              backup_file      "${check_file}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           done
         else

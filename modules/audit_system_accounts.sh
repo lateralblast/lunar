@@ -37,19 +37,17 @@ audit_system_accounts () {
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "System account \"${user_name}\" has an invalid shell"
               if [ "${os_name}" = "FreeBSD" ]; then
-                verbose_message "pw moduser ${user_name} -s /sbin/nologin" "fix"
+                lockdown_command="pw moduser ${user_name} -s /sbin/nologin"
+                verbose_message  "${lockdown_command}" "fix"
               else
-                verbose_message "usermod -s /sbin/nologin ${user_name}" "fix"
+                lockdown_command="usermod -s /sbin/nologin ${user_name}"
+                verbose_message  "${lockdown_command}" "fix"
               fi
             fi
             if [ "${audit_mode}" = 0 ]; then
-              verbose_message "System account \"${user_name}\" to have shell /sbin/nologin" "set"
-              backup_file     "${password_file}"
-              if [ "${os_name}" = "FreeBSD" ]; then
-                pw moduser "${user_name}" -s /sbin/nologin
-              else
-                usermod -s /sbin/nologin "${user_name}"
-              fi
+              lockdown_message="System account \"${user_name}\" to have shell /sbin/nologin"
+              backup_file      "${password_file}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           fi
         done

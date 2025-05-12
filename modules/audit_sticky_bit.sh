@@ -24,22 +24,22 @@ audit_sticky_bit () {
       string="World Writable Directories and Sticky Bits"
       verbose_message "${string}" "check"
       if [ "${os_version}" = "10" ]; then
-        log_file="${work_dir}/sticky_bits"
+        log_file="sticky_bits"
         file_list=$( find / \( -fstype nfs -o -fstype cachefs \
           -o -fstype autofs -o -fstype ctfs \
           -o -fstype mntfs -o -fstype objfs \
           -o -fstype proc \) -prune -o -type d \
           \( -perm -0002 -a -perm -1000 \) -print )
         for check_dir in ${file_list}; do
+          lockdown_command="sudo chmod +t ${check_dir}"
           if [ "${audit_mode}" = 1 ]; then
-            
             increment_insecure "Sticky bit not set on \"${check_dir}\""
-            verbose_message    "chmod +t ${check_dir}" "fix"
+            verbose_message    "${lockdown_command}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
+            update_log_file "${log_file}" "${check_dir}"
             verbose_message "Sticky bit on \"${check_dir}\"" "set"
-            sudo chmod +t "${check_dir}"
-            echo "${check_dir}" >> "${log_file}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
           if [ "${ansible}" = 1 ]; then
             echo ""
@@ -49,7 +49,8 @@ audit_sticky_bit () {
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           else
-            execute_lockdown "sudo chmod +t ${check_dir}" "Disable ${string}"
+            lockdown_message="Sticky bit from \"${check_dir}\""
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         done
         if [ "${audit_mode}" = 2 ]; then
@@ -58,8 +59,9 @@ audit_sticky_bit () {
             check_dirs=$( cat "${restore_file}" )
             for check_dir in ${check_dirs}; do
               if [ -d "${check_dir}" ]; then
-                verbose_message "Removing sticky bit from \"${check_dir}\"" "restore"
-                sudo chmod -t "${check_dir}"
+                restore_command="sudo chmod -t ${check_dir}"
+                restore_message="Removing sticky bit from \"${check_dir}\""
+                execute_restore "${restore_command}" "${restore_message}" "sudo"
               fi
             done
           fi

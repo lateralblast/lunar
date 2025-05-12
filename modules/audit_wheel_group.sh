@@ -29,9 +29,9 @@ audit_wheel_group () {
         fi
         if [ "${audit_mode}" = 0 ]; then
           backup_file     "${check_file}"
-          verbose_message "Adding wheel group \"${wheel_group}\" to \"${check_file}\"" "set"
-          groupadd "${wheel_group}"
-          usermod -G "${wheel_group}" root
+          lockdown_message="Adding wheel group \"${wheel_group}\" to \"${check_file}\""
+          lockdown_command="groupadd ${wheel_group} ; usermod -G ${wheel_group} root"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = "1" ]; then

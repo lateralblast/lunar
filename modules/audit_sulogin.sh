@@ -30,11 +30,11 @@ audit_sulogin () {
             increment_insecure "Single user mode does not require a password"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            verbose_message "Setting:   Single user mode to require a password" "set"
-            backup_file     "${check_file}"
             temp_file="/tmp/ttys_${check_string}"
-            awk '($4 == "console") { $5 = "insecure" } { print }' < "${check_file}" > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
+            verbose_message  "Setting:   Single user mode to require a password" "set"
+            backup_file      "${check_file}"
+            lockdown_command="awk '($4 == \"console\") { $5 = \"insecure\" } { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
@@ -54,24 +54,21 @@ audit_sulogin () {
       if [ -f "${check_file}" ]; then
         sulogin_check=$( grep -l sulogin "${check_file}" )
         if [ -z "$sulogin_check" ]; then
+          temp_file="/tmp/inittab_${check_string}"
+          lockdown_message="Single user mode to require authentication"
+          lockdown_command="awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm $temp_file"
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure "No Authentication required for single usermode"
-            verbose_message    "cat ${check_file} |awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' > ${temp_file}" "fix"
-            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            verbose_message    "${lockdown_command}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Setting:   Single user mode to require authentication"
-            backup_file ${check_file}
-            awk '{ print }; /^id:[0123456sS]:initdefault:/ { print "~~:S:wait:/sbin/sulogin" }' < "${check_file}" > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
-            if [ -f "${temp_file}" ]; then
-              rm "${temp_file}"
-            fi
+            backup_file      "${check_file}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
             increment_secure "Single usermode requires authentication"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
           if [ "${audit_mode}" = 2 ]; then
             restore_file   "${check_file}" "${restore_dir}"

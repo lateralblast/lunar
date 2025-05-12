@@ -28,17 +28,19 @@ audit_super_users () {
       check_chuser su true sugroups system root
     else
       if [ "${audit_mode}" != 2 ]; then
+        lockdown_command="userdel ${user_name}"
         user_list=$( awk -F: '$3 == "0" { print $1 }' /etc/passwd | grep -v root )
         for user_name in ${user_list}; do
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure "UID 0 for User \"${user_name}\""
-            verbose_message    "userdel ${user_name}" "fix"
+            verbose_message    "${lockdown_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file "/etc/shadow"
             backup_file "/etc/passwd"
-            echo     "Removing:  Account ${user_name} it UID 0"
-            userdel "${user_name}"
+            lockdown_message="Removing Account ${user_name} as it is UID 0"
+            lockdown_command="userdel ${user_name}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         done
         if [ "${user_name}" = "" ]; then

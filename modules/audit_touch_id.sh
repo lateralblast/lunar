@@ -20,7 +20,9 @@ audit_touch_id () {
       string="Touch ID"
       verbose_message "${string}" "check"
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( sudo bioutil -r -s | grep timeout | head -1 | cut -f2 -d: | sed "s/ //g" )
+        get_command="sudo bioutil -r -s | grep timeout | head -1 | cut -f2 -d: | grep -c ${touchid_timeout} | sed 's/ //g'"
+        set_command="/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}"
+        check_value=$( eval "${get_command}" )
         if [ "${check_value}" = "${touchid_timeout}" ]; then
           increment_secure   "Touch ID Timeout for system is set to \"${touchid_timeout}\""
         else
@@ -29,7 +31,7 @@ audit_touch_id () {
         if [ "${ansible}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
-          echo "  command: sh -c \"sudo bioutil -r -s | grep timeout | head -1 | cut -f2 -d: | grep -c ${touchid_timeout} | sed 's/ //g'\""
+          echo "  command: sh -c \"${get_command}\""
           echo "  register: ${name}"
           echo "  failed_when: ${name} != 1"
           echo "  changed_when: false"
@@ -37,11 +39,13 @@ audit_touch_id () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
-          echo "  command: sh -c \"/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}\""
+          echo "  command: sh -c \"${set_command}\""
           echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          execute_lockdown "/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}" " ${string}"
+          lockdown_command="${set_command}" 
+          lockdown_message="${string}"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
         for item in unlock ApplePay ; do
           string="Touch ID ${item}"
@@ -74,11 +78,13 @@ audit_touch_id () {
               echo ""
             else
               if [ "${item}" = "unlock" ]; then
-                execute_lockdown "/usr/bin/sudo usr/bin/bioutil -w -u 1" " ${string}"
+                lockdown_command="/usr/bin/sudo usr/bin/bioutil -w -u 1"
               else
-                execute_lockdown "/usr/bin/sudo usr/bin/bioutil -w -s 1" " ${string}"
+                lockdown_command="/usr/bin/sudo usr/bin/bioutil -w -s 1"
               fi
             fi
+            lockdown_message="${string}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           done
         done
       fi

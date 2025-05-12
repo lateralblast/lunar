@@ -50,9 +50,10 @@ audit_writable_files () {
                 verbose_message    "chmod o-w ${check_file}" "fix"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                echo "${check_file}" >> "${log_file}"
-                verbose_message "File \"${check_file}\" to be non world writable" "set"
-                chmod o-w "${check_file}"
+                update_log_file "${log_file}" "${check_file}"
+                lockdown_message="File \"${check_file}\" to be non world writable"
+                lockdown_command="chmod o-w ${check_file}"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             done
           done
@@ -85,9 +86,10 @@ audit_writable_files () {
               verbose_message    "chmod o-w ${check_file}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              echo "${check_file}" >> "${log_file}"
-              verbose_message "File \"${check_file}\" to be non world writable" "set"
-              chmod o-w "${check_file}"
+              update_log_file "${log_file}" "${check_file}"
+              lockdown_message="File \"${check_file}\" to be non world writable"
+              lockdown_command="chmod o-w ${check_file}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           done
         fi
@@ -98,8 +100,9 @@ audit_writable_files () {
           check_files=$( cat "${restore_file}" )
           for check_file in ${check_file}s; do
             if [ -f "${check_file}" ]; then
-              verbose_message "File \"${check_file}\" to previous permissions" "restore"
-              chmod o+w "${check_file}"
+              restore_message="File \"${check_file}\" to previous permissions"
+              restore_command="chmod o+w ${check_file}"
+              execute_restore "${restore_command}" "${restore_message}" "sudo"
             fi
           done
         fi
