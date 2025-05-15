@@ -15,7 +15,7 @@ check_dscl () {
     param="$2"
     value="$3"
     ansible_counter=$((ansible_counter+1))
-    name="check_dscl_${ansible_counter}"
+    ansible_value="check_dscl_${ansible_counter}"
     dir="/var/db/dslocal/nodes/Default"
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
@@ -24,15 +24,15 @@ check_dscl () {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"sudo dscl . -read ${file} ${param} 2> /dev/null\""
-        echo "  register: ${name}"
-        echo "  failed_when: ${name} == 1"
+        echo "  register: ${ansible_value}"
+        echo "  failed_when: ${ansible_value} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"sudo dscl . -create ${file} ${param} '${value}'\""
-        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       d_check=$( sudo dscl . -read "${file}" "${param}" 2> /dev/null | wc -l | sed "s/ //g" )

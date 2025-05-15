@@ -1947,3 +1947,5 @@
 # Updated lockdown and restore commands in some modules
 # 10.6.6: Thu 15 May 2025 18:10:29 AEST
 # Added sudo check to some tests
+# 10.6.7: Thu 15 May 2025 19:02:52 AEST
+# Cleaned up some variable names

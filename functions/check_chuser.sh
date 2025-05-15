@@ -18,7 +18,7 @@ check_chuser() {
     group_value="$5"
     user_name="$6"
     ansible_counter=$((ansible_counter+1))
-    name="check_chuser_${ansible_counter}"
+    ansible_value="check_chuser_${ansible_counter}"
     log_file="${sec_file}_${parameter_name}_${group_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
@@ -29,21 +29,20 @@ check_chuser() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""
-        echo "  register: ${name}"
-        echo "  failed_when: ${name} == 1"
+        echo "  register: ${ansible_value}"
+        echo "  failed_when: ${ansible_value} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"${set_command}\""
-        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       actual_value=$( eval "${get_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
         update_log_file "${log_file}" "chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
-        log_file="${work_dir}/${log_file}"
         increment_insecure "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\" for \"${user_name}\""
         lockdown_command="chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
         lockdown_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""

@@ -83,6 +83,7 @@ audit_auditd () {
           new_value="GRUB_CMDLINE_LINUX=\"${package_name}=${package_value} ${existing_value}\""
           lockdown_command="cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; update-grub"
           lockdown_message="Application/Feature \"${app_name}\" to enabled"
+          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
           increment_secure "${app_name} is not disabled in ${check_file}"
         fi

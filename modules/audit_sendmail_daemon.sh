@@ -78,7 +78,7 @@ audit_sendmail_daemon() {
               increment_insecure "Mail transfer agent is not running in local-only mode"
               verbose_message "" fix
               verbose_message "cp ${check_file} ${temp_file}" fix
-              verbose_message "cat ${temp_file} |awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA\"; next} { print }' > ${check_file}" fix
+              verbose_message "cat ${temp_file} |awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA\"; next} { print }' > ${check_file}" fix
               verbose_message "rm ${temp_file}" fix
               verbose_message "" fix
             fi
@@ -86,7 +86,7 @@ audit_sendmail_daemon() {
               backup_file ${check_file}
               verbose_message "Setting:   Mail transfer agent to run in local-only mode"
               cp "${check_file}" "${temp_file}"
-              awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA"; next} { print }' < "${temp_file}" > "${check_file}"
+              awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA"; next} { print }' < "${temp_file}" > "${check_file}"
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi

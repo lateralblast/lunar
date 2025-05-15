@@ -19,7 +19,7 @@ check_command_value () {
   correct_value="$3"
   service_name="$4"
   ansible_counter=$((ansible_counter+1))
-  name="check_command_value_${command_name}_${ansible_counter}"
+  ansible_value="check_command_value_${command_name}_${ansible_counter}"
   if [ "${audit_mode}" = 2 ]; then
     restore_file="${restore_dir}/${command_name}.log"
     if [ -f "${restore_file}" ]; then
@@ -73,15 +73,15 @@ check_command_value () {
     echo ""
     echo "- name: Checking ${string}"
     echo "  command: sh -c \"$check_command\""
-    echo "  register: ${name}"
-    echo "  failed_when: ${name} == 1"
+    echo "  register: ${ansible_value}"
+    echo "  failed_when: ${ansible_value} == 1"
     echo "  changed_when: false"
     echo "  ignore_errors: true"
     echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
     echo ""
     echo "- name: Fixing ${string}"
     echo "  command: sh -c \"${lockdown_command}\""
-    echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+    echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
     echo ""
   fi
   log_file="${command_name}.log"

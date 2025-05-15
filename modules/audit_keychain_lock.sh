@@ -15,7 +15,7 @@
 audit_keychain_lock () {
   if [ "${os_name}" = "Darwin" ]; then
     ansible_counter=$((ansible_counter+1))
-    name="audit_keychain_lock_${ansible_counter}"
+    ansible_value="audit_keychain_lock_${ansible_counter}"
     string="Keychain Lock"
     timeout="21600"
     verbose_message "${string}" "check"
@@ -32,8 +32,8 @@ audit_keychain_lock () {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"security show-keychain-info 2> /dev/null | grep '${check_value}' | grep -c '${timeout}' | sed 's/ //g'\""
-          echo "  register: ${name}"
-          echo "  failed_when: ${name} != 0"
+          echo "  register: ${ansible_value}"
+          echo "  failed_when: ${ansible_value} != 0"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
@@ -44,7 +44,7 @@ audit_keychain_lock () {
           else
             echo "  command: sh -c \"set-keychain-settings -l -t ${timeout}\""
           fi
-          echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
           execute_lockdown "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"

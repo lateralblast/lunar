@@ -26,7 +26,7 @@ audit_aws_sgs () {
   verbose_message "Security Groups"
   sgs=$( aws ec2 describe-security-groups --region "${aws_region}" --query SecurityGroups[].GroupId --output text )
   for sg in ${sgs}; do
-    in_check=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' | grep "0.0.0.0/0" )
+    in_check=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters ansible_value=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' | grep "0.0.0.0/0" )
     if [ -z "${in_check}" ]; then
       increment_secure    "Security Group ${sg} does not have a open inbound rule"
     else
@@ -48,7 +48,7 @@ audit_aws_sgs () {
       check_aws_open_port "${sg}" "5432"        "tcp"  "PostgreSQL" "none" "none"
       check_aws_open_port "${sg}" "27017"       "tcp"  "MongoDB"    "none" "none"
     fi
-    out_check=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters Name=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' | grep "0.0.0.0/0" )
+    out_check=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters ansible_value=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' | grep "0.0.0.0/0" )
     if [ -z "${out_check}" ]; then
       increment_secure    "Security Group ${sg} does not have a open outbound rule"
     else

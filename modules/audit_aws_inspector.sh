@@ -25,10 +25,10 @@ audit_aws_inspector () {
     fi
     for template in ${templates}; do
       names=$( aws inspector describe-assessment-templates --region "${aws_region}" --assessment-template-arns "${template}" --query 'assessmentTemplates[].name' --output text )
-      for name in ${name}s; do
+      for name in ${ansible_value}s; do
         instances=$( aws ec2 describe-instances --region "${aws_region}" --query 'Reservations[].Instances[].InstanceId' --output text )
         for instance in ${instances}; do
-          check=$( aws ec2 describe-instances --region "${aws_region}" --instance-id "${instance}" --query 'Reservations[].Instances[].Tags' | grep "${name}" )
+          check=$( aws ec2 describe-instances --region "${aws_region}" --instance-id "${instance}" --query 'Reservations[].Instances[].Tags' | grep "${ansible_value}" )
           if [ -n "${check}" ]; then
             increment_secure   "Instance \"${instance}\" has an inspector tag"
           else

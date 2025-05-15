@@ -37,7 +37,7 @@ audit_aws_rec_elb () {
     else
       increment_secure   "ELB \"${elb}\" has at least two instances in service"
     fi
-    instances=$( aws elb describe-instance-health --region "${aws_region}" --load-balancer-name "${elb}"  --query "InstanceStates[].InstanceState" --filter Name=state,Values='OutOfService' --output text )
+    instances=$( aws elb describe-instance-health --region "${aws_region}" --load-balancer-name "${elb}"  --query "InstanceStates[].InstanceState" --filter ansible_value=state,Values='OutOfService' --output text )
     for instance in ${instances}; do
       increment_insecure "ELB \"${elb}\" instance \"${instance}\" is out of service "
     done

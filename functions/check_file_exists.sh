@@ -18,7 +18,7 @@ check_file_exists () {
   check_exists="$2"
   log_file="file.log"
   ansible_counter=$((ansible_counter+1))
-  name="check_file_exists_${ansible_counter}"
+  ansible_value="check_file_exists_${ansible_counter}"
   if [ "${check_exists}" = "no" ]; then
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" does not exist"
@@ -28,13 +28,13 @@ check_file_exists () {
         echo "- name: Checking ${string}"
         echo "  stat:"
         echo "    path ${check_file}"
-        echo "  register: ${name}"
+        echo "  register: ${ansible_value}"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  file:"
         echo "    path: ${check_file}"
         echo "    state: absent"
-        echo "  when: ${name}.${exists} == True"
+        echo "  when: ${ansible_value}.${exists} == True"
         echo ""
       fi
     fi

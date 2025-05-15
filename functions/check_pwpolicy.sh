@@ -14,7 +14,7 @@ check_pwpolicy() {
     parameter_name="$1"
     correct_value="$2"
     ansible_counter=$((ansible_counter+1))
-    name="check_pwpolicy_${ansible_counter}"
+    ansible_value="check_pwpolicy_${ansible_counter}"
     log_file="${parameter_name}.log"
     if [ "${audit_mode}" != 2 ]; then
       string="Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
@@ -51,15 +51,15 @@ check_pwpolicy() {
           echo ""
           echo "- name: Checking ${string}"
           echo "  command:  sh -c \"${policy_command}\""
-          echo "  register: ${name}"
-          echo "  failed_when: ${name} == 1"
+          echo "  register: ${ansible_value}"
+          echo "  failed_when: ${ansible_value} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
           echo "  command: sh -c \"${lockdown_command}\""
-          echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
       else

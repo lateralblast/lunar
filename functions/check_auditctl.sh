@@ -20,7 +20,7 @@ check_auditctl () {
       get_command="auditctl -l | grep ${check_file}"
       set_command="auditctl -w ${file} -p wa -k ${audit_tag}"
       ansible_counter=$((ansible_counter+1))
-      name="auditctl_file_check_${ansible_counter}"
+      ansible_value="auditctl_file_check_${ansible_counter}"
       if [ -e "${check_file}" ]; then
         check=$( auditctl -l | grep "${check_file}" )
         if [ ! "${check}" ]; then
@@ -28,15 +28,15 @@ check_auditctl () {
             echo ""
             echo "- name: Checking ${secure_string}"
             echo "  command: sh -c \"${get_command}\""
-            echo "  register: ${name}"
-            echo "  failed_when: ${name} == 1"
+            echo "  register: ${ansible_value}"
+            echo "  failed_when: ${ansible_value} == 1"
             echo "  changed_when: false"
             echo "  ignore_errors: true"
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
             echo "- name: Enable Auditing for ${file}"
             echo "  command: sh -c \"${set_command}\""
-            echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+            echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           fi
           increment_insecure "${insecure_string}"

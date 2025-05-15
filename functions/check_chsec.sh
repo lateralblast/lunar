@@ -16,7 +16,7 @@ check_chsec() {
     parameter_name="$3"
     correct_value="$4"
     ansible_counter=$((ansible_counter+1))
-    name="check_chsec_${ansible_counter}"
+    ansible_value="check_chsec_${ansible_counter}"
     log_file="${sec_file}_${sec_stanza}_${parameter_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
@@ -27,15 +27,15 @@ check_chsec() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""
-        echo "  register: ${name}"
-        echo "  failed_when: ${name} == 1"
+        echo "  register: ${ansible_value}"
+        echo "  failed_when: ${ansible_value} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"${set_command}\""
-        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       actual_value=$( eval "${get_command}" )

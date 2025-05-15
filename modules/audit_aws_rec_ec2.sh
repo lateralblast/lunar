@@ -46,7 +46,7 @@ audit_aws_rec_ec2 () {
   # Check date of snapshots
   if [ "${check_snapage}" = "y" ]; then
     arn=$( aws iam get-user --query "User.Arn" --output text | cut -f5 -d: )
-    snapshots=$( aws ec2 describe-snapshots --region "${aws_region}" --owner-ids "${arn}" --filters Name=status,Values=completed --query "Snapshots[].SnapshotId" --output text )
+    snapshots=$( aws ec2 describe-snapshots --region "${aws_region}" --owner-ids "${arn}" --filters ansible_value=status,Values=completed --query "Snapshots[].SnapshotId" --output text )
     counter=0
     for snapshot in ${snapshot}s; do
       snap_date=$( aws ec2 describe-snapshots --region "${aws_region}" --snapshot-id "${snapshot}" --query "Snapshots[].StartTime" --output text --output text | cut -f1 -d. )
@@ -76,13 +76,13 @@ audit_aws_rec_ec2 () {
   sgs=$( aws ec2 describe-security-groups --region "${aws_region}" --query 'SecurityGroups[].GroupId' --output text )
   for sg in ${sgs}; do
     if [ ! "${sg}" = "default" ]; then
-      name=$( aws ec2 describe-security-groups --region "${aws_region}" --group-id "${sg}" --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text )
-      if [ -z "${name}" ]; then
+      ansible_value=$( aws ec2 describe-security-groups --region "${aws_region}" --group-id "${sg}" --query "SecurityGroups[].Tags[?Key==\\\`Name\\\`].Value" 2> /dev/null --output text )
+      if [ -z "${ansible_value}" ]; then
         increment_insecure "AWS Security Group ${sg} does not have a Name tag"
         verbose_message    "aws ec2 create-tags --region ${aws_region} --resources ${image} --tags Key=Name,Value=<valid_name_tag>" "fix"
       else
         if [ "${strict_valid_names}" = "y" ]; then
-          check=$( echo "${name}" |grep "^sg-${valid_tag_string}" )
+          check=$( echo "${ansible_value}" |grep "^sg-${valid_tag_string}" )
           if [ -n "${check}" ]; then
             increment_secure   "AWS Security Group \"${sg}\" has a valid Name tag"
           else
@@ -95,13 +95,13 @@ audit_aws_rec_ec2 () {
   # Check Volumes have Name tags
   volumes=$( aws ec2 describe-volumes --region "${aws_region}" --query "Volumes[].VolumeId" --output text )
   for volume in ${volumes}; do
-    name=$( aws ec2 describe-volumes --region "${aws_region}" --volume-id "${volume}" --query "Volumes[].Tags[?Key==\\\`Name\\\`].Value" --output text )
-    if [ -z "${name}" ]; then
+    ansible_value=$( aws ec2 describe-volumes --region "${aws_region}" --volume-id "${volume}" --query "Volumes[].Tags[?Key==\\\`Name\\\`].Value" --output text )
+    if [ -z "${ansible_value}" ]; then
       increment_insecure "AWS EC2 volume ${volume} does not have a Name tag"
       verbose_message    "aws ec2 create-tags --region ${aws_region} --resources ${volume} --tags Key=Name,Value=<valid_name_tag>" "fix"
     else
       if [ "${strict_valid_names}" = "y" ]; then
-        check=$( echo "${name}" |grep "^ami-${valid_tag_string}" )
+        check=$( echo "${ansible_value}" |grep "^ami-${valid_tag_string}" )
         if [ -n "${check}" ]; then
           increment_secure   "AWS EC2 volume \"${volume}\" has a valid Name tag"
         else
@@ -113,13 +113,13 @@ audit_aws_rec_ec2 () {
   # Check AMIs have Name tags
   images=$( aws ec2 describe-images --region "${aws_region}" --owners self --query "Images[].ImageId" --output text )
   for image in ${images}; do
-	  name=$( aws ec2 describe-images --region "${aws_region}" --owners self --image-id "${image}" --query "Images[].Tags[?Key==\\\`Name\\\`].Value" --output text )
-    if [ -z "${name}" ]; then
+	  ansible_value=$( aws ec2 describe-images --region "${aws_region}" --owners self --image-id "${image}" --query "Images[].Tags[?Key==\\\`Name\\\`].Value" --output text )
+    if [ -z "${ansible_value}" ]; then
       increment_insecure "AWS AMI ${image} does not have a Name tag"
       verbose_message    "aws ec2 create-tags --region ${aws_region} --resources ${image} --tags Key=Name,Value=<valid_name_tag>" "fix"
     else
       if [ "${strict_valid_names}" = "y" ]; then
-        check=$( echo "${name}" |grep "^ami-$valid_tag_string" )
+        check=$( echo "${ansible_value}" |grep "^ami-$valid_tag_string" )
         if [ -n "${check}" ]; then
           increment_secure   "AWS AMI \"${image}\" has a valid Name tag"
         else
@@ -138,7 +138,7 @@ audit_aws_rec_ec2 () {
         verbose_message    "aws ec2 create-tags --region ${aws_region} --resources ${instance} --tags Key=${tag},Value=<valid_name_tag>" "fix"
       else
         if [ "$strict_valid_names" = "y" ]; then
-          check=$( echo "${name}" |grep "^ec2-$valid_tag_string" )
+          check=$( echo "${ansible_value}" |grep "^ec2-$valid_tag_string" )
           if [ -n "${check}" ]; then
             increment_secure   "AWS Instance \"${instance}\" has a valid \"${tag}\" tag"
           else

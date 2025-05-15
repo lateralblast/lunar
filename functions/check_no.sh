@@ -14,7 +14,7 @@ check_no() {
     parameter_name="$1"
     correct_value="$2"
     ansible_counter=$((ansible_counter+1))
-    name="check_no_${ansible_counter}"
+    ansible_value="check_no_${ansible_counter}"
     log_file="${parameter_name}.log"
     get_command="no -a |grep '${parameter_name} ' |cut -f2 -d= |sed 's/ //g' |grep '${correct_value}'"
     set_command="no -p -o ${parameter_name}=${correct_value}"
@@ -26,15 +26,15 @@ check_no() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""
-        echo "  register: ${name}"
-        echo "  failed_when: ${name} == 1"
+        echo "  register: ${ansible_value}"
+        echo "  failed_when: ${ansible_value} == 1"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"${set_command}\""
-        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
       if [ "${actual_value}" != "${correct_value}" ]; then

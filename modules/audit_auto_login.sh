@@ -17,7 +17,7 @@
 audit_auto_login() {
   if [ "${os_name}" = "Darwin" ]; then
     ansible_counter=$((ansible_counter+1))
-    name="audit_auto_login_${ansible_counter}"
+    ansible_value="audit_auto_login_${ansible_counter}"
     string="Autologin"
     verbose_message         "${string}" "check"
     check_osx_defaults_bool "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes"
@@ -34,15 +34,15 @@ audit_auto_login() {
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""
-        echo "  register: ${name}"
-        echo "  failed_when: ${name} != 0"
+        echo "  register: ${ansible_value}"
+        echo "  failed_when: ${ansible_value} != 0"
         echo "  changed_when: false"
         echo "  ignore_errors: true"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
         echo "  command: sh -c \"${set_command}\""
-        echo "  when: ${name}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+        echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       else
         lockdown_command="${set_command}"
