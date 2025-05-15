@@ -37,7 +37,7 @@ audit_gnome_banner () {
                 verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> ${check_file}" "fix"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                backup_file ${check_file}
+                backup_file "${check_file}"
                 verbose_message "Setting:   Warning banner in \"${check_file}\""
                 echo "   --title=\"Security Message\" --filename=/etc/issue" >> "${check_file}"
                 if [ "${os_version}" = "10" ]; then

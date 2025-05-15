@@ -31,7 +31,7 @@ audit_logadm_value () {
           if [ "${audit_mode}" = 0 ]; then
             verbose_message   "Syslog to capture \"${log_facility}\"" "set"
           fi
-          backup_file ${check_file}
+          backup_file "${check_file}"
           if [ "${log_facility}" != "none" ]; then
             check_file="/etc/syslog.conf"
             if [ ! -f "${work_dir}${check_file}" ]; then

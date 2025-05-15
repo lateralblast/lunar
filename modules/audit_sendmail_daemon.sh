@@ -83,7 +83,7 @@ audit_sendmail_daemon() {
               verbose_message "" fix
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file ${check_file}
+              backup_file "${check_file}"
               verbose_message "Setting:   Mail transfer agent to run in local-only mode"
               cp "${check_file}" "${temp_file}"
               awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA"; next} { print }' < "${temp_file}" > "${check_file}"

@@ -35,7 +35,7 @@ audit_mount_noexec () {
           fi
           if [ "${audit_mode}" = 0 ]; then
             verbose_message     "Setting:   Setting noexec on tmpfs"
-            backup_file ${check_file}
+            backup_file "${check_file}"
             awk '( $3 ~ /^tmpfs$/ ) { $4 = $4 ",noexec" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' < "${check_file}" > "${temp_file}"
             cat "${temp_file}" > "${check_file}"
             if [ -f "${temp_file}" ]; then

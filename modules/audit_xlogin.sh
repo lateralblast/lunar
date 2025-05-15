@@ -55,11 +55,11 @@ audit_xlogin () {
             increment_insecure "${insecure_string}"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            verbose_message "X wrapper to disabled" "set"
-            backup_file     "${check_file}"
-            tmp_file="/tmp/ttys_${check_string}"
-            sed -e '/xdm -nodaemon/s/off/on/' "${check_file}" > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
+            backup_file      "${check_file}"
+            lockdown_message="X wrapper to disabled"
+            temp_file="/tmp/ttys_${check_string}"
+            lockdown_command="sed -e '/xdm -nodaemon/s/off/on/' ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
@@ -79,19 +79,14 @@ audit_xlogin () {
           if [ -z "${greet_check}" ]; then
             verbose_message "File ${check_file} for security message" "check"
             greet_mesg="This is a private system --- Authorized use only!"
+            lockdown_command="awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"${greet_mesg}\" < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "File ${check_file} does not have a security message"
-              verbose_message "awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"${greet_mesg}\" < ${check_file} > ${temp_file}" "fix"
-              verbose_message "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message "rm ${temp_file}"                  "fix"
+              verbose_message    "${lockdown_command}" "fix"
             else
-              verbose_message "Security message in ${check_file}" "set"
-              backup_file ${check_file}
-              awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue="${greet_mesg}" < "${check_file}" > "${temp_file}"
-              cat "${temp_file}" > "${check_file}"
-              if [ -f "${temp_file}" ]; then
-                rm "${temp_file}"
-              fi
+              backup_file "${check_file}"
+              lockdown_message="Security message in ${check_file}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
             increment_secure "File \"${check_file}\" has security message"
@@ -108,20 +103,15 @@ audit_xlogin () {
           greet_mesg="This is a private system --- Authorized USE only!"
           if [ "${greet_check}" != 1 ]; then
             verbose_message "File ${check_file} for security message"
-             if [ "${audit_mode}" = 1 ]; then
-               increment_insecure "File ${check_file} does not have a security message"
-               verbose_message "cat ${check_file} |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"${greet_mesg}\" > ${temp_file}" "fix"
-               verbose_message "cat ${temp_file} > ${check_file}" "fix"
-               verbose_message "rm ${temp_file}"                  "fix"
-             else
-               verbose_message "Security message in ${check_file}" "set"
-               backup_file ${check_file}
-               awk '/GreetString=/ { print "GreetString=" GreetString; next }; { print }' GreetString="${greet_mesg}" < "${check_file}" > "${temp_file}"
-               cat "${temp_file}" > "${check_file}"
-               if [ -f "${temp_file}" ]; then
-                 rm "${temp_file}"
-               fi
-             fi
+            lockdown_message="cat ${check_file} |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"${greet_mesg}\" > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+            if [ "${audit_mode}" = 1 ]; then
+              increment_insecure "File ${check_file} does not have a security message"
+              verbose_message    "${lockdown_command}" "fix"
+            else
+              backup_file      "${check_file}"
+              lockdown_message="Security message in ${check_file}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            fi
           else
             increment_secure "File ${check_file} has security message"
           fi
@@ -136,21 +126,20 @@ audit_xlogin () {
           greet_check=$( grep -c 'nolisten tcp' "${check_file}" )
           if [ "${greet_check}" != 1 ]; then
             verbose_message "For X11 nolisten directive in file \"${check_file}\"" "check"
+            lockdown_command_1="awk '( \$1 !~ /^#/ && \$3 == \"/usr/X11R6/bin/X\" ) { \$3 = \$3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}"
+            lockdown_command_2="awk '( \$1 !~ /^#/ && \$3 == \"/usr/bin/X\" ) { \$3 = \$3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}"
+            lockdown_command_3="cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "X11 nolisten directive not found in file \"${check_file}\""
-              verbose_message    "awk '( $1 !~ /^#/ && $3 == \"/usr/X11R6/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}" "fix"
-              verbose_message    "awk '( $1 !~ /^#/ && $3 == \"/usr/bin/X\" ) { $3 = $3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}"       "fix"
-              verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message    "rm ${temp_file}"                  "fix"
+              verbose_message "${lockdown_command_1}" "fix"
+              verbose_message "${lockdown_command_2}" "fix"
+              verbose_message "${lockdown_command_3}" "fix"
             else
-              verbose_message "Security message in file \"${check_file}\"" "set"
-              backup_file     "${check_file}"
-              awk '( $1 !~ /^#/ && $3 == "/usr/X11R6/bin/X" ) { $3 = $3 " -nolisten tcp" }; { print }' < "${check_file}" > "${temp_file}"
-              awk '( $1 !~ /^#/ && $3 == "/usr/bin/X" ) { $3 = $3 " -nolisten tcp" }; { print }'< "${check_file}"  > "${temp_file}"
-              cat "${temp_file}" > "${check_file}"
-              if [ -f "${temp_file}" ]; then
-                rm "${temp_file}"
-              fi
+              backup_file      "${check_file}"
+              lockdown_message="Security message in file \"${check_file}\""
+              execute_lockdown "${lockdown_command_1}" "${lockdown_message}" "sudo"
+              execute_lockdown "${lockdown_command_2}" "${lockdown_message}" "sudo"
+              execute_lockdown "${lockdown_command_3}" "${lockdown_message}" "sudo"
             fi
           else
             increment_secure "X11 nolisten directive found in file \"${check_file}\""

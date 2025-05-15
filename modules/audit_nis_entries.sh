@@ -32,7 +32,7 @@ audit_nis_entries () {
                 verbose_message    "cat ${temp_file} > ${check_file}" "fix"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                backup_file ${check_file}
+                backup_file "${check_file}"
                 verbose_message "File \"${check_file}\" to have no NIS entries" "set"
                 sed -e "s/^+/#&/" < "${check_file}" > "${temp_file}"
                 cat "${temp_file}" > "${check_file}"
