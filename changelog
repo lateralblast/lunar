@@ -1951,3 +1951,5 @@
 # Cleaned up some variable names
 # 10.6.8: Thu 15 May 2025 20:42:06 AEST
 # Updated xlogin test and some other tests
+# 10.6.9: Thu 15 May 2025 22:23:07 AEST
+# Updated formating of some tests

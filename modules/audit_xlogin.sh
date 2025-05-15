@@ -13,6 +13,7 @@
 #.
 
 audit_xlogin () {
+  temp_file="${temp_dir}/audit_xlogin"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "X Windows" "check"
     if [ "${os_name}" = "AIX" ]; then
@@ -57,7 +58,6 @@ audit_xlogin () {
           if [ "${audit_mode}" = 2 ]; then
             backup_file      "${check_file}"
             lockdown_message="X wrapper to disabled"
-            temp_file="/tmp/ttys_${check_string}"
             lockdown_command="sed -e '/xdm -nodaemon/s/off/on/' ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi

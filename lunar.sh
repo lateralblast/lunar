@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.6.8
+# Version:      10.6.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -883,7 +883,7 @@ if [ "$do_remote" = 1 ]; then
   echo "Copying ${app_dir} to $ext_host:/tmp"
   scp -r "${app_dir}" "$ext_host":/tmp
   echo "Executing lunar in audit mode (no changes will be made) on $ext_host"
-  ssh "$ext_host" "sudo /tmp/lunar.sh -a"
+  ssh "$ext_host" "sudo ${temp_dir}/lunar.sh -a"
   exit
 fi
 

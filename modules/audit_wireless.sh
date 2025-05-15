@@ -18,6 +18,10 @@ audit_wireless () {
   if [ "${os_name}" = "Darwin" ]; then
     string="Wifi information menu"
     verbose_message "${string}" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     if [ "${os_name}" = "Darwin" ] && [ "${os_version}" -ge 14 ]; then
       user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
       for user_name in ${user_list}; do
@@ -36,9 +40,9 @@ audit_wireless () {
     if [ "${os_name}" = "Linux" ]; then
       check=$( command -v nmcli 2> /dev/null | sed "s/ //g" )
       if [ "${check}" = "1" ]; then
-        check=$(nmcli radio all | grep -c enabled )
+        check=$( nmcli radio all | grep -c enabled )
       else
-        check=$(find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
+        check=$( find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
       fi
       if [ "${check}" = "0" ]; then
         increment_secure   "Wireless is enabled"

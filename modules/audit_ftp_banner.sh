@@ -24,17 +24,17 @@ audit_ftp_banner () {
           if [ "${actual_value}" != "Authorised" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_secure  "FTP warning message isn't enabled"
-              verbose_message   "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp" fix
-              verbose_message   "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" /tmp/ftpd.tmp > /tmp/ftpd.msg" fix
-              verbose_message   "gencat /usr/lib/nls/msg/en_US/ftpd.cat /tmp/ftpd.msg" fix
-              verbose_message   "rm /tmp/ftpd.tmp /tmp/ftpd.msg" fix
+              verbose_message   "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > ${temp_dir}/ftpd.tmp" fix
+              verbose_message   "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" ${temp_dir}/ftpd.tmp > ${temp_dir}/ftpd.msg" fix
+              verbose_message   "gencat /usr/lib/nls/msg/en_US/ftpd.cat ${temp_dir}/ftpd.msg" fix
+              verbose_message   "rm ${temp_dir}/ftpd.tmp ${temp_dir}/ftpd.msg" fix
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${message_file}"
-              dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > /tmp/ftpd.tmp
-              sed    "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" /tmp/ftpd.tmp > /tmp/ftpd.msg
-              gencat /usr/lib/nls/msg/en_US/ftpd.cat /tmp/ftpd.msg
-              rm /tmp/ftpd.tmp /tmp/ftpd.msg
+              dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > ${temp_dir}/ftpd.tmp
+              sed    "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" ${temp_dir}/ftpd.tmp > ${temp_dir}/ftpd.msg
+              gencat /usr/lib/nls/msg/en_US/ftpd.cat ${temp_dir}/ftpd.msg
+              rm ${temp_dir}/ftpd.tmp ${temp_dir}/ftpd.msg
             fi
           else
             if [ "${audit_mode}" = 1 ]; then

@@ -20,6 +20,7 @@ audit_system_auth_password_history () {
   auth_string="$1"
   search_string="$2"
   search_value="$3"
+  temp_file="${temp_dir}/audit_system_auth_password_history"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/security/opasswd"
     check_file_exists "${check_file}" "yes"
@@ -31,21 +32,16 @@ audit_system_auth_password_history () {
         if [ "${audit_mode}" != 2 ]; then
           verbose_message "Password entry \"${search_string}\" set to \"${search_value}\" in \"${check_file}\"" "check"
           check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk -F "${search_string}=" '{print $2}' | awk '{print $1}' )
+          lockdown_command="awk '( \$1 == \"password\" && \$3 == \"pam_unix.so\" ) { print \$0 \" ${search_string}=${search_value}\"; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" != "${search_value}" ]; then
             if [ "${audit_mode}" = "1" ]; then
               increment_insecure "Password entry ${search_string} is not set to ${search_value} in ${check_file}"
-              verbose_message    "cp ${check_file} ${temp_file}" "fix"
-              verbose_message    "awk '( $1 == \"password\" && $3 == \"pam_unix.so\" ) { print $0 \" ${search_string}=${search_value}\"; next };' < ${temp_file} > ${check_file}" "fix"
-              verbose_message    "rm ${temp_file}" "fix"
+              verbose_message    "${lockdown_command}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file      "${check_file}"
-              verbose_message  "Password entry in ${check_file}" "set"
-              cp "${check_file}" "${temp_file}"
-              awk '( $1 == "password" && $3 == "pam_unix.so" ) { print $0 " ${search_string}=${search_value}"; next };' < "${temp_file}" > "${check_file}"
-              if [ -f "${temp_file}" ]; then
-                rm "${temp_file}"
-              fi
+              lockdown_message="Password entry in ${check_file}"
+              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then

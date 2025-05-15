@@ -11,6 +11,7 @@
 #.
 
 audit_wheel_sudo () {
+  temp_file="${temp_dir}/audit_wheel_sudo"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Sudoers group settings" "check"
     for check_dir in /etc /usr/local/etc /usr/sfw/etc /opt/csw/etc; do

@@ -101,7 +101,7 @@ audit_serial_login () {
           if [ "${audit_mode}" = 2 ]; then
             verbose_message "Serial port logins to disabled" "set"
             backup_file     "${check_file}"
-            temp_file="/tmp/ttys_${check_string}"
+            temp_file="${temp_dir}/ttys_${check_string}"
             awk '($4 == "dialup") { $5 = "off" } { print }' < "${check_file}" > "${temp_file}"
             cat "${temp_file}" > "${check_file}"
           fi

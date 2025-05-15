@@ -24,6 +24,10 @@
 audit_user_netrc () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "User Netrc Files" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     check_fail=0
     home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d":" )
     for home_dir in ${home_dirs}; do

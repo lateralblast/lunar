@@ -18,6 +18,7 @@
 #.
 
 audit_sulogin () {
+  temp_file="${temp_dir}/audit_sulogin"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Single User Mode Requires Password" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
@@ -30,7 +31,6 @@ audit_sulogin () {
             increment_insecure "Single user mode does not require a password"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            temp_file="/tmp/ttys_${check_string}"
             verbose_message  "Setting:   Single user mode to require a password" "set"
             backup_file      "${check_file}"
             lockdown_command="awk '($4 == \"console\") { $5 = \"insecure\" } { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
@@ -54,7 +54,6 @@ audit_sulogin () {
       if [ -f "${check_file}" ]; then
         sulogin_check=$( grep -l sulogin "${check_file}" )
         if [ -z "$sulogin_check" ]; then
-          temp_file="/tmp/inittab_${check_string}"
           lockdown_message="Single user mode to require authentication"
           lockdown_command="awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm $temp_file"
           if [ "${audit_mode}" = 1 ]; then

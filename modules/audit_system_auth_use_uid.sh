@@ -16,6 +16,7 @@ audit_system_auth_use_uid () {
   auth_string="auth"
   search_string="use_uid"
   check_file="/etc/pam.d/su"
+  temp_file="${temp_dir}/audit_system_auth_use_uid"
   if [ -f "${check_file}" ]; then
     if [ "${os_name}" = "Linux" ]; then
       if [ "${audit_mode}" != 2 ]; then

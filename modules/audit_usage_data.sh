@@ -21,6 +21,11 @@ audit_usage_data () {
       check_osx_defaults_bool "Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist"  "AutoSubmit"           "0"
       check_osx_defaults_bool "Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist"  "ThirdPartyDataSubmit" "0"
       check_file_perms        "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" "644"                  "root" "admin"
+      verbose_message         "Siri Data Sharing" "check"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
