@@ -14,6 +14,10 @@
 audit_sudo_authenticate () {
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo authenticate" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
       auth_test=$( grep "^[^#].*\!authenticate" < "${check_file}" )

@@ -15,6 +15,10 @@
 audit_sudo_timestamp () {
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo timestamp" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     major_ver=$( sudo --version | head -1 | awk '{print $3}' | cut -f1 -d. )
     minor_ver=$( sudo --version | head -1 | awk '{print $3}' | cut -f2 -d. )
     check_sudo="0"

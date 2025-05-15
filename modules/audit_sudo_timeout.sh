@@ -17,6 +17,10 @@
 audit_sudo_timeout () {
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo timeout" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     for check_file in /etc/sudoers /etc/sudoers.d/sudoers_timeout; do
       if [ -f "${check_file}" ]; then
         check_file_value_with_position   "is"  "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash" "after" "# Defaults specification"

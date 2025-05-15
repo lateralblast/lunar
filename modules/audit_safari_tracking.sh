@@ -16,6 +16,10 @@ audit_safari_tracking () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Safari Cross-site Tracking" "check"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( ls /Users | grep -v Shared )
         for user_name in ${user_list}; do

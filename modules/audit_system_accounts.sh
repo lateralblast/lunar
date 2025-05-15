@@ -24,13 +24,17 @@
 audit_system_accounts () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "System Accounts that do not have a shell" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     password_file="/etc/passwd"
     shadow_file="/etc/shadow"
     if test -r "$shadow_file"; then
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<500 && $7!="/sbin/nologin" && $7!="/bin/false" ) {print $1}' < "${password_file}" )
         for user_name in ${user_list}; do
-          shadow_field=$( grep "${user_name}:" "$shadow_file" | grep -Ev "\*|\!\!|NP|UP|LK" | cut -f1 -d: );
+          shadow_field=$( grep "${user_name}:" "${shadow_file}" | grep -Ev "\*|\!\!|NP|UP|LK" | cut -f1 -d: );
           if [ "$shadow_field" = "${user_name}" ]; then
             increment_insecure "System account \"${user_name}\" has an invalid shell but the account is disabled"
           else

@@ -12,6 +12,10 @@
 audit_old_users () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Old users" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     never_count=0
     if [ "${audit_mode}" = 2 ]; then
       restore_file "/etc/shadow" "${restore_dir}"

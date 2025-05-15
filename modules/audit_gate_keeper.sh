@@ -19,6 +19,10 @@
 audit_gate_keeper () {
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Gatekeeper" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     log_file="gatekeeper.log"
     if [ "${audit_mode}" != 2 ]; then
       actual_value=$( sudo spctl --status | awk '{print $2}' | sed 's/d$//g' )

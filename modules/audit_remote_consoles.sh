@@ -15,6 +15,10 @@
 audit_remote_consoles () {
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Remote Consoles" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     log_file="remoteconsoles.log"
     if [ "${audit_mode}" != 2 ]; then
       disable_ttys=0

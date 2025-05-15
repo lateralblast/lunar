@@ -14,6 +14,10 @@
 audit_sudo_nopassword () {
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo NOPASSWD" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
       auth_test=$( grep "^[^#].*NOPASSWD" < "${check_file}" )

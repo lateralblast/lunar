@@ -13,6 +13,10 @@
 audit_password_history () {
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Password History" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/shadow"
       current_date=$( date +%s )

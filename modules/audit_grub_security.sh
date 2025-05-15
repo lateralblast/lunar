@@ -19,6 +19,10 @@
 audit_grub_security () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Grub Menu Security" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     if [ "${os_name}" = "Linux" ]; then
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
         check_file_perms "${check_file}" "0600"   "root" "root"

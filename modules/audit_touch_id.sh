@@ -19,6 +19,10 @@ audit_touch_id () {
       name="audit_touch_id_${ansible_counter}"
       string="Touch ID"
       verbose_message "${string}" "check"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
       if [ "${audit_mode}" != 2 ]; then
         get_command="sudo bioutil -r -s | grep timeout | head -1 | cut -f2 -d: | grep -c ${touchid_timeout} | sed 's/ //g'"
         set_command="/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}"

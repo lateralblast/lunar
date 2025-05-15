@@ -1945,3 +1945,5 @@
 # Updated lockdown and restore commands in some modules
 # 10.6.5: Mon 12 May 2025 15:58:48 AEST
 # Updated lockdown and restore commands in some modules
+# 10.6.6: Thu 15 May 2025 18:10:29 AEST
+# Added sudo check to some tests

@@ -62,6 +62,10 @@ audit_software_update () {
       fi
     else
       verbose_message "Software Autoupdate" "check"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
       actual_status=$( sudo softwareupdate --schedule |awk '{print $4}' )
       log_file="softwareupdate.log"
       correct_status="on"

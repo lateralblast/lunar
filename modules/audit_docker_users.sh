@@ -33,7 +33,7 @@ audit_docker_users () {
         for user_name in ${user_list}; do
           last_login=$( last -1 "${user_name}" | grep '[a-z]' | awk '{print $1}' )
           if [ "${last_login}" = "wtmp" ]; then
-            if test -r "/etc/shqdow"; then
+            if test -r "/etc/shadow"; then
               lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
               if [ "${lock_test}" = "${user_name}" ]; then
                 if [ "${audit_mode}" = 1 ]; then
@@ -58,7 +58,7 @@ audit_docker_users () {
         for user_name in ${user_list}; do
           user_id=$( uid -u "${user_name}" )
           if [ "${user_id}" -gt "${max_super_user_id}" ] ; then
-            if test -r "/etc/shqdow"; then
+            if test -r "/etc/shadow"; then
               lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
               if [ "${lock_test}" = "${user_name}" ]; then
                 if [ "${audit_mode}" = 1 ]; then

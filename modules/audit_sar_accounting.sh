@@ -15,6 +15,10 @@
 audit_sar_accounting () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "SAR Accounting" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     if [ "${os_name}" = "SunOS" ]; then
       check_append_file "/var/spool/cron/crontabs/adm" "0,20,40 * * * * /usr/lib/sa/sa1"                         "hash"
       check_append_file "/var/spool/cron/crontabs/adm" "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A" "hash"

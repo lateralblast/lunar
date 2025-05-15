@@ -15,6 +15,10 @@ audit_keychain_sync () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Keychain sync" "check"
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "Requires sudo to check" "notice"
+        return
+      fi
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ | grep "[a-z]")
         for user_name in ${user_list}; do

@@ -24,6 +24,11 @@ audit_ssh_perms () {
         done
       fi
     done
+    verbose_message "User SSH Permissions" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     while IFS=":" read -r user _ uid gid _ home shell; do
       if [ -d "${home}/.ssh" ]; then
         check_file_perms "${home}/.ssh" "0700" "${uid}" "${gid}"

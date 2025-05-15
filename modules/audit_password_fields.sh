@@ -40,6 +40,16 @@ audit_password_fields () {
           fi
         done
       fi
+    else
+      check_file="/etc/passwd"
+      restore_file "${check_file}" "${restore_dir}"
+    fi
+    verbose_message "Shadow Fields" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
+    if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/shadow"
       empty_count=0
       if [ "${os_name}" = "AIX" ]; then
@@ -89,9 +99,8 @@ audit_password_fields () {
         fi
       done
     else
-      for check_file in /etc/passwd /etc/shadow; do
-        restore_file "${check_file}" "${restore_dir}"
-      done
+      check_file="/etc/shadow"
+      restore_file "${check_file}" "${restore_dir}"
     fi
   fi
 }

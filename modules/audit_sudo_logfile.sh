@@ -14,6 +14,10 @@
 audit_sudo_logfile () {
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo logfile" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
       check_file_value_with_position   "is"  "${check_file}" "Defaults logfile" "eq" "/var/log/sudo.log" "hash" "after" "# Defaults specification"

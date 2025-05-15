@@ -15,6 +15,10 @@
 audit_root_access () {
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Root account access" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     access_test=$( passwd -S root | awk '{ print $2}' | grep -cE "L"  )
     if [ "${access_test}" = "0" ]; then
       increment_insecure "Root account is not locked"

@@ -18,6 +18,10 @@
 audit_inactive_users () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Inactive User Accounts" "check"
+    if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+      verbose_message "Requires sudo to check" "notice"
+      return
+    fi
     if [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/usr/sadm/defadduser" "definact" "eq" "35" "hash"
     fi
