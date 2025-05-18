@@ -10,7 +10,7 @@
 #.
 
 audit_iscsi () {
-  print_modle "audit_iscsi"
+  print_module "audit_iscsi"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "iSCSI Target Service" "check"
     if [ "${os_name}" = "SunOS" ]; then
