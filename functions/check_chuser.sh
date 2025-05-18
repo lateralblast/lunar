@@ -17,8 +17,6 @@ check_chuser() {
     group_name="$4"
     group_value="$5"
     user_name="$6"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_chuser_${ansible_counter}"
     log_file="${sec_file}_${parameter_name}_${group_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
@@ -26,6 +24,8 @@ check_chuser() {
       string="Security Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_chuser_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""

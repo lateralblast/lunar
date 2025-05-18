@@ -24,18 +24,20 @@ audit_pam_authtok () {
       else
         pam_check=$( grep -cPH -- "^\h*password\h+([^#\n\r]+)\h+pam_unix\.so\h+([^#\n\r]+\h+)?${pam_module}\b" < "${check_file}" )
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_pam_authtok_${ansible_counter}"
           echo ""
           echo "- name: Checking ${check_string}"
           echo "  command: sh -c \"grep -cPH -- '^\h*password\h+\([^#\n\r]+\)\h+pam_unix\.so\h+\([^#\n\r]+\h+\)?${pam_module}\b' < ${check_file}\"" 
-          echo "  register: ${pam_module}_check"
-          echo "  failed_when: ${pam_module}_check == 0"
+          echo "  register: ${ansible_value}"
+          echo "  failed_when: ${ansible_value} == 0"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${check_string}"
           echo "  command: sh -c \"sed \\"s/\(^password.*pam_unix\.so\)\(.*\)/\\1 ${pam_module} \\2/g\\" ${check_file}\""
-          echo "  when: ${pam_module}_check.rc == 0 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${ansible_value}.rc == 0 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
         if [ "${pam_check}" = "0" ]; then

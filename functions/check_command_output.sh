@@ -12,8 +12,6 @@
 check_command_output () {
   if [ "${os_name}" = "SunOS" ]; then
     command_name="$1"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_command_output_${command_name}_${ansible_counter}"
     if [ "${command_name}" = "getcond" ]; then
       get_command="auditconfig -getcond |cut -f2 -d'=' |sed 's/ //g'"
     fi
@@ -57,6 +55,8 @@ check_command_output () {
       string="Command \"${command_name}\" returns \"${correct_value}\""
       verbose_message "${string}" "check"
        if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_command_output_${command_name}_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command} |grep '${correct_value}'\""

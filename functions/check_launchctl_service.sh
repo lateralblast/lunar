@@ -11,8 +11,6 @@
 
 check_launchctl_service () {
   if [ "${os_name}" = "Darwin" ]; then
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_launchctl_service_${ansible_counter}"
     launchctl_service="$1"
     required_status="$2"
     log_file="${launchctl_service}.log"
@@ -35,6 +33,8 @@ check_launchctl_service () {
       string="Service \"${launchctl_service}\" is \"${required_status}\""
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_launchctl_service_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""

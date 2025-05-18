@@ -17,13 +17,13 @@ check_file_exists () {
   check_file="$1"
   check_exists="$2"
   log_file="file.log"
-  ansible_counter=$((ansible_counter+1))
-  ansible_value="check_file_exists_${ansible_counter}"
   if [ "${check_exists}" = "no" ]; then
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" does not exist"
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_file_exists_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  stat:"
@@ -59,6 +59,8 @@ check_file_exists () {
       string="File \"${check_file}\" ${exists}"
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_file_exists_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  stat:"

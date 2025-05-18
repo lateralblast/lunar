@@ -16,8 +16,6 @@
 
 audit_auto_login() {
   if [ "${os_name}" = "Darwin" ]; then
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="audit_auto_login_${ansible_counter}"
     string="Autologin"
     verbose_message         "${string}" "check"
     check_osx_defaults_bool "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes"
@@ -31,6 +29,8 @@ audit_auto_login() {
         increment_secure    "${string} Enabled"
       fi
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="audit_auto_login_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""

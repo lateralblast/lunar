@@ -13,8 +13,6 @@ check_pwpolicy() {
   if [ "${os_name}" = "Darwin" ]; then
     parameter_name="$1"
     correct_value="$2"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_pwpolicy_${ansible_counter}"
     log_file="${parameter_name}.log"
     if [ "${audit_mode}" != 2 ]; then
       string="Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
@@ -48,6 +46,8 @@ check_pwpolicy() {
           fi
         fi
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="check_pwpolicy_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command:  sh -c \"${policy_command}\""

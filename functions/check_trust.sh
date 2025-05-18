@@ -13,8 +13,6 @@ check_trust() {
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="$1"
     correct_value="$2"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_trust_${ansible_counter}"
     log_file="trustchk_${parameter_name}.log"
     actual_value=$( trustchk -p "${parameter_name}" | cut -f2 -d= )
     policy_command="trustchk -p ${parameter_name} | cut -f2 -d= | grep ${correct_value}"
@@ -31,6 +29,8 @@ check_trust() {
         increment_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       fi
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_trust_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command:  sh -c \"${policy_command}\""

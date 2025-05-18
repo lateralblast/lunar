@@ -15,8 +15,6 @@ check_chsec() {
     sec_stanza="$2"
     parameter_name="$3"
     correct_value="$4"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_chsec_${ansible_counter}"
     log_file="${sec_file}_${sec_stanza}_${parameter_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
@@ -24,6 +22,8 @@ check_chsec() {
       string="Security Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_chsec_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""

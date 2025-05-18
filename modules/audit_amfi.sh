@@ -14,8 +14,6 @@
 audit_amfi () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1012 ]; then
-      ansible_counter=$((ansible_counter+1))
-      ansible_value="audit_amfi_${ansible_counter}"
       string="Apple Mobile File Integrity"
       verbose_message "${string}" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
@@ -32,6 +30,8 @@ audit_amfi () {
           increment_insecure "Apple Mobile File Integrity is set to \"${check_value}\""
         fi
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_amfi_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${get_command}'\""

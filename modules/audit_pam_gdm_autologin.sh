@@ -24,18 +24,20 @@ audit_pam_gdm_autologin () {
       fi
       if [ "${audit_mode}" != 2 ]; then
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_pam_gdm_autologin_${ansible_counter}"
           echo ""
           echo "- name: Checking ${check_string}"
           echo "  command:  sh -c \"cat ${check_file} |grep -v '^#' |grep '^${pam_module}' |head -1 |wc -l\""
-          echo "  register: ${pam_module}_check"
-          echo "  failed_when: ${pam_module}_check == 1"
+          echo "  register: ${ansible_value}"
+          echo "  failed_when: ${ansible_value} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${check_string}"
           echo "  command: sh -c \"sed -i 's/^${pam_module}/#&/g' ${check_file}\""
-          echo "  when: ${pam_module}_check .rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${ansible_value} .rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
         gdm_check=$( grep -v "^#" "${check_file}" | grep "^${pam_module}" | head -1 | wc -l | sed "s/ //g" )

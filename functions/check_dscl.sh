@@ -14,13 +14,13 @@ check_dscl () {
     file="$1"
     param="$2"
     value="$3"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_dscl_${ansible_counter}"
     dir="/var/db/dslocal/nodes/Default"
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_dscl_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"sudo dscl . -read ${file} ${param} 2> /dev/null\""

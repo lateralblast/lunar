@@ -15,8 +15,6 @@
 audit_touch_id () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      ansible_counter=$((ansible_counter+1))
-      ansible_value="audit_touch_id_${ansible_counter}"
       string="Touch ID"
       verbose_message "${string}" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
@@ -33,6 +31,8 @@ audit_touch_id () {
           increment_insecure "Touch ID Timeout for system is not set to \"${touchid_timeout}\""
         fi
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_touch_id_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${get_command}\""

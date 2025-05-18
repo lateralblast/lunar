@@ -15,8 +15,6 @@
 
 audit_bonjour_advertising() {
   if [ "${os_name}" = "Darwin" ]; then
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="audit_bonjour_advertising_${ansible_counter}"
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     if [ "${long_os_version}" -ge 1014 ]; then
       check_osx_defaults_bool "/Library/Preferences/com.apple.mDNSResponder.plist" "NoMulticastAdvertisements" "1"
@@ -30,6 +28,8 @@ audit_bonjour_advertising() {
         set_command="sed 's,mDNSResponder</string>,&X                <string>-NoMulticastAdvertisements</string>,g' < ${check_file} | tr X '\n' > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
         multicast_test=$( grep -c "NoMulticastAdvertisements" "${check_file}" )
         if [ -n "${ansible}" ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_bonjour_advertising_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${get_command}\""

@@ -14,13 +14,13 @@ check_osx_systemsetup () {
     if [ "${os_version}" -ge 12 ]; then
       param="$1"
       value="$2"
-      ansible_counter=$((ansible_counter+1))
-      ansible_value="check_osx_systemsetup_${ansible_counter}"
       log_file="systemsetup_${param}.log"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
         verbose_message "${string}" "check"
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="check_osx_systemsetup_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"sudo systemsetup -${param} |cut -f2 -d: |sed 's/ //g' |tr '[:upper:]' '[:lower:]'\""

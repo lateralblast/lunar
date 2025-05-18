@@ -42,8 +42,17 @@ restore_file () {
           reboot=1
           verbose_message "Reboot required" "notice"
         fi
-        if [ "${check_file}" = "/etc/ssh/sshd_config" ] || [ "${check_file}" = "/etc/sshd_config" ]; then
-          verbose_message "Service restart required" "notice"
+        check_base=$( basename "${check_file}" )
+        if [ "${check_base}" = "sshd_config" ]; then
+          verbose_message "Notice:    Service restart required for SSH"
+        fi
+        if [ "${ansible}" = 1 ]; then
+          echo ""
+          echo "- name: Restart ssh service"
+          echo "  service:"
+          echo "    name:  ssh"
+          echo "    state: restarted"
+          echo ""
         fi
       fi
     fi

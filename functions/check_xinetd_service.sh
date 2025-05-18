@@ -17,8 +17,6 @@ audit_xinetd_service () {
     service_name="$1"
     parameter_name="$2"
     correct_status="$3"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="audit_xinetd_service_${ansible_counter}"
     check_file="/etc/xinetd.d/${service_name}"
     log_file="${work_dir}/${service_name}.log"
     if [ -f "${check_file}" ]; then
@@ -41,6 +39,8 @@ audit_xinetd_service () {
           increment_secure   "Service \"${service_name}\" has \"${parameter_name}\" set to \"${correct_status}\""
         fi
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_xinetd_service_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command:  sh -c \"cat ${check_file} |grep ${parameter_name} |awk '{print \$3}'\""

@@ -13,9 +13,7 @@ check_sysadminctl () {
   if [ "${os_name}" = "Darwin" ]; then
     param="$1"
     value="$2"
-    ansible_counter=$((ansible_counter+1))
     log_file="sysadminctl.log"
-    ansible_value="check_sysadminctl_${ansible_counter}"
     if [ "${value}" = "off" ]; then
       search_value="disabled"
       other_value="on"
@@ -30,6 +28,8 @@ check_sysadminctl () {
       get_command="sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}"
       set_command="sudo sysadminctl -${param} ${value}"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_sysadminctl_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""

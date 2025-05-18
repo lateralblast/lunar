@@ -13,8 +13,6 @@ check_no() {
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="$1"
     correct_value="$2"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_no_${ansible_counter}"
     log_file="${parameter_name}.log"
     get_command="no -a |grep '${parameter_name} ' |cut -f2 -d= |sed 's/ //g' |grep '${correct_value}'"
     set_command="no -p -o ${parameter_name}=${correct_value}"
@@ -23,6 +21,8 @@ check_no() {
       string="Parameter \"${parameter_name}\" is \"${correct_value}\""
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_no_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""

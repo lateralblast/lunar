@@ -29,18 +29,20 @@ audit_pam_wheel () {
       if [ "${audit_mode}" != 2 ]; then
         check_value=$( grep "^auth" "${check_file}" | grep "${search_string}$" | awk '{print $8}' )
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_pam_wheel_${ansible_counter}"
           echo ""
           echo "- name: Checking ${check_string}"
           echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep '${search_string}$' |head -1 |wc -l\""
-          echo "  register: ${pam_module}_auth_check"
-          echo "  failed_when: ${pam_module}_auth_check == 1"
+          echo "  register: ${ansible_value}"
+          echo "  failed_when: ${ansible_value} == 1"
           echo "  changed_when: false"
           echo "  ignore_errors: true"
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${check_string}"
           echo "  command: sh -c \"sed -i 's/^.*${search_string}$/#&/' ${check_file}\""
-          echo "  when: ${pam_module}_auth_check.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
+          echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
         if [ "${check_value}" != "${search_string}" ]; then

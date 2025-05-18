@@ -18,8 +18,6 @@
 audit_asset_cache () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1013 ]; then
-      ansible_counter=$((ansible_counter+1))
-      ansible_value="audit_asset_cache_${ansible_counter}"
       string="Asset Cache Activation"
       verbose_message "${string}" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
@@ -36,6 +34,8 @@ audit_asset_cache () {
           increment_insecure "Content Caching is activated"
         fi
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_asset_cache_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${get_command}\""

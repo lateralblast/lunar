@@ -26,8 +26,6 @@ check_pmset() {
     if [ "${value}" = "1" ]; then
       state="on"
     fi
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_pmset_${ansible_counter}"
     log_file="pmset_${service}.log"
     actual_test=$( pmset -g | grep "${service}" | awk '{print $2}' | grep -c "${value}" | sed "s/ //g" )
     if [ "$actual_test" = "0" ]; then
@@ -39,6 +37,8 @@ check_pmset() {
       string="Sleep is disabled when powered"
       verbose_message "${string}" "check"
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="check_pmset_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"pmset -g | grep ${service} |awk '{print \$2}' |grep ${value}\""

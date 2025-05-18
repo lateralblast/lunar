@@ -14,8 +14,6 @@
 
 audit_keychain_lock () {
   if [ "${os_name}" = "Darwin" ]; then
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="audit_keychain_lock_${ansible_counter}"
     string="Keychain Lock"
     timeout="21600"
     verbose_message "${string}" "check"
@@ -29,6 +27,8 @@ audit_keychain_lock () {
           increment_secure   "Keychain \"${check_value}\" has \"${timeout}\" set"
         fi
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="audit_keychain_lock_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"security show-keychain-info 2> /dev/null | grep '${check_value}' | grep -c '${timeout}' | sed 's/ //g'\""

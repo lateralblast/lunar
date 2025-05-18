@@ -19,8 +19,6 @@ audit_apparmor () {
     do_app_test=1
     package_name="apparmor"
     app_name="AppArmor"
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="apparmor_check_${ansible_counter}"
     string="AppArmor Unconfined Applications"
     verbose_message "${string}" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
@@ -46,6 +44,8 @@ audit_apparmor () {
         increment_insecure  "There are unconfined applications"
       fi
       if [ "${ansible}" = 1 ]; then
+        ansible_counter=$((ansible_counter+1))
+        ansible_value="apparmor_check_${ansible_counter}"
         echo ""
         echo "- name: Checking ${string}"
         echo "  command: sh -c \"${get_command}\""
@@ -90,6 +90,8 @@ audit_apparmor () {
             lockdown_command="cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*"
             lockdown_message="Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
             if [ "${ansible}" = 1 ]; then
+              ansible_counter=$((ansible_counter+1))
+              ansible_value="apparmor_check_${ansible_counter}"
               echo ""
               echo "- name: Checking ${string}"
               echo "  command: sh -c \"${disabled_get_command}\""

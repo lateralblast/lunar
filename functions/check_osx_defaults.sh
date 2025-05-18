@@ -30,8 +30,6 @@ check_osx_defaults () {
       defaults_user="${defaults_host}"
       defaults_host=""
     fi
-    ansible_counter=$((ansible_counter+1))
-    ansible_value="check_osx_defaults_${ansible_counter}"
     if [ "${defaults_user}" = "" ]; then
       defaults_command="sudo defaults"
     else
@@ -144,6 +142,8 @@ check_osx_defaults () {
         fi
         get_command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2>&1 |grep ${defaults_value}"
         if [ "${ansible}" = 1 ]; then
+          ansible_counter=$((ansible_counter+1))
+          ansible_value="check_osx_defaults_${ansible_counter}"
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${get_command}\""

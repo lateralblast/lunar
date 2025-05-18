@@ -19,12 +19,12 @@ check_auditctl () {
       verbose_message "${secure_string}" "check"
       get_command="auditctl -l | grep ${check_file}"
       set_command="auditctl -w ${file} -p wa -k ${audit_tag}"
-      ansible_counter=$((ansible_counter+1))
-      ansible_value="auditctl_file_check_${ansible_counter}"
       if [ -e "${check_file}" ]; then
         check=$( auditctl -l | grep "${check_file}" )
         if [ ! "${check}" ]; then
           if [ "${ansible}" = 1 ]; then
+            ansible_counter=$((ansible_counter+1))
+            ansible_value="auditctl_file_check_${ansible_counter}"
             echo ""
             echo "- name: Checking ${secure_string}"
             echo "  command: sh -c \"${get_command}\""
