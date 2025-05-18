@@ -16,6 +16,7 @@
 #.
 
 audit_docker_logging () {
+  print_module "audit_docker_logging"
   if [ "${os_name}" = "Linux" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

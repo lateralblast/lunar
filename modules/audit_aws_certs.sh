@@ -12,6 +12,7 @@
 #.
 
 audit_aws_certs () {
+  print_module    "audit_aws_certs"
   verbose_message "Certificates" "check"
   certs=$( aws iam list-server-certificates --region "${aws_region}" --query "ServerCertificateMetadataList[].ServerCertificateName" --output text )
   cur_date=$( date "+%Y-%m-%dT%H:%M:%SS" )

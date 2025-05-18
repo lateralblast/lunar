@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# check_sunos_service
+# check_service
 #
 # Service audit routine wrapper, sends to appropriate function based on service type
 #
@@ -12,7 +12,8 @@
 # correct_status  = What the status of the service should be, ie enable/disabled
 #.
 
-check_sunos_service () {
+check_service () {
+  print_function "check_service"
   if [ "${os_name}" = "SunOS" ]; then
     service_name="$1"
     correct_status="$2"

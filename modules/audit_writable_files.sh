@@ -24,6 +24,7 @@
 #.
 
 audit_writable_files () {
+  print_module "audit_writable_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${do_fs}" = 1 ]; then
       verbose_message "World Writable Files" "check"

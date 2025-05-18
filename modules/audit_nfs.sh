@@ -23,6 +23,7 @@
 #.
 
 audit_nfs () {
+  print_module "audit_nfs"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "$nfsd_disable" = "yes" ]; then
       verbose_message "NFS Services" "check"

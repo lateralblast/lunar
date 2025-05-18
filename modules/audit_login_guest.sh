@@ -12,6 +12,7 @@
 #.
 
 audit_login_guest () {
+  print_module "audit_login_guest"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Guest login" "check"
     check_osx_defaults_bool "/Library/Preferences/com.apple.loginwindow.plist" "GuestEnabled" "no"

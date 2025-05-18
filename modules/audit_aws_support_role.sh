@@ -12,6 +12,7 @@
 #.
 
 audit_aws_support_role () {
+  print_module    "audit_aws_support_role"
   verbose_message "Support" "check"
   arn=$( aws iam list-policies --query "Policies[?PolicyName == 'AWSSupportAccess']" | grep Arn | awk -F': ' '{print $2}' | sed "s/ //g" | sed "s/,//g" | sed "s/\"//g" )
   roles=$( aws iam list-entities-for-policy --policy-arn "${arn}" | grep PolicyRoles | cut -f2 -d: )

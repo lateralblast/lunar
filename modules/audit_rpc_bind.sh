@@ -12,6 +12,7 @@
 #.
 
 audit_rpc_bind () {
+  print_module "audit_rpc_bind"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "RPC Bind" check
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then

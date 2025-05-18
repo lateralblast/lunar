@@ -12,6 +12,7 @@
 #.
 
 audit_audit_class () {
+  print_module "audit_audit_class"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       audit_create_class

@@ -10,6 +10,7 @@
 #.
 
 audit_ipsec () {
+  print_module "audit_ipsec"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "IPSEC Services" "check"

@@ -12,6 +12,7 @@
 #.
 
 check_inetd_service () {
+  print_function "check_inetd_service"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     service_name="$1"
     correct_status="$2"

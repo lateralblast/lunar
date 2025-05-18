@@ -10,6 +10,7 @@
 #.
 
 full_audit_virtualisation_services () {
+  print_module "full_audit_virtualisation_services"
   audit_zones
   audit_xen
 }

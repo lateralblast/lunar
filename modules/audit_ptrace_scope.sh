@@ -10,6 +10,7 @@
 #.
 
 audit_ptrace_scope () {
+  print_module "audit_ptrace_scope"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Ptrace scope is restricted" "check"
     if [ "${os_vendor}" = "Ubuntu" ]; then

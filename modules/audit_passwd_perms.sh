@@ -19,6 +19,7 @@
 #.
 
 audit_passwd_perms () {
+  print_module "audit_passwd_perms"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Group and Password File Permissions" "check"
     if [ "${os_name}" = "AIX" ]; then

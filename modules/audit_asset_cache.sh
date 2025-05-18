@@ -16,6 +16,7 @@
 #.
 
 audit_asset_cache () {
+  print_module "audit_asset_cache"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1013 ]; then
       string="Asset Cache Activation"

@@ -13,6 +13,7 @@
 #.
 
 audit_system_integrity () {
+  print_module "audit_system_integrity"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "System Integrity" "check"
     if [ "${audit_mode}" != 2 ]; then

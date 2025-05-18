@@ -12,6 +12,7 @@
 #.
 
 audit_smbconf_perms () {
+  print_module "audit_smbconf_perms"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "SMB Config Permissions" "check"
     check_file_perms "/etc/samba/smb.conf"    "0644" "root" "root"

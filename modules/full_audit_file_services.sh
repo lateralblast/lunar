@@ -10,6 +10,7 @@
 #.
 
 full_audit_file_services () {
+  print_module "full_audit_file_services"
   audit_syslog_perms
   audit_volfs
   audit_autofs

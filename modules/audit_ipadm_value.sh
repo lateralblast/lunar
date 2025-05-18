@@ -10,6 +10,7 @@
 #.
 
 audit_ipadm_value () {
+  print_module "audit_ipadm_value"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       ipadm_name="$1"

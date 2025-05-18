@@ -12,6 +12,7 @@
 #.
 
 audit_file_metadata () {
+  print_module "audit_file_metadata"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       verbose_message   "Auditing of File Metadata Modification Events" "check"

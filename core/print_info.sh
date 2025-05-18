@@ -147,10 +147,30 @@ print_tests () {
   echo ""
 }
 
+# print_function
+#
+# Print fuction name
+#.
+
+print_function() {
+  funct_name="$1"
+  echo "Function:   ${funct_name}"
+}
+
 # print_results
 #
 # Print Results
 #.
+
+# print_module
+#
+# Print module name
+#.
+
+print_module() {
+  module_name="$1"
+  echo "Module:     ${module_name}"
+}
 
 print_results () {
   echo ""

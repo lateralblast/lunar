@@ -39,7 +39,8 @@
 #.
 
 audit_aws_monitoring () {
-  verbose_message "CloudWatch" "check"
+  print_module    "audit_aws_monitoring"
+  verbose_message "CloudWatch"   "check"
   trails=$( aws cloudtrail describe-trails --region "${aws_region}" --query "trailList[].CloudWatchLogsLogGroupArn" --output text | awk -F':' '{print $7}' )
   if [ "${trails}" ]; then
     increment_secure "CloudWatch log groups exits for CloudTrail"

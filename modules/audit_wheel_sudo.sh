@@ -11,6 +11,7 @@
 #.
 
 audit_wheel_sudo () {
+  print_module "audit_wheel_sudo"
   temp_file="${temp_dir}/audit_wheel_sudo"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Sudoers group settings" "check"

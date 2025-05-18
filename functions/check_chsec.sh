@@ -10,6 +10,7 @@
 #.
 
 check_chsec() {
+  print_function "check_chsec"
   if [ "${os_name}" = "AIX" ]; then
     sec_file="$1"
     sec_stanza="$2"

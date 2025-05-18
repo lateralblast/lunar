@@ -14,6 +14,7 @@
 #.
 
 audit_bonjour_advertising() {
+  print_module "audit_bonjour_advertising"
   if [ "${os_name}" = "Darwin" ]; then
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     if [ "${long_os_version}" -ge 1014 ]; then

@@ -14,6 +14,7 @@
 #.
 
 audit_apparmor () {
+  print_module "audit_apparmor"
   if [ "${os_name}" = "Linux" ]; then
     do_grub_test=0
     do_app_test=1

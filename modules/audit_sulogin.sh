@@ -18,6 +18,7 @@
 #.
 
 audit_sulogin () {
+  print_module "audit_sulogin"
   temp_file="${temp_dir}/audit_sulogin"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Single User Mode Requires Password" "check"

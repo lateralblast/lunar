@@ -13,6 +13,7 @@
 #.
 
 print_audit_info () {
+  print_function "print_audit_info"
   if [ "${verbose}" = 1 ]; then
     module="$1"
     comment_text=0

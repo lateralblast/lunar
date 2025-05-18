@@ -19,6 +19,7 @@
 #.
 
 replace_file_value () {
+  print_function "replace_file_value"
   check_file="$1"
   check_value="$2"
   new_check_value="${check_value}"

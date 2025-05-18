@@ -23,6 +23,7 @@
 #.
 
 audit_core_dumps () {
+  print_module "audit_core_dumps"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Core Dumps" "check"
     if [ "${os_name}" = "SunOS" ]; then

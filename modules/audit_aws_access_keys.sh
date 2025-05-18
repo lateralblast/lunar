@@ -12,7 +12,8 @@
 #.
 
 audit_aws_access_keys () {
-  verbose_message "Access Keys" "check"
+  print_module    "audit_aws_access_keys"
+  verbose_message "Access Keys"   "check"
   aws iam generate-credential-report > /dev/null 2>&1
   entries=$( aws iam get-credential-report --query 'Content' --output text | "${base64_d}" | cut -d, -f1,4,9,11,14,16 | sed '1 d' | grep -v '<root_account>' | awk -F '\n' '{print $1}' )
   for entry in ${entries}; do

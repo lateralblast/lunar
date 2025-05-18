@@ -20,6 +20,7 @@
 #.
 
 audit_console_login () {
+  print_moduled "audit_console_login"
   if [ "${os_name}" = "SunOS" ]; then
     string="Root Login to System Console"
    verbose_message "${string}" "check"

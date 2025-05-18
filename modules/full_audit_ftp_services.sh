@@ -9,6 +9,7 @@
 # Audit FTP Services
 
 full_audit_ftp_services () {
+  print_module "full_audit_ftp_services"
   audit_ftp_logging
   audit_ftp_umask
   audit_ftp_conf

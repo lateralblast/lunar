@@ -18,6 +18,7 @@
 #.
 
 audit_telnet_client () {
+  print_module "audit_telnet_client"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message     "Telnet Client" "check"
     check_linux_package "uninstall"     "telnet"

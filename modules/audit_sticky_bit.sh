@@ -19,6 +19,7 @@
 #.
 
 audit_sticky_bit () {
+  print_module "audit_sticky_bit"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = 1 ]; then
       string="World Writable Directories and Sticky Bits"

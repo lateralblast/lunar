@@ -14,6 +14,7 @@
 #.
 
 check_command_value () {
+  print_function "check_command_value"
   command_name="$1"
   parameter_name="$2"
   correct_value="$3"

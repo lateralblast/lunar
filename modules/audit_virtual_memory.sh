@@ -15,6 +15,7 @@
 #.
 
 audit_virtual_memory () {
+  print_module "audit_virtual_memory"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Randomised Virtual Memory Region Placement" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Ubuntu" ]; then

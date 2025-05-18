@@ -16,6 +16,7 @@
 #.
 
 audit_aws_rec_all () {
+  print_function "audit_aws_rec_all"
   audit_aws_rec_ec2
   audit_aws_rec_es
   audit_aws_rec_dynamodb

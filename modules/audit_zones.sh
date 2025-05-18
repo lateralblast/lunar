@@ -10,6 +10,7 @@
 #.
 
 audit_zones () {
+  print_module "audit_zones"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       zone_check=$( zoneadm list -civ | awk '{print $1}' | grep 1 )

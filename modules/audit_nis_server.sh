@@ -22,6 +22,7 @@
 #.
 
 audit_nis_server () {
+  print_module "audit_nis_server"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "NIS Server Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then

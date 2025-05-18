@@ -10,6 +10,7 @@
 #.
 
 audit_vnc () {
+  print_module "audit_vnc"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "VNC Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then

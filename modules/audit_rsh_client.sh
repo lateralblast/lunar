@@ -19,6 +19,7 @@
 #.
 
 audit_rsh_client () {
+  print_module "audit_rsh_client"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message     "RSH Client"  "check"
     check_linux_package "uninstall"   "rsh"

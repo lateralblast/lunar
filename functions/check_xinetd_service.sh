@@ -13,6 +13,7 @@
 #.
 
 audit_xinetd_service () {
+  print_function "audit_xinetd_service"
   if [ "${os_name}" = "Linux" ]; then
     service_name="$1"
     parameter_name="$2"

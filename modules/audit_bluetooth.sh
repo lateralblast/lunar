@@ -15,6 +15,7 @@
 #.
 
 audit_bluetooth () {
+  print_module "audit_bluetooth"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Bluetooth services and file sharing"      "check"
     check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0"

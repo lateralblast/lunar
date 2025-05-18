@@ -13,6 +13,7 @@
 #.
 
 audit_pam_deny () {
+  print_module "audit_pam_deny"
   if [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     pam_module="pam_deny"
      verbose_message "PAM Deny Weak Authentication Services" "check"

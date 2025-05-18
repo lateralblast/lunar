@@ -10,6 +10,7 @@
 #.
 
 audit_cde_print () {
+  print_module "audit_cde_print"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "CDE Print" "check"

@@ -10,6 +10,7 @@
 #.
 
 check_no() {
+  print_function "check_no"
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="$1"
     correct_value="$2"

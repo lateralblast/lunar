@@ -16,6 +16,7 @@
 #.
 
 audit_rsh_server () {
+  print_module "audit_rsh_server"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       verbose_message "RSH Server Daemon" "check"

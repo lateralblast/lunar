@@ -12,6 +12,7 @@
 #.
 
 audit_vnetd () {
+  print_module "audit_vnetd"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "VNET Daemon"                    "check"

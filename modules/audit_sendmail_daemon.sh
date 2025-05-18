@@ -18,6 +18,7 @@
 #.
 
 audit_sendmail_daemon() {
+  print_module "audit_sendmail_daemon"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Sendmail Daemon" "check"
     if [ "$sendmail_disable" = "yes" ]; then

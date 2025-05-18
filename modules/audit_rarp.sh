@@ -11,6 +11,7 @@
 #.
 
 audit_rarp () {
+  print_module "audit_rarp"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "RARP Daemon" "check"
     if [ "${os_name}" = "SunOS" ]; then

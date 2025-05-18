@@ -14,6 +14,7 @@
 
 audit_aws_cf () {
   # Check Cloud Formation stacks are using SNS
+  print_module    "audit_aws_cf"
   verbose_message "CloudFormation" "check"
   stacks=$( aws cloudformation list-stacks --region "${aws_region}" --query 'StackSummaries[].StackId' --output text )
   for stack in ${stacks}; do 

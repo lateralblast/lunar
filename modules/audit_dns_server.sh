@@ -19,6 +19,7 @@
 #.
 
 audit_dns_server () {
+  print_module "audit_dns_server"
   if [ "${named_disable}" = "yes" ]; then
     if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
       verbose_message "DNS Server" "check"

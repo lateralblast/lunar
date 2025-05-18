@@ -12,6 +12,7 @@
 #.
 
 check_aws_password_policy () {
+  print_function "check_aws_password_policy"
   param="$1"
   value="$2"
   switch="$3"

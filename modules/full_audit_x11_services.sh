@@ -10,6 +10,7 @@
 #.
 
 full_audit_x11_services () {
+  print_module "full_audit_x11_services"
   audit_cde_ttdb
   audit_cde_cal
   audit_cde_spc

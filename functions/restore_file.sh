@@ -16,6 +16,7 @@
 #.
 
 restore_file () {
+  print_function "restore_file"
   check_file="$1"
   check_dir="$2"
   if [ "${audit_mode}" = 2 ]; then

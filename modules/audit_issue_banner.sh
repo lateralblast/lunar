@@ -23,6 +23,7 @@
 #.
 
 audit_issue_banner () {
+  print_module "audit_issue_banner"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Security Warning Message" "check"
     if [ "${os_name}" = "Darwin" ]; then

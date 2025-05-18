@@ -10,6 +10,7 @@
 #.
 
 check_dscl () {
+  print_function "check_dscl"
   if [ "${os_name}" = "Darwin" ]; then
     file="$1"
     param="$2"

@@ -10,6 +10,7 @@
 #.
 
 check_chuser() {
+  print_function "check_chuser"
   if [ "${os_name}" = "AIX" ]; then
     sec_file="$1"
     parameter_name="$2"

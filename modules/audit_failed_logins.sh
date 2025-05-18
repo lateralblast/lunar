@@ -12,6 +12,7 @@
 #.
 
 audit_failed_logins () {
+  print_module "audit_failed_logins"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message  "Failed Login Attempts"   "check"

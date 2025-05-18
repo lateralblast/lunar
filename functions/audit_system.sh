@@ -10,6 +10,7 @@
 #.
 
 funct_audit_system () {
+  print_function "funct_audit_system"
   audit_mode=$1
   check_environment
   if [ "${audit_mode}" = 0 ]; then
@@ -60,6 +61,7 @@ funct_audit_system () {
 #.
 
 audit_system_all () {
+  print_function "audit_system_all"
   full_audit_shell_services
   full_audit_accounting_services
   full_audit_firewall_services

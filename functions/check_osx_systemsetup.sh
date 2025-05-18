@@ -10,6 +10,7 @@
 #.
 
 check_osx_systemsetup () {
+  print_functions "check_osx_systemsetup"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 12 ]; then
       param="$1"

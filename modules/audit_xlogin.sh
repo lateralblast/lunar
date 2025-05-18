@@ -13,6 +13,7 @@
 #.
 
 audit_xlogin () {
+  print_module "audit_xlogin"
   temp_file="${temp_dir}/audit_xlogin"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "X Windows" "check"

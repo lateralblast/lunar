@@ -10,6 +10,7 @@
 #.
 
 full_audit_disk_services () {
+  print_module "full_audit_disk_services"
   audit_svm
   audit_svm_gui
   audit_iscsi

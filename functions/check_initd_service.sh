@@ -14,6 +14,7 @@
 #.
 
 check_initd_service () {
+  print_function "check_initd_service"
   if [ "${os_name}" = "SunOS" ]; then
     service_name="$1"
     correct_status="$2"

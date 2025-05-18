@@ -13,6 +13,7 @@
 #.
 
 audit_icloud_drive () {
+  print_module "audit_icloud_drive"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "iCloud Drive" "check"

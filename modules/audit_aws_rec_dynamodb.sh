@@ -13,6 +13,7 @@
 
 audit_aws_rec_dynamodb () {
   # Check for zero length tables
+  print_module    "audit_aws_rec_dynamodb"
   verbose_message "DynamoDB" "check"
   tables=$( aws dynamodb list-tables --region "${aws_region}" --query 'TableNames' --output text )
   for table in ${table}s; do

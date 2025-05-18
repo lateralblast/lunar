@@ -19,6 +19,7 @@
 #.
 
 audit_ldap_server () {
+  print_module "audit_ldap_server"
   if [ "${os_name}" = "Linux" ]; then
     verbose_mesage      "LDAP Server" "check"
     check_linux_service "slapd"       "off"

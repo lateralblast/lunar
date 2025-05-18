@@ -10,6 +10,7 @@
 #.
 
 audit_xen () {
+  print_module "audit_xen"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Xen Daemons" "check"
     for service_name in xend xendomains; do

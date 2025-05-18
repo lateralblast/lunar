@@ -10,6 +10,7 @@
 #.
 
 audit_wheel_group () {
+  print_module "audit_wheel_group"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/group"
     string="Wheel Group"

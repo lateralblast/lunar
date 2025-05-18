@@ -10,6 +10,7 @@
 #.
 
 audit_echo () {
+  print_module "audit_echo"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message "Echo and Chargen Services" "check"

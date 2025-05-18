@@ -12,6 +12,7 @@
 #.
 
 audit_nisplus () {
+  print_module "audit_nisplus"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "NIS+ Daemons"             "check"

@@ -10,6 +10,7 @@
 #.
 
 full_audit_print_services () {
+  print_module "full_audit_print_services"
   audit_ppd_cache
   audit_print
   audit_cups

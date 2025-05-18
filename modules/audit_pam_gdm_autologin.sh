@@ -12,6 +12,7 @@
 #.
 
 audit_pam_gdm_autologin () {
+  print_module "audit_pam_gdm_autologin"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       pam_module="gdm-autologin"

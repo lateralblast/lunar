@@ -13,6 +13,7 @@
 #.
 
 audit_screen_corner () {
+  print_module "audit_screen_corner"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Screen Saver Corners" "check"

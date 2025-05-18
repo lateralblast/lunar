@@ -10,6 +10,7 @@
 #.
 
 audit_system_x86 () {
+  print_function "audit_system_x86"
   if [ "${os_name}" = "SunOS" ]; then
     audit_grub_security
     audit_kdm_config

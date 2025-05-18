@@ -21,6 +21,7 @@
 #.
 
 audit_kubernetes_etcd () {
+  print_module "audit_kubernetes_etcd"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "etcd" |grep -v grep )
     if [ "${daemon_check}" ]; then

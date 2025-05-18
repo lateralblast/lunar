@@ -26,6 +26,7 @@
 #.
 
 audit_password_fields () {
+  print_module "audit_password_fields"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Password Fields" "check"
     if [ "${audit_mode}" != 2 ]; then

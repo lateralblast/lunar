@@ -13,6 +13,7 @@
 #.
 
 audit_system_auth_password_hashing () {
+  print_module "audit_system_auth_password_hashing"
   auth_string="$1"
   search_string="$2"
   temp_file="${temp_dir}/audit_system_auth_password_hashing"

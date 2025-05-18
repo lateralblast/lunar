@@ -21,6 +21,7 @@
 #.
 
 audit_password_expiry () {
+  print_module "audit_password_expiry"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Password Expiration Parameters on Active Accounts" "check"
     if [ "${os_name}" = "AIX" ]; then

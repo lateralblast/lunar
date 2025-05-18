@@ -17,6 +17,7 @@
 #.
 
 audit_system_auth_password_history () {
+  print_module "audit_system_auth_password_history"
   auth_string="$1"
   search_string="$2"
   search_value="$3"

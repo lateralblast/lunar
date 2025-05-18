@@ -10,6 +10,7 @@
 #.
 
 audit_wheel_su () {
+  print_module "audit_wheel_su"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Wheel group ownership" "check"
     check_file=$( command -v su 2> /dev/null )

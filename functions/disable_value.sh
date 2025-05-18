@@ -15,6 +15,7 @@
 #.
 
 disable_value () {
+  print_function "disable_value"
   check_file="$1"
   parameter_name="$2"
   comment_value="$3"

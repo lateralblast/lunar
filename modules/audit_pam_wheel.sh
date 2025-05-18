@@ -19,6 +19,7 @@
 #.
 
 audit_pam_wheel () {
+  print_module "audit_pam_wheel"
   if [ "${os_name}" = "Linux" ]; then
     pam_module="pam_wheel"
     check_string="PAM ${pam_module} Configuration"

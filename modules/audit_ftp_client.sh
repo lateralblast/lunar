@@ -10,6 +10,7 @@
 #.
 
 audit_ftp_client () {
+  print_module "audit_ftp_client"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "FTP Client" "check"
     for package in ftp tnftp; do

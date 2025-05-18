@@ -18,6 +18,7 @@
 #.
 
 audit_autofs () {
+  print_module "audit_autofs"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Automount Services" "check"
     if [ "${os_name}" = "SunOS" ]; then

@@ -15,6 +15,7 @@
 #.
 
 audit_file_perms () {
+  print_module "audit_file_perms"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "System File Permissions" "check"
     log_file="fileperms.log"

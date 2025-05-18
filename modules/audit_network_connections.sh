@@ -10,6 +10,7 @@
 #.
 
 audit_network_connections () {
+  print_module "audit_network_connections"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       verbose_message   "Auditing of Incomming Network Connections"         "check"

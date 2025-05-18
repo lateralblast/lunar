@@ -12,6 +12,7 @@
 #.
 
 audit_aws_ec () {
+  print_module    "audit_aws_ec"
   verbose_message "ElastiCache" "check"
   caches=$( aws elasticache describe-replication-groups --region "${aws_region}" --query 'ReplicationGroups[].ReplicationGroupId' --output text )
   for cache in ${caches}; do 

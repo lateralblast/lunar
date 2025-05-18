@@ -19,7 +19,8 @@
 
 audit_aws_iam () {
   # Root account should only be used sparingly, admin functions and responsibilities should be delegated
-  verbose_message "IAM" "check"
+  print_module    "audit_aws_iam"
+  verbose_message "IAM"   "check"
   aws iam generate-credential-report > /dev/null 2>&1
   date_test=$( date +%Y-%m )
   last_login=$( aws iam get-credential-report --query 'Content' --output text | "${base64_d}" | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' | cut -f2 -d, | cut -f1,2 -d- | grep '[0-9]' )

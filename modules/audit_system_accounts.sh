@@ -22,6 +22,7 @@
 #.
 
 audit_system_accounts () {
+  print_module "audit_system_accounts"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "System Accounts that do not have a shell" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

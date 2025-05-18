@@ -13,6 +13,7 @@
 #.
 
 audit_remote_login () {
+  print_module "audit_remote_login"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message       "Remote Login"   "check"
     check_osx_systemsetup "getremotelogin" "off"

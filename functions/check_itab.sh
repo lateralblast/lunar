@@ -11,6 +11,7 @@
 #.
 
 check_itab() {
+  print_function "check_itab"
   if [ "${os_name}" = "AIX" ]; then
     service_name="$1"
     correct_value="$2"

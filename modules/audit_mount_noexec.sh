@@ -19,6 +19,7 @@
 #.
 
 audit_mount_noexec () {
+  print_module "audit_mount_noexec"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "No-exec on /tmp" "check"
     check_file="/etc/fstab"

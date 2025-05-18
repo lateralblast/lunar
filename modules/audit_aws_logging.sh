@@ -28,6 +28,7 @@
 #.
 
 audit_aws_logging () {
+  print_module    "audit_aws_logging"
   verbose_message "CloudTrail" "check"
   trails=$( aws cloudtrail describe-trails --region "${aws_region}" --query "trailList[].Name" --output text )
   if [ "${trails}" ]; then

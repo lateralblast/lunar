@@ -13,6 +13,7 @@
 #.
 
 funct_check_pkg () {
+  print_function "funct_check_pkg"
   if [ "${os_name}" = "SunOS" ]; then
     package_name="$1"
     package_check=$( pkginfo "$1" )

@@ -14,6 +14,7 @@
 #.
 
 audit_reserved_ids () {
+  print_module "audit_reserved_ids"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Reserved IDs" "check"
     if [ "${audit_mode}" != 2 ]; then

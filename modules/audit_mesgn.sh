@@ -15,6 +15,7 @@
 #.
 
 audit_mesgn () {
+  print_module "audit_mesgn"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Default mesg Settings for Users" "check"
     for check_file in /etc/.login /etc/profile /etc/skel/.bash_profile /etc/skel/.bashrc \

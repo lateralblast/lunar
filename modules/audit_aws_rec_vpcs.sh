@@ -13,6 +13,7 @@
 #.
 
 audit_aws_rec_vpcs () {
+  print_module    "audit_aws_rec_vpcs"
   verbose_message "VPC Recommendations" "check"
   # Check Security Groups have Name tags
   vpcs=$( aws ec2 describe-vpcs --region "${aws_region}" --query 'Vpcs[].VpcId' --output text )

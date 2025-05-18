@@ -10,6 +10,7 @@
 #.
 
 check_subserver() {
+  print_function "check_subserver"
   if [ "${os_name}" = "AIX" ]; then
     service_name="$1"
     protocol_name="$2"

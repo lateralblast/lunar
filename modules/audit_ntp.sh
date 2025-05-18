@@ -25,6 +25,7 @@
 #.
 
 audit_ntp () {
+  print_module "audit_ntp"
   ntp_package="chrony"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Network Time Protocol" "check"

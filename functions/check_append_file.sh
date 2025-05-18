@@ -14,6 +14,7 @@
 #.
 
 check_append_file () {
+  print_function "check_append_file"
   check_file="$1"
   parameter="$2"
   comment_value="$3"

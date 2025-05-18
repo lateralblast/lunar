@@ -15,6 +15,7 @@
 #.
 
 audit_auto_login() {
+  print_module "audit_auto_login"
   if [ "${os_name}" = "Darwin" ]; then
     string="Autologin"
     verbose_message         "${string}" "check"

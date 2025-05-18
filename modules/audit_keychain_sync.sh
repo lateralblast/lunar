@@ -12,6 +12,7 @@
 #.
 
 audit_keychain_sync () {
+  print_mocule "audit_keychain_sync"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Keychain sync" "check"

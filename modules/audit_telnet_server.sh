@@ -16,6 +16,7 @@
 #.
 
 audit_telnet_server () {
+  print_module "audit_telnet_server"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_name}" = "Amazon" ]; then
       verbose_message     "Telnet Server Daemon" "check"

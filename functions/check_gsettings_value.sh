@@ -19,6 +19,7 @@
 #.
 
 check_gsettings_value () {
+  print_function "check_gsettings_value"
   parameter_root="$1"
   parameter_name="$2" 
   correct_value="$3"

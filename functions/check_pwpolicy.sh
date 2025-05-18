@@ -10,6 +10,7 @@
 #.
 
 check_pwpolicy() {
+  print_function "check_pwpolicy"
   if [ "${os_name}" = "Darwin" ]; then
     parameter_name="$1"
     correct_value="$2"

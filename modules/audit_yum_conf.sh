@@ -17,6 +17,7 @@
 #.
 
 audit_yum_conf () {
+  print_module "audit_yum_conf"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       verbose_message  "Yum Configuration"  "check"

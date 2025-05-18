@@ -10,6 +10,7 @@
 #.
 
 check_ausearch () {
+  print_function "check_ausearch"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       funct="$1"

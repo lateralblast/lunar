@@ -14,6 +14,7 @@
 #.
 
 audit_account_switching () {
+  print_module "audit_account_switching"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       ansible_counter=$((ansible_counter+1))

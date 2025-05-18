@@ -16,6 +16,7 @@
 #.
 
 audit_docker_monitoring () {
+  print_module "audit_docker_monitoring"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       docker_bin=$( command -v docker )

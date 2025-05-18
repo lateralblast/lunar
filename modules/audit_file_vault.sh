@@ -14,6 +14,7 @@
 #.
 
 audit_file_vault () {
+  print_module "audit_file_vault"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "File Vault" "check"
     if [ "${audit_mode}" != 2 ]; then

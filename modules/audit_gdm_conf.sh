@@ -14,6 +14,7 @@
 #.
 
 audit_gdm_conf () {
+  print_module "audit_gdm_conf"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/X11/gdm/gdm.conf"
     if [ -e "${check_file}" ]; then

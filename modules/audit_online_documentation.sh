@@ -12,6 +12,7 @@
 #.
 
 audit_online_documentation () {
+  print_module "audit_online_documentation"
   if [ "${os_name}" = "AIX" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Online Documentation" "check"
     if [ "${os_name}" = "AIX" ]; then

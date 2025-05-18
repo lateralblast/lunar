@@ -10,6 +10,7 @@
 #.
 
 audit_webmin () {
+  print_module "audit_webmin"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "Webmin Daemon"                              "check"

@@ -18,6 +18,7 @@
 #.
 
 audit_auditd () {
+  print_module "audit_auditd"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Audit Daemon" "check"
     if [ "${os_name}" = "Linux" ]; then
@@ -52,7 +53,7 @@ audit_auditd () {
           backup_file        "${check_file}"
           line_check=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" )
           if [ -n "${line_check}" ]; then
-            existing_value=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" |cut -f2 -d= |sed "s/\"//g" )
+            existing_value=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" | cut -f2 -d= |sed "s/\"//g" )
             new_value="GRUB_CMDLINE_LINUX=\"audit=1 ${existing_value}\""
             execute_lockdown "cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; update-grub" "Application \"${app_name}\" to enabled"
           else
@@ -79,7 +80,7 @@ audit_auditd () {
           lockdown_command="cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; update-grub"
           lockdown_message="Application/Feature \"${app_name} \" in \"${check_file}\" to enabled"
           execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
-          existing_value=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" |cut -f2 -d= |sed "s/\"//g" )
+          existing_value=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" |cut -f2 -d= | sed "s/\"//g" )
           new_value="GRUB_CMDLINE_LINUX=\"${package_name}=${package_value} ${existing_value}\""
           lockdown_command="cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; update-grub"
           lockdown_message="Application/Feature \"${app_name}\" to enabled"
@@ -95,7 +96,7 @@ audit_auditd () {
           backup_file "${check_file}"
           line_check=$( grep "^GRUB_CMDLINE_LINUX" ${check_file} )
           if [ -n "${line_check}" ]; then
-            existing_value=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" |cut -f2 -d= |sed "s/\"//g" )
+            existing_value=$( grep "^GRUB_CMDLINE_LINUX" "${check_file}" | cut -f2 -d= |sed "s/\"//g" )
             new_value="GRUB_CMDLINE_LINUX=\"${package_name}=${package_value} ${existing_value}\""
             lockdown_command="cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; update-grub"
             lockdown_message="Application/Feature \"${app_name}\" to enabled"

@@ -10,6 +10,7 @@
 #
 
 audit_wheel_users () {
+  print_module "audit_wheel_users"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Wheel Users" "check"
     check_file="/etc/group"

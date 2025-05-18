@@ -11,6 +11,7 @@
 #.
 
 audit_group_fields () {
+  print_module "audit_group_fields"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Group Fields" "check"
     if [ "${audit_mode}" != 2 ]; then

@@ -17,6 +17,7 @@
 #.
 
 audit_iptables () {
+  print_module "audit_iptables"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message     "IP Tables" "check"
     check_linux_package "install"   "iptables"

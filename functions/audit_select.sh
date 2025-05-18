@@ -10,6 +10,7 @@
 #.
 
 funct_audit_select () {
+  print_function "funct_audit_select"
   audit_mode=$1
   function=$2
   check_environment

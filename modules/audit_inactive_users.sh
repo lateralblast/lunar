@@ -16,6 +16,7 @@
 #.
 
 audit_inactive_users () {
+  print_module "audit_inactive_users"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Inactive User Accounts" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

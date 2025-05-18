@@ -14,6 +14,7 @@
 #.
 
 check_systemctl_service () {
+  print_function "check_systemctl_service"
   temp_status="$1"
   temp_name="$2"
   use_systemctl="no"

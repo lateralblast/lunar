@@ -21,6 +21,7 @@
 #.
 
 audit_duplicate_ids () {
+  print_module "audit_duplicate_ids"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Duplicate IDs" "check"
     field="$1"

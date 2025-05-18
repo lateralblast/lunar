@@ -12,6 +12,7 @@
 #.
 
 audit_amfi () {
+  print_module "audit_amfi"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1012 ]; then
       string="Apple Mobile File Integrity"

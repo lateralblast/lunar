@@ -14,6 +14,7 @@
 #.
 
 audit_xinetd_server () {
+  print_module "audit_xinetd_server"
   if [ "${os_name}" = "Linux" ]; then
     service_name="xinetd"
     check_linux_service "${service_name}" "off"

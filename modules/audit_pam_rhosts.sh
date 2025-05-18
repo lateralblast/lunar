@@ -14,6 +14,7 @@
 #.
 
 audit_pam_rhosts () {
+  print_module "audit_pam_rhosts"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     pam_module="pam_rhosts_auth"
     check_string="PAM ${pam_module} Configuration"

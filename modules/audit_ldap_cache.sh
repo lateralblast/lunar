@@ -12,6 +12,7 @@
 #.
 
 audit_ldap_cache () {
+  print_module "audit_ldap_cache"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "LDAP Cache" "check"
     if [ "${os_name}" = "SunOS" ]; then

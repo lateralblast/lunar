@@ -13,6 +13,7 @@
 #.
 
 audit_touch_id () {
+  print_module "audit_touch_id"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       string="Touch ID"

@@ -10,6 +10,7 @@
 #.
 
 audit_ftp_conf () {
+  print_module "audit_ftp_conf"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "FTP users" "check"
     if [ "${os_name}" = "AIX" ]; then

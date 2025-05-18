@@ -12,6 +12,7 @@
 #.
 
 audit_safari_show_statusbar () {
+  print_module "audit_safari_show_statusbar"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Safari Show Status Bar" "check"

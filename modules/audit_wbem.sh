@@ -12,6 +12,7 @@
 #.
 
 audit_wbem () {
+  print_module "audit_wbem"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "Web Based Enterprise Management"  "check"

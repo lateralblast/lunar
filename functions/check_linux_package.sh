@@ -13,6 +13,7 @@
 #.
 
 check_linux_package_with_group () {
+  print_function "check_linux_package_with_group"
   if [ "${os_name}" = "Linux" ]; then
     package_mode="$1"
     package_check="$2"

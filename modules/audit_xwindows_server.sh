@@ -14,6 +14,7 @@
 #.
 
 audit_xwindows_server () {
+  print_module "audit_xwindows_server"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "X Windows Server"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then

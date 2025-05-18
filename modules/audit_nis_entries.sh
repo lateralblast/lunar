@@ -17,6 +17,7 @@
 #.
 
 audit_nis_entries () {
+  print_module "audit_nis_entries"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "NIS Map Entries" "check"
     for check_file in /etc/passwd /etc/shadow /etc/group; do

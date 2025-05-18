@@ -18,7 +18,8 @@
 #.
 
 audit_aws_mfa () {
-  verbose_message "MFA" "check"
+  print_module    "audit_aws_mfa"
+  verbose_message "MFA"   "check"
   entries=$( aws iam get-credential-report --query 'Content' --output text | "${base64_d}" | cut -d, -f1,4,8 | sed '1 d' | awk -F '\n' '{print $1}' )
   for entry in ${entries}; do
     user=$( echo "${entry}" | cut -d, -f1 )

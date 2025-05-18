@@ -13,6 +13,7 @@
 #.
 
 audit_telnet_banner () {
+  print_module "audit_telnet_banner"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "Telnet Banner" "check"
     check_file_value "is" "/etc/default/telnetd" "BANNER" "eq" "/etc/issue" "hash"

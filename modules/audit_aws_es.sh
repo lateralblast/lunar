@@ -13,6 +13,7 @@
 #.
 
 audit_aws_es () {
+  print_modules   "audit_aws_es"
   verbose_message "Elasticsearch" "check"
   domains=$( aws es list-domain-names --region "${aws_region}" --query "DomainNames[].DomainName" --output text )
   for domain in ${domains}; do

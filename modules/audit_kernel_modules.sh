@@ -12,6 +12,7 @@
 #.
 
 audit_kernel_modules () {
+  print_module "audit_kernel_modules"
   if [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Kernel Module Signing" "check"
     for module in $( esxcli system module list | grep '^[a-z]' | awk '($3 == "true") {print $1}' ); do

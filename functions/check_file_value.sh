@@ -26,6 +26,7 @@
 #.
 
 check_file_value_with_position () {
+  print_function "check_file_value_with_position"
   operator="$1"
   check_file="$2"
   parameter_name="$3"

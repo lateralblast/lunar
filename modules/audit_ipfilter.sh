@@ -10,6 +10,7 @@
 #.
 
 audit_ipfilter () {
+  print_module "audit_ipfilter"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "IP Filter" "check"

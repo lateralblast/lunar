@@ -26,6 +26,7 @@
 #.
 
 audit_ssh_config () {
+  print_module    "audit_ssh_config"
   verbose_message "SSH" "check"
   if [ "${os_name}" = "VMkernel" ]; then
     verbose_message     "SSH Daemon"  "check"

@@ -30,6 +30,7 @@
 #.
 
 audit_sleep () {
+  print_module "audit_sleep"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Sleep" "check"
     if [ "${long_os_version}" -ge 1014 ]; then

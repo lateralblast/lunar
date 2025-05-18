@@ -13,6 +13,7 @@
 #.
 
 audit_system_auth_use_uid () {
+  print_module "audit_system_auth_use_uid"
   auth_string="auth"
   search_string="use_uid"
   check_file="/etc/pam.d/su"

@@ -12,6 +12,7 @@
 #.
 
 audit_system_preferences () {
+  print_module "audit_system_preferences"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "System Preferences" "check"
     if [ ! "${audit_mode}" != 2 ]; then

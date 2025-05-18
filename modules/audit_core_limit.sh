@@ -12,6 +12,7 @@
 #.
 
 audit_core_limit () {
+  print_module "audit_core_limit"
   if [ "${os_name}" = "Darwin" ]; then
     string="Core dump limits"
     verbose_message "${string}" "check"

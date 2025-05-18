@@ -10,5 +10,6 @@
 #.
 
 audit_test_subset () {
+  print_function "audit_test_subset"
   audit_legacy
 }

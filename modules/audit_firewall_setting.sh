@@ -23,6 +23,7 @@
 #.
 
 audit_firewall_setting () {
+  print_module "audit_firewall_setting"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message        "Firewall Settings" "check"
     check_osx_defaults_int "/Library/Preferences/com.apple.alf" "globalstate" "1"

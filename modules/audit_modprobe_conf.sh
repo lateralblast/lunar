@@ -19,6 +19,7 @@
 #.
 
 audit_modprobe_conf () {
+  print_module "audit_modprobe_conf"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message   "Modprobe Configuration"  "check"
     check_append_file "/etc/modprobe.conf"      "install cramfs /bin/false"        "hash"

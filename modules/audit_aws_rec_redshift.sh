@@ -12,6 +12,7 @@
 #.
 
 audit_aws_rec_redshift () {
+  print_module    "audit_aws_rec_redshift"
   verbose_message "Redshift Recommendations" "check"
   dbs=$( aws redshift describe-reserved-nodes --region "${aws_region}" --query 'ReservedNodes[].ReservedNodeId' --output text )
   for db in ${dbs}; do

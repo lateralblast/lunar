@@ -10,6 +10,7 @@
 #.
 
 audit_sudo_perms () {
+  print_module "audit_sudo_perms"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo file permissions" "check"
     check_file="/etc/sudoers"

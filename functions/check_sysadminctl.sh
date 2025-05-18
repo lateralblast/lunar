@@ -10,6 +10,7 @@
 #.
 
 check_sysadminctl () {
+  print_function "check_sysadminctl"
   if [ "${os_name}" = "Darwin" ]; then
     param="$1"
     value="$2"

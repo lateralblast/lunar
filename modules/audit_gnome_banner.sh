@@ -20,6 +20,7 @@
 #.
 
 audit_gnome_banner () {
+  print_module "audit_gnome_banner"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Gnome Warning Banner" "check"
     if [ "${os_name}" = "SunOS" ]; then

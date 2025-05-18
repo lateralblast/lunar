@@ -15,6 +15,7 @@
 #.
 
 audit_xinetd () {
+  print_module "audit_xinetd"
   if [ "${os_name}" = "Linux" ]; then
     check_dir="/etc/xinetd.d"
     if [ -d "${check_dir}" ]; then

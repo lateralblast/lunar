@@ -12,6 +12,7 @@
 #.
 
 audit_disk_encryption () {
+  print_module "audit_disk_encryption"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Disk Encryption" "check"
     if [ "${audit_mode}" != 2 ]; then

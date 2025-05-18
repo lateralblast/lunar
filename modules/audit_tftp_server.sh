@@ -17,6 +17,7 @@
 #.
 
 audit_tftp_server () {
+  print_module "audit_tftp_server"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "TFTP Server Daemon" "check"
     if [ "${os_name}" = "SunOS" ]; then

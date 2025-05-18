@@ -13,6 +13,7 @@
 #.
 
 audit_root_access () {
+  print_module "audit_root_access"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Root account access" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

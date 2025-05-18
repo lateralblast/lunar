@@ -24,6 +24,7 @@
 #.
 
 audit_docker_network () {
+  print_module "audit_docker_network"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

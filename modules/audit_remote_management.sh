@@ -14,6 +14,7 @@
 #.
 
 audit_remote_management () {
+  print_module "audit_remote_management"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Remote Management" "check"
     if [ "${audit_mode}" != 2 ]; then

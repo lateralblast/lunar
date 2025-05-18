@@ -13,6 +13,7 @@
 #.
 
 audit_keychain_lock () {
+  print_module "audit_keychain_lock"
   if [ "${os_name}" = "Darwin" ]; then
     string="Keychain Lock"
     timeout="21600"

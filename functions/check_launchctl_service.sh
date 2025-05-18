@@ -10,6 +10,7 @@
 #.
 
 check_launchctl_service () {
+  print_function "check_launchctl_service"
   if [ "${os_name}" = "Darwin" ]; then
     launchctl_service="$1"
     required_status="$2"

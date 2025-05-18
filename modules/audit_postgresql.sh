@@ -11,6 +11,7 @@
 #.
 
 audit_postgresql () {
+  print_module "audit_postgresql"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "PostgreSQL Database" "check"
     if [ "${os_name}" = "SunOS" ]; then

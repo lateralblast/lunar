@@ -12,6 +12,7 @@
 #.
 
 audit_docker_all () {
+  print_function "audit_docker_all"
   audit_auditd
   audit_docker_users
   audit_docker_daemon
@@ -21,12 +22,13 @@ audit_docker_all () {
   audit_docker_security
 }
 
-# funct_audit_aws
+# funct_audit_docker
 #
-# Audit AWS
+# Audit Docker 
 #.
 
 funct_audit_docker () {
+  print_function "funct_audit_docker"
   audit_mode=$1
   check_environment
   audit_docker_all

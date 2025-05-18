@@ -10,6 +10,7 @@
 #.
 
 audit_system_sparc () {
+  print_function "audit_system_sparc"
   if [ "${os_name}" = "SunOS" ]; then
     audit_eeprom_security
   fi

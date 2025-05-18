@@ -12,6 +12,7 @@
 #.
 
 audit_dhcprd () {
+  print_module "audit_dhcprd"
   if [ "${dhcprd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
       verbose_message "DHCP Relay Daemon" "check"

@@ -13,6 +13,7 @@
 #.
 
 audit_remote_consoles () {
+  print_module "audit_remote_consoles"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Remote Consoles" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

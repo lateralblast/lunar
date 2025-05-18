@@ -12,6 +12,7 @@
 #.
 
 audit_shells () {
+  print_module "audit_shells"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Shells" "check"
     check_file="/etc/shells"

@@ -14,6 +14,7 @@
 #.
 
 check_chkconfig_service () {
+  print_function "check_chkconfig_service"
   if [ "${os_name}" = "VMkernel" ]; then
     service_name="$1"
     service_level="$2"

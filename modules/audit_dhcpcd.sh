@@ -12,6 +12,7 @@
 #.
 
 audit_dhcpcd () {
+  print_module "audit_dhcpcd"
   if [ "${dhcpcd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
       verbose_message "DHCP Client Daemon" "check"

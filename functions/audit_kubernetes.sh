@@ -12,6 +12,7 @@
 #.
 
 audit_kubernetes_all () {
+  print_function "audit_kubernetes_all"
   audit_kubernetes_apiserver
   audit_kubernetes_scheduler
   audit_kubernetes_controller
@@ -25,6 +26,7 @@ audit_kubernetes_all () {
 #.
 
 funct_audit_kubernetes () {
+  print_function "funct_audit_kubernetes"
   audit_mode=$1
   check_environment
   audit_kubernetes_all

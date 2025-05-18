@@ -17,6 +17,7 @@
 #.
 
 audit_selinux () {
+  print_module "audit_selinux"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message  "SELinux" "check"
     check_file_value "is" "/etc/selinux/config" "SELINUX"     "eq" "enforcing" "hash"

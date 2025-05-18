@@ -12,6 +12,7 @@
 #.
 
 audit_avahi_conf () {
+  print_module "audit_avahi_conf"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message  "Multicast DNS Server" "check"
     for check_file in /etc/avahi/avahi-daemon.conf /usr/local/etc/avahi/avahi-daemon.conf; do

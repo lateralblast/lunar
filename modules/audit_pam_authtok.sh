@@ -13,6 +13,7 @@
 #.
 
 audit_pam_authtok () {
+  print_module "audit_pam_authtok"
   if [ "${os_name}" = "Linux" ]; then
     pam_module="use_authtok"
     check_string="PAM ${pam_module} Configuration"

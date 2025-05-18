@@ -12,6 +12,7 @@
 #.
 
 audit_sudo_usepty () {
+  print_module "audit_sudo_usepty"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo use_pty" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

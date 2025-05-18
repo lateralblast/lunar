@@ -17,6 +17,7 @@
 #.
 
 audit_password_hashing () {
+  print_module "audit_password_hashing"
   if [ "${os_name}" = "Linux" ]; then
     hashing=$1
     if [ "$1" = "" ]; then

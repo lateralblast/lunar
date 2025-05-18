@@ -15,6 +15,7 @@
 #.
 
 audit_sudo_timeout () {
+  print_module "audit_sudo_timeout"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo timeout" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

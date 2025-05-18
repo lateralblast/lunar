@@ -10,6 +10,7 @@
 #.
 
 audit_bootparams () {
+  print_module "audit_bootparams"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Bootparams Daemon" "check"
     if [ "${os_name}" = "SunOS" ]; then

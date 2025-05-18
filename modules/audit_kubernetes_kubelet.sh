@@ -21,6 +21,7 @@
 #.
 
 audit_kubernetes_kubelet () {
+  print_module "audit_kubernetes_kubelet"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kubelet" | grep -v grep )
     if [ "${daemon_check}" ]; then

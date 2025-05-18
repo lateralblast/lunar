@@ -12,6 +12,7 @@
 #.
 
 audit_ftp_logging () {
+  print_module "audit_ftp_logging"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "FTPD Daemon Logging" "check"
     if [ "${os_name}" = "SunOS" ]; then

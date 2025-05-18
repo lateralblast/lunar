@@ -11,6 +11,7 @@
 #.
 
 audit_login_delay () {
+  print_module "audit_login_delay"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "Delay between Failed Login Attempts" "check"
     check_file_value "is" "/etc/default/login" "SLEEPTIME" "eq" "4" "hash"

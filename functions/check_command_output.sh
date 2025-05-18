@@ -10,6 +10,7 @@
 #.
 
 check_command_output () {
+  print_function "check_command_output"
   if [ "${os_name}" = "SunOS" ]; then
     command_name="$1"
     if [ "${command_name}" = "getcond" ]; then

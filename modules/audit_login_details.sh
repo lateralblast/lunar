@@ -11,6 +11,7 @@
 #.
 
 audit_login_details () {
+  print_module "audit_login_details"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Login display details" "check"
     check_osx_defaults_bool "/Library/Preferences/com.apple.loginwindow" "SHOWFULLNAME" "yes"

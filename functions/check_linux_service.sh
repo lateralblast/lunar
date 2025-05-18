@@ -13,6 +13,7 @@
 #.
 
 check_linux_service () {
+  print_function "check_linux_service"
   service_name="$1"
   correct_status="$2" 
   if [ "${os_name}" = "VMkernel" ] || [ "${os_name}" = "Linux" ]; then

@@ -12,6 +12,7 @@
 #.
 
 audit_remote_shell () {
+  print_module "audit_remote_shell"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Telnet and Rlogin Services" "check"
     if [ "${os_name}" = "AIX" ]; then

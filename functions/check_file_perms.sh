@@ -19,6 +19,7 @@
 #.
 
 check_file_perms () {
+  print_function "check_file_perms"
   check_file="$1"
   check_perms="$2"
   check_owner="$3"

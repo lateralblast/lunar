@@ -19,6 +19,7 @@
 #.
 
 audit_talk_client () {
+  print_module "audit_talk_client"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message     "Talk Client" "check"
     check_linux_package "uninstall"   "talk"

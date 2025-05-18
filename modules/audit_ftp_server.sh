@@ -19,6 +19,7 @@
 #.
 
 audit_ftp_server () {
+  print_module "audit_ftp_server"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "FTP Daemon" "check"
     if [ "${os_name}" = "SunOS" ]; then

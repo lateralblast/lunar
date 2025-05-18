@@ -12,6 +12,7 @@
 #.
 
 audit_biosdevname () {
+  print_module "audit_biosdevname"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "SuSE" ]; then
       verbose_message     "BIOS Devname"  "check"

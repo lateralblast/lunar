@@ -24,6 +24,7 @@
 #.
 
 audit_unowned_files () {
+  print_module "audit_unowned_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Unowned Files and Directories" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

@@ -12,6 +12,7 @@
 #.
 
 create_nddscript () {
+  print_function "create_nddscript"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" != "11" ]; then
       verbose_message "Kernel ndd Parameters" "check"

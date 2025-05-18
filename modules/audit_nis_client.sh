@@ -20,6 +20,7 @@
 #.
 
 audit_nis_client () {
+  print_module "audit_nis_client"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "NIS Client Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then

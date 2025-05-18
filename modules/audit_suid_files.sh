@@ -23,6 +23,7 @@
 #.
 
 audit_suid_files () {
+  print_module "audit_suid_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Set UID/GID Files" "check"
     log_file="setuidfiles.log"

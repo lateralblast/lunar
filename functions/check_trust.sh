@@ -10,6 +10,7 @@
 #.
 
 check_trust() {
+  print_function "check_trust"
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="$1"
     correct_value="$2"

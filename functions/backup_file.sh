@@ -10,6 +10,7 @@
 #.
 
 backup_file () {
+  print_function "backup_file"
   check_file="$1"
   if [ -f "${check_file}" ]; then
     if [ "${audit_mode}" = 0 ]; then

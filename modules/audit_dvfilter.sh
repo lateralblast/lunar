@@ -13,6 +13,7 @@
 #.
 
 audit_dvfilter () {
+  print_module "audit_dvfilter"
   if [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Dvfilter" "check"
     backup_file="${work_dir}/dvfilter"

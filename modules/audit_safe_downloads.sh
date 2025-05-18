@@ -12,6 +12,7 @@
 #.
 
 audit_safe_downloads () {
+  print_module "audit_safe_downloads"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Safe Downloads list" "check"
     log_file="gatekeeper.log"

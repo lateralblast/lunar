@@ -10,6 +10,7 @@
 #.
 
 check_osx_defaults () {
+  print_function "check_osx_defaults"
   if [ "${os_name}" = "Darwin" ]; then
     defaults_file="$1"
     defaults_parameter="$2"

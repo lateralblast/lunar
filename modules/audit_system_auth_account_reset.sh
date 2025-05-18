@@ -13,6 +13,7 @@
 #.
 
 audit_system_auth_account_reset () {
+  print_module "audit_system_auth_account_reset"
   auth_string=$1
   search_string=$2
   temp_file="${temp_dir}/audit_system_auth_account_reset"

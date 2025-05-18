@@ -12,6 +12,7 @@
 #.
 
 audit_pae () {
+  print_module "audit_pae"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "XD/NX" "check"
     if [ -f "/var/log/dmesg" ]; then

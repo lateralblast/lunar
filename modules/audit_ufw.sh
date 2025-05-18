@@ -13,6 +13,7 @@
 #.
 
 audit_ufw () {
+  print_module "audit_ufw"
   if [ "${os_name}" = "Linux" ] && [ "${os_vendor}" = "Ubuntu" ]; then
     verbose_message     "UFW"       "check"
     check_linux_package "install"   "ufw"

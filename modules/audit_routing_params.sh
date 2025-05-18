@@ -26,6 +26,7 @@
 #.
 
 audit_routing_params () {
+  print_module "audit_routing_params"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "IP Routing"        "check"

@@ -12,6 +12,7 @@
 #.
 
 check_aws_open_port () {
+  print_function "check_aws_open_port"
   sg="$1"
   port="$2"
   protocol="$3"

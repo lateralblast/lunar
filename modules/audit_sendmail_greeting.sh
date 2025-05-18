@@ -10,6 +10,7 @@
 #.
 
 audit_sendmail_greeting () {
+  print_module "audit_sendmail_greeting"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
     if [ -f "${check_file}" ]; then

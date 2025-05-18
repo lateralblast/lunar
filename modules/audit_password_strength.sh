@@ -15,6 +15,7 @@
 #.
 
 audit_password_strength () {
+  print_module "audit_password_strength"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Strong Password Creation Policies" "check"
     if  [ "${os_name}" = "SunOS" ]; then

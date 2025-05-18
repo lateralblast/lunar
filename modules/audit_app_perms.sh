@@ -13,6 +13,7 @@
 #.
 
 audit_app_perms () {
+  print_module "audit_app_perms"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Application Permissions" "check"
     if [ "${audit_mode}" != 2 ]; then

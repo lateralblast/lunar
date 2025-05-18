@@ -12,6 +12,7 @@
 #.
 
 audit_root_home () {
+  print_module "audit_root_home"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Home Directory Permissions for root Account" "check"
     if [ "${os_name}" = "SunOS" ]; then

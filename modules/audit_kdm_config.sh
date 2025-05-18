@@ -10,6 +10,7 @@
 #.
 
 audit_kdm_config () {
+  print_module "audit_kdm_config"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "Graphics Configuration" "check"

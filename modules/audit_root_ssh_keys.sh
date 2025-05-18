@@ -10,6 +10,7 @@
 #.
 
 audit_root_ssh_keys () {
+  print_module "audit_root_ssh_keys"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Root SSH keys" "check"
     if [ "${audit_mode}" != 2 ]; then

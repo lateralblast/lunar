@@ -10,6 +10,7 @@
 #.
 
 audit_dns_client () {
+  print_module "audit_dns_client"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message     "Name Server Caching Daemon" "check"
     check_linux_service "nscd" "off"

@@ -10,6 +10,7 @@
 #.
 
 audit_cde_spc () {
+  print_module "audit_cde_spc"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "Subprocess control"            "check"

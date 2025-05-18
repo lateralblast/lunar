@@ -13,6 +13,7 @@
 #.
 
 update_log_file () {
+  print_function "update_log_file"
   log_file="$1"
   log_value="$2"
   log_dir=$( dirname "${log_file}" )

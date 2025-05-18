@@ -22,6 +22,7 @@
 #.
 
 audit_groups_exist () {
+  print_module "audit_groups_exist"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "User Groups" "check"
     check_file="/etc/group"

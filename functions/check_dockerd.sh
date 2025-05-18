@@ -12,6 +12,7 @@
 #.
 
 check_dockerd () {
+  print_function "check_dockerd"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       used="$1"

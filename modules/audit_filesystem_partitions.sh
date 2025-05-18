@@ -22,6 +22,7 @@
 #.
 
 audit_filesystem_partitions () {
+  print_module "audit_filesystem_partitions"
   if [ "${os_name}" = "Linux" ]; then
     for filesystem in /tmp /var /var/log /var/log/audit /home /dev/shm /var/tmp; do
       verbose_message "Filesystem \"${filesystem}\" is a separate filesystem" "check"

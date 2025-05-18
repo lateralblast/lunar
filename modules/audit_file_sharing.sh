@@ -12,6 +12,7 @@
 #.
 
 audit_file_sharing () {
+  print_module "audit_file_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Apple File Sharing"  "check"
     check_osx_defaults_bool "/Library/Preferences/SystemConfiguration/com.apple.smb.server" "AllowGuestAccess" "no"

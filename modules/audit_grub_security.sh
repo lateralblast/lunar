@@ -17,6 +17,7 @@
 #.
 
 audit_grub_security () {
+  print_module "audit_grub_security"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Grub Menu Security" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

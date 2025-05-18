@@ -12,6 +12,7 @@
 #.
 
 audit_account_lockout () {
+  print_module "audit_account_lockout"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Account Lockout"         "check"
     check_pwpolicy  "maxFailedLoginAttempts"  "3"

@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.0
+# Version:      10.7.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -546,6 +546,7 @@ do_select=0
 do_aws=0
 do_aws_rec=0
 do_docker=0
+print_funct=0
 
 # If given no command line arguments print usage information
 
@@ -557,7 +558,7 @@ fi
 while test $# -gt 0
 do
   case $1 in
-    -1|--list)                         # switch - List changes/backups
+    -1|--list)                      # switch - List changes/backups
       list="$2"
       if [ -z "$list" ]; then
         print_changes
@@ -577,7 +578,7 @@ do
       fi
       exit
       ;;
-    -2|--tests|--printtests)           # switch - Print tests
+    -2|--tests|--printtests)        # switch - Print tests
       tests="$2" 
       if [ -z "$tests" ]; then
         print_tests "All"
@@ -586,6 +587,10 @@ do
         shift 2
       fi
       exit
+      ;;
+    -3|--printfunct)                # switch - Print function
+      print_funct=1
+      shift
       ;;
     -8|--usesudo)                   # switch - Use sudo
       use_sudo=1

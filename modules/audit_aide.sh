@@ -16,6 +16,7 @@
 #.
 
 audit_aide () {
+  print_module "audit_aide"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message     "AIDE" "check"
     check_linux_package "install" "aide"

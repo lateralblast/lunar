@@ -10,6 +10,7 @@
 #.
 
 check_auditctl () {
+  print_function "check_auditctl"
   check_file="$1"
   audit_tag="$2"
   if [ "${os_name}" = "Linux" ]; then

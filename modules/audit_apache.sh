@@ -25,6 +25,7 @@
 #.
 
 audit_apache () {
+  print_module "audit_apache"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Apache and web based services" "check"
     if [ "${os_name}" = "SunOS" ]; then

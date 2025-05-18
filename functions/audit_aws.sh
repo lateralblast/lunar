@@ -10,6 +10,7 @@
 #.
 
 funct_audit_aws () {
+  print_function "funct_audit_aws"
   audit_mode=$1
   check_environment
   check_aws
@@ -19,10 +20,11 @@ funct_audit_aws () {
 
 # funct_audit_aws
 #
-# Audit AWS
+# Audit AWS REC
 #.
 
 funct_audit_aws_rec () {
+  print_function "funct_audit_aws_rec"
   audit_mode=$1
   check_environment
   check_aws
@@ -32,7 +34,7 @@ funct_audit_aws_rec () {
 
 # audit_aws_all
 #
-# Audit AWS
+# Audit AWS all
 #
 # Run various AWS audit tests
 # 
@@ -40,6 +42,7 @@ funct_audit_aws_rec () {
 #.
 
 audit_aws_all () {
+  print_function "audit_aws_all"
   audit_aws_iam
   audit_aws_mfa
   audit_aws_access_keys

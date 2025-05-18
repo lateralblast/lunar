@@ -10,6 +10,7 @@
 #.
 
 audit_hotplug () {
+  print_module "audit_hotplug"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Hotplug Service" "check"
     if [ "${os_name}" = "SunOS" ]; then

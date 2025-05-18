@@ -13,6 +13,7 @@
 #.
 
 audit_extended_attributes () {
+  print_module "audit_extended_attributes"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Extended Attributes" "check"
     if [ "${audit_mode}" = 1 ]; then

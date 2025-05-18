@@ -14,6 +14,7 @@
 #.
 
 audit_shell_timeout () {
+  print_module "audit_shell_timeout"
   if [ "${os_name}" = "VMkernel" ]; then
     for test in ESXiShellInteractiveTimeOut ESXiShellTimeOut; do
       timeout="3600"

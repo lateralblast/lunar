@@ -18,7 +18,8 @@
 #.
 
 audit_aws_redshift () {
-  verbose_message "Redshift" "check"
+  print_module     "audit_aws_redshift"
+  verbose_message "Redshift"   "check"
   dbs=$( aws redshift describe-clusters --region "${aws_region}" --query 'Clusters[].ClusterIdentifier' --output text )
   for db in ${dbs}; do
     # Check if version upgrades are enabled

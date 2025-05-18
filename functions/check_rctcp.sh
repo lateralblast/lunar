@@ -10,6 +10,7 @@
 #.
 
 check_rctcp() {
+  print_function "check_rctcp"
   if [ "${os_name}" = "AIX" ]; then
     service_name="$1"
     correct_value="$2"

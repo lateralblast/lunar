@@ -12,6 +12,7 @@
 #.
 
 audit_print () {
+  print_module "audit_print"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Printing Daemons" "check"
     if [ "${os_name}" = "AIX" ]; then
