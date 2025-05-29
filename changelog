@@ -1965,3 +1965,5 @@
 # Added lockdown check
 # 10.7.5: Thu 29 May 2025 15:38:42 AEST
 # Added dryrun switch
+# 10.7.6: Thu 29 May 2025 15:47:11 AEST
+# Fixed lockdown check

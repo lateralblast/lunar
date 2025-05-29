@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.5
+# Version:      10.7.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -180,8 +180,7 @@ warning_message () {
 lockdown_warning () {
   if [ ! "${force}" = 1 ]; then
     warning_message "This will alter the system"
-    read -p "Do you want to continue?(yes/no) "
-    reply="$1"
+    read -p "Do you want to continue? (yes/no): " reply
     case "${reply}" in
       yes)
         return
