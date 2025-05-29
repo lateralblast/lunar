@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.8
+# Version:      10.7.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -423,7 +423,7 @@ execute_restore () {
   command="$1"
   message="$2"
   privilege="$3"
-  if [ "${audit_mode}" = 0 ]; then
+  if [ "${audit_mode}" = 2 ]; then
     total=$((total+1))
     if [ "${message}" ]; then
       verbose_message "${message}" "restore"

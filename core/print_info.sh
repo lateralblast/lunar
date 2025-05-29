@@ -189,10 +189,10 @@ print_results () {
     echo "Tests:      ${total}"
     case "${audit_mode}" in
       2)
-        echo "Restore:    ${restore}"
+        echo "Restores:   ${restore}"
         ;;
       0)
-        echo "Lockdown:   ${lockdown}"
+        echo "Lockdowns:  ${lockdown}"
         ;;
       *)
         echo "Passes:     ${secure}"
@@ -204,11 +204,11 @@ print_results () {
     echo " \    /\    Tests:      ${total}"
     case "${audit_mode}" in
       2)
-        echo "  )  ( ')   Restore:    ${restore}"
+        echo "  )  ( ')   Restores:   ${restore}"
         echo " (  /  )    "
         ;;
       0)
-        echo "  )  ( ')   Lockdown:   ${lockdown}"
+        echo "  )  ( ')   Lockdowns:  ${lockdown}"
         echo " (  /  )    "
         ;;
       *)

@@ -1971,3 +1971,5 @@
 # Improved listing of backups
 # 10.7.8: Thu 29 May 2025 17:12:25 AEST
 # Added lockdown/restore counting
+# 10.7.9: Thu 29 May 2025 20:05:20 AEST
+# Output improvements
