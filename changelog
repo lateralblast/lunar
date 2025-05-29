@@ -1967,3 +1967,5 @@
 # Added dryrun switch
 # 10.7.6: Thu 29 May 2025 15:47:11 AEST
 # Fixed lockdown check
+# 10.7.7: Thu 29 May 2025 16:32:48 AEST
+# Improved listing of backups

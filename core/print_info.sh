@@ -72,13 +72,13 @@ print_usage () {
   echo ""
   echo "$0 -a -v"
   echo ""
-  echo "Display previous backups:"
+  echo "Display Previous Backups:"
   echo ""
   echo "$0 -b"
-  echo "Previous backups:"
+  echo "Previous Backups:"
   echo "21_12_2012_19_45_05  21_12_2012_20_35_54  21_12_2012_21_57_25"
   echo ""
-  echo "Restore from previous backup:"
+  echo "Restore from Previous Backup:"
   echo ""
   echo "$0 -u 21_12_2012_19_45_05"
   echo ""
@@ -102,7 +102,7 @@ print_backups () {
   echo "Previous backups:"
   echo ""
   if [ -d "${base_dir}" ]; then
-    find "${base_dir}" -maxdepth 1
+    find "${base_dir}" -maxdepth 1 -name "[0-9]*" -type d
   fi
 }
 
