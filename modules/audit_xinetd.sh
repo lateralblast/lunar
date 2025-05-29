@@ -6,6 +6,8 @@
 
 # audit_xinetd
 #
+# Check inetd services
+#
 # Refer to Section(s) 2.1.12-8  Page(s) 54-8  CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 2.1.12-8  Page(s) 63-6  CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 2.1.12-8  Page(s) 57-61 CIS RHEL 6 Benchmark v1.2.0

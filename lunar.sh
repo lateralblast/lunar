@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.2
+# Version:      10.7.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -228,6 +228,11 @@ verbose_message () {
       update)
         echo "Updating:   ${text}"
         ;;
+      *)
+        if [ "${verbose}" = 1 ]; then
+          echo "${text}"
+        fi
+        ;;
     esac
   fi
 }
@@ -241,7 +246,7 @@ if [ "${os_name}" != "VMkernel" ]; then
   else
     id_check=$( id -u )
   fi
-  arg_test=$(echo "$@" | grep -cE "\-h|\-V|\-\-help|\-\-version" )
+  arg_test=$(echo "$@" | grep -cE "\-h|\-V|\-\-help|\-\-version|info" )
   if [ "${arg_test}" != "1" ]; then
     if [ "${id_check}" != "0" ]; then
       verbose_message "$0 may need root" "warn"
@@ -573,18 +578,26 @@ do
           backups)
             print_backups 
             ;;
+          tests)
+            print_tests "All"
+            ;;
         esac
         shift 2
       fi
       exit
       ;;
-    -2|--tests|--printtests)        # switch - Print tests
+    -2|--*tests)                    # switch - Print tests
       tests="$2" 
-      if [ -z "$tests" ]; then
+      if [ -z "${tests}" ]; then
         print_tests "All"
       else
-        print_tests "$tests"
-        shift 2
+        if [ "${tests}" = "--verbose" ]; then
+          verbose=1
+          print_tests "All"
+        else
+          print_tests "${tests}"
+          shift 2
+        fi
       fi
       exit
       ;;
@@ -785,10 +798,8 @@ do
       shift 2
       ;;
     -R|--moduleinfo|--testinfo)     # switch - Print information about a module
-      check_environment
-      verbose=1
       module="$2"
-      print_audit_info "$module"
+      print_audit_info "${module}"
       shift 2
       exit
       ;;
