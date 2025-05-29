@@ -383,6 +383,7 @@ execute_lockdown () {
   message="$2"
   privilege="$3"
   if [ "${audit_mode}" = 0 ]; then
+    total=$((total+1))
     if [ "${message}" ]; then
       verbose_message "${message}" "set"
     fi
@@ -423,6 +424,7 @@ execute_restore () {
   message="$2"
   privilege="$3"
   if [ "${audit_mode}" = 0 ]; then
+    total=$((total+1))
     if [ "${message}" ]; then
       verbose_message "${message}" "restore"
     fi
