@@ -219,6 +219,7 @@ print_results () {
     echo "  \(__)|    Reboot:     ${reboot}"
   fi
   if [ "${audit_mode}" = 0 ]; then
+    echo ""
     echo "Backup:     ${work_dir}"
     echo "Restore:    $0 -u ${date_suffix}"
   fi
