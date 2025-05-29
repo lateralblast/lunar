@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.3
+# Version:      10.7.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -160,6 +160,38 @@ sendmail_disable="yes"
 ipv6_disable="yes"
 routed_disable="yes"
 named_disable="yes"
+
+# warning_message
+#
+# Warning message
+#.
+
+warning_message () {
+  message="$1"
+  verbose_message "${message}" "warn"
+}
+
+# lockdown_warning
+#
+# Check whether to proceed
+#.
+
+lockdown_warning () {
+  if [ ! "${force}" = 1 ]; then
+    warning_message "This will alter the system"
+    read -p "Do you want to continue?(yes/no) "
+    reply="$1"
+    case "${reply}" in
+      yes)
+        return
+        ;;
+      *)
+        exit
+        ;;
+    esac
+  fi
+  exit
+}
 
 # verbose_message
 #
@@ -547,6 +579,7 @@ audit_mode=3
 do_fs=3
 audit_select=0
 verbose=0
+force=0
 do_select=0
 do_aws=0
 do_aws_rec=0
@@ -559,6 +592,22 @@ if [ "$*" = "" ]; then
   print_help
   exit
 fi
+
+# Initial parse of arguements
+
+#while test $# -gt 0
+#do
+#  case $1 in
+##    *-0*|*--force*)
+#      force=1
+#      shift
+#      ;;
+#    *)
+#      ;;
+#  esac
+#done
+
+# Parse arguments
 
 while test $# -gt 0
 do
@@ -613,6 +662,10 @@ do
       check_shellcheck
       shift
       exit
+      ;;
+    -0|--force)                     # switch - Force action
+      force=1
+      shift
       ;;
     -a|--audit)                     # switch - Run in audit mode (for Operating Systems - no changes made to system)
       audit_mode=1
@@ -881,6 +934,14 @@ do
       ;;
   esac
 done
+
+# If we are in lockdown mode do a check whether we are in force mode and whether to proceed
+
+if [ "${audit_mode}" = 0 ]; then
+  lockdown_warning
+fi
+
+# Set restore directory
 
 restore_dir="${base_dir}/${restore_date}"
 function=$(echo "${function}" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g" )

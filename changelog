@@ -1961,3 +1961,5 @@
 # Fixed typos
 # 10.7.3: Thu 29 May 2025 11:55:24 AEST
 # Improved print_audit_info routine
+# 10.7.4: Thu 29 May 2025 14:50:10 AEST
+# Added lockdown check
