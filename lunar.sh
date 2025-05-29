@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.4
+# Version:      10.7.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -113,6 +113,7 @@ wheel_group="wheel"
 docker_group="docker"
 reboot=0
 verbose=0
+dryrun=0
 ansible=0
 ansible_counter=0
 core_dir="${app_dir}/core"
@@ -383,13 +384,19 @@ execute_lockdown () {
     fi
     verbose_message "${command}" "execute"
     if [ "${privilege}" = "" ]; then
-      eval "${command}"
+      if [ "${dryrun}" = 0 ]; then
+        eval "${command}"
+      fi
     else
       if [ "$my_id" = "0" ]; then
-        eval "${command}"
+        if [ "${dryrun}" = 0 ]; then
+          eval "${command}"
+        fi
       else
         if [ "${use_sudo}" = "1" ]; then
-          eval "${command}"
+          if [ "${dryrun}" = 0 ]; then
+            eval "${command}"
+          fi
         fi
       fi
     fi
@@ -593,20 +600,6 @@ if [ "$*" = "" ]; then
   exit
 fi
 
-# Initial parse of arguements
-
-#while test $# -gt 0
-#do
-#  case $1 in
-##    *-0*|*--force*)
-#      force=1
-#      shift
-#      ;;
-#    *)
-#      ;;
-#  esac
-#done
-
 # Parse arguments
 
 while test $# -gt 0
@@ -652,6 +645,10 @@ do
       ;;
     -3|--printfunct)                # switch - Print function
       print_funct=1
+      shift
+      ;;
+    -4|--dryrun)                    # switch - Run in dryrun mode
+      dryrun=1
       shift
       ;;
     -8|--usesudo)                   # switch - Use sudo
