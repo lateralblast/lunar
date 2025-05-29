@@ -185,20 +185,38 @@ print_results () {
   else
     reboot="Not Required"
   fi
-  if [ ! "${audit_mode}" = 2 ]; then
-    if [ "${no_cat}" = "1" ]; then
-      echo "Tests:      ${total}"
-      echo "Passes:     ${secure}"
-      echo "Warnings:   ${insecure}"
-    else
-      echo " \    /\    Tests:      ${total}"
-      echo "  )  ( ')   Passes:     ${secure}"
-      echo " (  /  )    Warnings:   ${insecure}"
-      echo "  \(__)|    Reboot:     ${reboot}"
-    fi
-  fi
-  if [ "${audit_mode}" != 1 ]; then
+  if [ "${no_cat}" = "1" ]; then
+    echo "Tests:      ${total}"
+    case "${audit_mode}" in
+      2)
+        echo "Restore:    ${restore}"
+        ;;
+      0)
+        echo "Lockdown:   ${lockdown}"
+        ;;
+      *)
+        echo "Passes:     ${secure}"
+        echo "Warnings:   ${insecure}"
+        ;;
+    esac
     echo "Reboot:     ${reboot}"
+  else
+    echo " \    /\    Tests:      ${total}"
+    case "${audit_mode}" in
+      2)
+        echo "  )  ( ')   Restore:    ${restore}"
+        echo " (  /  )    "
+        ;;
+      0)
+        echo "  )  ( ')   Lockdown:   ${lockdown}"
+        echo " (  /  )    "
+        ;;
+      *)
+        echo "  )  ( ')   Passes:     ${secure}"
+        echo " (  /  )    Warnings:   ${insecure}"
+        ;;
+    esac
+    echo "  \(__)|    Reboot:     ${reboot}"
   fi
   if [ "${audit_mode}" = 0 ]; then
     echo "Backup:     ${work_dir}"

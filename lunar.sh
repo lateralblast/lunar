@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.7
+# Version:      10.7.8
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -93,13 +93,18 @@ ssh_allowgroups=""
 ssh_denyusers=""
 ssh_denygroups=""
 
+# Set up some counters
+
+secure=0
+insecure=0
+lockdown=0
+restore=0
+total=0
+
 # Set up some global variables/defaults
 
 app_dir=$( dirname "$0" )
 args="$@"
-secure=0
-insecure=0
-total=0
 use_sudo=0
 syslog_server=""
 syslog_logdir=""
@@ -384,16 +389,19 @@ execute_lockdown () {
     verbose_message "${command}" "execute"
     if [ "${privilege}" = "" ]; then
       if [ "${dryrun}" = 0 ]; then
+        lockdown=$((lockdown+1))
         eval "${command}"
       fi
     else
       if [ "$my_id" = "0" ]; then
         if [ "${dryrun}" = 0 ]; then
+          lockdown=$((lockdown+1))
           eval "${command}"
         fi
       else
         if [ "${use_sudo}" = "1" ]; then
           if [ "${dryrun}" = 0 ]; then
+            lockdown=$((lockdown+1))
             eval "${command}"
           fi
         fi
@@ -420,13 +428,22 @@ execute_restore () {
     fi
     verbose_message "${command}" "execute"
     if [ "${privilege}" = "" ]; then
-      eval "${command}"
+      if [ "${dryrun}" = 0 ]; then
+        restore=$((restore+1))
+        eval "${command}"
+      fi
     else
       if [ "$my_id" = "0" ]; then
-        eval "${command}"
+        if [ "${dryrun}" = 0 ]; then
+          restore=$((restore+1))
+          eval "${command}"
+        fi
       else
         if [ "${use_sudo}" = "1" ]; then
-          eval "${command}"
+          if [ "${dryrun}" = 0 ]; then
+            restore=$((restore+1))
+            eval "${command}"
+          fi
         fi
       fi
     fi
@@ -478,9 +495,7 @@ restore_state () {
 #.
 
 increment_total () {
-  if [ "${audit_mode}" != 2 ]; then
-    total=$((total+1))
-  fi
+  total=$((total+1))
 }
 
 # increment_secure
@@ -930,6 +945,10 @@ do
       ;;
   esac
 done
+
+if [ "${dryrun}" = 1 ]; then
+  verbose_message "Running in dryrun mode" "notice"
+fi
 
 # If we are in lockdown mode do a check whether we are in force mode and whether to proceed
 

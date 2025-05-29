@@ -1969,3 +1969,5 @@
 # Fixed lockdown check
 # 10.7.7: Thu 29 May 2025 16:32:48 AEST
 # Improved listing of backups
+# 10.7.8: Thu 29 May 2025 17:12:25 AEST
+# Added lockdown/restore counting
