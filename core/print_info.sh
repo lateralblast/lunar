@@ -221,7 +221,11 @@ print_results () {
   if [ "${audit_mode}" = 0 ]; then
     echo ""
     echo "Backup:     ${work_dir}"
-    echo "Restore:    $0 -u ${date_suffix}"
+    if [ ! "${function}" = "" ]; then
+      echo "Restore:    $0 -s ${function} -u ${date_suffix} -8"
+    else
+      echo "Restore:    $0 -u ${date_suffix} -8"
+    fi
   fi
   echo ""
 }
