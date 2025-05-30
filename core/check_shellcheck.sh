@@ -19,7 +19,7 @@ check_shellcheck () {
     if [ -d "${dir_name}" ]; then
       file_list=$( ls "${dir_name}"/*.sh )
       for file_name in ${file_list}; do
-        if [ "${verbose}" = "1" ]; then
+        if [ "${verbose_mode}" = "1" ]; then
           verbose_message "\"${file_name}\"" "load"
         fi
         echo "Checking ${file_name}"

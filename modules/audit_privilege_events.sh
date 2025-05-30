@@ -12,7 +12,7 @@
 #.
 
 audit_privilege_events () {
-  print_module "audit_privilege_events"
+  print_function "audit_privilege_events"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       verbose_message   "Auditing of Privileged Events" "check"

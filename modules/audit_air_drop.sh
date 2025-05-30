@@ -13,7 +13,7 @@
 #.
 
 audit_air_drop () {
-  print_module "audit_air_drop"
+  print_function "audit_air_drop"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Air Drop" "check"

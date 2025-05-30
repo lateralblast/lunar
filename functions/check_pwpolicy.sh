@@ -46,7 +46,7 @@ check_pwpolicy() {
             execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="check_pwpolicy_${ansible_counter}"
           echo ""

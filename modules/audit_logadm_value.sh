@@ -14,7 +14,7 @@
 #.
 
 audit_logadm_value () {
-  print_module "audit_logadm_value"
+  print_function "audit_logadm_value"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message "Debug Level Daemon Logging" "check"

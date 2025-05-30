@@ -11,7 +11,7 @@
 #.
 
 audit_linux_logfiles () {
-  print_module "audit_linux_logfiles"
+  print_function "audit_linux_logfiles"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Log File Permissions" "check"
     for log_file in boot.log btml cron dmesg ksyms httpd lastlog maillog \

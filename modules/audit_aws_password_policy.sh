@@ -18,7 +18,7 @@
 #.
 
 audit_aws_password_policy () {
-  print_module    "audit_aws_password_policy"
+  print_function  "audit_aws_password_policy"
   verbose_message "Password Policy"   "check"
   policy=$( aws iam get-account-password-policy 2> /dev/null )
   length=$( echo "${policy}" | wc -l | sed "s/ //g" )

@@ -12,7 +12,7 @@
 #.
 
 audit_media_sharing () {
-  print_module "audit_media_sharing"
+  print_function "audit_media_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Media Sharing" "check"

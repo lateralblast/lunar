@@ -10,7 +10,7 @@
 #.
 
 full_audit_kernel_services () {
-  print_module "full_audit_kernel_services"
+  print_function "full_audit_kernel_services"
   audit_sysctl
   #audit_kernel_modules
   audit_kernel_accounting

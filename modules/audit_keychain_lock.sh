@@ -13,7 +13,7 @@
 #.
 
 audit_keychain_lock () {
-  print_module "audit_keychain_lock"
+  print_function "audit_keychain_lock"
   if [ "${os_name}" = "Darwin" ]; then
     string="Keychain Lock"
     timeout="21600"
@@ -27,7 +27,7 @@ audit_keychain_lock () {
         else
           increment_secure   "Keychain \"${check_value}\" has \"${timeout}\" set"
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_keychain_lock_${ansible_counter}"
           echo ""

@@ -12,7 +12,7 @@
 #.
 
 audit_time_machine () {
-  print_module "audit_time_machine"
+  print_function "audit_time_machine"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 14 ]; then
       verbose_message "iCloud Drive" "check"

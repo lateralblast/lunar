@@ -12,7 +12,7 @@
 #.
 
 audit_sudo_authenticate () {
-  print_module "audit_sudo_authenticate"
+  print_function "audit_sudo_authenticate"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo authenticate" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

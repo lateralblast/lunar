@@ -10,7 +10,7 @@
 #.
 
 audit_ppd_cache () {
-  print_module "audit_ppd_cache"
+  print_function "audit_ppd_cache"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "PPD Cache" "check"

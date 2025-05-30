@@ -15,7 +15,7 @@
 #.
 
 audit_aws_dns () {
-  print_modules   "audit_aws_dns"
+  print_function  "audit_aws_dns"
   verbose_message "Route53" "check"
   domains=$( aws route53domains list-domains --query 'Domains[].DomainName' --output text 2> /dev/null )
   for domain in ${domains}; do

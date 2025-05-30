@@ -11,7 +11,7 @@
 
 
 audit_volfs () {
-  print_module "audit_volfs"
+  print_function "audit_volfs"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Volume Management Daemons" "check"
     if [ "${os_version}" = "10" ]; then

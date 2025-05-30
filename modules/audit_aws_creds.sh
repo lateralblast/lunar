@@ -14,7 +14,7 @@
 #.
 
 audit_aws_creds () {
-  print_module    "audit_aws_creds"
+  print_function  "audit_aws_creds"
   verbose_message "Credentials"   "check"
   aws iam generate-credential-report > /dev/null 2>&1
   entries=$( aws iam get-credential-report --query 'Content' --output text | "${base64_d}" | cut -d, -f1,4,5,6,9,10,11,14,15,16 | sed '1 d' | awk -F '\n' '{print $1}' )

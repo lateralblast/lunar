@@ -17,7 +17,7 @@
 #.
 
 audit_syslog_conf () {
-  print_module "audit_syslog_conf"
+  print_function "audit_syslog_conf"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Syslog Configuration" "check"
     if [ "${os_name}" = "Linux" ]; then

@@ -10,7 +10,7 @@
 #.
 
 audit_wheel_group () {
-  print_module "audit_wheel_group"
+  print_function "audit_wheel_group"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/group"
     string="Wheel Group"
@@ -21,7 +21,7 @@ audit_wheel_group () {
         if [ "${audit_mode}" = "1" ]; then
           increment_insecure "Wheel group \"${wheel_group}\" does not exist in \"${check_file}\""
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  group:"

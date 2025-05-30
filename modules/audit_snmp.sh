@@ -21,7 +21,7 @@
 #.
 
 audit_snmp () {
-  print_module "audit_snmp"
+  print_function "audit_snmp"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "VMkernel" ]; then
     if [ "$snmpd_disable" = "yes" ]; then
       verbose_message "SNMP Daemons and Log Permissions" "check"

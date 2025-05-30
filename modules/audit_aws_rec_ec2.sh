@@ -21,7 +21,7 @@
 #.
 
 audit_aws_rec_ec2 () {
-  print_module    "audit_aws_rec_ec2"
+  print_function  "audit_aws_rec_ec2"
   verbose_message "EC2 Recommendations" "check"
   volumes=$( aws ec2 describe-volumes --region "${aws_region}" --query 'Volumes[].VolumeId' --output text )
   for volume in ${volumes}; do

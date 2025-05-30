@@ -13,7 +13,7 @@
 #.
 
 audit_sudo_timestamp () {
-  print_module "audit_sudo_timestamp"
+  print_function "audit_sudo_timestamp"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo timestamp" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

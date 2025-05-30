@@ -10,7 +10,7 @@
 #.
 
 audit_boot_server () {
-  print_module "audit_boot_server"
+  print_function "audit_boot_server"
   audit_rarp
   audit_bootparams
   audit_tftp_server

@@ -19,7 +19,7 @@
 #.
 
 audit_root_primary_group () {
-  print_module "audit_root_primary_group"
+  print_function "audit_root_primary_group"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Root Primary Group" "check"
     log_file="root_primary_group.log"

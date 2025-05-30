@@ -19,7 +19,7 @@ check_dscl () {
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
       verbose_message "${string}" "check"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_dscl_${ansible_counter}"
         echo ""

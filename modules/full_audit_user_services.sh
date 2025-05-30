@@ -10,7 +10,7 @@
 #.
 
 full_audit_user_services () {
-  print_module "full_audit_user_services"
+  print_function "full_audit_user_services"
   audit_root_access
   audit_root_home
   audit_root_path

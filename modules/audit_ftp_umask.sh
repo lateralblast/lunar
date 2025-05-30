@@ -14,7 +14,7 @@
 #.
 
 audit_ftp_umask () {
-  print_module "audit_ftp_umask"
+  print_function "audit_ftp_umask"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Default umask for FTP Users" "check"
     if [ "${os_name}" = "AIX" ]; then

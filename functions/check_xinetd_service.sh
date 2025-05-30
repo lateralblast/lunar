@@ -39,7 +39,7 @@ audit_xinetd_service () {
         else
           increment_secure   "Service \"${service_name}\" has \"${parameter_name}\" set to \"${correct_status}\""
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_xinetd_service_${ansible_counter}"
           echo ""

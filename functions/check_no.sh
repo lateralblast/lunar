@@ -21,7 +21,7 @@ check_no() {
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${parameter_name}\" is \"${correct_value}\""
       verbose_message "${string}" "check"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_no_${ansible_counter}"
         echo ""

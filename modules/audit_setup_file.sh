@@ -10,7 +10,7 @@
 #.
 
 audit_setup_file () {
-  print_module "audit_setup_file"
+  print_function "audit_setup_file"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message  "Setup file"              "check"
     check_file_perms "/var/db/.AppleSetupDone" "0400" "root" "${wheel_group}"

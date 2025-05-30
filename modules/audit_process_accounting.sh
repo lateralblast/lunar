@@ -10,7 +10,7 @@
 #.
 
 audit_process_accounting () {
-  print_module "audit_process_accounting"
+  print_function "audit_process_accounting"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Process Accounting" "check"
     check_file="/etc/rc3.d/S99acct"

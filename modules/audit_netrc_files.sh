@@ -13,7 +13,7 @@
 #.
 
 audit_netrc_files () {
-  print_module "audit_netrc_files"
+  print_function "audit_netrc_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "User Netrc Files" "check"
     audit_dot_files ".netrc"

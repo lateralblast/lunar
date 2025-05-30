@@ -32,7 +32,7 @@ check_file_perms () {
   if [ "${audit_mode}" != 2 ]; then
     string="File permissions on \"${check_file}\""
     verbose_message "${string}" "check"
-    if [ "${ansible}" = 1 ]; then
+    if [ "${ansible_mode}" = 1 ]; then
       echo ""
       echo "- name: Checking ${string}"
       echo "  file:"

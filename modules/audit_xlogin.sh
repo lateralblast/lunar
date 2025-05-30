@@ -13,7 +13,7 @@
 #.
 
 audit_xlogin () {
-  print_module "audit_xlogin"
+  print_function "audit_xlogin"
   temp_file="${temp_dir}/audit_xlogin"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "X Windows" "check"
@@ -45,7 +45,7 @@ audit_xlogin () {
       verbose_message "${search_string}" "check"
       if [ "${ttys_test}" != "on" ]; then
         if [ "${audit_mode}" != 2 ]; then
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             echo ""
             echo "- name: Checking ${secure_string}"
             echo "  lineinfile:"

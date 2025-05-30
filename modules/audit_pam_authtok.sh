@@ -13,7 +13,7 @@
 #.
 
 audit_pam_authtok () {
-  print_module "audit_pam_authtok"
+  print_function "audit_pam_authtok"
   if [ "${os_name}" = "Linux" ]; then
     pam_module="use_authtok"
     check_string="PAM ${pam_module} Configuration"
@@ -24,7 +24,7 @@ audit_pam_authtok () {
         restore_file "${check_file}" "${restore_dir}"
       else
         pam_check=$( grep -cPH -- "^\h*password\h+([^#\n\r]+)\h+pam_unix\.so\h+([^#\n\r]+\h+)?${pam_module}\b" < "${check_file}" )
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_pam_authtok_${ansible_counter}"
           echo ""

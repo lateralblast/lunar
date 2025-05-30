@@ -10,7 +10,7 @@
 #.
 
 audit_ocfserv () {
-  print_module "audit_ocfserv"
+  print_function "audit_ocfserv"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "OCF Service"                      "check"

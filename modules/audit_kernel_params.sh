@@ -15,7 +15,7 @@
 #.
 
 audit_kernel_params () {
-  print_module "audit_kernel_params"
+  print_function "audit_kernel_params"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Kernel Parameters" "check"
     if [ "${os_name}" = "AIX" ]; then

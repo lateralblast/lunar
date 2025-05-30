@@ -51,7 +51,7 @@ check_gsettings_value () {
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure "Parameter \"${parameter_name}\" is not set to \"${correct_value}\" in ${parameter_root}"
             string="Parameter \"${parameter_root}.${parameter_name}\" to \"${correct_value}\""
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               echo ""
               echo "- name: Setting ${string}"
               echo "  gsetting:"

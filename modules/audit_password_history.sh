@@ -11,7 +11,7 @@
 #.
 
 audit_password_history () {
-  print_module "audit_password_history"
+  print_function "audit_password_history"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Password History" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

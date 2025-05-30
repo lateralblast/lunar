@@ -15,7 +15,7 @@
 #.
 
 audit_kernel_accounting () {
-  print_module "audit_kernel_accounting"
+  print_function "audit_kernel_accounting"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Darwin" ]; then
     check_file="/etc/system"
     if [ "${os_name}" = "SunOS" ]; then

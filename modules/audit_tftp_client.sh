@@ -14,7 +14,7 @@
 #.
 
 audit_tftp_client () {
-  print_module "audit_tftp_client"
+  print_function "audit_tftp_client"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "TFTP Client" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then

@@ -14,7 +14,7 @@
 #.
 
 audit_cd_sharing () {
-  print_module "audit_cd_sharing"
+  print_function "audit_cd_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "DVD/CD Sharing" "check"
     if [ "${audit_mode}" != 2 ]; then

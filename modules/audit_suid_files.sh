@@ -23,7 +23,7 @@
 #.
 
 audit_suid_files () {
-  print_module "audit_suid_files"
+  print_function "audit_suid_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Set UID/GID Files" "check"
     log_file="setuidfiles.log"
@@ -36,7 +36,7 @@ audit_suid_files () {
             increment_insecure "File \"${check_file}\" is SUID/SGID"
             lockdown_command="chmod o-S ${check_file}"
             lockdown_message="Setting file \"${check_file}\" to be non world writable"
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               echo ""
               echo "- name: Checking write permissions for ${check_file}"
               echo "  file:"
@@ -69,7 +69,7 @@ audit_suid_files () {
         lockdown_message="Setting file \"${check_file}\" to be non world writable"
         for check_file in $( ${find_command} ); do
           increment_insecure "File ${check_file} is SUID/SGID"
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             echo ""
             echo "- name: Checking write permissions for ${check_file}"
             echo "  file:"

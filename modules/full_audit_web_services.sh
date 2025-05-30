@@ -9,7 +9,7 @@
 # Audit web services
 
 full_audit_web_services () {
-  print_module "full_audit_web_services"
+  print_function "full_audit_web_services"
   audit_webconsole
   audit_wbem
   audit_apache

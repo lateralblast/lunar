@@ -13,7 +13,7 @@
 #.
 
 audit_sar_accounting () {
-  print_module "audit_sar_accounting"
+  print_function "audit_sar_accounting"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "SAR Accounting" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

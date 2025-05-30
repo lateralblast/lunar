@@ -10,7 +10,7 @@
 #.
 
 full_audit_other_daemons () {
-  print_module "full_audit_other_daemons"
+  print_function "full_audit_other_daemons"
   audit_xinetd
   audit_other_daemons
   audit_legacy

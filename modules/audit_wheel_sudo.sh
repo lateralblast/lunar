@@ -11,7 +11,7 @@
 #.
 
 audit_wheel_sudo () {
-  print_module "audit_wheel_sudo"
+  print_function "audit_wheel_sudo"
   temp_file="${temp_dir}/audit_wheel_sudo"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Sudoers group settings" "check"
@@ -24,7 +24,7 @@ audit_wheel_sudo () {
           if [ "${audit_mode}" != 2 ]; then
             wheel_groups=$( grep NOPASSWD "${check_file}" | grep ALL | grep -v '^#' | awk '{print $1}' )
             for wheel_group in ${wheel_groups} ; do
-              if [ "${ansible}" = 1 ]; then
+              if [ "${ansible_mode}" = 1 ]; then
                 echo ""
                 echo "- name: Checking NOPASSWD for ${wheel_group} in ${check_file}"
                 echo "  lineinfile:"
@@ -55,7 +55,7 @@ audit_wheel_sudo () {
         if [ "${audit_mode}" != 2 ]; then
           wheel_groups=$( grep NOPASSWD "${check_file}" | grep ALL | grep -v '^#' | awk '{print $1}' )
           for wheel_group in ${wheel_groups} ; do
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               echo ""
               echo "- name: Checking NOPASSWD for ${wheel_group} in ${check_file}"
               echo "  lineinfile:"

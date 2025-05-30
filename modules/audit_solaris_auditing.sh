@@ -12,7 +12,7 @@
 #.
 
 audit_solaris_auditing () {
-  print_module "audit_solaris_auditing"
+  print_function "audit_solaris_auditing"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       verbose_message      "Solaris Auditing" "check"

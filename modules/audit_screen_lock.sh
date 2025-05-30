@@ -16,7 +16,7 @@
 #.
 
 audit_screen_lock () {
-  print_module "audit_screen_lock"
+  print_function "audit_screen_lock"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Screen Idle Time" "check"

@@ -11,7 +11,7 @@
 #.
 
 audit_rsa_securid_pam () {
-  print_module "audit_rsa_securid_pam"
+  print_function "audit_rsa_securid_pam"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/sd_pam.conf"
     if [ -f "${check_file}" ]; then

@@ -13,7 +13,7 @@
 #.
 
 audit_gss () {
-  print_module "audit_gss"
+  print_function "audit_gss"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "Generic Security Services" "check"

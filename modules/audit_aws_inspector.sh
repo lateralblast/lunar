@@ -13,7 +13,7 @@
 
 audit_aws_inspector () {
   # check for templates
-  print_module    "audit_aws_inspector"
+  print_function  "audit_aws_inspector"
   verbose_message "Inspector"   "check"
   templates=$( aws inspector list-assessment-templates 2> /dev/null --output text )
   if [ -n "${templates}" ]; then

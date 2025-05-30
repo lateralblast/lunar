@@ -12,7 +12,7 @@
 #.
 
 audit_java () {
-  print_module "audit_java"
+  print_function "audit_java"
   minimum_value=7
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then

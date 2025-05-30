@@ -14,7 +14,7 @@
 #.
 
 audit_system_auth_password_policy () {
-  print_module "audit_system_auth_password_policy"
+  print_function "audit_system_auth_password_policy"
   auth_string="$1"
   search_string="$2"
   search_value="$3"

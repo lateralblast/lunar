@@ -18,7 +18,7 @@
 
 audit_aws_elb () {
   # Ensure ELBs have logging enabled
-  print_module    "audit_aws_elb"
+  print_function  "audit_aws_elb"
   verbose_message "ELB"   "check"
   elbs=$( aws elb describe-load-balancers --region "${aws_region}" --query "LoadBalancerDescriptions[].LoadBalancerName" --output text )
   for elb in ${elbs}; do

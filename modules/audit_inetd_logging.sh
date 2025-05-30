@@ -12,7 +12,7 @@
 #.
 
 audit_inetd_logging () {
-  print_module "audit_inetd_logging"
+  print_function "audit_inetd_logging"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Logging for inetd"  "check"
     check_file_value "is" "/etc/default/syslogd"    "LOG_FROM_REMOTE" "eq" "NO" "hash"

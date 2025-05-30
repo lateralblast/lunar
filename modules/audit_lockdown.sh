@@ -13,7 +13,7 @@
 #.
 
 audit_lockdown () {
-  print_module "audit_lockdown"
+  print_function "audit_lockdown"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Lockdown Mode" "check"

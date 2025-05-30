@@ -18,7 +18,7 @@
 #.
 
 audit_logrotate () {
-  print_module "audit_logrotate"
+  print_function "audit_logrotate"
   if [ "${os_name}" = "Linux" ]; then
     for check_file in /etc/logrotate.d/syslog /etc/logrotate.d/rsyslog; do
       if [ -f "${check_file}" ]; then

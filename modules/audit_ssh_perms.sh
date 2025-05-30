@@ -10,7 +10,7 @@
 #.
 
 audit_ssh_perms () {
-  print_module "audit_ssh_perms"
+  print_function "audit_ssh_perms"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "SSH Permissions" "check"
     for check_dir in /etc/ssh /usr/local/etc/ssh; do

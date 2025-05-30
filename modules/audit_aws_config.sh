@@ -12,7 +12,7 @@
 #.
 
 audit_aws_config () {
-  print_module    "audit_aws_config"
+  print_function  "audit_aws_config"
   verbose_message "Config"   "check"
 	check=$( aws configservice describe-configuration-recorders --region "${aws_region}" )
   if [ ! "${check}" ]; then

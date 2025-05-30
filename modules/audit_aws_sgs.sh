@@ -23,7 +23,7 @@
 #.
 
 audit_aws_sgs () {
-  print_module    "audit_aws_sgs"
+  print_function    "audit_aws_sgs"
   verbose_message "Security Groups"
   sgs=$( aws ec2 describe-security-groups --region "${aws_region}" --query SecurityGroups[].GroupId --output text )
   for sg in ${sgs}; do

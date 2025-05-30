@@ -19,7 +19,7 @@
 #.
 
 audit_sticky_bit () {
-  print_module "audit_sticky_bit"
+  print_function "audit_sticky_bit"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = 1 ]; then
       string="World Writable Directories and Sticky Bits"
@@ -42,7 +42,7 @@ audit_sticky_bit () {
             verbose_message "Sticky bit on \"${check_dir}\"" "set"
             execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             echo ""
             echo "- name: Checking ${string} on ${check_dir}"
             echo "  command: sh -c \"sudo chmod +t ${check_dir}\""

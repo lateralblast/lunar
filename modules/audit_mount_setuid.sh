@@ -22,7 +22,7 @@
 #.
 
 audit_mount_setuid () {
-  print_module "audit_mount_setuid"
+  print_function "audit_mount_setuid"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Set-UID on Mounted Devices" "check"
     if [ "${os_name}" = "SunOS" ]; then

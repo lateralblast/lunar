@@ -17,7 +17,7 @@
 #.
 
 audit_system_auth () {
-  print_module "audit_system_auth"
+  print_function "audit_system_auth"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "PAM Authentication" "check"
     check_file="/etc/security/pwquality.conf"

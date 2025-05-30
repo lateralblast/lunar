@@ -20,7 +20,7 @@
 #.
 
 audit_kubernetes_apiserver () {
-  print_module "audit_kubernetes_apiserver"
+  print_function "audit_kubernetes_apiserver"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
 #    daemon_check=`ps -ef | grep "kube-apiserver" |grep -v grep`
     daemon_check="yes"

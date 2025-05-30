@@ -14,7 +14,7 @@
 #.
 
 audit_retry_limit () {
-  print_module "audit_retry_limit"
+  print_function "audit_retry_limit"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Retry Limit for Account Lockout" "check"
     if [ "${os_name}" = "AIX" ]; then

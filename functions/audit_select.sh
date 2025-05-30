@@ -12,36 +12,36 @@
 funct_audit_select () {
   print_function "funct_audit_select"
   audit_mode=$1
-  function=$2
+  module_name=$2
   check_environment
-  module_test=$( echo "${function}" | grep -c aws )
+  module_test=$( echo "${module_name}" | grep -c aws )
   if [ "$module_test" = "1" ]; then
     check_aws
   fi
-  suffix_test=$( echo "${function}" | grep -c "\\.sh" )
+  suffix_test=$( echo "${module_name}" | grep -c "\\.sh" )
   if [ "${suffix_test}" = "1" ]; then
-    function=$( echo "${function}" | cut -f1 -d. )
+    module_name=$( echo "${module_name}" | cut -f1 -d. )
   fi
-  module_test=$( echo "${function}" | grep -c "full" )
+  module_test=$( echo "${module_name}" | grep -c "full" )
   if [ "$module_test" = "0" ]; then  
-    function_test=$( echo "${function}" | grep -c "audit_" )
+    function_test=$( echo "${module_name}" | grep -c "audit_" )
     if [ "${function_test}" = "0" ]; then
-      function="audit_${function}"
+      module_name="audit_${module_name}"
     fi
   fi
-  module_test=$( echo "${function}" | grep "audit" )
+  module_test=$( echo "${module_name}" | grep "audit" )
   if [ -n "$module_test" ]; then
-    if [ -f "${modules_dir}/${function}.sh" ]; then
-      print_audit_info "${function}"
-      eval "${function}"
+    if [ -f "${modules_dir}/${module_name}.sh" ]; then
+      print_audit_info "${module_name}"
+      eval "${module_name}"
     else
-      verbose_message "Audit function \"${function}\" does not exist" "warn"
+      verbose_message "Audit function \"${module_name}\" does not exist" "warn"
       verbose_message "" ""
       exit
     fi 
     print_results
   else
-    verbose_message "Audit function \"${function}\" does not exist" "warn"
+    verbose_message "Audit function \"${module_name}\" does not exist" "warn"
     verbose_message "" ""
   fi
 }

@@ -15,7 +15,7 @@
 #.
 
 audit_aws_cdn () {
-  print_module    "audit_aws_cdn"
+  print_function  "audit_aws_cdn"
   verbose_message "Cloudfront"  "check"
   aws configure set preview.cloudfront true
   cdns=$( aws cloudfront list-distributions --query 'DistributionList.Items[].Id' --output text | grep -v null )

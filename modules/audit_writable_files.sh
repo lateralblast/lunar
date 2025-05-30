@@ -24,7 +24,7 @@
 #.
 
 audit_writable_files () {
-  print_module "audit_writable_files"
+  print_function "audit_writable_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${do_fs}" = 1 ]; then
       verbose_message "World Writable Files" "check"
@@ -38,7 +38,7 @@ audit_writable_files () {
           for file_system in ${file_system}s; do
             check_files=$( find "${file_system}" -xdev -type f -perm -0002 2> /dev/null )
             for check_file in ${check_file}s; do
-              if [ "${ansible}" = 1 ]; then
+              if [ "${ansible_mode}" = 1 ]; then
                 echo ""
                 echo "- name: Checking write permissions for ${check_file}"
                 echo "  file:"
@@ -74,7 +74,7 @@ audit_writable_files () {
             -a ! -perm -1000 \) -print"
           fi
           for check_file in $( ${find_command} ); do
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               echo ""
               echo "- name: Checking write permissions for ${check_file}"
               echo "  file:"

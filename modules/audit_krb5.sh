@@ -10,7 +10,7 @@
 #.
 
 audit_krb5 () {
-  print_module "audit_krb5"
+  print_function "audit_krb5"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Kerberos" "check"
     if [ "${os_name}" = "SunOS" ]; then

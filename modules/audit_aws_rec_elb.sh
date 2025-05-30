@@ -15,7 +15,7 @@
 #.
 
 audit_aws_rec_elb () {
-  print_module    "audit_aws_rec_elb"
+  print_function  "audit_aws_rec_elb"
   verbose_message "ELB Recommendations" "check"
 	elbs=$( aws elb describe-load-balancers --region "${aws_region}" --query "LoadBalancerDescriptions[].LoadBalancerName" --output text )
   for elb in ${elbs}; do

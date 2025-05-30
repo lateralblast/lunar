@@ -20,7 +20,7 @@
 #.
 
 audit_forward_files () {
-  print_module "audit_forward_files"
+  print_function "audit_forward_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "User Forward Files" "check"
     audit_dot_files ".forward"

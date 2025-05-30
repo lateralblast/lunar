@@ -14,7 +14,7 @@
 #.
 
 audit_system_auth_unlock_time () {
-  print_module "audit_system_auth_unlock_time"
+  print_function "audit_system_auth_unlock_time"
   auth_string="$1"
   search_string="$2"
   search_value="$3"

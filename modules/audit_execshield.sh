@@ -20,7 +20,7 @@
 #.
 
 audit_execshield () {
-  print_module "audit_execshield"
+  print_function "audit_execshield"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "XD/NS Support" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then

@@ -23,7 +23,7 @@
 #.
 
 audit_tcp_wrappers () {
-  print_module "audit_tcp_wrappers"
+  print_function "audit_tcp_wrappers"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "TCP Wrappers" "check"
     if [ "${os_name}" = "AIX" ]; then

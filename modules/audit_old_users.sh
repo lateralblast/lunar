@@ -10,7 +10,7 @@
 #.
 
 audit_old_users () {
-  print_module "audit_old_users"
+  print_function "audit_old_users"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Old users" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

@@ -22,7 +22,7 @@
 #.
 
 audit_super_users () {
-  print_module "audit_super_users"
+  print_function "audit_super_users"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Accounts with UID 0" "check"
     if [ "${os_name}" = "AIX" ]; then

@@ -12,7 +12,7 @@
 #.
 
 audit_aws_rec_inspector () {
-  print_module    "audit_aws_rec_inspector"
+  print_function  "audit_aws_rec_inspector"
   verbose_message "Inspector Recommendations" "check"
   # check for templates
   templates=$( aws inspector list-assessment-templates 2> /dev/null --output text )

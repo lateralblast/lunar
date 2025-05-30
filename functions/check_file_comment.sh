@@ -27,7 +27,7 @@ check_file_comment () {
     if [ -f "${file}" ]; then
       check=$( grep "${search}" < "${file}" | grep -cv "^${comment}" )
       if [ ! "${check}" = "0" ]; then
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  lineinfile:"

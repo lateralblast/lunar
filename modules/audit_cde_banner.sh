@@ -12,7 +12,7 @@
 #.
 
 audit_cde_banner () {
-  print_module "audit_cde_banner"
+  print_function "audit_cde_banner"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "CDE Warning Banner" "check"
     for cde_file in /usr/dt/config/*/Xresources ; do

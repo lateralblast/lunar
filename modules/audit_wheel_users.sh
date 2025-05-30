@@ -10,7 +10,7 @@
 #
 
 audit_wheel_users () {
-  print_module "audit_wheel_users"
+  print_function "audit_wheel_users"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Wheel Users" "check"
     check_file="/etc/group"
@@ -22,7 +22,7 @@ audit_wheel_users () {
           if read -r "/etc/shqdow"; then
             lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
             if [ "${lock_test}" = "${user_name}" ]; then
-              if [ "${ansible}" = 1 ]; then
+              if [ "${ansible_mode}" = 1 ]; then
                 echo ""
                 echo "- name: Checking password lock for ${user_name}"
                 echo "  user:"

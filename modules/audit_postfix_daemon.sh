@@ -14,7 +14,7 @@
 #.
 
 audit_postfix_daemon () {
-  print_module "audit_postfix_daemon"
+  print_function "audit_postfix_daemon"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Postfix Daemon" "check"
     if [ "${os_vendor}" = "SuSE" ]; then

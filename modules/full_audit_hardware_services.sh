@@ -10,6 +10,6 @@
 #.
 
 full_audit_hardware_services () {
-  print_module "full_audit_hardware_services"
+  print_function "full_audit_hardware_services"
   audit_hotplug
 }

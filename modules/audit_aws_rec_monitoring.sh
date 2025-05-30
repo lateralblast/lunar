@@ -12,7 +12,7 @@
 #.
 
 audit_aws_rec_monitoring () {
-  print_module    "audit_aws_rec_monitoring"
+  print_function  "audit_aws_rec_monitoring"
   verbose_message "CloudWatch Recommendations" "check"
   trails=$( aws cloudtrail describe-trails --region "${aws_region}" --query "trailList[].CloudWatchLogsLogGroupArn" --output text |awk -F':' '{print $7}' )
   if [ "${trails}" ]; then

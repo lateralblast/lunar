@@ -12,7 +12,7 @@
 #.
 
 audit_webconsole () {
-  print_module "audit_webconsole"
+  print_function "audit_webconsole"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "Web Console"                    "check"

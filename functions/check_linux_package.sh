@@ -30,7 +30,7 @@ check_linux_package_with_group () {
     if [ "${audit_mode}" != "2" ]; then
       string="${package_type} \"${package_check}\" is \"${package_status}\""
       verbose_message "${string}" "check"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: ${string}"
         echo "  package:"

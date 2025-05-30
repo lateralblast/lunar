@@ -19,7 +19,7 @@
 #.
 
 audit_cron_perms () {
-  print_module "audit_cron_perms"
+  print_function "audit_cron_perms"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Cron Permissions" "check"
     for check_file in /etc/crontab /var/spool/cron /etc/cron.daily /etc/cron.d \

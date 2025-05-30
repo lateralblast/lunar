@@ -28,7 +28,7 @@ check_sysadminctl () {
       verbose_message  "${string}" "check"
       get_command="sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}"
       set_command="sudo sysadminctl -${param} ${value}"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_sysadminctl_${ansible_counter}"
         echo ""

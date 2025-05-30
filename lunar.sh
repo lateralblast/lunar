@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.8.3
+# Version:      10.8.4
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -95,11 +95,11 @@ ssh_denygroups=""
 
 # Set up some counters
 
-secure=0
-insecure=0
-lockdown=0
-restore=0
-total=0
+secure_count=0
+insecure_count=0
+lockdown_count=0
+restore_count=0
+total_count=0
 
 # Set up some global variables/defaults
 
@@ -116,10 +116,10 @@ temp_file="${temp_dir}/${pkg_suffix}.tmp"
 work_dir="${base_dir}/${date_suffix}"
 wheel_group="wheel"
 docker_group="docker"
-reboot=0
-verbose=0
-dryrun=0
-ansible=0
+reboot_required=0
+verbose_mode=0
+dryrun_mode=0
+ansible_mode=0
 ansible_counter=0
 core_dir="${app_dir}/core"
 functions_dir="${app_dir}/functions"
@@ -151,7 +151,7 @@ anacron_enable="no"
 ssh_sandbox="yes"
 do_debug=0
 do_select=0
-function=""
+module_name=""
 no_cat=0
 ubuntu_codename=""
 
@@ -183,7 +183,7 @@ warning_message () {
 #.
 
 lockdown_warning () {
-  if [ "${dryrun}" = 0 ]; then
+  if [ "${dryrun_mode}" = 0 ]; then
     if [ "${force}" != 1 ]; then
       warning_message "This will alter the system"
       read -p "Do you want to continue? (yes/no): " reply
@@ -207,7 +207,7 @@ lockdown_warning () {
 verbose_message () {
   text="$1"
   style="$2"
-  if [ "${verbose}" = 1 ] && [ "$style" = "fix" ]; then
+  if [ "${verbose_mode}" = 1 ] && [ "$style" = "fix" ]; then
     if [ "${text}" = "" ]; then
       echo ""
     else
@@ -267,7 +267,7 @@ verbose_message () {
         echo "Updating:   ${text}"
         ;;
       *)
-        if [ "${verbose}" = 1 ]; then
+        if [ "${verbose_mode}" = 1 ]; then
           echo "${text}"
         fi
         ;;
@@ -302,7 +302,7 @@ fi
 
 # Load core functions from core directory
 if [ -d "${core_dir}" ]; then
-  if [ "${verbose}" = "1" ]; then
+  if [ "${verbose_mode}" = "1" ]; then
     echo ""
     echo "Loading core functions"
     echo ""
@@ -310,7 +310,7 @@ if [ -d "${core_dir}" ]; then
   file_list=$( ls "${core_dir}"/*.sh )
   for file_name in ${file_list}; do
     . "${file_name}"
-    if [ "${verbose}" = "1" ]; then
+    if [ "${verbose_mode}" = "1" ]; then
       verbose_message "\"${file_name}\"" "load"
     fi
   done
@@ -384,26 +384,26 @@ execute_lockdown () {
   message="$2"
   privilege="$3"
   if [ "${audit_mode}" = 0 ]; then
-    total=$((total+1))
+    total_count=$((total_count+1))
     if [ "${message}" ]; then
       verbose_message "${message}" "set"
     fi
     verbose_message "${command}" "execute"
     if [ "${privilege}" = "" ]; then
-      if [ "${dryrun}" = 0 ]; then
-        lockdown=$((lockdown+1))
+      if [ "${dryrun_mode}" = 0 ]; then
+        lockdown_count=$((lockdown_count+1))
         sh -c "${command}"
       fi
     else
       if [ "$my_id" = "0" ]; then
-        if [ "${dryrun}" = 0 ]; then
-          lockdown=$((lockdown+1))
+        if [ "${dryrun_mode}" = 0 ]; then
+          lockdown_count=$((lockdown_count+1))
           sh -c "${command}"
         fi
       else
         if [ "${use_sudo}" = "1" ]; then
-          if [ "${dryrun}" = 0 ]; then
-            lockdown=$((lockdown+1))
+          if [ "${dryrun_mode}" = 0 ]; then
+            lockdown_count=$((lockdown_count+1))
             sudo sh -c "${command}"
           fi
         fi
@@ -425,26 +425,26 @@ execute_restore () {
   message="$2"
   privilege="$3"
   if [ "${audit_mode}" = 2 ]; then
-    total=$((total+1))
+    total_count=$((total_count+1))
     if [ "${message}" ]; then
       verbose_message "${message}" "restore"
     fi
     verbose_message "${command}" "execute"
     if [ "${privilege}" = "" ]; then
-      if [ "${dryrun}" = 0 ]; then
-        restore=$((restore+1))
+      if [ "${dryrun_mode}" = 0 ]; then
+        restore_count=$((restore_count+1))
         sh -c "${command}"
       fi
     else
       if [ "$my_id" = "0" ]; then
-        if [ "${dryrun}" = 0 ]; then
-          restore=$((restore+1))
+        if [ "${dryrun_mode}" = 0 ]; then
+          restore_count=$((restore_count+1))
           sh -c "${command}"
         fi
       else
         if [ "${use_sudo}" = "1" ]; then
-          if [ "${dryrun}" = 0 ]; then
-            restore=$((restore+1))
+          if [ "${dryrun_mode}" = 0 ]; then
+            restore_count=$((restore_count+1))
             sudo sh -c "${command}"
           fi
         fi
@@ -498,7 +498,7 @@ restore_state () {
 #.
 
 increment_total () {
-  total=$((total+1))
+  total_count=$((total_count+1))
 }
 
 # increment_secure
@@ -509,12 +509,12 @@ increment_total () {
 increment_secure () {
   if [ "${audit_mode}" != 2 ]; then
     message="$1"
-    total=$((total+1))
-    secure=$((secure+1))
-    if [ "${secure}" -eq 1 ]; then
-      echo "Secure:     ${message} [${secure} Pass]"
+    total_count=$((total_count+1))
+    secure_count=$((secure_count+1))
+    if [ "${secure_count}" -eq 1 ]; then
+      echo "Secure:     ${message} [${secure_count} Pass]"
     else
-      echo "Secure:     ${message} [${secure} Passes]"
+      echo "Secure:     ${message} [${secure_count} Passes]"
     fi
   fi
 }
@@ -527,12 +527,12 @@ increment_secure () {
 increment_insecure () {
   if [ "${audit_mode}" != 2 ]; then
     message="$1"
-    total=$((total+1))
-    insecure=$((insecure+1))
-    if [ "${insecure}" -eq 1 ]; then
-      verbose_message "${message} [${insecure} Warning]" "warn"
+    total_count=$((total_count+1))
+    insecure_count=$((insecure_count+1))
+    if [ "${insecure_count}" -eq 1 ]; then
+      verbose_message "${message} [${insecure_count} Warning]" "warn"
     else
-      verbose_message "${message} [${insecure} Warnings]" "warn"
+      verbose_message "${message} [${insecure_count} Warnings]" "warn"
     fi
   fi
 }
@@ -602,7 +602,7 @@ secure_baseline () {
 audit_mode=3
 do_fs=3
 audit_select=0
-verbose=0
+verbose_mode=0
 force=0
 do_select=0
 do_aws=0
@@ -651,7 +651,7 @@ do
         print_tests "All"
       else
         if [ "${tests}" = "--verbose" ]; then
-          verbose=1
+          verbose_mode=1
           print_tests "All"
         else
           print_tests "${tests}"
@@ -665,7 +665,7 @@ do
       shift
       ;;
     -4|--dryrun)                    # switch - Run in dryrun mode
-      dryrun=1
+      dryrun_mode=1
       shift
       ;;
     -8|--usesudo)                   # switch - Use sudo
@@ -712,7 +712,7 @@ do
     -d|--dockeraudit)               # switch - Run in audit mode (for Docker - no changes made to system)
       audit_mode=1
       do_docker=1
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -D|--dockertests)               # switch - List all Docker functions available to selective mode
@@ -768,7 +768,7 @@ do
       ;;
     -h|--help)                      # switch - Display help
       print_help
-      if [ "${verbose}" = 1 ]; then
+      if [ "${verbose_mode}" = 1 ]; then
        print_usage
       fi 
       shift
@@ -790,11 +790,11 @@ do
     -k|--kubeaudit)                 # switch - Run in audit mode (for Kubernetes - no changes made to system)
       audit_mode=1
       do_kubernetes=1
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -K|--function|--test)           # switch - Do a specific function
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -l|--lockdown)                  # switch - Run in lockdown mode (for Operating Systems - changes made to system)
@@ -826,7 +826,7 @@ do
       shift 2
       ;;
     -n|--ansible)                   # switch - Output ansible
-      ansible=1
+      ansible_mode=1
       shift
       ;;
     -N|--nocat)                     # switch - Do output cat in score
@@ -874,7 +874,7 @@ do
       audit_mode=1
       do_fs=0
       do_select=1
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -S|--unixtests|--unix)          # switch - List UNIX tests
@@ -900,7 +900,7 @@ do
       shift
       ;;
     -v|--verbose)                   # switch - Run in verbose mode
-      verbose=1
+      verbose_mode=1
       shift
       ;;
     -V|--version)                   # switch - Print version
@@ -911,7 +911,7 @@ do
     -w|--awsaudit)                  # switch - Run in audit mode (for AWS - no changes made to system)
       audit_mode=1
       do_aws=1
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -W|--awstests|--aws)            # switch - List all AWS functions available to selective mode
@@ -922,7 +922,7 @@ do
     -x|--awsrec)                    # switch - Run in recommendations mode (for AWS - no changes made to system)
       audit_mode=1
       do_aws_rec=1
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -X|--strict)                    # switch - Run shellcheck against script
@@ -934,7 +934,7 @@ do
       audit_mode=0
       do_fs=0
       do_select=1
-      function="$2"
+      module_name="$2"
       shift 2
       ;;
     -Z|--changes|--listchanges)     # switch - List changes
@@ -961,7 +961,7 @@ fi
 
 # If running in dry run mode say so
 
-if [ "${dryrun}" = 1 ]; then
+if [ "${dryrun_mode}" = 1 ]; then
   verbose_message "Running in dryrun mode" "notice"
 fi
 
@@ -973,7 +973,7 @@ fi
 
 # Get function name
 
-function=$(echo "${function}" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g" )
+module_name=$(echo "${module_name}" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g" )
 
 # check arguments
 
@@ -1042,7 +1042,7 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
                   mp_command="${mp_command} --debug"
                 fi
                 if [ "$do_select" = "1" ]; then  
-                  mp_command="${mp_command} --select ${function}"
+                  mp_command="${mp_command} --select ${module_name}"
                 fi
                 multipass exec "${test_tag}" -- bash -c "${mp_command}"
               fi
@@ -1090,8 +1090,8 @@ if [ "${audit_mode}" != 3 ]; then
   fi
   echo ""
   if [ "$do_select" = 1 ]; then
-    verbose_message    "Selecting ${function}" "audit"
-    funct_audit_select "${audit_mode}" "${function}"
+    verbose_message    "Selecting ${module_name}" "audit"
+    funct_audit_select "${audit_mode}" "${module_name}"
   else
     case $audit_type in
       Kubernetes)

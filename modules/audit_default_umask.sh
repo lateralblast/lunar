@@ -22,7 +22,7 @@
 #.
 
 audit_default_umask () {
-  print_module "audit_default_umask"
+  print_function "audit_default_umask"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Default umask for Users" "check"
     if [ "${os_name}" = "SunOS" ]; then

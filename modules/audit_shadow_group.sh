@@ -14,7 +14,7 @@
 #.
 
 audit_shadow_group () {
-  print_module "audit_shadow_group"
+  print_function "audit_shadow_group"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Shadow Group" "check"
     check_file="/etc/group"

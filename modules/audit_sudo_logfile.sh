@@ -12,7 +12,7 @@
 #.
 
 audit_sudo_logfile () {
-  print_module "audit_sudo_logfile"
+  print_function "audit_sudo_logfile"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "Sudo logfile" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

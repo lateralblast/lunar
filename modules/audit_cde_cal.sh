@@ -12,7 +12,7 @@
 #.
 
 audit_cde_cal () {
-  print_module "audit_cde_cal"
+  print_function "audit_cde_cal"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message     "Local CDE Calendar Manager" "check"

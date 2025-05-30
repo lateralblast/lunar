@@ -10,7 +10,7 @@
 #.
 
 full_audit_password_services () {
-  print_module "full_audit_password_services"
+  print_function "full_audit_password_services"
   audit_rsa_securid_pam
   audit_system_auth
   audit_system_auth_use_uid

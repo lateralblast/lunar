@@ -19,7 +19,7 @@
 #.
 
 audit_cups () {
-  print_module "audit_cups"
+  print_function "audit_cups"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Printing Services" "check"
     for service_name in cups cups-lpd cupsrenice; do

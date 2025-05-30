@@ -20,7 +20,7 @@
 #.
 
 audit_cron_allow () {
-  print_module "audit_cron_allow"
+  print_function "audit_cron_allow"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "At/Cron Authorized Users" "check"
     if [ "${os_name}" = "FreeBSD" ]; then

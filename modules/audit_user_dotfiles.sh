@@ -21,7 +21,7 @@
 #.
 
 audit_user_dotfiles () {
-  print_module "audit_user_dotfiles"
+  print_function "audit_user_dotfiles"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "User Dot Files" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

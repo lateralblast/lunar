@@ -12,7 +12,7 @@
 #.
 
 audit_encryption_kit () {
-  print_module "audit_encryption_kit"
+  print_function "audit_encryption_kit"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message         "Encryption Toolkit" "check"

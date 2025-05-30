@@ -19,7 +19,7 @@
 #.
 
 audit_samba () {
-  print_module "audit_samba"
+  print_function "audit_samba"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Samba Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then

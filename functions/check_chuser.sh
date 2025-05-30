@@ -24,7 +24,7 @@ check_chuser() {
     if [ "${audit_mode}" != 2 ]; then
       string="Security Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       verbose_message "${string}" "check"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_chuser_${ansible_counter}"
         echo ""

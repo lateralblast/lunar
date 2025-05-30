@@ -10,7 +10,7 @@
 #.
 
 full_audit_other_services () {
-  print_module "full_audit_other_services"
+  print_function "full_audit_other_services"
   audit_bluetooth
   audit_postgresql
   audit_encryption_kit

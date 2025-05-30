@@ -10,7 +10,7 @@
 #.
 
 audit_winbind () {
-  print_module "audit_winbind"
+  print_function "audit_winbind"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Winbind Daemon" "check"
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then

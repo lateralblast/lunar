@@ -12,7 +12,7 @@
 #.
 
 audit_pam_gdm_autologin () {
-  print_module "audit_pam_gdm_autologin"
+  print_function "audit_pam_gdm_autologin"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       pam_module="gdm-autologin"
@@ -24,7 +24,7 @@ audit_pam_gdm_autologin () {
         restore_file "${check_file}" "${restore_dir}"
       fi
       if [ "${audit_mode}" != 2 ]; then
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_pam_gdm_autologin_${ansible_counter}"
           echo ""

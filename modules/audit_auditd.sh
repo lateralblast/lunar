@@ -18,7 +18,7 @@
 #.
 
 audit_auditd () {
-  print_module "audit_auditd"
+  print_function "audit_auditd"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Audit Daemon" "check"
     if [ "${os_name}" = "Linux" ]; then

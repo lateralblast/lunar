@@ -20,7 +20,7 @@
 #.
 
 audit_prelink () {
-  print_module "audit_prelink"
+  print_function "audit_prelink"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Prelinking" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then

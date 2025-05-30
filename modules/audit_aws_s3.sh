@@ -14,7 +14,7 @@
 #.
 
 audit_aws_s3 () {
-  print_modules   "audit_aws_s3"
+  print_function  "audit_aws_s3"
   verbose_message "S3"   "check"
   buckets=$( aws s3api list-buckets --region "${aws_region}" --query 'Buckets[*].Name' --output text )
   for bucket in ${buckets}; do

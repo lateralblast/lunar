@@ -12,7 +12,7 @@
 #.
 
 audit_system_auth_nullok () {
-  print_module "audit_system_auth_nullok"
+  print_function "audit_system_auth_nullok"
   temp_file="${temp_dir}/audit_system_auth_nullok"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then

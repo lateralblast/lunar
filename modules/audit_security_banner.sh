@@ -20,7 +20,7 @@
 #.
 
 audit_security_banner () {
-  print_module "audit_security_banner"
+  print_function "audit_security_banner"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Warnings for Standard Login Services" "check"
     if [ "${os_name}" = "AIX" ]; then

@@ -12,7 +12,7 @@
 #.
 
 audit_rhosts_files () {
-  print_module "audit_rhosts_files"
+  print_function "audit_rhosts_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Rhosts Files" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

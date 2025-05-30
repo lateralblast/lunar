@@ -20,7 +20,7 @@
 #.
 
 audit_console_login () {
-  print_module "audit_console_login"
+  print_function "audit_console_login"
   if [ "${os_name}" = "SunOS" ]; then
     string="Root Login to System Console"
    verbose_message "${string}" "check"
@@ -43,7 +43,7 @@ audit_console_login () {
       disable_ttys=0
       console_list=""
       if [ "${audit_mode}" != 2 ]; then
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: ${string}"
           echo "  lineinfile:"

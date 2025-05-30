@@ -22,7 +22,7 @@
 #.
 
 audit_root_path () {
-  print_module "audit_root_path"
+  print_function "audit_root_path"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Root PATH Environment Integrity" "check"
     if [ "${audit_mode}" != 2 ]; then

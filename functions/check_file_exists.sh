@@ -22,7 +22,7 @@ check_file_exists () {
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" does not exist"
       verbose_message "${string}" "check"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_file_exists_${ansible_counter}"
         echo ""
@@ -59,7 +59,7 @@ check_file_exists () {
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" ${exists}"
       verbose_message "${string}" "check"
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_file_exists_${ansible_counter}"
         echo ""

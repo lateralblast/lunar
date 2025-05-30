@@ -18,7 +18,7 @@
 #.
 
 audit_aws_rds () {
-  print_module    "audit_aws_rds"
+  print_function  "audit_aws_rds"
   verbose_message "RDS"   "check"
   dbs=$( aws rds describe-db-instances --region "${aws_region}" --query 'DBInstances[].DBInstanceIdentifier' --output text )
   for db in ${dbs}; do

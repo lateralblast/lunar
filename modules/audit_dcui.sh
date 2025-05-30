@@ -12,7 +12,7 @@
 #.
 
 audit_dcui () {
-  print_module "audit_dcui"
+  print_function "audit_dcui"
   if [ "${os_name}" = "VMkernel" ]; then
     service_name="DCUI"
     verbose_message     "${service_name} Lockdown" "check"

@@ -21,7 +21,7 @@
 #.
 
 audit_kubernetes_perms () {
-  print_module "audit_kubernetes_perms"
+  print_function "audit_kubernetes_perms"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Kubernetes permissions" "check"
     check_file="/var/lib/etcd"

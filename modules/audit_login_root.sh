@@ -15,7 +15,7 @@
 #.
 
 audit_login_root () {
-  print_module "audit_login_root"
+  print_function "audit_login_root"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Root login"  "check"
     check_dscl      "/Users/root" "AuthenticationAuthority" "No such key: AuthenticationAuthority"

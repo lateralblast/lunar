@@ -13,7 +13,7 @@
 #.
 
 audit_serial_login () {
-  print_module "audit_serial_login"
+  print_function "audit_serial_login"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Login on Serial Ports" "check"
     if [ "${os_name}" = "AIX" ]; then

@@ -141,7 +141,7 @@ print_tests () {
         ;;
     esac
     if [ -n "${module_name}" ]; then
-      if [ "${verbose}" = 1 ]; then
+      if [ "${verbose_mode}" = 1 ]; then
         print_audit_info "${module_name}"
       else
         echo "${module_name}"
@@ -158,7 +158,7 @@ print_tests () {
 
 print_function() {
   funct_name="$1"
-  if [ "${verbose}" = 1 ]; then
+  if [ "${verbose_mode}" = 1 ]; then
     echo "Function:   ${funct_name}"
   fi
 }
@@ -168,61 +168,61 @@ print_function() {
 # Print Results
 #.
 
-# print_module
+# print_function
 #
 # Print module name
 #.
 
-print_module() {
+print_function() {
   module_name="$1"
   echo "Module:     ${module_name}"
 }
 
 print_results () {
   echo ""
-  if [ "${reboot}" = 1 ]; then
-    reboot="Required"
+  if [ "${reboot_required}" = 1 ]; then
+    reboot_required="Required"
   else
-    reboot="Not Required"
+    reboot_required="Not Required"
   fi
   if [ "${no_cat}" = "1" ]; then
-    echo "Tests:      ${total}"
+    echo "Tests:      ${total_count}"
     case "${audit_mode}" in
       2)
-        echo "Restores:   ${restore}"
+        echo "Restores:   ${restore_count}"
         ;;
       0)
-        echo "Lockdowns:  ${lockdown}"
+        echo "Lockdowns:  ${lockdown_count}"
         ;;
       *)
-        echo "Passes:     ${secure}"
-        echo "Warnings:   ${insecure}"
+        echo "Passes:     ${secure_count}"
+        echo "Warnings:   ${insecure_count}"
         ;;
     esac
-    echo "Reboot:     ${reboot}"
+    echo "Reboot:     ${reboot_required}"
   else
-    echo " \    /\    Tests:      ${total}"
+    echo " \    /\    Tests:      ${total_count}"
     case "${audit_mode}" in
       2)
-        echo "  )  ( ')   Restores:   ${restore}"
+        echo "  )  ( ')   Restores:   ${restore_count}"
         echo " (  /  )    "
         ;;
       0)
-        echo "  )  ( ')   Lockdowns:  ${lockdown}"
+        echo "  )  ( ')   Lockdowns:  ${lockdown_count}"
         echo " (  /  )    "
         ;;
       *)
-        echo "  )  ( ')   Passes:     ${secure}"
-        echo " (  /  )    Warnings:   ${insecure}"
+        echo "  )  ( ')   Passes:     ${secure_count}"
+        echo " (  /  )    Warnings:   ${insecure_count}"
         ;;
     esac
-    echo "  \(__)|    Reboot:     ${reboot}"
+    echo "  \(__)|    Reboot:     ${reboot_required}"
   fi
   if [ "${audit_mode}" = 0 ]; then
     echo ""
     echo "Backup:     ${work_dir}"
-    if [ ! "${function}" = "" ]; then
-      echo "Restore:    $0 -s ${function} -u ${date_suffix} -8"
+    if [ ! "${module_name}" = "" ]; then
+      echo "Restore:    $0 -s ${module_name} -u ${date_suffix} -8"
     else
       echo "Restore:    $0 -u ${date_suffix} -8"
     fi
@@ -314,7 +314,7 @@ setting_message () {
 print_audit_info () {
   module="$1"
   comment_text=0
-  verbose=1
+  verbose_mode=1
   dir_name=$( pwd )
   check=$( echo "${module}" | grep "audit" )
   if [ -z "${check}" ]; then

@@ -43,7 +43,7 @@ check_append_file () {
         lockdown_message="Parameter \"${parameter}\" in \"${check_file}\""
         execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         if [ "${parameter}" ]; then
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             echo ""
             echo "- name: Checking ${secure_string}"
             echo "  lineinfile:"
@@ -55,7 +55,7 @@ check_append_file () {
         fi
       else
         if [ "${parameter}" ]; then
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             echo ""
             echo "- name: Checking ${secure_string}"
             echo "  lineinfile:"

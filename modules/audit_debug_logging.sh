@@ -11,7 +11,7 @@
 #.
 
 audit_debug_logging () {
-  print_module "audit_debug_logging"
+  print_function "audit_debug_logging"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message    "Connection Logging" "check"

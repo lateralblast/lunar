@@ -14,7 +14,7 @@
 #.
 
 audit_aws_sns () {
-  print_module    "audit_aws_sns"
+  print_function    "audit_aws_sns"
   verbose_message "SNS"   "check"
   topic_list=$( aws sns list-topics --region "${aws_region}" --query 'Topics[].TopicArn' --output text )
   for topic in $topic_lis; do

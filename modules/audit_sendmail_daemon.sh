@@ -18,7 +18,7 @@
 #.
 
 audit_sendmail_daemon() {
-  print_module "audit_sendmail_daemon"
+  print_function "audit_sendmail_daemon"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Sendmail Daemon" "check"
     if [ "$sendmail_disable" = "yes" ]; then
@@ -70,7 +70,6 @@ audit_sendmail_daemon() {
       if [ -f "${check_file}" ]; then
         verbose_message "Sendmail Configuration"
         search_string="Addr=127.0.0.1"
-        restore=0
         if [ "${audit_mode}" != 2 ]; then
          verbose_message "Mail transfer agent is running in local-only mode"
           check_value=$( grep -v '^#' "${check_file}" | grep "O DaemonPortOptions" | awk '{print $3}' | grep "${search_string}" )

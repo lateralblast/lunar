@@ -14,7 +14,7 @@
 #.
 
 audit_apparmor () {
-  print_module "audit_apparmor"
+  print_function "audit_apparmor"
   if [ "${os_name}" = "Linux" ]; then
     do_grub_test=0
     do_app_test=1
@@ -44,7 +44,7 @@ audit_apparmor () {
       else
         increment_insecure  "There are unconfined applications"
       fi
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="apparmor_check_${ansible_counter}"
         echo ""
@@ -90,7 +90,7 @@ audit_apparmor () {
             backup_file      "${check_file}"
             lockdown_command="cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*"
             lockdown_message="Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               ansible_counter=$((ansible_counter+1))
               ansible_value="apparmor_check_${ansible_counter}"
               echo ""

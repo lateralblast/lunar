@@ -22,7 +22,7 @@
 #.
 
 audit_user_netrc () {
-  print_module "audit_user_netrc"
+  print_function "audit_user_netrc"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "User Netrc Files" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

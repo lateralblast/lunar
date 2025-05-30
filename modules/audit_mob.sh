@@ -12,7 +12,7 @@
 #.
 
 audit_mob () {
-  print_module "audit_mob"
+  print_function "audit_mob"
   if [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Managed Object Browser" "check"
     log_file="mob_status"

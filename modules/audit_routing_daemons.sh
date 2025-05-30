@@ -14,7 +14,7 @@
 #.
 
 audit_routing_daemons () {
-  print_module "audit_routing_daemons"
+  print_function "audit_routing_daemons"
   if [ "$routed_disable" = "yes" ]; then
     if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
       verbose_message "Routing Daemons" "check"

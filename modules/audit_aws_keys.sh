@@ -16,7 +16,7 @@
 #.
 
 audit_aws_keys () {
-  print_module    "audit_aws_keys"
+  print_function  "audit_aws_keys"
   verbose_message "KMS Keys" "check"
   keys=$( aws kms list-keys --query Keys --output text )
   if [ "${keys}" ]; then

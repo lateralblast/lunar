@@ -10,7 +10,7 @@
 #.
 
 audit_ipmi () {
-  print_module "audit_ipmi"
+  print_function "audit_ipmi"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "IPMI Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then

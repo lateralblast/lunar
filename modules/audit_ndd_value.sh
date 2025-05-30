@@ -11,7 +11,7 @@
 #.
 
 audit_ndd_value () {
-  print_module "audit_ndd_value"
+  print_function "audit_ndd_value"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       ndd_name="$1"

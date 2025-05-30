@@ -19,7 +19,7 @@
 #.
 
 audit_dhcp_server () {
-  print_module "audit_dhcp_server"
+  print_function "audit_dhcp_server"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "DHCP Server" "check"
     if [ "${os_name}" = "SunOS" ]; then

@@ -17,7 +17,7 @@
 #.
 
 audit_email_daemons () {
-  print_module "audit_email_daemons"
+  print_function "audit_email_daemons"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Mail Daemons" "check"
     for service_name in cyrus imapd qpopper dovecot; do

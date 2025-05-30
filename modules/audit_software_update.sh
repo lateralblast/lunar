@@ -16,7 +16,7 @@
 #.
 
 audit_software_update () {
-  print_module "audit_software_update"
+  print_function "audit_software_update"
   if [ "${os_name}" = "VMkernel" ]; then
     verbose_message "Software Update" "check"
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"

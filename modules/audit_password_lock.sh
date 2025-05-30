@@ -11,7 +11,7 @@
 #.
 
 audit_password_lock () {
-  print_module "audit_password_lock"
+  print_function "audit_password_lock"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Inactive password Lock" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

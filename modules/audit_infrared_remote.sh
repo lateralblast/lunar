@@ -15,7 +15,7 @@
 #.
 
 audit_infrared_remote () {
-  print_module "audit_infrared_remote"
+  print_function "audit_infrared_remote"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Apple Remote Activation" "check"
     check_osx_defaults_bool "/Library/Preferences/com.apple.driver.AppleIRController" "DeviceEnabled" "no"

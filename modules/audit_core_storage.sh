@@ -13,7 +13,7 @@
 #.
 
 audit_core_storage () {
-  print_module "audit_core_storage"
+  print_function "audit_core_storage"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Core Storage Volumes" "check"

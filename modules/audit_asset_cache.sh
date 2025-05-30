@@ -16,7 +16,7 @@
 #.
 
 audit_asset_cache () {
-  print_module "audit_asset_cache"
+  print_function "audit_asset_cache"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1013 ]; then
       string="Asset Cache Activation"
@@ -34,7 +34,7 @@ audit_asset_cache () {
         else
           increment_insecure "Content Caching is activated"
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_asset_cache_${ansible_counter}"
           echo ""

@@ -14,7 +14,7 @@
 #.
 
 audit_web_sharing () {
-  print_module "audit_web_sharing"
+  print_function "audit_web_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message   "Web sharing" "check"
     check_file_value "is"   "/etc/apache2/httpd.conf" "ServerTokens"    "space" "Prod"     "hash"

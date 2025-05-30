@@ -27,7 +27,7 @@
 #.
 
 audit_system_accounting () {
-  print_module "audit_system_accounting"
+  print_function "audit_system_accounting"
   max_log_file="8"
   max_log_file_action="keep_logs"
   disk_full_action="single"

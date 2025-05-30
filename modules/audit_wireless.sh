@@ -15,7 +15,7 @@
 #.
 
 audit_wireless () {
-  print_module "audit_wireless"
+  print_function "audit_wireless"
   if [ "${os_name}" = "Darwin" ]; then
     string="Wifi information menu"
     verbose_message "${string}" "check"

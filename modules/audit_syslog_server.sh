@@ -22,7 +22,7 @@
 #.
 
 audit_syslog_server () {
-  print_module "audit_syslog_server"
+  print_function "audit_syslog_server"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Syslog Daemon" "check"
     if [ "${os_name}" = "FreeBSD" ]; then

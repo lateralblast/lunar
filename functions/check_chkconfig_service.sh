@@ -91,7 +91,7 @@ check_chkconfig_service () {
       fi
     else
       if [ "${actual_status}" = "on" ] || [ "${actual_status}" = "off" ]; then
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  service:"

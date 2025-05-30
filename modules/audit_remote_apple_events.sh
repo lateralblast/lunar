@@ -14,7 +14,7 @@
 #.
 
 audit_remote_apple_events () {
-  print_module "audit_remote_apple_events"
+  print_function "audit_remote_apple_events"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Remote Apple Events" "check"
     if [ "${long_os_version}" -ge 1008 ]; then

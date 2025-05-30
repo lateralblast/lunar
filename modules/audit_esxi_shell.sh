@@ -13,7 +13,7 @@
 #.
 
 audit_esxi_shell () {
-  print_module "audit_esxi_shell"
+  print_function "audit_esxi_shell"
   if [ "${os_name}" = "VMkernel" ]; then
     verbose_message     "ESXShell" "check"
     check_linux_service "ESXShell" "off"

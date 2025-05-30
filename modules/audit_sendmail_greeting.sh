@@ -10,13 +10,12 @@
 #.
 
 audit_sendmail_greeting () {
-  print_module "audit_sendmail_greeting"
+  print_function "audit_sendmail_greeting"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
     if [ -f "${check_file}" ]; then
       verbose_message "Sendmail Greeting" "check"
       search_string="v/"
-      restore=0
       if [ "${audit_mode}" != 2 ]; then
         check_value=$( grep -v '^#' "${check_file}" | grep 'O SmtpGreetingMessage' | awk '{print $4}' | grep 'v/' )
         if [ "${check_value}" = "${search_string}" ]; then

@@ -13,7 +13,7 @@
 #.
 
 audit_safari_tracking () {
-  print_module "audit_safari_tracking"
+  print_function "audit_safari_tracking"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Safari Cross-site Tracking" "check"

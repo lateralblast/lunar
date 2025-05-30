@@ -12,7 +12,7 @@
 #.
 
 audit_amfi () {
-  print_module "audit_amfi"
+  print_function "audit_amfi"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1012 ]; then
       string="Apple Mobile File Integrity"
@@ -30,7 +30,7 @@ audit_amfi () {
         else
           increment_insecure "Apple Mobile File Integrity is set to \"${check_value}\""
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_amfi_${ansible_counter}"
           echo ""

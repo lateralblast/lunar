@@ -10,7 +10,7 @@
 #.
 
 full_audit_network_services () {
-  print_module "full_audit_network_services"
+  print_function "full_audit_network_services"
   audit_snmp
   audit_ntp
   audit_ipmi

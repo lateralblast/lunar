@@ -10,7 +10,7 @@
 #.
 
 full_audit_osx_services () {
-  print_module "full_audit_osx_services"
+  print_function "full_audit_osx_services"
   audit_bluetooth
   audit_guest_sharing
   audit_file_sharing

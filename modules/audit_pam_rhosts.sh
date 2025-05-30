@@ -14,7 +14,7 @@
 #.
 
 audit_pam_rhosts () {
-  print_module "audit_pam_rhosts"
+  print_function "audit_pam_rhosts"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     pam_module="pam_rhosts_auth"
     check_string="PAM ${pam_module} Configuration"
@@ -26,7 +26,7 @@ audit_pam_rhosts () {
       else
         if [ -f "${check_file}" ]; then
           pam_check=$( grep -v "^#" ${check_file} | grep "${pam_module}" | head -1 | wc -l | sed "s/ //g" )
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             ansible_counter=$((ansible_counter+1))
             ansible_value="audit_pam_rhosts_${ansible_counter}"
             echo ""
@@ -82,7 +82,7 @@ audit_pam_rhosts () {
             restore_file "${check_file}" "${restore_dir}"
           else
             pam_check=$( grep -v "^#" "${check_file}" | grep -c "rhosts_auth" | sed "s/ //g" )
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               ansible_counter=$((ansible_counter+1))
               ansible_value="audit_pam_rhosts_${ansible_counter}"
               echo ""

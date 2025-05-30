@@ -13,7 +13,7 @@
 #.
 
 audit_syslog_perms () {
-  print_module "audit_syslog_perms"
+  print_function "audit_syslog_perms"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Syslog Permissions" "check"
     if [ "${os_name}" = "SunOS" ]; then

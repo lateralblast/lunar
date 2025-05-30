@@ -12,7 +12,7 @@
 #.
 
 audit_aws_rec_ec () {
-  print_module    "audit_aws_rec_ec"
+  print_function  "audit_aws_rec_ec"
   verbose_message "ElastiCache Recommendation" "check"
   # Ensure that your AWS ElastiCache Reserved Instances (RIs) are renewed before expiration
   caches=$( aws elasticache describe-reserved-cache-nodes --region "${aws_region}" --query 'ReservedCacheNodes[].ReservedCacheNodeId' --output text )

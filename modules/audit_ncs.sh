@@ -12,7 +12,7 @@
 #.
 
 audit_ncs () {
-  print_module "audit_ncs"
+  print_function "audit_ncs"
   if [ "${os_name}" = "AIX" ]; then
     verbose_message "NCS" "check"
     check_itab      "ncs" "off"

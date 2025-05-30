@@ -22,7 +22,7 @@
 #.
 
 audit_duplicate_users () {
-  print_module "audit_duplicate_users"
+  print_function "audit_duplicate_users"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message     "Duplicate Users"  "check"
     audit_duplicate_ids "1" "users" "name" "/etc/passwd"

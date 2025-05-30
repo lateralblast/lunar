@@ -12,7 +12,7 @@
 #.
 
 audit_syslog_auth () {
-  print_module "audit_syslog_auth"
+  print_function "audit_syslog_auth"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message    "SYSLOG AUTH Messages" "check"

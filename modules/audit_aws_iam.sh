@@ -19,7 +19,7 @@
 
 audit_aws_iam () {
   # Root account should only be used sparingly, admin functions and responsibilities should be delegated
-  print_module    "audit_aws_iam"
+  print_function  "audit_aws_iam"
   verbose_message "IAM"   "check"
   aws iam generate-credential-report > /dev/null 2>&1
   date_test=$( date +%Y-%m )

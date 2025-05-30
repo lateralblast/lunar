@@ -19,7 +19,7 @@
 #.
 
 audit_pam_wheel () {
-  print_module "audit_pam_wheel"
+  print_function "audit_pam_wheel"
   if [ "${os_name}" = "Linux" ]; then
     pam_module="pam_wheel"
     check_string="PAM ${pam_module} Configuration"
@@ -29,7 +29,7 @@ audit_pam_wheel () {
       search_string="use_uid"
       if [ "${audit_mode}" != 2 ]; then
         check_value=$( grep "^auth" "${check_file}" | grep "${search_string}$" | awk '{print $8}' )
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_pam_wheel_${ansible_counter}"
           echo ""

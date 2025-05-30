@@ -13,7 +13,7 @@
 #.
 
 audit_air_play () {
-  print_module "audit_air_play"
+  print_function "audit_air_play"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Air Play Receiver" "check"

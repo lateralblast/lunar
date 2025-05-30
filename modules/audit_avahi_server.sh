@@ -19,7 +19,7 @@
 #.
 
 audit_avahi_server () {
-  print_module "audit_avahi_server"
+  print_function "audit_avahi_server"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Avahi Server" "check"
     for service_name in avahi avahi-autoipd avahi-daemon avahi-dnsconfd; do

@@ -10,7 +10,7 @@
 #.
 
 audit_system_auth_password_strength () {
-  print_module "audit_system_auth_password_strength"
+  print_function "audit_system_auth_password_strength"
   auth_string=$1
   search_string=$2
   temo_file="${temp_dir}/audit_system_auth_password_strength"

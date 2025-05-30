@@ -21,7 +21,7 @@
 #.
 
 audit_home_perms () {
-  print_module "audit_home_perms"
+  print_function "audit_home_perms"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = "1" ]; then
       verbose_message "Home Directory Permissions" "check"

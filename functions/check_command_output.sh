@@ -55,7 +55,7 @@ check_command_output () {
     if [ "${audit_mode}" != 2 ]; then
       string="Command \"${command_name}\" returns \"${correct_value}\""
       verbose_message "${string}" "check"
-       if [ "${ansible}" = 1 ]; then
+       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_command_output_${command_name}_${ansible_counter}"
         echo ""

@@ -12,7 +12,7 @@
 #.
 
 audit_ssh_forwarding () {
-  print_module "audit_ssh_forwarding"
+  print_function "audit_ssh_forwarding"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "SSH Forwarding" "check"
     if [ "${os_name}" = "Darwin" ]; then

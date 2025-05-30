@@ -16,7 +16,7 @@
 #.
 
 audit_gnome_screen_lock () {
-  print_module "audit_gnome_screen_lock"
+  print_function "audit_gnome_screen_lock"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "Screen Lock for GNOME Users" "check"
     check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*timeout:"     "space" "0:10:00" "bang"
@@ -31,7 +31,7 @@ audit_gnome_screen_lock () {
         if [ -d "/etc/dconf" ]; then
           check_file="/etc/dconf/db/ibus.d/00-screensaver"
           if [ -f "${check_file}" ]; then
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               string="Screen Lock for GNOME Users"
               echo "- name: ${string}"
               echo "  copy:"

@@ -13,7 +13,7 @@
 #.
 
 audit_nobody_rpc () {
-  print_module "audit_nobody_rpc"
+  print_function "audit_nobody_rpc"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message  "Nobody Access for RPC Encryption Key Storage Service" "check"

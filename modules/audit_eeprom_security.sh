@@ -13,7 +13,7 @@
 #.
 
 audit_eeprom_security () {
-  print_module "audit_eeprom_security"
+  print_function "audit_eeprom_security"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "EEPROM Password" "check"
     if [ "${audit_mode}" = 2 ]; then

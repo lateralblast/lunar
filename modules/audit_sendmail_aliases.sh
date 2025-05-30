@@ -11,7 +11,7 @@
 #.
 
 audit_sendmail_aliases () {
-  print_module "audit_sendmail_aliases"
+  print_function "audit_sendmail_aliases"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message  "Sendmail Aliases" "check"
     disable_value    "/etc/aliases"     "decode" "hash"

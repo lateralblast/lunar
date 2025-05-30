@@ -25,7 +25,7 @@ check_environment () {
   fi
   # Load functions from functions directory
   if [ -d "${functions_dir}" ]; then
-    if [ "${verbose}" = "1" ]; then
+    if [ "${verbose_mode}" = "1" ]; then
       echo ""
       echo "Loading Functions"
       echo ""
@@ -37,14 +37,14 @@ check_environment () {
       else
         source "${file_name}"
       fi
-      if [ "${verbose}" = "1" ]; then
+      if [ "${verbose_mode}" = "1" ]; then
         verbose_message "\"${file_name}\"" "load"
       fi
     done
   fi
   # Load modules for modules directory
   if [ -d "${modules_dir}" ]; then
-    if [ "${verbose}" = "1" ]; then
+    if [ "${verbose_mode}" = "1" ]; then
       echo ""
       echo "Loading Modules"
       echo ""
@@ -62,7 +62,7 @@ check_environment () {
           source "${file_name}"
         fi
       fi
-      if [ "${verbose}" = "1" ]; then
+      if [ "${verbose_mode}" = "1" ]; then
         verbose_message "\"${file_name}\"" "load"
       fi
     done
@@ -72,7 +72,7 @@ check_environment () {
       echo ""
       echo "Loading Customised Modules"
       echo ""
-    if [ "${verbose}" = "1" ]; then
+    if [ "${verbose_mode}" = "1" ]; then
       echo ""
     fi
     file_list=$( ls "${private_dir}"/*.sh )
@@ -83,7 +83,7 @@ check_environment () {
         source "${file_name}"
       fi
     done
-    if [ "${verbose}" = "1" ]; then
+    if [ "${verbose_mode}" = "1" ]; then
       echo "Loading:   ${file_name}"
     fi
   fi

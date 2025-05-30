@@ -13,7 +13,7 @@
 #.
 
 audit_touch_id () {
-  print_module "audit_touch_id"
+  print_function "audit_touch_id"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       string="Touch ID"
@@ -31,7 +31,7 @@ audit_touch_id () {
         else
           increment_insecure "Touch ID Timeout for system is not set to \"${touchid_timeout}\""
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_touch_id_${ansible_counter}"
           echo ""
@@ -63,7 +63,7 @@ audit_touch_id () {
             else
               increment_insecure "Touch ID Timeout for for user \"${user_name}\" is not set to \"${touchid_timeout}\""
             fi
-            if [ "${ansible}" = 1 ]; then
+            if [ "${ansible_mode}" = 1 ]; then
               echo ""
               echo "- name: Checking ${string} for ${user_name}"
               echo "  command: sh -c \"sudo -u ${user_name} bioutil -r -s | grep ${item} | head -1 | cut -f2 -d: | sed 's/ //g'\""

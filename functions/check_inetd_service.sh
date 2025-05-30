@@ -27,7 +27,7 @@ check_inetd_service () {
       if [ "${audit_mode}" != 2 ]; then
         string="If inetd service \"${service_name}\" is set to \"${correct_status}\""
         verbose_message "${string}" "check"
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  lineinfile:"

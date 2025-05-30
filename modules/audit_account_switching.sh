@@ -14,7 +14,7 @@
 #.
 
 audit_account_switching () {
-  print_module "audit_account_switching"
+  print_function "audit_account_switching"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       ansible_counter=$((ansible_counter+1))
@@ -35,7 +35,7 @@ audit_account_switching () {
         else
           increment_insecure "Administrator Account Login to Another User Session is not set to \"${correct_value}\""
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  command: sh -c \"${get_command}\""

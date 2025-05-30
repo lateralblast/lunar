@@ -12,7 +12,7 @@
 #.
 
 audit_remote_info () {
-  print_module "audit_remote_info"
+  print_function "audit_remote_info"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Remote Information Services" "check"
     if [ "${os_name}" = "AIX" ]; then

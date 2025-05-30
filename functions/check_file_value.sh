@@ -119,7 +119,7 @@ check_file_value_with_position () {
           if [ "${audit_mode}" = 0 ]; then
             backup_file "${check_file}"
             if [ "${check_file}" = "/etc/system" ]; then
-              reboot=1
+              reboot_required=1
               verbose_message "Reboot required" "notice"
             fi
             if [ "$sshd_test" =  "1" ]; then
@@ -127,7 +127,7 @@ check_file_value_with_position () {
             fi
             execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             echo ""
             echo "- name: Checking ${string}"
             echo "  lineinfile:"
@@ -183,7 +183,7 @@ check_file_value_with_position () {
             test_value=1
           fi
         fi
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           if [ "${negative}" = "not" ]; then
             line="${parameter_name}${separator}${correct_value}"
           else
@@ -235,7 +235,7 @@ check_file_value_with_position () {
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "Parameter \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\"" "set"
               if [ "${check_file}" = "/etc/system" ]; then
-                reboot=1
+                reboot_required=1
                 verbose_message "Reboot required" "notice"
               fi
               if [ "${check_file}" = "/etc/ssh/sshd_config" ] || [ "${check_file}" = "/etc/sshd_config" ]; then

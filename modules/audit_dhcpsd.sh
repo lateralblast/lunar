@@ -12,7 +12,7 @@
 #.
 
 audit_dhcpsd () {
-  print_module "audit_dhcpsd"
+  print_function "audit_dhcpsd"
   if [ "${dhcpsd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
       verbose_message "DHCP Server Daemon" "check"

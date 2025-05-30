@@ -18,7 +18,7 @@
 #.
 
 audit_stack_protection () {
-  print_module "audit_stack_protection"
+  print_function "audit_stack_protection"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "Stack Protection" "check"
     check_file_value "is" "/etc/system" "set noexec_user_stack"     "eq" "1" "star"

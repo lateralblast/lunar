@@ -39,7 +39,7 @@ check_svcadm_service () {
         log_file="${file_header}.log"
         string="Service ${service_name} is ${correct_status}"
         verbose_message "${string}" "check"
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  service:"

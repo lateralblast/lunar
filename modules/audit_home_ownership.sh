@@ -25,7 +25,7 @@
 #.
 
 audit_home_ownership () {
-  print_module "audit_home_ownership"
+  print_function "audit_home_ownership"
   if [ "${os_name}" = "SunOS" ] || [  "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Ownership of Home Directories" "check"
     home_check=0

@@ -12,7 +12,7 @@
 #.
 
 audit_svm () {
-  print_module "audit_svm"
+  print_function "audit_svm"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message       "Solaris Volume Manager Daemons"    "check"

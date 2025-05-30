@@ -10,7 +10,7 @@
 #.
 
 full_audit_naming_services () {
-  print_module "full_audit_naming_services"
+  print_function "full_audit_naming_services"
   audit_nis_server
   audit_nis_client
   audit_nisplus

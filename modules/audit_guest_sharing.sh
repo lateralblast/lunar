@@ -15,7 +15,7 @@
 #.
 
 audit_guest_sharing () {
-  print_module "audit_guest_sharing"
+  print_function "audit_guest_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message          "Guest account file sharing" "check"
     check_osx_defaults_bool  "/Library/Preferences/com.apple.AppleFileServer"                "guestAccess"      "no"

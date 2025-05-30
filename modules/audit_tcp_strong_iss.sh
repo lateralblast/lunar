@@ -21,7 +21,7 @@
 #.
 
 audit_tcp_strong_iss () {
-  print_module "audit_tcp_strong_iss"
+  print_function "audit_tcp_strong_iss"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message  "TCP Sequence Number Generation" "check"
     check_file_value "is" "/etc/default/inetinit"     "TCP_STRONG_ISS" "eq" "2" "hash"

@@ -12,7 +12,7 @@
 #.
 
 audit_ftp_banner () {
-  print_module "audit_ftp_banner"
+  print_function "audit_ftp_banner"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "FTP Warning Banner" "check"
     if [ "${os_name}" = "AIX" ]; then

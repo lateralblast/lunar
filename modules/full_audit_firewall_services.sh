@@ -10,7 +10,7 @@
 #.
 
 full_audit_firewall_services () {
-  print_module "full_audit_firewall_services"
+  print_function "full_audit_firewall_services"
   audit_ipsec
   audit_ipfilter
   audit_tcp_wrappers

@@ -17,7 +17,7 @@
 #.
 
 audit_legacy_inet () {
-  print_module "audit_legacy_inet"
+  print_function "audit_legacy_inet"
   verbose_message "Inet Services" "check"
   for service_name in time echo discard daytime chargen fs dtspc \
     exec comsat talk finger uucp name xaudio netstat ufsd rexd \
@@ -30,7 +30,7 @@ audit_legacy_inet () {
 }
 
 audit_legacy_init () {
-  print_module "audit_legacy_init"
+  print_function "audit_legacy_init"
   verbose_message "Init Services" "check"
   for service_name in llc2 pcmcia ppd slpd boot.server autoinstall \
     power bdconfig cachefs.daemon cacheos.finish asppp uucp flashprom \
@@ -42,7 +42,7 @@ audit_legacy_init () {
 }
 
 audit_legacy () {
-  print_module 'audit_legacy'
+  print_function 'audit_legacy'
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Legacy Inet/Init Services" "check"
     if [ "${os_name}" = "AIX" ]; then

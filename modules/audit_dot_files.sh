@@ -10,7 +10,7 @@
 #.
 
 audit_dot_files () {
-  print_module "audit_dot_files"
+  print_function "audit_dot_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Dot Files" "check"
     check_file="$1"

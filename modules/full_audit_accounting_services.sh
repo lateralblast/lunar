@@ -10,7 +10,7 @@
 #.
 
 full_audit_accounting_services() {
-  print_module "full_audit_accounting_services"
+  print_function "full_audit_accounting_services"
   audit_system_accounting
   audit_process_accounting
   audit_audit_class

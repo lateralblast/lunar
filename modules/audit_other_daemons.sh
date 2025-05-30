@@ -17,7 +17,7 @@
 #.
 
 audit_other_daemons () {
-  print_module "audit_other_daemons"
+  print_function "audit_other_daemons"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message "Miscellaneous Services" "check"
     for service_name in wu-ftpd ftp vsftpd aaeventd tftp acpid \

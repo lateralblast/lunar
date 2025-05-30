@@ -18,7 +18,7 @@
 #.
 
 audit_aws_redshift () {
-  print_module     "audit_aws_redshift"
+  print_function  "audit_aws_redshift"
   verbose_message "Redshift"   "check"
   dbs=$( aws redshift describe-clusters --region "${aws_region}" --query 'Clusters[].ClusterIdentifier' --output text )
   for db in ${dbs}; do

@@ -49,7 +49,7 @@ replace_file_value () {
   fi
   if [ "${check_dfs}" != 0 ]; then
     if [ "${audit_mode}" != 2 ]; then
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
         echo "  lineinfile:"

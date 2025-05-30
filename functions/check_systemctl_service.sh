@@ -85,7 +85,7 @@ check_systemctl_service () {
       string="Service \"${service_name}\" is \"${correct_status}\""
       verbose_message "${string}" "check"
       if [ "${audit_mode}" != 2 ]; then
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"
           echo "  service:"

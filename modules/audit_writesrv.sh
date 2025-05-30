@@ -10,7 +10,7 @@
 #.
 
 audit_writesrv () {
-  print_module "audit_writesrv"
+  print_function "audit_writesrv"
   if [ "${os_name}" = "AIX" ]; then
     verbose_message "Writesrv" "check"
     check_itab      "writesrv" "off"

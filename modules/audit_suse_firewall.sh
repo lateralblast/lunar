@@ -12,7 +12,7 @@
 #.
 
 audit_suse_firewall () {
-  print_module "audit_suse_firewall"
+  print_function "audit_suse_firewall"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "SuSE" ]; then
       verbose_message     "SuSE Firewall"       "check"

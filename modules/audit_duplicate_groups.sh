@@ -21,7 +21,7 @@
 #.
 
 audit_duplicate_groups () {
-  print_module "audit_duplicate_groups"
+  print_function "audit_duplicate_groups"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message     "Duplicate Groups"  "check"
     audit_duplicate_ids "1" "groups" "name" "/etc/group"

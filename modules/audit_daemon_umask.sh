@@ -16,7 +16,7 @@
 #.
 
 audit_daemon_umask () {
-  print_module "audit_daemon_umask"
+  print_function "audit_daemon_umask"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     verbose_message "Daemon Umask" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

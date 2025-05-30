@@ -12,7 +12,7 @@
 #.
 
 audit_cde_screen_lock () {
-  print_module "audit_cde_screen_lock"
+  print_function "audit_cde_screen_lock"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Screen Lock for CDE Users" "check"
     file_list=$( find /usr/dt/config/*/sys.resources -t file -maxdepth 1 2> /dev/null )

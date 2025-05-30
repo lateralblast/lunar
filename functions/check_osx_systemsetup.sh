@@ -10,7 +10,7 @@
 #.
 
 check_osx_systemsetup () {
-  print_functions "check_osx_systemsetup"
+  print_function "check_osx_systemsetup"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 12 ]; then
       param="$1"
@@ -19,7 +19,7 @@ check_osx_systemsetup () {
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
         verbose_message "${string}" "check"
-        if [ "${ansible}" = 1 ]; then
+        if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="check_osx_systemsetup_${ansible_counter}"
           echo ""

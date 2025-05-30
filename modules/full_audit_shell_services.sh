@@ -10,7 +10,7 @@
 #.
 
 full_audit_shell_services () {
-  print_module "full_audit_shell_services"
+  print_function "full_audit_shell_services"
   audit_issue_banner
   audit_ssh_config
   audit_ssh_perms

@@ -12,7 +12,7 @@
 #.
 
 audit_power_management () {
-  print_module "audit_power_management"
+  print_function "audit_power_management"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Power Management" "check"
     if [ "${os_name}" = "AIX" ]; then

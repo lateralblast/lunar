@@ -15,7 +15,7 @@
 #.
 
 audit_ipv6 () {
-  print_module "audit_ipv6"
+  print_function "audit_ipv6"
   if [ "$ipv6_disable" = "yes" ]; then
     verbose_message "IPv6 Autoconf Daemon" "check"
     if [ "${os_name}" = "AIX" ]; then

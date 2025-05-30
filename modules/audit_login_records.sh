@@ -10,7 +10,7 @@
 #.
 
 audit_login_records () {
-  print_module "audit_login_records"
+  print_function "audit_login_records"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message    "Login Records" "check"

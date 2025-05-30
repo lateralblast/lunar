@@ -15,7 +15,7 @@
 #.
 
 audit_gnome_automount () {
-  print_module "audit_gnome_automount"
+  print_function "audit_gnome_automount"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message       "Automount/Autorun for GNOME Users" "check"
     check_gsettings_value "org.gnome.desktop.media-handling"  "automount-open" "false"
@@ -25,7 +25,7 @@ audit_gnome_automount () {
       if [ "${os_version}" -ge 22 ]; then 
         if [ -d "/etc/dconf" ]; then
           check_file="/etc/dconf/db/ibus.d/00-media-automount"
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             string="Automount GNOME Users"
             echo "- name: ${string}"
             echo "  copy:"
@@ -61,7 +61,7 @@ audit_gnome_automount () {
             fi
           fi
           check_file="/etc/dconf/db/ibus.d/locks/00-media-automount"
-          if [ "${ansible}" = 1 ]; then
+          if [ "${ansible_mode}" = 1 ]; then
             string="Automount/Autorun Lock GNOME Users"
             echo "- name: ${string}"
             echo "  copy:"

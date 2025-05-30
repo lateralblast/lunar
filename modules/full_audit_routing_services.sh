@@ -10,7 +10,7 @@
 #.
 
 full_audit_routing_services () {
-  print_module 'full_audit_routing_services'
+  print_function 'full_audit_routing_services'
   audit_routing_daemons
   audit_routing_params
 }

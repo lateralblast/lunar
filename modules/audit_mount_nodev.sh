@@ -21,7 +21,7 @@
 #.
 
 audit_mount_nodev () {
-  print_module "audit_mount_nodev"
+  print_function "audit_mount_nodev"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/fstab"
     if [ -e "${check_file}" ]; then

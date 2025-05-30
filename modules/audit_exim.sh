@@ -12,7 +12,7 @@
 #.
 
 audit_exim () {
-  print_module "audit_exim"
+  print_function "audit_exim"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/exim4/update-exim4.conf"
     if [ -f "${check_file}" ]; then

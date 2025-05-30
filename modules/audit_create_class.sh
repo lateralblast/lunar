@@ -12,7 +12,7 @@
 #.
 
 audit_create_class () {
-  print_module "audit_create_class"
+  print_function "audit_create_class"
   if [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/security/audit_class"
     if [ -f "${check_file}" ]; then

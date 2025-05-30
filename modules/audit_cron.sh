@@ -17,7 +17,7 @@
 #.
 
 audit_cron () {
-  print_module "audit_cron"
+  print_function "audit_cron"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message       "Cron Daemon" "check"
     check_linux_service   "crond"       "on"

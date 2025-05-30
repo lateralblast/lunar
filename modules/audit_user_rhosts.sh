@@ -23,7 +23,7 @@
 #.
 
 audit_user_rhosts () {
-  print_module "audit_user_rhosts"
+  print_function "audit_user_rhosts"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "User RHosts Files" "check"
     check_fail=0

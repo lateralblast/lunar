@@ -19,7 +19,7 @@
 #.
 
 audit_sysctl () {
-  print_module "audit_sysctl"
+  print_function "audit_sysctl"
   if [ "${os_name}" = "Linux" ]; then
     verbose_message   "Sysctl Configuration"      "check"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.default.secure_redirects"     "eq"   "0"    "hash"

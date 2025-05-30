@@ -12,7 +12,7 @@
 #.
 
 audit_vopied () {
-  print_module "audit_vopied"
+  print_function "audit_vopied"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "VOPIE Daemon"                    "check"

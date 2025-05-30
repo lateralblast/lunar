@@ -15,7 +15,7 @@
 #.
 
 audit_auto_login() {
-  print_module "audit_auto_login"
+  print_function "audit_auto_login"
   if [ "${os_name}" = "Darwin" ]; then
     string="Autologin"
     verbose_message         "${string}" "check"
@@ -29,7 +29,7 @@ audit_auto_login() {
       else
         increment_secure    "${string} Enabled"
       fi
-      if [ "${ansible}" = 1 ]; then
+      if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="audit_auto_login_${ansible_counter}"
         echo ""

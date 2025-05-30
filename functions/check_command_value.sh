@@ -68,7 +68,7 @@ check_command_value () {
   else
     lockdown_command="${set_command} ${parameter_name}=${correct_value}"
   fi
-  if [ "${ansible}" = 1 ]; then
+  if [ "${ansible_mode}" = 1 ]; then
     ansible_counter=$((ansible_counter+1))
     ansible_value="check_command_value_${command_name}_${ansible_counter}"
     echo ""

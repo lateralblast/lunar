@@ -13,7 +13,7 @@
 #.
 
 audit_internet_sharing () {
-  print_module "audit_internet_sharing"
+  print_function "audit_internet_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message         "Internet Sharing" "check"
     check_osx_defaults_dict "/Library/Preferences/SystemConfiguration/com.apple.nat" "NAT" "Enabled" "dict" "0" "int"

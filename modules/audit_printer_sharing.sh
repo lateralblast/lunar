@@ -16,7 +16,7 @@
 #.
 
 audit_printer_sharing () {
-  print_module "audit_printer_sharing"
+  print_function "audit_printer_sharing"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Printer Sharing" "check"
     if [ "${audit_mode}" != 2 ]; then

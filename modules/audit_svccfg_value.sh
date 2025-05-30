@@ -10,7 +10,7 @@
 #.
 
 audit_svccfg_value () {
-  print_module "audit_svccfg_value"
+  print_function "audit_svccfg_value"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "RPC Port Mapping" "check"
     service_name="$1"

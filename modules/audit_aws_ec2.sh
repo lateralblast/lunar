@@ -16,7 +16,7 @@
 #.
 
 audit_aws_ec2 () {
-  print_module    "audit_aws_ec2"
+  print_function  "audit_aws_ec2"
   verbose_message "EC2"   "check"
   instances=$( aws ec2 describe-instances --region "${aws_region}" --query 'Reservations[].Instances[].InstanceId' --filters "Name=instance.group-name,Values=default" --output text )
   if [ -z "${instances}" ]; then

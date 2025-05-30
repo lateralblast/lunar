@@ -17,7 +17,7 @@
 #.
 
 audit_gate_keeper () {
-  print_module "audit_gate_keeper"
+  print_function "audit_gate_keeper"
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "Gatekeeper" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

@@ -15,7 +15,7 @@
 #.
 
 audit_ldap () {
-  print_module "audit_ldap"
+  print_function "audit_ldap"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     verbose_message "LDAP Client" "check"
     if [ "${os_name}" = "SunOS" ]; then
