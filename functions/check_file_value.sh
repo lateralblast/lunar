@@ -104,6 +104,8 @@ check_file_value_with_position () {
       string="Parameter ${parameter_name} to ${correct_value} in ${check_file}"
       lockdown_message="Value of \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\""
       if [ ! -f "${check_file}" ]; then
+        log_file="${restore_dir}/fileops.log"
+        echo "rm,${check_file}" >> "${log_file}"
         if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
           line="${parameter_name}${separator}\"${correct_value}\""
         else

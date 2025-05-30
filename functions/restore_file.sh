@@ -19,18 +19,20 @@ restore_file () {
   print_function "restore_file"
   check_file="$1"
   check_dir="$2"
+  if [ ! "${check_dir}" ]; then
+    restore_file="${restore_dir}${check_file}"
+  else
+    restore_file="${check_dir}${check_file}"
+  fi
+  log_file="${restore_dir}/fileops.log"
   if [ "${audit_mode}" = 2 ]; then
-    if [ ! "${check_dir}" ]; then
-      restore_file="${restore_dir}${check_file}"
-    else
-      restore_file="${check_dir}${check_file}"
-    fi
     if [ -f "${restore_file}" ]; then
       sum_check_file=$( cksum "${check_file}" | awk '{print $1}' )
       sum_restore_file=$( cksum "${restore_file}" | awk '{print $1}' )
       if [ "$sum_check_file" != "$sum_restore_file" ]; then
-        verbose_message "File \"${restore_file}\" to \"${check_file}\"" "restore"
-        cp -p "${restore_file}" "${check_file}"
+        restore_message="File \"${restore_file}\" to \"${check_file}\""
+        restore_command="cp -p \"${restore_file}\" \"${check_file}\""
+        execute_restore "${restore_message}" "${restore_command}" "sudo"
         if [ "${os_name}" = "SunOS" ]; then
           if [ "${os_version}" != "11" ]; then
             pkgchk -f -n -p "${check_file}" 2> /dev/null
@@ -54,6 +56,15 @@ restore_file () {
           echo "    name:  ssh"
           echo "    state: restarted"
           echo ""
+        fi
+      fi
+    else
+      if [ -f "${log_file}" ]; then
+        operation=$( grep "${check_file}" < "${log_file}" | cut -f1 -d"," )
+        if [ -n "${operation}" ]; then
+          restore_command="${operation} \"${check_file}\""
+          restore_message="${restore_command}"
+          execute_restore "${restore_message}" "${restore_command}" "sudo"
         fi
       fi
     fi

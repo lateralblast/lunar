@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.8.0
+# Version:      10.8.1
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -949,6 +949,18 @@ do
   esac
 done
 
+# Set Restore Directory if not set
+
+if [ "${audit_mode}" = 2 ]; then
+  restore_dir="${base_dir}/${restore_date}"
+else
+  if [ "${restore_dir}" = "" ]; then
+    restore_dir="${work_dir}"
+  fi
+fi
+
+# If running in dry run mode say so
+
 if [ "${dryrun}" = 1 ]; then
   verbose_message "Running in dryrun mode" "notice"
 fi
@@ -959,9 +971,8 @@ if [ "${audit_mode}" = 0 ]; then
   lockdown_warning
 fi
 
-# Set restore directory
+# Get function name
 
-restore_dir="${base_dir}/${restore_date}"
 function=$(echo "${function}" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g" )
 
 # check arguments
