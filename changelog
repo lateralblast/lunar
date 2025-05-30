@@ -1973,3 +1973,5 @@
 # Added lockdown/restore counting
 # 10.7.9: Thu 29 May 2025 20:05:20 AEST
 # Output improvements
+# 10.8.0: Fri 30 May 2025 13:21:01 AEST
+# Sudo improvements

@@ -19,10 +19,12 @@ audit_sudo_usepty () {
       verbose_message "Requires sudo to check" "notice"
       return
     fi
-    check_file="/etc/sudoers"
-    if [ -f "${check_file}" ]; then
-      check_append_file "${check_file}" "Defaults use_pty" "hash"
-      check_file_perms  "${check_file}" "440" "root"       "${wheel_group}" 
+    if [ -d "/etc/sudoers.d" ]; then
+      check_file="/etc/sudoers.d/use_pty"
+    else
+      check_file="/etc/sudoers"
     fi
+    check_append_file "${check_file}" "Defaults use_pty" "hash"
+    check_file_perms  "${check_file}" "440" "root"       "${wheel_group}" 
   fi
 }

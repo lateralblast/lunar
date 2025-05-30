@@ -5,7 +5,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.7.9
+# Version:      10.8.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -183,19 +183,20 @@ warning_message () {
 #.
 
 lockdown_warning () {
-  if [ ! "${force}" = 1 ]; then
-    warning_message "This will alter the system"
-    read -p "Do you want to continue? (yes/no): " reply
-    case "${reply}" in
-      yes)
-        return
-        ;;
-      *)
-        exit
-        ;;
-    esac
+  if [ "${dryrun}" = 0 ]; then
+    if [ "${force}" != 1 ]; then
+      warning_message "This will alter the system"
+      read -p "Do you want to continue? (yes/no): " reply
+      case "${reply}" in
+        yes)
+          return
+          ;;
+        *)
+          exit
+          ;;
+      esac
+    fi
   fi
-  exit
 }
 
 # verbose_message
@@ -391,19 +392,19 @@ execute_lockdown () {
     if [ "${privilege}" = "" ]; then
       if [ "${dryrun}" = 0 ]; then
         lockdown=$((lockdown+1))
-        eval "${command}"
+        sh -c "${command}"
       fi
     else
       if [ "$my_id" = "0" ]; then
         if [ "${dryrun}" = 0 ]; then
           lockdown=$((lockdown+1))
-          eval "${command}"
+          sh -c "${command}"
         fi
       else
         if [ "${use_sudo}" = "1" ]; then
           if [ "${dryrun}" = 0 ]; then
             lockdown=$((lockdown+1))
-            eval "${command}"
+            sudo sh -c "${command}"
           fi
         fi
       fi
@@ -432,19 +433,19 @@ execute_restore () {
     if [ "${privilege}" = "" ]; then
       if [ "${dryrun}" = 0 ]; then
         restore=$((restore+1))
-        eval "${command}"
+        sh -c "${command}"
       fi
     else
       if [ "$my_id" = "0" ]; then
         if [ "${dryrun}" = 0 ]; then
           restore=$((restore+1))
-          eval "${command}"
+          sh -c "${command}"
         fi
       else
         if [ "${use_sudo}" = "1" ]; then
           if [ "${dryrun}" = 0 ]; then
             restore=$((restore+1))
-            eval "${command}"
+            sudo sh -c "${command}"
           fi
         fi
       fi

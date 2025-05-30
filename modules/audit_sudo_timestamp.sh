@@ -30,18 +30,14 @@ audit_sudo_timestamp () {
         check_sudo="1"
       fi
     fi
-    if [ "$check_sudo" = "1" ]; then
-      if [ "${os_name}" = "Darwin" ] && [ "${os_version}" -ge 14 ]; then
-        check_file="/etc/sudoers.d/sudoers_timestamp"
-      else
-        if [ "${os_name}" = "Linux" ]; then
-          check_file="/etc/sudoers.d/sudoers_timestamp"
-        else
-          check_file="/etc/sudoers"
-        fi
-      fi
+    if [ -d "/etc/sudoers.d" ]; then
+      check_file="/etc/sudoers.d/timestamp"
+    else
+      check_file="/etc/sudoers"
     fi
-    check_file_value_with_position   "is"  "${check_file}" "Defaults timestamp_type" "eq" "tty" "hash" "after" "# Defaults specification"
-    check_file_perms "${check_file}" "440" "root"          "${wheel_group}" 
+    if [ "$check_sudo" = "1" ]; then
+      check_file_value "is"  "${check_file}" "Defaults timestamp_type" "eq" "tty" "hash"
+      check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
+    fi
   fi
 }

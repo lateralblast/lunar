@@ -22,11 +22,12 @@ audit_sudo_timeout () {
       verbose_message "Requires sudo to check" "notice"
       return
     fi
-    for check_file in /etc/sudoers /etc/sudoers.d/sudoers_timeout; do
-      if [ -f "${check_file}" ]; then
-        check_file_value_with_position   "is"  "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash" "after" "# Defaults specification"
-        check_file_perms "${check_file}" "440" "root"          "${wheel_group}" 
-      fi
-    done
+    if [ -d "/etc/sudoers.d" ]; then
+      check_file="/etc/sudoers.d/timeout"
+    else
+      check_file="/etc/sudoers"
+    fi
+    check_file_value "is"  "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash"
+    check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
   fi
 }

@@ -35,6 +35,8 @@ check_file_value_with_position () {
   comment_value="$6"
   position="$7"
   search_value="$8"
+  temp_file=$( basename ${check_file} )
+  temp_file="${temp_dir}/${temp_file}"
   dir_name=$( dirname "${check_file}" )
   sshd_test=$( echo "${check_file}" | grep -c "sshd_config" | sed "s/ //g" )
   if [ ! -f "${check_file}" ]; then
@@ -99,20 +101,21 @@ check_file_value_with_position () {
     else
       string="Value of \"${parameter_name}\" ${operator} set to \"${correct_value}\" in \"${check_file}\""
       verbose_message "${string}" "check"
+      string="Parameter ${parameter_name} to ${correct_value} in ${check_file}"
+      lockdown_message="Value of \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\""
       if [ ! -f "${check_file}" ]; then
+        if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
+          line="${parameter_name}${separator}\"${correct_value}\""
+        else
+          line="${parameter_name}${separator}${correct_value}"
+        fi
+        lockdown_command="echo '${line}' >> ${check_file}"
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
-          if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/sudoers" ]; then
-            line="${parameter_name}${separator}\"${correct_value}\""
-            verbose_message "echo \"${parameter_name}${separator}\"${correct_value}\" >> ${check_file}" "fix"
-          else
-            line="${parameter_name}${separator}${correct_value}"
-            verbose_message "echo \"${parameter_name}${separator}${correct_value}\" >> ${check_file}" "fix"
-          fi
+          verbose_message "${lockdown_command}" "fix"
         else
           if [ "${audit_mode}" = 0 ]; then
-            string="Parameter ${parameter_name} to ${correct_value} in ${check_file}"
-            verbose_message "\"${string}\"" "set"
+            backup_file "${check_file}"
             if [ "${check_file}" = "/etc/system" ]; then
               reboot=1
               verbose_message "Reboot required" "notice"
@@ -120,12 +123,7 @@ check_file_value_with_position () {
             if [ "$sshd_test" =  "1" ]; then
               verbose_message "Service restart required for SSH" "notice"
             fi
-            backup_file "${check_file}"
-            if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
-              echo "${parameter_name}${separator}\"${correct_value}\"" >> "${check_file}"
-            else
-              echo "${parameter_name}${separator}${correct_value}" >> "${check_file}"
-            fi
+            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
           if [ "${ansible}" = 1 ]; then
             echo ""
@@ -218,7 +216,7 @@ check_file_value_with_position () {
                 verbose_message "echo -e \"${parameter_name}\t${correct_value}\" >> ${check_file}" "fix"
               else
                 if [ "${position}" = "after" ]; then
-                  verbose_message "${cat_command} ${check_file} | sed \"s,${search_value},&\n${parameter_name}${separator}${correct_value},\" > ${temp_file}" "fix"
+                  verbose_message "${cat_command} ${check_file} | sed \"s,${search_value},&\\\n${parameter_name}${separator}${correct_value},\" > ${temp_file}" "fix"
                   verbose_message "${cat_command} ${temp_file} > ${check_file}" "fix"
                 else
                   verbose_message "echo \"${parameter_name}${separator}${correct_value}\" >> ${check_file}" "fix"
@@ -226,11 +224,10 @@ check_file_value_with_position () {
               fi
             else
               if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
-                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\"${correct_value}\"/\" ${check_file} > ${temp_file}" "fix"
+                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\"${correct_value}\"/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}" "fix"
               else
-                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file}" "fix"
+                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}" "fix"
               fi
-              verbose_message "${cat_command} ${temp_file} > ${check_file}" "fix"
             fi
           else
             if [ "${audit_mode}" = 0 ]; then
@@ -245,22 +242,22 @@ check_file_value_with_position () {
               backup_file "${check_file}"
               if [ "${check_parameter}" != "${parameter_name}" ]; then
                 if [ "${separator_value}" = "tab" ]; then
-                  eval "${echo_command} -e \"${parameter_name}\t${correct_value}\" >> ${check_file}"
+                  lockdown_command="${echo_command} -e \"${parameter_name}\t${correct_value}\" >> ${check_file}"
                 else
                   if [ "${position}" = "after" ]; then
-                    eval "${cat_command} ${check_file} | sed \"s,${search_value},&\n${parameter_name}${separator}${correct_value},\" > ${temp_file}"
-                    eval "${cat_command} ${temp_file} > ${check_file}"
+                    lockdown_command="${cat_command} ${check_file} | sed \"s,${search_value},&\\\n${parameter_name}${separator}${correct_value},\" > ${temp_file} ; ${cat_command} ${temp_file} > ${check_file} ; rm ${temp_file}"
                   else
-                    ${echo_command} "${parameter_name}${separator}${correct_value}" >> "${check_file}"
+                    lockdown_command="${echo_command} \"${parameter_name}${separator}${correct_value}\" >> ${check_file}"
                   fi
                 fi
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               else
                 if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
-                  eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\\"${correct_value}\\"/\" ${check_file} > ${temp_file}"
+                  lockdown_command="${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\\"${correct_value}\\"/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
                 else
-                  eval "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file}"
+                  lockdown_command="${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
                 fi
-                cat "${temp_file}" > "${check_file}"
+                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                 if [ "${os_name}" = "SunOS" ]; then
                   if [ "${os_version}" != "11" ]; then
                     pkgchk -f -n -p "${check_file}" 2> /dev/null
@@ -268,7 +265,6 @@ check_file_value_with_position () {
                     pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
                   fi
                 fi
-                rm "${temp_file}"
               fi
             fi
           fi
