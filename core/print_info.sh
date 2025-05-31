@@ -174,8 +174,8 @@ print_function() {
 #.
 
 print_function() {
-  module_name="$1"
-  echo "Module:     ${module_name}"
+  function_name="$1"
+  echo "Module:     ${function_name}"
 }
 
 print_results () {

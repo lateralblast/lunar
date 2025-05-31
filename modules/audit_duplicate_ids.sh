@@ -25,7 +25,7 @@ audit_duplicate_ids () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Duplicate IDs" "check"
     field="$1"
-    module_name="$2"
+    function="$2"
     term="$3"
     check_file="$4"
     duplicate=0
@@ -38,7 +38,7 @@ audit_duplicate_ids () {
           if [ "${file_check}" = 1 ]; then
             file_id=$( echo "${file_info}" |cut -f2 -d":" )
             if [ "${audit_mode}" = 1 ];then
-              increment_insecure "There are multiple \"${module_name}\" with \"${term}\" \"${file_id}\""
+              increment_insecure "There are multiple \"${function}\" with \"${term}\" \"${file_id}\""
               duplicate=1
             fi
           fi
@@ -46,7 +46,7 @@ audit_duplicate_ids () {
       done
       if [ "${audit_mode}" = 1 ]; then
         if [ "${duplicate}" = 0 ];then
-          increment_secure "No \"${module_name}\" with duplicate \"${term}\""
+          increment_secure "No \"${function}\" with duplicate \"${term}\""
         fi
       fi
     fi
