@@ -1993,3 +1993,5 @@
 # Fixed bug with module_name being recast
 # 10.8.9: Sat 31 May 2025 16:03:06 AEST
 # Fixes based on POSIX sh recommendations from shellcheck
+# 10.9.0: Sat 31 May 2025 16:09:06 AEST
+# More shellcheck recommendations

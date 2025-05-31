@@ -32,10 +32,10 @@ audit_ftp_banner () {
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${message_file}"
-              dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > ${temp_dir}/ftpd.tmp
-              sed    "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" ${temp_dir}/ftpd.tmp > ${temp_dir}/ftpd.msg
-              gencat /usr/lib/nls/msg/en_US/ftpd.cat ${temp_dir}/ftpd.msg
-              rm ${temp_dir}/ftpd.tmp ${temp_dir}/ftpd.msg
+              dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > "${temp_dir}/ftpd.tmp"
+              sed    "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" "${temp_dir}/ftpd.tmp" > "${temp_dir}/ftpd.msg"
+              gencat /usr/lib/nls/msg/en_US/ftpd.cat "${temp_dir}/ftpd.msg"
+              rm "${temp_dir}/ftpd.tmp" "${temp_dir}/ftpd.msg"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
