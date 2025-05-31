@@ -189,7 +189,7 @@ lockdown_warning () {
     if [ "${force}" != 1 ]; then
       warning_message "This will alter the system"
       printf "%s" "Do you want to continue? (yes/no): "
-      while read reply
+      while read -r reply
       do
         case "${reply}" in
           yes)
