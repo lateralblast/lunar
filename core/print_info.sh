@@ -23,8 +23,13 @@ print_info () {
   echo ""
   echo "Usage: $0 -${info}|--${info}"
   echo ""
-  echo "${info}(s):"
-  echo "---------"
+  if [ "${info}" = "switch" ]; then
+    echo "${info}(es):"
+    echo "-----------"
+  else
+    echo "${info}(s):"
+    echo "----------"
+  fi
   while read -r line; do
     test=$( echo "${line}" | grep "# ${info}" )
     if [ "${test}" ]; then

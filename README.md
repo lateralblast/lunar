@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 10.9.0
+Current version 10.9.1
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -143,14 +143,22 @@ Usage
 ```
 Usage: ./lunar.sh -switch|--switch
 
-switch(s):
----------
+switch(es):
+----------
 -1|--list)
   List changes/backups
--2|--tests|--printtests)
+-2|--tests)
   Print tests
+-3|--printfunct)
+  Print function
+-4|--dryrun)
+  Run in dryrun mode
+-8|--usesudo)
+  Use sudo
 -9|--shellcheck)
   Run shellcheck against script
+-0|--force)
+  Force action
 -a|--audit)
   Run in audit mode (for Operating Systems - no changes made to system)
 -A|--fullaudit)

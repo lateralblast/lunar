@@ -1995,3 +1995,5 @@
 # Fixes based on POSIX sh recommendations from shellcheck
 # 10.9.0: Sat 31 May 2025 16:09:06 AEST
 # More shellcheck recommendations
+# 10.9.1: Sat 31 May 2025 17:25:53 AEST
+# Updated documentation
