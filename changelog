@@ -1985,3 +1985,5 @@
 # Cleaned up some variable names
 # 10.8.5: Sat 31 May 2025 14:21:00 AEST
 # Fixed check_file_value routine logging
+# 10.8.6: Sat 31 May 2025 14:29:11 AEST
+# Stopped check_environment running multiple times
