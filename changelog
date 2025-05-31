@@ -1987,3 +1987,5 @@
 # Fixed check_file_value routine logging
 # 10.8.6: Sat 31 May 2025 14:29:11 AEST
 # Stopped check_environment running multiple times
+# 10.8.7: Sat 31 May 2025 15:30:36 AEST
+# Improved check_file_value routine

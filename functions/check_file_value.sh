@@ -116,7 +116,7 @@ check_file_value_with_position () {
         else
           if [ "${audit_mode}" = 0 ]; then
             log_file="${restore_dir}/fileops.log"
-            echo "rm,${check_file}" >> "${log_file}"
+            update_log_file "${log_file}" "rm,${check_file}"
             backup_file "${check_file}"
             if [ "${check_file}" = "/etc/system" ]; then
               reboot_required=1
