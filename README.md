@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 10.8.8
+Current version 10.8.9
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -24,8 +24,7 @@ Fund me here: https://ko-fi.com/richardatlateralblast
 
 Run this code in audit more only, e.g. with -a or --audit switch.
 Run lockdown at your own risk. As per any system change, have backups.
-I'm working on improving the lockdown and recovery mode, but I would
-avoid using it in that mode for the moment.
+I'm working on improving the recovery mode, but there may still be bugs.
 
 I've tried to clean up this script as much as possible using shellcheck,
 and I've enable the option to use the -e (errexit) and -u (nounset) shell

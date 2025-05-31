@@ -1991,3 +1991,5 @@
 # Improved check_file_value routine
 # 10.8.8: Sat May 31 15:38:14 AEST 2025
 # Fixed bug with module_name being recast
+# 10.8.9: Sat 31 May 2025 16:03:06 AEST
+# Fixes based on POSIX sh recommendations from shellcheck

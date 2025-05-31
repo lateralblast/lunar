@@ -36,7 +36,7 @@ audit_apparmor () {
       do_app_test=1
     fi
     if [ "${do_app_test}" = 1 ]; then
-      get_command="apparmor_status |grep "unconfined mode" |awk '{print \$1}'"
+      get_command="apparmor_status |grep \"unconfined mode\" |awk '{print \$1}'"
       set_command="sudo aa-enforce /etc/apparmor.d/*"
       profile_test=$( eval "${get_command}" )
       if [ "${profile_test}" = "0" ]; then

@@ -1,11 +1,13 @@
 #!/bin/sh
 
 # shellcheck disable=SC1090
+# shellcheck disable=SC2029
 # shellcheck disable=SC2034
+# shellcheck disable=SC2124
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.8.8
+# Version:      10.8.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -186,15 +188,18 @@ lockdown_warning () {
   if [ "${dryrun_mode}" = 0 ]; then
     if [ "${force}" != 1 ]; then
       warning_message "This will alter the system"
-      read -p "Do you want to continue? (yes/no): " reply
-      case "${reply}" in
-        yes)
-          return
-          ;;
-        *)
-          exit
-          ;;
-      esac
+      printf "%s" "Do you want to continue? (yes/no): "
+      while read reply
+      do
+        case "${reply}" in
+          yes)
+            return
+            ;;
+          *)
+            exit
+            ;;
+        esac
+      done
     fi
   fi
 }
@@ -645,7 +650,7 @@ do
       fi
       exit
       ;;
-    -2|--*tests)                    # switch - Print tests
+    -2|--tests)                    # switch - Print tests
       tests="$2" 
       if [ -z "${tests}" ]; then
         print_tests "All"
@@ -977,19 +982,19 @@ module_name=$(echo "${module_name}" | tr '[:upper:]' '[:lower:]' | sed "s/ /_/g"
 
 # check arguments
 
-if [ "$do_audit" = 1 ]; then
-  if [ "$audit_type" = "" ]; then
+if [ "${do_audit}" = 1 ]; then
+  if [ "${audit_type}" = "" ]; then
     audit_type="local"
   fi
 fi
 
 # Run script remotely 
 
-if [ "$do_remote" = 1 ]; then
-  echo "Copying ${app_dir} to $ext_host:/tmp"
-  scp -r "${app_dir}" "$ext_host":/tmp
-  echo "Executing lunar in audit mode (no changes will be made) on $ext_host"
-  ssh "$ext_host" "sudo ${temp_dir}/lunar.sh -a"
+if [ "${do_remote}" = 1 ]; then
+  echo "Copying ${app_dir} to ${ext_host}:/tmp"
+  scp -r "${app_dir}" "${ext_host}":/tmp
+  echo "Executing lunar in audit mode (no changes will be made) on ${ext_host}"
+  ssh "${ext_host}" "sudo sh -c \"${temp_dir}/lunar.sh -a\""
   exit
 fi
 
@@ -997,8 +1002,8 @@ check_environment
 
 # Run in docker or multipass
 
-if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
-  if [ "$do_multipass" = 1 ]; then
+if [ "${do_compose}" = 1 ] || [ "${do_multipass}" = 1 ]; then
+  if [ "${do_multipass}" = 1 ]; then
     get_ubuntu_codename "${test_os}"
     test_os="${ubuntu_codename}"
     if [ "${test_tag}" = "none" ]; then
@@ -1008,7 +1013,7 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
     fi
   fi
   if [ ! "${test_os}" = "none" ] && [ ! "${test_tag}" = "none" ]; then
-    if [ "$do_compose" = 1 ]; then
+    if [ "${do_compose}" = 1 ]; then
       d_test=$(command -v docker-compose )
       if [ -n "$d_test" ]; then
         if [ "$do_shell" = 0 ]; then
@@ -1022,26 +1027,26 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
       fi
     else
       mpackage_test=$(command -v multipass | wc -l | sed "s/ //g" )
-      if [ "$mpackage_test" = "1" ]; then
+      if [ "${mpackage_test}" = "1" ]; then
         vm_test=$(multipass list | awk '{print $1}' | grep -c "${test_tag}" )
-        if [ "$vm_test" = "1" ]; then
-          if [ "$action" = "delete" ]; then
+        if [ "${vm_test}" = "1" ]; then
+          if [ "${action}" = "delete" ]; then
             verbose_message "Multipass VM \"${test_tag}\" with release \"${test_os}\"" "delete"
             multipass delete "${test_tag}"
             multipass purge
           else
-            if [ "$do_shell" = 1 ] || [ "$action" = "shell" ]; then
+            if [ "${do_shell}" = 1 ] || [ "${action}" = "shell" ]; then
               multipass shell "${test_tag}"
             else
-              if [ "$action" = "refresh" ]; then
+              if [ "${action}" = "refresh" ]; then
                 multipass exec "${test_tag}" -- bash -c "rm -rf lunar"
                 multipass exec "${test_tag}" -- bash -c "git clone ${git_url}"
               else
-                mp_command="sudo lunar/lunar.sh --action $action"
-                if [ "$do_debug" = "1" ]; then  
+                mp_command="sudo lunar/lunar.sh --action ${action}"
+                if [ "${do_debug}" = "1" ]; then  
                   mp_command="${mp_command} --debug"
                 fi
-                if [ "$do_select" = "1" ]; then  
+                if [ "${do_select}" = "1" ]; then  
                   mp_command="${mp_command} --select ${module_name}"
                 fi
                 multipass exec "${test_tag}" -- bash -c "${mp_command}"
@@ -1049,11 +1054,11 @@ if [ "$do_compose" = 1 ] || [ "$do_multipass" = 1 ]; then
             fi
           fi
         else 
-          if [ "$action" = "delete" ]; then
+          if [ "${action}" = "delete" ]; then
             verbose_message "Multipass VM \"${test_tag}\" does not exist"
             exit
           else
-            if [ "$action" = "create" ]; then
+            if [ "${action}" = "create" ]; then
               verbose_message "Multipass VM \"${test_tag}\" with release \"${test_os}\"" "create"
               multipass launch "${test_os}" --name "${test_tag}"
               multipass exec "${test_tag}" -- bash -c "git clone ${git_url}"
@@ -1089,11 +1094,11 @@ if [ "${audit_mode}" != 3 ]; then
     verbose_message "Filesystem checks will be done" "info"
   fi
   echo ""
-  if [ "$do_select" = 1 ]; then
+  if [ "${do_select}" = 1 ]; then
     verbose_message    "Selecting ${module_name}" "audit"
     funct_audit_select "${audit_mode}" "${module_name}"
   else
-    case $audit_type in
+    case "${audit_type}" in
       Kubernetes)
         verbose_message        "Kubernetes" "audit"
         funct_audit_kubernetes "${audit_mode}"
