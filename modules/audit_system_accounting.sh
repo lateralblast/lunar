@@ -33,6 +33,7 @@ audit_system_accounting () {
   disk_full_action="single"
   disk_error_action="single"
   space_left_action="single"
+  admin_space_left_action="single"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "System Accounting" "check"
     if [ "${os_name}" = "AIX" ]; then
