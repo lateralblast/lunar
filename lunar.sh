@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.9.3
+# Version:      10.9.5
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -156,6 +156,8 @@ do_select=0
 module_name=""
 no_cat=0
 ubuntu_codename=""
+output_type="cli"
+output_file=""
 
 # Disable daemons
 
@@ -675,6 +677,14 @@ do
     -4|--dryrun)                    # switch - Run in dryrun mode
       dryrun_mode=1
       shift
+      ;;
+    -6|--format)                    # switch - Outpt format/type
+      output_type="$2"
+      shift 2
+      ;;
+    -7|--file)                      # switch - Output file
+      output_file="$2"
+      shift 2
       ;;
     -8|--usesudo)                   # switch - Use sudo
       use_sudo=1
