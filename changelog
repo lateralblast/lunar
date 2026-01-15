@@ -2009,3 +2009,5 @@
 # Added hostname and domainname to OS info
 # 10.9.7: Thu Jan 15 21:17:22 AEDT 2026
 # Added initial CSV output
+# 10.9.8: Thu Jan 15 21:26:27 AEDT 2026
+# Fixed typo
