@@ -29,7 +29,7 @@ audit_aide () {
       check_file_value    "is" "/etc/aide/aide.conf"  "/sbin/autrace"    "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
       check_file_value    "is" "/etc/aide/aide.conf"  "/sbin/augenrules" "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"   "hash"
     fi
-    if [ "${os_release}" -lt 24 ]; then
+    if [ "${os_version}" -lt 24 ]; then
       check_append_file   "/etc/cron.d/aide" "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check" "hash"
     else
       check_linux_service "dailyaidecheck.timer"      "on"

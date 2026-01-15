@@ -1999,3 +1999,5 @@
 # Updated documentation
 # 10.9.2: Thu Jan 15 11:57:32 AEDT 2026
 # Updated Ubuntu codenames
+# 10.9.3: Thu Jan 15 12:38:51 AEDT 2026
+# Fixed OS version check in aide check
