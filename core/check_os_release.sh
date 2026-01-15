@@ -92,8 +92,14 @@ get_ubuntu_codename () {
     "25.04")
       ubuntu_codename="plucky"
       ;;
+    "25.10")
+      ubuntu_codename="questing"
+      ;;
+    "26.04")
+      ubuntu_codename="resolute"
+      ;;
     *)
-      ubuntu_codename="lts"    
+      ubuntu_codename="unknown"    
       ;;
   esac
 }

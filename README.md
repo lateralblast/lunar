@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 10.9.1
+Current version 10.9.2
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -27,7 +27,7 @@ Run lockdown at your own risk. As per any system change, have backups.
 I'm working on improving the recovery mode, but there may still be bugs.
 
 I've tried to clean up this script as much as possible using shellcheck,
-and I've enable the option to use the -e (errexit) and -u (nounset) shell
+and I've enabled the option to use the -e (errexit) and -u (nounset) shell
 flags to help protect against errors. The -x (xtrace) shell flag can be
 enabled by using the script with the -Q or --debug flag.
 
