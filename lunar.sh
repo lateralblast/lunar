@@ -372,6 +372,9 @@ check_virtual_platform () {
       virtual=$( dmidecode | grep Manufacturer |head -1 | awk '{print $2}' | sed "s/,//g" )
     else
       virtual=$( uname -p )
+      if [ "${virtual}" = "unknown" ]; then
+        virtual=$( uname -m )
+      fi
     fi
   fi
   echo "Platform:   ${virtual}"
