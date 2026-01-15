@@ -14,7 +14,7 @@ check_environment () {
   check_os_release
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "" ""
-    verbose_message "If node is managed" "check"
+    verbose_message "Checking if node is managed" "info"
     managed_node=$( sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d: )
     if [ "${managed_node}" = "Error" ]; then
       verbose_message "Node is not managed" "notice"

@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.9.6
+# Version:      10.9.7
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -116,6 +116,7 @@ temp_dir="${base_dir}/tmp"
 date_suffix=$( date +%d_%m_%Y_%H_%M_%S )
 temp_file="${temp_dir}/${pkg_suffix}.tmp"
 work_dir="${base_dir}/${date_suffix}"
+csv_dir="${base_dir}/csv"
 wheel_group="wheel"
 docker_group="docker"
 reboot_required=0
@@ -154,10 +155,11 @@ ssh_sandbox="yes"
 do_debug=0
 do_select=0
 module_name=""
-no_cat=0
+no_cat=1
 ubuntu_codename=""
 output_type="cli"
 output_file=""
+output_csv="Module,Check,Status,Fix"
 
 # Disable daemons
 
@@ -184,6 +186,10 @@ verbose_message () {
       echo ""
     else
       echo "[ Fix ]     ${text}"
+      output_csv="${output_csv},${text}"
+      if [ ! "${output_file}" = "" ]; then
+        case "${output_csv}" in *"check_"*) echo "${output_csv}" >> "${output_file}";; esac
+      fi
     fi
   else
     case $style in
@@ -195,6 +201,7 @@ verbose_message () {
         ;;
       check|checking)
         echo "Checking:   ${text}"
+        output_csv="${output_csv},${text}"
         ;;
       create|creating)
         echo "Creating:   ${text}"
@@ -213,6 +220,10 @@ verbose_message () {
         ;;
       module)
         echo "Module:     ${text}"
+        if [ ! "${output_file}" = "" ]; then
+          case "${output_csv}" in *"check_"*) echo "${output_csv}" >> "${output_file}";; esac
+        fi
+        output_csv="${text}"
         ;;
       notice)
         echo "Notice:     ${text}"
@@ -305,6 +316,7 @@ if [ ! "${id_check}" = 0 ]; then
   temp_dir="${base_dir}/tmp"
   temp_file="${temp_dir}/${pkg_suffix}.tmp"
   work_dir="${base_dir}/${date_suffix}"
+  csv_dir="${base_dir}/csv"
 fi
 
 # Load core functions from core directory
@@ -526,6 +538,7 @@ increment_secure () {
     else
       echo "Secure:     ${message} [${secure_count} Passes]"
     fi
+    output_csv="${output_csv},PASS:${message}"
   fi
 }
 
@@ -544,6 +557,7 @@ increment_insecure () {
     else
       verbose_message "${message} [${insecure_count} Warnings]" "warn"
     fi
+    output_csv="${output_csv},FAIL:${message}"
   fi
 }
 
@@ -1012,6 +1026,20 @@ if [ "${do_remote}" = 1 ]; then
 fi
 
 check_environment
+
+# Setup output file and directory
+
+output_dir=$(dirname "${output_file}")
+if [ ! -d "${output_dir}" ]; then
+  mkdir -p "${output_dir}"
+fi
+if [ "${output_type}" = "csv" ] && [ "${output_file}" = "" ]; then
+  output_file="${csv_dir}/lunar_${os_hostname}_${date_suffix}.csv"
+fi
+if [ "${output_type}" = "csv" ]; then
+  verbose_message "${output_file}" "create"
+  echo "${output_csv}" > "${output_file}"
+fi
 
 # Run in docker or multipass
 

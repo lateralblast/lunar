@@ -168,11 +168,6 @@ print_function() {
   fi
 }
 
-# print_results
-#
-# Print Results
-#.
-
 # print_function
 #
 # Print module name
@@ -182,6 +177,11 @@ print_function() {
   function_name="$1"
   verbose_message "${function_name}" "module"
 }
+
+# print_results
+#
+# Print Results
+#.
 
 print_results () {
   echo ""
@@ -231,6 +231,10 @@ print_results () {
     else
       echo "Restore:    $0 -u ${date_suffix} -8"
     fi
+  fi
+  if [ "${output_type}" = "csv" ]; then
+    echo ""
+    echo "CSV File:   ${output_file}"
   fi
   echo ""
 }
