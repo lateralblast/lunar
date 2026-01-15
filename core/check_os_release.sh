@@ -236,6 +236,13 @@ check_os_release () {
       os_platform=$( uname -p )
     fi
   fi
+  os_hostname=$( hostname -f )
+  echo "Hostname:   ${os_hostname}"
+  os_domain=$( hostname -d )
+  if [ "${os_domain}" = "" ]; then
+    os_domain=$( hostname -f | cut -f2- -d. )
+  fi
+  echo "Domain:     ${os_domain}"
   os_machine=$( uname -m )
   check_virtual_platform
   if [ "${os_platform}" = "" ]; then

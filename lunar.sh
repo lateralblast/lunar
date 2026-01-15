@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.9.5
+# Version:      10.9.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -171,6 +171,82 @@ ipv6_disable="yes"
 routed_disable="yes"
 named_disable="yes"
 
+# verbose_message
+#
+# Print a message if verbose mode enabled
+#.
+
+verbose_message () {
+  text="$1"
+  style="$2"
+  if [ "${verbose_mode}" = 1 ] && [ "$style" = "fix" ]; then
+    if [ "${text}" = "" ]; then
+      echo ""
+    else
+      echo "[ Fix ]     ${text}"
+    fi
+  else
+    case $style in
+      audit|auditing)
+        echo "Auditing:   ${text}"
+        ;;
+      backup)
+        echo "Backup:     ${text}"
+        ;;
+      check|checking)
+        echo "Checking:   ${text}"
+        ;;
+      create|creating)
+        echo "Creating:   ${text}"
+        ;;
+      delete|deleting)
+        echo "Deleting:   ${text}"
+        ;;
+      exec|execute|executing)
+        echo "Executing:  ${text}"
+        ;;
+      install|installing)
+        echo "Installing: ${text}"
+        ;;
+      load|loading)
+        echo "Loading:    ${text}"
+        ;;
+      module)
+        echo "Module:     ${text}"
+        ;;
+      notice)
+        echo "Notice:     ${text}"
+        ;;
+      remove|removing)
+        echo "Removing:   ${text}"
+        ;;
+      run|running)
+        echo "Running:    ${text}"
+        ;;
+      save|saving)
+        echo "Saving:     ${text}"
+        ;;
+      set|setting)
+        echo "Setting:    ${text}"
+        ;;
+      secure)
+        echo "Secure:     ${text}"
+        ;;
+      update)
+        echo "Updating:   ${text}"
+        ;;
+      warn|warning)
+        echo "Warning:    ${text}"
+        ;;
+      *)
+        if [ "${verbose_mode}" = 1 ]; then
+          echo "${text}"
+        fi
+        ;;
+    esac
+  fi
+}
+
 # warning_message
 #
 # Warning message
@@ -203,82 +279,6 @@ lockdown_warning () {
         esac
       done
     fi
-  fi
-}
-
-# verbose_message
-#
-# Print a message if verbose mode enabled
-#.
-
-verbose_message () {
-  text="$1"
-  style="$2"
-  if [ "${verbose_mode}" = 1 ] && [ "$style" = "fix" ]; then
-    if [ "${text}" = "" ]; then
-      echo ""
-    else
-      echo "[ Fix ]     ${text}"
-    fi
-  else
-    case $style in
-      audit|auditing)
-        echo "Auditing:   ${text}"
-        ;;
-      load|loading)
-        echo "Loading:    ${text}"
-        ;;
-      exec|execute|executing)
-        echo "Executing:  ${text}"
-        ;;
-      notice)
-        echo "Notice:     ${text}"
-        ;;
-      delete|deleting)
-        echo "Deleting:   ${text}"
-        ;;
-      install|installing)
-        echo "Installing: ${text}"
-        ;;
-      backup)
-        echo "Backup:     ${text}"
-        ;;
-      save|saving)
-        echo "Saving:     ${text}"
-        ;;
-      set|setting)
-        echo "Setting:    ${text}"
-        ;;
-      run|running)
-        echo "Running:    ${text}"
-        ;;
-      restore|restoring)
-        echo "Restoring:  ${text}"
-        ;;
-      remove|removing)
-        echo "Removing:   ${text}"
-        ;;
-      check|checking)
-        echo "Checking:   ${text}"
-        ;;
-      create|creating)
-        echo "Creating:   ${text}"
-        ;;
-      warn|warning)
-        echo "Warning:    ${text}"
-        ;;
-      secure)
-        echo "Secure:     ${text}"
-        ;;
-      update)
-        echo "Updating:   ${text}"
-        ;;
-      *)
-        if [ "${verbose_mode}" = 1 ]; then
-          echo "${text}"
-        fi
-        ;;
-    esac
   fi
 }
 

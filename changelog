@@ -2005,3 +2005,5 @@
 # Improved virtual check
 # 10.9.5: Thu Jan 15 14:22:12 AEDT 2026
 # Added output file and format options for future improvements
+# 10.9.6: Thu Jan 15 15:25:37 AEDT 2026
+# Added hostname and domainname to OS info

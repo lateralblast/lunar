@@ -180,7 +180,7 @@ print_function() {
 
 print_function() {
   function_name="$1"
-  echo "Module:     ${function_name}"
+  verbose_message "${function_name}" "module"
 }
 
 print_results () {
