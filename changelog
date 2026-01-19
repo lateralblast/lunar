@@ -2011,3 +2011,5 @@
 # Added initial CSV output
 # 10.9.8: Thu Jan 15 21:26:27 AEDT 2026
 # Fixed typo
+# 10.9.9: Thu Jan 19 11:51:25 AEDT 2026
+# Added initial Azure stub

@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      10.9.8
+# Version:      10.9.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -589,7 +589,25 @@ check_aws () {
   fi
 }
 
+# check_azure
+#
+# Check Azure CLI etc is installed
+#.
 
+check_azure () {
+  azure_bin=$( command -v az 2> /dev/null )
+  if [ -f "$azure_bin" ]; then
+    ext_test=$( az extension list | grep databricks )
+    if [ -z "${ext_test}" ]; then
+      echo "Azure databricks extension is not installed"
+      exit
+    fi
+  else
+    echo "Azure CLI is not installed"
+    exit
+  fi
+  az login
+}
 
 # Get the path the script starts from
 

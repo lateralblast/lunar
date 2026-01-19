@@ -18,7 +18,7 @@
 #.
 
 audit_aws_vpcs () {
-  print_function    "audit_aws_vpcs"
+  print_function  "audit_aws_vpcs"
   verbose_message "VPCs"   "check"
   # Check for exposed VPC endpoints
   endpoint_list=$( aws ec2 describe-vpc-endpoints --region "${aws_region}" --query 'VpcEndpoints[*].VpcEndpointId' --output text )
