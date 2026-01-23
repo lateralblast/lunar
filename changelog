@@ -2011,5 +2011,49 @@
 # Added initial CSV output
 # 10.9.8: Thu Jan 15 21:26:27 AEDT 2026
 # Fixed typo
-# 10.9.9: Thu Jan 19 11:51:25 AEDT 2026
+# 10.9.9: Mon Jan 19 11:51:25 AEDT 2026
 # Added initial Azure stub
+# 11.0.0: Wed Jan 21 11:51:25 AEDT 2026
+# Added Azure Storage Accounts audit stub
+# 11.0.1: Wed Jan 21 15:52:58 AEDT 2026
+# Added Azure Storage Accounts Key Expiration check
+# 11.0.2: Thu Jan 22 14:47:19 AEDT 2026
+# Fixed Azure Storage Accounts Key Expiration check
+# 11.0.3: Thu Jan 22 17:10:30 AEDT 2026
+# Added Azure Storage Accounts Key Regeneration check
+# 11.0.4: Thu 22 Jan 2026 18:37:22 AEDT
+# Added command_message routine
+# 11.0.5: Thu 22 Jan 2026 20:44:42 AEDT
+# Added Private Endpoint check for Storage Accounts
+# 11.0.6: Thu 22 Jan 2026 21:29:00 AEDT
+# Added Public Network Access check for Storage Accounts
+# 11.0.7: Thu 22 Jan 2026 21:36:22 AEDT
+# Added fix commands for some Storage Accounts tests
+# 11.0.8: Thu 22 Jan 2026 21:41:33 AED
+# Added check to verify default network access rule for Storage Accounts
+# 11.0.9: Thu 22 Jan 2026 21:46:22 AEDT
+# Added generic check_azure_storage_account_value function
+# 11.1.0: Thu 22 Jan 2026 21:50:22 AEDT
+# Added check to verify Microsoft Entra authorization for Storage Accounts
+# 11.1.1: Thu 22 Jan 2026 21:51:33 AEDT
+# Improved check_azure_storage_account_value function
+# 11.1.2: Thu 22 Jan 2026 21:56:22 AEDT
+# Added check to verify Azure services on the trusted services list for Storage Accounts
+# 11.1.3: Thu 22 Jan 2026 22:06:22 AEDT
+# Added check to verify Secure transfer required for Storage Accounts
+# 11.1.4: Thu 22 Jan 2026 22:11:22 AEDT
+# Added check to verify Cross Tenant Replication for Storage Accounts
+# 11.1.5: Thu 22 Jan 2026 22:16:22 AEDT
+# Added check to verify Allow blob public access for Storage Accounts
+# 11.1.6: Thu 22 Jan 2026 22:21:22 AEDT
+# Added Minimum TLS version check for Storage Accounts
+# 11.1.7: Fri 23 Jan 2026 10:37:22 AEDT
+# Added check_azure_resource_manager_locks function
+# 11.1.8: Fri 23 Jan 2026 10:42:22 AEDT
+# Added Azure Resource Manager Delete locks check for Storage Accounts
+# 11.1.9: Fri 23 Jan 2026 10:46:22 AEDT
+# Added Azure Resource Manager ReadOnly locks check for Storage Accounts
+# 11.2.0: Fri 23 Jan 2026 11:12:39 AEDT
+# Added Azure Storage Accounts Redundancy check
+# 11.2.1: Fri 23 Jan 2026 11:51:22 AEDT
+# Bug fixes and improvements

@@ -312,6 +312,16 @@ setting_message () {
   verbose_message "$1" "set"
 }
 
+#
+# command_message
+#
+# Command message
+#.
+
+command_message () {
+  verbose_message "$1" "exec"
+}
+
 # print_audit_info
 #
 # This function searches the script for the information associated

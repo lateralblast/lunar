@@ -29,4 +29,5 @@ funct_audit_azure () {
 
 audit_azure_all () {
   audit_azure_databricks
+  audit_azure_storage_accounts
 }

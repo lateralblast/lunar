@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 10.9.9
+Current version 11.2.1
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -30,6 +30,17 @@ I've tried to clean up this script as much as possible using shellcheck,
 and I've enabled the option to use the -e (errexit) and -u (nounset) shell
 flags to help protect against errors. The -x (xtrace) shell flag can be
 enabled by using the script with the -Q or --debug flag.
+
+Status
+------
+
+In progress:
+
+- More flexibility in reporting format(s),  e.g. CSV
+- More inline documentation and documentation output
+- Adding Azure support (current focus)
+- Adding Kubernetes support
+- Adding Apache support
 
 Introduction
 ------------
@@ -89,6 +100,7 @@ Supported Services
 The following services are supported:
 
 - AWS
+- Azure (not complete)
 - Docker
 - Kubernetes (not complete)
 - Apache (not complete)
@@ -144,7 +156,7 @@ Usage
 Usage: ./lunar.sh -switch|--switch
 
 switch(es):
-----------
+-----------
 -1|--list)
   List changes/backups
 -2|--tests)
@@ -153,6 +165,10 @@ switch(es):
   Print function
 -4|--dryrun)
   Run in dryrun mode
+-6|--format)
+  Outpt format/type
+-7|--file)
+  Output file
 -8|--usesudo)
   Use sudo
 -9|--shellcheck)

@@ -14,4 +14,12 @@
 audit_azure_databricks () {
   print_function  "audit_azure_databricks"
   verbose_message "Azure Databricks" "check"
+  verbose_message "Azure Databricks is deployed in a customer-managed virtual network" "check"
+#  verbose_message "Azure Databricks" "check"
+#  workspaces=$(az databricks workspace list --query "[].name" -o tsv)
+#  for workspace in ${workspaces}; do
+#    resource_group=$( az databricks workspace list --query "[?contains(name, '${workspace}')].[resourceGroup]" --output tsv )
+#  done
+  verbose_message "Network security groups are configured for Databricks subnets" "check"
+  #
 }
