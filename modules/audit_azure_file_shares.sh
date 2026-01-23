@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+
+# audit_azure_file_shares
+#
+# Check Azure File Shares
+#
+# Refer to Section(s) 9.1.1-3 Page(s) 475-84 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#.
+
+audit_azure_file_shares () {
+  print_function  "audit_azure_file_shares"
+  verbose_message "Azure File Shares" "check"
+  storage_accounts=$( az storage account list --query "[].name" -o tsv )
+  for storage_account in ${storage_accounts}; do
+    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" -o tsv )
+    # 9.1.1 Ensure soft delete for Azure File Shares is Enabled
+    # 9.1.2 Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
+    # 9.1.3 Ensure 'SMB channel encryption' is set to 'AES-256-GCM' or higher for SMB file shares
+    check_azure_file_share_value "Days retained"           "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.days"        "eq" "7"           "--share-delete-retention-days"   ""
+    check_azure_file_share_value "Soft Delete"             "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.enabled"     "eq" "true"        "--enable-share-delete-retention" ""
+    check_azure_file_share_value "SMB Protocol Version"    "${storage_account}" "${resource_group}" "service-properties" "protocolSettings.smb.versions"          "eq" "SMB3.1.1"    "--versions"
+    check_azure_file_share_value "SMB Channel Encryption"  "${storage_account}" "${resource_group}" "service-properties" "protocolSettings.smb.channelEncryption" "eq" "AES-256-GCM" "--channel-encryption"
+  done
+}

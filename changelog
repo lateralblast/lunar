@@ -2073,3 +2073,13 @@
 # Added check for Azure Storage Container Days Retained
 # 11.2.9: Fri 23 Jan 2026 15:06:22 AEDT
 # Added check for Azure Storage Container Versioning
+# 11.3.1: Fri 23 Jan 2026 20:06:22 AEDT
+# Added check of Azure File Shares 
+# 11.3.2: Fri 23 Jan 2026 20:06:22 AEDT
+# Added check for Azure File Shares Soft Delete
+# 11.3.3: Fri 23 Jan 2026 20:06:22 AEDT
+# Added check for Azure File Shares Days Retained
+# 11.3.4: Fri 23 Jan 2026 20:06:22 AEDT
+# Added check for Azure File Shares SMB Protocol Version
+# 11.3.5: Fri 23 Jan 2026 20:06:22 AEDT
+# Added check for Azure File Shares SMB Channel Encryption
