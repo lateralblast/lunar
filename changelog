@@ -2083,3 +2083,5 @@
 # Added check for Azure File Shares SMB Protocol Version
 # 11.3.5: Fri 23 Jan 2026 20:06:22 AEDT
 # Added check for Azure File Shares SMB Channel Encryption
+# 11.3.6: Fri 23 Jan 2026 20:51:27 AEDT
+# Added Azure CLI extension checks
