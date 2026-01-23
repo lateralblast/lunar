@@ -2057,3 +2057,19 @@
 # Added Azure Storage Accounts Redundancy check
 # 11.2.1: Fri 23 Jan 2026 11:51:22 AEDT
 # Bug fixes and improvements
+# 11.2.2: Fri 23 Jan 2026 12:06:22 AEDT
+# Added check_azure_storage_blob_value function
+# 11.2.3: Fri 23 Jan 2026 12:11:22 AEDT
+# Added check for Azure Storage Blob Soft Delete
+# 11.2.4: Fri 23 Jan 2026 12:16:22 AEDT
+# Added check for Azure Storage Blob Days Retained
+# 11.2.5: Fri 23 Jan 2026 14:12:30 AEDT
+# Added Azure auth mode
+# 11.2.6: Fri 23 Jan 2026 15:00:19 AEDT
+# Added check_azure_storage_container_value function
+# 11.2.7: Fri 23 Jan 2026 15:02:22 AEDT
+# Added check for Azure Storage Container Soft Delete
+# 11.2.8: Fri 23 Jan 2026 15:04:22 AEDT
+# Added check for Azure Storage Container Days Retained
+# 11.2.9: Fri 23 Jan 2026 15:06:22 AEDT
+# Added check for Azure Storage Container Versioning

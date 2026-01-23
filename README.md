@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 11.2.1
+Current version 11.2.9
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -36,7 +36,7 @@ Status
 
 In progress:
 
-- More flexibility in reporting format(s),  e.g. CSV
+- More flexibility in reporting format(s) e.g. CSV
 - More inline documentation and documentation output
 - Adding Azure support (current focus)
 - Adding Kubernetes support

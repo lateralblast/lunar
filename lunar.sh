@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      11.2.1
+# Version:      11.2.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -59,6 +59,9 @@
 # audit_mode = 1 : Audit Mode
 # audit_mode = 0 : Lockdown Mode
 # audit_mode = 2 : Restore Mode
+
+# Azure
+azure_auth_mode="login"
 
 # Defaults for AWS
 
