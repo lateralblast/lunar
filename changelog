@@ -2103,3 +2103,5 @@
 # Added Azure Database Services check stub
 # 11.4.5: Sat 24 Jan 2026 17:58:34 AEDT
 # Added Azure Identity Services check stub
+# 11.4.6: Sat 24 Jan 2026 18:07:34 AEDT
+# Added Azure Logging and Monitoring check stub
