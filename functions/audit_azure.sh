@@ -36,4 +36,5 @@ audit_azure_all () {
   audit_azure_database_services
   audit_azure_identity_services
   audit_azure_logging_and_monitoring
+  audit_azure_networking_services
 }
