@@ -33,4 +33,5 @@ audit_azure_all () {
   audit_azure_blob_storage
   audit_azure_file_shares
   audit_azure_compute_services
+  audit_azure_database_services
 }
