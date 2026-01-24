@@ -2097,3 +2097,5 @@
 # Added Azure Databricks Private Link check
 # 11.4.2: Sat 24 Jan 2026 17:20:34 AEDT
 # Added Azure Databricks Private Endpoints check
+# 11.4.3: Sat 24 Jan 2026 17:47:34 AEDT
+# Added Azure Compute Services check stub
