@@ -2085,3 +2085,15 @@
 # Added check for Azure File Shares SMB Channel Encryption
 # 11.3.6: Fri 23 Jan 2026 20:51:27 AEDT
 # Added Azure CLI extension checks
+# 11.3.7: Sat 24 Jan 2026 14:19:25 AEDT
+# Added Azure Databricks check routine
+# 11.3.8: Sat 24 Jan 2026 14:22:22 AEDT
+# Added Azure Monitor check routine
+# 11.3.9: Sat 24 Jan 2026 17:16:34 AEDT
+# Added Azure Databricks TBD check list
+# 11.4.0: Sat 24 Jan 2026 17:18:34 AEDT
+# Added Azure Databricks No Public IP check
+# 11.4.1: Sat 24 Jan 2026 17:19:34 AEDT
+# Added Azure Databricks Private Link check
+# 11.4.2: Sat 24 Jan 2026 17:20:34 AEDT
+# Added Azure Databricks Private Endpoints check

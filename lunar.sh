@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      11.3.6
+# Version:      11.4.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -601,11 +601,12 @@ check_azure () {
   azure_bin=$( command -v az 2> /dev/null )
   if [ -f "$azure_bin" ]; then
     for cli_ext in databricks bastion; do
-    ext_test=$( az extension list | grep "${cli_ext}" )
-    if [ -z "${ext_test}" ]; then
-      echo "Azure ${cli_ext} extension is not installed"
-      exit
-    fi
+      ext_test=$( az extension list | grep "${cli_ext}" )
+      if [ -z "${ext_test}" ]; then
+        echo "Azure ${cli_ext} extension is not installed"
+        exit
+      fi
+    done
   else
     echo "Azure CLI is not installed"
     exit
