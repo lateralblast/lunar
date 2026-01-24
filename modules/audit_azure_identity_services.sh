@@ -27,5 +27,7 @@ audit_azure_identity_services () {
   # 5.2.8 Ensure a Token Protection Conditional Access policy is considered - TBD
   # 5.3.1 Ensure that Azure admin accounts are not used for daily operations - TBD
   # 5.3.2 Ensure that guest users are reviewed on a regular basis
+  # 5.3.3 Ensure that use of the 'User Access Administrator' role is restricted
   audit_azure_guest_users
+  audit_azure_user_access_admin_role
 }
