@@ -2111,3 +2111,5 @@
 # Added Azure Security Services check stub
 # 11.4.9: Sat 24 Jan 2026 18:23:34 AEDT
 # Added Azure Storage Services check stub
+# 11.5.0: Sat 24 Jan 2026 21:32:22 AEDT
+# Added Azure Guest Users check
