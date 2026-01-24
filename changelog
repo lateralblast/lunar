@@ -2101,3 +2101,5 @@
 # Added Azure Compute Services check stub
 # 11.4.4: Sat 24 Jan 2026 17:48:34 AEDT
 # Added Azure Database Services check stub
+# 11.4.5: Sat 24 Jan 2026 17:58:34 AEDT
+# Added Azure Identity Services check stub
