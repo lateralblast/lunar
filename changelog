@@ -2113,5 +2113,7 @@
 # Added Azure Storage Services check stub
 # 11.5.0: Sat 24 Jan 2026 21:32:22 AEDT
 # Added Azure Guest Users check
-# 11.5.1: Sat 25 Jan 2026 21:01:40 AEDT
+# 11.5.1: Sun 25 Jan 2026 10:01:40 AEDT
 # Added Azure User Access Administrator Role check
+# 11.5.2: Sun 25 Jan 2026 11:19:03 AEDT
+# Added Azure Custom Subscription Admin Roles check
