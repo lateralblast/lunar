@@ -2123,3 +2123,5 @@
 # Added Azure Subscription Diagnostic Settings check
 # 11.5.5: Sun 25 Jan 2026 18:01:22 AEDT
 # Added check to ensure Diagnostic Setting captures appropriate categories
+# 11.5.6: Sun 25 Jan 2026 19:40:16 AEDT
+# Added check to ensure Diagnostic Logs are encrypted

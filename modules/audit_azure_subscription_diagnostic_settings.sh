@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 6.1.1.1 Page(s) 194-8   CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.1.2 Page(s) 199-202 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.1.3 Page(s) 203-6   CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 audit_azure_subscription_diagnostic_settings () {
   print_function "audit_azure_subscription_diagnostic_settings"
@@ -39,5 +40,19 @@ audit_azure_subscription_diagnostic_settings () {
         increment_secure   "There is a diagnostic setting for ${setting} for subscription ${subscription_id}"
       fi
     done
+    storage_accounts=$( az monitor diagnostic-settings subscription list --subscription ${subscription_id} --query 'value[*].storageAccountId' -o tsv )
+    for storage_account in ${storage_accounts}; do
+      key_source=$( az storage account show --name ${storage_account} --query 'encryption.keySource' -o tsv 2>/dev/null )
+      key_vault=$( az storage account show --name ${storage_account} --query 'encryption.keyVaultProperties' -o tsv 2>/dev/null )
+      if [ "${key_source}" = "Microsoft.Keyvault" ]; then
+        if [ ! -z "${key_vault}" ] && [ ! "${key_vault}" = "null" ]; then
+          increment_secure   "Storage account ${storage_account} is encrypted with customer-managed key"
+        else
+          increment_insecure "Storage account ${storage_account} is encrypted with customer-managed key but no key vault is specified"
+        fi
+      else
+        increment_insecure "Storage account ${storage_account} is not encrypted with customer-managed key"
+      fi
+    done 
   done
 }
