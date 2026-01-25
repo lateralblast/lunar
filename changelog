@@ -2125,3 +2125,5 @@
 # Added check to ensure Diagnostic Setting captures appropriate categories
 # 11.5.6: Sun 25 Jan 2026 19:40:16 AEDT
 # Added check to ensure Diagnostic Logs are encrypted
+# 11.5.7: Sun 25 Jan 2026 21:02:32 AEDT
+# Added Azure Survey check
