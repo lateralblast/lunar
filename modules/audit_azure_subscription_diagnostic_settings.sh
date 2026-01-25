@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+
+# audit_azure_subscription_diagnostic_settings
+#
+# Check Azure Subscription Diagnostic Settings
+#
+# Refer to Section(s) 6.1.1.1 Page(s) 194-7 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#.
+audit_azure_subscription_diagnostic_settings () {
+  print_function "audit_azure_subscription_diagnostic_settings"
+  verbose_message "Azure Subscription Diagnostic Settings" "check"
+  subscription_ids=$( az account list --query "[].id" -o tsv 2>/dev/null )
+  for subscription_id in ${subscription_ids}; do
+    diagnostic_settings=$( az monitor diagnostic-settings list --scope /subscriptions/${subscription_id} --query "[].value" -o tsv 2>/dev/null )
+    if [ -z "${diagnostic_settings}" ]; then
+      increment_insecure "There are no diagnostic settings for subscription ${subscription_id}"
+    else
+      increment_secure   "There are diagnostic settings for subscription ${subscription_id}"
+    fi
+    resource_ids=$( az resource list --subscription ${subscription_id} --query "[].id" -o tsv )
+    for resource_id in ${resource_ids}; do
+      diagnostic_settings=$( az monitor diagnostic-settings list --resource ${resource_id} --query "[].value" -o tsv 2>/dev/null )
+      if [ -z "${diagnostic_settings}" ]; then
+        increment_insecure "There are no diagnostic settings for resource ${resource_id}"
+      else
+        increment_secure   "There are diagnostic settings for resource ${resource_id}"
+      fi    
+    done
+  done
+}

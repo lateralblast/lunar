@@ -2119,3 +2119,5 @@
 # Added Azure Custom Subscription Admin Roles check
 # 11.5.3: Sun 25 Jan 2026 14:54:42 AEDT
 # Added Azure Subscription Owners check
+# 11.5.4: Sun 25 Jan 2026 17:50:12 AEDT
+# Added Azure Subscription Diagnostic Settings check

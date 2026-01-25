@@ -59,4 +59,5 @@ audit_azure_identity_services () {
   # 5.26 Ensure fewer than 5 users have global administrator assignment - TBD
   # 5.27 Ensure there are between 2 and 3 subscription owners
   audit_azure_subscription_owners
+  # 5.28 Ensure passwordless authentication methods are considered - TBD
 }
