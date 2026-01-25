@@ -2117,3 +2117,5 @@
 # Added Azure User Access Administrator Role check
 # 11.5.2: Sun 25 Jan 2026 11:19:03 AEDT
 # Added Azure Custom Subscription Admin Roles check
+# 11.5.3: Sun 25 Jan 2026 14:54:42 AEDT
+# Added Azure Subscription Owners check

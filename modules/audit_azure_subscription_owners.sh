@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+
+# audit_azure_subscription_owners
+#
+# Check Azure Subscription Owners
+#
+# Refer to Section(s) 5.27 Page(s) 186-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#.
+audit_azure_subscription_owners () {
+  print_function "audit_azure_subscription_owners"
+  verbose_message "Azure Subscription Owners" "check"
+  correct_value=""
+  subscription_ids=$( az account list --query "[].id" -o tsv )
+  max_owners="3"
+  for subscription_id in ${subscription_ids}; do
+    role_owners=$( az role assignment list --role Owner --scope /subscriptions/${subscription_id} --query "[].id" -o tsv )
+    if [ -z "${role_owners}" ]; then
+      increment_secure   "There are members with the Subscription Owner role"
+    else
+      owner_count=$( echo "${role_owners}" | wc -l )
+      if [ "${owner_count}" -gt "${max_owners}" ]; then
+        increment_insecure "There are more than ${max_owners} members with the Subscription Owner role"
+      else
+        increment_secure   "There are ${owner_count} members with the Subscription Owner role"
+      fi
+      role_assignment_ids=$( echo "${role_owners}" | tr '\n' ' ' )
+      verbose_message    "az role assignment delete --ids \"${role_assignment_ids}\"" "fix"
+    fi
+  done
+}

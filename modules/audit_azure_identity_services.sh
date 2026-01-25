@@ -54,4 +54,9 @@ audit_azure_identity_services () {
   # 5.22 Ensure that 'Require Multifactor Authentication to register or join devices with Microsoft Entra' is set to 'Yes' - TBD
   # 5.23 Ensure that no custom subscription administrator roles exist
   audit_azure_custom_subscription_admin_roles
+  # 5.24 Ensure that a custom role is assigned permissions for administering resource locks - TBD
+  # 5.25 Ensure that 'Subscription leaving Microsoft Entra tenant' and 'Subscription entering Microsoft Entra tenant' is set to 'Permit no one' - TBD
+  # 5.26 Ensure fewer than 5 users have global administrator assignment - TBD
+  # 5.27 Ensure there are between 2 and 3 subscription owners
+  audit_azure_subscription_owners
 }
