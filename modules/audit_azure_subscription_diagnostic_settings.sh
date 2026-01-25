@@ -8,7 +8,8 @@
 #
 # Check Azure Subscription Diagnostic Settings
 #
-# Refer to Section(s) 6.1.1.1 Page(s) 194-7 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.1.1 Page(s) 194-8   CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.1.2 Page(s) 199-202 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 audit_azure_subscription_diagnostic_settings () {
   print_function "audit_azure_subscription_diagnostic_settings"
@@ -29,6 +30,14 @@ audit_azure_subscription_diagnostic_settings () {
       else
         increment_secure   "There are diagnostic settings for resource ${resource_id}"
       fi    
+    done
+    for setting in Administrative Alert Policy Security; do
+      diagnostic_setting=$( az monitor diagnostic-settings subscription list --subscription ${subscription_id} | grep "${setting}" | grep -i "enabled" | grep true )
+      if [ -z "${diagnostic_setting}" ]; then
+        increment_insecure "There is no diagnostic setting for ${setting} for subscription ${subscription_id}"
+      else
+        increment_secure   "There is a diagnostic setting for ${setting} for subscription ${subscription_id}"
+      fi
     done
   done
 }

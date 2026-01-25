@@ -2121,3 +2121,5 @@
 # Added Azure Subscription Owners check
 # 11.5.4: Sun 25 Jan 2026 17:50:12 AEDT
 # Added Azure Subscription Diagnostic Settings check
+# 11.5.5: Sun 25 Jan 2026 18:01:22 AEDT
+# Added check to ensure Diagnostic Setting captures appropriate categories
