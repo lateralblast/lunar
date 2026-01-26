@@ -30,7 +30,7 @@ check_environment () {
       echo "Loading Functions"
       echo ""
     fi
-    file_list=$( ls "${functions_dir}"/*.sh )
+    file_list=$( find "${functions_dir}" -name "*.sh" )
     for file_name in ${file_list}; do
       if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] ||  [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
         . "${file_name}"
@@ -49,7 +49,7 @@ check_environment () {
       echo "Loading Modules"
       echo ""
     fi
-    file_list=$( ls "${modules_dir}"/*.sh )
+    file_list=$( find "${modules_dir}" -name "*.sh" )
     for file_name in ${file_list}; do
       if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
         . "${file_name}"
@@ -75,7 +75,7 @@ check_environment () {
     if [ "${verbose_mode}" = "1" ]; then
       echo ""
     fi
-    file_list=$( ls "${private_dir}"/*.sh )
+    file_list=$( find "${private_dir}" -name "*.sh" )
     for file_name in ${file_list}; do
       if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] ||  [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
         . "${file_name}"
