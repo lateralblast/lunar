@@ -2171,3 +2171,5 @@
 # Added Azure Application Insights check
 # 11.7.9: Tue 27 Jan 2026 09:38:22 AEDT
 # Added Azure Resource Logging check
+# 11.8.0: Tue 27 Jan 2026 10:08:22 AEDT
+# Added Azure SKU Basic/Consumption check

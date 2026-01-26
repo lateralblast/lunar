@@ -50,4 +50,6 @@ audit_azure_logging_and_monitoring () {
   audit_azure_application_insights
   # 6.1.4 Ensure that Azure Monitor Resource Logging is Enabled for All Services that Support it
   audit_azure_resource_logging
+  # 6.1.5 Ensure that SKU Basic/Consumption is not used on artifacts that need to be monitored (Particularly for Production Workloads)
+  audit_azure_sku_basic_consumption
 }

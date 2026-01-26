@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 11.7.9
+Current version 11.8.0
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -153,8 +153,10 @@ For Azure:
 
 - Azure
   - Azure CLI
-  - Databricks extension
-  - Bastion extension
+  - Extensions
+    - databricks
+    - bastion
+    - resource-graph
 
 Usage
 -----
