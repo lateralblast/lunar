@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 11.5.7
+Current version 11.5.8
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -148,6 +148,13 @@ For AWS:
     - CloudTrail:DescribeTrails
     - Config:DescribeConfigurationRecorders
     - SNS:ListSubscriptionsByTopic
+
+For Azure:
+
+- Azure
+  - Azure CLI
+  - Databricks extension
+  - Bastion extension
 
 Usage
 -----
