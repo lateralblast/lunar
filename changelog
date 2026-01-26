@@ -2155,3 +2155,5 @@
 # Added Azure Activity Log Alerts Delete Network Security Group check
 # 11.7.1: Tue 27 Jan 2026 08:51:22 AEDT
 # Added Azure Activity Log Alerts Create or Update Security Solution check
+# 11.7.2: Tue 27 Jan 2026 08:54:22 AEDT
+# Added Azure Activity Log Alerts Delete Security Solution check

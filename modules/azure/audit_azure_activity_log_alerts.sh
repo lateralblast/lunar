@@ -13,6 +13,7 @@
 # Refer to Section(s) 6.1.2.3 Page(s) 235-38 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.2.4 Page(s) 239-42 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.2.5 Page(s) 243-46 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.6 Page(s) 247-50 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 
 audit_azure_activity_log_alerts () {
@@ -49,6 +50,12 @@ audit_azure_activity_log_alerts () {
       increment_secure "Activity Log Alert for Create or Update Security Solution is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Security Solution is not enabled"
+    fi
+    alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Security/securitySolutions/delete" )
+    if [ -z "${alert_check}" ]; then
+      increment_secure "Activity Log Alert for Delete Security Solution is enabled"
+    else
+      increment_insecure "Activity Log Alert for Delete Security Solution is not enabled"
     fi
   done
 }
