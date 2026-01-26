@@ -44,5 +44,6 @@ audit_azure_logging_and_monitoring () {
   # 6.1.2.8  Ensure that Activity Log Alert exists for Delete SQL Server Firewall Rule
   # 6.1.2.9  Ensure that Activity Log Alert exists for Create or Update Public IP Address rule
   # 6.1.2.10 Ensure that Activity Log Alert exists for Delete Public IP Address rule
+  # 6.1.2.11 Ensure that an Activity Log Alert exists for Service Health
   audit_azure_activity_log_alerts
 }
