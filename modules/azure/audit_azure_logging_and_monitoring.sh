@@ -23,6 +23,7 @@ audit_azure_logging_and_monitoring () {
   # 6.1.1.7 Ensure that virtual network flow logs are captured and sent to Log Analytics
   # 6.1.1.8 Ensure that a Microsoft Entra diagnostic setting exists to send Microsoft Graph activity logs to an appropriate destination
   # 6.1.1.9 Ensure that a Microsoft Entra diagnostic setting exists to send Microsoft Entra activity logs to an appropriate destination
+  # 6.1.1.10 Ensure that Intune logs are captured and sent to Log Analytics
   audit_azure_subscription_diagnostic_settings
   audit_azure_diagnostic_setting_categories
   audit_azure_activity_logs_cmk
@@ -32,4 +33,5 @@ audit_azure_logging_and_monitoring () {
   audit_azure_virtual_network_flow_logs
   audit_azure_graph_diagnostic_settings
   audit_azure_entra_diagnostic_settings
+  audit_azure_intune_logs
 }
