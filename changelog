@@ -2163,3 +2163,5 @@
 # Added Azure Activity Log Alerts Delete SQL Server Firewall Rule check
 # 11.7.5: Tue 27 Jan 2026 09:03:22 AEDT
 # Added Azure Activity Log Alerts Create or Update Public IP Address rule check
+# 11.7.6: Tue 27 Jan 2026 09:06:22 AEDT
+# Added Azure Activity Log Alerts Delete Public IP Address rule check

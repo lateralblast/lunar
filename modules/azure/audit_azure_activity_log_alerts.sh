@@ -8,15 +8,16 @@
 #
 # Check Azure Activity Log Alerts
 #
-# Refer to Section(s) 6.1.2.1 Page(s) 227-30 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.2 Page(s) 231-34 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.3 Page(s) 235-38 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.4 Page(s) 239-42 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.5 Page(s) 243-46 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.6 Page(s) 247-50 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.7 Page(s) 251-54 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.8 Page(s) 255-58 CIS Microsoft Azure Foundations Benchmark v5.0.0
-# Refer to Section(s) 6.1.2.9 Page(s) 259-62 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.1  Page(s) 227-30 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.2  Page(s) 231-34 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.3  Page(s) 235-38 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.4  Page(s) 239-42 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.5  Page(s) 243-46 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.6  Page(s) 247-50 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.7  Page(s) 251-54 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.8  Page(s) 255-58 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.9  Page(s) 259-62 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.10 Page(s) 263-66 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 
 audit_azure_activity_log_alerts () {
@@ -77,6 +78,12 @@ audit_azure_activity_log_alerts () {
       increment_secure "Activity Log Alert for Create or Update Public IP Address rule is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Public IP Address rule is not enabled"
+    fi
+    alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/publicIPAddresses/delete" )
+    if [ -z "${alert_check}" ]; then
+      increment_secure "Activity Log Alert for Delete Public IP Address rule is enabled"
+    else
+      increment_insecure "Activity Log Alert for Delete Public IP Address rule is not enabled"
     fi
   done
 }
