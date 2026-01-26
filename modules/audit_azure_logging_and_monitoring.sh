@@ -17,4 +17,6 @@ audit_azure_logging_and_monitoring () {
   # 6.1.1.2 Ensure Diagnostic Setting captures appropriate categories
   # 6.1.1.3 Ensure the storage account containing the container with activity logs is encrypted with customer-managed key (CMK)
   audit_azure_subscription_diagnostic_settings
+  audit_azure_diagnostic_setting_categories
+  audit_azure_activity_logs_cmk
 }
