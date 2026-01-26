@@ -12,7 +12,7 @@
 #.
 
 audit_azure_guest_users () {
-  print_function "audit_azure_guest_users"
+  print_function  "audit_azure_guest_users"
   verbose_message "Azure Guest Users" "check"
   guest_users=$( az ad user list --query "[?contains(userType, 'Guest')]" --query "id" -o tsv )
   if [ -z "$guest_users" ]; then

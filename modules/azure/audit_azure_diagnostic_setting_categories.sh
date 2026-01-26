@@ -12,7 +12,7 @@
 #.
 
 audit_azure_diagnostic_setting_categories () {
-  print_function "audit_azure_diagnostic_setting_categories"
+  print_function  "audit_azure_diagnostic_setting_categories"
   verbose_message "Azure Diagnostic Setting Categories" "check"
   subscription_ids=$( az account list --query "[].id" -o tsv 2>/dev/null )
   for subscription_id in ${subscription_ids}; do

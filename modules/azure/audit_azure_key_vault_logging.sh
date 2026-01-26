@@ -12,7 +12,7 @@
 #.
 
 audit_azure_key_vault_logging () {
-  print_function "audit_azure_key_vault_logging"
+  print_function  "audit_azure_key_vault_logging"
   verbose_message "Azure Key Vault Logging" "check"
   key_vault_ids=$( az keyvault list --query "[].id" -o tsv 2>/dev/null )
   for key_vault_id in ${key_vault_ids}; do

@@ -8,7 +8,7 @@
 #
 # Check Azure Storage Services
 #
-# Refer to Section(s) 3 Page(s) 63-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 9 Page(s) 473-549 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to CIS Microsoft Azure Compute Services Benchmark
 #.
 
@@ -18,5 +18,5 @@ audit_azure_storage_services () {
   audit_azure_databricks
   audit_azure_blob_storage
   audit_azure_file_shares
-  audit_azure_storage_account
+  audit_azure_storage_accounts
 }

@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 6.1.1.3 Page(s) 203-6   CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
+
 audit_azure_activity_logs_cmk () {
   print_function "audit_azure_activity_logs_cmk"
   verbose_message "Azure Activity Logs CMK" "check"

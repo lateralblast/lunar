@@ -10,8 +10,9 @@
 #
 # Refer to Section(s) 5.23 Page(s) 174-6 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
+
 audit_azure_custom_subscription_admin_roles () {
-  print_function "audit_azure_custom_subscription_admin_roles"
+  print_function  "audit_azure_custom_subscription_admin_roles"
   verbose_message "Azure Custom Subscription Admin Roles" "check"
   correct_value=""
   actual_value=$( az role definition list --custom-role-only True | grep -iE "assignableScope|subscription" | grep "*" )
