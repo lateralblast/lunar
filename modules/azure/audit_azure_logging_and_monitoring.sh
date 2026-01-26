@@ -40,5 +40,6 @@ audit_azure_logging_and_monitoring () {
   # 6.1.2.4 Ensure that Activity Log Alert exists for Delete Network Security Group
   # 6.1.2.5 Ensure that Activity Log Alert exists for Create or Update Security Solution
   # 6.1.2.6 Ensure that Activity Log Alert exists for Delete Security
+  # 6.1.2.7 Ensure that Activity Log Alert exists for Create or Update SQL Server Firewall Rule
   audit_azure_activity_log_alerts
 }
