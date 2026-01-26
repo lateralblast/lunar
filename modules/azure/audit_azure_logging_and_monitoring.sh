@@ -46,4 +46,6 @@ audit_azure_logging_and_monitoring () {
   # 6.1.2.10 Ensure that Activity Log Alert exists for Delete Public IP Address rule
   # 6.1.2.11 Ensure that an Activity Log Alert exists for Service Health
   audit_azure_activity_log_alerts
+  # 6.1.3.1 Ensure Application Insights are Configured
+  audit_azure_application_insights
 }

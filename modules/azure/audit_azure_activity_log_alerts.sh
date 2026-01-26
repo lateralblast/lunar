@@ -28,68 +28,68 @@ audit_azure_activity_log_alerts () {
   for subscription_id in $subscription_ids; do
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Authorization/policyAssignments/write" ) 
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Create Policy Assignment is enabled"
+      increment_secure   "Activity Log Alert for Create Policy Assignment is enabled"
     else
       increment_insecure "Activity Log Alert for Create Policy Assignment is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Authorization/policyAssignments/delete" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Delete Policy Assignment is enabled"
+      increment_secure   "Activity Log Alert for Delete Policy Assignment is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Policy Assignment is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/networkSecurityGroups/write" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Create or Update Network Security Group is enabled"
+      increment_secure   "Activity Log Alert for Create or Update Network Security Group is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Network Security Group is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/networkSecurityGroups/delete" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Delete Network Security Group is enabled"
+      increment_secure   "Activity Log Alert for Delete Network Security Group is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Network Security Group is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Security/securitySolutions/write" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Create or Update Security Solution is enabled"
+      increment_secure   "Activity Log Alert for Create or Update Security Solution is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Security Solution is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Security/securitySolutions/delete" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Delete Security Solution is enabled"
+      increment_secure   "Activity Log Alert for Delete Security Solution is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Security Solution is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Sql/servers/firewallRules/write" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Create or Update SQL Server Firewall Rule is enabled"
+      increment_secure   "Activity Log Alert for Create or Update SQL Server Firewall Rule is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update SQL Server Firewall Rule is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Sql/servers/firewallRules/delete" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Delete SQL Server Firewall Rule is enabled"
+      increment_secure   "Activity Log Alert for Delete SQL Server Firewall Rule is enabled"
     else
       increment_insecure "Activity Log Alert for Delete SQL Server Firewall Rule is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/publicIPAddresses/write" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Create or Update Public IP Address rule is enabled"
+      increment_secure   "Activity Log Alert for Create or Update Public IP Address rule is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Public IP Address rule is not enabled"
     fi
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/publicIPAddresses/delete" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Delete Public IP Address rule is enabled"
+      increment_secure   "Activity Log Alert for Delete Public IP Address rule is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Public IP Address rule is not enabled"
     fi
   done
   alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "ServiceHealth" )
     if [ -z "${alert_check}" ]; then
-      increment_secure "Activity Log Alert for Service Health is enabled"
+      increment_secure   "Activity Log Alert for Service Health is enabled"
     else
       increment_insecure "Activity Log Alert for Service Health is not enabled"
     fi
