@@ -2151,3 +2151,5 @@
 # Added Azure Activity Log Alerts Delete Policy Assignment check
 # 11.6.9: Mon 26 Jan 2026 21:46:22 AEDT
 # Added Azure Activity Log Alerts Create or Update Network Security Group check
+# 11.7.0: Tue 27 Jan 2026 08:38:22 AEDT
+# Added Azure Activity Log Alerts Delete Network Security Group check
