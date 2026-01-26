@@ -36,6 +36,6 @@ audit_azure_logging_and_monitoring () {
   audit_azure_intune_logs
   # 6.1.2.1 Ensure that Activity Log Alert exists for Create Policy Assignment
   # 6.1.2.2 Ensure that Activity Log Alert exists for Delete Policy Assignment
+  # 6.1.2.3 Ensure that Activity Log Alert exists for Create or Update Network Security Group
   audit_azure_activity_log_alerts
-
 }
