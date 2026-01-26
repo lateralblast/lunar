@@ -9,6 +9,7 @@
 # Check Azure Activity Log Alerts
 #
 # Refer to Section(s) 6.1.2.1 Page(s) 227-30 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.2.2 Page(s) 231-32 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 
 audit_azure_activity_log_alerts () {
@@ -21,6 +22,12 @@ audit_azure_activity_log_alerts () {
       increment_secure "Activity Log Alert for Create Policy Assignment is enabled"
     else
       increment_insecure "Activity Log Alert for Create Policy Assignment is not enabled"
+    fi
+    alert_check=$( az monitor activity-log alert list --subscription <subscription ID> --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Authorization/policyAssignments/delete" )
+    if [ -z "${alert_check}" ]; then
+      increment_secure "Activity Log Alert for Delete Policy Assignment is enabled"
+    else
+      increment_insecure "Activity Log Alert for Delete Policy Assignment is not enabled"
     fi
   done
 }

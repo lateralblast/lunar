@@ -2146,4 +2146,6 @@
 # 11.6.6: Mon 26 Jan 2026 21:15:22 AEDT
 # Added stub for Azure Intune Logs check
 # 11.6.7: Mon 26 Jan 2026 21:34:22 AEDT
-# Added Azure Activity Log Alerts check
+# Added Azure Activity Log Alerts Create Policy Assignment check
+# 11.6.8: Mon 26 Jan 2026 21:41:22 AEDT
+# Added Azure Activity Log Alerts Delete Policy Assignment check
