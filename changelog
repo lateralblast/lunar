@@ -2159,3 +2159,5 @@
 # Added Azure Activity Log Alerts Delete Security Solution check
 # 11.7.3: Tue 27 Jan 2026 08:57:22 AEDT
 # Added Azure Activity Log Alerts Create or Update SQL Server Firewall Rule check
+# 11.7.4: Tue 27 Jan 2026 09:00:22 AEDT
+# Added Azure Activity Log Alerts Delete SQL Server Firewall Rule check
