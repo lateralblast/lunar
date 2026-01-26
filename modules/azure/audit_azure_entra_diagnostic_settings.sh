@@ -8,7 +8,7 @@
 #
 # Check Azure Entra Diagnostic Settings
 #
-# Refer to Section(s) 6.1.1.8 Page(s) 218-9 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 6.1.1.9 Page(s) 220-2 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 
 audit_azure_entra_diagnostic_settings () {
