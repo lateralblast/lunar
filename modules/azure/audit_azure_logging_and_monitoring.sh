@@ -48,4 +48,6 @@ audit_azure_logging_and_monitoring () {
   audit_azure_activity_log_alerts
   # 6.1.3.1 Ensure Application Insights are Configured
   audit_azure_application_insights
+  # 6.1.4 Ensure that Azure Monitor Resource Logging is Enabled for All Services that Support it
+  audit_azure_resource_logging
 }
