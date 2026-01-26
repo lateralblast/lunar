@@ -2129,3 +2129,5 @@
 # Added Azure Survey check
 # 11.5.8: Mon 26 Jan 2026 12:16:32 AEDT
 # Split out Azure Diagnostic Settings checks into multiple routines
+# 11.5.9: Mon 26 Jan 2026 18:11:56 AEDT
+# Added Azure Key Vault Logging check

@@ -30,7 +30,8 @@ funct_audit_select () {
   fi
   module_test=$( echo "${module_name}" | grep "audit" )
   if [ -n "$module_test" ]; then
-    if [ -f "${modules_dir}/${module_name}.sh" ]; then
+    file_name=$( find "${modules_dir}" -name "${module_name}.sh" )
+    if [ -f "${file_name}" ]; then
       print_audit_info "${module_name}"
       eval "${module_name}"
     else

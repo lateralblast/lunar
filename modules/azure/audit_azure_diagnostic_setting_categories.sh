@@ -10,6 +10,7 @@
 #
 # Refer to Section(s) 6.1.1.2 Page(s) 199-202 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
+
 audit_azure_diagnostic_setting_categories () {
   print_function "audit_azure_diagnostic_setting_categories"
   verbose_message "Azure Diagnostic Setting Categories" "check"
