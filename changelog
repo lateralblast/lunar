@@ -2213,3 +2213,5 @@
 # Updated documentation
 # 12.0.0: Tue Jan 27 20:36:59 AEDT 2026
 # Added check for Microsoft Defender for SQL Server
+# 12.0.1: Tue Jan 27 20:39:35 AEDT 2026
+# Added check for Microsoft Defender for SQL Servers on Machines

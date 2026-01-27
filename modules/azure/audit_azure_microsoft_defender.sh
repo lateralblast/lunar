@@ -18,6 +18,7 @@
 # 8.1.7.1  Ensure That Microsoft Defender for Azure Cosmos DB Is Set To 'On'
 # 8.1.7.2  Ensure That Microsoft Defender for Open-Source Relational Databases Is Set To 'On'
 # 8.1.7.3  Ensure That Microsoft Defender for (Managed Instance) Azure SQL Databases Is Set To 'On'
+# 8.1.7.4  Ensure That Microsoft Defender for SQL Servers on Machines Is Set To 'On'
 #
 # Refer to Section(s) 8.1.1- Page(s) 338-472 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
@@ -45,4 +46,6 @@ audit_azure_microsoft_defender () {
   check_azure_microsoft_defender_value "Defender for Open-Source Relational Databases"       "OpenSourceRelationalDatabases" "Standard" "On"
   # 8.1.7.3 Ensure That Microsoft Defender for (Managed Instance) Azure SQL Databases Is Set To 'On'
   check_azure_microsoft_defender_value "Defender for (Managed Instance) Azure SQL Databases" "SqlServers"                    "Standard" "On"
+  # 8.1.7.4 Ensure That Microsoft Defender for SQL Servers on Machines Is Set To 'On'
+  check_azure_microsoft_defender_value "Defender for SQL Servers on Machines"                "SqlServersVirtualMachines"     "Standard" "On"
 }
