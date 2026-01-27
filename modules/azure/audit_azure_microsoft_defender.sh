@@ -22,9 +22,11 @@ audit_azure_microsoft_defender () {
   print_function  "audit_azure_microsoft_defender"
   verbose_message "Azure Microsoft Defender" "check"
   # 8.1.1.1  Ensure Microsoft Defender CSPM is set to 'On'
-  check_azure_microsoft_defender_value "Cloud Security Posture Management (CSPM)" "CloudPosture"    "Standard" "Om"
+  check_azure_microsoft_defender_value "Cloud Security Posture Management (CSPM)" "CloudPosture"      "Standard" "Om"
   # 8.1.2.1  Ensure Microsoft Defender CWP is set to 'On'
-  check_azure_microsoft_defender_value "Cloud Workload Protection (CWP)"          "Api"             "Standard" "On"
+  check_azure_microsoft_defender_value "Cloud Workload Protection (CWP)"          "Api"               "Standard" "On"
   # 8.1.3.1 Ensure that Defender for Servers is set to 'On'
-  check_azure_microsoft_defender_value "Defender for Servers"                     "VirtualMachines" "Standard" "On"
+  check_azure_microsoft_defender_value "Defender for Servers"                     "VirtualMachines"   "Standard" "On"
+  # 8.1.4.1 Ensure That Microsoft Defender for Containers Is Set To 'On'
+  check_azure_microsoft_defender_value "Microsoft Defender for Containers"        "ContainerRegistry" "Standard" "On"
 }

@@ -2199,3 +2199,5 @@
 # Added check that enpoint protection is enabled
 # 11.9.3: Tue 27 Jan 2026 19:51:22 AEDT
 # Added check that agentless scanning is enabled
+# 11.9.4: Tue 27 Jan 2026 20:16:55 AEDT
+# Added check for Microsoft Defender for Containers
