@@ -20,12 +20,12 @@
 
 replace_file_value () {
   print_function "replace_file_value"
-  check_file="$1"
-  check_value="$2"
+  check_file="${1}"
+  check_value="${2}"
   new_check_value="${check_value}"
-  correct_value="$3"
+  correct_value="${3}"
   new_correct_value="${correct_value}"
-  position="$4"
+  position="${4}"
   if [ "${position}" = "start" ]; then
     position="^"
   else

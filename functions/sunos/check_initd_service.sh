@@ -16,8 +16,8 @@
 check_initd_service () {
   print_function "check_initd_service"
   if [ "${os_name}" = "SunOS" ]; then
-    service_name="$1"
-    correct_status="$2"
+    service_name="${1}"
+    correct_status="${2}"
     log_file="initd.log"
     service_check=$( ls /etc/init.d | grep "^${service_name}$" | sed 's/ //g' )
     if [ -n "${service_check}" ]; then

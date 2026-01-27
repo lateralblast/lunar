@@ -13,11 +13,11 @@ check_ausearch () {
   print_function "check_ausearch"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
-      funct="$1"
-      bin="$2"
-      command="$3"
-      mode="$4"
-      value="$5" 
+      funct="${1}"
+      bin="${2}"
+      command="${3}"
+      mode="${4}"
+      value="${5}" 
       exists=$( command -v "${bin}" )
       if [ "${exists}" ]; then
         if [ "${value}" ]; then

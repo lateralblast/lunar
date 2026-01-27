@@ -15,10 +15,10 @@
 
 check_command_value () {
   print_function "check_command_value"
-  command_name="$1"
-  parameter_name="$2"
-  correct_value="$3"
-  service_name="$4"
+  command_name="${1}"
+  parameter_name="${2}"
+  correct_value="${3}"
+  service_name="${4}"
   if [ "${audit_mode}" = 2 ]; then
     restore_file="${restore_dir}/${command_name}.log"
     if [ -f "${restore_file}" ]; then

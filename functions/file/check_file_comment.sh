@@ -14,9 +14,9 @@
 
 check_file_comment () {
   print_function "check_file_comment"
-  file="$1"
-  search="$2"
-  comment="$3"
+  file="${1}"
+  search="${2}"
+  comment="${3}"
   line="^(\s*${search}.*)"
   if [ "${comment}" = "hash" ]; then
     comment="#"

@@ -14,9 +14,9 @@ audit_ndd_value () {
   print_function "audit_ndd_value"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      ndd_name="$1"
-      ndd_property="$2"
-      correct_value="$3"
+      ndd_name="${1}"
+      ndd_property="${2}"
+      correct_value="${3}"
       if [ "${ndd_property}" = "tcp_extra_priv_ports_add" ]; then
         current_value=$( ndd -get "${ndd_name}" tcp_extra_priv_ports | grep "${correct_value}" )
       else

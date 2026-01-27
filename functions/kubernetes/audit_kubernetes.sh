@@ -27,7 +27,7 @@ audit_kubernetes_all () {
 
 funct_audit_kubernetes () {
   print_function "funct_audit_kubernetes"
-  audit_mode=$1
+  audit_mode="${1}"
   audit_kubernetes_all
   print_results
 }

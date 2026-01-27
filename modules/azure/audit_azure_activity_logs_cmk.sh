@@ -17,12 +17,12 @@
 audit_azure_activity_logs_cmk () {
   print_function "audit_azure_activity_logs_cmk"
   verbose_message "Azure Activity Logs CMK" "check"
-  subscription_ids=$( az account list --query "[].id" -o tsv 2>/dev/null )
+  subscription_ids=$( az account list --query "[].id" --output tsv 2>/dev/null )
   for subscription_id in ${subscription_ids}; do
-    storage_accounts=$( az monitor diagnostic-settings subscription list --subscription ${subscription_id} --query 'value[*].storageAccountId' -o tsv )
+    storage_accounts=$( az monitor diagnostic-settings subscription list --subscription ${subscription_id} --query 'value[*].storageAccountId' --output tsv )
     for storage_account in ${storage_accounts}; do
-      key_source=$( az storage account show --name ${storage_account} --query 'encryption.keySource' -o tsv 2>/dev/null )
-      key_vault=$( az storage account show --name ${storage_account} --query 'encryption.keyVaultProperties' -o tsv 2>/dev/null )
+      key_source=$( az storage account show --name ${storage_account} --query 'encryption.keySource' --output tsv 2>/dev/null )
+      key_vault=$( az storage account show --name ${storage_account} --query 'encryption.keyVaultProperties' --output tsv 2>/dev/null )
       if [ "${key_source}" = "Microsoft.Keyvault" ]; then
         if [ ! -z "${key_vault}" ] && [ ! "${key_vault}" = "null" ]; then
           increment_secure   "Storage account ${storage_account} is encrypted with customer-managed key"

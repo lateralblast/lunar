@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      11.8.8
+# Version:      11.8.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -182,8 +182,8 @@ named_disable="yes"
 #.
 
 verbose_message () {
-  text="$1"
-  style="$2"
+  text="${1}"
+  style="${2}"
   if [ "${verbose_mode}" = 1 ] && [ "$style" = "fix" ]; then
     if [ "${text}" = "" ]; then
       echo ""
@@ -267,7 +267,7 @@ verbose_message () {
 #.
 
 warning_message () {
-  message="$1"
+  message="${1}"
   verbose_message "${message}" "warn"
 }
 
@@ -405,9 +405,9 @@ check_virtual_platform () {
 #.
 
 execute_lockdown () {
-  command="$1"
-  message="$2"
-  privilege="$3"
+  command="${1}"
+  message="${2}"
+  privilege="${3}"
   if [ "${audit_mode}" = 0 ]; then
     total_count=$((total_count+1))
     if [ "${message}" ]; then
@@ -446,9 +446,9 @@ execute_lockdown () {
 #.
 
 execute_restore () {
-  command="$1"
-  message="$2"
-  privilege="$3"
+  command="${1}"
+  message="${2}"
+  privilege="${3}"
   if [ "${audit_mode}" = 2 ]; then
     total_count=$((total_count+1))
     if [ "${message}" ]; then
@@ -488,8 +488,8 @@ execute_restore () {
 
 backup_state () {
   if [ "${audit_mode}" = 0 ]; then
-    backup_name="$1"
-    backup_value="$1"
+    backup_name="${1}"
+    backup_value="${1}"
     backup_file="${work_dir}/${backup_name}.log"
     echo "$backup_value" > "${backup_file}"
   fi
@@ -503,9 +503,9 @@ backup_state () {
 
 restore_state () {
   if [ "${audit_mode}" = 2 ]; then
-    restore_name="$1"
-    current_value="$2"
-    restore_command="$3"
+    restore_name="${1}"
+    current_value="${2}"
+    restore_command="${3}"
     restore_file="${restore_dir}/${restore_name}"
     if [ -f "${restore_file}" ]; then
       restore_value=$( cat "${restore_file}" )
@@ -533,7 +533,7 @@ increment_total () {
 
 increment_secure () {
   if [ "${audit_mode}" != 2 ]; then
-    message="$1"
+    message="${1}"
     total_count=$((total_count+1))
     secure_count=$((secure_count+1))
     if [ "${secure_count}" -eq 1 ]; then
@@ -552,7 +552,7 @@ increment_secure () {
 
 increment_insecure () {
   if [ "${audit_mode}" != 2 ]; then
-    message="$1"
+    message="${1}"
     total_count=$((total_count+1))
     insecure_count=$((insecure_count+1))
     if [ "${insecure_count}" -eq 1 ]; then
@@ -670,7 +670,7 @@ while test $# -gt 0
 do
   case $1 in
     -1|--list)                      # switch - List changes/backups
-      list="$2"
+      list="${2}"
       if [ -z "$list" ]; then
         print_changes
         print_backups
@@ -693,7 +693,7 @@ do
       exit
       ;;
     -2|--tests)                    # switch - Print tests
-      tests="$2" 
+      tests="${2}" 
       if [ -z "${tests}" ]; then
         print_tests "All"
       else
@@ -716,11 +716,11 @@ do
       shift
       ;;
     -6|--format)                    # switch - Outpt format/type
-      output_type="$2"
+      output_type="${2}"
       shift 2
       ;;
     -7|--file)                      # switch - Output file
-      output_file="$2"
+      output_file="${2}"
       shift 2
       ;;
     -8|--usesudo)                   # switch - Use sudo
@@ -752,11 +752,11 @@ do
       exit
       ;;
     -B|--basedir)                   # switch - Set base directory
-      base_dir="$2"
+      base_dir="${2}"
       shift 2
       ;;
     -c|--codename|--distro)         # switch -  Distro/Code name (used with docker/multipass)
-      test_distro="$2"
+      test_distro="${2}"
       shift 2
       ;;
     -C|--shell)                     # switch - Run docker-compose testing suite (drops to shell in order to do more testing)
@@ -767,7 +767,7 @@ do
     -d|--dockeraudit)               # switch - Run in audit mode (for Docker - no changes made to system)
       audit_mode=1
       do_docker=1
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -D|--dockertests)               # switch - List all Docker functions available to selective mode
@@ -777,15 +777,15 @@ do
       ;;  
     -e|--host)                      # switch - Run in audit mode on external host (for Operating Systems - no changes made to system)
       do_remote=1
-      ext_host="$2"
+      ext_host="${2}"
       shift 2
       ;;
     -E|--hash|--passwordhash)       # switch - Password hash
-      password_hashing="$2"
+      password_hashing="${2}"
       shift 2
       ;;
     -f|--action)                    # switch - Action (e.g delete - used with multipass)
-      action="$2"
+      action="${2}"
       case $action in
         audit)
           audit_mode=1
@@ -810,15 +810,15 @@ do
       shift 2
       ;; 
     -F|--tempfile)                  # switch - Temporary file to use for operations
-      temp_file="$2"
+      temp_file="${2}"
       shift 2
       ;;
     -g|--giturl)                    # switch - Git URL for code to copy to container
-      git_url="$2"
+      git_url="${2}"
       shift 2
       ;;
     -G|--wheelgroup)                # switch - Set wheel group
-      wheel_group="$2"
+      wheel_group="${2}"
       shift 2
       ;;
     -h|--help)                      # switch - Display help
@@ -835,21 +835,21 @@ do
       exit
       ;;
     -i|--anacron)                   # switch - Enable/Disable anacron
-      anacron_enable="$2"
+      anacron_enable="${2}"
       shift 2
       ;;
     -I|--type)                      # switch - Audit type
-      audit_type="$2"
+      audit_type="${2}"
       shift 2
       ;;
     -k|--kubeaudit)                 # switch - Run in audit mode (for Kubernetes - no changes made to system)
       audit_mode=1
       do_kubernetes=1
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -K|--function|--test)           # switch - Do a specific function
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -l|--lockdown)                  # switch - Run in lockdown mode (for Operating Systems - changes made to system)
@@ -863,7 +863,7 @@ do
       shift
       ;;
     -m|--machine|--vm)              # switch - Set virtualisation type
-      vm_type="$2"
+      vm_type="${2}"
       case $vm_type in
         docker)
           do_compose=1
@@ -877,7 +877,7 @@ do
       shift 2
       ;;
     -M|--workdir)                   # switch - Set work directory
-      work_dir="$2"
+      work_dir="${2}"
       shift 2
       ;;
     -n|--ansible)                   # switch - Output ansible
@@ -889,7 +889,7 @@ do
       shift
       ;;
     -o|--os|--osver)                # switch - Set OS version
-      test_os="$2"
+      test_os="${2}"
       shift 2
       ;;
     -O|--osinfo|--systeminfo)       # switch - Print OS/System information
@@ -903,7 +903,7 @@ do
       exit
       ;;
     -P|--sshsandbox|--sandbox)      # switch - Enable/Disabe SSH sandbox
-      ssh_sandbox="$2"
+      ssh_sandbox="${2}"
       shift 2
       ;;
     -q|--quiet|--nostrict)          # switch - Run in quiet mode
@@ -916,11 +916,11 @@ do
       shift
       ;;
     -r|--awsregion|--region)        # switch - Set AWS region
-      aws_region="$2"
+      aws_region="${2}"
       shift 2
       ;;
     -R|--moduleinfo|--testinfo)     # switch - Print information about a module
-      module="$2"
+      module="${2}"
       print_audit_info "${module}"
       shift 2
       exit
@@ -929,7 +929,7 @@ do
       audit_mode=1
       do_fs=0
       do_select=1
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -S|--unixtests|--unix)          # switch - List UNIX tests
@@ -938,16 +938,16 @@ do
       exit
       ;;
     -t|--tag|--name)                # switch - Set docker tag
-      test_tag="$2"
+      test_tag="${2}"
       shift 2
       ;;
     -T|--tempdir)                   # switch - Set temp directoru
-      temp_dir="$2"
+      temp_dir="${2}"
       shift 2
       ;;
     -u|--undo)                      # switch - Undo lockdown (for Operating Systems - changes made to system)
       audit_mode=2
-      restore_date="$2"
+      restore_date="${2}"
       shift 2
       ;;
     -U|--dofiles)                   # switch - Include filesystems
@@ -966,7 +966,7 @@ do
     -w|--awsaudit)                  # switch - Run in audit mode (for AWS - no changes made to system)
       audit_mode=1
       do_aws=1
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -W|--awstests|--aws)            # switch - List all AWS functions available to selective mode
@@ -977,7 +977,7 @@ do
     -x|--awsrec)                    # switch - Run in recommendations mode (for AWS - no changes made to system)
       audit_mode=1
       do_aws_rec=1
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -X|--strict)                    # switch - Run shellcheck against script
@@ -989,7 +989,7 @@ do
       audit_mode=0
       do_fs=0
       do_select=1
-      module_name="$2"
+      module_name="${2}"
       shift 2
       ;;
     -Z|--changes|--listchanges)     # switch - List changes

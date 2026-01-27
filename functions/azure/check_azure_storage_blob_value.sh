@@ -13,19 +13,19 @@
 
 check_azure_storage_blob_value () {
   print_function  "check_azure_storage_account_value"
-  description="$1"
-  storage_account="$2"
-  blob_propery="$3"
-  blob_policy="$4"
-  query_string="$5"
-  function="$6"
-  correct_value="$7"
-  parameter_name="$8"
+  description="${1}"
+  storage_account="${2}"
+  blob_propery="${3}"
+  blob_policy="${4}"
+  query_string="${5}"
+  function="${6}"
+  correct_value="${7}"
+  parameter_name="${8}"
   verbose_message "${description} for Storage Blobs on account \"${storage_account}\" is \"${correct_value}\"" "check"
   if [ "${azure_auth_mode}" = "login" ]; then
-    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" -o tsv --auth-mode "${azure_auth_mode}" )
+    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" --output tsv --auth-mode "${azure_auth_mode}" )
   else
-    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" -o tsv )
+    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" --output tsv )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Storage Blob \"${storage_account}\" has ${description} set to ${correct_value}"

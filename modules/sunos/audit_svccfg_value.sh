@@ -13,9 +13,9 @@ audit_svccfg_value () {
   print_function "audit_svccfg_value"
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "RPC Port Mapping" "check"
-    service_name="$1"
-    service_property="$2"
-    correct_value="$3"
+    service_name="${1}"
+    service_property="${2}"
+    correct_value="${3}"
     current_value=$( svccfg -s "${service_name}" listprop "${service_property}" | awk '{print $3}' )
     file_header="svccfg"
     log_file="${work_dir}/${file_header}.log"

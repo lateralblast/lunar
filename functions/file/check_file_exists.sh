@@ -15,8 +15,8 @@
 
 check_file_exists () {
   print_function "check_file_exists"
-  check_file="$1"
-  check_exists="$2"
+  check_file="${1}"
+  check_exists="${2}"
   log_file="file.log"
   if [ "${check_exists}" = "no" ]; then
     if [ "${audit_mode}" != 2 ]; then

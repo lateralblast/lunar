@@ -13,8 +13,8 @@ check_osx_systemsetup () {
   print_function "check_osx_systemsetup"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 12 ]; then
-      param="$1"
-      value="$2"
+      param="${1}"
+      value="${2}"
       log_file="systemsetup_${param}.log"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""

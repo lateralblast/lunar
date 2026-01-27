@@ -20,10 +20,10 @@
 
 check_file_perms () {
   print_function "check_file_perms"
-  check_file="$1"
-  check_perms="$2"
-  check_owner="$3"
-  check_group="$4"
+  check_file="${1}"
+  check_perms="${2}"
+  check_owner="${3}"
+  check_group="${4}"
   if [ "${id_check}" = "0" ]; then
     find_command="find"
   else

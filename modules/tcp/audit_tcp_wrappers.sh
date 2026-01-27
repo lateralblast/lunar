@@ -76,8 +76,8 @@ audit_tcp_wrappers () {
           ip_values=$( ip addr | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print $2}' )
           for ip_value in $ip_values; do
             set -- $( echo "$ip_value" | awk -F"/" '{print $1" "$2 }' )
-            ip_address="$1"
-            cidr="$2"
+            ip_address="${1}"
+            cidr="${2}"
             netmask=$( cidr_to_mask "$cidr" )
             for daemon in ${tcpd_allow}; do
               check_file_value "is" "${check_file}" "${daemon}" "colon" " ${ip_address}/${netmask}" "hash"

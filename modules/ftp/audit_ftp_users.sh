@@ -15,7 +15,7 @@
 
 audit_ftp_users () {
   print_function "audit_ftp_users"
-  check_file="$1"
+  check_file="${1}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     funct_verbost_message "FTP Users" "check"
     if [ "${os_name}" = "AIX" ]; then

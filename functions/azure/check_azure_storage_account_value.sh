@@ -13,16 +13,16 @@
 
 check_azure_storage_account_value () {
   print_function  "check_azure_storage_account_value"
-  description="$1"
-  storage_account="$2"
-  resource_group="$3"
-  query_string="$4"
-  function="$5"
-  correct_value="$6"
-  parameter_name="$7"
+  description="${1}"
+  storage_account="${2}"
+  resource_group="${3}"
+  query_string="${4}"
+  function="${5}"
+  correct_value="${6}"
+  parameter_name="${7}"
   if [ "${resource_group}" = "" ]; then
     verbose_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
-    actual_value=$( az storage account show --name "${storage_account}" --query "${query_string}" -o tsv )
+    actual_value=$( az storage account show --name "${storage_account}" --query "${query_string}" --output tsv )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} set to ${correct_value}"
@@ -53,9 +53,9 @@ check_azure_storage_account_value () {
       fi
     fi
   else
-    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" -o tsv )
+    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
     verbose_message "${description} for Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\"" "check"
-    actual_value=$( az storage account show --name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" -o tsv )
+    actual_value=$( az storage account show --name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} set to ${correct_value} for resource group \"${resource_group}\""

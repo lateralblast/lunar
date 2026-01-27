@@ -13,17 +13,17 @@
 
 check_azure_file_share_value () {
   print_function  "check_azure_file_share_value"
-  description="$1"
-  storage_account="$2"
-  resource_group="$3"
-  share_propery="$4"
-  query_string="$5"
-  function="$6"
-  correct_value="$7"
-  parameter_name="$8"
-  retention_days="$9"
+  description="${1}"
+  storage_account="${2}"
+  resource_group="${3}"
+  share_propery="${4}"
+  query_string="${5}"
+  function="${6}"
+  correct_value="${7}"
+  parameter_name="${8}"
+  retention_days="${9}"
   verbose_message "${description} for Shares on Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
-  actual_value=$( az storage account file-${share_propery} show --account-name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" -o tsv )
+  actual_value=$( az storage account file-${share_propery} show --account-name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Shares for Storage Account \"${storage_account}\" has ${description} set to ${correct_value}"
   else

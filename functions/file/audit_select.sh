@@ -11,8 +11,8 @@
 
 funct_audit_select () {
   print_function "funct_audit_select"
-  audit_mode=$1
-  module_name=$2
+  audit_mode="${1}"
+  module_name="${2}"
   module_test=$( echo "${module_name}" | grep -c aws )
   if [ "$module_test" = "1" ]; then
     check_aws

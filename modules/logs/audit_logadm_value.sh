@@ -18,8 +18,8 @@ audit_logadm_value () {
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       verbose_message "Debug Level Daemon Logging" "check"
-      log_name="$1"
-      log_facility="$2"
+      log_name="${1}"
+      log_facility="${2}"
       check_file="/etc/logadm.conf"
       check_log=$( logadm -V | grep -v '^#' | grep "${log_name}" )
       log_file="/var/log/${log_name}"

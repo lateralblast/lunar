@@ -16,9 +16,9 @@
 check_chkconfig_service () {
   print_function "check_chkconfig_service"
   if [ "${os_name}" = "VMkernel" ]; then
-    service_name="$1"
-    service_level="$2"
-    correct_status="$3"
+    service_name="${1}"
+    service_level="${2}"
+    correct_status="${3}"
     chk_config="/bin/chkconfig"
     log_file="chkconfig.log"
     actual_status=$( ${chk_config} --list "${service_name}" | awk '{print $2}' )
@@ -51,9 +51,9 @@ check_chkconfig_service () {
     fi
   fi
   if [ "${os_name}" = "Linux" ]; then
-    service_name=$1
-    service_level=$2
-    correct_status=$3
+    service_name="${1}"
+    service_level="${2}"
+    correct_status="${3}"
     secure_string="Sevice \"${service_name}\" at run level \"${service_level}\" at rune level \"${service_level}\" is \"${correct_status}\""
     insecure_string="Service \"${service_name}\" at run level \"${service_level}\" at rune level \"${service_level}\" is \"${correct_status}\""
     verbose_message "${secure_string}" "check"

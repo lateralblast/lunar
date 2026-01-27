@@ -15,8 +15,8 @@
 check_sunos_service () {
   print_function "check_sunos_service"
   if [ "${os_name}" = "SunOS" ]; then
-    temp_name="$1"
-    temp_status="$2"
+    temp_name="${1}"
+    temp_status="${2}"
     if [ "${temp_name}" = "disable" ] || [ "${temp_name}" = "enable" ]; then
       service_name=${temp_status}
       if [ "${temp_name}" = "disable" ]; then

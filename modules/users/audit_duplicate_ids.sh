@@ -24,10 +24,10 @@ audit_duplicate_ids () {
   print_function "audit_duplicate_ids"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Duplicate IDs" "check"
-    field="$1"
-    function="$2"
-    term="$3"
-    check_file="$4"
+    field="${1}"
+    function="${2}"
+    term="${3}"
+    check_file="${4}"
     duplicate=0
     if [ "${audit_mode}" != 2 ]; then
       file_list=$( cut -f"$field" -d: < "${check_file}" | sort -n | uniq -c | awk '{ print $1":"$2 }' )

@@ -27,7 +27,7 @@
 audit_azure_databricks () {
   print_function  "audit_azure_databricks"
   verbose_message "Azure Databricks" "check"
-  workspace_list=$( az databricks workspace list --query "[].name" -o tsv )
+  workspace_list=$( az databricks workspace list --query "[].name" --output tsv )
   for workspace_name in ${workspace_list}; do
     resource_group=$( az databricks workspace list --query "[?contains(name, '${workspace}')].[resourceGroup]" --output tsv )
     resource_id=$( az databricks workspace list --query "[?contains(name, '${workspace}')].[id]" --output tsv )

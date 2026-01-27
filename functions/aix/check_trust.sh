@@ -12,8 +12,8 @@
 check_trust() {
   print_function "check_trust"
   if [ "${os_name}" = "AIX" ]; then
-    parameter_name="$1"
-    correct_value="$2"
+    parameter_name="${1}"
+    correct_value="${2}"
     log_file="trustchk_${parameter_name}.log"
     actual_value=$( trustchk -p "${parameter_name}" | cut -f2 -d= )
     policy_command="trustchk -p ${parameter_name} | cut -f2 -d= | grep ${correct_value}"

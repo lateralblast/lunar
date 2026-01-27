@@ -15,10 +15,10 @@ check_dockerd () {
   print_function "check_dockerd"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
-      used="$1"
-      type="$2"
-      param="$3"
-      value="$4"
+      used="${1}"
+      type="${2}"
+      param="${3}"
+      value="${4}"
       if [ "${type}" = "config" ]; then
         if [ "${value}" ]; then
          verbose_message "Docker \"${type}\" parameter \"${param}\" has value \"${value}\"" "check"

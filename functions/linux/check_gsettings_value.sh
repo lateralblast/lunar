@@ -20,9 +20,9 @@
 
 check_gsettings_value () {
   print_function "check_gsettings_value"
-  parameter_root="$1"
-  parameter_name="$2" 
-  correct_value="$3"
+  parameter_root="${1}"
+  parameter_name="${2}" 
+  correct_value="${3}"
   command_name="gsettings"
   log_file="${command_name}.log"
   check=$( command -v gsettings 2> /dev/null | wc -l | sed "s/ //g" )

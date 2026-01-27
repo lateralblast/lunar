@@ -12,8 +12,8 @@
 check_sysadminctl () {
   print_function "check_sysadminctl"
   if [ "${os_name}" = "Darwin" ]; then
-    param="$1"
-    value="$2"
+    param="${1}"
+    value="${2}"
     log_file="sysadminctl.log"
     if [ "${value}" = "off" ]; then
       search_value="disabled"

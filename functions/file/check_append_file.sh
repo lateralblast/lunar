@@ -15,9 +15,9 @@
 
 check_append_file () {
   print_function "check_append_file"
-  check_file="$1"
-  parameter="$2"
-  comment_value="$3"
+  check_file="${1}"
+  parameter="${2}"
+  comment_value="${3}"
   dir_name=$( dirname "${check_file}" )
   if [ ! -f "${check_file}" ]; then
     verbose_message "File \"${check_file}\" does not exist" "warn"

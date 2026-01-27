@@ -12,14 +12,14 @@
 #.
 
 check_azure_storage_account_keys_rotation () {
-  storage_account="$1"
-  resource_id="$2"
-  correct_value="$3"
+  storage_account="${1}"
+  resource_id="${2}"
+  correct_value="${3}"
   status_check=$( az monitor activity-log list --namespace Microsoft.Storage --offset ${correct_value}d --query "[?contains(authorization.action, 'regenerateKey')]" --resource-id "${resource_id}" |grep "Succeeded" ) 
   if [ -n "${status_check}" ]; then
     increment_secure "Storage Account \"${storage_account}\" has access keys regenerated in the last \"${correct_value}\" days"
   else
-    creation_date=$( az storage account show --name "${storage_account}" --query "creationTime" -o tsv | cut -d T -f 1 )
+    creation_date=$( az storage account show --name "${storage_account}" --query "creationTime" --output tsv | cut -d T -f 1 )
     if [ "${os_name}" = "Linux" ]; then
       creation_secs=$( date -d "${creation_date}" +%s )
       current_secs=$( date +%s )

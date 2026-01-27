@@ -15,8 +15,8 @@
 check_service () {
   print_function "check_service"
   if [ "${os_name}" = "SunOS" ]; then
-    service_name="$1"
-    correct_status="$2"
+    service_name="${1}"
+    correct_status="${2}"
     service_test=$( echo "${service_name}" |grep "svc:" )
     if [ -n "${service_test}" ]; then
       check_svcadm_service "${service_name}" "${correct_status}"

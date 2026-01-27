@@ -13,9 +13,9 @@ audit_ipadm_value () {
   print_function "audit_ipadm_value"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
-      ipadm_name="$1"
-      ipadm_property="$2"
-      correct_value="$3"
+      ipadm_name="${1}"
+      ipadm_property="${2}"
+      correct_value="${3}"
       current_value=$( ipadm show-prop -p "${ipadm_name}" -co current "${ipadm_property}" )
       file_header="ipadm"
       log_file="${work_dir}/${file_header}.log"

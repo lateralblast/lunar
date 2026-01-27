@@ -15,9 +15,9 @@
 
 audit_system_auth_password_policy () {
   print_function "audit_system_auth_password_policy"
-  auth_string="$1"
-  search_string="$2"
-  search_value="$3"
+  auth_string="${1}"
+  search_string="${2}"
+  search_value="${3}"
   temp_file="${temp_dir}/audit_system_auth_password_policy"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then

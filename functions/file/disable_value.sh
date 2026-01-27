@@ -16,9 +16,9 @@
 
 disable_value () {
   print_function "disable_value"
-  check_file="$1"
-  parameter_name="$2"
-  comment_value="$3"
+  check_file="${1}"
+  parameter_name="${2}"
+  comment_value="${3}"
   if [ -f "${check_file}" ]; then
     if [ "${comment_value}" = "star" ]; then
       comment_value="*"

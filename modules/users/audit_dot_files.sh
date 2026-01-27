@@ -13,7 +13,7 @@ audit_dot_files () {
   print_function "audit_dot_files"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     verbose_message "Dot Files" "check"
-    check_file="$1"
+    check_file="${1}"
     if [ "${audit_mode}" != 2 ]; then
       dir_list=$( cut -f6 -d':' /etc/passwd )
       for dir_name in ${dir_list}; do

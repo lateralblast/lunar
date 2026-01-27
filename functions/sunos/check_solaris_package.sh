@@ -15,7 +15,7 @@
 funct_check_pkg () {
   print_function "funct_check_pkg"
   if [ "${os_name}" = "SunOS" ]; then
-    package_name="$1"
+    package_name="${1}"
     package_check=$( pkginfo "$1" )
     log_file="${work_dir}/pkg.log"
     if [ "${audit_mode}" = 2 ]; then

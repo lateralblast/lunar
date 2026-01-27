@@ -17,7 +17,7 @@
 audit_azure_guest_users () {
   print_function  "audit_azure_guest_users"
   verbose_message "Azure Guest Users" "check"
-  guest_users=$( az ad user list --query "[?contains(userType, 'Guest')]" --query "id" -o tsv )
+  guest_users=$( az ad user list --query "[?contains(userType, 'Guest')]" --query "id" --output tsv )
   if [ -z "$guest_users" ]; then
     increment_secure   "No guest users found"
   else

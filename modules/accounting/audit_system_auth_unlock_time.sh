@@ -15,9 +15,9 @@
 
 audit_system_auth_unlock_time () {
   print_function "audit_system_auth_unlock_time"
-  auth_string="$1"
-  search_string="$2"
-  search_value="$3"
+  auth_string="${1}"
+  search_string="${2}"
+  search_value="${3}"
   temp_file="${temp_dir}/audit_system_auth_unlock_time"
   if [ "${os_name}" = "Linux" ]; then
     os_check=0

@@ -12,7 +12,7 @@
 check_command_output () {
   print_function "check_command_output"
   if [ "${os_name}" = "SunOS" ]; then
-    command_name="$1"
+    command_name="${1}"
     if [ "${command_name}" = "getcond" ]; then
       get_command="auditconfig -getcond |cut -f2 -d'=' |sed 's/ //g'"
     fi

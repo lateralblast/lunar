@@ -12,8 +12,8 @@
 check_pwpolicy() {
   print_function "check_pwpolicy"
   if [ "${os_name}" = "Darwin" ]; then
-    parameter_name="$1"
-    correct_value="$2"
+    parameter_name="${1}"
+    correct_value="${2}"
     log_file="${parameter_name}.log"
     if [ "${audit_mode}" != 2 ]; then
       string="Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""

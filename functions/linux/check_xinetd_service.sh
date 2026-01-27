@@ -15,9 +15,9 @@
 audit_xinetd_service () {
   print_function "audit_xinetd_service"
   if [ "${os_name}" = "Linux" ]; then
-    service_name="$1"
-    parameter_name="$2"
-    correct_status="$3"
+    service_name="${1}"
+    parameter_name="${2}"
+    correct_status="${3}"
     check_file="/etc/xinetd.d/${service_name}"
     log_file="${work_dir}/${service_name}.log"
     if [ -f "${check_file}" ]; then

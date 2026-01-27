@@ -11,7 +11,7 @@
 
 check_package () {
   print_function "check_package"
-  package_name="$1"
+  package_name="${1}"
   if [ "${os_name}" = "Linux" ]; then
   	check_linux_package   "${package_name}"
   fi

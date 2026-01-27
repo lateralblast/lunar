@@ -11,7 +11,7 @@
 
 funct_audit_system () {
   print_function "funct_audit_system"
-  audit_mode=$1
+  audit_mode="${1}"
   if [ "${audit_mode}" = 0 ]; then
     if [ ! -d "${work_dir}" ]; then
       mkdir -p "${work_dir}"

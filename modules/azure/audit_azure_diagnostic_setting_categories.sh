@@ -17,7 +17,7 @@
 audit_azure_diagnostic_setting_categories () {
   print_function  "audit_azure_diagnostic_setting_categories"
   verbose_message "Azure Diagnostic Setting Categories" "check"
-  subscription_ids=$( az account list --query "[].id" -o tsv 2>/dev/null )
+  subscription_ids=$( az account list --query "[].id" --output tsv 2>/dev/null )
   for subscription_id in ${subscription_ids}; do
     for setting in Administrative Alert Policy Security; do
       diagnostic_setting=$( az monitor diagnostic-settings subscription list --subscription ${subscription_id} | grep "${setting}" | grep -i "enabled" | grep true )

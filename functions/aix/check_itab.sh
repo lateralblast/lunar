@@ -13,8 +13,8 @@
 check_itab() {
   print_function "check_itab"
   if [ "${os_name}" = "AIX" ]; then
-    service_name="$1"
-    correct_value="$2"
+    service_name="${1}"
+    correct_value="${2}"
     log_file="${service_name}.log"
     actual_value=$( lsitab "${service_name}" | cut -f1 -d: )
     if [ "${correct_value}" = "off" ]; then

@@ -12,13 +12,13 @@
 #.
 
 check_azure_microsoft_defender_value () {
-  description="$1"
-  parameter_name="$2"
-  correct_value="$3"
-  correct_status="$4"
+  description="${1}"
+  parameter_name="${2}"
+  correct_value="${3}"
+  correct_status="${4}"
   print_function  "check_azure_microsoft_defender_value"
   verbose_message "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
-  actual_value=$( az security pricing show --name "${parameter_name}" --query pricingTier -o tsv )
+  actual_value=$( az security pricing show --name "${parameter_name}" --query pricingTier --output tsv )
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\""
   else
@@ -31,7 +31,7 @@ check_azure_microsoft_defender_value () {
   fi
   if [ ! "${correct_status}" = "" ]; then
     verbose_message "Azure Microsoft Defender \"${description}\" Status is set to \"${correct_status}\"" "check"
-    actual_status=$( az security pricing show --name "${parameter_name}" --query "[operationStatus]" -o tsv )
+    actual_status=$( az security pricing show --name "${parameter_name}" --query "[operationStatus]" --output tsv )
     if [ "${actual_status}" = "${correct_status}" ]; then
       increment_secure   "Microsoft Defender \"${description}\" Status is set to \"${correct_status}\""
     else

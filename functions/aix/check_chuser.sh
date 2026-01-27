@@ -12,12 +12,12 @@
 check_chuser() {
   print_function "check_chuser"
   if [ "${os_name}" = "AIX" ]; then
-    sec_file="$1"
-    parameter_name="$2"
-    correct_value="$3"
-    group_name="$4"
-    group_value="$5"
-    user_name="$6"
+    sec_file="${1}"
+    parameter_name="${2}"
+    correct_value="${3}"
+    group_name="${4}"
+    group_value="${5}"
+    user_name="${6}"
     log_file="${sec_file}_${parameter_name}_${group_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"

@@ -19,9 +19,9 @@
 audit_azure_file_shares () {
   print_function  "audit_azure_file_shares"
   verbose_message "Azure File Shares" "check"
-  storage_accounts=$( az storage account list --query "[].name" -o tsv )
+  storage_accounts=$( az storage account list --query "[].name" --output tsv )
   for storage_account in ${storage_accounts}; do
-    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" -o tsv )
+    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
     # 9.1.1 Ensure soft delete for Azure File Shares is Enabled
     # 9.1.2 Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
     # 9.1.3 Ensure 'SMB channel encryption' is set to 'AES-256-GCM' or higher for SMB file shares

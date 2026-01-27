@@ -12,8 +12,8 @@
 check_launchctl_service () {
   print_function "check_launchctl_service"
   if [ "${os_name}" = "Darwin" ]; then
-    launchctl_service="$1"
-    required_status="$2"
+    launchctl_service="${1}"
+    required_status="${2}"
     log_file="${launchctl_service}.log"
     if [ "${required_status}" = "on" ] || [ "${required_status}" = "enable" ]; then
       required_status="enabled"

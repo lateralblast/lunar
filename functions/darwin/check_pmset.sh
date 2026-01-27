@@ -12,8 +12,8 @@
 check_pmset() {
   print_function "check_pmset"
   if [ "${os_name}" = "Darwin" ]; then
-    service="$1"
-    value="$2"
+    service="${1}"
+    value="${2}"
     state="${value}"
     if [ "${value}" = "off" ]; then
       value="0"

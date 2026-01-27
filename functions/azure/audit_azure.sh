@@ -32,7 +32,7 @@ audit_azure_all () {
 
 funct_audit_azure () {
   print_function "funct_audit_azure"
-  audit_mode=$1
+  audit_mode="${1}"
   check_environment
   check_azure
   audit_azure_all

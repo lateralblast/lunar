@@ -14,8 +14,8 @@
 check_inetd_service () {
   print_function "check_inetd_service"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    service_name="$1"
-    correct_status="$2"
+    service_name="${1}"
+    correct_status="${2}"
     check_file="/etc/inetd.conf"
     log_file="${service_name}.log"
     if [ -f "${check_file}" ]; then

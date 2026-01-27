@@ -14,8 +14,8 @@
 
 audit_system_auth_account_reset () {
   print_function "audit_system_auth_account_reset"
-  auth_string=$1
-  search_string=$2
+  auth_string="${1}"
+  search_string="${2}"
   temp_file="${temp_dir}/audit_system_auth_account_reset"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then

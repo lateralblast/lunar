@@ -12,8 +12,8 @@
 check_no() {
   print_function "check_no"
   if [ "${os_name}" = "AIX" ]; then
-    parameter_name="$1"
-    correct_value="$2"
+    parameter_name="${1}"
+    correct_value="${2}"
     log_file="${parameter_name}.log"
     get_command="no -a |grep '${parameter_name} ' |cut -f2 -d= |sed 's/ //g' |grep '${correct_value}'"
     set_command="no -p -o ${parameter_name}=${correct_value}"

@@ -27,14 +27,14 @@
 
 check_file_value_with_position () {
   print_function "check_file_value_with_position"
-  operator="$1"
-  check_file="$2"
-  parameter_name="$3"
-  separator="$4"
-  correct_value="$5"
-  comment_value="$6"
-  position="$7"
-  search_value="$8"
+  operator="${1}"
+  check_file="${2}"
+  parameter_name="${3}"
+  separator="${4}"
+  correct_value="${5}"
+  comment_value="${6}"
+  position="${7}"
+  search_value="${8}"
   temp_file=$( basename ${check_file} )
   temp_file="${temp_dir}/${temp_file}"
   dir_name=$( dirname "${check_file}" )

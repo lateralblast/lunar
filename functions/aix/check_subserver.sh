@@ -12,9 +12,9 @@
 check_subserver() {
   print_function "check_subserver"
   if [ "${os_name}" = "AIX" ]; then
-    service_name="$1"
-    protocol_name="$2"
-    correct_value="$3"
+    service_name="${1}"
+    protocol_name="${2}"
+    correct_value="${3}"
     log_file="${service_name}.log"
     actual_value=$( grep "${service_name} " /etc/inetd.conf | grep "${protocol_name} " | grep -v "^#" | awk "{print $1}" )
     if [ "${actual_value}" != "${service_name}" ]; then

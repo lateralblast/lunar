@@ -15,9 +15,9 @@
 check_linux_package_with_group () {
   print_function "check_linux_package_with_group"
   if [ "${os_name}" = "Linux" ]; then
-    package_mode="$1"
-    package_check="$2"
-    group_check="$3"
+    package_mode="${1}"
+    package_check="${2}"
+    group_check="${3}"
     package_type="Package"
     if [ "${package_mode}" = "install" ]; then
       package_status="installed"

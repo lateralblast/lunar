@@ -19,7 +19,7 @@ print_version () {
 #.
 
 print_info () {
-  info="$1"
+  info="${1}"
   echo ""
   echo "Usage: $0 -${info}|--${info}"
   echo ""
@@ -117,7 +117,7 @@ print_backups () {
 #. 
 
 print_tests () {
-  test_string="$1"
+  test_string="${1}"
   echo ""
   if [ "${test_string}" = "UNIX" ]; then
     grep_string="-v aws"
@@ -162,7 +162,7 @@ print_tests () {
 #.
 
 print_function() {
-  funct_name="$1"
+  funct_name="${1}"
   if [ "${verbose_mode}" = 1 ]; then
     echo "Function:   ${funct_name}"
   fi
@@ -174,7 +174,7 @@ print_function() {
 #.
 
 print_function() {
-  function_name="$1"
+  function_name="${1}"
   verbose_message "${function_name}" "module"
 }
 
@@ -290,7 +290,7 @@ print_previous () {
 #.
 
 handle_output () {
-  text="$1"
+  text="${1}"
   echo "$1"
 }
 
@@ -331,7 +331,7 @@ command_message () {
 #.
 
 print_audit_info () {
-  module="$1"
+  module="${1}"
   comment_text=0
   verbose_mode=1
   dir_name=$( pwd )

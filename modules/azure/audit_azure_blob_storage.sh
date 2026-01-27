@@ -19,7 +19,7 @@
 audit_azure_blob_storage () {
   print_function  "audit_azure_blob_storage"
   verbose_message "Azure Blob Storage" "check"
-  storage_accounts=$( az storage account list --query "[].name" -o tsv )
+  storage_accounts=$( az storage account list --query "[].name" --output tsv )
   for storage_account in ${storage_accounts}; do
     # 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
     check_azure_storage_blob_value "Soft delete"   "${storage_account}" "service-properties" "delete-policy" "enabled" "eq" "true" "--enable"
@@ -27,11 +27,11 @@ audit_azure_blob_storage () {
     # 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
     check_azure_storage_container_value "Versioning" "${storage_account}" "" "service-properties" "isVersioningEnabled" "eq" "true" "--enable-versioning"
     # 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
-    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" -o tsv )
+    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
     if [ "${azure_auth_mode}" = "login" ]; then
-      container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" -o tsv --auth-mode "${azure_auth_mode}" )
+      container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" --output tsv --auth-mode "${azure_auth_mode}" )
     else
-      container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" -o tsv )
+      container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" --output tsv )
     fi
     for container_name in ${container_names}; do
       check_azure_storage_container_value "Soft delete"   "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.enabled" "eq" "true" "--enable-container-delete-retention"

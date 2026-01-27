@@ -29,7 +29,7 @@ audit_docker_all () {
 
 funct_audit_docker () {
   print_function "funct_audit_docker"
-  audit_mode=$1
+  audit_mode="${1}"
   audit_docker_all
   print_results
 }

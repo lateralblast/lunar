@@ -12,10 +12,10 @@
 check_chsec() {
   print_function "check_chsec"
   if [ "${os_name}" = "AIX" ]; then
-    sec_file="$1"
-    sec_stanza="$2"
-    parameter_name="$3"
-    correct_value="$4"
+    sec_file="${1}"
+    sec_stanza="${2}"
+    parameter_name="${3}"
+    correct_value="${4}"
     log_file="${sec_file}_${sec_stanza}_${parameter_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"

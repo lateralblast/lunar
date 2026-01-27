@@ -12,9 +12,9 @@
 check_dscl () {
   print_function "check_dscl"
   if [ "${os_name}" = "Darwin" ]; then
-    file="$1"
-    param="$2"
-    value="$3"
+    file="${1}"
+    param="${2}"
+    value="${3}"
     dir="/var/db/dslocal/nodes/Default"
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\" in \"${file}\""

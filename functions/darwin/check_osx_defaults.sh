@@ -12,17 +12,17 @@
 check_osx_defaults () {
   print_function "check_osx_defaults"
   if [ "${os_name}" = "Darwin" ]; then
-    defaults_file="$1"
-    defaults_parameter="$2"
-    defaults_value="$3"
-    defaults_type="$4"
+    defaults_file="${1}"
+    defaults_parameter="${2}"
+    defaults_value="${3}"
+    defaults_type="${4}"
     if [ "${defaults_type}" = "dict" ]; then
-      defaults_second_value="$5"
-      defaults_second_type="$6"
-      defaults_user="$7"
+      defaults_second_value="${5}"
+      defaults_second_type="${6}"
+      defaults_user="${7}"
     else
-      defaults_host="$5"
-      defaults_user="$6"
+      defaults_host="${5}"
+      defaults_user="${6}"
     fi
     defaults_read="read"
     defaults_write="write"

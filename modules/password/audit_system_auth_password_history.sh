@@ -18,9 +18,9 @@
 
 audit_system_auth_password_history () {
   print_function "audit_system_auth_password_history"
-  auth_string="$1"
-  search_string="$2"
-  search_value="$3"
+  auth_string="${1}"
+  search_string="${2}"
+  search_value="${3}"
   temp_file="${temp_dir}/audit_system_auth_password_history"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/security/opasswd"

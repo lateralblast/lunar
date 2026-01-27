@@ -15,8 +15,8 @@
 check_svcadm_service () {
   print_function "check_svcadm_service"
   if [ "${os_name}" = "SunOS" ]; then
-    service_name="$1"
-    correct_status="$2"
+    service_name="${1}"
+    correct_status="${2}"
     file_header="svcadm"
     service_exists=$( svcs -a | grep "${service_name}" | awk '{print $3}' )
     if [ "${audit_mode}" = 2 ]; then

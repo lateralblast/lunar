@@ -2189,3 +2189,5 @@
 # Added Azure Microsoft Defender check for Defender for Servers
 # 11.8.8: Tue 27 Jan 2026 15:38:22 AEDT
 # Added function to check Azure security setting values
+# 11.8.9: Tue 27 Jan 2026 15:42:22 AEDT
+# Code cleanup

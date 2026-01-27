@@ -12,8 +12,8 @@
 check_rctcp() {
   print_function "check_rctcp"
   if [ "${os_name}" = "AIX" ]; then
-    service_name="$1"
-    correct_value="$2"
+    service_name="${1}"
+    correct_value="${2}"
     if [ "${correct_value}" = "off" ]; then
       status_value="disabled"
     else

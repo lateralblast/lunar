@@ -11,8 +11,8 @@
 
 check_auditctl () {
   print_function "check_auditctl"
-  check_file="$1"
-  audit_tag="$2"
+  check_file="${1}"
+  audit_tag="${2}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       secure_string="Auditing is enabled on file \"${check_file}\""
