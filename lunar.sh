@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      11.8.9
+# Version:      11.9.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -354,8 +354,8 @@ company_name="Insert Company Name Here"
 
 cidr_to_mask () {
   set -- $(( 5 - ($1 / 8) )) 255 255 255 255 $(( (255 << (8 - ($1 % 8))) & 255 )) 0 0 0
-  if [ "$1" -gt 1 ]; then
-    shift "$1" 
+  if [ "${1}" -gt 1 ]; then
+    shift "${1}" 
   else
     shift
   fi
@@ -370,7 +370,7 @@ cidr_to_mask () {
 mask_to_cidr () {
   x="${1##*255.}"
   set -- 0^^^128^192^224^240^248^252^254^ $(( (${#1} - ${#x})*2 )) "${x%%.*}"
-  x=${1%%"$3"*}
+  x=${1%%"${3}"*}
   echo $(( $2 + (${#x}/4) ))
 }
 

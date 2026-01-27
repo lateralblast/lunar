@@ -291,7 +291,7 @@ print_previous () {
 
 handle_output () {
   text="${1}"
-  echo "$1"
+  echo "${1}"
 }
 
 # checking_message
@@ -300,7 +300,7 @@ handle_output () {
 #.
 
 checking_message () {
-  verbose_message "$1" "check"
+  verbose_message "${1}" "check"
 }
 
 # setting_message
@@ -309,7 +309,7 @@ checking_message () {
 #.
 
 setting_message () {
-  verbose_message "$1" "set"
+  verbose_message "${1}" "set"
 }
 
 #
@@ -319,7 +319,7 @@ setting_message () {
 #.
 
 command_message () {
-  verbose_message "$1" "exec"
+  verbose_message "${1}" "exec"
 }
 
 # print_audit_info

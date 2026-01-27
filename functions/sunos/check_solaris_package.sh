@@ -16,7 +16,7 @@ funct_check_pkg () {
   print_function "funct_check_pkg"
   if [ "${os_name}" = "SunOS" ]; then
     package_name="${1}"
-    package_check=$( pkginfo "$1" )
+    package_check=$( pkginfo "${1}" )
     log_file="${work_dir}/pkg.log"
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/pkg.log"
@@ -55,7 +55,7 @@ funct_check_pkg () {
               pkgadd "${package_name}"
             else
               pkgadd -d "${base_dir}/pkg" "${package_name}"
-              package_check=$( pkginfo "$1" )
+              package_check=$( pkginfo "${1}" )
             fi
             package_test=$( echo "${package_check}" | grep "ERROR" )
             if [ -z "${package_check}" ]; then

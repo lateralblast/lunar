@@ -18,7 +18,7 @@ audit_ufw () {
     verbose_message     "UFW"       "check"
     check_linux_package "install"   "ufw"
     check_linux_service "ufw"       "on"
-    check_file_value    "is"        "/etc/ufw/ufw.conf"   "LOGLEVEL" "eg" "high" "hash"
+    check_file_value    "is"        "/etc/ufw/ufw.conf"   "LOGLEVEL" "eq" "high" "hash"
     check_linux_package "uninstall" "iptables-persistent"
     #check_ufw_rule      ""
   fi

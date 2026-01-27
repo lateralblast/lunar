@@ -33,7 +33,7 @@ audit_shadow_group () {
         fi
         if [ "${audit_mode}" = 0 ]; then
           backup_file "${check_file}"
-          awk -F':' '( $1 == "shadow" ) {print $1":"$2":"$3":" ; next}; {print}' < "${check_file}" > "${temp_file}"
+          awk -F':' '( $1 == "shadow" ) {print $1":"${2}":"${3}":" ; next}; {print}' < "${check_file}" > "${temp_file}"
           cat "${temp_file}" > "${check_file}"
           rm  "${temp_file}"
         fi

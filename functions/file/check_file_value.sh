@@ -279,13 +279,13 @@ check_file_value_with_position () {
 }
 
 check_file_value () {
-  if [ -n "$7" ]; then
-    check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "$7" ""
+  if [ -n "${7}" ]; then
+    check_file_value_with_position  "${1}" "${2}" "${3}" "${4}" "${5}" "${6}" "${7}" ""
   else
-    if [ -n "$8" ]; then
-      check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8"
+    if [ -n "${8}" ]; then
+      check_file_value_with_position  "${1}" "${2}" "${3}" "${4}" "${5}" "${6}" "${7}" "${8}"
     else
-      check_file_value_with_position  "$1" "$2" "$3" "$4" "$5" "$6" "" ""
+      check_file_value_with_position  "${1}" "${2}" "${3}" "${4}" "${5}" "${6}" "" ""
     fi
   fi
 }

@@ -10,7 +10,7 @@
 #.
 
 get_ubuntu_codename () {
-  case "$1" in
+  case "${1}" in
     "4.10")
       ubuntu_codename="warty"
       ;;

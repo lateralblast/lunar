@@ -56,7 +56,7 @@ audit_password_fields () {
       if [ "${os_name}" = "AIX" ]; then
         user_list=$( pwdck –n ALL )
       else
-        user_list=$( awk -F':' '{print $1":"$2":"}' < /etc/shadow | grep "::$" | cut -f1 -d: )
+        user_list=$( awk -F':' '{print $1":"${2}":"}' < /etc/shadow | grep "::$" | cut -f1 -d: )
       fi
       for user_name in ${user_list}; do
         empty_count=1

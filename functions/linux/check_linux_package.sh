@@ -151,5 +151,5 @@ check_linux_package_with_group () {
 }
 
 check_linux_package () {
-  check_linux_package_with_group "$1" "$2" ""
+  check_linux_package_with_group "${1}" "${2}" ""
 }

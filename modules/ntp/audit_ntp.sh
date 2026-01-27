@@ -72,7 +72,7 @@ audit_ntp () {
         check_file_value        "is"      "/etc/sysconfig/chronyd" "OPTIONS" "eq" "\"-u chrony\"" "hash"
         for server_number in $( seq 0 3 ); do
           ntp_server="${server_number}.${country_suffix}.pool.ntp.org"
-          check_file_value      "is" "/etc/chrony/chrony.conf" "pool" "${ntp_server} iburst" "space" "hash"
+          check_file_value      "is" "/etc/chrony/chrony.conf" "pool" "space" "${ntp_server} iburst" "hash"
         done
       else
         if [ "${ntp_package}" = "systemd-timesyncd" ]; then
@@ -83,9 +83,9 @@ audit_ntp () {
           check_linux_service   "${ntp_package}"  "on"
           comf_file="/etc/systemd/timesyncd.conf"
           ntp_server="0.${country_suffix}.pool.ntp.org"
-          check_file_value      "is" "${conf_file}" "NTP" "eq"              "${ntp_server}" "hash"
+          check_file_value      "is" "${conf_file}" "NTP"         "eq" "${ntp_server}" "hash"
           ntp_server="1.${country_suffix}.pool.ntp.org"
-          check_file_value      "is" "${conf_file}" "FallbackNTP" "eq"      "${ntp_server}" "hash"
+          check_file_value      "is" "${conf_file}" "FallbackNTP" "eq" "${ntp_server}" "hash"
         else
           check_linux_package   "install" "ntp"
           if [ -f "/usr/bin/systemctl" ]; then
