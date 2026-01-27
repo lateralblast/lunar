@@ -31,4 +31,6 @@ audit_azure_microsoft_defender () {
   check_azure_microsoft_defender_value "Microsoft Defender for Containers"        "ContainerRegistry" "Standard" "On"
   # 8.1.5.1 Ensure That Microsoft Defender for Storage Is Set To 'On'
   check_azure_microsoft_defender_value "Microsoft Defender for Storage"           "StorageAccounts"   "Standard" "On"
+  # 8.1.6.1 Ensure That Microsoft Defender for App Services Is Set To 'On'
+  check_azure_microsoft_defender_value "Microsoft Defender for App Services"      "AppServices"       "Standard" "On"
 }

@@ -2203,3 +2203,5 @@
 # Added check for Microsoft Defender for Containers
 # 11.9.5: Tue 27 Jan 2026 20:19:55 AEDT
 # Added check for Microsoft Defender for Storage
+# 11.9.6: Tue 27 Jan 2026 20:23:55 AEDT
+# Added check for Microsoft Defender for App Services
