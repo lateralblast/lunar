@@ -10,6 +10,8 @@
 #
 # 6.1.5 Ensure that SKU Basic/Consumption is not used on artifacts that need to be monitored (Particularly for Production Workloads)
 # Refer to Section(s) 6.1.5 Page(s) 281-3 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_sku_basic_consumption () {

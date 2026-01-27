@@ -8,8 +8,10 @@
 #
 # Check Azure Resource Logging
 #
-# 6.1.4    Ensure that Azure Monitor Resource Logging is Enabled for All Services that Support it
+# 6.1.4 Ensure that Azure Monitor Resource Logging is Enabled for All Services that Support it
 # Refer to Section(s) 6.1.4 Page(s) 275-80 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_resource_logging () {

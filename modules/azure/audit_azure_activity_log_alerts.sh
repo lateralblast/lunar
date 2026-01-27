@@ -30,6 +30,8 @@
 # Refer to Section(s) 6.1.2.9  Page(s) 259-62 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.2.10 Page(s) 263-66 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.2.11 Page(s) 267-70 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_activity_log_alerts () {

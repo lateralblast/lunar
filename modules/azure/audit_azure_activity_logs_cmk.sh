@@ -10,6 +10,8 @@
 #
 # 6.1.1.3  Ensure that storage account is encrypted with customer-managed key
 # Refer to Section(s) 6.1.1.3 Page(s) 203-6   CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_activity_logs_cmk () {

@@ -10,6 +10,8 @@
 #
 # Refer to Section(s) 4 Page(s) 69 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to CIS Microsoft Azure Database Services Benchmark
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_database_services () {

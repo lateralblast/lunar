@@ -47,6 +47,8 @@
 # 8.4.1    Ensure an Azure Bastion Host Exists
 # 8.5      Ensure Azure DDoS Network Protection is enabled on virtual networks
 # Refer to Section(s) 8.1-5 Page(s) 338-472 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_security_services () {

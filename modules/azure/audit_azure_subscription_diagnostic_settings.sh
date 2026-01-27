@@ -10,7 +10,10 @@
 #
 # 6.1.1.1  Ensure that Diagnostic Settings are enabled for all Azure Subscriptions
 # Refer to Section(s) 6.1.1.1 Page(s) 194-8   CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
+
 audit_azure_subscription_diagnostic_settings () {
   print_function "audit_azure_subscription_diagnostic_settings"
   verbose_message "Azure Subscription Diagnostic Settings Activity Logs" "check"

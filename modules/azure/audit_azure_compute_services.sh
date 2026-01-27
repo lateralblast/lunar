@@ -10,6 +10,8 @@
 #
 # Refer to Section(s) 3 Page(s) 63-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to CIS Microsoft Azure Compute Services Benchmark
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_compute_services () {

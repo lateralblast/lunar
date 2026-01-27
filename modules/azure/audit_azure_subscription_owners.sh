@@ -10,6 +10,8 @@
 #
 # 5.27  Ensure that there are no more than 3 members with the Subscription Owner role
 # Refer to Section(s) 5.27 Page(s) 186-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 audit_azure_subscription_owners () {
   print_function "audit_azure_subscription_owners"
