@@ -2185,3 +2185,5 @@
 # Added Azure Microsoft Defender check for CWP
 # 11.8.6: Tue 27 Jan 2026 15:14:52 AEDT
 # Added status check to Microsoft Defender check
+# 11.8.7: Tue 27 Jan 2026 15:24:22 AEDT
+# Added Azure Microsoft Defender check for Defender for Servers
