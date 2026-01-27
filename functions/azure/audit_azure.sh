@@ -15,6 +15,7 @@
 
 audit_azure_all () {
   audit_azure_survey
+  audit_azure_extensions
   audit_azure_storage_services
   audit_azure_compute_services
   audit_azure_database_services

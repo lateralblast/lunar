@@ -2175,3 +2175,5 @@
 # Added Azure SKU Basic/Consumption check
 # 11.8.1: Tue 27 Jan 2026 11:16:00 AEDT
 # Updated documentation
+# 11.8.2: Tue 27 Jan 2026 12:18:37 AEDT
+# Added Azure Extensions check
