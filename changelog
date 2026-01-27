@@ -2207,3 +2207,5 @@
 # Added check for Microsoft Defender for App Services
 # 11.9.7: Tue 27 Jan 2026 20:26:55 AEDT
 # Added check for Microsoft Defender for Azure Cosmos DB
+# 11.9.8: Tue 27 Jan 2026 20:31:22 AEDT
+# Added check for Microsoft Defender for Open-Source RDBMS
