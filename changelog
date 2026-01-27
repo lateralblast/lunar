@@ -2197,3 +2197,5 @@
 # Added error handling to systemctl commands
 # 11.9.2: Tue 27 Jan 2026 19:46:22 AEDT
 # Added check that enpoint protection is enabled
+# 11.9.3: Tue 27 Jan 2026 19:51:22 AEDT
+# Added check that agentless scanning is enabled

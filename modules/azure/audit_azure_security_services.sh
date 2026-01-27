@@ -58,5 +58,7 @@ audit_azure_security_services () {
   audit_azure_microsoft_defender
   # 8.1.3.2 Ensure that 'Vulnerability assessment for machines' component status is set to 'On' - TBD
   # 8.1.3.3 Ensure that 'Endpoint protection' component status is set to 'On'
-  check_azure_security_setting_value "Endpoint protection" "WDATP" "enabled" "true"
+  check_azure_security_setting_value "Endpoint protection"             "WDATP" "enabled" "true"
+  # 8.1.3.4 Ensure that 'Agentless scanning for machines' component status is set to 'On'
+  check_azure_security_setting_value "Agentless scanning for machines" "CSPM"  "enabled" "true"
 }
