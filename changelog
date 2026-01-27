@@ -2201,3 +2201,5 @@
 # Added check that agentless scanning is enabled
 # 11.9.4: Tue 27 Jan 2026 20:16:55 AEDT
 # Added check for Microsoft Defender for Containers
+# 11.9.5: Tue 27 Jan 2026 20:19:55 AEDT
+# Added check for Microsoft Defender for Storage

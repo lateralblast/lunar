@@ -29,4 +29,6 @@ audit_azure_microsoft_defender () {
   check_azure_microsoft_defender_value "Defender for Servers"                     "VirtualMachines"   "Standard" "On"
   # 8.1.4.1 Ensure That Microsoft Defender for Containers Is Set To 'On'
   check_azure_microsoft_defender_value "Microsoft Defender for Containers"        "ContainerRegistry" "Standard" "On"
+  # 8.1.5.1 Ensure That Microsoft Defender for Storage Is Set To 'On'
+  check_azure_microsoft_defender_value "Microsoft Defender for Storage"           "StorageAccounts"   "Standard" "On"
 }
