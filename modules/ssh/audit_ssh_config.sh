@@ -110,7 +110,7 @@ audit_ssh_config () {
   done
   verbose_message "SSH MACs" "check"
   ignore_list=""
-  mac_list=$( sshd -T | grep "^macs" | sed "s/,/ /g" | sed "s/^macs //g" )
+  mac_list=$( sshd -T 2> /dev/null | grep "^macs" | sed "s/,/ /g" | sed "s/^macs //g" )
   for mac_name in ${mac_list}; do
     case "${mac_name}" in
       hmac-md5|hmac-md5-96|hmac-ripemd160|hmac-sha1-96|umac-64@openssh.com|hmac-md5-etm@openssh.com|hmac-md5-96-etm@openssh.com|hmac-ripemd160-etm@openssh.com|mac-sha1-96-etm@openssh.com|umac-64-etm@openssh.com|umac-128-etm@openssh.com)
@@ -135,7 +135,7 @@ audit_ssh_config () {
   fi
   verbose_message "SSH KexAlgorithms" "check"
   ignore_list=""
-  kex_list=$( sshd -T | grep "^kexalgorithms" | sed "s/,/ /g" | sed "s/^kexalgorithms //g" )
+  kex_list=$( sshd -T 2> /dev/null | grep "^kexalgorithms" | sed "s/,/ /g" | sed "s/^kexalgorithms //g" )
   for kex_name in ${kex_list}; do
     case "${kex_name}" in
       diffie-hellman-group1-sha1|diffie-hellman-group14-sha1|diffie-hellman-group-exchange-sha1) 
@@ -160,7 +160,7 @@ audit_ssh_config () {
   fi
   verbose_message "SSH Ciphers" "check"
   ignore_list=""
-  cipher_list=$( sshd -T | grep "^ciphers" | sed "s/,/ /g" | sed "s/^ciphers //g" )
+  cipher_list=$( sshd -T 2> /dev/null | grep "^ciphers" | sed "s/,/ /g" | sed "s/^ciphers //g" )
   for cipher_name in ${cipher_list}; do
     case "${cipher_name}" in
       3des-cbc|aes128-cbc|aes192-cbc|aes256-cbc) 

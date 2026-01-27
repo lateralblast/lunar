@@ -47,19 +47,19 @@ check_systemctl_service () {
   fi
   if [ "${use_systemctl}" = "yes" ]; then
     log_file="systemctl.log"
-    alias_check=$( systemctl is-enabled "${service_name}" | grep -c "alias" | sed "s/ //g" )
+    alias_check=$( systemctl is-enabled "${service_name}" 2> /dev/null | grep -c "alias" | sed "s/ //g" )
     if [ "$alias_check" = "1" ]; then
-      service_name=$( systemctl status "${service_name}" | head -1 | awk '{print $2}' )
+      service_name=$( systemctl status "${service_name}" 2> /dev/null | head -1 | awk '{print $2}' )
     fi
-    nf_status=$( systemctl is-enabled "${service_name}" | grep -c "not-found" | sed "s/ //g" )
+    nf_status=$( systemctl is-enabled "${service_name}" 2> /dev/null | grep -c "not-found" | sed "s/ //g" )
     if [ "$nf_status" = "1" ]; then
       actual_status="not-found"
     else
-      en_status=$( systemctl is-enabled "${service_name}" | grep -cE "enabled|static" | sed "s/ //g" )
+      en_status=$( systemctl is-enabled "${service_name}" 2> /dev/null | grep -cE "enabled|static" | sed "s/ //g" )
       if [ "$en_status" = "1" ]; then
         actual_status="enabled"
       else
-        en_status=$( systemctl is-enabled "${service_name}" | grep -cE "disabled" | sed "s/ //g" )
+        en_status=$( systemctl is-enabled "${service_name}" 2> /dev/null | grep -cE "disabled" | sed "s/ //g" )
         if [ "$en_status" = "1" ]; then
           actual_status="disabled"
         fi
@@ -77,7 +77,7 @@ check_systemctl_service () {
             else
               service_switch="disable"
             fi
-            eval "systemctl ${service_switch} ${service_name}"
+            eval "systemctl ${service_switch} ${service_name} 2> /dev/null"
           fi
         fi
       fi
@@ -102,7 +102,7 @@ check_systemctl_service () {
           if [ "${actual_status}" != "${correct_status}" ] && [ ! "${actual_status}" = "not-found" ]; then
             increment_insecure "Service \"${service_name}\" is not \"${correct_status}\""
             update_log_file  "${log_file}" "${service_name},${actual_status}"
-            lockdown_command="systemctl ${service_switch} ${service_name}"
+            lockdown_command="systemctl ${service_switch} ${service_name} 2> /dev/null"
             lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
             execute_lockdown "${lockdown_command}"  "${lockdown_message}" "sudo"
           else

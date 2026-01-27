@@ -2193,3 +2193,5 @@
 # Code cleanup
 # 11.9.0: Tue 27 Jan 2026 15:44:22 AEDT
 # Typo fixes
+# 11.9.1: Tue 27 Jan 2026 19:21:22 AEDT
+# Added error handling to systemctl commands

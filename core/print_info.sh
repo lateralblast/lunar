@@ -146,7 +146,7 @@ print_tests () {
         ;;
     esac
     if [ -n "${module_name}" ]; then
-      if [ "${verbose_mode}" = 1 ]; then
+      if [ "${verbose_mode}" -eq 1 ]; then
         print_audit_info "${module_name}"
       else
         echo "${module_name}"
@@ -163,19 +163,9 @@ print_tests () {
 
 print_function() {
   funct_name="${1}"
-  if [ "${verbose_mode}" = 1 ]; then
+  if [ "${verbose_mode}" -eq 1 ]; then
     echo "Function:   ${funct_name}"
   fi
-}
-
-# print_function
-#
-# Print module name
-#.
-
-print_function() {
-  function_name="${1}"
-  verbose_message "${function_name}" "module"
 }
 
 # print_results
@@ -332,8 +322,7 @@ command_message () {
 
 print_audit_info () {
   module="${1}"
-  comment_text=0
-  verbose_mode=1
+  comment_text="0"
   dir_name=$( pwd )
   check=$( echo "${module}" | grep "audit" )
   if [ -z "${check}" ]; then
