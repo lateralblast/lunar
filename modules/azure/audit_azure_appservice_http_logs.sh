@@ -8,6 +8,7 @@
 #
 # Check Azure AppService HTTP Logs
 #
+# 6.1.1.6  Ensure that logging for Azure AppService 'HTTP logs' is enabled
 # Refer to Section(s) 6.1.1.6 Page(s) 213-4 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 

@@ -2173,3 +2173,5 @@
 # Added Azure Resource Logging check
 # 11.8.0: Tue 27 Jan 2026 10:08:22 AEDT
 # Added Azure SKU Basic/Consumption check
+# 11.8.1: Tue 27 Jan 2026 11:16:00 AEDT
+# Updated documentation

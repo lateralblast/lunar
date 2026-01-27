@@ -8,6 +8,17 @@
 #
 # Check Azure Activity Log Alerts
 #
+# 6.1.2.1  Ensure that Activity Log Alert for Create Policy Assignment is enabled
+# 6.1.2.2  Ensure that Activity Log Alert for Delete Policy Assignment is enabled
+# 6.1.2.3  Ensure that Activity Log Alert exists for Create or Update Network Security Group
+# 6.1.2.4  Ensure that Activity Log Alert exists for Delete Network Security Group
+# 6.1.2.5  Ensure that Activity Log Alert exists for Create or Update Security Solution
+# 6.1.2.6  Ensure that Activity Log Alert exists for Delete Security Solution
+# 6.1.2.7  Ensure that Activity Log Alert exists for Create or Update SQL Server Firewall Rule
+# 6.1.2.8  Ensure that Activity Log Alert exists for Delete SQL Server Firewall Rule
+# 6.1.2.9  Ensure that Activity Log Alert exists for Create or Update Public IP Address rule
+# 6.1.2.10 Ensure that Activity Log Alert exists for Delete Public IP Address rule
+# 6.1.2.11 Ensure that Activity Log Alert exists for Service Health
 # Refer to Section(s) 6.1.2.1  Page(s) 227-30 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.2.2  Page(s) 231-34 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to Section(s) 6.1.2.3  Page(s) 235-38 CIS Microsoft Azure Foundations Benchmark v5.0.0
@@ -26,60 +37,70 @@ audit_azure_activity_log_alerts () {
   verbose_message "Azure Activity Log Alerts" "check"
   subscription_ids="$( az account show --query id --output tsv )"
   for subscription_id in $subscription_ids; do
+    # 6.1.2.1 Ensure that Activity Log Alert for Create Policy Assignment is enabled
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Authorization/policyAssignments/write" ) 
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Create Policy Assignment is enabled"
     else
       increment_insecure "Activity Log Alert for Create Policy Assignment is not enabled"
     fi
+    # 6.1.2.2 Ensure that Activity Log Alert for Delete Policy Assignment is enabled
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Authorization/policyAssignments/delete" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Delete Policy Assignment is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Policy Assignment is not enabled"
     fi
+    # 6.1.2.3 Ensure that Activity Log Alert exists for Create or Update Network Security Group
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/networkSecurityGroups/write" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Create or Update Network Security Group is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Network Security Group is not enabled"
     fi
+    # 6.1.2.4 Ensure that Activity Log Alert exists for Delete Network Security Group
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/networkSecurityGroups/delete" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Delete Network Security Group is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Network Security Group is not enabled"
     fi
+    # 6.1.2.5 Ensure that Activity Log Alert exists for Create or Update Security Solution
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Security/securitySolutions/write" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Create or Update Security Solution is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Security Solution is not enabled"
     fi
+    # 6.1.2.6 Ensure that Activity Log Alert exists for Delete Security Solution
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Security/securitySolutions/delete" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Delete Security Solution is enabled"
     else
       increment_insecure "Activity Log Alert for Delete Security Solution is not enabled"
     fi
+    # 6.1.2.7 Ensure that Activity Log Alert exists for Create or Update SQL Server Firewall Rule
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Sql/servers/firewallRules/write" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Create or Update SQL Server Firewall Rule is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update SQL Server Firewall Rule is not enabled"
     fi
+    # 6.1.2.8 Ensure that Activity Log Alert exists for Delete SQL Server Firewall Rule
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Sql/servers/firewallRules/delete" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Delete SQL Server Firewall Rule is enabled"
     else
       increment_insecure "Activity Log Alert for Delete SQL Server Firewall Rule is not enabled"
     fi
+    # 6.1.2.9 Ensure that Activity Log Alert exists for Create or Update Public IP Address rule
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/publicIPAddresses/write" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Create or Update Public IP Address rule is enabled"
     else
       increment_insecure "Activity Log Alert for Create or Update Public IP Address rule is not enabled"
     fi
+    # 6.1.2.10 Ensure that Activity Log Alert exists for Delete Public IP Address rule
     alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "Microsoft.Network/publicIPAddresses/delete" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Delete Public IP Address rule is enabled"
@@ -87,6 +108,7 @@ audit_azure_activity_log_alerts () {
       increment_insecure "Activity Log Alert for Delete Public IP Address rule is not enabled"
     fi
   done
+  # 6.1.2.11 Ensure that Activity Log Alert exists for Service Health
   alert_check=$( az monitor activity-log alert list --subscription "${subscription_id}" --query "[].{Name:name,Enabled:enabled,Condition:condition.allOf,Actions:actions}" | grep "ServiceHealth" )
     if [ -z "${alert_check}" ]; then
       increment_secure   "Activity Log Alert for Service Health is enabled"

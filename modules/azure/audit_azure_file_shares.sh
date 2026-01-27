@@ -8,6 +8,9 @@
 #
 # Check Azure File Shares
 #
+# 9.1.1 Ensure soft delete for Azure File Shares is Enabled
+# 9.1.2 Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
+# 9.1.3 Ensure 'SMB channel encryption' is set to 'AES-256-GCM' or higher for SMB file shares
 # Refer to Section(s) 9.1.1-3 Page(s) 475-84 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 

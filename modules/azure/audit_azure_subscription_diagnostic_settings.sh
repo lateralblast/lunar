@@ -8,6 +8,7 @@
 #
 # Check Azure Subscription Diagnostic Settings
 #
+# 6.1.1.1  Ensure that Diagnostic Settings are enabled for all Azure Subscriptions
 # Refer to Section(s) 6.1.1.1 Page(s) 194-8   CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 audit_azure_subscription_diagnostic_settings () {

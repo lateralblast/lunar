@@ -8,6 +8,7 @@
 #
 # Check Azure Guest Users
 #
+# 5.3.2 Ensure that guest user access is restricted
 # Refer to Section(s) 5.3.2 Page(s) 111-4 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 

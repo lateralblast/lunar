@@ -8,6 +8,7 @@
 #
 # Check Azure NSG Flow Logs
 #
+# 6.1.1.5  Ensure that Network Security Group Flow logs are captured and sent to Log Analytics
 # Refer to Section(s) 6.1.1.5 Page(s) 211-2 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 

@@ -8,6 +8,7 @@
 #
 # Check Azure Subscription Owners
 #
+# 5.27  Ensure that there are no more than 3 members with the Subscription Owner role
 # Refer to Section(s) 5.27 Page(s) 186-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 audit_azure_subscription_owners () {

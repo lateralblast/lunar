@@ -8,6 +8,7 @@
 #
 # Check Azure Custom Subscription Admin Roles
 #
+# 5.23  Ensure that custom subscription administrator roles are not used
 # Refer to Section(s) 5.23 Page(s) 174-6 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 

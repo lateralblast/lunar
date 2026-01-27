@@ -8,6 +8,9 @@
 #
 # Check Azure Blob Storage
 #
+# 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
+# 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
+# 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
 # Refer to Section(s) 9.2.1-3 Page(s) 485-95 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #.
 
