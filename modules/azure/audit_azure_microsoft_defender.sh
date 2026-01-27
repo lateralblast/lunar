@@ -20,6 +20,8 @@
 # 8.1.7.3  Ensure That Microsoft Defender for (Managed Instance) Azure SQL Databases Is Set To 'On'
 # 8.1.7.4  Ensure That Microsoft Defender for SQL Servers on Machines Is Set To 'On'
 # 8.1.8.1  Ensure That Microsoft Defender for Azure Key Vault Is Set To 'On'
+# 8.1.9.1  Ensure That Microsoft Defender for Resource Manager Is Set To 'On'
+# 8.1.10   Ensure that Microsoft Defender for Cloud is configured to check VM operating systems for updates - TBD
 #
 # Refer to Section(s) 8.1.1- Page(s) 338-472 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
@@ -51,4 +53,7 @@ audit_azure_microsoft_defender () {
   check_azure_microsoft_defender_value "Defender for SQL Servers on Machines"                "SqlServersVirtualMachines"     "Standard" "On"
   # 8.1.8.1 Ensure That Microsoft Defender for Azure Key Vault Is Set To 'On'
   check_azure_microsoft_defender_value "Defender for Azure Key Vault"                        "KeyVaults"                     "Standard" "On"
+  # 8.1.9.1 Ensure That Microsoft Defender for Resource Manager Is Set To 'On'
+  check_azure_microsoft_defender_value "Defender for Resource Manager"                       "Arm"                           "Standard" "On"
+  # 8.1.10  Ensure that Microsoft Defender for Cloud is configured to check VM operating systems for updates - TBD
 }

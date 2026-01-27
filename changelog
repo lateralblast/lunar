@@ -2217,3 +2217,5 @@
 # Added check for Microsoft Defender for SQL Servers on Machines
 # 12.0.2: Tue Jan 27 20:43:22 AEDT 2026
 # Added check for Microsoft Defender for Azure Key Vault
+# 12.0.3: Tue Wed 28 10:16:12 AEDT 2026
+# Added check for Microsoft Defender for Resource Manager
