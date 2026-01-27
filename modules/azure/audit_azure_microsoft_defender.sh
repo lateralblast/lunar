@@ -27,5 +27,4 @@ audit_azure_microsoft_defender () {
   check_azure_microsoft_defender_value "Cloud Workload Protection (CWP)"          "Api"             "Standard" "On"
   # 8.1.3.1 Ensure that Defender for Servers is set to 'On'
   check_azure_microsoft_defender_value "Defender for Servers"                     "VirtualMachines" "Standard" "On"
-  # 8.1.3.2 Ensure that 'Vulnerability assessment for machines' component status is set to 'On' - TBD
 }

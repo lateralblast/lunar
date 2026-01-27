@@ -2195,3 +2195,5 @@
 # Typo fixes
 # 11.9.1: Tue 27 Jan 2026 19:21:22 AEDT
 # Added error handling to systemctl commands
+# 11.9.2: Tue 27 Jan 2026 19:46:22 AEDT
+# Added check that enpoint protection is enabled
