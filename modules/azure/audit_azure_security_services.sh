@@ -54,4 +54,6 @@
 audit_azure_security_services () {
   print_function  "audit_azure_security_services"
   verbose_message "Azure Security Services" "check"
+  # 8.1.1.1  Ensure Microsoft Defender CSPM is set to 'On'
+  audit_azure_microsoft_defender
 }

@@ -24,6 +24,7 @@
 # 7.14  Ensure request body inspection is enabled in Azure Web Application Firewall policy on Azure Application Gateway
 # 7.15  Ensure bot protection is enabled in Azure Web Application Firewall policy on Azure Application Gateway
 # 7.16  Ensure Azure Network Security Perimeter is used to secure Azure platform-as-a-service resources
+#
 # Refer to Section(s) 7.1-16 Page(s) 287-337 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured
