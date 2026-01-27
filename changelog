@@ -2205,3 +2205,5 @@
 # Added check for Microsoft Defender for Storage
 # 11.9.6: Tue 27 Jan 2026 20:23:55 AEDT
 # Added check for Microsoft Defender for App Services
+# 11.9.7: Tue 27 Jan 2026 20:26:55 AEDT
+# Added check for Microsoft Defender for Azure Cosmos DB

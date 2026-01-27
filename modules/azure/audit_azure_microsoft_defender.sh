@@ -33,4 +33,6 @@ audit_azure_microsoft_defender () {
   check_azure_microsoft_defender_value "Microsoft Defender for Storage"           "StorageAccounts"   "Standard" "On"
   # 8.1.6.1 Ensure That Microsoft Defender for App Services Is Set To 'On'
   check_azure_microsoft_defender_value "Microsoft Defender for App Services"      "AppServices"       "Standard" "On"
+  # 8.1.7.1 Ensure That Microsoft Defender for Azure Cosmos DB Is Set To 'On'
+  check_azure_microsoft_defender_value "Microsoft Defender for Cosmos DB"         "CosmosDbs"         "Standard" "On"
 }
