@@ -2183,3 +2183,5 @@
 # Added Azure Microsoft Defender check for CSPM
 # 11.8.5: Tue 27 Jan 2026 14:40:22 AEDT
 # Added Azure Microsoft Defender check for CWP
+# 11.8.6: Tue 27 Jan 2026 15:14:52 AEDT
+# Added status check to Microsoft Defender check
