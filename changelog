@@ -2219,3 +2219,5 @@
 # Added check for Microsoft Defender for Azure Key Vault
 # 12.0.3: Tue Wed 28 10:16:12 AEDT 2026
 # Added check for Microsoft Defender for Resource Manager
+# 12.0.4: Tue Wed 28 12:58:38 AEDT 2026
+# Added Azure Security Contact check

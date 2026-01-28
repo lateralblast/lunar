@@ -63,4 +63,7 @@ audit_azure_security_services () {
   check_azure_security_setting_value "Agentless scanning for machines" "CSPM"  "enabled" "true"
   # 8.1.3.5 Ensure that 'File Integrity Monitoring' component status is set to 'On' - TBD
   # 8.1.5.2 Ensure Advanced Threat Protection Alerts for Storage Accounts Are Monitored - TBD
+  # 8.1.11 Ensure that Microsoft Cloud Security Benchmark policies are not set to 'Disabled' - TBD
+  # 8.1.12 Ensure That 'All users with the following roles' is set to 'Owner'
+  audit_azure_security_contacts
 }
