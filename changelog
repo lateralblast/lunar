@@ -2221,3 +2221,12 @@
 # Added check for Microsoft Defender for Resource Manager
 # 12.0.4: Tue Wed 28 12:58:38 AEDT 2026
 # Added Azure Security Contact check
+# 12.0.5: Tue Wed 28 13:26:02 AEDT 2026
+# Added Azure Security Contact check for email address
+# 12.0.6: Tue Wed 28 13:28:02 AEDT 2026
+# Added Azure Security Contact check for alert notifications
+# 12.0.7: Tue Wed 28 13:30:02 AEDT 2026
+# Updated documentation
+# 12.0.8: Tue Wed 28 13:35:02 AEDT 2026
+# Added Azure Security Contact check for alert notifications severity
+

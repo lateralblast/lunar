@@ -8,6 +8,8 @@
 #
 # Check Azure Security Contact Value
 #
+# Refer to https://learn.microsoft.com/en-us/cli/azure/security/contact?view=azure-cli-latest
+#
 # This requires the Azure CLI to be installed and configured
 #.
 
@@ -24,12 +26,14 @@ check_azure_security_contact_value () {
       increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${correct_value}\""
     else
       increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${correct_value}\""
+      verbose_message    "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{"state":"On","roles":["Owner"]}' --alert-notifications '{"state":"On","minimalSeverity":"Low"}'" "fix"
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${correct_value}\""
     else
       increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${correct_value}\""
+      verbose_message    "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{"state":"On","roles":["Owner"]}' --alert-notifications '{"state":"On","minimalSeverity":"Low"}'" "fix"
     fi
   fi
 }

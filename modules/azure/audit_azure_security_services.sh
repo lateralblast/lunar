@@ -65,5 +65,7 @@ audit_azure_security_services () {
   # 8.1.5.2 Ensure Advanced Threat Protection Alerts for Storage Accounts Are Monitored - TBD
   # 8.1.11 Ensure that Microsoft Cloud Security Benchmark policies are not set to 'Disabled' - TBD
   # 8.1.12 Ensure That 'All users with the following roles' is set to 'Owner'
+  # 8.1.13 Ensure 'Additional email addresses' is Configured with a Security Contact Email
+  # 8.1.14 Ensure that 'Notify about alerts with the following severity (or higher)' is enabled
   audit_azure_security_contacts
 }
