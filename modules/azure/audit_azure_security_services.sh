@@ -68,4 +68,5 @@ audit_azure_security_services () {
   # 8.1.13 Ensure 'Additional email addresses' is Configured with a Security Contact Email
   # 8.1.14 Ensure that 'Notify about alerts with the following severity (or higher)' is enabled
   audit_azure_security_contacts
+  # 8.1.15 Ensure that 'Notify about attack paths with the following risk level (or higher)' is enabled - TBD
 }

@@ -2229,4 +2229,5 @@
 # Updated documentation
 # 12.0.8: Tue Wed 28 13:35:02 AEDT 2026
 # Added Azure Security Contact check for alert notifications severity
-
+# 12.0.9: Tue Wed 28 17:08:33 AEDT 2026
+# Improved Microsoft Defender check

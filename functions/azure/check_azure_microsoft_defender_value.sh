@@ -16,26 +16,43 @@ check_azure_microsoft_defender_value () {
   parameter_name="${2}"
   correct_value="${3}"
   correct_status="${4}"
+  resource_type="${5}"
   print_function  "check_azure_microsoft_defender_value"
-  verbose_message "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
-  actual_value=$( az security pricing show --name "${parameter_name}" --query pricingTier --output tsv )
-  if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\""
+  if [ "${resource_type}" = "" ]; then
+    resource_check="ignore"
   else
-    increment_insecure "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not set to \"${correct_value}\""
-    if [ "${parameter_name}" = "CloudPosture" ]; then
-      verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\" --extensions name=ApiPosture isEnabled=true" "fix"
-    else
-      verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\"" "fix"
-    fi
+    resource_check=$( az resource list --resource-type "${resource_type}" --output tsv )
   fi
-  if [ ! "${correct_status}" = "" ]; then
-    verbose_message "Azure Microsoft Defender \"${description}\" Status is set to \"${correct_status}\"" "check"
-    actual_status=$( az security pricing show --name "${parameter_name}" --query "[operationStatus]" --output tsv )
-    if [ "${actual_status}" = "${correct_status}" ]; then
-      increment_secure   "Microsoft Defender \"${description}\" Status is set to \"${correct_status}\""
+  if [ "${resource_check}" = "" ]; then
+    if [ "${correct_value}" = "Exists" ]; then
+      increment_insecure "Microsoft Defender \"${description}\" does not exist"
     else
-      increment_insecure "Microsoft Defender \"${description}\" Status is not set to \"${correct_status}\""
+      verbose_message    "Azure Resource Type \"${resource_type}\" not found"
+    fi
+  else
+    if [ "${correct_value}" = "Exists" ]; then
+      increment_secure "Microsoft Defender \"${description}\" exists"
+    else
+      verbose_message  "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
+      actual_value=$( az security pricing show --name "${parameter_name}" --query pricingTier --output tsv )
+      if [ "${actual_value}" = "${correct_value}" ]; then
+        increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\""
+      else
+        increment_insecure "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not set to \"${correct_value}\""
+      if [ "${parameter_name}" = "CloudPosture" ]; then
+        verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\" --extensions name=ApiPosture isEnabled=true" "fix"
+      else
+        verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\"" "fix"
+      fi
+      if [ ! "${correct_status}" = "" ]; then
+        verbose_message     "Azure Microsoft Defender \"${description}\" Status is set to \"${correct_status}\"" "check"
+        actual_status=$( az security pricing show --name "${parameter_name}" --query "[operationStatus]" --output tsv )
+        if [ "${actual_status}" = "${correct_status}" ]; then
+          increment_secure    "Microsoft Defender \"${description}\" Status is set to \"${correct_status}\""
+        else
+          increment_insecure  "Microsoft Defender \"${description}\" Status is not set to \"${correct_status}\""
+        fi
+      fi
     fi
   fi
 }
