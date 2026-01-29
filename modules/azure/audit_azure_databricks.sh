@@ -42,10 +42,10 @@ audit_azure_databricks () {
     # 2.1.9  Ensure 'No Public IP' is set to 'Enabled'
     # 2.1.10 Ensure 'Allow Public Network Access' is set to 'Disabled'
     # 2.1.11 Ensure private endpoints are used to access Azure Databricks workspaces - Needs check of each endpoint
-    check_azure_monitor_values    "Diagnostic Log Delivery"     "${workspace_name}" "${resource_id}"    "diagnostic-settings"               ""   "ne"                  ""                      ""
-    check_azure_databricks_values "Customer Managed Keys"       "${workspace_name}" "${resource_group}" "encryption.keySource"              "eq" "Microsoft.KeyVault." ""
-    check_azure_databricks_values "No Public IP"                "${workspace_name}" "${resource_group}" "parameters.enableNoPublicIp.value" "eq" "true"                "--enable-no-public-ip"
-    check_azure_databricks_values "Allow Public Network Access" "${workspace_name}" "${resource_group}" "publicNetworkAccess"               "eq" "Disabled"            "--public-network-access"
-    check_azure_databricks_values "Private Endpoints"           "${workspace_name}" "${resource_group}" "privateEndpointConnections"        "ne" ""                    ""
+    check_azure_monitor_value    "Diagnostic Log Delivery"     "${workspace_name}" "${resource_id}"    "diagnostic-settings"               ""   "ne"                  ""                      ""
+    check_azure_databricks_value "Customer Managed Keys"       "${workspace_name}" "${resource_group}" "encryption.keySource"              "eq" "Microsoft.KeyVault." ""
+    check_azure_databricks_value "No Public IP"                "${workspace_name}" "${resource_group}" "parameters.enableNoPublicIp.value" "eq" "true"                "--enable-no-public-ip"
+    check_azure_databricks_value "Allow Public Network Access" "${workspace_name}" "${resource_group}" "publicNetworkAccess"               "eq" "Disabled"            "--public-network-access"
+    check_azure_databricks_value "Private Endpoints"           "${workspace_name}" "${resource_group}" "privateEndpointConnections"        "ne" ""                    ""
   done
 }

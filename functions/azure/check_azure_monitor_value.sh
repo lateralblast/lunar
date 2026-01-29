@@ -4,14 +4,14 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# check_azure_monitor_values
+# check_azure_monitor_value
 #
 # Check Azure Monitor values
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-check_azure_monitor_values () {
+check_azure_monitor_value () {
   description="${1}"
   workspace_name="${2}"
   resource_id="${3}"
@@ -20,7 +20,7 @@ check_azure_monitor_values () {
   function="${6}"
   correct_value="${7}"
   parameter_name="${8}"
-  print_function  "check_azure_monitor_values"
+  print_function  "check_azure_monitor_value"
   verbose_message "Azure Monitor value" "check"
   if [ "${query_string}" = "" ]; then
     parameter_string=""

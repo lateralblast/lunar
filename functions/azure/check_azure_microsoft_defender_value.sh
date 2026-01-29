@@ -39,10 +39,11 @@ check_azure_microsoft_defender_value () {
         increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\""
       else
         increment_insecure "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not set to \"${correct_value}\""
-      if [ "${parameter_name}" = "CloudPosture" ]; then
-        verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\" --extensions name=ApiPosture isEnabled=true" "fix"
-      else
-        verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\"" "fix"
+        if [ "${parameter_name}" = "CloudPosture" ]; then
+          verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\" --extensions name=ApiPosture isEnabled=true" "fix"
+        else
+          verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\"" "fix"
+        fi
       fi
       if [ ! "${correct_status}" = "" ]; then
         verbose_message     "Azure Microsoft Defender \"${description}\" Status is set to \"${correct_status}\"" "check"

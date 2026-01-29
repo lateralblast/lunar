@@ -22,7 +22,8 @@
 # 8.1.8.1  Ensure That Microsoft Defender for Azure Key Vault Is Set To 'On'
 # 8.1.9.1  Ensure That Microsoft Defender for Resource Manager Is Set To 'On'
 # 8.1.10   Ensure that Microsoft Defender for Cloud is configured to check VM operating systems for updates - TBD
-# 8.1.16   Ensure that Microsoft Defender External Attack Surface Monitoring (EASM) is enabled - TBD
+# 8.1.16   Ensure that Microsoft Defender External Attack Surface Monitoring (EASM) is enabled
+# 8.2.1    Ensure That Microsoft Defender for IoT Hub Is Set To 'On'
 #
 # Refer to Section(s) 8.1.1- Page(s) 338-472 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
@@ -57,6 +58,8 @@ audit_azure_microsoft_defender () {
   # 8.1.9.1 Ensure That Microsoft Defender for Resource Manager Is Set To 'On'
   check_azure_microsoft_defender_value "Defender for Resource Manager"                       "Arm"                           "Standard" "On"     ""
   # 8.1.10  Ensure that Microsoft Defender for Cloud is configured to check VM operating systems for updates - TBD
-  # 8.1.16  Ensure that Microsoft Defender External Attack Surface Monitoring (EASM) is enabled - TBD
+  # 8.1.16  Ensure that Microsoft Defender External Attack Surface Monitoring (EASM) is enabled
   check_azure_microsoft_defender_value "Defender for External Attack Surface Monitoring"     ""                              "Standard" "Exists" "Microsoft.Easm/workspaces"
+  # 8.2.1 Ensure That Microsoft Defender for IoT Hub Is Set To 'On'
+  # check_azure_microsoft_defender_value "Defender for IoT Hub"                                "IotHubs"                       "Standard" "On"     "Microsoft.Devices/IotHubs"
 }

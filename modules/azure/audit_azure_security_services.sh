@@ -69,4 +69,6 @@ audit_azure_security_services () {
   # 8.1.14 Ensure that 'Notify about alerts with the following severity (or higher)' is enabled
   audit_azure_security_contacts
   # 8.1.15 Ensure that 'Notify about attack paths with the following risk level (or higher)' is enabled - TBD
+  # 8.3.1 Ensure that the Expiration Date is set for all Keys in RBAC Key Vaults
+  audit_azure_key_vault_keys
 }
