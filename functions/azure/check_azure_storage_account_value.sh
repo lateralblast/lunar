@@ -25,9 +25,9 @@ check_azure_storage_account_value () {
     actual_value=$( az storage account show --name "${storage_account}" --query "${query_string}" --output tsv )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Storage Account \"${storage_account}\" has ${description} set to ${correct_value}"
+        increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
       else
-        increment_insecure "Storage Account \"${storage_account}\" does not have ${description} set to ${correct_value}"
+        increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
         if [ ! -z "${parameter_name}" ]; then
           if [[ ${parameter_name} =~ -- ]]; then
             verbose_message    "az storage account update --name ${storage_account} ${parameter_name} ${correct_value}" "fix"
@@ -39,9 +39,9 @@ check_azure_storage_account_value () {
     else
       if [ "${function}" = "ne" ]; then
         if [ "${actual_value}" != "${correct_value}" ]; then
-          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} set to ${correct_value}"
+          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} "${function}" to "${correct_value}"
         else
-          increment_insecure "Storage Account \"${storage_account}\" has ${description} set to ${correct_value}"
+          increment_insecure "Storage Account \"${storage_account}\" has ${description} "${function}" to "${correct_value}"
           if [ ! -z "${parameter_name}" ]; then
             if [[ ${parameter_name} =~ -- ]]; then
               verbose_message    "az storage account update --name ${storage_account} ${parameter_name} ${correct_value}" "fix"
@@ -58,9 +58,9 @@ check_azure_storage_account_value () {
     actual_value=$( az storage account show --name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Storage Account \"${storage_account}\" has ${description} set to ${correct_value} for resource group \"${resource_group}\""
+        increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
       else
-        increment_insecure "Storage Account \"${storage_account}\" does not have ${description} set to ${correct_value} for resource group \"${resource_group}\""
+        increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
         if [ ! -z "${parameter_name}" ]; then
           if [[ ${parameter_name} =~ -- ]]; then
             verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${parameter_name} ${correct_value}" "fix"
@@ -72,9 +72,9 @@ check_azure_storage_account_value () {
     else
       if [ "${function}" = "ne" ]; then
         if [ "${actual_value}" != "${correct_value}" ]; then
-          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} set to ${correct_value} for resource group \"${resource_group}\""
+          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
         else
-          increment_insecure "Storage Account \"${storage_account}\" has ${description} set to ${correct_value} for resource group \"${resource_group}\""
+          increment_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
           if [ ! -z "${parameter_name}" ]; then
             if [[ ${parameter_name} =~ -- ]]; then
               verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${parameter_name} ${correct_value}" "fix"

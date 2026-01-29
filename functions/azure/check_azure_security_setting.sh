@@ -17,11 +17,11 @@ check_azure_security_setting_value () {
   parameter_name="${3}"
   correct_value="${4}"
   print_function "check_azure_security_setting_value"
-  verbose_message "${description} \"${setting_name}\" parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
+  verbose_message "${description} \"${setting_name}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
   actual_value=$( az security setting show --name "${setting_name}" --query "${parameter_name}" --output tsv 2>/dev/null )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "${description} \"${setting_name}\" parameter \"${parameter_name}\" is set to \"${correct_value}\""
+    increment_secure   "${description} \"${setting_name}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "${description} \"${setting_name}\" parameter \"${parameter_name}\" is not set to \"${correct_value}\""
+    increment_insecure "${description} \"${setting_name}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
   fi
 }

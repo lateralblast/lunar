@@ -22,12 +22,12 @@ check_azure_file_share_value () {
   correct_value="${7}"
   parameter_name="${8}"
   retention_days="${9}"
-  verbose_message "${description} for Shares on Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
+  verbose_message "${description} for Shares on Storage Account \"${storage_account}\" is \"${function}\" to \"${correct_value}\"" "check"
   actual_value=$( az storage account file-${share_propery} show --account-name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Shares for Storage Account \"${storage_account}\" has ${description} set to ${correct_value}"
+    increment_secure   "Shares for Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "Shares for Storage Account \"${storage_account}\" does not have ${description} set to ${correct_value}"
+    increment_insecure "Shares for Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${parameter_name}" ]; then
       if [[ ${parameter_name} =~ -- ]]; then
         if [ "${retention_days}" = "" ]; then

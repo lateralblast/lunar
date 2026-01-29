@@ -9,7 +9,10 @@
 # Check Azure Key Vault Keys
 #
 # 8.3.1 Ensure that the Expiration Date is set for all Keys in RBAC Key Vaults
-# Refer to Section(s) 8.3.1 Page(s) 425-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# 8.3.2 Ensure that the Expiration Date is set for all Keys in Non-RBAC Key Vaults
+# 8.3.3 Ensure that the Expiration Date is set for all Secrets in RBAC Key Vaults
+# 8.3.4 Ensure that the Expiration Date is set for all Secrets in Non-RBAC Key Vaults
+# Refer to Section(s) 8.3.1-4 Page(s) 425-39 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured
 # Audit account needs to have the 'Key Vault Reader' role

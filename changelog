@@ -2235,3 +2235,7 @@
 # Added Azure Key Vault check for key enabled status
 # 12.1.1: Thu 29 Jan 2026 15:10:22 AEDT
 # Added Azure Key Vault check for key expiry date
+# 12.1.2: Thu 29 Jan 2026 15:46:51 AEDT
+# Updated output for checks to be more consistent
+# 12.1.3: Thu 29 Jan 2026 15:53:49 AEDT
+# Updated checks for Azure Key Vault keys

@@ -33,12 +33,12 @@ check_azure_microsoft_defender_value () {
     if [ "${correct_value}" = "Exists" ]; then
       increment_secure "Microsoft Defender \"${description}\" exists"
     else
-      verbose_message  "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
+      verbose_message  "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
       actual_value=$( az security pricing show --name "${parameter_name}" --query pricingTier --output tsv )
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is set to \"${correct_value}\""
+        increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       else
-        increment_insecure "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not set to \"${correct_value}\""
+        increment_insecure "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
         if [ "${parameter_name}" = "CloudPosture" ]; then
           verbose_message    "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\" --extensions name=ApiPosture isEnabled=true" "fix"
         else
@@ -46,12 +46,12 @@ check_azure_microsoft_defender_value () {
         fi
       fi
       if [ ! "${correct_status}" = "" ]; then
-        verbose_message     "Azure Microsoft Defender \"${description}\" Status is set to \"${correct_status}\"" "check"
+        verbose_message     "Azure Microsoft Defender \"${description}\" Status is \"${function}\" to \"${correct_status}\"" "check"
         actual_status=$( az security pricing show --name "${parameter_name}" --query "[operationStatus]" --output tsv )
         if [ "${actual_status}" = "${correct_status}" ]; then
-          increment_secure    "Microsoft Defender \"${description}\" Status is set to \"${correct_status}\""
+          increment_secure    "Microsoft Defender \"${description}\" Status is \"${function}\" to \"${correct_status}\""
         else
-          increment_insecure  "Microsoft Defender \"${description}\" Status is not set to \"${correct_status}\""
+          increment_insecure  "Microsoft Defender \"${description}\" Status is not \"${function}\" to \"${correct_status}\""
         fi
       fi
     fi

@@ -28,9 +28,9 @@ check_azure_storage_blob_value () {
     actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" --output tsv )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Storage Blob \"${storage_account}\" has ${description} set to ${correct_value}"
+    increment_secure   "Storage Blob \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "Storage Blob \"${storage_account}\" does not have ${description} set to ${correct_value}"
+    increment_insecure "Storage Blob \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${parameter_name}" ]; then
       if [[ ${parameter_name} =~ -- ]]; then
         verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} ${parameter_name} ${correct_value}" "fix"

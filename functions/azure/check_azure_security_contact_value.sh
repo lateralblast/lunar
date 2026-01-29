@@ -19,20 +19,20 @@ check_azure_security_contact_value () {
   function="${3}"
   correct_value="${4}"
   print_function  "check_azure_security_contact_value"
-  verbose_message "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" ${function} \"${correct_value}\"" "check"
+  verbose_message "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
   actual_value=$( az security contact show --name "${contact_name}" --query "${parameter_name}" --output tsv 2>/dev/null )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${correct_value}\""
+      increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${correct_value}\""
+      increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
       verbose_message    "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{"state":"On","roles":["Owner"]}' --alert-notifications '{"state":"On","minimalSeverity":"Low"}'" "fix"
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${correct_value}\""
+      increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${correct_value}\""
+      increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       verbose_message    "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{"state":"On","roles":["Owner"]}' --alert-notifications '{"state":"On","minimalSeverity":"Low"}'" "fix"
     fi
   fi

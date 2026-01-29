@@ -29,9 +29,9 @@ check_azure_storage_container_value () {
     actual_value=$( az storage account blob-${container_propery} show --account-name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Storage Containers on Storage Account \"${storage_account}\" has ${description} set to ${correct_value}"
+    increment_secure   "Storage Containers on Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "Storage Containers on Storage Account \"${storage_account}\" does not have ${description} set to ${correct_value}"
+    increment_insecure "Storage Containers on Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${parameter_name}" ]; then
       if [ "${resource_group}" = "" ]; then
         if [[ ${parameter_name} =~ -- ]]; then
