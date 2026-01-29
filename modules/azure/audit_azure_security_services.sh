@@ -70,5 +70,14 @@ audit_azure_security_services () {
   audit_azure_security_contacts
   # 8.1.15 Ensure that 'Notify about attack paths with the following risk level (or higher)' is enabled - TBD
   # 8.3.1 Ensure that the Expiration Date is set for all Keys in RBAC Key Vaults
+  # 8.3.2 Ensure that the Expiration Date is set for all Keys in Non-RBAC Key Vaults
+  # 8.3.3 Ensure that the Expiration Date is set for all Secrets in RBAC Key Vaults
+  # 8.3.4 Ensure that the Expiration Date is set for all Secrets in Non-RBAC Key Vaults
   audit_azure_key_vault_keys
+  # 8.3.5 Ensure that Purge Protection is enabled for all Key Vaults
+  audit_azure_key_vault_purge_protection
+  # 8.3.6 Ensure that Role Based Access Control for Azure Key Vault is enabled
+  audit_azure_key_vault_rbac 
+  # 8.3.7 Ensure Public Network Access is Disabled
+  audit_azure_key_vault_public_network_access
 }

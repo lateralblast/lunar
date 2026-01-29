@@ -26,8 +26,8 @@ audit_azure_key_vault_keys () {
   for key_vault in ${key_vaults}; do
     key_list=$( az keyvault key list --vault-name "${key_vault}" --query "[].name" --output tsv )
     for key_name in ${key_list}; do
-      check_azure_key_vault_value "${key_vault}" "${key_name}" "attributes.enabled" "eq" "true" 
-      check_azure_key_vault_value "${key_vault}" "${key_name}" "attributes.expired" "ne" "" 
+      check_azure_key_vault_key_value "${key_vault}" "${key_name}" "attributes.enabled" "eq" "true" 
+      check_azure_key_vault_key_value "${key_vault}" "${key_name}" "attributes.expired" "ne" "" 
     done
   done
 }
