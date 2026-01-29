@@ -17,25 +17,25 @@ check_azure_storage_blob_value () {
   storage_account="${2}"
   blob_propery="${3}"
   blob_policy="${4}"
-  query_string="${5}"
+  parameter_name="${5}"
   function="${6}"
   correct_value="${7}"
-  parameter_name="${8}"
+  set_name="${8}"
   verbose_message "${description} for Storage Blobs on account \"${storage_account}\" is \"${correct_value}\"" "check"
   if [ "${azure_auth_mode}" = "login" ]; then
-    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" --output tsv --auth-mode "${azure_auth_mode}" )
+    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${parameter_name}" --output tsv --auth-mode "${azure_auth_mode}" )
   else
-    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${query_string}" --output tsv )
+    actual_value=$( az storage blob ${blob_propery} ${blob_policy} show --account-name "${storage_account}" --query "${parameter_name}" --output tsv )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Storage Blob \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
     increment_insecure "Storage Blob \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
-    if [ ! -z "${parameter_name}" ]; then
-      if [[ ${parameter_name} =~ -- ]]; then
-        verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} ${parameter_name} ${correct_value}" "fix"
+    if [ ! -z "${set_name}" ]; then
+      if [[ ${set_name} =~ -- ]]; then
+        verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} ${set_name} ${correct_value}" "fix"
       else
-        verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} --set ${parameter_name}=${correct_value}" "fix"
+        verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
       fi
     fi
   fi

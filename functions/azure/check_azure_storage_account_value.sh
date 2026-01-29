@@ -16,23 +16,23 @@ check_azure_storage_account_value () {
   description="${1}"
   storage_account="${2}"
   resource_group="${3}"
-  query_string="${4}"
+  parameter_name="${4}"
   function="${5}"
   correct_value="${6}"
-  parameter_name="${7}"
+  set_name="${7}"
   if [ "${resource_group}" = "" ]; then
     verbose_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
-    actual_value=$( az storage account show --name "${storage_account}" --query "${query_string}" --output tsv )
+    actual_value=$( az storage account show --name "${storage_account}" --query "${parameter_name}" --output tsv )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
       else
         increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
-        if [ ! -z "${parameter_name}" ]; then
-          if [[ ${parameter_name} =~ -- ]]; then
-            verbose_message    "az storage account update --name ${storage_account} ${parameter_name} ${correct_value}" "fix"
+        if [ ! -z "${set_name}" ]; then
+          if [[ ${set_name} =~ -- ]]; then
+            verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
           else
-            verbose_message    "az storage account update --name ${storage_account} --set ${parameter_name}=${correct_value}" "fix"
+            verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
           fi
         fi
       fi
@@ -42,11 +42,11 @@ check_azure_storage_account_value () {
           increment_secure   "Storage Account \"${storage_account}\" does not have ${description} "${function}" to "${correct_value}"
         else
           increment_insecure "Storage Account \"${storage_account}\" has ${description} "${function}" to "${correct_value}"
-          if [ ! -z "${parameter_name}" ]; then
-            if [[ ${parameter_name} =~ -- ]]; then
-              verbose_message    "az storage account update --name ${storage_account} ${parameter_name} ${correct_value}" "fix"
+          if [ ! -z "${set_name}" ]; then
+            if [[ ${set_name} =~ -- ]]; then
+              verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
             else
-              verbose_message    "az storage account update --name ${storage_account} --set ${parameter_name}=${correct_value}" "fix"
+              verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
             fi
           fi
         fi
@@ -55,17 +55,17 @@ check_azure_storage_account_value () {
   else
     resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
     verbose_message "${description} for Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\"" "check"
-    actual_value=$( az storage account show --name "${storage_account}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
+    actual_value=$( az storage account show --name "${storage_account}" --resource-group "${resource_group}" --query "${parameter_name}" --output tsv )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
       else
         increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
-        if [ ! -z "${parameter_name}" ]; then
-          if [[ ${parameter_name} =~ -- ]]; then
-            verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${parameter_name} ${correct_value}" "fix"
+        if [ ! -z "${set_name}" ]; then
+          if [[ ${set_name} =~ -- ]]; then
+            verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
           else
-            verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${parameter_name}=${correct_value}" "fix"
+            verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
           fi
         fi
       fi
@@ -75,11 +75,11 @@ check_azure_storage_account_value () {
           increment_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
         else
           increment_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
-          if [ ! -z "${parameter_name}" ]; then
-            if [[ ${parameter_name} =~ -- ]]; then
-              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${parameter_name} ${correct_value}" "fix"
+          if [ ! -z "${set_name}" ]; then
+            if [[ ${set_name} =~ -- ]]; then
+              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
             else
-              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${parameter_name}=${correct_value}" "fix"
+              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
             fi
           fi
         fi

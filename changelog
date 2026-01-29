@@ -2243,3 +2243,5 @@
 # Added Azure Key Vault Purge Protection check
 # 12.1.5: Thu 29 Jan 2026 18:04:54 AEDT
 # Added Azure Key Vault RBAC check
+# 12.1.6: Thu 29 Jan 2026 19:58:18 AEDT
+# Function variable alignment for azure checks

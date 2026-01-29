@@ -23,7 +23,7 @@ audit_azure_key_vault_rbac () {
   for resource_name in ${resource_names}; do
     resource_groups=$( az resource list --name "${resource_name}" --query "[].resourceGroup" --output tsv )
     for resource_group in ${resource_groups}; do
-      check_azure_key_vault_value "${resource_name}" "${resource_group}" "properties.enableRbacAuthorization" "eq" "true"
+      check_azure_key_vault_value "${resource_name}" "${resource_group}" "properties.enableRbacAuthorization" "eq" "true" "--enable-rbac-authorization"
     done
   done
 }
