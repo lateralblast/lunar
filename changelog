@@ -2247,3 +2247,5 @@
 # Function variable alignment for azure checks
 # 12.1.7: Thu 29 Jan 2026 21:01:10 AEDT
 # Added Azure Key Vault Public Network Access check
+# 12.1.8: Thu 29 Jan 2026 21:30:38 AEDT
+# Added Azure Key Vault Private Endpoint check
