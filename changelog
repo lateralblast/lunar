@@ -2241,3 +2241,5 @@
 # Updated checks for Azure Key Vault keys
 # 12.1.4: Thu 29 Jan 2026 17:32:22 AEDT
 # Added Azure Key Vault Purge Protection check
+# 12.1.5: Thu 29 Jan 2026 18:04:54 AEDT
+# Added Azure Key Vault RBAC check

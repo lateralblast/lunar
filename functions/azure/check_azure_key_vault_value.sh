@@ -14,25 +14,25 @@
 #.
 
 check_azure_key_vault_value () {
-  key_vault="${1}"
-  key_name="${2}"
+  resource_name="${1}"
+  resource_group="${2}"
   parameter_name="${3}"
   function="${4}"
   correct_value="${5}"
   print_function  "check_azure_key_vault_value"
-  verbose_message "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
-  actual_value=$( az keyvault key show --vault-name "${key_vault}" --name "${key_name}" --query "${parameter_name}" --output tsv 2> /dev/null )
+  verbose_message "Key with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
+  actual_value=$( az keyvault show --resource-group "${resource_group}" --name "${resource_name}" --query "${parameter_name}" --output tsv 2> /dev/null )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure "Key with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      increment_insecure "Key with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      increment_insecure "Key with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
     else
-      increment_secure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure "Key with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }
