@@ -2261,3 +2261,5 @@
 # Updated documentation
 # 12.2.4: Fri 30 Jan 2026 15:56:22 AEDT
 # Fixed Azure Application Insights check
+# 12.2.5: Fri 30 Jan 2026 15:58:22 AEDT
+# Cleaned up Azure User Access Administrator Role check
