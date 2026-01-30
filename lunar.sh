@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      12.1.8
+# Version:      12.2.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -124,6 +124,7 @@ wheel_group="wheel"
 docker_group="docker"
 reboot_required=0
 verbose_mode=0
+command_mode=0
 dryrun_mode=0
 ansible_mode=0
 ansible_counter=0
@@ -184,7 +185,7 @@ named_disable="yes"
 verbose_message () {
   text="${1}"
   style="${2}"
-  if [ "${verbose_mode}" = 1 ] && [ "$style" = "fix" ]; then
+  if [ "${verbose_mode}" = 1 ] && [ "${style}" = "fix" ]; then
     if [ "${text}" = "" ]; then
       echo ""
     else
@@ -713,6 +714,10 @@ do
       ;;
     -4|--dryrun)                    # switch - Run in dryrun mode
       dryrun_mode=1
+      shift
+      ;;
+    -5|--commands)                  # switch - Display command that would be run
+      command_mode=1
       shift
       ;;
     -6|--format)                    # switch - Outpt format/type

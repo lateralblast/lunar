@@ -309,7 +309,9 @@ setting_message () {
 #.
 
 command_message () {
-  verbose_message "${1}" "exec"
+  if [ "${command_mode}" = 1 ]; then
+    verbose_message "${1}" "exec"
+  fi
 }
 
 # print_audit_info
