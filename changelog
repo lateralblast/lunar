@@ -2253,3 +2253,11 @@
 # Added command_message function
 # 12.2.0: Fri 30 Jan 2026 14:06:38 AEDT
 # Added key vault check for key rotation
+# 12.2.1: Fri 30 Jan 2026 14:47:22 AEDT
+# Fixed Azure Databricks check
+# 12.2.2: Fri 30 Jan 2026 15:50:22 AEDT
+# Started adding command_message function support
+# 12.2.3: Fri 30 Jan 2026 15:53:22 AEDT
+# Updated documentation
+# 12.2.4: Fri 30 Jan 2026 15:56:22 AEDT
+# Fixed Azure Application Insights check

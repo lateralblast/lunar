@@ -19,9 +19,11 @@ check_azure_databricks_value () {
   function="${5}"
   correct_value="${6}"
   parameter_name="${7}"
-  print_function  "check_azure_databricks_value"
+  print_function  "check_azure_databrick_value"
   verbose_message "Azure Databricks ${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
-  actual_value=$( az databricks workspace show --name "${workspace_name}" --resource-group "${resource_group}" --query "${query_string}" --output tsv )
+  command="az databricks workspace show --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv"
+  command_message "${command}" "exec"
+  actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_secure "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""

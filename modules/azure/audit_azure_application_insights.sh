@@ -17,10 +17,10 @@
 audit_azure_application_insights () {
   print_function  "audit_azure_application_insights"
   verbose_message "Azure Application Insights" "check"
-  insights_check=$( az monitor app-insights list --subscription "${subscription_id}" --query "az monitor app-insights component show --query "[].{ID:appId, Name:name, Tenant:tenantId, Location:location, Provisioning_State:provisioningState}"" --output tsv )
-    if [ -z "${insights_check}" ]; then
-      increment_secure   "Application Insights is enabled"
-    else
-      increment_insecure "Application Insights is not enabled"
-    fi 
+  insights_check=$( az monitor app-insights component show --query "[].{ID:appId, Name:name, Tenant:tenantId, Location:location, Provisioning_State:provisioningState}" )
+  if [ -z "${insights_check}" ]; then
+    increment_secure   "Application Insights is enabled"
+  else
+    increment_insecure "Application Insights is not enabled"
+  fi 
 }

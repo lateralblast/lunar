@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 12.2.0
+Current version 12.2.4
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -157,6 +157,7 @@ For Azure:
     - databricks
     - bastion
     - resource-graph
+    - application-insights
 
 Usage
 -----

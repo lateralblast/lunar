@@ -23,7 +23,9 @@ check_azure_file_share_value () {
   set_name="${8}"
   retention_days="${9}"
   verbose_message "${description} for Shares on Storage Account \"${storage_account}\" is \"${function}\" to \"${correct_value}\"" "check"
-  actual_value=$( az storage account file-${share_propery} show --account-name "${storage_account}" --resource-group "${resource_group}" --query "${parameter_name}" --output tsv )
+  command="az storage account file-${share_propery} show --account-name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv"
+  actual_value=$( eval "${command}" )
+  command_message "${command}" "exec"
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Shares for Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
