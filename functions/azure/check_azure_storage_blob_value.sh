@@ -23,11 +23,11 @@ check_azure_storage_blob_value () {
   set_name="${8}"
   verbose_message "${description} for Storage Blobs on account \"${storage_account}\" is \"${correct_value}\"" "check"
   if [ "${azure_auth_mode}" = "login" ]; then
-    command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\""
+    command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\" 2> /dev/null"
     actual_value=$( eval "${command}" )
     command_message "${command}" "exec"
   else
-    command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv"
+    command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     actual_value=$( eval "${command}" )
     command_message "${command}" "exec"
   fi

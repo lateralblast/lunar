@@ -23,12 +23,12 @@ check_azure_storage_container_value () {
   set_name="${8}"
   if [ "${resource_group}" = "" ]; then
     verbose_message "${description} for Storage Containers on Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
-    command="az storage account blob-${container_propery} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv"
+    command="az storage account blob-${container_propery} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     actual_value=$( eval "${command}" )
     command_message "${command}" "exec"
   else
     verbose_message "${description} for Storage Containers on Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\"" "check"
-    command="az storage account blob-${container_propery} show --account-name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv"
+    command="az storage account blob-${container_propery} show --account-name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     actual_value=$( eval "${command}" )
     command_message "${command}" "exec"
   fi

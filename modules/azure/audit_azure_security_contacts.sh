@@ -22,7 +22,9 @@
 audit_azure_security_contacts () {
   print_function  "audit_azure_security_contacts"
   verbose_message "Azure Security Contacts" "check"
-  contact_names=$( az security contact list --query "[].name" --output tsv 2>/dev/null )
+  command="az security contact list --query \"[].name\" --output tsv 2> /dev/null"
+  command_message "${command}" "exec"
+  contact_names=$( eval "${command}" )
   if [ -z "$contact_names" ]; then
     increment_insecure "No Azure Security Contacts found"
     verbose_message    "az security contact create --name <contact-name> --email <email-address> --notifications-by-role '{"state":"On","roles":["Owner"]}' --alert-notifications '{"state":"On","minimalSeverity":"Low"}'" "fix"

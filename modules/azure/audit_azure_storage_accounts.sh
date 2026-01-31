@@ -34,10 +34,16 @@
 audit_azure_storage_accounts () {
   print_function  "audit_azure_storage_accounts"
   verbose_message "Azure Storage Accounts" "check"
-  storage_accounts=$( az storage account list --query "[].name" --output tsv )
+  command="az storage account list --query \"[].name\" --output tsv"
+  storage_accounts=$( eval "${command}" )
+  command_message "${command}" "exec"
   for storage_account in ${storage_accounts}; do
-    resource_id=$( az storage account show --name "${storage_account}" --query "id" --output tsv )
-    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
+    command="az storage account show --name \"${storage_account}\" --query \"id\" --output tsv"
+    resource_id=$( eval "${command}" )
+    command_message "${command}" "exec"
+    command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
+    resource_group=$( eval "${command}" )
+    command_message "${command}" "exec"
     # 9.3.1.2 Ensure that Storage Account access keys are periodically regenerated
     check_azure_storage_account_keys_rotation                                               "${storage_account}"  "${resource_id}"    "90"
     # 9.3.1.1 Ensure that 'Enable key rotation reminders' is enabled for each Storage Account

@@ -2263,3 +2263,11 @@
 # Fixed Azure Application Insights check
 # 12.2.5: Fri 30 Jan 2026 15:58:22 AEDT
 # Cleaned up Azure User Access Administrator Role check
+# 12.2.6: Fri 30 Jan 2026 16:18:22 AEDT
+# Cleaned up some Azure storage checks
+# 12.2.7: Fri 30 Jan 2026 16:46:22 AEDT
+# Improved environment checking
+# 12.2.8: Fri 30 Jan 2026 17:04:10 AEDT
+# Added Azure login check
+# 12.2.9: Fri 30 Jan 2026 17:12:10 AEDT
+# Updated Azure Monitor Diagnostic Settings check

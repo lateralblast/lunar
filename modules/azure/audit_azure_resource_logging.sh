@@ -17,16 +17,16 @@
 audit_azure_resource_logging () {
   print_function  "audit_azure_resource_logging"
   verbose_message "Azure Resource Logging" "check"
-  subscription_ids="$( az account show --query id --output tsv )"
+  command="az account show --query id --output tsv"
+  command_message "${command}" "exec"
+  subscription_ids="$( eval "${command}" )"
   for subscription_id in $subscription_ids; do
-    resource_ids="$( az resource list --subscription "${subscription_id}" --query "[].id" --output tsv )"
+    command="az resource list --subscription \"${subscription_id}\" --query \"[].id\" --output tsv"
+    command_message "${command}" "exec"
+    resource_ids="$( eval "${command}" )"
     for resource_id in $resource_ids; do
-      resource_logging_check=$( az monitor diagnostic-settings list --subscription "${subscription_id}" --resource "${resource_id}" --output tsv )
-      if [ -z "${resource_logging_check}" ]; then
-        increment_secure   "Resource logging is enabled for ${resource_id}"
-      else
-        increment_insecure "Resource logging is not enabled for ${resource_id}"
-      fi
+      # check_azure_monitoring_diagnostics_value "${subscription_id}" "${resource_id}"
+      check_azure_monitoring_diagnostics_value "${resource_id}"
     done
   done
 }

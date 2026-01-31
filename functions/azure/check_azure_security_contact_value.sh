@@ -20,7 +20,7 @@ check_azure_security_contact_value () {
   correct_value="${4}"
   print_function  "check_azure_security_contact_value"
   verbose_message "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
-  command="az security contact show --name \"${contact_name}\" --query \"${parameter_name}\" --output tsv 2>/dev/null"
+  command="az security contact show --name \"${contact_name}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
   actual_value=$( eval "${command}" )
   command_message "${command}" "exec"
   if [ "${function}" = "eq" ]; then

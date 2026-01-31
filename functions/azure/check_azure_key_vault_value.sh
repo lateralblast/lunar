@@ -23,8 +23,8 @@ check_azure_key_vault_value () {
   print_function  "check_azure_key_vault_value"
   verbose_message "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
   command="az keyvault show --resource-group \"${resource_group}\" --name \"${resource_name}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-  actual_value=$( eval "${command}" )
   command_message "${command}" "exec"
+  actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_secure   "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""

@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      12.2.5
+# Version:      12.2.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -164,6 +164,8 @@ ubuntu_codename=""
 output_type="cli"
 output_file=""
 output_csv="Module,Check,Status,Fix"
+check_azure=0
+check_aws=0
 
 # Disable daemons
 
@@ -565,56 +567,6 @@ increment_insecure () {
   fi
 }
 
-# check_aws
-#
-# Check AWS CLI etc is installed
-#.
-
-check_aws () {
-  aws_bin=$( command -v aws 2> /dev/null )
-  if [ -f "$aws_bin" ]; then
-    aws_creds="$HOME/.aws/credentials"
-    if [ -f "${aws_creds}" ]; then
-      if [ "${os_name}" = "Darwin" ]; then
-        base64_d="base64 -D"
-      else
-        base64_d="base64 -d"
-      fi
-    else
-      echo "AWS credentials file does not exit"
-      exit
-    fi
-  else
-    echo "AWS CLI is not installed"
-    exit
-  fi
-  if [ ! "${aws_region}" ]; then
-    aws_region=$( aws configure get region )
-  fi
-}
-
-# check_azure
-#
-# Check Azure CLI etc is installed
-#.
-
-check_azure () {
-  azure_bin=$( command -v az 2> /dev/null )
-  if [ -f "$azure_bin" ]; then
-    for cli_ext in databricks bastion; do
-      ext_test=$( az extension list | grep "${cli_ext}" )
-      if [ -z "${ext_test}" ]; then
-        echo "Azure ${cli_ext} extension is not installed"
-        exit
-      fi
-    done
-  else
-    echo "Azure CLI is not installed"
-    exit
-  fi
-  az login
-}
-
 # Get the path the script starts from
 
 start_path=$( pwd )
@@ -664,6 +616,17 @@ if [ "$*" = "" ]; then
   print_help
   exit
 fi
+
+# Check environment for cloud providers
+
+case "$*" in
+  *azure*)
+    check_azure_environment
+    ;;
+  *aws*) 
+    check_aws_environment
+    ;;
+esac
 
 # Parse arguments
 
@@ -1052,6 +1015,8 @@ if [ "${do_remote}" = 1 ]; then
   ssh "${ext_host}" "sudo sh -c \"${temp_dir}/lunar.sh -a\""
   exit
 fi
+
+# Check environment
 
 check_environment
 

@@ -111,7 +111,7 @@ get_ubuntu_codename () {
 
 check_os_release () {
   echo ""
-  echo "# SYSTEM INFORMATION:"
+  echo "# Local System Information:"
   echo ""
   os_codename=""
   os_minorrev=""

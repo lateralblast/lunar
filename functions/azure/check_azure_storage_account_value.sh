@@ -22,7 +22,7 @@ check_azure_storage_account_value () {
   set_name="${7}"
   if [ "${resource_group}" = "" ]; then
     verbose_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
-    command="az storage account show --name \"${storage_account}\" --query \"${parameter_name}\" --output tsv"
+    command="az storage account show --name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     actual_value=$( eval "${command}" )
     command_message "${command}" "exec"
     if [ "${function}" = "eq" ]; then

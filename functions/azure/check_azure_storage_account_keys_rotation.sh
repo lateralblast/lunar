@@ -15,7 +15,7 @@ check_azure_storage_account_keys_rotation () {
   storage_account="${1}"
   resource_id="${2}"
   correct_value="${3}"
-  command="az monitor activity-log list --namespace Microsoft.Storage --offset ${correct_value}d --query \"[?contains(authorization.action, 'regenerateKey')]\" --resource-id \"${resource_id}\" |grep \"Succeeded\""
+  command="az monitor activity-log list --namespace Microsoft.Storage --offset ${correct_value}d --query \"[?contains(authorization.action, 'regenerateKey')]\" --resource-id \"${resource_id}\" 2> /dev/null |grep \"Succeeded\""
   status_check=$( eval "${command}" )
   command_message "${command}" "exec"
   if [ -n "${status_check}" ]; then

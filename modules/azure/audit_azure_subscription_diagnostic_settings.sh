@@ -17,9 +17,13 @@
 audit_azure_subscription_diagnostic_settings () {
   print_function "audit_azure_subscription_diagnostic_settings"
   verbose_message "Azure Subscription Diagnostic Settings Activity Logs" "check"
-  subscription_ids=$( az account list --query "[].id" --output tsv 2>/dev/null )
+  command="az account list --query \"[].id\" --output tsv 2>/dev/null"
+  subscription_ids=$( eval "${command}" )
+  command_message "${command}" "exec"
   for subscription_id in ${subscription_ids}; do
-    diagnostic_settings=$( az monitor diagnostic-settings list --scope /subscriptions/${subscription_id} --query "[].value" --output tsv 2>/dev/null )
+    command="az monitor diagnostic-settings list --scope /subscriptions/${subscription_id} --query \"[].value\" --output tsv 2>/dev/null"
+    diagnostic_settings=$( eval "${command}" )
+    command_message "${command}" "exec"
     if [ -z "${diagnostic_settings}" ]; then
       increment_insecure "There are no diagnostic settings for subscription ${subscription_id}"
     else

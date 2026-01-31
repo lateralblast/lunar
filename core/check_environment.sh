@@ -4,6 +4,61 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
+# check_aws_environment
+#
+# Check AWS CLI etc is installed
+#.
+
+check_aws_environment () {
+  aws_bin=$( command -v aws 2> /dev/null )
+  if [ -f "$aws_bin" ]; then
+    aws_creds="$HOME/.aws/credentials"
+    if [ -f "${aws_creds}" ]; then
+      if [ "${os_name}" = "Darwin" ]; then
+        base64_d="base64 -D"
+      else
+        base64_d="base64 -d"
+      fi
+    else
+      echo "AWS credentials file does not exit"
+      exit
+    fi
+  else
+    echo "AWS CLI is not installed"
+    exit
+  fi
+  if [ ! "${aws_region}" ]; then
+    aws_region=$( aws configure get region )
+  fi
+}
+
+# check_azure_environment
+#
+# Check Azure CLI etc is installed
+#.
+
+check_azure_environment () {
+  azure_bin=$( command -v az 2> /dev/null )
+  if [ -f "$azure_bin" ]; then
+    for cli_ext in databricks bastion resource-graph application-insights; do
+      ext_test=$( az extension list | grep "${cli_ext}" )
+      if [ -z "${ext_test}" ]; then
+        echo "Azure ${cli_ext} extension is not installed"
+        exit
+      fi
+    done
+  else
+    echo "Azure CLI is not installed"
+    exit
+  fi
+  azure_display_name=$( az ad signed-in-user show --query displayName -o tsv )
+  if [ -z "${azure_display_name}" ]; then
+    az login
+  else
+    verbose_message "Logged in as ${azure_display_name}" "notice"
+  fi
+}
+
 # check_environment
 #
 # Do some environment checks
