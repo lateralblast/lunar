@@ -2273,3 +2273,9 @@
 # Updated Azure Monitor Diagnostic Settings check
 # 12.3.0: Sat 31 Jan 2026 11:59:26 AEDT
 # Updated Azure Activity Log Alerts check
+# 12.3.1: Sat 31 Jan 2026 12:34:51 AEDT
+# Updated Azure Key Vault check
+# 12.3.2: Sat 31 Jan 2026 12:36:51 AEDT
+# Updated Azure Key Vault logging check
+# 12.3.3: Sat 31 Jan 2026 15:06:48 AEDT
+# Added command_message support to more Azure modules/functions

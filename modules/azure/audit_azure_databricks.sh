@@ -27,10 +27,16 @@
 audit_azure_databricks () {
   print_function  "audit_azure_databricks"
   verbose_message "Azure Databricks" "check"
-  workspace_list=$( az databricks workspace list --query "[].name" --output tsv )
+  command="az databricks workspace list --query \"[].name\" --output tsv"
+  command_message "${command}" "exec"
+  workspace_list=$( eval "${command}" )
   for workspace_name in ${workspace_list}; do
-    resource_group=$( az databricks workspace list --query "[?contains(name, '${workspace}')].[resourceGroup]" --output tsv )
-    resource_id=$( az databricks workspace list --query "[?contains(name, '${workspace}')].[id]" --output tsv )
+    command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[resourceGroup]\" --output tsv"
+    command_message "${command}" "exec"
+    resource_group=$( eval "${command}" )
+    command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[id]\" --output tsv"
+    command_message "${command}" "exec"
+    resource_id=$( eval "${command}" )
     # 2.1.1  Ensure that Azure Databricks is deployed in a customer-managed virtual network (VNet) - TBD
     # 2.1.2  Ensure that network security groups are configured for Databricks subnets - TBD
     # 2.1.3  Ensure that traffic is encrypted between cluster worker nodes - TBD

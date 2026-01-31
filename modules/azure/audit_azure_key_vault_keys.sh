@@ -28,9 +28,13 @@
 audit_azure_key_vault_keys () {
   print_function  "audit_azure_key_vault_keys"
   verbose_message "Azure Key Vault Keys" "check"
-  key_vaults=$( az keyvault list --query "[].name" --output tsv )
+  command="az keyvault list --query \"[].name\" --output tsv"
+  command_message "${command}" "exec"
+  key_vaults=$( eval "${command}" )
   for key_vault in ${key_vaults}; do
-    key_list=$( az keyvault key list --vault-name "${key_vault}" --query "[].name" --output tsv )
+    command="az keyvault key list --vault-name \"${key_vault}\" --query \"[].name\" --output tsv"
+    command_message "${command}" "exec"
+    key_list=$( eval "${command}" )
     for key_name in ${key_list}; do
       check_azure_key_vault_key_value "${key_vault}" "${key_name}" "attributes.enabled"     "eq" "true" ""                ""
       check_azure_key_vault_key_value "${key_vault}" "${key_name}" "attributes.expired"     "ne" ""     ""                ""

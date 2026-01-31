@@ -19,7 +19,9 @@
 audit_azure_blob_storage () {
   print_function  "audit_azure_blob_storage"
   verbose_message "Azure Blob Storage" "check"
-  storage_accounts=$( az storage account list --query "[].name" --output tsv )
+  command="az storage account list --query \"[].name\" --output tsv"
+  command_message "${command}" "exec"
+  storage_accounts=$( eval "${command}" )
   for storage_account in ${storage_accounts}; do
     # 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
     check_azure_storage_blob_value "Soft delete"   "${storage_account}" "service-properties" "delete-policy" "enabled" "eq" "true" "--enable"
@@ -27,7 +29,9 @@ audit_azure_blob_storage () {
     # 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
     check_azure_storage_container_value "Versioning" "${storage_account}" "" "service-properties" "isVersioningEnabled" "eq" "true" "--enable-versioning"
     # 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
-    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
+    command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
+    command_message "${command}" "exec"
+    resource_group=$( eval "${command}" )
     if [ "${azure_auth_mode}" = "login" ]; then
       container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" --output tsv --auth-mode "${azure_auth_mode}" )
     else

@@ -25,7 +25,6 @@ audit_azure_resource_logging () {
     command_message "${command}" "exec"
     resource_ids="$( eval "${command}" )"
     for resource_id in $resource_ids; do
-      # check_azure_monitoring_diagnostics_value "${subscription_id}" "${resource_id}"
       check_azure_monitoring_diagnostics_value "${resource_id}"
     done
   done

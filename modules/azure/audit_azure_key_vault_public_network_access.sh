@@ -19,9 +19,13 @@
 audit_azure_key_vault_public_network_access () {
   print_function  "audit_azure_key_vault_public_network_access"
   verbose_message "Azure Key Vault Public Network Access" "check"
-  resource_names=$( az resource list --query "[?type=='Microsoft.KeyVault/vaults'].name" --output tsv )
+  command="az resource list --query \"[?type=='Microsoft.KeyVault/vaults'].name\" --output tsv"
+  command_message "${command}" "exec"
+  resource_names=$( eval "${command}" )
   for resource_name in ${resource_names}; do
-    resource_groups=$( az resource list --name "${resource_name}" --query "[].resourceGroup" --output tsv )
+    command="az resource list --name \"${resource_name}\" --query \"[].resourceGroup\" --output tsv"
+    command_message "${command}" "exec"
+    resource_groups=$( eval "${command}" )
     for resource_group in ${resource_groups}; do
       check_azure_key_vault_value "${resource_name}" "${resource_group}" "properties.publicNetworkAccess" "eq" "Disabled" "--public-network-access"
     done

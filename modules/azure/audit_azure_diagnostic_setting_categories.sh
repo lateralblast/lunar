@@ -17,10 +17,14 @@
 audit_azure_diagnostic_setting_categories () {
   print_function  "audit_azure_diagnostic_setting_categories"
   verbose_message "Azure Diagnostic Setting Categories" "check"
-  subscription_ids=$( az account list --query "[].id" --output tsv 2>/dev/null )
+  command="az account list --query \"[].id\" --output tsv 2>/dev/null"
+  command_message "${command}" "exec"
+  subscription_ids=$( eval "${command}" )
   for subscription_id in ${subscription_ids}; do
     for setting in Administrative Alert Policy Security; do
-      diagnostic_setting=$( az monitor diagnostic-settings subscription list --subscription ${subscription_id} | grep "${setting}" | grep -i "enabled" | grep true )
+      command="az monitor diagnostic-settings subscription list --subscription ${subscription_id} | grep \"${setting}\" | grep -i \"enabled\" | grep true"
+      command_message "${command}" "exec"
+      diagnostic_setting=$( eval "${command}" )
       if [ -z "${diagnostic_setting}" ]; then
         increment_insecure "There is no diagnostic setting for ${setting} for subscription ${subscription_id}"
       else
