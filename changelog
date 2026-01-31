@@ -2279,3 +2279,5 @@
 # Updated Azure Key Vault logging check
 # 12.3.3: Sat 31 Jan 2026 15:06:48 AEDT
 # Added command_message support to more Azure modules/functions
+# 12.3.4: Sat 31 Jan 2026 15:47:22 AEDT
+# Added command_message support to check_environment
