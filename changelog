@@ -2271,3 +2271,5 @@
 # Added Azure login check
 # 12.2.9: Fri 30 Jan 2026 17:12:10 AEDT
 # Updated Azure Monitor Diagnostic Settings check
+# 12.3.0: Sat 31 Jan 2026 11:59:26 AEDT
+# Updated Azure Activity Log Alerts check
