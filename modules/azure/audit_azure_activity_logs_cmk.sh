@@ -18,18 +18,18 @@ audit_azure_activity_logs_cmk () {
   print_function "audit_azure_activity_logs_cmk"
   verbose_message "Azure Activity Logs CMK" "check"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
-  command_message "${command}" "exec"
+  command_message "${command}"
   subscription_ids=$( eval "${command}" )
   for subscription_id in ${subscription_ids}; do
     command="az monitor diagnostic-settings subscription list --subscription ${subscription_id} --query 'value[*].storageAccountId' --output tsv"
-    command_message "${command}" "exec"
+    command_message "${command}"
     storage_accounts=$( eval "${command}" )
     for storage_account in ${storage_accounts}; do
       command="az storage account show --name ${storage_account} --query 'encryption.keySource' --output tsv 2>/dev/null"
-      command_message "${command}" "exec"
+      command_message "${command}"
       key_source=$( eval "${command}" )
       command="az storage account show --name ${storage_account} --query 'encryption.keyVaultProperties' --output tsv 2>/dev/null"
-      command_message "${command}" "exec"
+      command_message "${command}"
       key_vault=$( eval "${command}" )
       if [ "${key_source}" = "Microsoft.Keyvault" ]; then
         if [ ! -z "${key_vault}" ] && [ ! "${key_vault}" = "null" ]; then

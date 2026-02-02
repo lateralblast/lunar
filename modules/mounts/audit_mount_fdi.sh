@@ -32,7 +32,9 @@ audit_mount_fdi () {
     fi
     if [ -f "${check_file}" ]; then
       if [ "${audit_mode}" != "2" ]; then
-        fdi_check=$( grep -v "Default policies" ${check_file} | head -1 | wc -l | sed "s/ //g" )
+        command="grep -v \"Default policies\" \"${check_file}\" | head -1 | wc -l | sed \"s/ //g\""
+        command_message "${command}"
+        fdi_check=$( eval "${command}" )
         if [ "$fdi_check" = 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure  "User mountable filesystems enabled"

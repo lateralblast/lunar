@@ -15,12 +15,20 @@ audit_wheel_users () {
     verbose_message "Wheel Users" "check"
     check_file="/etc/group"
     if [ "${audit_mode}" != 2 ]; then
-      user_list=$( grep "^${wheel_group}:" "${check_file}" | cut -f4 -d: | sed 's/,/ /g' )
+      command="grep \"^${wheel_group}:\" \"${check_file}\" | cut -f4 -d: | sed 's/,/ /g'"
+      command_message "${command}"
+      user_list=$( eval "${command}" )
       for user_name in ${user_list}; do
-        last_login=$( last -1 "${user_name}" | grep '[a-z]' | awk '{print $1}' )
+        command="last -1 "${user_name}" | grep '[a-z]' | awk '{print \$1}'"
+        command_message "${command}"
+        last_login=$( eval "${command}" )
         if [ "${last_login}" = "wtmp" ]; then
-          if read -r "/etc/shqdow"; then
-            lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
+          command="read -r \"/etc/shadow\""
+          command_message "${command}"
+          if eval "${command}"; then
+            command="grep \"^${user_name}:\" /etc/shadow | grep -v 'LK' | cut -f1 -d:"
+            command_message "${command}"
+            lock_test=$( eval "${command}" )
             if [ "${lock_test}" = "${user_name}" ]; then
               if [ "${ansible_mode}" = 1 ]; then
                 echo ""

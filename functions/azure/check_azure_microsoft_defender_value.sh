@@ -36,7 +36,7 @@ check_azure_microsoft_defender_value () {
       verbose_message  "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
       command="az security pricing show --name \"${parameter_name}\" --query pricingTier --output tsv 2> /dev/null"
       actual_value=$( eval "${command}" )
-      command_message "${command}" "exec"
+      command_message "${command}"
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       else

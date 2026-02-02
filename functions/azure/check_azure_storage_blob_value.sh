@@ -25,11 +25,11 @@ check_azure_storage_blob_value () {
   if [ "${azure_auth_mode}" = "login" ]; then
     command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\" 2> /dev/null"
     actual_value=$( eval "${command}" )
-    command_message "${command}" "exec"
+    command_message "${command}"
   else
     command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     actual_value=$( eval "${command}" )
-    command_message "${command}" "exec"
+    command_message "${command}"
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Storage Blob \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""

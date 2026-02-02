@@ -16,19 +16,28 @@ audit_svccfg_value () {
     service_name="${1}"
     service_property="${2}"
     correct_value="${3}"
-    current_value=$( svccfg -s "${service_name}" listprop "${service_property}" | awk '{print $3}' )
+    command="svccfg -s \"${service_name}\" listprop \"${service_property}\" | awk '{print \$3}'"
+    command_message "${command}"
+    current_value=$( eval "${command}" )
     file_header="svccfg"
     log_file="${work_dir}/${file_header}.log"
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${file_header}.log"
       if [ -f "${restore_file}" ]; then
-        restore_property=$( grep "${service_name}" "${restore_file}" | cut -f2 -d',' )
-        restore_value=$( grep "${service_name}" "${restore_file}" | cut -f3 -d',' )
-        restore_check=$( expr "${restore_property}" : "[A-z]" )
+        command="grep \"${service_name}\" \"${restore_file}\" | cut -f2 -d','"
+        command_message "${command}"
+        restore_property=$( eval "${command}" )
+        command="grep \"${service_name}\" \"${restore_file}\" | cut -f3 -d','"
+        command_message "${command}"
+        restore_value=$( eval "${command}" )
+        command="expr \"${restore_property}\" : \"[A-z]\""
+        command_message "${command}"
+        restore_check=$( eval "${command}" )
         if [ "${restore_check}" = "1" ]; then
           if [ "${current_value}" != "${restore_value}" ]; then
             restore_message="Service \"${service_name}\" Property \"${restore_property}\" to \"${restore_value}\""
             restore_command="svccfg -s ${service_name} setprop ${restore_property} = ${restore_value}"
+            command_message "${restore_command}"
             execute_restore "${restore_command}" "${restore_message}" "sudo"
           fi
         fi

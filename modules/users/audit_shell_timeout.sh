@@ -20,7 +20,9 @@ audit_shell_timeout () {
       timeout="3600"
       verbose_message "Timeoute value for \"${test}\"" "check"
       backup_file="${work_dir}/${test}"
-      current_value=$( esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep "/UserVars/${test}" | cut -f2 -d, )
+      command="esxcli --formatter=csv --format-param=fields=\"Path,Int Value\" system settings advanced list | grep \"/UserVars/${test}\" | cut -f2 -d,"
+      command_message "${command}"
+      current_value=$( eval "${command}" )
       if [ "${audit_mode}" != "2" ]; then
         if [ "${current_value}" != "${timeout}" ]; then
           if [ "${audit_mode}" = "0" ]; then

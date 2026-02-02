@@ -25,14 +25,18 @@ audit_home_perms () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = "1" ]; then
       verbose_message "Home Directory Permissions" "check"
-      dir_list=$( cut -f6 -d":" < /etc/passwd | grep -v "^/$" | grep "home" )
+      command="cut -f6 -d: < /etc/passwd | grep -v \"^#\" | grep -v \"^/\$\" | egrep -iE \"home|users\""
+      command_message "${command}"
+      dir_list=$( eval "${command}" )
       for home_dir in ${dir_list}; do
         if [ -d "${home_dir}" ]; then
           check_file_perms "${home_dir}" "0700"
         fi
       done
       if [ "${os_name}" = "Darwin" ]; then
-        dir_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
+        command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
+        command_message "${command}"
+        dir_list=$( eval "${command}" )
         for home_dir in ${dir_list}; do
           check_file_perms "/Users/${home_dir}" "0700"
         done

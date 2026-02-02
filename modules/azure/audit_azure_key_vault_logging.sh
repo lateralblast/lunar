@@ -18,15 +18,15 @@ audit_azure_key_vault_logging () {
   print_function  "audit_azure_key_vault_logging"
   verbose_message "Azure Key Vault Logging" "check"
   command="az keyvault list --query \"[].id\" --output tsv 2>/dev/null"
-  command_message "${command}" "exec"
+  command_message "${command}"
   key_vault_ids=$( eval "${command}" )
   for key_vault_id in ${key_vault_ids}; do
     command="az monitor diagnostic-settings list --resource ${key_vault_id} --query \"[].name\" --output tsv 2>/dev/null"
-    command_message "${command}" "exec"
+    command_message "${command}"
     resource_names=$( eval "${command}" )
     for resource_name in ${resource_names}; do
       command="az monitor diagnostic-settings show --resource ${key_vault_id} --name ${resource_name} --query \"logs\" --output tsv 2>/dev/null"
-      command_message "${command}" "exec"
+      command_message "${command}"
       az monitor diagnostic-settings show --resource ${key_vault_id} --name ${resource_name} --query "logs" --output tsv 2>/dev/null |
       while read -r line; do
         category=$( echo "${line}" | awk '{print $1}' )

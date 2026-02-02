@@ -24,7 +24,7 @@ check_azure_storage_account_value () {
     verbose_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
     command="az storage account show --name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     actual_value=$( eval "${command}" )
-    command_message "${command}" "exec"
+    command_message "${command}"
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""

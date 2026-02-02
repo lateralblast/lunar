@@ -28,7 +28,9 @@ audit_pam_wheel () {
     if [ -f "${check_file}" ]; then
       search_string="use_uid"
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( grep "^auth" "${check_file}" | grep "${search_string}$" | awk '{print $8}' )
+        command="grep \"^auth\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
+        command_message "${command}"
+        check_value=$( eval "${command}" )
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="audit_pam_wheel_${ansible_counter}"

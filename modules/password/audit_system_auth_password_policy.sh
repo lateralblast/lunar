@@ -24,7 +24,9 @@ audit_system_auth_password_policy () {
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "${check_file}" ]; then
           verbose_message "Password \"${search_string}\" is set to \"${search_value}\" in \"${check_file}\"" "check"
-          check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk -F "${search_string}=" '{print $2}' | awk '{print $1}' )
+          command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk -F \"${search_string}=\" '{print \$2}' | awk '{print \$1}'"
+          command_message "${command}"
+          check_value=$( eval "${command}" )
           lockdown_command="awk '( \$1 == \"password\" && \$2 == \"requisite\" && \$3 == \"pam_cracklib.so\" ) { print \$0  \" dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9\"; next }; { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" != "${search_value}" ]; then
             if [ "${audit_mode}" = "1" ]; then

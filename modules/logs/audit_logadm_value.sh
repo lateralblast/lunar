@@ -21,7 +21,9 @@ audit_logadm_value () {
       log_name="${1}"
       log_facility="${2}"
       check_file="/etc/logadm.conf"
-      check_log=$( logadm -V | grep -v '^#' | grep "${log_name}" )
+      command="logadm -V | grep -v '^#' | grep \"${log_name}\""
+      command_message "${command}"
+      check_log=$( eval "${command}" )
       log_file="/var/log/${log_name}"
       if [ -z "$log_check" ]; then
         if [ "${audit_mode}" = 1 ]; then
@@ -37,16 +39,22 @@ audit_logadm_value () {
             check_file="/etc/syslog.conf"
             if [ ! -f "${work_dir}${check_file}" ]; then
               echo "Saving:    File ${check_file} to ${work_dir}${check_file}"
-              find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
+              command="find \"${check_file}\" | cpio -pdm \"${work_dir}\" 2> /dev/null"
+              command_message "${command}"
+              eval "${command}"
             fi
           fi
           echo  "${log_facility}\t\t\t${log_file}" >> "${check_file}"
           touch "${log_file}"
           chown root:root "${log_file}"
           if [ "${log_facility}" = "none" ]; then
-            logadm -w "${log_name}" -C 13 "${log_file}"
+            command="logadm -w \"${log_name}\" -C 13 \"${log_file}\""
+            command_message "${command}"
+            eval "${command}"
           else
-            logadm -w "${log_name}" -C 13 -a 'pkill -HUP syslogd' "${log_file}"
+            command="logadm -w \"${log_name}\" -C 13 -a 'pkill -HUP syslogd' \"${log_file}\""
+            command_message "${command}"
+            eval "${command}"
             svcadm refresh svc:/system/system-log
           fi
         fi
@@ -54,9 +62,13 @@ audit_logadm_value () {
           if [ -f "${restore_dir}/${check_file}" ]; then
             cp -p "${restore_dir}/${check_file}" "${check_file}"
             if [ "${os_version}" != "11" ]; then
-              pkgchk -f -n -p ${check_file} 2> /dev/null
+              command="pkgchk -f -n -p ${check_file} 2> /dev/null"
+              command_message "${command}"
+              eval "${command}"
             else
-              pkg fix $( pkg search ${check_file} | grep pkg | awk '{print $4}' )
+              command="pkg fix \$( pkg search ${check_file} | grep pkg | awk '{print \$4}' )"
+              command_message "${command}"
+              eval "${command}"
             fi
           fi
           if [ "${log_facility}" = "none" ]; then
@@ -64,9 +76,13 @@ audit_logadm_value () {
             if [ -f "${restore_dir}/${check_file}" ]; then
               cp -p "${restore_dir}/${check_file}" "${check_file}"
               if [ "${os_version}" != "11" ]; then
-                pkgchk -f -n -p "${check_file}" 2> /dev/null
+                command="pkgchk -f -n -p \"${check_file}\" 2> /dev/null"
+                command_message "${command}"
+                eval "${command}"
               else
-                pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
+                command="pkg fix \$( pkg search \"${check_file}\" | grep pkg | awk '{print \$4}' )"
+                command_message "${command}"
+                eval "${command}"
               fi
             fi
             svcadm refresh svc:/system/system-log

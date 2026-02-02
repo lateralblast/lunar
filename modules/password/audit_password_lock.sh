@@ -21,7 +21,9 @@ audit_password_lock () {
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/shadow"
       inactive_time="45"
-      inactive_test=$( useradd -D | grep INACTIVE | cut -f2 -d= )
+      command="useradd -D | grep INACTIVE | cut -f2 -d="
+      command_message "${command}"
+      inactive_test=$( eval "${command}" )
       if [ "${inactive_test}" -lt "${inactive_time}" ]; then
         increment_insecure  "Inactive password lock is less than ${inactive_time}"
       else

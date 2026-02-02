@@ -17,7 +17,9 @@ audit_root_home () {
     verbose_message "Home Directory Permissions for root Account" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
-        home_check=$( grep root /etc/passwd | cut -f6 -d: )
+        command="grep root /etc/passwd | cut -f6 -d:"
+        command_message "${command}"
+        home_check=$( eval "${command}" )
         log_file="${work_dir}/roothome.log"
         if [ "${home_check}" != "/root" ]; then
           if [ "${audit_mode}" = 1 ]; then

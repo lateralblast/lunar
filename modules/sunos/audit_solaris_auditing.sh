@@ -29,16 +29,28 @@ audit_solaris_auditing () {
         log_file="$workdir${check_file}"
         rolemod -K audit_flags=lo,ad,ft,ex,lck:no root
         if [ -f "${check_file}" ]; then
-          audit_check=$( grep "audit -n" "${check_file}" | cut -f4 -d'/' )
+          command="grep \"audit -n\" \"${check_file}\" | cut -f4 -d'/'"
+          command_message "${command}"
+          audit_check=$( eval "${command}" )
           if [ "$audit_check" != "audit -n" ]; then
             if [ ! -f "${log_file}" ]; then
               verbose_message "File ${check_file} to ${work_dir}${check_file}" "save"
-              find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
+              command="find \"${check_file}\" | cpio -pdm \"${work_dir}\" 2> /dev/null"
+              command_message "${command}"
+              eval "${command}"
             fi
-            echo  "0 * * * * /usr/sbin/audit -n" >> "${check_file}"
-            chown root:root /var/audit
-            chmod 750 /var/audit
-            pkg   fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
+            command="echo \"0 * * * * /usr/sbin/audit -n\" >> \"${check_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="chown root:root /var/audit"
+            command_message "${command}"
+            eval "${command}"
+            command="chmod 750 /var/audit"
+            command_message "${command}"
+            eval "${command}"
+            command="pkg   fix $( pkg search \"${check_file}\" | grep pkg | awk '{print \$4}' )"
+            command_message "${command}"
+            eval "${command}"
           fi
         fi
       fi

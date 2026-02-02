@@ -2281,3 +2281,47 @@
 # Added command_message support to more Azure modules/functions
 # 12.3.4: Sat 31 Jan 2026 15:47:22 AEDT
 # Added command_message support to check_environment
+# 12.3.5: Sun 01 Feb 2026 11:01:22 AEDT
+# Added command_message support to modules in users directory
+# 12.3.6: Sun 01 Feb 2026 15:43:22 AEDT
+# Added command_message support to modules in wheel directory
+# 12.3.7: Sun 01 Feb 2026 15:45:22 AEDT
+# Added command_message support to modules in sudo directory
+# 12.3.8: Sun 01 Feb 2026 15:47:22 AEDT
+# Added command_message support to modules in sunos directory
+# 12.3.9: Sun 01 Feb 2026 15:49:22 AEDT
+# Added command_message support to modules in syslog directory
+# 12.4.0: Sun 01 Feb 2026 15:51:22 AEDT
+# Added command_message support to modules in talk directory
+# 12.4.1: Sun 01 Feb 2026 15:53:22 AEDT
+# Added command_message support to modules in tcp directory
+# 12.4.2: Sun 01 Feb 2026 15:55:22 AEDT
+# Added command_message support to modules in telnet directory
+# 12.4.3: Sun 01 Feb 2026 20:54:46 AEDT
+# Added command_message support to modules in ssh directory
+# 12.4.4: Sun 01 Feb 2026 20:56:46 AEDT
+# Added command_message support to modules in services directory
+# 12.4.5: Sun 01 Feb 2026 21:04:54 AEDT
+# Added command_message support to modules in remote directory
+# 12.4.6: Sun 01 Feb 2026 21:17:54 AEDT
+# Added command_message support to modules in print directory
+# 12.4.7: Sun 01 Feb 2026 21:19:16 AEDT
+# Added command_message support to modules in power directory
+# 12.4.8: Mon 02 Feb 2026 07:18:53 AEDT
+# Added command_message support to modules in password directory
+# 12.4.9: Mon 02 Feb 2026 07:32:53 AEDT
+# Added command_message support to modules in pam directory
+# 12.5.0: Mon 02 Feb 2026 07:51:53 AEDT
+# Added command_message support to modules in nis directory
+# 12.5.1: Mon 02 Feb 2026 08:00:22 AEDT
+# Added command_message support to modules in mounts directory
+# 12.5.2: Mon 02 Feb 2026 08:07:22 AEDT
+# Added command_message support to modules in mail directory
+# 12.5.3: Mon 02 Feb 2026 08:11:22 AEDT
+# Added command_message support to modules in logs directory
+# 12.5.4: Mon 02 Feb 2026 08:22:22 AEDT
+# Added command_message support to modules in login directory
+# 12.5.5: Mon 02 Feb 2026 08:24:22 AEDT
+# Added command_message support to modules in linux directory
+# 12.5.6: Mon 02 Feb 2026 08:26:22 AEDT
+# Commit some of the command_message changes

@@ -18,9 +18,13 @@ audit_ndd_value () {
       ndd_property="${2}"
       correct_value="${3}"
       if [ "${ndd_property}" = "tcp_extra_priv_ports_add" ]; then
-        current_value=$( ndd -get "${ndd_name}" tcp_extra_priv_ports | grep "${correct_value}" )
+        command="ndd -get \"${ndd_name}\" tcp_extra_priv_ports | grep \"${correct_value}\""
+        command_message "${command}"
+        current_value=$( eval "${command}" )
       else
-        current_value=$( ndd -get "${ndd_name}" "${ndd_property}" )
+        command="ndd -get \"${ndd_name}\" \"${ndd_property}\""
+        command_message "${command}"
+        current_value=$( eval "${command}" )
       fi
       file_header="ndd"
       log_file="${work_dir}/${file_header}.log"
@@ -31,7 +35,9 @@ audit_ndd_value () {
           restore_value=$( grep "${ndd_property}," "${restore_file}" | cut -f3 -d',' )
           if [ -n "${restore_value}"  ]; then
             if [ "${ndd_property}" = "tcp_extra_priv_ports_add" ]; then
-              current_value=$( ndd -get "${ndd_name}" tcp_extra_priv_ports | grep "${restore_value}" )
+              command="ndd -get \"${ndd_name}\" tcp_extra_priv_ports | grep \"${restore_value}\""
+              command_message "${command}"
+              current_value=$( eval "${command}" )
             fi
             if [ -n "${current_value}" ]; then
               if [ "${current_value}" != "${restore_value}" ]; then
@@ -39,7 +45,9 @@ audit_ndd_value () {
                   ndd_property="tcp_extra_priv_ports_del"
                 fi
                 verbose_message "Restoring: \"${ndd_name}\" \"${ndd_property}\" to \"${restore_value}\"" "restore"
-                ndd -set "${ndd_name}" "${ndd_property}" "${restore_value}"
+                command="ndd -set \"${ndd_name}\" \"${ndd_property}\" \"${restore_value}\""
+                command_message "${command}"
+                eval "${command}"
               fi
             fi
           fi
@@ -49,6 +57,7 @@ audit_ndd_value () {
       fi
       if [ "${current_value}" -ne "${correct_value}" ]; then
         command_line="ndd -set ${ndd_name} ${ndd_property} ${correct_value}"
+        command_message "${command_line}"
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "NDD \"${ndd_name} ${ndd_property}\" not set to \"${correct_value}\""
           verbose_message "${command_line}" "fix"

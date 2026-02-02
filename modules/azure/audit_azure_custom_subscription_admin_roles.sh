@@ -18,7 +18,7 @@ audit_azure_custom_subscription_admin_roles () {
   print_function  "audit_azure_custom_subscription_admin_roles"
   verbose_message "Azure Custom Subscription Admin Roles" "check"
   command="az role definition list --custom-role-only True | grep -iE \"assignableScope|subscription\" | grep \"*\""
-  command_message "${command}" "exec"
+  command_message "${command}"
   actual_value=$( eval "${command}" )
   if [ -z "${actual_value}" ]; then
     increment_secure   "No custom subscription administrator roles exist"

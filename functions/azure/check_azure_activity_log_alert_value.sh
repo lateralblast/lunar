@@ -19,7 +19,7 @@ check_azure_activity_log_alert_value () {
   print_function  "check_azure_activity_log_alert_value"
   verbose_message "Azure Activity Log Alert for ${description} for subscription \"${subscription_id}\" is \"${alert_check}\"" "check"
   command="az monitor activity-log alert list --subscription \"${subscription_id}\" --query \"${query_string}\" | grep \"${alert_check}\""
-  command_message "${command}" "exec"
+  command_message "${command}"
   alert_check=$( eval "${command}" )
   if [ -n "${alert_check}" ]; then
     increment_secure   "Activity Log Alert for ${description} is enabled"

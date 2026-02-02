@@ -16,7 +16,9 @@ audit_ipadm_value () {
       ipadm_name="${1}"
       ipadm_property="${2}"
       correct_value="${3}"
-      current_value=$( ipadm show-prop -p "${ipadm_name}" -co current "${ipadm_property}" )
+      command="ipadm show-prop -p \"${ipadm_name}\" -co current \"${ipadm_property}\""
+      command_message "${command}"
+      current_value=$( eval "${command}" )
       file_header="ipadm"
       log_file="${work_dir}/${file_header}.log"
       if [ "${audit_mode}" = 2 ]; then

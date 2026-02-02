@@ -72,7 +72,9 @@ audit_sendmail_daemon() {
         search_string="Addr=127.0.0.1"
         if [ "${audit_mode}" != 2 ]; then
          verbose_message "Mail transfer agent is running in local-only mode"
-          check_value=$( grep -v '^#' "${check_file}" | grep "O DaemonPortOptions" | awk '{print $3}' | grep "${search_string}" )
+         command="grep -v '^#' \"${check_file}\" | grep \"O DaemonPortOptions\" | awk '{print \$3}' | grep \"${search_string}\""
+         command_message "${command}"
+         check_value=$( eval "${command}" )
           if [ "${check_value}" = "${search_string}" ]; then
             if [ "${audit_mode}" = "1" ]; then
               increment_insecure "Mail transfer agent is not running in local-only mode"
@@ -85,8 +87,12 @@ audit_sendmail_daemon() {
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${check_file}"
               verbose_message "Setting:   Mail transfer agent to run in local-only mode"
-              cp "${check_file}" "${temp_file}"
-              awk 'O DaemonPortOptions=/ { print "O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA"; next} { print }' < "${temp_file}" > "${check_file}"
+              command="cp \"${check_file}\" \"${temp_file}\""
+              command_message "${command}"
+              eval "${command}"
+              command="awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA\"; next} { print }' < \"${temp_file}\" > \"${check_file}\""
+              command_message "${command}"
+              eval "${command}"
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi

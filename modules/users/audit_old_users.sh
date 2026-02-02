@@ -21,12 +21,18 @@ audit_old_users () {
     if [ "${audit_mode}" = 2 ]; then
       restore_file "/etc/shadow" "${restore_dir}"
     else
-      user_list=$( grep -v "/usr/bin/false" "/etc/passwd" | grep -Ev "^halt|^shutdown|^root|^sync|/sbin/nologin" | cut -f1 -d: )
+      command="grep -v \"/usr/bin/false\" \"/etc/passwd\" | grep -Ev \"^halt|^shutdown|^root|^sync|/sbin/nologin\" | cut -f1 -d:"
+      command_message "${command}"
+      user_list=$( eval "${command}" )
       for user_name in ${user_list}; do
         if test -r "/etc/shadow"; then
-          shadow_check=$( grep "^${user_name}:" "/etc/shadow" | cut -f2 -d":" | grep -cEv "\*|\!\!|NP|LK|UP" | sed "s/ //g" )
+          command="grep \"^${user_name}:\" \"/etc/shadow\" | cut -f2 -d: | grep -cEv \"\*|\!\!|NP|LK|UP\" | sed \"s/ //g\""
+          command_message "${command}"
+          shadow_check=$( eval "${command}" )
           if [ "$shadow_check" = "1" ]; then
-            login_check=$( last "${user_name}" | awk '{print $1}' | grep -c "${user_name}" | sed "s/ //g" )
+            command="last \"${user_name}\" | awk '{print \$1}' | grep -c \"${user_name}\" | sed \"s/ //g\""
+            command_message "${command}"
+            login_check=$( eval "${command}" )
             if [ "$login_check" = "1" ]; then
               if [ "${audit_mode}" = 1 ]; then
                 never_count=$((never_count+1))

@@ -25,7 +25,9 @@ audit_daemon_umask () {
     fi
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "11" ]; then
-        umask_check=$( svcprop -p umask/umask svc:/system/environment:init )
+        command="svcprop -p umask/umask svc:/system/environment:init"
+        command_message "${command}"
+        umask_check=$( eval "${command}" )
         umask_value="022"
         log_file="umask.log"
         if [ "${umask_check}" != "${umask_value}" ]; then

@@ -38,6 +38,7 @@ audit_apparmor () {
     if [ "${do_app_test}" = 1 ]; then
       get_command="apparmor_status |grep \"unconfined mode\" |awk '{print \$1}'"
       set_command="sudo aa-enforce /etc/apparmor.d/*"
+      command_message "${get_command}"
       profile_test=$( eval "${get_command}" )
       if [ "${profile_test}" = "0" ]; then
         increment_secure    "There are no unconfined applications"
@@ -115,9 +116,13 @@ audit_apparmor () {
             temp_file="${temp_dir}/${package_name}"
             backup_file "${check_file}"
             if [ "${check_file}" = "/etc/default/grub" ]; then
-              line_check=$( grep -c "^GRUB_CMDLINE_LINUX" "${check_file}" )
+              command="grep -c \"^GRUB_CMDLINE_LINUX\" \"${check_file}\""
+              command_message "${command}"
+              line_check=$( eval "${command}" )
               if [ -n "${line_check}" ]; then
-                existing_value=$( grep "^GRUB_CMDLINE_LINUX" < "${check_file}" |cut -f2 -d= |sed "s/\"//g" )
+                command="grep \"^GRUB_CMDLINE_LINUX\" < \"${check_file}\" |cut -f2 -d= |sed \"s/\"//g\""
+                command_message "${command}"
+                existing_value=$( eval "${command}" )
                 new_value="GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor ${existing_value}\""
                 lockdown_command="cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file}"
                 lockdown_message="Disabled Application/Package \"${app_name}\" removed"

@@ -20,7 +20,7 @@ audit_azure_extensions () {
     fi
     verbose_message "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
     command="az config get \"${parameter_name}\" --query value --output tsv 2> /dev/null"
-    command_message "${command}" "exec"
+    command_message "${command}"
     actual_value=$( eval "${command}" )
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_secure   "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\""

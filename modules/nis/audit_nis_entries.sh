@@ -23,9 +23,13 @@ audit_nis_entries () {
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if test -r "${check_file}"; then
         if [ "${audit_mode}" != 2 ]; then
-          entry_check=$( grep -c "^\+" "${check_file}" | sed "s/ //g" )
+          command="grep -c \"^\+\" \"${check_file}\" | sed \"s/ //g\""
+          command_message "${command}"
+          entry_check=$( eval "${command}" )
           if [ ! "${entry_check}" = "0" ]; then
-            file_entries=$( grep "^\+" "${check_file}" )
+            command="grep \"^\+\" \"${check_file}\""
+            command_message "${command}"
+            file_entries=$( eval "${command}" )
             for file_entry in ${file_entries}; do
               if [ "${audit_mode}" = 1 ]; then
                 increment_insecure "NIS entry \"${file_entry}\" in ${check_file}"
@@ -35,13 +39,21 @@ audit_nis_entries () {
               if [ "${audit_mode}" = 0 ]; then
                 backup_file "${check_file}"
                 verbose_message "File \"${check_file}\" to have no NIS entries" "set"
-                sed -e "s/^+/#&/" < "${check_file}" > "${temp_file}"
-                cat "${temp_file}" > "${check_file}"
+                command="sed -e \"s/^+/#&/\" < \"${check_file}\" > \"${temp_file}\""
+                command_message "${command}"
+                file_list=$( eval "${command}" )
+                command="cat \"${temp_file}\" > \"${check_file}\""
+                command_message "${command}"
+                file_list=$( eval "${command}" )
                 if [ "${os_name}" = "SunOS" ]; then
                   if [ "${os_version}" != "11" ]; then
-                    pkgchk -f -n -p "${check_file}" 2> /dev/null
+                    command="pkgchk -f -n -p \"${check_file}\" 2> /dev/null"
+                    command_message "${command}"
+                    file_list=$( eval "${command}" )
                   else
-                    pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
+                    command="pkg fix $( pkg search \"${check_file}\" | grep pkg | awk '{print \$4}' )"
+                    command_message "${command}"
+                    file_list=$( eval "${command}" )
                   fi
                 fi
                 if [ -f "${temp_file}" ]; then

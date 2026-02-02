@@ -24,7 +24,9 @@ audit_remote_consoles () {
     if [ "${audit_mode}" != 2 ]; then
       disable_ttys=0
       log_file="${work_dir}/${log_file}"
-      console_list=$( /usr/sbin/consadm -p )
+      command="/usr/sbin/consadm -p"
+      command_message "${command}"
+      console_list=$( eval "${command}" )
       for console_device in $console_list; do
         disable_ttys=1
         if [ "${audit_mode}" = 1 ]; then
@@ -34,7 +36,9 @@ audit_remote_consoles () {
         if [ "${audit_mode}" = 0 ]; then
           echo "${console_device}" >> "${log_file}"
           verbose_message   "Console disabled on \"${console_device}\""   "set"
-          consadm -d "${console_device}"
+          command="consadm -d \"${console_device}\""
+          command_message "${command}"
+          eval "${command}"
         fi
       done
       if [ "${disable_ttys}" = 0 ]; then
@@ -45,10 +49,14 @@ audit_remote_consoles () {
     else
       restore_file="${restore_dir}${log_file}"
       if [ -f "${restore_file}" ]; then
-        restore_list=$( cat "${restore_file}" )
+        command="cat \"${restore_file}\""
+        command_message "${command}"
+        restore_list=$( eval "${command}" )
         for console_device in ${restore_list}; do
           verbose_message   "Console to enabled on \"${console_device}\"" "restore"
-          consadm -a "${console_device}"
+          command="consadm -a \"${console_device}\""
+          command_message "${command}"
+          eval "${command}"
         done
       fi
     fi

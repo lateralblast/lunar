@@ -34,7 +34,9 @@ audit_issue_banner () {
     for check_file in ${file_list}; do
       if [ -f "${check_file}" ]; then
         check_file_perms "${check_file}" 0644 root root
-        issue_check=$( grep -cE "NOTICE TO USERS|UNAUTHORIZED ACCESS" "${check_file}" | sed "s/ //g" )
+        command="grep -cE \"NOTICE TO USERS|UNAUTHORIZED ACCESS\" \"${check_file}\" | sed \"s/ //g\""
+        command_message "${command}"
+        issue_check=$( eval "${command}" )
       else
         issue_check=0
       fi

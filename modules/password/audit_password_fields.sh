@@ -31,7 +31,9 @@ audit_password_fields () {
     verbose_message "Password Fields" "check"
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/passwd"
-      user_list=$( awk -F: '($3 == 0) { print $1 }' "${check_file}" | grep -v root )
+      command="awk -F: '(\$3 == 0) { print \$1 }' \"${check_file}\" | grep -v root"
+      command_message "${command}"
+      user_list=$( eval "${command}" )
       if [ "$user_list" = "" ]; then
         increment_secure "No non root users have UID 0"
       else
@@ -54,9 +56,13 @@ audit_password_fields () {
       check_file="/etc/shadow"
       empty_count=0
       if [ "${os_name}" = "AIX" ]; then
-        user_list=$( pwdck –n ALL )
+        command="pwdck –n ALL"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
       else
-        user_list=$( awk -F':' '{print $1":"${2}":"}' < /etc/shadow | grep "::$" | cut -f1 -d: )
+        command="awk -F':' '{print \$1\":\"\${2}\":\"}' < /etc/shadow | grep \"::$\" | cut -f1 -d:"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
       fi
       for user_name in ${user_list}; do
         empty_count=1
@@ -81,7 +87,9 @@ audit_password_fields () {
       fi
       for check_file in /etc/passwd /etc/shadow; do
         if test -r "${check_file}"; then
-          legacy_check=$( grep '^+:' ${check_file} | head -1 | wc -l | sed "s/ //g" )
+          command="grep '^+:' ${check_file} | head -1 | wc -l | sed \"s/ //g\""
+          command_message "${command}"
+          legacy_check=$( eval "${command}" )
           if [ "${legacy_check}" != "0" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Legacy field found in \"${check_file}\""
@@ -91,8 +99,12 @@ audit_password_fields () {
             if [ "${audit_mode}" = 0 ]; then
               backup_file     "${check_file}"
               verbose_message "Legacy entries from \"${check_file}\"" "remove"
-              grep -v "^+:" "${check_file}" > "${temp_file}"
-              cat "${temp_file}"  > "${check_file}"
+              command="grep -v \"^+:\" \"${check_file}\" > \"${temp_file}\""
+              command_message "${command}"
+              eval "${command}"
+              command="cat \"${temp_file}\"  > \"${check_file}\""
+              command_message "${command}"
+              eval "${command}"
             fi
           else
             increment_secure "No legacy entries in \"${check_file}\""

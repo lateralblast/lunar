@@ -109,7 +109,9 @@ audit_syslog_server () {
             check_file_value   "is" "${conf_file}" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/localmessages" "hash"
             funct_file_perms   "${conf_file}"      "0600" "root" "root"
             if [ "${audit_mode}" != 2 ]; then
-              remote_check=$( grep -v '#' "${check_file}" | grep "*.* @@" | grep -v localhost | grep -c "[A-Z]|[a-z]" )
+              command="grep -v '#' \"${check_file}\" | grep \"*.* @@\" | grep -v localhost | grep -c \"[A-Z]|[a-z]\""
+              command_message "${command}"
+              remote_check=$( eval "${command}" )
               if [ "${remote_check}" != "1" ]; then
                 if [ "${audit_mode}" = 1 ] || [ "${audit_mode}" = 0 ]; then
                   increment_insecure "Rsyslog is not sending messages to a remote server"
@@ -125,7 +127,9 @@ audit_syslog_server () {
       fi
       conf_file="/etc/rsyslog.conf"
       if [ -f "${conf_file}" ]; then
-        server_check=$( grep -E "imtcp|imudp" < "${conf_file}" | grep -cv "^#" | sed "s/ //g" )
+        command="grep -E \"imtcp|imudp\" < \"${conf_file}\" | grep -cv \"^#\" | sed \"s/ //g\""
+        command_message "${command}"
+        server_check=$( eval "${command}" )
         if [ "${serial_check}" = "0" ]; then
           increment_secure    "Rsyslog is not running in server mode"
         else

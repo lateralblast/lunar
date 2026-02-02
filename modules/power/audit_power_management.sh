@@ -24,7 +24,9 @@ audit_power_management () {
         check_file_value "is" "/etc/default/power" "CPRCHANGEPERM" "eq" "-" "hash"
       fi
       if [ "${os_version}" = "11" ]; then
-        poweradm_test=$( poweradm list | grep suspend | awk '{print $2}' | cut -f2 -d"=" )
+        command="poweradm list | grep suspend | awk '{print \$2}' | cut -f2 -d\"=\""
+        command_message "${command}"
+        poweradm_test=$( eval "${command}" )
         log_file="poweradm.log"
         if [ "${audit_mode}" = 2 ]; then
           restore_file="${restore_dir}/#log_file"

@@ -39,7 +39,9 @@ audit_xlogin () {
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="nodaemon"
-      ttys_test=$( grep ${check_string} ${check_file} | awk '{print $5}' )
+      command="grep ${check_string} ${check_file} | awk '{print \$5}'"
+      command_message "${command}"
+      ttys_test=$( eval "${command}" )
       secure_string="X Wrapper is disabled"
       insecure_string="X Wrapper is not disabled"
       verbose_message "${search_string}" "check"
@@ -76,7 +78,9 @@ audit_xlogin () {
       if [ -f "${check_file}" ]; then
         verbose_message "X Security Message" "check"
         if [ "${audit_mode}" != 2 ]; then
-          greet_check=$( grep 'private system' "${check_file}" )
+          command="grep 'private system' \"${check_file}\""
+          command_message "${command}"
+          greet_check=$( eval "${command}" )
           if [ -z "${greet_check}" ]; then
             verbose_message "File ${check_file} for security message" "check"
             greet_mesg="This is a private system --- Authorized use only!"
@@ -100,7 +104,9 @@ audit_xlogin () {
       if [ -f "${check_file}" ]; then
         verbose_message "X Security Message" "check"
         if [ "${audit_mode}" != 2 ]; then
-          greet_check=$( grep -c 'private system' ${check_file} )
+          command="grep -c 'private system' ${check_file}"
+          command_message "${command}"
+          greet_check=$( eval "${command}" )
           greet_mesg="This is a private system --- Authorized USE only!"
           if [ "${greet_check}" != 1 ]; then
             verbose_message "File ${check_file} for security message"
@@ -124,7 +130,9 @@ audit_xlogin () {
       if [ -f "${check_file}" ]; then
         verbose_message "X Listening"
         if [ "${audit_mode}" != 2 ]; then
-          greet_check=$( grep -c 'nolisten tcp' "${check_file}" )
+          command="grep -c 'nolisten tcp' \"${check_file}\""
+          command_message "${command}"
+          greet_check=$( eval "${command}" )
           if [ "${greet_check}" != 1 ]; then
             verbose_message "For X11 nolisten directive in file \"${check_file}\"" "check"
             lockdown_command_1="awk '( \$1 !~ /^#/ && \$3 == \"/usr/X11R6/bin/X\" ) { \$3 = \$3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}"

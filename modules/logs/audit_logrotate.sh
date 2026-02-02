@@ -29,7 +29,9 @@ audit_logrotate () {
           else
             search_string="/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler /var/log/boot.log /var/log/cron"
           fi
-          check_value=$( grep "${search_string}" "${check_file}" | sed 's/ {//g' )
+          command="grep \"${search_string}\" \"${check_file}\" | sed 's/ {//g'"
+          command_message "${command}"
+          check_value=$( eval "${command}" )
           if [ "${check_value}" != "${search_string}" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Log rotate is not configured for ${search_string}"
@@ -40,8 +42,12 @@ audit_logrotate () {
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${check_file}"
               echo  "Removing:  Configuring logrotate"
-              sed   "s,.*{,${search_string} {," "${check_file}" > "${temp_file}"
-              cat   "${temp_file}" > "${check_file}"
+              command="sed \"s,.*{,${search_string} {,\" \"${check_file}\" > \"${temp_file}\""
+              command_message "${command}"
+              eval "${command}"
+              command="cat \"${temp_file}\" > \"${check_file}\""
+              command_message "${command}"
+              eval "${command}"
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi

@@ -20,11 +20,11 @@ audit_azure_key_vault_private_endpoints () {
   print_function  "audit_azure_key_vault_private_endpoints"
   verbose_message "Azure Key Vault Private Endpoints" "check"
   command="az resource list --query \"[?type=='Microsoft.KeyVault/vaults'].name\" --output tsv"
-  command_message "${command}" "exec"
+  command_message "${command}"
   resource_names=$( eval "${command}" )
   for resource_name in ${resource_names}; do
     command="az resource list --name \"${resource_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message "${command}" "exec"
+    command_message "${command}"
     resource_groups=$( eval "${command}" )
     for resource_group in ${resource_groups}; do
       check_azure_key_vault_value "${resource_name}" "${resource_group}" "properties.privateEndpointConnections" "ne" "" ""

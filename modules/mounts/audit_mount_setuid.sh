@@ -29,7 +29,9 @@ audit_mount_setuid () {
       if [ "${os_version}" = "10" ]; then
         check_file="/etc/rmmount.conf"
         if [ -f "${check_file}" ]; then
-          nosuid_check=$( grep -v "^#" "${check_file}" | grep "\-o nosuid" )
+          command="grep -v \"^#\" \"${check_file}\" | grep \"\\-o nosuid\""
+          command_message "${command}"
+          nosuid_check=$( eval "${command}" )
           log_file="${work_dir}/${check_file}"
           if [ -n "$nosuid_check" ]; then
             if [ "${audit_mode}" = 1 ]; then
@@ -56,19 +58,25 @@ audit_mount_setuid () {
       if [ -e "${check_file}" ]; then
         verbose_message "File Systems mounted with nodev" "check"
         if [ "${audit_mode}" != "2" ]; then
-          nodev_check=$( grep -v "^#" ${check_file} | grep -E "ext2|ext3|ext4|swap|tmpfs" | grep -v '/ ' | grep -cv '/boot' | sed "s/ //g" )
+          command="grep -v \"^#\" \"${check_file}\" | grep -E \"ext2|ext3|ext4|swap|tmpfs\" | grep -v '/ ' | grep -cv '/boot' | sed \"s/ //g\""
+          command_message "${command}"
+          nodev_check=$( eval "${command}" )
           if [ ! "$nodev_check" = "0" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure  "Found filesystems that should be mounted nodev"
-              verbose_message     "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
+              verbose_message     "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
               verbose_message     "cat ${temp_file} > ${check_file}" "fix"
               verbose_message     "rm ${temp_file}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "Setting nodev on filesystems" "set"
               backup_file     "${check_file}"
-              awk '( $3 ~ /^ext[2,3,4]|tmpfs$/ && $2 != "/" ) { $4 = $4 ",nosuid" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }'< "${check_file}" > "${temp_file}"
-              cat "${temp_file}" > "${check_file}"
+              command="awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' < \"${check_file}\" > \"${temp_file}\""
+              command_message "${command}"
+              eval "${command}"
+              command="cat \"${temp_file}\" > \"${check_file}\""
+              command_message "${command}"
+              eval "${command}"
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi

@@ -38,7 +38,7 @@ audit_azure_activity_log_alerts () {
   print_function "audit_azure_activity_log_alerts"
   verbose_message "Azure Activity Log Alerts" "check"
   command="az account show --query id --output tsv"
-  command_message "${command}" "exec"
+  command_message "${command}"
   subscription_ids="$( eval "${command}" )"
   for subscription_id in $subscription_ids; do
     # 6.1.2.1 Ensure that Activity Log Alert for Create Policy Assignment is enabled

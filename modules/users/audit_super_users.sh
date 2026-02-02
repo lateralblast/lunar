@@ -30,7 +30,9 @@ audit_super_users () {
     else
       if [ "${audit_mode}" != 2 ]; then
         lockdown_command="userdel ${user_name}"
-        user_list=$( awk -F: '$3 == "0" { print $1 }' /etc/passwd | grep -v root )
+        command="awk -F: '\$3 == \"0\" { print \$1 }' /etc/passwd | grep -v root"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure "UID 0 for User \"${user_name}\""

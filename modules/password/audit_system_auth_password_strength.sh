@@ -19,7 +19,9 @@ audit_system_auth_password_strength () {
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "${check_file}" ]; then
           verbose_message "Password minimum strength enabled in \"${check_file}\"" "check"
-          check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk '{print $8}' )
+          command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
+          command_message "${command}"
+          check_value=$( eval "${command}" )
           lockdown_command="sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' < ${check_file} > ${temo_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}" "fix"
           if [ "${check_value}" != "${search_string}" ]; then
             if [ "${audit_mode}" = "1" ]; then

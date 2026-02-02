@@ -31,6 +31,8 @@ audit_home_ownership () {
     home_check=0
     if [ "${os_name}" = "AIX" ]; then
       if [ "${audit_mode}" != 2 ]; then
+        command="lsuser -c ALL | grep -v \"^#name\" | cut -f1 -d:"
+        command_message "${command}"
         lsuser -c ALL | grep -v "^#name" | cut -f1 -d: | while read -r check_user; do
           user_check=$( lsuser -f "${check_user}" | grep id | cut -f2 -d"=" )
           if [ "${user_check}" -ge 200 ]; then

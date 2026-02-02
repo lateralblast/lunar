@@ -20,7 +20,7 @@ check_azure_security_setting_value () {
   verbose_message "${description} \"${setting_name}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
   command="az security setting show --name \"${setting_name}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
   actual_value=$( eval "${command}" )
-  command_message "${command}" "exec"
+  command_message "${command}"
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "${description} \"${setting_name}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
   else

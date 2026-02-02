@@ -68,8 +68,12 @@ audit_console_login () {
           if [ "${audit_mode}" = 0 ]; then
             backup_file     "${check_file}"
             verbose_message "Consoles to disabled on \"$console_list\"" "set"
-            sed "s/tty[0-9].*//g" < "${check_file}" | grep '[a-z]' > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
+            command="sed \"s/tty[0-9].*//g\" < \"${check_file}\" | grep '[a-z]' > \"${temp_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="cat \"${temp_file}\" > \"${check_file}\""
+            command_message "${command}"
+            eval "${command}"
             if [ -f "${temp_file}" ]; then
               rm "${temp_file}"
             fi

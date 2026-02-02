@@ -32,7 +32,9 @@ audit_system_auth_password_history () {
       if [ -f "${check_file}" ]; then
         if [ "${audit_mode}" != 2 ]; then
           verbose_message "Password entry \"${search_string}\" set to \"${search_value}\" in \"${check_file}\"" "check"
-          check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk -F "${search_string}=" '{print $2}' | awk '{print $1}' )
+          command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk -F \"${search_string}=\" '{print \$2}' | awk '{print \$1}'"
+          command_message "${command}"
+          check_value=$( eval "${command}" )
           lockdown_command="awk '( \$1 == \"password\" && \$3 == \"pam_unix.so\" ) { print \$0 \" ${search_string}=${search_value}\"; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" != "${search_value}" ]; then
             if [ "${audit_mode}" = "1" ]; then

@@ -18,11 +18,11 @@ audit_azure_resource_logging () {
   print_function  "audit_azure_resource_logging"
   verbose_message "Azure Resource Logging" "check"
   command="az account show --query id --output tsv"
-  command_message "${command}" "exec"
+  command_message "${command}"
   subscription_ids="$( eval "${command}" )"
   for subscription_id in $subscription_ids; do
     command="az resource list --subscription \"${subscription_id}\" --query \"[].id\" --output tsv"
-    command_message "${command}" "exec"
+    command_message "${command}"
     resource_ids="$( eval "${command}" )"
     for resource_id in $resource_ids; do
       check_azure_monitoring_diagnostics_value "${resource_id}"

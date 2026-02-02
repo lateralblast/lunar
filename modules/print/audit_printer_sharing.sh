@@ -21,9 +21,13 @@ audit_printer_sharing () {
     verbose_message "Printer Sharing" "check"
     if [ "${audit_mode}" != 2 ]; then
       if [ "${long_os_version}" -ge 1014 ]; then
-        printer_test=$( /usr/bin/sudo /usr/sbin/cupsctl | grep -c "_share_printers=0" )
+        command="/usr/bin/sudo /usr/sbin/cupsctl | grep -c \"_share_printers=0\""
+        command_message "${command}"
+        printer_test=$( eval "${command}" )
       else
-        printer_test=$( system_profiler SPPrintersDataType | grep Shared | awk '{print $2}' | grep -c 'Yes' | sed "s/ //g" )
+        command="system_profiler SPPrintersDataType | grep Shared | awk '{print \$2}' | grep -c 'Yes' | sed \"s/ //g\""
+        command_message "${command}"
+        printer_test=$( eval "${command}" )
       fi
       if [ "${printer_test}" = "0" ]; then
         increment_insecure  "Printer sharing is enabled"

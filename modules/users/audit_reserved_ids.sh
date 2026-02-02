@@ -8,6 +8,8 @@
 #
 # Check reserved IDs
 #
+# Bug: sets insecure_count to 0 for some reason
+#
 # Refer to Section(s) 9.2.17 Page(s) 202-3 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.17   Page(s) 84-5  CIS Solaris 11.1 Benchmark v1.0.0
 # Refer to Section(s) 9.17   Page(s) 130-1 CIS Solaris 10 Benchmark v1.1.0
@@ -18,6 +20,8 @@ audit_reserved_ids () {
   if [ "${os_name}" = "SunOS" ]; then
     verbose_message "Reserved IDs" "check"
     if [ "${audit_mode}" != 2 ]; then
+      command="getent passwd | awk -F: '(\$3 < 500) { print \"\$1\" \"\$3\" }'"
+      command_message "${command}"
       getent passwd | awk -F: '($3 < 100) { print $1" "$3 }' | while read -r check_user check_uid; do
         found=0
         for test_user in root daemon bin sys adm lp uucp nuucp smmsp listen \
@@ -27,7 +31,6 @@ audit_reserved_ids () {
           fi
         done
         if [ "${found}" = 0 ]; then
-          check_uid=1
           if [ "${audit_mode}" = 1 ];then
             increment_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
           fi
@@ -41,6 +44,8 @@ audit_reserved_ids () {
      verbose_message "Whether reserved UUIDs are assigned to system accounts" "check"
     fi
     if [ "${audit_mode}" != 2 ]; then
+      command="getent passwd | awk -F: '(\$3 < 500) { print \"\$1\" \"\$3\" }'"
+      command_message "${command}"
       getent passwd | awk -F: '($3 < 500) { print $1" "$3 }' | while read -r check_user check_uid; do
         found=0
         for test_user in root bin daemon adm lp sync shutdown halt mail news uucp \
@@ -52,7 +57,6 @@ audit_reserved_ids () {
           fi
         done
         if [ "${found}" = 0 ]; then
-          check_uid=1
           if [ "${audit_mode}" = 1 ];then
             increment_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
           fi

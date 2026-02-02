@@ -21,7 +21,9 @@ audit_sudo_authenticate () {
     fi
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
-      auth_test=$( grep "^[^#].*\!authenticate" < "${check_file}" )
+      command="grep \"^[^#].*\\!authenticate\" < \"${check_file}\""
+      command_message "${command}"
+      auth_test=$( eval "${command}" )
       if [ -n "${auth_test}" ]; then
         increment_insecure  "Re-authentication is not disabled for sudo in ${check_file}"
       else
@@ -30,9 +32,13 @@ audit_sudo_authenticate () {
       check_file_perms "${check_file}" "440" "root"       "${wheel_group}" 
     fi
     if [ -d "/etc/sudoers.d" ]; then
-      file_list=$( find /etc/sudoers.d -type file )
+      command="find /etc/sudoers.d -type file"
+      command_message "${command}"
+      file_list=$( eval "${command}" )
       for check_file in ${file_list}; do
-        auth_test=$( grep "^[^#].*\!authenticate" < "${check_file}" )
+        command="grep \"^[^#].*\\!authenticate\" < \"${check_file}\""
+        command_message "${command}"
+        auth_test=$( eval "${command}" )
         if [ -n "${auth_test}" ]; then
           increment_insecure  "Re-authentication is not disabled for sudo in ${check_file}"
         else

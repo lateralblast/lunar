@@ -25,7 +25,9 @@ audit_sulogin () {
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"
-      ttys_test=$( grep "${check_string}" ${check_file} | awk '{print $5}' )
+      command="grep \"${check_string}\" \"${check_file}\" |awk '{print \$5}'"
+      command_message "${command}"
+      ttys_test=$( eval "${command}" )
       if [ "${ttys_test}" != "insecure" ]; then
         if [ "${audit_mode}" != 2 ]; then
           if [ "${audit_mode}" = 1 ]; then
@@ -53,7 +55,9 @@ audit_sulogin () {
     if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/inittab"
       if [ -f "${check_file}" ]; then
-        sulogin_check=$( grep -l sulogin "${check_file}" )
+        command="grep -l sulogin \"${check_file}\""
+        command_message "${command}"
+        sulogin_check=$( eval "${command}" )
         if [ -z "$sulogin_check" ]; then
           lockdown_message="Single user mode to require authentication"
           lockdown_command="awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm $temp_file"

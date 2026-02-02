@@ -14,10 +14,14 @@ audit_root_ssh_keys () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     verbose_message "Root SSH keys" "check"
     if [ "${audit_mode}" != 2 ]; then
-      root_home=$( grep '^root' /etc/passwd | cut -f6 -d: )
+      command="grep '^root' /etc/passwd | cut -f6 -d:"
+      command_message "${command}"
+      root_home=$( ${command} )
       for check_file in $root_home/.ssh/authorized_keys $root_home/.ssh/authorized_keys2; do
         if [ -f "${check_file}" ]; then
-          key_check=$( wc -l "${check_file}" | awk '{print $1}' )
+          command="wc -l \"${check_file}\" | awk '{print \$1}'"
+          command_message "${command}"
+          key_check=$( eval "${command}" )
           if [ "${key_check}" -ge 1 ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Keys file \"${check_file}\" ${exists}"

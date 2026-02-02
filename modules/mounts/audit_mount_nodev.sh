@@ -27,7 +27,9 @@ audit_mount_nodev () {
     if [ -e "${check_file}" ]; then
       verbose_message "File Systems mounted with nodev" "check"
       if [ "${audit_mode}" != "2" ]; then
-        nodev_check=$( grep -v "^#" "${check_file}" | grep -E "ext2|ext3|swap|tmpfs" | grep -v '/ ' | grep -cv '/boot' | sed "s/ //g" )
+        command="grep -v \"^#\" \"${check_file}\" | grep -E \"ext2|ext3|swap|tmpfs\" | grep -v '/ ' | grep -cv '/boot' | sed \"s/ //g\""
+        command_message "${command}"
+        nodev_check=$( eval "${command}" )
         if [ "$nodev_check" = 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure  "Found filesystems that should be mounted nodev"
@@ -38,8 +40,12 @@ audit_mount_nodev () {
           if [ "${audit_mode}" = 0 ]; then
             verbose_message     "Setting:   Setting nodev on filesystems"
             backup_file         "${check_file}"
-            awk '( $3 ~ /^ext[2,3,4]|tmpf$/ && $2 != "/" ) { $4 = $4 ",nodev" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",$1,$2,$3,$4,$5,$6 }' < "${check_file}" > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
+            command="awk '( \$3 ~ /^ext[2,3,4]|tmpf$/ && \$2 != "/" ) { \$4 = \$4 ",nodev" }; { printf "%-26s %-22s %-8s %-16s %-1s %-1s\n",\$1,\$2,\$3,\$4,\$5,\$6 }' < \"${check_file}\" > \"${temp_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="cat \"${temp_file}\" > \"${check_file}\""
+            command_message "${command}"
+            eval "${command}"
             if [ -f "${temp_file}" ]; then
               rm "${temp_file}"
             fi

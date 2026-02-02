@@ -20,8 +20,12 @@ audit_sudo_timestamp () {
       verbose_message "Requires sudo to check" "notice"
       return
     fi
-    major_ver=$( sudo --version | head -1 | awk '{print $3}' | cut -f1 -d. )
-    minor_ver=$( sudo --version | head -1 | awk '{print $3}' | cut -f2 -d. )
+    command="sudo --version | head -1 | awk '{print \$3}' | cut -f1 -d."
+    command_message "${command}"
+    major_ver=$( eval "${command}" )
+    command="sudo --version | head -1 | awk '{print \$3}' | cut -f2 -d."
+    command_message "${command}"
+    minor_ver=$( eval "${command}" )
     check_sudo="0"
     if [ "$major_ver" -gt 1 ]; then
       check_sudo="1"

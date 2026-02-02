@@ -17,19 +17,27 @@ audit_serial_login () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     verbose_message "Login on Serial Ports" "check"
     if [ "${os_name}" = "AIX" ]; then
-      tty_list=$( lsitab –a | grep "on:/usr/sbin/getty" | awk '{print $2}' )
+      command="lsitab –a | grep \"on:/usr/sbin/getty\" | awk '{print \$2}'"
+      command_message "${command}"
+      tty_list=$( eval "${command}" )
       if [ -z "${tty_list}" ]; then
         if [ "${audit_mode}" = 1 ]; then
           increment_secure "Serial port logins disabled"
         fi
         if [ "${audit_mode}" = 2 ]; then
-          tty_list=$( lsitab –a | grep "/usr/sbin/getty" | awk '{print $2}' )
+          command="lsitab –a | grep \"/usr/sbin/getty\" | awk '{print \$2}'"
+          command_message "${command}"
+          tty_list=$( eval "${command}" )
           for tty_name in ${tty_list}; do
             log_file="${restore_dir}/${tty_name}"
             if [ -f "${log_file}" ]; then
-              previous_value=$( cat "${log_file}" )
+              command="cat \"${log_file}\""
+              command_message "${command}"
+              previous_value=$( eval "${command}" )
               verbose_message "TTY \"${tty_name}\" to \"${previous_value}\"" "restore"
-              chitab "${previous_value} ${tty_name}"
+              command="chitab \"${previous_value} ${tty_name}\""
+              command_message "${command}"
+              eval "${command}"
             fi
           done
         fi
@@ -37,22 +45,34 @@ audit_serial_login () {
         for tty_name in ${tty_list}; do
           if [ "${audit_mode}" != 2 ]; then
             log_file="${work_dir}/${tty_name}"
-            actual_value=$( lsitab -a | grep "on:/usr/sbin/getty" | grep "${tty_name}" )
-            new_value=$( echo "${actual_value}" | sed 's/on/off/g' )
+            command="lsitab -a | grep \"on:/usr/sbin/getty\" | grep \"${tty_name}\""
+            command_message "${command}"
+            actual_value=$( eval "${command}" )
+            command="echo \"${actual_value}\" | sed 's/on/off/g'"
+            command_message "${command}"
+            new_value=$( eval "${command}" )
             if [ "${audit_mode}" = 1 ]; then
               increment_insecure "Serial port logins not disabled on \"${tty_name}\""
               verbose_message    "chitab \"${new_value}\"" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              echo   "${actual_value}" > "${log_file}"
-              chitab "${new_value} ${tty_name}"
+              command="echo \"${actual_value}\" > \"${log_file}\""
+              command_message "${command}"
+              eval "${command}"
+              command="chitab \"${new_value} ${tty_name}\""
+              command_message "${command}"
+              eval "${command}"
             fi
           else
             log_file="${restore_dir}/${tty_name}"
             if [ -f "${log_file}" ]; then
-              previous_value=$( cat "${log_file}" )
+              command="cat \"${log_file}\""
+              command_message "${command}"
+              previous_value=$( eval "${command}" )
               verbose_message "Restoring: TTY \"${tty_name}\" to \"${previous_value}\""
-              chitab "${previous_value} ${tty_name}"
+              command="chitab \"${previous_value} ${tty_name}\""
+              command_message "${command}"
+              eval "${command}"
             fi
           fi
         done
@@ -60,9 +80,13 @@ audit_serial_login () {
     fi
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" != "11" ]; then
-        serial_test=$( pmadm -L | grep -E "ttya|ttyb" | cut -f4 -d ":" | grep -c "ux" )
+        command="pmadm -L | grep -E \"ttya|ttyb\" | cut -f4 -d \":\" | grep -c \"ux\""
+        command_message "${command}"
+        serial_test=$( eval "${command}" )
         log_file="${work_dir}/pmadm.log"
-        serial_check=$( expr "$serial_test" : "2" )
+        command="expr \"$serial_test\" : \"2\""
+        command_message "${command}"
+        serial_check=$( eval "${command}" )
         if [ "${serial_check}" = "1" ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_secure "Serial port logins disabled"
@@ -75,17 +99,27 @@ audit_serial_login () {
           fi
           if [ "${audit_mode}" = 0 ]; then
             verbose_message "Serial port logins to disabled" "set"
-            echo "ttya,ttyb" >> "${log_file}"
-            pmadm -d -p zsmon -s ttya
-            pmadm -d -p zsmon -s ttyb
+            command="echo \"ttya,ttyb\" >> \"${log_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="pmadm -d -p zsmon -s ttya"
+            command_message "${command}"
+            eval "${command}"
+            command="pmadm -d -p zsmon -s ttyb"
+            command_message "${command}"
+            eval "${command}"
           fi
         fi
         if [ "${audit_mode}" = 2 ]; then
           restore_file="${restore_dir}/pmadm.log"
           if [ -f "${restore_file}" ]; then
             verbose_message "Serial port logins to enabled" "restore"
-            pmadm -e -p zsmon -s ttya
-            pmadm -e -p zsmon -s ttyb
+            command="pmadm -e -p zsmon -s ttya"
+            command_message "${command}"
+            eval "${command}"
+            command="pmadm -e -p zsmon -s ttyb"
+            command_message "${command}"
+            eval "${command}"
           fi
         fi
       fi
@@ -93,7 +127,9 @@ audit_serial_login () {
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="dialup"
-      ttys_test=$( grep "${check_string}" "${check_file}" |awk '{print $5}' )
+      command="grep \"${check_string}\" \"${check_file}\" |awk '{print \$5}'"
+      command_message "${command}"
+      ttys_test=$( eval "${command}" )
       if [ "${ttys_test}" != "off" ]; then
         if [ "${audit_mode}" != 2 ]; then
           if [ "${audit_mode}" = 1 ]; then
@@ -103,8 +139,12 @@ audit_serial_login () {
             verbose_message "Serial port logins to disabled" "set"
             backup_file     "${check_file}"
             temp_file="${temp_dir}/ttys_${check_string}"
-            awk '($4 == "dialup") { $5 = "off" } { print }' < "${check_file}" > "${temp_file}"
-            cat "${temp_file}" > "${check_file}"
+            command="awk '(\\$4 == \"dialup\") { \\$5 = \"off\" } { print }' < \"${check_file}\" > \"${temp_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="cat \"${temp_file}\" > \"${check_file}\""
+            command_message "${command}"
+            eval "${command}"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"

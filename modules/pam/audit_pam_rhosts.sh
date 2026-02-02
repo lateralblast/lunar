@@ -9,6 +9,8 @@
 #
 # Check PAM rhost settings
 #
+# Bug: Need to implement backup_file to after the ansible_mode check
+#
 # Refer to Section(s) 6.8 Page(s) 51-52 CIS Solaris 11.1 Benchmark  v1.0.0
 # Refer to Section(s) 6.4 Page(s) 89    CIS Solaris 10 Benchmark v5.1.0
 #.
@@ -25,7 +27,9 @@ audit_pam_rhosts () {
         restore_file "${check_file}" "${restore_dir}"
       else
         if [ -f "${check_file}" ]; then
-          pam_check=$( grep -v "^#" ${check_file} | grep "${pam_module}" | head -1 | wc -l | sed "s/ //g" )
+          command="grep -v "^#" ${check_file} | grep "${pam_module}" | head -1 | wc -l | sed "s/ //g""
+          command_message "${command}"
+          pam_check=$( eval "${command}" )
           if [ "${ansible_mode}" = 1 ]; then
             ansible_counter=$((ansible_counter+1))
             ansible_value="audit_pam_rhosts_${ansible_counter}"
@@ -53,18 +57,28 @@ audit_pam_rhosts () {
               log_file="${work_dir}${check_file}"
               if [ ! -f "${log_file}" ]; then
                 verbose_message "File ${check_file} to ${work_dir}${check_file}" "save"
-                find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
+                command="find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null"
+                command_message "${command}"
+                file_list=$( eval "${command}" )
               fi
               verbose_message "Rhost authentication to disabled in ${check_file}" "set"
-              sed -e "s/^.*${pam_module}/#&/" "${check_file}" > "${temp_file}"
-              cat "${temp_file}" > "${check_file}"
+              command="sed -e 's/^.*${pam_module}/#&/' "${check_file}" > "${temp_file}""
+              command_message "${command}"
+              file_list=$( eval "${command}" )
+              command="cat "${temp_file}" > "${check_file}""
+              command_message "${command}"
+              file_list=$( eval "${command}" )
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi
               if [ "${os_version}" != "11" ]; then
-                pkgchk -f -n -p "${check_file}" 2> /dev/null
+                command="pkgchk -f -n -p \"${check_file}\" 2> /dev/null"
+                command_message "${command}"
+                file_list=$( eval "${command}" )
               else
-                pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
+                command="pkg fix $( pkg search \"${check_file}\" | grep pkg | awk '{print \$4}' )"
+                command_message "${command}"
+                file_list=$( eval "${command}" )
               fi
             fi
           else
@@ -76,7 +90,9 @@ audit_pam_rhosts () {
     if [ "${os_name}" = "Linux" ]; then
       check_dir="/etc/pam.d"
       if [ -d "${check_dir}" ]; then
-        file_list=$( find "${check_dir}" -type f )
+        command="find \"${check_dir}\" -type f"
+        command_message "${command}"
+        file_list=$( eval "${command}" )
         for check_file in ${file_list}; do
           if [ "${audit_mode}" = 2 ]; then
             restore_file "${check_file}" "${restore_dir}"
@@ -109,8 +125,12 @@ audit_pam_rhosts () {
               if [ "${audit_mode}" = 0 ]; then
                 backup_file     "${check_file}"
                 verbose_message "Rhost authentication to disabled in \"${check_file}\"" "set"
-                sed -e 's/^.*rhosts_auth/#&/' < "${check_file}" > "${temp_file}"
-                cat "${temp_file}" > "${check_file}"
+                command="sed -e 's/^.*rhosts_auth/#&/' < \"${check_file}\" > \"${temp_file}\""
+                command_message "${command}"
+                file_list=$( eval "${command}" )
+                command="cat \"${temp_file}\" > \"${check_file}\""
+                command_message "${command}"
+                file_list=$( eval "${command}" )
                 if [ -f "${temp_file}" ]; then
                   rm "${temp_file}"
                 fi

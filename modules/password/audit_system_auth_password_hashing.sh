@@ -22,7 +22,9 @@ audit_system_auth_password_hashing () {
       check_file="/etc/pam.d/common-password"
       if [ -f "${check_file}" ]; then
         verbose_message "Password minimum strength enabled in \"${check_file}\"" "check"
-        check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk '{print $8}' )
+        command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
+        command_message "${command}"
+        check_value=$( eval "${command}" )
         lockdown_command="sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then

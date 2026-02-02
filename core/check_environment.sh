@@ -42,7 +42,7 @@ check_azure_environment () {
   if [ -f "$azure_bin" ]; then
     for cli_ext in databricks bastion resource-graph application-insights; do
       command="az extension list | grep \"${cli_ext}\""
-      command_message "${command}" "exec"
+      command_message "${command}"
       ext_test=$( eval "${command}" )
       if [ -z "${ext_test}" ]; then
         echo "Azure ${cli_ext} extension is not installed"
@@ -54,7 +54,7 @@ check_azure_environment () {
     exit
   fi
   command="az ad signed-in-user show --query displayName -o tsv"
-  command_message "${command}" "exec"
+  command_message "${command}"
   azure_display_name=$( eval "${command}" )
   if [ -z "${azure_display_name}" ]; then
     az login
@@ -75,7 +75,7 @@ check_environment () {
     verbose_message "" ""
     verbose_message "Checking if node is managed" "info"
     command="sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d:"
-    command_message "${command}" "exec"
+    command_message "${command}"
     managed_node=$( eval "${command}" )
     if [ "${managed_node}" = "Error" ]; then
       verbose_message "Node is not managed" "notice"

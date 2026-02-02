@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      12.3.4
+# Version:      12.5.6
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -539,7 +539,7 @@ increment_secure () {
     message="${1}"
     total_count=$((total_count+1))
     secure_count=$((secure_count+1))
-    if [ "${secure_count}" -eq 1 ]; then
+    if [ "${secure_count}" = 1 ]; then
       echo "Secure:     ${message} [${secure_count} Pass]"
     else
       echo "Secure:     ${message} [${secure_count} Passes]"
@@ -558,7 +558,7 @@ increment_insecure () {
     message="${1}"
     total_count=$((total_count+1))
     insecure_count=$((insecure_count+1))
-    if [ "${insecure_count}" -eq 1 ]; then
+    if [ "${insecure_count}" = 1 ]; then
       verbose_message "${message} [${insecure_count} Warning]" "warn"
     else
       verbose_message "${message} [${insecure_count} Warnings]" "warn"
@@ -600,7 +600,7 @@ secure_baseline () {
 # Handle command line arguments
 
 audit_mode=3
-do_fs=3
+do_fs=0
 audit_select=0
 verbose_mode=0
 force=0
@@ -761,7 +761,7 @@ do
           ;;
         fullaudit)
           audit_mode=1
-          do_fs=2
+          do_fs=1
           ;;
         lockdown)
           audit_mode=0

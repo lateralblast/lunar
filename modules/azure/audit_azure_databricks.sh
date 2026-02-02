@@ -28,14 +28,14 @@ audit_azure_databricks () {
   print_function  "audit_azure_databricks"
   verbose_message "Azure Databricks" "check"
   command="az databricks workspace list --query \"[].name\" --output tsv"
-  command_message "${command}" "exec"
+  command_message "${command}"
   workspace_list=$( eval "${command}" )
   for workspace_name in ${workspace_list}; do
     command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[resourceGroup]\" --output tsv"
-    command_message "${command}" "exec"
+    command_message "${command}"
     resource_group=$( eval "${command}" )
     command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[id]\" --output tsv"
-    command_message "${command}" "exec"
+    command_message "${command}"
     resource_id=$( eval "${command}" )
     # 2.1.1  Ensure that Azure Databricks is deployed in a customer-managed virtual network (VNet) - TBD
     # 2.1.2  Ensure that network security groups are configured for Databricks subnets - TBD
