@@ -24,9 +24,10 @@
 
 audit_nfs () {
   print_function "audit_nfs"
+  string="NFS Services"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "$nfsd_disable" = "yes" ]; then
-      verbose_message "NFS Services" "check"
       if [ "${os_name}" = "AIX" ]; then
         check_itab "rcnfs" "off"
       fi
@@ -68,5 +69,7 @@ audit_nfs () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

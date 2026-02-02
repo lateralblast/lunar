@@ -25,9 +25,10 @@
 
 audit_writable_files () {
   print_function "audit_writable_files"
+  string="World Writable Files"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${do_fs}" = 1 ]; then
-      verbose_message "World Writable Files" "check"
       log_file="worldwritablefiles.log"
       if [ "${audit_mode}" = 0 ]; then
         log_file="${work_dir}/${log_file}"
@@ -109,5 +110,7 @@ audit_writable_files () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

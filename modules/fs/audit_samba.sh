@@ -20,8 +20,9 @@
 
 audit_samba () {
   print_function "audit_samba"
+  string="Samba Daemons"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Samba Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         if [ "${os_update}" -ge 4 ]; then
@@ -43,5 +44,7 @@ audit_samba () {
         check_file_value_with_position "is" "${check_file}" "client ntlmv2 auth" "eq" "yes" "semicolon" "after" "\[Global\]"
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

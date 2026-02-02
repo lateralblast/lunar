@@ -25,8 +25,9 @@
 
 audit_unowned_files () {
   print_function "audit_unowned_files"
+  string="Unowned Files and Directories"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Unowned Files and Directories" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -57,5 +58,7 @@ audit_unowned_files () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -11,8 +11,9 @@
 
 audit_hotplug () {
   print_function "audit_hotplug"
+  string="Hotplug Service"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Hotplug Service" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/system/hotplug:default" "disabled"
@@ -23,5 +24,7 @@ audit_hotplug () {
         check_linux_service "${service_name}" "off"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

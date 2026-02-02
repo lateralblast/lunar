@@ -19,8 +19,9 @@
 
 audit_autofs () {
   print_function "audit_autofs"
+  string="Automount Services"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Automount Services" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/system/filesystem/autofs" "disabled"
@@ -29,5 +30,7 @@ audit_autofs () {
     if [ "${os_name}" = "Linux" ]; then
       check_linux_service   "autofs" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -20,10 +20,10 @@
 
 audit_sticky_bit () {
   print_function "audit_sticky_bit"
+  string="World Writable Directories and Sticky Bits"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = 1 ]; then
-      string="World Writable Directories and Sticky Bits"
-      verbose_message "${string}" "check"
       if [ "${os_version}" = "10" ]; then
         log_file="sticky_bits"
         file_list=$( find / \( -fstype nfs -o -fstype cachefs \
@@ -69,5 +69,7 @@ audit_sticky_bit () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

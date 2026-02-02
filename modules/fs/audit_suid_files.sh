@@ -24,8 +24,9 @@
 
 audit_suid_files () {
   print_function "audit_suid_files"
+  string="Set UID/GID Files"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Set UID/GID Files" "check"
     log_file="setuidfiles.log"
     if [ "${audit_mode}" = 1 ]; then
       if [ "${os_name}" = "Linux" ]; then
@@ -88,5 +89,7 @@ audit_suid_files () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

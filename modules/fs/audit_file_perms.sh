@@ -16,8 +16,9 @@
 
 audit_file_perms () {
   print_function "audit_file_perms"
+  string="System File Permissions"
+  check_command "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "System File Permissions" "check"
     log_file="fileperms.log"
     if [ "${audit_mode}" != 2 ]; then
       if [ "${os_version}" = "11" ]; then
@@ -119,5 +120,7 @@ audit_file_perms () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }
