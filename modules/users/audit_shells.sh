@@ -13,8 +13,9 @@
 
 audit_shells () {
   print_function "audit_shells"
+  string="Shells"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Shells" "check"
     check_file="/etc/shells"
     if [ -f "${check_file}" ]; then
       if [ "${audit_mode}" = 2 ]; then
@@ -48,5 +49,7 @@ audit_shells () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

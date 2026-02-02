@@ -16,8 +16,9 @@
 
 audit_ipv6 () {
   print_function "audit_ipv6"
+  string="IPv6"
+  check_message "${string}"
   if [ "$ipv6_disable" = "yes" ]; then
-    verbose_message "IPv6 Autoconf Daemon" "check"
     if [ "${os_name}" = "AIX" ]; then
       for service_name in autoconf6 ndpd-host ndpd-router; do
         check_rctcp "${service_name}" "off"
@@ -32,5 +33,7 @@ audit_ipv6 () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

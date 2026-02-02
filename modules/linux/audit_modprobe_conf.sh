@@ -20,8 +20,9 @@
 
 audit_modprobe_conf () {
   print_function "audit_modprobe_conf"
+  string="Modprobe Configuration"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message   "Modprobe Configuration"  "check"
     check_append_file "/etc/modprobe.conf"      "install cramfs /bin/false"        "hash"
     check_append_file "/etc/modprobe.conf"      "install freevxfs /bin/false"      "hash"
     check_append_file "/etc/modprobe.conf"      "install hfs /bin/false"           "hash"
@@ -47,5 +48,7 @@ audit_modprobe_conf () {
     check_append_file "/etc/modprobe.conf"      "install sctp /bin/false"          "hash"
     check_append_file "/etc/modprobe.conf"      "install dccp /bin/false"          "hash"
     check_append_file "/etc/modprobe.conf"      "install vfat /bin/false"          "hash"
+  else
+    na_message "${string}"
   fi
 }

@@ -20,8 +20,9 @@
 
 audit_passwd_perms () {
   print_function "audit_passwd_perms"
+  string="Group and Password File Permissions"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Group and Password File Permissions" "check"
     if [ "${os_name}" = "AIX" ]; then
       for check_file in /etc/passwd /etc/group; do
         check_file_perms ${check_file} 0644 root security
@@ -46,5 +47,7 @@ audit_passwd_perms () {
       check_file_perms "/etc/master.passwd" "0600" "root" "${wheel_group}"
       check_file_perms "/etc/spwd.db"       "0600" "root" "${wheel_group}"
     fi
+  else
+    na_message "${string}"
   fi
 }

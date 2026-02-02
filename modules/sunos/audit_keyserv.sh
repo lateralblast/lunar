@@ -12,10 +12,13 @@
 
 audit_keyserv () {
   print_function "audit_keyserv"
+  string="RPC Encryption Key"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "RPC Encryption Key"
       check_sunos_service "svc:/network/rpc/keyserv" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

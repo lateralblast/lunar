@@ -21,8 +21,11 @@
 
 audit_forward_files () {
   print_function "audit_forward_files"
+  string="User Forward Files"
+  check_message "${string}" 
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "User Forward Files" "check"
     audit_dot_files ".forward"
+  else
+    na_message "${string}"
   fi
 }

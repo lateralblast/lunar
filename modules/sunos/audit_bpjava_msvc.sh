@@ -11,10 +11,13 @@
 
 audit_bpjava_msvc () {
   print_function "audit_bpjava_msvc"
+  string="BPJava Service"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "BPJava Service" "check"
       check_sunos_service "svc:/network/bpjava-msvc/tcp:default" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

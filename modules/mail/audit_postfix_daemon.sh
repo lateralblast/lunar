@@ -15,8 +15,9 @@
 
 audit_postfix_daemon () {
   print_function "audit_postfix_daemon"
+  string="Postfix Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Postfix Daemon" "check"
     if [ "${os_vendor}" = "SuSE" ]; then
       check_file_value  "is" "/etc/sysconfig/mail"  "SMTPD_LISTEN_REMOTE" "eq" "no" "hash"
     fi
@@ -25,5 +26,7 @@ audit_postfix_daemon () {
     else
       check_file_value  "is" "/etc/postfix/main.cf" "inet_interfaces"     "eq" "localhost"     "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

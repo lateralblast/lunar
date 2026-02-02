@@ -17,8 +17,9 @@
 
 audit_inactive_users () {
   print_function "audit_inactive_users"
+  string="Inactive User Accounts"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Inactive User Accounts" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -64,5 +65,7 @@ audit_inactive_users () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

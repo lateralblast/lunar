@@ -14,8 +14,9 @@
 
 audit_eeprom_security () {
   print_function "audit_eeprom_security"
+  string="EEPROM Password"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "EEPROM Password" "check"
     if [ "${audit_mode}" = 2 ]; then
       echo "EEPROM password to none" "restore"
       eeprom security-mode=none
@@ -38,5 +39,7 @@ audit_eeprom_security () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

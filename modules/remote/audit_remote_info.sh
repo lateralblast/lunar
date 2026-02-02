@@ -13,8 +13,9 @@
 
 audit_remote_info () {
   print_function "audit_remote_info"
+  string="Remote Information Services"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Remote Information Services" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_rctcp "rwhod" "off"
     fi
@@ -27,5 +28,7 @@ audit_remote_info () {
         check_sunos_service "svc:/network/rpc/wall:default"   "disabled"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

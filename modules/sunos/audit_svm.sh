@@ -13,9 +13,10 @@
 
 audit_svm () {
   print_function "audit_svm"
+  string="Solaris Volume Manager Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message       "Solaris Volume Manager Daemons"    "check"
       check_sunos_service   "svc:/system/metainit"              "disabled"
       check_sunos_service   "svc:/system/mdmonitor"             "disabled"
       if [ "${os_update}" -lt 4 ]; then
@@ -24,5 +25,7 @@ audit_svm () {
         check_sunos_service "svc:/system/device/mpxio-upgrade"  "disabled"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

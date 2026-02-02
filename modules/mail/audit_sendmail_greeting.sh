@@ -11,10 +11,11 @@
 
 audit_sendmail_greeting () {
   print_function "audit_sendmail_greeting"
+  string="Sendmail Greeting"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
     if [ -f "${check_file}" ]; then
-      verbose_message "Sendmail Greeting" "check"
       search_string="v/"
       if [ "${audit_mode}" != 2 ]; then
         command="grep -v '^#' \"${check_file}\" | grep 'O SmtpGreetingMessage' | awk '{print \$4}' | grep 'v/'"
@@ -78,5 +79,7 @@ audit_sendmail_greeting () {
       fi
       check_file_perms "${check_file}" "0444" "root" "root"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,8 +13,11 @@
 
 audit_secure_swap () {
   print_function "audit_secure_swap"
+  string="Secure Swap"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Secure swap" "check"
     check_osx_defaults_bool "/Library/Preferences/com.apple.virtualMemory" "UseEncryptedSwap" "yes"
+  else
+    na_message "${string}"
   fi
 }

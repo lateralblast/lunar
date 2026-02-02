@@ -17,8 +17,9 @@
 
 audit_printer_sharing () {
   print_function "audit_printer_sharing"
+  string="Printer Sharing"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Printer Sharing" "check"
     if [ "${audit_mode}" != 2 ]; then
       if [ "${long_os_version}" -ge 1014 ]; then
         command="/usr/bin/sudo /usr/sbin/cupsctl | grep -c \"_share_printers=0\""
@@ -42,5 +43,7 @@ audit_printer_sharing () {
       verbose_message       "Select Sharing"            "fix"
       verbose_message       "Uncheck Printer Sharing"   "fix"
     fi
+  else
+    na_message "${string}"
   fi
 }

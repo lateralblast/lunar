@@ -11,10 +11,13 @@
 
 audit_ppd_cache () {
   print_function "audit_ppd_cache"
+  string="PPD Cache"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "PPD Cache" "check"
       check_sunos_service "svc:/application/print/ppd-cache-update:default" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

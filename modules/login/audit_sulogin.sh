@@ -19,9 +19,10 @@
 
 audit_sulogin () {
   print_function "audit_sulogin"
+  string="Single User Mode Requires Password"
+  check_message "${string}"
   temp_file="${temp_dir}/audit_sulogin"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message "Single User Mode Requires Password" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file="/etc/ttys"
       check_string="console"
@@ -86,5 +87,7 @@ audit_sulogin () {
       fi
       check_file_value   "is" "/etc/sysconfig/boot" "PROMPT_FOR_CONFIRM" "eq" "no" "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -12,8 +12,9 @@
 
 audit_password_history () {
   print_function "audit_password_history"
+  string="Password History"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Password History" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -39,5 +40,7 @@ audit_password_history () {
         restore_file "${check_file}" "${restore_dir}"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

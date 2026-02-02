@@ -14,8 +14,10 @@
 
 audit_pam_authtok () {
   print_function "audit_pam_authtok"
+  pam_module="use_authtok"
+  string="PAM ${pam_module} Configuration"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    pam_module="use_authtok"
     check_string="PAM ${pam_module} Configuration"
     verbose_message "${check_string}" "check"
     if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 24 ]; then
@@ -61,6 +63,10 @@ audit_pam_authtok () {
           increment_secure "PAM ${pam_module} enabled in \"${check_file}\""
         fi
       fi
+    else
+      na_message "${string}"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,10 +13,13 @@
 
 audit_wbem () {
   print_function "audit_wbem"
+  string="Web Based Enterprise Management"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "Web Based Enterprise Management"  "check"
       check_sunos_service "svc:/application/management/wbem" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

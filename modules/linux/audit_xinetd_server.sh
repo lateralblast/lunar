@@ -15,12 +15,15 @@
 
 audit_xinetd_server () {
   print_function "audit_xinetd_server"
+  string="Xinetd Server Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     service_name="xinetd"
     check_linux_service "${service_name}" "off"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
-      verbose_message     "Xinetd Server Daemon" "check"
-      check_linux_package "uninstall"            "${service_name}"
+      check_linux_package "uninstall" "${service_name}"
     fi
+  else
+    na_message "${string}"
   fi
 }

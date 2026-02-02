@@ -14,8 +14,9 @@
 
 audit_extended_attributes () {
   print_function "audit_extended_attributes"
+  string="Extended Attributes"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Extended Attributes" "check"
     if [ "${audit_mode}" = 1 ]; then
       file_list=$( find / \( -fstype nfs -o -fstype cachefs \
       -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
@@ -25,5 +26,7 @@ audit_extended_attributes () {
         increment_insecure "File \"${check_file}\" has extended attributes"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

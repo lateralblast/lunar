@@ -14,9 +14,12 @@
 
 audit_apport () {
   print_function "audit_apport"
+  string="Automatic Error Reporting"
+  check_message "${string}"
   if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
-    verbose_message     "Automatic Error Reporting" "check"
     check_file_value    "is" "/etc/default/apport"  "enabled" "eq" "0" "hash"
     check_linux_service "apport" "off"
+  else
+    na_message "${string}"
   fi
 }

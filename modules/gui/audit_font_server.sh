@@ -11,8 +11,9 @@
 
 audit_font_server () {
   print_function "audit_font_server"
+  string="Font Server"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Font Server" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         for service_name in "svc:/application/x11/xfs:default" \
@@ -26,5 +27,7 @@ audit_font_server () {
       service_name="xfs"
       check_linux_service "${service_name}" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

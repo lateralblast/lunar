@@ -21,8 +21,9 @@
 
 audit_nis_client () {
   print_function "audit_nis_client"
+  string="NIS Client Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "NIS Client Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/network/nis/client" "disabled"
@@ -34,5 +35,7 @@ audit_nis_client () {
         check_linux_package "uninstall"       "${service_name}"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

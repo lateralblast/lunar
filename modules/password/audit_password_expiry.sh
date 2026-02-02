@@ -22,8 +22,9 @@
 
 audit_password_expiry () {
   print_function "audit_password_expiry"
+  string="Password Expiration Parameters on Active Accounts"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Password Expiration Parameters on Active Accounts" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_chsec "/etc/security/user" "default"  "mindiff"       "4"
       check_chsec "/etc/security/user" "default"  "minage"        "1"
@@ -64,5 +65,7 @@ audit_password_expiry () {
         check_file_value "is" "/etc/adduser.conf" "upwexpire"     "eq"  "91d"   "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

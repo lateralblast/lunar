@@ -13,11 +13,14 @@
 
 audit_create_class () {
   print_function "audit_create_class"
+  string="Audit Classes"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/security/audit_class"
     if [ -f "${check_file}" ]; then
-      verbose_message "Audit Classes" "check"
       check_append_file "${check_file}" "0x0100000000000000:lck:Security Lockdown" "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -18,6 +18,8 @@
 
 audit_xinetd () {
   print_function "audit_xinetd"
+  string="Xinetd Services"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_dir="/etc/xinetd.d"
     if [ -d "${check_dir}" ]; then
@@ -40,5 +42,7 @@ audit_xinetd () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

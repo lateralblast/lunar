@@ -18,8 +18,9 @@
 
 audit_selinux () {
   print_function "audit_selinux"
+  string="SELinux"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message  "SELinux" "check"
     check_file_value "is" "/etc/selinux/config" "SELINUX"     "eq" "enforcing" "hash"
     check_file_value "is" "/etc/selinux/config" "SELINUXTYPE" "eq" "targeted"  "hash"
     check_file_perms "/etc/selinux/config"      "0400" "root" "root"
@@ -32,5 +33,7 @@ audit_selinux () {
     done
     check_linux_package "uninstall" "setroubleshoot"
     check_linux_package "uninstall" "mctrans"
+  else
+    na_message "${string}"
   fi
 }

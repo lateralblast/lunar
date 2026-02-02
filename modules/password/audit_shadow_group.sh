@@ -15,8 +15,9 @@
 
 audit_shadow_group () {
   print_function "audit_shadow_group"
+  string="Shadow Group"
+  check_message "${string}" 
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Shadow Group" "check"
     check_file="/etc/group"
     temp_file="${temp_dir}/group"
     if [ "${audit_mode}" = 2 ]; then
@@ -49,5 +50,7 @@ audit_shadow_group () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

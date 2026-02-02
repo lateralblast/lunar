@@ -15,8 +15,9 @@
 
 audit_retry_limit () {
   print_function "audit_retry_limit"
+  string="Retry Limit for Account Lockout"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Retry Limit for Account Lockout" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_chsec "/etc/security/login.cfg" "default" "logininterval" "300"
       check_chsec "/etc/security/login.cfg" "default" "logindisable"  "10"
@@ -34,5 +35,7 @@ audit_retry_limit () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

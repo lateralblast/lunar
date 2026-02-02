@@ -11,9 +11,10 @@
 
 audit_echo () {
   print_function "audit_echo"
+  string="Echo and Chargen Services"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message "Echo and Chargen Services" "check"
       for service_name in "svc:/network/echo:dgram" \
         "svc:/network/echo:stream" "svc:/network/time:dgram" \
         "svc:/network/time:stream" "svc:/network/tname:default" \
@@ -25,6 +26,8 @@ audit_echo () {
         check_sunos_service "${service_name}" "disabled"
       done
     fi
+  else
+    na_message "${string}"
   fi
 #  if [ "${os_name}" = "Linux" ]; then
 #    verbose_message "Telnet and Rlogin Services"

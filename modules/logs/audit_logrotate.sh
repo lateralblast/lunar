@@ -19,10 +19,11 @@
 
 audit_logrotate () {
   print_function "audit_logrotate"
+  string="Log Rotate Configuration"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for check_file in /etc/logrotate.d/syslog /etc/logrotate.d/rsyslog; do
       if [ -f "${check_file}" ]; then
-        verbose_message "Log Rotate Configuration" "check"
         if [ "${audit_mode}" != 2 ]; then
           if [ "${os_vendor}" = "SuSE" ]; then
             search_string="/var/log/warn /var/log/messages /var/log/allmessages /var/log/localmessages /var/log/firewall /var/log/acpid /var/log/NetworkManager /var/log/mail /var/log/mail.info /var/log/mail.warn /var/log/mail.err /var/log/news/news.crit /var/log/news/news.err /var/log/news/news.notice"
@@ -62,5 +63,7 @@ audit_logrotate () {
         fi
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

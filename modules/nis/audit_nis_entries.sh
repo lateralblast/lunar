@@ -18,8 +18,9 @@
 
 audit_nis_entries () {
   print_function "audit_nis_entries"
+  string="NIS Map Entries"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "NIS Map Entries" "check"
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if test -r "${check_file}"; then
         if [ "${audit_mode}" != 2 ]; then
@@ -72,5 +73,7 @@ audit_nis_entries () {
         fi
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

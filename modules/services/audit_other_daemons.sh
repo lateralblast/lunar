@@ -18,8 +18,9 @@
 
 audit_other_daemons () {
   print_function "audit_other_daemons"
+  string="Miscellaneous Services"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Miscellaneous Services" "check"
     for service_name in wu-ftpd ftp vsftpd aaeventd tftp acpid \
       amd arptables_jg arpwatch atd netfs irda isdn bluetooth \
       capi conman cpuspeed cryrus-imapd dc_client dc_server \
@@ -37,5 +38,7 @@ audit_other_daemons () {
       tog-pegasus tux wpa_supplicant zebra ncpfs; do
       check_linux_service "${service_name}" "off"
     done
+  else
+    na_message "${string}"
   fi
 }

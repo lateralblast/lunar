@@ -18,8 +18,9 @@
 
 audit_tftp_server () {
   print_function "audit_tftp_server"
+  string="TFTP Server"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "TFTP Server Daemon" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_file_perms    "/tftpboot"                      "0744" "root" "root"
@@ -37,5 +38,7 @@ audit_tftp_server () {
         check_linux_package "uninstall"   "tftp-server"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

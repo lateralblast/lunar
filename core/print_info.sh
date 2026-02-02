@@ -168,67 +168,6 @@ print_function() {
   fi
 }
 
-# print_results
-#
-# Print Results
-#.
-
-print_results () {
-  echo ""
-  if [ "${reboot_required}" = 1 ]; then
-    reboot_required="Required"
-  else
-    reboot_required="Not Required"
-  fi
-  if [ "${no_cat}" = "1" ]; then
-    echo "Tests:      ${total_count}"
-    case "${audit_mode}" in
-      2)
-        echo "Restores:   ${restore_count}"
-        ;;
-      0)
-        echo "Lockdowns:  ${lockdown_count}"
-        ;;
-      *)
-        echo "Passes:     ${secure_count}"
-        echo "Warnings:   ${insecure_count}"
-        ;;
-    esac
-    echo "Reboot:     ${reboot_required}"
-  else
-    echo " \    /\    Tests:      ${total_count}"
-    case "${audit_mode}" in
-      2)
-        echo "  )  ( ')   Restores:   ${restore_count}"
-        echo " (  /  )    "
-        ;;
-      0)
-        echo "  )  ( ')   Lockdowns:  ${lockdown_count}"
-        echo " (  /  )    "
-        ;;
-      *)
-        echo "  )  ( ')   Passes:     ${secure_count}"
-        echo " (  /  )    Warnings:   ${insecure_count}"
-        ;;
-    esac
-    echo "  \(__)|    Reboot:     ${reboot_required}"
-  fi
-  if [ "${audit_mode}" = 0 ]; then
-    echo ""
-    echo "Backup:     ${work_dir}"
-    if [ ! "${module_name}" = "" ]; then
-      echo "Restore:    $0 -s ${module_name} -u ${date_suffix} -8"
-    else
-      echo "Restore:    $0 -u ${date_suffix} -8"
-    fi
-  fi
-  if [ "${output_type}" = "csv" ]; then
-    echo ""
-    echo "CSV File:   ${output_file}"
-  fi
-  echo ""
-}
-
 # print_changes
 #
 # Do a diff between previous file (saved) and existing file
@@ -293,6 +232,10 @@ checking_message () {
   verbose_message "${1}" "check"
 }
 
+check_message () {
+  verbose_message "${1}" "check"
+}   
+
 # setting_message
 #
 # Setting message
@@ -302,7 +245,6 @@ setting_message () {
   verbose_message "${1}" "set"
 }
 
-#
 # command_message
 #
 # Command message
@@ -311,6 +253,17 @@ setting_message () {
 command_message () {
   if [ "${command_mode}" = 1 ]; then
     verbose_message "${1}" "exec"
+  fi
+}
+
+# na_message
+#
+# Not Applicable message
+#.
+
+na_message () {
+  if [ "${command_mode}" = 1 ]; then
+    verbose_message "${1}" "na"
   fi
 }
 
@@ -349,4 +302,65 @@ print_audit_info () {
       fi
     done < "${file_name}"
   fi
+}
+
+# print_results
+#
+# Print Results
+#.
+
+print_results () {
+  echo ""
+  if [ "${reboot_required}" = 1 ]; then
+    reboot_required="Required"
+  else
+    reboot_required="Not Required"
+  fi
+  if [ "${no_cat}" = "1" ]; then
+    echo "Tests:      ${total_count}"
+    case "${audit_mode}" in
+      2)
+        echo "Restores:   ${restore_count}"
+        ;;
+      0)
+        echo "Lockdowns:  ${lockdown_count}"
+        ;;
+      *)
+        echo "Passes:     ${secure_count}"
+        echo "Warnings:   ${insecure_count}"
+        ;;
+    esac
+    echo "Reboot:     ${reboot_required}"
+  else
+    echo " \    /\    Tests:      ${total_count}"
+    case "${audit_mode}" in
+      2)
+        echo "  )  ( ')   Restores:   ${restore_count}"
+        echo " (  /  )    "
+        ;;
+      0)
+        echo "  )  ( ')   Lockdowns:  ${lockdown_count}"
+        echo " (  /  )    "
+        ;;
+      *)
+        echo "  )  ( ')   Passes:     ${secure_count}"
+        echo " (  /  )    Warnings:   ${insecure_count}"
+        ;;
+    esac
+    echo "  \(__)|    Reboot:     ${reboot_required}"
+  fi
+  if [ "${audit_mode}" = 0 ]; then
+    echo ""
+    echo "Backup:     ${work_dir}"
+    if [ ! "${module_name}" = "" ]; then
+      echo "Restore:    $0 -s ${module_name} -u ${date_suffix} -8"
+    else
+      echo "Restore:    $0 -u ${date_suffix} -8"
+    fi
+  fi
+  if [ "${output_type}" = "csv" ]; then
+    echo ""
+    echo "CSV File:   ${output_file}"
+  fi
+  echo ""
 }

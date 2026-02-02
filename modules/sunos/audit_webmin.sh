@@ -11,10 +11,13 @@
 
 audit_webmin () {
   print_function "audit_webmin"
+  string="Webmin Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "Webmin Daemon"                              "check"
       check_sunos_service "svc:/application/management/webmin:default" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

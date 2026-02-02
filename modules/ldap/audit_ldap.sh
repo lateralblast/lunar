@@ -16,8 +16,9 @@
 
 audit_ldap () {
   print_function "audit_ldap"
+  string="LDAP Client"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    verbose_message "LDAP Client" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/network/ldap/client:default" "disabled"
@@ -27,5 +28,7 @@ audit_ldap () {
       check_linux_package   "uninstall" "openldap-clients"
       check_linux_package   "uninstall" "ldap-utils"
     fi
+  else
+    na_message "${string}"
   fi
 }

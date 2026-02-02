@@ -17,10 +17,10 @@
 
 audit_pam_rhosts () {
   print_function "audit_pam_rhosts"
+  pam_module="pam_rhosts_auth"
+  string="PAM ${pam_module} Configuration"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    pam_module="pam_rhosts_auth"
-    check_string="PAM ${pam_module} Configuration"
-    verbose_message "${check_string}" "check"
     if [ "${os_name}" = "SunOS" ]; then
       check_file="/etc/pam.conf"
       if [ "${audit_mode}" = 2 ]; then
@@ -34,7 +34,7 @@ audit_pam_rhosts () {
             ansible_counter=$((ansible_counter+1))
             ansible_value="audit_pam_rhosts_${ansible_counter}"
             echo ""
-            echo "- name: Checking ${check_string}"
+            echo "- name: Checking ${string}"
             echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep '${pam_module}' |head -1 |wc -l | sed 's/ //g'\""
             echo "  register: ${ansible_value}"
             echo "  failed_when: ${ansible_value} == 1"
@@ -42,7 +42,7 @@ audit_pam_rhosts () {
             echo "  ignore_errors: true"
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
-            echo "- name: Fixing ${check_string}"
+            echo "- name: Fixing ${string}"
             echo "  command: sh -c \"sed -i 's/^.*${pam_module}/#&/' ${check_file}\""
             echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
@@ -102,7 +102,7 @@ audit_pam_rhosts () {
               ansible_counter=$((ansible_counter+1))
               ansible_value="audit_pam_rhosts_${ansible_counter}"
               echo ""
-              echo "- name: Checking ${check_string}"
+              echo "- name: Checking ${string}"
               echo "  command:  sh -c \"cat ${check_file} | grep -v '^#' |grep 'rhosts_auth' |head -1 |wc -l | sed 's/ //g'\""
               echo "  register: ${ansible_value}"
               echo "  failed_when: ${ansible_value} == 1"
@@ -110,7 +110,7 @@ audit_pam_rhosts () {
               echo "  ignore_errors: true"
               echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
               echo ""
-              echo "- name: Fixing ${check_string}"
+              echo "- name: Fixing ${string}"
               echo "  command: sh -c \"sed -i 's/^.*rhosts_auth/#&/' ${check_file}\""
               echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
               echo ""
@@ -142,5 +142,7 @@ audit_pam_rhosts () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

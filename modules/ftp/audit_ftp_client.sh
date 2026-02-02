@@ -11,10 +11,13 @@
 
 audit_ftp_client () {
   print_function "audit_ftp_client"
+  string="FTP Client"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "FTP Client" "check"
     for package in ftp tnftp; do
       check_linux_package "uninstall" "${package}"
     done
+  else
+    na_message "${string}"
   fi
 }

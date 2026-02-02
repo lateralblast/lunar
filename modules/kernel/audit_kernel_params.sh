@@ -16,8 +16,9 @@
 
 audit_kernel_params () {
   print_function "audit_kernel_params"
+  string="Kernel Parameters"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Kernel Parameters" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_no "ipsrcrouteforward"      "0"
       check_no "ipignoreredirects"      "1"
@@ -106,5 +107,7 @@ audit_kernel_params () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

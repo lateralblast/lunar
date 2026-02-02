@@ -23,8 +23,9 @@
 
 audit_nis_server () {
   print_function "audit_nis_server"
+  string="NIS Server Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message "NIS Server Daemons" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         for service_name in "svc:/network/nis/server" \
@@ -52,5 +53,7 @@ audit_nis_server () {
       check_file_value "is" "/etc/rc.conf" "nis_client_enable"    "eq" "NO" "hash"
       check_file_value "is" "/etc/rc.conf" "nis_ypset_enable"     "eq" "NO" "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

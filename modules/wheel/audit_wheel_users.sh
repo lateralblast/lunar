@@ -11,13 +11,17 @@
 
 audit_wheel_users () {
   print_function "audit_wheel_users"
+  string="Wheel Users"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Wheel Users" "check"
     check_file="/etc/group"
     if [ "${audit_mode}" != 2 ]; then
       command="grep \"^${wheel_group}:\" \"${check_file}\" | cut -f4 -d: | sed 's/,/ /g'"
       command_message "${command}"
       user_list=$( eval "${command}" )
+      if [ "${user_list}" = "" ]; then
+        increment_insecure "No users in wheel group"
+      fi
       for user_name in ${user_list}; do
         command="last -1 "${user_name}" | grep '[a-z]' | awk '{print \$1}'"
         command_message "${command}"
@@ -54,5 +58,7 @@ audit_wheel_users () {
     else
       restore_file "${check_file}" "${restore_dir}"
     fi
+  else
+    na_message "${string}"
   fi
 }

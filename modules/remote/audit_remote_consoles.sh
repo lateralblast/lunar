@@ -14,8 +14,9 @@
 
 audit_remote_consoles () {
   print_function "audit_remote_consoles"
+  string="Remote Consoles"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Remote Consoles" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -60,5 +61,7 @@ audit_remote_consoles () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

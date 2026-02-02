@@ -15,13 +15,13 @@
 
 audit_apparmor () {
   print_function "audit_apparmor"
+  string="AppArmor Unconfined Applications"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     do_grub_test=0
     do_app_test=1
     package_name="apparmor"
     app_name="AppArmor"
-    string="AppArmor Unconfined Applications"
-    verbose_message "${string}" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -147,5 +147,7 @@ audit_apparmor () {
         fi
       fi
     done 
+  else
+    na_message "${string}"
   fi
 }

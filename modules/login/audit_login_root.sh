@@ -16,8 +16,11 @@
 
 audit_login_root () {
   print_function "audit_login_root"
+  string="Root login"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Root login"  "check"
     check_dscl      "/Users/root" "AuthenticationAuthority" "No such key: AuthenticationAuthority"
+  else
+    na_message "${string}"
   fi
 }

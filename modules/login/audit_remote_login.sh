@@ -14,8 +14,11 @@
 
 audit_remote_login () {
   print_function "audit_remote_login"
+  string="Remote Login"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message       "Remote Login"   "check"
     check_osx_systemsetup "getremotelogin" "off"
+  else
+    na_message "${string}"
   fi
 }

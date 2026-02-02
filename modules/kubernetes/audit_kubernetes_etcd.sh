@@ -22,12 +22,13 @@
 
 audit_kubernetes_etcd () {
   print_function "audit_kubernetes_etcd"
+  string="Kubernetes etcd"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "etcd" |grep -v grep )
     if [ "${daemon_check}" ]; then
       check_file="/etc/kubernetes/manifests/etcd.yaml"
       if [ -f "${check_file}" ]; then
-        verbose_message   "Kubernetes etcd"     "check"
         check_file_perms  "${check_file}"       "0644" "root" "root"
         check_file_value  "is"  "${check_file}" "--client-cert-auth"      "eq" "true"  "hash"
         check_file_value  "set" "${check_file}" "--cert-file"             "eq" "na"    "hash"
@@ -37,5 +38,7 @@ audit_kubernetes_etcd () {
         check_file_value  "set" "${check_file}" "--trusted-ca-file"       "eq" "na"    "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

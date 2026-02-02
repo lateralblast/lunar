@@ -15,8 +15,9 @@
 
 audit_remote_management () {
   print_function "audit_remote_management"
+  string="Remote Management"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Remote Management" "check"
     if [ "${audit_mode}" != 2 ]; then
       command="launchctl list |awk '{print \$3}' |grep -c ARDAgent |sed \"s/ //g\""
       command_message "${command}"
@@ -34,5 +35,7 @@ audit_remote_management () {
       verbose_message       "Select Sharing"              "fix"
       verbose_message       "Uncheck Remote Management"   "fix"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -12,6 +12,8 @@
 
 audit_rsa_securid_pam () {
   print_function "audit_rsa_securid_pam"
+  string="RSA SecurID PAM Agent Configuration"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/sd_pam.conf"
     if [ -f "${check_file}" ]; then
@@ -32,7 +34,6 @@ audit_rsa_securid_pam () {
           check_value=$( eval "${command}" )
         fi
       fi
-      verbose_message "RSA SecurID PAM Agent Configuration" "check"
       if [ "${audit_mode}" != 2 ]; then
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = 1 ]; then
@@ -81,5 +82,7 @@ audit_rsa_securid_pam () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

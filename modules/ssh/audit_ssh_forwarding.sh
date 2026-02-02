@@ -13,13 +13,16 @@
 
 audit_ssh_forwarding () {
   print_function "audit_ssh_forwarding"
+  string="SSH Forwarding"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "SSH Forwarding" "check"
     if [ "${os_name}" = "Darwin" ]; then
       check_file="/etc/sshd_config"
     else
       check_file="/etc/ssh/sshd_config"
     fi
     check_file_value "is" "${check_file}" "AllowTcpForwarding" "space" "no" "hash"
+  else
+    na_message "${string}"
   fi
 }

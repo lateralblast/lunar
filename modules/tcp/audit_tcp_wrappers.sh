@@ -24,8 +24,9 @@
 
 audit_tcp_wrappers () {
   print_function "audit_tcp_wrappers"
+  string="TCP Wrappers"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "TCP Wrappers" "check"
     if [ "${os_name}" = "AIX" ]; then
       package_name="netsec.options.tcpwrapper.base"
       check_lslpp "${package_name}"
@@ -104,5 +105,7 @@ audit_tcp_wrappers () {
         check_linux_package "install" "tcpd"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

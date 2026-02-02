@@ -13,10 +13,13 @@
 
 audit_cde_ttdb () {
   print_function "audit_cde_ttdb"
+  string="CDE ToolTalk Database Server"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "CDE ToolTalk Database Server"        "check"
       check_sunos_service "svc:/network/rpc/cde-ttdbserver:tcp" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,10 +13,11 @@
 
 audit_exim () {
   print_function "audit_exim"
+  string="Exim"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/exim4/update-exim4.conf"
     if [ -f "${check_file}" ]; then
-      verbose_message   "Exim" "check"
       check_file_value  "is" "${check_file}" "dc_eximconfig_configtype" "eq" "'local'"           "hash"
       check_file_value  "is" "${check_file}" "dc_local_interfaces"      "eq" "'127.0.0.1 ; ::1'" "hash"
       check_file_value  "is" "${check_file}" "dc_readhost"              "eq" "''"                "hash"
@@ -29,5 +30,7 @@ audit_exim () {
       check_file_value  "is" "${check_file}" "dc_mailname_in_oh"        "eq" "'true'"            "hash"
       check_file_value  "is" "${check_file}" "dc_localdelivery"         "eq" "'mail_spool'"      "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,10 +13,13 @@
 
 audit_biosdevname () {
   print_function "audit_biosdevname"
+  string="BIOS Devname"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "SuSE" ]; then
-      verbose_message     "BIOS Devname"  "check"
-      check_linux_package "uninstall"     "biosdevname"
+      check_linux_package "uninstall" "biosdevname"
     fi
+  else
+    na_message "${string}"
   fi
 }

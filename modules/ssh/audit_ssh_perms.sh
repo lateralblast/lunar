@@ -11,8 +11,9 @@
 
 audit_ssh_perms () {
   print_function "audit_ssh_perms"
+  string="SSH Permissions"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "SSH Permissions" "check"
     for check_dir in /etc/ssh /usr/local/etc/ssh; do
       if [ -d "${check_dir}" ]; then
         command="find \"${check_dir}\" -name \"*_key\" -type f"
@@ -45,5 +46,7 @@ audit_ssh_perms () {
         done
       fi
     done < /etc/passwd 
+  else
+    na_message "${string}"
   fi
 }

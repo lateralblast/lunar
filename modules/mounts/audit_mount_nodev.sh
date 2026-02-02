@@ -22,10 +22,11 @@
 
 audit_mount_nodev () {
   print_function "audit_mount_nodev"
+  string="File Systems mounted with nodev"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/fstab"
     if [ -e "${check_file}" ]; then
-      verbose_message "File Systems mounted with nodev" "check"
       if [ "${audit_mode}" != "2" ]; then
         command="grep -v \"^#\" \"${check_file}\" | grep -E \"ext2|ext3|swap|tmpfs\" | grep -v '/ ' | grep -cv '/boot' | sed \"s/ //g\""
         command_message "${command}"
@@ -61,5 +62,7 @@ audit_mount_nodev () {
       fi
       check_file_perms    "${check_file}" "0644" "root" "root"
     fi
+  else
+    na_message "${string}"
   fi
 }

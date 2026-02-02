@@ -12,8 +12,9 @@
 
 audit_group_fields () {
   print_function "audit_group_fields"
+  string="Group Fields"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Group Fields" "check"
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/group"
       group_list=$( awk -F: '($3 == 0) { print $1 }' "${check_file}" | grep -v root )
@@ -30,5 +31,7 @@ audit_group_fields () {
       check_file="/etc/group"
       restore_file "${check_file}" "${restore_dir}"
     fi
+  else
+    na_message "${string}"
   fi
 }

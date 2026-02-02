@@ -13,10 +13,13 @@
 
 audit_webconsole () {
   print_function "audit_webconsole"
+  string="Web Console"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "Web Console"                    "check"
       check_sunos_service "svc:/system/webconsole:console" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

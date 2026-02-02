@@ -12,8 +12,11 @@
 
 audit_login_details () {
   print_function "audit_login_details"
+  string="Login display details"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Login display details" "check"
     check_osx_defaults_bool "/Library/Preferences/com.apple.loginwindow" "SHOWFULLNAME" "yes"
+  else
+    na_message "${string}"
   fi
 }

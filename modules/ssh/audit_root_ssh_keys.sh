@@ -11,8 +11,9 @@
 
 audit_root_ssh_keys () {
   print_function "audit_root_ssh_keys"
+  string="Root SSH keys"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Root SSH keys" "check"
     if [ "${audit_mode}" != 2 ]; then
       command="grep '^root' /etc/passwd | cut -f6 -d:"
       command_message "${command}"
@@ -48,5 +49,7 @@ audit_root_ssh_keys () {
     else
       restore_file "${check_file}" "${restore_dir}"
     fi
+  else
+    na_message "${string}"
   fi
 }

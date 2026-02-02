@@ -21,8 +21,9 @@
 
 audit_gnome_banner () {
   print_function "audit_gnome_banner"
+  string="Gnome Warning Banner"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Gnome Warning Banner" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         check_file_value "is" "/etc/X11/gdm.conf" "Welcome" "eq" "Authorised users only" "hash"
@@ -142,5 +143,7 @@ audit_gnome_banner () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

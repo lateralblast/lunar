@@ -11,6 +11,8 @@
 #
 # Check home ownership
 #
+# Bug: insecure_count is being reset to 0
+#
 # Refer to Section(s) 9.2.7,12,3 Page(s) 166-7,171-2   CIS CentOS Linux 6 Benchmark v1.0.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 192-3,197-200 CIS RHEL 5 Benchmark v2.1.0
 # Refer to Section(s) 9.2.7,12-4 Page(s) 170,174-6     CIS RHEL 6 Benchmark v1.2.0
@@ -26,9 +28,10 @@
 
 audit_home_ownership () {
   print_function "audit_home_ownership"
+  string="Ownership of Home Directories"
+  check_message "${string}"
+  found=0
   if [ "${os_name}" = "SunOS" ] || [  "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Ownership of Home Directories" "check"
-    home_check=0
     if [ "${os_name}" = "AIX" ]; then
       if [ "${audit_mode}" != 2 ]; then
         command="lsuser -c ALL | grep -v \"^#name\" | cut -f1 -d:"
@@ -37,19 +40,22 @@ audit_home_ownership () {
           user_check=$( lsuser -f "${check_user}" | grep id | cut -f2 -d"=" )
           if [ "${user_check}" -ge 200 ]; then
             found=0
-            home_dir=$( lsuser -a home "${check_user}" | cut -f2 -d"=" )
+            command="lsuser -a home \"${check_user}\" | cut -f2 -d"=""
+            command_message "${command}"
+            home_dir=$( eval "${command}" )
           else
             found=1
           fi
           if [ "${found}" = 0 ]; then
-            home_check=1
             if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
               if [ "${audit_mode}" = 1 ];then
                 increment_insecure "User \"${check_user}\" has no home directory defined"
               fi
             else
               if [ -d "${home_dir}" ]; then
-                dir_owner=$( ls -ld "${home_dir}/." | awk '{ print $3 }' )
+                command="ls -ld \"${home_dir}/.\" | awk '{ print \$3 }'"
+                command_message "${command}"
+                dir_owner=$( eval "${command}" )
                 if [ "${dir_owner}" != "${check_user}" ]; then
                   if [ "${audit_mode}" = 1 ];then
                     increment_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
@@ -65,11 +71,6 @@ audit_home_ownership () {
             fi
           fi
         done
-        if [ "${home_check}" = 0 ]; then
-          if [ "${audit_mode}" = 1 ];then
-            increment_secure "No ownership issues with home directories"
-          fi
-        fi
       fi
     fi
     if [ "${os_name}" = "SunOS" ]; then
@@ -83,14 +84,15 @@ audit_home_ownership () {
             fi
           done
           if [ "${found}" = 0 ]; then
-            home_check=1
             if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
               if [ "${audit_mode}" = 1 ];then
                 increment_insecure "User \"${check_user}\" has no home directory defined"
               fi
             else
               if [ -d "${home_dir}" ]; then
-                dir_owner=$( ls -ld "${home_dir}/." | awk '{ print $3 }' )
+                command="ls -ld \"${home_dir}/.\" | awk '{ print \$3 }'"
+                command_message "${command}"
+                dir_owner=$( eval "${command}" )
                 if [ "${dir_owner}" != "${check_user}" ]; then
                   if [ "${audit_mode}" = 1 ];then
                     increment_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
@@ -106,11 +108,6 @@ audit_home_ownership () {
             fi
           fi
         done
-        if [ "${home_check}" = 0 ]; then
-          if [ "${audit_mode}" = 1 ];then
-            increment_secure "No ownership issues with home directories"
-          fi
-        fi
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
@@ -127,14 +124,15 @@ audit_home_ownership () {
           done
           if [ "${found}" = 0 ]; then
             if test -r "${home_dir}"; then
-              home_check=1
               if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
                 if [ "${audit_mode}" = 1 ];then
                   increment_insecure "User \"${check_user}\" has no home directory defined"
                 fi
               else
                 if [ -d "${home_dir}" ]; then
-                  dir_owner=$( ls -ld "${home_dir}/." | awk '{ print $3 }' )
+                  command="ls -ld \"${home_dir}/.\" | awk '{ print \$3 }'"
+                  command_message "${command}"
+                  dir_owner=$( eval "${command}" )
                   if [ "${dir_owner}" != "${check_user}" ]; then
                     if [ "${audit_mode}" = 1 ];then
                       increment_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
@@ -151,12 +149,9 @@ audit_home_ownership () {
             fi
           fi
         done
-        if [ "${home_check}" = 0 ]; then
-          if [ "${audit_mode}" = 1 ];then
-            increment_secure "No ownership issues with home directories"
-          fi
-        fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

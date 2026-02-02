@@ -11,10 +11,10 @@
 
 audit_wheel_group () {
   print_function "audit_wheel_group"
+  string="Wheel Group"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/group"
-    string="Wheel Group"
-    verbose_message "${string}" "check"
     if [ "${audit_mode}" != 2 ]; then
       command="grep \"^${wheel_group}:\" \"${check_file}\" |wc -c"
       command_message "${command}"
@@ -44,5 +44,7 @@ audit_wheel_group () {
     else
       restore_file "${check_file}" "${restore_dir}"
     fi
+  else
+    na_message "${string}"
   fi
 }

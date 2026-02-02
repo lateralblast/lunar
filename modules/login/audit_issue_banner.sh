@@ -24,8 +24,9 @@
 
 audit_issue_banner () {
   print_function "audit_issue_banner"
+  string="Security Warning Message"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Security Warning Message" "check"
     if [ "${os_name}" = "Darwin" ]; then
       file_list="/etc/issue /etc/motd /etc/issue.net /Library/Security/PolicyBanner.txt"
     else
@@ -91,5 +92,7 @@ audit_issue_banner () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

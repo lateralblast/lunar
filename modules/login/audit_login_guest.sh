@@ -13,11 +13,14 @@
 
 audit_login_guest () {
   print_function "audit_login_guest"
+  string="Guest login"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Guest login" "check"
     check_osx_defaults_bool "/Library/Preferences/com.apple.loginwindow.plist" "GuestEnabled" "no"
     check_dscl              "/Users/Guest" "AuthenticationAuthority" ";basic;"
     check_dscl              "/Users/Guest" "passwd"    "*"
     check_dscl              "/Users/Guest" "UserShell" "/sbin/nologin"
+  else
+    na_message "${string}"
   fi
 }

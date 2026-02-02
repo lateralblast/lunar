@@ -18,6 +18,8 @@
 
 audit_password_hashing () {
   print_function "audit_password_hashing"
+  string="Password Hashing"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     hashing="${1}"
     if [ "${1}" = "" ]; then
@@ -55,5 +57,7 @@ audit_password_hashing () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -14,8 +14,9 @@
 
 audit_root_access () {
   print_function "audit_root_access"
+  string="Root Access"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Root account access" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -26,5 +27,7 @@ audit_root_access () {
     else
       increment_secure   "Root account is locked"
     fi
+  else
+    na_message "${string}"
   fi
 }

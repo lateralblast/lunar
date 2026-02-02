@@ -23,8 +23,9 @@
 
 audit_syslog_server () {
   print_function "audit_syslog_server"
+  string="Syslog Server"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message "Syslog Daemon" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
       if [ "${os_version}" -lt 5 ]; then
         check_file_value  "is" "/etc/syslog.conf" "daemon.debug" "tab"  "/var/log/daemon.log" "hash"
@@ -138,5 +139,7 @@ audit_syslog_server () {
         check_file_value "is" "${conf_file}" "\$FileCreateMode" "space" "0640" "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -11,8 +11,9 @@
 
 audit_iscsi () {
   print_function "audit_iscsi"
+  string="iSCSI Target Service"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "iSCSI Target Service" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/system/iscsitgt:default" "disabled"
@@ -22,5 +23,7 @@ audit_iscsi () {
       check_linux_service "iscsi"  "off"
       check_linux_service "iscsid" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

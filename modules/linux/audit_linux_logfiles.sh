@@ -12,8 +12,9 @@
 
 audit_linux_logfiles () {
   print_function "audit_linux_logfiles"
+  string="Log File Permissions"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Log File Permissions" "check"
     for log_file in boot.log btml cron dmesg ksyms httpd lastlog maillog \
       mailman messages news pgsql rpm pkgs sa samba scrollkeeper.log \
       secure spooler squid vbox wtmp; do
@@ -21,5 +22,7 @@ audit_linux_logfiles () {
         check_file_perms "/var/log/${log_file}" "0600" "root" "root"
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

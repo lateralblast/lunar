@@ -16,12 +16,15 @@
 
 audit_virtual_memory () {
   print_function "audit_virtual_memory"
+  string="Randomised Virtual Memory Region Placement"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Randomised Virtual Memory Region Placement" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Ubuntu" ]; then
       if [ "${os_version}" -gt 5 ]; then
         check_file_value "is" "/etc/sysctl.conf" "kernel.randomize_va_space" "eq" "2" "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

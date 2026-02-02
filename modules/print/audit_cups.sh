@@ -20,8 +20,9 @@
 
 audit_cups () {
   print_function "audit_cups"
+  string="Printing Services"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Printing Services" "check"
     for service_name in cups cups-lpd cupsrenice; do
       check_linux_service "${service_name}" "off"
     done
@@ -30,5 +31,7 @@ audit_cups () {
     check_file_perms "/etc/cups/cupsd.conf"       "0600"  "lp"    "sys"
     check_file_value "is" "/etc/cups/cupsd.conf"  "User"  "space" "lp"    "hash"
     check_file_value "is" "/etc/cups/cupsd.conf"  "Group" "space" "sys"   "hash"
+  else
+    na_message "${string}"
   fi
 }

@@ -17,11 +17,12 @@ audit_system_auth_password_hashing () {
   auth_string="${1}"
   search_string="${2}"
   temp_file="${temp_dir}/audit_system_auth_password_hashing"
+  check_file="/etc/pam.d/common-password"
+  string="Password minimum strength enabled in \"${check_file}\""
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
-      check_file="/etc/pam.d/common-password"
       if [ -f "${check_file}" ]; then
-        verbose_message "Password minimum strength enabled in \"${check_file}\"" "check"
         command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
         command_message "${command}"
         check_value=$( eval "${command}" )
@@ -46,5 +47,7 @@ audit_system_auth_password_hashing () {
       restore_file="/etc/pam.d/common-password"
       restore_file "${restore_file}" "${restore_dir}"
     fi
+  else
+    na_message "${string}"
   fi
 }

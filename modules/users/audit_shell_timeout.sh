@@ -15,10 +15,12 @@
 
 audit_shell_timeout () {
   print_function "audit_shell_timeout"
+  string="Shell Timeout"
+  check_message "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
     for test in ESXiShellInteractiveTimeOut ESXiShellTimeOut; do
       timeout="3600"
-      verbose_message "Timeoute value for \"${test}\"" "check"
+      check_message "Timeout value for \"${test}\""
       backup_file="${work_dir}/${test}"
       command="esxcli --formatter=csv --format-param=fields=\"Path,Int Value\" system settings advanced list | grep \"/UserVars/${test}\" | cut -f2 -d,"
       command_message "${command}"
@@ -56,6 +58,8 @@ audit_shell_timeout () {
         /etc/zprofile /etc/skel/.zshrc /etc/skel/.bashrc /etc/bashrc /etc/skel/.bashrc /etc/login.defs; do
         check_file_value "is" "${check_file}" "TMOUT" "eq" "900" "hash"
       done
+    else
+      na_message "${string}"
     fi 
   fi
 }

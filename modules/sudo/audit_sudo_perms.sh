@@ -11,8 +11,9 @@
 
 audit_sudo_perms () {
   print_function "audit_sudo_perms"
+  string="Sudo file permissions"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Sudo file permissions" "check"
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
       check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
@@ -23,5 +24,7 @@ audit_sudo_perms () {
         check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

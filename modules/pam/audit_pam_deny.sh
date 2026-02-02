@@ -14,9 +14,10 @@
 
 audit_pam_deny () {
   print_function "audit_pam_deny"
+  string="PAM Deny Weak Authentication Services"
+  check_message "${string}"
   if [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     pam_module="pam_deny"
-     verbose_message "PAM Deny Weak Authentication Services" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
       if [ "${os_version}" -lt 5 ]; then
         check_append_file "/etc/pam.conf"   "rexecd\tauth\trequired\${pam_module}.so" "hash"
@@ -30,5 +31,7 @@ audit_pam_deny () {
     if [ "${os_name}" = "Linux" ]; then
       check_append_file   "/etc/pam.d/sshd" "auth\trequisite\${pam_module}.so" "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

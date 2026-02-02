@@ -20,10 +20,10 @@
 
 audit_pam_wheel () {
   print_function "audit_pam_wheel"
+  pam_module="pam_wheel"
+  check_string="PAM ${pam_module} Configuration"
+  check_message "${check_string}"
   if [ "${os_name}" = "Linux" ]; then
-    pam_module="pam_wheel"
-    check_string="PAM ${pam_module} Configuration"
-    verbose_message "${check_string}" "check"
     check_file="/etc/pam.d/su"
     if [ -f "${check_file}" ]; then
       search_string="use_uid"
@@ -73,5 +73,7 @@ audit_pam_wheel () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${check_string}"
   fi
 }

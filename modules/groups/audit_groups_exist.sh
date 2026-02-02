@@ -23,8 +23,9 @@
 
 audit_groups_exist () {
   print_function "audit_groups_exist"
+  string="User Groups"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "User Groups" "check"
     check_file="/etc/group"
     group_fail=0
     if [ "${audit_mode}" != 2 ]; then
@@ -43,5 +44,7 @@ audit_groups_exist () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

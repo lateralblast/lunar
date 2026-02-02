@@ -14,8 +14,9 @@
 
 audit_serial_login () {
   print_function "audit_serial_login"
+  string="Login on Serial Ports"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Login on Serial Ports" "check"
     if [ "${os_name}" = "AIX" ]; then
       command="lsitab –a | grep \"on:/usr/sbin/getty\" | awk '{print \$2}'"
       command_message "${command}"
@@ -155,5 +156,7 @@ audit_serial_login () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

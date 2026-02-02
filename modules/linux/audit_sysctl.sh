@@ -20,8 +20,9 @@
 
 audit_sysctl () {
   print_function "audit_sysctl"
+  string="Sysctl Configuration"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message   "Sysctl Configuration"      "check"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.default.secure_redirects"     "eq"   "0"    "hash"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.all.secure_redirects"         "eq"   "0"    "hash"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.icmp_echo_ignore_broadcasts"       "eq"   "1"    "hash"
@@ -46,5 +47,7 @@ audit_sysctl () {
     check_file_value  "is" "/etc/sysctl.conf"     "kernel.randomize_va_space"                  "eq"   "2"    "hash"
     check_append_file "/etc/security/limits.conf" "* hard core 0"                              "hash"
     check_file_perms  "/etc/sysctl.conf"          "0600"                                       "root" "root"
+  else
+    na_message "${string}"
   fi
 }

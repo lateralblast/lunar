@@ -21,8 +21,9 @@
 
 audit_prelink () {
   print_function "audit_prelink"
+  string="Prelinking"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Prelinking" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       check_file="/etc/sysconfig/prelink"
     else
@@ -37,5 +38,7 @@ audit_prelink () {
       execute_lockdown  "prelink -ua" "Prelink to disabled"
     fi
     check_linux_package "uninstall"   "prelink"
+  else
+    na_message "${string}"
   fi
 }

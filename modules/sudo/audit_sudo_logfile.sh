@@ -13,8 +13,9 @@
 
 audit_sudo_logfile () {
   print_function "audit_sudo_logfile"
+  string="Sudo logfile"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Sudo logfile" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -26,5 +27,7 @@ audit_sudo_logfile () {
     fi
     check_file_value "is"  "${check_file}" "Defaults logfile" "eq" "/var/log/sudo.log" "hash"
     check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
+  else
+    na_message "${string}"
   fi
 }

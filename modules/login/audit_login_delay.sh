@@ -12,8 +12,11 @@
 
 audit_login_delay () {
   print_function "audit_login_delay"
+  string="Delay between Failed Login Attempts"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message  "Delay between Failed Login Attempts" "check"
     check_file_value "is" "/etc/default/login" "SLEEPTIME" "eq" "4" "hash"
+  else
+    na_message "${string}"
   fi
 }

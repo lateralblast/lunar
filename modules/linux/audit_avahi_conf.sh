@@ -13,8 +13,9 @@
 
 audit_avahi_conf () {
   print_function "audit_avahi_conf"
+  string="Multicast DNS Server"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message  "Multicast DNS Server" "check"
     for check_file in /etc/avahi/avahi-daemon.conf /usr/local/etc/avahi/avahi-daemon.conf; do
       if [ -f "${check_file}" ]; then
         check_file_value_with_position "is" "${check_file}" "disable-user-service-publishing" "eq" "yes" "hash" "after" "\[publish\]"
@@ -27,5 +28,7 @@ audit_avahi_conf () {
         check_file_value_with_position "is" "${check_file}" "check-response-ttl"              "eq" "yes" "hash" "after" "\[server\]"
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

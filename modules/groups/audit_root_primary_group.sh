@@ -20,8 +20,9 @@
 
 audit_root_primary_group () {
   print_function "audit_root_primary_group"
+  string="Root Primary Group"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Root Primary Group" "check"
     log_file="root_primary_group.log"
     check_file="/etc/group"
     group_check=$( grep "^root:" /etc/passwd | cut -f4 -d: )
@@ -52,5 +53,7 @@ audit_root_primary_group () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

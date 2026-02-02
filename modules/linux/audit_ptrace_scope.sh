@@ -11,12 +11,15 @@
 
 audit_ptrace_scope () {
   print_function "audit_ptrace_scope"
+  string="Ptrace scope is restricted"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Ptrace scope is restricted" "check"
     if [ "${os_vendor}" = "Ubuntu" ]; then
       if [ "${os_version}" -ge 24 ]; then
         check_file_value "is" "/etc/sysctl.conf" "kernel.yama.ptrace_scope" "eq" "1" "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

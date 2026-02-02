@@ -22,12 +22,13 @@
 
 audit_kubernetes_kubelet () {
   print_function "audit_kubernetes_kubelet"
+  string="Kubernetes kubelet"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kubelet" | grep -v grep )
     if [ "${daemon_check}" ]; then
       check_file="/etc/systemd/system/kubelet.service.d/10-kubeadm.conf"
       if [ -f "${check_file}" ]; then
-        verbose_message  "Kubernetes kubelet"   "check"
         check_file_perms "${check_file}"        "0755" "root" "root"
         check_file_value "is"  "${check_file}"  "KUBELET_SYSTEM_PODS_ARGS" "eq" "--anonymous-auth=false"                 "hash"
         check_file_value "is"  "${check_file}"  "KUBELET_AUTHZ_ARGS"       "eq" "--authorization-mode=Webhook"           "hash"
@@ -46,5 +47,7 @@ audit_kubernetes_kubelet () {
         check_file_value "is"  "${check_file}"  "--tls-cipher-suites"      "eq" "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AE S_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM _SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM _SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256" "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

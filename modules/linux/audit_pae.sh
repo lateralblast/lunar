@@ -13,8 +13,9 @@
 
 audit_pae () {
   print_function "audit_pae"
+  string="XD/NX Support"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "XD/NX" "check"
     if [ -f "/var/log/dmesg" ]; then
       check_nx=$( grep NX < /var/log/dmesg | grep "protection: active" | tail -1 | grep -c active | sed "s/ //g" )
       if [ "${check_nx}" = "1" ]; then
@@ -23,5 +24,7 @@ audit_pae () {
         increment_insecure "XD/NX is not enabled"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

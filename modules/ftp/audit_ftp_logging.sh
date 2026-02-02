@@ -13,8 +13,9 @@
 
 audit_ftp_logging () {
   print_function "audit_ftp_logging"
+  string="FTPD Daemon Logging"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "FTPD Daemon Logging" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         get_command="svcprop -p inetd_start/exec svc:/network/ftp:default"
@@ -65,5 +66,7 @@ audit_ftp_logging () {
         check_file_perms      "${check_file}" "0600" "root" "root"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

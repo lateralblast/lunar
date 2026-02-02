@@ -17,13 +17,13 @@
 
 audit_gnome_screen_lock () {
   print_function "audit_gnome_screen_lock"
+  string="Screen Lock for GNOME Users"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message  "Screen Lock for GNOME Users" "check"
     check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*timeout:"     "space" "0:10:00" "bang"
     check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*lockTimeout:" "space" "0:00:00" "bang"
   fi
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message       "Screen Lock for GNOME Users" "check"
     check_gsettings_value "org.gnome.desktop.session"     "idle-delay" "uint32 900"
     check_gsettings_value "org.gnome.desktop.screensaver" "lock-delay" "uint32 5" 
     if [ "${os_vendor}" = "Ubuntu" ]; then
@@ -68,5 +68,7 @@ audit_gnome_screen_lock () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

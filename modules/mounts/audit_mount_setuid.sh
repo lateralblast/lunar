@@ -23,8 +23,9 @@
 
 audit_mount_setuid () {
   print_function "audit_mount_setuid"
+  string="Set-UID on Mounted Devices"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message "Set-UID on Mounted Devices" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         check_file="/etc/rmmount.conf"
@@ -93,5 +94,7 @@ audit_mount_setuid () {
         check_file_perms    "${check_file}" "0644" "root" "root"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

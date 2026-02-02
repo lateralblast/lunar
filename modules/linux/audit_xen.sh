@@ -11,10 +11,13 @@
 
 audit_xen () {
   print_function "audit_xen"
+  string="Xen Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Xen Daemons" "check"
     for service_name in xend xendomains; do
       check_linux_service "${service_name}" "off"
     done
+  else
+    na_message "${string}"
   fi
 }

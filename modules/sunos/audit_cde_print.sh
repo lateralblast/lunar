@@ -11,10 +11,13 @@
 
 audit_cde_print () {
   print_function "audit_cde_print"
+  string="CDE Print"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message     "CDE Print" "check"
       check_sunos_service "svc:/application/cde-printinfo:default" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

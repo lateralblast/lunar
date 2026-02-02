@@ -13,10 +13,13 @@
 
 audit_syslog_auth () {
   print_function "audit_syslog_auth"
+  string="SYSLOG AUTH Messages"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message    "SYSLOG AUTH Messages" "check"
       audit_logadm_value "authlog" "auth.info"
     fi
+  else
+    na_message "${string}"
   fi
 }

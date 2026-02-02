@@ -2327,3 +2327,5 @@
 # Commit some of the command_message changes
 # 12.5.7: Mon 02 Feb 2026 13:12:23 AEDT
 # Fixed typo
+# 12.5.8: Mon 02 Feb 2026 21:14:23 AEDT
+# Improved output for some checks

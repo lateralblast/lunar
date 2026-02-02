@@ -21,8 +21,9 @@
 
 audit_execshield () {
   print_function "audit_execshield"
+  string="XD/NS Support"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "XD/NS Support" "check"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       if [ "${os_version}" -gt 4 ]; then
         check_linux_package "install" "kernel-PAE"
@@ -34,5 +35,7 @@ audit_execshield () {
         check_linux_package "install" "kernel-pae"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -18,7 +18,8 @@
 
 audit_legacy_inet () {
   print_function "audit_legacy_inet"
-  verbose_message "Inet Services" "check"
+  string="Inet Services"
+  check_message "${string}"
   for service_name in time echo discard daytime chargen fs dtspc \
     exec comsat talk finger uucp name xaudio netstat ufsd rexd \
     systat sun-dr uuidgen krb5_prop 100068 100146 100147 100150 \
@@ -31,7 +32,8 @@ audit_legacy_inet () {
 
 audit_legacy_init () {
   print_function "audit_legacy_init"
-  verbose_message "Init Services" "check"
+  string="Init Services"
+  check_message "${string}"
   for service_name in llc2 pcmcia ppd slpd boot.server autoinstall \
     power bdconfig cachefs.daemon cacheos.finish asppp uucp flashprom \
     PRESERVE ncalogd ncad ab2mgr dmi mipagent nfs.client autofs rpc \
@@ -43,8 +45,9 @@ audit_legacy_init () {
 
 audit_legacy () {
   print_function 'audit_legacy'
+  string="Legacy Inet/Init Services"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Legacy Inet/Init Services" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_rctcp     "timed"      "off"
       check_subserver "telnet"     "tcp6"       "off"
@@ -87,5 +90,7 @@ audit_legacy () {
         audit_legacy_init
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

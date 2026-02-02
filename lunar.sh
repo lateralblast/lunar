@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      12.5.7
+# Version:      12.5.8
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -254,6 +254,9 @@ verbose_message () {
         ;;
       warn|warning)
         echo "Warning:    ${text}"
+        ;;
+      na)
+        echo "Notice:     ${text} is not applicable on this system"
         ;;
       *)
         if [ "${verbose_mode}" = 1 ]; then
@@ -565,6 +568,7 @@ increment_insecure () {
     fi
     output_csv="${output_csv},FAIL:${message}"
   fi
+  insecure_temp="${insecure_count}"
 }
 
 # Get the path the script starts from
@@ -895,7 +899,6 @@ do
       ;;
     -s|--select|--check)            # switch - Run in selective mode (only run tests you want to)
       audit_mode=1
-      do_fs=0
       do_select=1
       module_name="${2}"
       shift 2

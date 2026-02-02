@@ -13,14 +13,17 @@
 
 audit_encryption_kit () {
   print_function "audit_encryption_kit"
+  string="Encryption Toolkit"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message         "Encryption Toolkit" "check"
       check_solaris_package   "SUNWcry"
       check_solaris_package   "SUNWcryr"
       if [ "${os_update}" -le 4 ]; then
         check_solaris_package "SUNWcryman"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -15,9 +15,10 @@
 
 audit_logadm_value () {
   print_function "audit_logadm_value"
+  string="Debug Level Daemon Logging"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message "Debug Level Daemon Logging" "check"
       log_name="${1}"
       log_facility="${2}"
       check_file="/etc/logadm.conf"
@@ -94,5 +95,7 @@ audit_logadm_value () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

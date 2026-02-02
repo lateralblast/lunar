@@ -17,8 +17,9 @@
 
 audit_aide () {
   print_function "audit_aide"
+  string="AIDE"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message     "AIDE" "check"
     check_linux_package "install" "aide"
     check_linux_package "install" "aide-common"
     if [ -d "/etc/aide" ]; then
@@ -34,5 +35,7 @@ audit_aide () {
     else
       check_linux_service "dailyaidecheck.timer"      "on"
     fi
+  else
+    na_message "${string}"
   fi
 }

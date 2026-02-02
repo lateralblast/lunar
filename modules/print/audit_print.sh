@@ -13,8 +13,9 @@
 
 audit_print () {
   print_function "audit_print"
+  string="Printing Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Printing Daemons" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_itab "qdaemon" "off"
       check_itab "lpd"     "off"
@@ -30,5 +31,7 @@ audit_print () {
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file_value      "is" "/etc/rc.conf" "lpd_enable" "eq" "NO"    "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

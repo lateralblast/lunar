@@ -15,8 +15,9 @@
 
 audit_xwindows_server () {
   print_function "audit_xwindows_server"
+  string="X Windows Server"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "X Windows Server"
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       no_rego=$( yum grouplist 2>&1 | grep "not registered" )
       if [ -z "${no_rego}" ]; then
@@ -29,5 +30,7 @@ audit_xwindows_server () {
         check_linux_package "uninstall" "xserver-common"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

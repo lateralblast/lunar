@@ -22,9 +22,10 @@
 
 audit_snmp () {
   print_function "audit_snmp"
+  string="SNMP Daemons and Log Permissions"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "VMkernel" ]; then
     if [ "$snmpd_disable" = "yes" ]; then
-      verbose_message "SNMP Daemons and Log Permissions" "check"
       if [ "${os_name}" = "VMkernel" ]; then
         log_file="snmpstatus"
         backup_file="${work_dir}/${log_file}"
@@ -97,5 +98,7 @@ audit_snmp () {
         check_file_perms    "/var/adm/ras"  "0700" "root" "system"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

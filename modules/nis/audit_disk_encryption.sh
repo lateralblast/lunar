@@ -13,8 +13,9 @@
 
 audit_disk_encryption () {
   print_function "audit_disk_encryption"
+  string="Disk Encryption"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Disk Encryption" "check"
     if [ "${audit_mode}" != 2 ]; then
       disk_check=$( diskutil cs list | grep -i encryption | grep AES-XTS )
       if [ "${disk_check}" ]; then
@@ -23,5 +24,7 @@ audit_disk_encryption () {
         increment_insecure "Disk encryption is not enabled"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -14,6 +14,8 @@ audit_system_auth_password_strength () {
   auth_string="${1}"
   search_string="${2}"
   temo_file="${temp_dir}/audit_system_auth_password_strength"
+  string="Password minimum strength"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
@@ -45,5 +47,7 @@ audit_system_auth_password_strength () {
         restore_file "${check_file}" "${restore_dir}"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

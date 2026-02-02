@@ -13,8 +13,9 @@
 
 audit_rhosts_files () {
   print_function "audit_rhosts_files"
+  string="Rhosts Files"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Rhosts Files" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -22,5 +23,7 @@ audit_rhosts_files () {
     for check_file in /.rhosts /.shosts /root/.rhosts /root/.shosts /etc/hosts.equiv; do
       check_file_exists "${check_file}" "no"
     done
+  else
+    na_message "${string}"
   fi
 }

@@ -11,8 +11,9 @@
 
 audit_dot_files () {
   print_function "audit_dot_files"
+  string="Dot Files"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Dot Files" "check"
     check_file="${1}"
     if [ "${audit_mode}" != 2 ]; then
       dir_list=$( cut -f6 -d':' /etc/passwd )
@@ -42,5 +43,7 @@ audit_dot_files () {
         restore_file "${check_file}" "${restore_dir}"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -11,8 +11,9 @@
 
 audit_ftp_conf () {
   print_function "audit_ftp_conf"
+  string="FTP users"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "FTP users" "check"
     if [ "${os_name}" = "AIX" ]; then
       audit_ftp_users "/etc/ftpusers"
     fi
@@ -22,5 +23,7 @@ audit_ftp_conf () {
     if [ "${os_name}" = "Linux" ]; then
       audit_ftp_users "/etc/vsftpd/ftpusers"
     fi
+  else
+    na_message "${string}"
   fi
 }

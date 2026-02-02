@@ -14,10 +14,13 @@
 
 audit_kerberos_tgt () {
   print_function "audit_kerberos_tgt"
+  string="Kerberos Ticket Warning"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "Kerberos Ticket Warning" "check"
       check_sunos_service "svc:/network/security/ktkt_warn" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,8 +13,11 @@
 
 audit_ncs () {
   print_function "audit_ncs"
+  string="NCS"
+  check_message "${string}"
   if [ "${os_name}" = "AIX" ]; then
-    verbose_message "NCS" "check"
-    check_itab      "ncs" "off"
+    check_itab "ncs" "off"
+  else
+    na_message "${string}"
   fi
 }

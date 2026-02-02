@@ -22,8 +22,9 @@
 
 audit_kubernetes_perms () {
   print_function "audit_kubernetes_perms"
+  string="Kubernetes permissions"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Kubernetes permissions" "check"
     check_file="/var/lib/etcd"
     if [ -f "${check_file}" ]; then
       check_file_perms    "${check_file}" "0700" "etcd" "etcd"
@@ -44,5 +45,7 @@ audit_kubernetes_perms () {
         check_file_perms  "${check_file}" "0600" "root" "root"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -22,9 +22,10 @@
 
 audit_home_perms () {
   print_function "audit_home_perms"
+  string="Home Directory Permissions"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = "1" ]; then
-      verbose_message "Home Directory Permissions" "check"
       command="cut -f6 -d: < /etc/passwd | grep -v \"^#\" | grep -v \"^/\$\" | egrep -iE \"home|users\""
       command_message "${command}"
       dir_list=$( eval "${command}" )
@@ -42,5 +43,7 @@ audit_home_perms () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

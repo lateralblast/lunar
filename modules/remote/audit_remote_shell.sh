@@ -13,8 +13,9 @@
 
 audit_remote_shell () {
   print_function "audit_remote_shell"
+  string="Remote Shell"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Telnet and Rlogin Services" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_chsec "/etc/security/user" "root" "rlogin" "false"
       for user_name in daemon bin sys adm uucp nobody lpd; do
@@ -37,5 +38,7 @@ audit_remote_shell () {
         check_linux_service "${service_name}" "off"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

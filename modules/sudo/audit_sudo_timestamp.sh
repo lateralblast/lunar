@@ -14,8 +14,9 @@
 
 audit_sudo_timestamp () {
   print_function "audit_sudo_timestamp"
+  string="Sudo timestamp"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Sudo timestamp" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -43,5 +44,7 @@ audit_sudo_timestamp () {
       check_file_value "is"  "${check_file}" "Defaults timestamp_type" "eq" "tty" "hash"
       check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
     fi
+  else
+    na_message "${string}"
   fi
 }

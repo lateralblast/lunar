@@ -17,8 +17,9 @@
 
 audit_unconfined_daemons () {
   print_function "audit_unconfined_daemons"
+  string="Unconfined Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Unconfined Daemons" "check"
     command="ps -eZ 2> /dev/null | grep \"initrc\" | grep -Evw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print \$NF }'"
     command_message "${command}"
     daemon_check=$( eval "${command}" )
@@ -31,5 +32,7 @@ audit_unconfined_daemons () {
         increment_secure   "No unconfined daemons"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

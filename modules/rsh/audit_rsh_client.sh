@@ -20,9 +20,12 @@
 
 audit_rsh_client () {
   print_function "audit_rsh_client"
+  string="RSH Client"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message     "RSH Client"  "check"
     check_linux_package "uninstall"   "rsh"
     check_linux_package "uninstall"   "rsh-client"
+  else
+    na_message "${string}"
   fi
 }

@@ -16,8 +16,9 @@
 
 audit_sudo_timeout () {
   print_function "audit_sudo_timeout"
+  string="Sudo timeout"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Sudo timeout" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -29,5 +30,7 @@ audit_sudo_timeout () {
     fi
     check_file_value "is"  "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash"
     check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
+  else
+    na_message "${string}"
   fi
 }

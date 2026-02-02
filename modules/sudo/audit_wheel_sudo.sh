@@ -12,9 +12,10 @@
 
 audit_wheel_sudo () {
   print_function "audit_wheel_sudo"
+  string="Sudoers group settings"
+  check_message "${string}"
   temp_file="${temp_dir}/audit_wheel_sudo"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Sudoers group settings" "check"
     for check_dir in /etc /usr/local/etc /usr/sfw/etc /opt/csw/etc; do
       check_dir="${check_dir}/sudoers.d"
       if [ -d "${check_dir}" ]; then
@@ -80,5 +81,7 @@ audit_wheel_sudo () {
         fi
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

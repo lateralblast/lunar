@@ -14,10 +14,13 @@
 
 audit_nobody_rpc () {
   print_function "audit_nobody_rpc"
+  string="Nobody Access for RPC Encryption Key Storage Service"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message  "Nobody Access for RPC Encryption Key Storage Service" "check"
       check_file_value "is" "/etc/default/keyserv" "ENABLE_NOBODY_KEYS" "eq"  "NO" "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

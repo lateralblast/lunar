@@ -19,9 +19,12 @@
 
 audit_telnet_client () {
   print_function "audit_telnet_client"
+  string="Telnet Client"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message     "Telnet Client" "check"
     check_linux_package "uninstall"     "telnet"
     check_linux_package "uninstall"     "inetutils-telnet"
+  else
+    na_message "${string}"
   fi
 }

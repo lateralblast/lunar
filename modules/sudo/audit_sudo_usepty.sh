@@ -13,8 +13,9 @@
 
 audit_sudo_usepty () {
   print_function "audit_sudo_usepty"
+  string="Sudo use_pty"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Sudo use_pty" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -26,5 +27,7 @@ audit_sudo_usepty () {
     fi
     check_append_file "${check_file}" "Defaults use_pty" "hash"
     check_file_perms  "${check_file}" "440" "root"       "${wheel_group}" 
+  else
+    na_message "${string}"
   fi
 }

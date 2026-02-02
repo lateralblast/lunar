@@ -13,10 +13,13 @@
 
 audit_apocd () {
   print_function "audit_apocd"
+  string="APOC Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      verbose_message     "APOC Daemons" "check"
       check_sunos_service "svc:/network/apocd/udp:default" "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

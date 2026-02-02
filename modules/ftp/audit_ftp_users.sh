@@ -15,9 +15,10 @@
 
 audit_ftp_users () {
   print_function "audit_ftp_users"
+  string="FTP Users"
+  check_message "${string}"
   check_file="${1}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
-    funct_verbost_message "FTP Users" "check"
     if [ "${os_name}" = "AIX" ]; then
       for user_name in $( lsuser -c ALL | grep -v ^#name | grep -v root | cut -f1 -d: ); do
         user_check=$( lsuser -f "${user_name}" | grep id | cut -f2 -d= )
@@ -97,5 +98,7 @@ audit_ftp_users () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

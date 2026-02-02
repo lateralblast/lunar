@@ -22,10 +22,11 @@
 
 audit_kubernetes_scheduler () {
   print_function "audit_kubernetes_scheduler"
+  string="Kubernetes scheduler"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kube-scheduler" | grep -v grep )
     if [ "${daemon_check}" ]; then
-      verbose_message "Kubernetes scheduler" "check"
       check_file="/etc/kubernetes/manifests/kube-scheduler.yaml"
       if [ -f "${check_file}" ]; then
         check_file_perms "${check_file}"      "0644"  "root" "root"
@@ -34,5 +35,7 @@ audit_kubernetes_scheduler () {
         check_file_value "is" "${check_file}" "--address"           "eq" "127.0.0.1"                         "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

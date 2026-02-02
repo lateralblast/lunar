@@ -14,8 +14,9 @@
 
 audit_mount_fdi () {
   print_function "audit_mount_fdi"
+  string="User Mountable Filesystems"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "User Mountable Filesystems" "check"
     check_dir="/usr/share/hal/fdi/95userpolicy"
     if [ -e "${check_dir}" ]; then
       check_file="${check_dir}/floppycdrom.fdi"
@@ -80,5 +81,7 @@ audit_mount_fdi () {
       fi
     fi
     check_file_perms "${check_file}" "0640" "root" "root"
+  else
+    na_message "${string}"
   fi
 }

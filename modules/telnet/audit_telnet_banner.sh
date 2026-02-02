@@ -14,8 +14,11 @@
 
 audit_telnet_banner () {
   print_function "audit_telnet_banner"
+  string="Telnet Banner"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message  "Telnet Banner" "check"
     check_file_value "is" "/etc/default/telnetd" "BANNER" "eq" "/etc/issue" "hash"
+  else
+    na_message "${string}"
   fi
 }

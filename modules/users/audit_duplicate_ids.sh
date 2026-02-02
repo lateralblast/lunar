@@ -22,8 +22,9 @@
 
 audit_duplicate_ids () {
   print_function "audit_duplicate_ids"
+  string="Duplicate IDs"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Duplicate IDs" "check"
     field="${1}"
     function="${2}"
     term="${3}"
@@ -50,5 +51,7 @@ audit_duplicate_ids () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

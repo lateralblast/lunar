@@ -13,6 +13,8 @@
 
 audit_audit_class () {
   print_function "audit_audit_class"
+  string="Audit Class"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       audit_create_class
@@ -20,5 +22,7 @@ audit_audit_class () {
       audit_file_metadata
       audit_privilege_events
     fi
+  else
+    na_message "${string}"
   fi
 }

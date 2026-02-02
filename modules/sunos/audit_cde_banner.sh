@@ -13,8 +13,9 @@
 
 audit_cde_banner () {
   print_function "audit_cde_banner"
+  string="CDE Warning Banner"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "CDE Warning Banner" "check"
     for cde_file in /usr/dt/config/*/Xresources ; do
       dir_name=$( dirname" ${cde_file}" | sed "s/usr/etc/" )
       check_file="${dir_name}/Xresources"
@@ -23,5 +24,7 @@ audit_cde_banner () {
         check_file_value "is" "${check_file}" "Dtlogin*greeting.persLabelString" "colon" "Authorized uses only" "star"
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

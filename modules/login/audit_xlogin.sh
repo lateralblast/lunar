@@ -14,9 +14,10 @@
 
 audit_xlogin () {
   print_function "audit_xlogin"
+  string="X Windows"
+  check_message "${string}"
   temp_file="${temp_dir}/audit_xlogin"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "X Windows" "check"
     if [ "${os_name}" = "AIX" ]; then
       verbose_message "CDE Startup" "check"
       check_itab dt off
@@ -158,5 +159,7 @@ audit_xlogin () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

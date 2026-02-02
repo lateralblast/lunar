@@ -11,16 +11,19 @@
 
 audit_zones () {
   print_function "audit_zones"
+  string="Zone Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       zone_check=$( zoneadm list -civ | awk '{print $1}' | grep 1 )
       if [ "${zone_check}" != "1" ]; then
-        verbose_message     "Zone Daemons"
         check_sunos_service "svc:/system/rcap:default"       "disabled"
         check_sunos_service "svc:/system/pools:default"      "disabled"
         check_sunos_service "svc:/system/tsol-zones:default" "disabled"
         check_sunos_service "svc:/system/zones:default"      "disabled"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

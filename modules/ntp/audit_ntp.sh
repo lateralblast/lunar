@@ -26,9 +26,10 @@
 
 audit_ntp () {
   print_function "audit_ntp"
+  string="Network Time Protocol"
+  check_message "${string}"
   ntp_package="chrony"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "VMkernel" ]; then
-    verbose_message "Network Time Protocol" "check"
     if [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/etc/inet/ntp.conf" "server" "space" "pool.ntp.org" "hash"
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
@@ -103,5 +104,7 @@ audit_ntp () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

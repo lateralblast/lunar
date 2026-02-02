@@ -17,11 +17,14 @@
 
 audit_telnet_server () {
   print_function "audit_telnet_server"
+  string="Telnet Server"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_name}" = "Amazon" ]; then
-      verbose_message     "Telnet Server Daemon" "check"
       check_linux_service "telnet.socket"        "off"
       check_linux_package "uninstall"            "telnet-server"
     fi
+  else
+    na_message "${string}"
   fi
 }

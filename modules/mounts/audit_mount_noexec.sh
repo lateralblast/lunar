@@ -20,8 +20,9 @@
 
 audit_mount_noexec () {
   print_function "audit_mount_noexec"
+  string="No-exec on /tmp"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "No-exec on /tmp" "check"
     check_file="/etc/fstab"
     if [ -e "${check_file}" ]; then
       verbose_message "Temp File Systems mounted with noexec" "check"
@@ -60,5 +61,7 @@ audit_mount_noexec () {
       fi
       check_file_perms "${check_file}" "0644" "root" "root"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -20,10 +20,13 @@
 
 audit_avahi_server () {
   print_function "audit_avahi_server"
+  string="Avahi Server"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Avahi Server" "check"
     for service_name in avahi avahi-autoipd avahi-daemon avahi-dnsconfd; do
       check_linux_service "${service_name}" "off"
     done
+  else
+    na_message "${string}"
   fi
 }

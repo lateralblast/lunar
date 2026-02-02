@@ -12,8 +12,9 @@
 
 audit_postgresql () {
   print_function "audit_postgresql"
+  string="PostgreSQL Database"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "PostgreSQL Database" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         for service_name in "svc:/application/database/postgresql_83:default_32bit" \
@@ -28,5 +29,7 @@ audit_postgresql () {
     if [ "${os_name}" = "Linux" ]; then
       check_linux_service "postgresql" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -12,9 +12,12 @@
 
 audit_sendmail_aliases () {
   print_function "audit_sendmail_aliases"
+  string="Sendmail Aliases"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message  "Sendmail Aliases" "check"
     disable_value    "/etc/aliases"     "decode" "hash"
     check_file_perms "/etc/aliases"     "0644"   "root" "root"
+  else
+    na_message "${string}"
   fi
 }

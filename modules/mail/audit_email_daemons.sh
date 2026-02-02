@@ -18,11 +18,14 @@
 
 audit_email_daemons () {
   print_function "audit_email_daemons"
+  string="Mail Daemons"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "Mail Daemons" "check"
     for service_name in cyrus imapd qpopper dovecot; do
       check_linux_service "${service_name}" "off"
       check_linux_package "uninstall"       "${service_name}"
     done
+  else
+    na_message "${string}"
   fi
 }

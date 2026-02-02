@@ -22,10 +22,11 @@
 
 audit_kubernetes_controller () {
   print_function "audit_kubernetes_controller"
+  string="Kubernetes Controller"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kube-controller-manager" | grep -v grep )
     if [ "${daemon_check}" ]; then
-      verbose_message "Kubernetes Controller" "check"
       check_file="/etc/kubernetes/manifests/kube-controller-manager.yaml"
       if [ -f "${check_file}" ]; then
         check_file_value "is"  "${check_file}" "--terminated-pod-gc-threshold"      "eq" "10"   "hash"
@@ -35,5 +36,7 @@ audit_kubernetes_controller () {
         check_file_value "is"  "${check_file}" "--feature-gates"                    "eq" "RotateKubeletServerCertificate=true" "hash" # yes
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -17,11 +17,14 @@
 
 audit_talk_server () {
   print_function "audit_talk_server"
+  string="Talk Server"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
-      verbose_message     "Talk Server Daemon" "check"
       check_linux_service "ntalk"              "off"
       check_linux_package "uninstall"          "talk-server"
     fi
+  else
+    na_message "${string}"
   fi
 }

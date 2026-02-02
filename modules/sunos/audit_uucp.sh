@@ -11,6 +11,8 @@
 
 audit_uucp () {
   print_function "audit_uucp"
+  string="UUCP Service"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       verbose_message     "Samba Web Configuration Deamon" "check"
@@ -20,5 +22,7 @@ audit_uucp () {
       verbose_message     "UUCP Service" "check"
       check_sunos_service "uucp"         "disabled"
     fi
+  else
+    na_message "${string}"
   fi
 }

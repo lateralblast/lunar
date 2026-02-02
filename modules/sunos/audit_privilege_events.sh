@@ -13,9 +13,10 @@
 
 audit_privilege_events () {
   print_function "audit_privilege_events"
+  string="Auditing of Privileged Events"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
-      verbose_message   "Auditing of Privileged Events" "check"
       check_append_file "/etc/security/audit_event"     "lck:AUE_CHROOT"      "hash"
       check_append_file "/etc/security/audit_event"     "lck:AUE_SETREUID"    "hash"
       check_append_file "/etc/security/audit_event"     "lck:AUE_SETREGID"    "hash"
@@ -31,5 +32,7 @@ audit_privilege_events () {
       check_append_file "/etc/security/audit_event"     "lck:AUE_SETSID"      "hash"
       check_append_file "/etc/security/audit_event"     "lck:AUE_SETPGID"     "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

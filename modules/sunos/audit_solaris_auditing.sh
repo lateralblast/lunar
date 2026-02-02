@@ -13,9 +13,10 @@
 
 audit_solaris_auditing () {
   print_function "audit_solaris_auditing"
+  string="Solaris Auditing"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
-      verbose_message      "Solaris Auditing" "check"
       check_command_output "getcond"
       check_command_output "getpolicy"
       check_command_output "getnaflags"
@@ -55,5 +56,7 @@ audit_solaris_auditing () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

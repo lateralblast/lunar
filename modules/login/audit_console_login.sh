@@ -21,9 +21,9 @@
 
 audit_console_login () {
   print_function "audit_console_login"
+  string="Root Login to System Console"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    string="Root Login to System Console"
-   verbose_message "${string}" "check"
     if [ "${os_version}" = "10" ]; then
       check_file="/etc/default/login"
       check_file_value "is" "${check_file}" "CONSOLE" "eq" "/dev/console" "hash"
@@ -87,5 +87,7 @@ audit_console_login () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

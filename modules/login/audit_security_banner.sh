@@ -21,8 +21,9 @@
 
 audit_security_banner () {
   print_function "audit_security_banner"
+  string="Warnings for Standard Login Services"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Warnings for Standard Login Services" "check"
     if [ "${os_name}" = "AIX" ]; then
       user_name="bin"
       group_name="bin"
@@ -40,5 +41,7 @@ audit_security_banner () {
     if [ -f "${check_file}" ]; then
       check_file_perms "${check_file}" "0644" "${user_name}" "${group_name}"
     fi
+  else
+    na_message "${string}"
   fi
 }

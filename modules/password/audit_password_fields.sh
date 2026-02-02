@@ -27,8 +27,9 @@
 
 audit_password_fields () {
   print_function "audit_password_fields"
+  string="Password Fields"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "Password Fields" "check"
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/passwd"
       command="awk -F: '(\$3 == 0) { print \$1 }' \"${check_file}\" | grep -v root"
@@ -115,5 +116,7 @@ audit_password_fields () {
       check_file="/etc/shadow"
       restore_file "${check_file}" "${restore_dir}"
     fi
+  else
+    na_message "${string}"
   fi
 }

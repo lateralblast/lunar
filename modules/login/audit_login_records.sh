@@ -11,10 +11,13 @@
 
 audit_login_records () {
   print_function "audit_login_records"
+  string="Login Records"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      verbose_message    "Login Records" "check"
       audit_logadm_value "loginlog"      "none"
     fi
+  else
+    na_message "${string}"
   fi
 }
