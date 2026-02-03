@@ -16,8 +16,12 @@
 audit_aws_creds () {
   print_function  "audit_aws_creds"
   verbose_message "Credentials"   "check"
-  aws iam generate-credential-report > /dev/null 2>&1
-  entries=$( aws iam get-credential-report --query 'Content' --output text | "${base64_d}" | cut -d, -f1,4,5,6,9,10,11,14,15,16 | sed '1 d' | awk -F '\n' '{print $1}' )
+  command="aws iam generate-credential-report > /dev/null 2>&1"
+  command_message "${command}"
+  eval "${command}"
+  command="aws iam get-credential-report --query 'Content' --output text | \"${base64_d}\" | cut -d, -f1,4,5,6,9,10,11,14,15,16 | sed '1 d' | awk -F '\\\n' '{print \$1}'"
+  command_message "${command}"
+  entries=$( eval "${command}" )
   for entry in ${entries}; do
     aws_user=$( echo "${entry}" | cut -d, -f1 )
     aws_pass=$( echo "${entry}" | cut -d, -f2 )
@@ -44,9 +48,13 @@ audit_aws_creds () {
           a_test=$( echo "${aws_last}" |grep "[0-9]" )
           if [ -n "$a_test" ]; then
             if [ "${os_name}" = "Linux" ]; then
-              aws_sec=$( date -d "${aws_last}" "+%s" )
+              command="date -d \"${aws_last}\" \"+%s\""
+              command_message "${command}"
+              aws_sec=$( eval "${command}" )
             else
-              aws_sec=$( date -j -f "%Y-%m-%dT%H:%M:%S+00:00" "${aws_last}" "+%s" )
+              command="date -j -f \"%Y-%m-%dT%H:%M:%S+00:00\" \"${aws_last}\" \"+%s\""
+              command_message "${command}"
+              aws_sec=$( eval "${command}" )
             fi
             aws_days=$( echo "(${cur_sec} - ${aws_sec})/84600" | bc )
             if [ "$aws_days" -gt 90 ]; then
@@ -58,9 +66,13 @@ audit_aws_creds () {
           a_test=$( echo "${aws_rot}" |grep "[0-9]" )
           if [ -n "$a_test" ]; then
             if [ "${os_name}" = "Linux" ]; then
-              rot_sec=$( date -d "${aws_last}" "+%s" )
+              command="date -d \"${aws_last}\" \"+%s\""
+              command_message "${command}"
+              rot_sec=$( eval "${command}" )
             else
-              rot_sec=$( date -j -f "%Y-%m-%dT%H:%M:%S+00:00" "${aws_last}" "+%s" )
+              command="date -j -f \"%Y-%m-%dT%H:%M:%S+00:00\" \"${aws_last}\" \"+%s\""
+              command_message "${command}"
+              rot_sec=$( eval "${command}" )
             fi
             rot_days=$( echo "(${rot_sec} - ${cur_sec})/84600" | bc )
             if [ "${rot_days}" -gt 90 ]; then
@@ -74,9 +86,13 @@ audit_aws_creds () {
         fi
         if [ "${key1_use}" = "true" ]; then
           if [ "${os_name}" = "Linux" ]; then
-            key1_sec=$( date -d "${key1_last}" "+%s" )
+            command="date -d \"${key1_last}\" \"+%s\""
+            command_message "${command}"
+            key1_sec=$( eval "${command}" )
           else
-            key1_sec=$( date -j -f "%Y-%m-%dT%H:%M:%S+00:00" "${key1_last}" "+%s" )
+            command="date -j -f \"%Y-%m-%dT%H:%M:%S+00:00\" \"${key1_last}\" \"+%s\""
+            command_message "${command}"
+            key1_sec=$( eval "${command}" )
           fi
           key1_days=$( echo "(${cur_sec} - ${key1_sec})/84600" | bc )
           if [ "${key1_days}" -gt 90 ]; then
@@ -87,9 +103,13 @@ audit_aws_creds () {
           k_test=$( echo "${key1_rot}" |grep "[0-9]" )
           if [ -n "${k_test}" ]; then
             if [ "${os_name}" = "Linux" ]; then
-              rot_sec=$( date -d "${key1_rot}" "+%s" )
+              command="date -d \"${key1_rot}\" \"+%s\""
+              command_message "${command}"
+              rot_sec=$( eval "${command}" )
             else
-              rot_sec=$( date -j -f "%Y-%m-%dT%H:%M:%S+00:00" "${key1_rot}" "+%s" )
+              command="date -j -f \"%Y-%m-%dT%H:%M:%S+00:00\" \"${key1_rot}\" \"+%s\""
+              command_message "${command}"
+              rot_sec=$( eval "${command}" )
             fi
             rot_days=$( echo "(${cur_sec} - ${rot_sec})/84600" | bc )
             if [ "${rot_days}" -gt 90 ]; then
@@ -103,9 +123,13 @@ audit_aws_creds () {
         fi
         if [ "${key2_use}" = "true" ]; then
           if [ "${os_name}" = "Linux" ]; then
-            key2_sec=$( date -d "${key2_last}" "+%s" )
+            command="date -d \"${key2_last}\" \"+%s\""
+            command_message "${command}"
+            key2_sec=$( eval "${command}" )
           else
-            key2_sec=$( date -j -f "%Y-%m-%dT%H:%M:%S+00:00" "${key2_last}" "+%s" )
+            command="date -j -f \"%Y-%m-%dT%H:%M:%S+00:00\" \"${key2_last}\" \"+%s\""
+            command_message "${command}"
+            key2_sec=$( eval "${command}" )
           fi
           key2_days=$( echo "(${cur_sec} - ${key2_sec})/84600" | bc )
           if [ "${key2_days}" -gt 90 ]; then
@@ -116,9 +140,13 @@ audit_aws_creds () {
           k_test=$( echo "${key2_rot}" |grep "[0-9]" )
           if [ -n "${k_test}" ]; then
             if [ "${os_name}" = "Linux" ]; then
-              rot_sec=$( date -d "${key2_rot}" "+%s" )
+              command="date -d \"${key2_rot}\" \"+%s\""
+              command_message "${command}"
+              rot_sec=$( eval "${command}" )
             else
-              rot_sec=$( date -j -f "%Y-%m-%dT%H:%M:%S+00:00" "${key2_rot}" "+%s" )
+              command="date -j -f \"%Y-%m-%dT%H:%M:%S+00:00\" \"${key2_rot}\" \"+%s\""
+              command_message "${command}"
+              rot_sec=$( eval "${command}" )
             fi
             rot_days=$( echo "(${cur_sec} - ${rot_sec})/84600" | bc )
             if [ "${rot_days}" -gt 90 ]; then

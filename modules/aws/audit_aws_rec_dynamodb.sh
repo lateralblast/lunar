@@ -15,9 +15,13 @@ audit_aws_rec_dynamodb () {
   # Check for zero length tables
   print_function  "audit_aws_rec_dynamodb"
   verbose_message "DynamoDB" "check"
-  tables=$( aws dynamodb list-tables --region "${aws_region}" --query 'TableNames' --output text )
+  command="aws dynamodb list-tables --region \"${aws_region}\" --query 'TableNames' --output text"
+  command_message "${command}"
+  tables=$( eval "${command}" )
   for table in ${table}s; do
-    size=$( aws dynamodb describe-table --region "${aws_region}" --table-name "${table}" --query 'Table.ItemCount' --output text )
+    command="aws dynamodb describe-table --region \"${aws_region}\" --table-name \"${table}\" --query 'Table.ItemCount' --output text"
+    command_message "${command}"
+    size=$( eval "${command}" )
     if [ ! "${size}" -eq 0 ]; then
       increment_secure   "DynamoDB table \"${table}\" is not empty"
     else

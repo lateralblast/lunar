@@ -14,9 +14,13 @@
 audit_aws_ec () {
   print_function  "audit_aws_ec"
   verbose_message "ElastiCache" "check"
-  caches=$( aws elasticache describe-replication-groups --region "${aws_region}" --query 'ReplicationGroups[].ReplicationGroupId' --output text )
+  command="aws elasticache describe-replication-groups --region \"${aws_region}\" --query 'ReplicationGroups[].ReplicationGroupId' --output text"
+  command_message "${command}"
+  caches=$( eval "${command}" )
   for cache in ${caches}; do 
-    check=$( aws elasticache describe-replication-groups --region "${aws_region}" --replication-group-id "${cache}" --query 'ReplicationGroups[].AutomaticFailover' | grep enabled )
+    command="aws elasticache describe-replication-groups --region \"${aws_region}\" --replication-group-id \"${cache}\" --query 'ReplicationGroups[].AutomaticFailover' | grep enabled"
+    command_message "${command}"
+    check=$( eval "${command}" )
     if [ -n "${check}" ]; then
       increment_secure   "ElastiCache \"${cache}\" is Multi-AZ enabled"
     else

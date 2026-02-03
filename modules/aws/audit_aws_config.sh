@@ -14,14 +14,18 @@
 audit_aws_config () {
   print_function  "audit_aws_config"
   verbose_message "Config"   "check"
-	check=$( aws configservice describe-configuration-recorders --region "${aws_region}" )
+	command="aws configservice describe-configuration-recorders --region \"${aws_region}\""
+  command_message "${command}"
+  check=$( eval "${command}" )
   if [ ! "${check}" ]; then
     increment_insecure "AWS Configuration Recorder not enabled"
     execute_lockdown   "aws configservice start-configuration-recorder" "Configuration Recorder Service to enabled"
   else
     increment_secure   "AWS Configuration Recorder enabled"
   fi
-  check=$( aws configservice --region "${aws_region}" get-status | grep FAILED )
+  command="aws configservice --region \"${aws_region}\" get-status | grep FAILED"
+  command_message "${command}"
+  check=$( eval "${command}" )
   if [ "${check}" ]; then
     increment_insecure "AWS Config not enabled"
   else

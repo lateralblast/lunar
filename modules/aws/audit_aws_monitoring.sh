@@ -41,11 +41,15 @@
 audit_aws_monitoring () {
   print_function  "audit_aws_monitoring"
   verbose_message "CloudWatch"   "check"
-  trails=$( aws cloudtrail describe-trails --region "${aws_region}" --query "trailList[].CloudWatchLogsLogGroupArn" --output text | awk -F':' '{print $7}' )
+  command="aws cloudtrail describe-trails --region \"${aws_region}\" --query \"trailList[].CloudWatchLogsLogGroupArn\" --output text | awk -F':' '{print \$7}'"
+  command_message "${command}"
+  trails=$( eval "${command}" )
   if [ "${trails}" ]; then
     increment_secure "CloudWatch log groups exits for CloudTrail"
     for trail in ${trails}; do
-      metrics=$( aws logs describe-metric-filters --region "${aws_region}" --log-group-name "${trail}" --query "metricFilters[].filterPattern" --output text )
+      command="aws logs describe-metric-filters --region \"${aws_region}\" --log-group-name \"${trail}\" --query \"metricFilters[].filterPattern\" --output text"
+      command_message "${command}"
+      metrics=$( eval "${command}" )
       if [ ! "${metric}" ]; then
         increment_insecure  "CloudWatch log group ${trail} has no metrics"
         verbose_message     "aws logs put-metric-filter --region ${aws_region} --log-group-name ${trail} --filter-name unauthorized-api-calls-metric --metric-transformations metricName=unauthorized-api-calls-metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }'"     "fix"
@@ -83,7 +87,9 @@ audit_aws_monitoring () {
                       CreateVpc DeleteVpc ModifyVpcAttribute AcceptVpcPeeringConnection CreateVpcPeeringConnection DeleteVpcPeeringConnection \
                       RejectVpcPeeringConnection AttachClassicLinkVpc DetachClassicLinkVpc DisableVpcClassicLink EnableVpcClassicLink \
                       TerminateInstances StopInstances StartInstances RebootInstances RunInstances; do
-          check=$( aws logs describe-metric-filters --region "${aws_region}" --log-group-name "${trail}" --query "metricFilters[].filterPattern" --output text |grep "${metric}" )
+          command="aws logs describe-metric-filters --region \"${aws_region}\" --log-group-name \"${trail}\" --query \"metricFilters[].filterPattern\" --output text |grep \"${metric}\""
+          command_message "${command}"
+          check=$( eval "${command}" )
           if [ -n "${check}" ]; then
             increment_secure   "CloudWatch log group \"${trail}\" metrics include \"${metric}\""
           else
@@ -95,11 +101,15 @@ audit_aws_monitoring () {
   else
     increment_insecure "No CloudWatch log groups exist for CloudTrail"
   fi
-  alarms=$( aws cloudwatch describe-alarms --region "${aws_region}" --query "MetricAlarms[].AlarmActions" --output text )
+  command="aws cloudwatch describe-alarms --region \"${aws_region}\" --query \"MetricAlarms[].AlarmActions\" --output text"
+  command_message "${command}"
+  alarms=$( eval "${command}" )
   if [ "${alarms}" ]; then
     increment_secure "CloudWatch alarms exits for CloudTrail"
     for alarm in ${alarms}; do
-      subscribers=$( aws sns list-subscriptions-by-topic --region "${aws_region}" --topic-arn "${alarm}" --output text )
+      command="aws sns list-subscriptions-by-topic --region \"${aws_region}\" --topic-arn \"${alarm}\" --output text"
+      command_message "${command}"
+      subscribers=$( eval "${command}" )
       if [ "${subscribers}" ]; then
         increment_secure   "CloudWatch alarm \"${alarm}\" has subscribers"
       else

@@ -20,7 +20,9 @@
 audit_aws_mfa () {
   print_function  "audit_aws_mfa"
   verbose_message "MFA"   "check"
-  entries=$( aws iam get-credential-report --query 'Content' --output text | "${base64_d}" | cut -d, -f1,4,8 | sed '1 d' | awk -F '\n' '{print $1}' )
+  command="aws iam get-credential-report --query 'Content' --output text | \"${base64_d}\" | cut -d, -f1,4,8 | sed '1 d' | awk -F '\\\n' '{print \$1}'"
+  command_message "${command}"
+  entries=$( eval "${command}" )
   for entry in ${entries}; do
     user=$( echo "${entry}" | cut -d, -f1 )
     pass=$( echo "${entry}" | cut -d, -f2 )
@@ -43,10 +45,14 @@ audit_aws_mfa () {
       fi
     fi
   done
-  check=$( aws iam get-account-summary | grep "AccountMFAEnabled" | cut -f1 -d: | sed "s/ //g" | sed "s/,//g" )
+  command="aws iam get-account-summary | grep \"AccountMFAEnabled\" | cut -f1 -d: | sed \"s/ //g\" | sed \"s/,//g\""
+  command_message "${command}"
+  check=$( eval "${command}" )
   if [ "${check}" = "1" ]; then
     increment_secure "The root account has MFA enabled"
-    check=$( iaws iam list-virtual-mfa-devices | grep "SerialNumber" | grep -c "root_account" )
+    command="iaws iam list-virtual-mfa-devices | grep \"SerialNumber\" | grep -c \"root_account\""
+    command_message "${command}"
+    check=$( eval "${command}" )
     if [ "${check}" = "0" ]; then
       increment_secure    "The root account does not have a virtual MFA"
     else

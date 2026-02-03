@@ -18,11 +18,15 @@
 audit_aws_keys () {
   print_function  "audit_aws_keys"
   verbose_message "KMS Keys" "check"
-  keys=$( aws kms list-keys --query Keys --output text )
+  command="aws kms list-keys --query Keys --output text"
+  command_message "${command}"
+  keys=$( eval "${command}" )
   if [ "${keys}" ]; then
     for key in ${keys}; do
       # Check key is enabled
-      check=$( aws kms get-key-rotation-status --key-id "${key}" --query 'KeyMetadata' | grep Enabled | grep true )
+      command="aws kms get-key-rotation-status --key-id \"${key}\" --query 'KeyMetadata' | grep Enabled | grep true"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ ! "${check}" ]; then
         increment_insecure "Key \"${key}\" is not enabled"
         verbose_message    "aws kms schedule-key-deletion --key-id ${key} --pending-window-in-days $aws_days_to_key_deletion" "fix"
@@ -30,7 +34,9 @@ audit_aws_keys () {
         increment_secure   "Key \"${key}\" is enabled"
       fi
       # Check that key rotation is enabled
-      check=$( aws kms get-key-rotation-status --key-id "${key}" |grep KeyRotationEnabled | grep true )
+      command="aws kms get-key-rotation-status --key-id \"${key}\" |grep KeyRotationEnabled | grep true"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ ! "${check}" ]; then
         increment_insecure "Key \"${key}\" does not have key rotation enabled"
         verbose_message    "aws cloudtrail update-trail --name <trail_name> --kms-id <cloudtrail_kms_key> aws kms put-key-policy --key-id <cloudtrail_kms_key> --policy <cloudtrail_kms_key_policy>" "fix"
@@ -43,9 +49,13 @@ audit_aws_keys () {
     increment_insecure "No Keys are being used"
   fi
   # Check for SSH keys
-  users=$( aws iam list-users --query 'Users[].UserName' --output text )
+  command="aws iam list-users --query 'Users[].UserName' --output text"
+  command_message "${command}"
+  users=$( eval "${command}" )
   for user in ${users}; do
-    check=$( aws iam list-ssh-public-keys --region "${aws_region}" --user-name "${user}" | grep -c Active )
+    command="aws iam list-ssh-public-keys --region \"${aws_region}\" --user-name \"${user}\" | grep -c Active"
+    command_message "${command}"
+    check=$( eval "${command}" )
     if [ "${check}" -gt 1 ]; then
       increment_insecure  "User \"${user}\" does has more than one active SSH key"
     else

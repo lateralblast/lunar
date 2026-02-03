@@ -25,11 +25,15 @@
 audit_aws_sgs () {
   print_function    "audit_aws_sgs"
   verbose_message "Security Groups"
-  sgs=$( aws ec2 describe-security-groups --region "${aws_region}" --query SecurityGroups[].GroupId --output text )
+  command="aws ec2 describe-security-groups --region \"${aws_region}\" --query SecurityGroups[].GroupId --output text"
+  command_message "${command}"
+  sgs=$( eval "${command}" )
   for sg in ${sgs}; do
-    in_check=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters ansible_value=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' | grep "0.0.0.0/0" )
+    command="aws ec2 describe-security-groups --region \"${aws_region}\" --group-ids \"${sg}\" --filters ansible_value=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissions:IpPermissions,GroupId:GroupId}' | grep \"0.0.0.0/0\""
+    command_message "${command}"
+    in_check=$( eval "${command}" )
     if [ -z "${in_check}" ]; then
-      increment_secure    "Security Group ${sg} does not have a open inbound rule"
+      increment_secure    "Security Group \"${sg}\" does not have a open inbound rule"
     else
       check_aws_open_port "${sg}" "-1"          "icmp" "ICMP"       "none" "none"
       check_aws_open_port "${sg}" "20,21"       "tcp"  "FTP"        "none" "none"
@@ -49,12 +53,14 @@ audit_aws_sgs () {
       check_aws_open_port "${sg}" "5432"        "tcp"  "PostgreSQL" "none" "none"
       check_aws_open_port "${sg}" "27017"       "tcp"  "MongoDB"    "none" "none"
     fi
-    out_check=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters ansible_value=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' | grep "0.0.0.0/0" )
+    command="aws ec2 describe-security-groups --region \"${aws_region}\" --group-ids \"${sg}\" --filters ansible_value=group-name,Values='default' --query 'SecurityGroups[*].{IpPermissionsEgress:IpPermissionsEgress,GroupId:GroupId}' | grep \"0.0.0.0/0\""
+    command_message "${command}"
+    out_check=$( eval "${command}" )
     if [ -z "${out_check}" ]; then
-      increment_secure    "Security Group ${sg} does not have a open outbound rule"
+      increment_secure    "Security Group \"${sg}\" does not have a open outbound rule"
     else
-      increment_insecure  "Security Group ${sg} has an open outbound rule"
-      verbose_message     "aws ec2 revoke-security-group-egress --region ${aws_region} --group-name ${sg} --protocol tcp --cidr 0.0.0.0/0" "fix"
+      increment_insecure  "Security Group \"${sg}\" has an open outbound rule"
+      verbose_message     "aws ec2 revoke-security-group-egress --region \"${aws_region}\" --group-name \"${sg}\" --protocol tcp --cidr 0.0.0.0/0" "fix"
     fi
   done
 }

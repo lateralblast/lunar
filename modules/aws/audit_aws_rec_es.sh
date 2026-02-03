@@ -15,26 +15,36 @@
 audit_aws_rec_es () {
   print_function  "audit_aws_rec_es"
   verbose_message "Elasticsearch Recommendations" "check"
-  domains=$( aws es list-domain-names --region "${aws_region}" --query "DomainNames[].DomainName" --output text )
+  command="aws es list-domain-names --region \"${aws_region}\" --query \"DomainNames[].DomainName\" --output text"
+  command_message "${command}"
+  domains=$( eval "${command}" )
   for domain in ${domains}; do
     # Check that ES domains have dedicated masters
-    check=$( aws es describe-elasticsearch-domain --domain-name "${domain}" --query "DomainStatus.ElasticsearchClusterConfig.DedicatedMasterEnabled" | grep true )
+    command="aws es describe-elasticsearch-domain --domain-name \"${domain}\" --query \"DomainStatus.ElasticsearchClusterConfig.DedicatedMasterEnabled\" | grep true"
+    command_message "${command}"
+    check=$( eval "${command}" )
     if [ -n "${check}" ]; then
       increment_secure   "Elasticsearch doamin \"${domain}\" has dedicated master nodes"
     else
       increment_insecure "Elasticsearch domain \"${domain}\" does not have dedicated master nodes"
     fi
     # Check that ES domains are using cost effective storage
-    check=$( aws es describe-elasticsearch-domain --domain-name "${domain}" --query 'DomainStatus.EBSOptions.VolumeType' | grep "gp2" )
+    command="aws es describe-elasticsearch-domain --domain-name \"${domain}\" --query \"DomainStatus.EBSOptions.VolumeType\" | grep \"gp2\""
+    command_message "${command}"
+    check=$( eval "${command}" )
     if [ -n "${check}" ]; then
       increment_secure   "Elasticsearch doamin \"${domain}\" is using General Purpose SSD"
     else
       increment_insecure "Elasticsearch domain \"${domain}\" is not using General Purpose SSD"
-      vol_size=$( aws es describe-elasticsearch-domain --domain-name "${domain}" --query 'DomainStatus.EBSOptions.VolumeSize' --output text )
-      verbose_message    "aws es update-elasticsearch-domain-config --region ${aws_region} --domain-name ${domain} --ebs-options EBSEnabled=true,VolumeType=\"gp2\",VolumeSize=$vol_size" "fix"
+      command="aws es describe-elasticsearch-domain --domain-name \"${domain}\" --query \"DomainStatus.EBSOptions.VolumeSize\" --output text"
+      command_message "${command}"
+      vol_size=$( eval "${command}" )
+      verbose_message    "aws es update-elasticsearch-domain-config --region \"${aws_region}\" --domain-name \"${domain}\" --ebs-options EBSEnabled=true,VolumeType=\"gp2\",VolumeSize=$vol_size" "fix"
     fi
     # Check that ES domains have cross zone awareness
-    check=$( aws es describe-elasticsearch-domain --domain-name "${domain}" --query "DomainStatus.ElasticsearchClusterConfig.ZoneAwarenessEnabled" | grep true )
+    command="aws es describe-elasticsearch-domain --domain-name \"${domain}\" --query \"DomainStatus.ElasticsearchClusterConfig.ZoneAwarenessEnabled\" | grep true"
+    command_message "${command}"
+    check=$( eval "${command}" )
     if [ -n "${check}" ]; then
       increment_secure   "Elasticsearch doamin \"${domain}\" has cross zone awareness"
     else

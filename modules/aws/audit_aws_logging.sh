@@ -30,11 +30,15 @@
 audit_aws_logging () {
   print_function  "audit_aws_logging"
   verbose_message "CloudTrail" "check"
-  trails=$( aws cloudtrail describe-trails --region "${aws_region}" --query "trailList[].Name" --output text )
+  command="aws cloudtrail describe-trails --region \"${aws_region}\" --query \"trailList[].Name\" --output text"
+  command_message "${command}"
+  trails=$( eval "${command}" )
   if [ "${trails}" ]; then
     for trail in ${trails}; do
       # Check CloudTrail has MultiRegion enabled
-      check=$( aws cloudtrail describe-trails --region "${aws_region}" --trail-name-list "${trail}" --query "trailList[].IsMultiRegionTrail" | grep true )
+      command="aws cloudtrail describe-trails --region \"${aws_region}\" --trail-name-list \"${trail}\" --query \"trailList[].IsMultiRegionTrail\" | grep true"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -n "${check}" ]; then
         increment_secure   "CloudTrail \"${trail}\" is enabled in all regions"
     	else
@@ -42,7 +46,9 @@ audit_aws_logging () {
         verbose_message    "aws cloudtrail update-trail --name ${trail} --is-multi-region-trail" fix
       fi
       # Check CloudTrail is recording global events
-      check=$( aws cloudtrail describe-trails --region "${aws_region}" --trail-name-list "${trail}" --query "trailList[].IncludeGlobalServiceEvents" | grep true )
+      command="aws cloudtrail describe-trails --region \"${aws_region}\" --trail-name-list \"${trail}\" --query \"trailList[].IncludeGlobalServiceEvents\" | grep true"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -n "${check}" ]; then
         increment_secure   "CloudTrail \"${trail}\" is recording global events"
       else
@@ -50,7 +56,9 @@ audit_aws_logging () {
         verbose_message    "aws cloudtrail update-trail --name ${trail} --include-global-service-events" fix
       fi
       # Check log file validation is enabled
-      check=$( aws cloudtrail describe-trails --region "${aws_region}" --trail-name-list "${trail}" --query "trailList[].LogFileValidationEnabled" | grep true )
+      command="aws cloudtrail describe-trails --region \"${aws_region}\" --trail-name-list \"${trail}\" --query \"trailList[].LogFileValidationEnabled\" | grep true"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -n "${check}" ]; then
         increment_secure   "CloudTrail \"${trail}\" log file validation is enabled"
       else
@@ -59,17 +67,23 @@ audit_aws_logging () {
       fi
       # 
     done
-    buckets=$( aws cloudtrail describe-trails --region "${aws_region}" --query 'trailList[*].S3BucketName' --output text )
+    command="aws cloudtrail describe-trails --region \"${aws_region}\" --query 'trailList[*].S3BucketName' --output text"
+    command_message "${command}"
+    buckets=$( eval "${command}" )
     # Check that CloudTrail buckets don't grant access to users it shouldn't
     # Check that CloudTrail bucket versioning is enable
     for bucket in ${buckets}; do
-      grants=$( aws s3api get-bucket-acl --region "${aws_region}" --bucket "${bucket}" | grep URI | grep AllUsers )
+      command="aws s3api get-bucket-acl --region \"${aws_region}\" --bucket \"${bucket}\" | grep URI | grep AllUsers"
+      command_message "${command}"
+      grants=$( eval "${command}" )
       if [ -n "${grants}" ]; then
         increment_insecure "CloudTrail log file bucket \"${bucket}\" grants access to Principal AllUsers"
       else
         increment_secure   "CloudTrail log file bucket \"${bucket}\" does not grant access to Principal AllUsers"
       fi
-      grants=$( aws s3api get-bucket-acl --region "${aws_region}" --bucket "${bucket}" | grep URI | grep AuthenticatedUsers )
+      command="aws s3api get-bucket-acl --region \"${aws_region}\" --bucket \"${bucket}\" | grep URI | grep AuthenticatedUsers"
+      command_message "${command}"
+      grants=$( eval "${command}" )
       if [ -n "${grants}" ]; then
         increment_insecure "CloudTrail log file bucket ${bucket} grants access to Principal AuthenticatedUsers"
         verbose_message    "aws s3api put-bucket-acl --region ${aws_region} --region ${aws_region}--bucket ${bucket} --acl private" fix
@@ -77,13 +91,17 @@ audit_aws_logging () {
         increment_secure   "CloudTrail log file bucket ${bucket} does not grant access to Principal AuthenticatedUsers"
       fi
       
-      grants=$( aws s3api get-bucket-policy --region "${aws_region}" --bucket "${bucket}" --query Policy | tr "}" "\n" | grep Allow | grep "\*" )
+      command="aws s3api get-bucket-policy --region \"${aws_region}\" --bucket \"${bucket}\" --query Policy | tr \"}\" \"\\\n\" | grep Allow | grep \"\*\""
+      command_message "${command}"
+      grants=$( eval "${command}" )
       if [ -n "${grants}" ]; then
         increment_insecure "CloudTrail log file bucket \"${bucket}\" grants access to Principal *"
       else
         increment_secure   "CloudTrail log file bucket \"${bucket}\" does not grant access to Principal *"
       fi
-      logging=$( aws s3api get-bucket-logging --region "${aws_region}" --bucket "${bucket}" )
+      command="aws s3api get-bucket-logging --region \"${aws_region}\" --bucket \"${bucket}\""
+      command_message "${command}"
+      logging=$( eval "${command}" )
       if [ -z "$logging" ]; then
         increment_insecure "CloudTrail log file bucket ${bucket} does not have access logging enabled"
         verbose_message    "aws s3api put-bucket-acl --region ${aws_region} --bucket ${bucket} --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" fix
@@ -91,31 +109,41 @@ audit_aws_logging () {
       else
         increment_secure   "CloudTrail log file bucket ${bucket} has access logging enabled"
       fi
-      check=$( aws s3api get-bucket-versioning --bucket "${bucket}" | grep Enabled )
+      command="aws s3api get-bucket-versioning --bucket \"${bucket}\" | grep Enabled"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -n "${check}" ]; then
         increment_secure   "CloudTrail log bucket \"${bucket}\" has versioning enabled"
       else
         increment_insecure "CloudTrail bucket \"${bucket}\" does not have versioning enabled"
       fi
     done
-    trails=$( aws cloudtrail describe-trails --region "${aws_region}" --query trailList[].Name --output text )
+    command="aws cloudtrail describe-trails --region \"${aws_region}\" --query trailList[].Name --output text"
+    command_message "${command}"
+    trails=$( eval "${command}" )
     for trail in ${trails}; do
       # Check CloudTrail has a CloudWatch Logs group enabled
-      check=$( aws cloudtrail describe-trails --region "${aws_region}" --trail-name-list "${trail}" |grep CloudWatchLogsLogGroupArn )
+      command="aws cloudtrail describe-trails --region \"${aws_region}\" --trail-name-list \"${trail}\" |grep CloudWatchLogsLogGroupArn"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -z "${check}" ]; then
         increment_insecure "CloudTrail ${trail} does not have a CloudWatch Logs group enabled"
       else
         increment_secure   "CloudTrail ${trail} has a CloudWatch Logs group enabled"
       fi
       # Check CloudTrail bucket is receiving logs
-      check=$( aws cloudtrail get-trail-status --region "${aws_region}" --name "${bucket}" --query "LatestCloudWatchLogsDeliveryTime" --output text )
+      command="aws cloudtrail get-trail-status --region \"${aws_region}\" --name \"${bucket}\" --query \"LatestCloudWatchLogsDeliveryTime\" --output text"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -z "${check}" ]; then
         increment_insecure "CloudTrail \"${trail}\" does not have a Last log file delivered timestamp"
       else
         increment_secure   "CloudTrail \"${trail}\" has a last log file delivered timestamp"
       fi
       # Check CloudTrail has key enabled for bucket
-      check=$( aws cloudtrail get-trail-status --region "${aws_region}" --name "${bucket}" | grep KmsKeyId )
+      command="aws cloudtrail get-trail-status --region \"${aws_region}\" --name \"${bucket}\" | grep KmsKeyId"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ -z "${check}" ]; then
         increment_insecure "CloudTrail \"${trail}\" does not have a KMS Key ID"
       else
