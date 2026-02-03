@@ -15,12 +15,15 @@
 
 audit_remote_apple_events () {
   print_function "audit_remote_apple_events"
+  string="Remote Apple Events"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Remote Apple Events" "check"
     if [ "${long_os_version}" -ge 1008 ]; then
       check_osx_systemsetup   "getremoteappleevents" "off"
     else
       check_launchctl_service "eppc"
     fi
+  else
+    na_message "${string}"
   fi
 }

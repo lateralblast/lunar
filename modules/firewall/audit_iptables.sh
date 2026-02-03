@@ -18,8 +18,9 @@
 
 audit_iptables () {
   print_function "audit_iptables"
+  string="IP Tables"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message     "IP Tables" "check"
     check_linux_package "install"   "iptables"
     check_linux_service "iptables"  "on"
     check_linux_service "ip6tables" "on"
@@ -36,5 +37,7 @@ audit_iptables () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

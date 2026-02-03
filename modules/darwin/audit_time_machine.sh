@@ -13,12 +13,13 @@
 
 audit_time_machine () {
   print_function "audit_time_machine"
+  string="Time Machine"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 14 ]; then
-      verbose_message "iCloud Drive" "check"
-      if [ "${audit_mode}" != 2 ]; then
-        check_osx_defaults_bool "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1"
-      fi
+      check_osx_defaults_bool "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1"
     fi
+  else
+    na_message "${string}"
   fi
 }

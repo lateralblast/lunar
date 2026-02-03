@@ -17,13 +17,16 @@
 
 audit_docker_logging () {
   print_function "audit_docker_logging"
+  string="Docker Logging"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then
-      verbose_message "Docker Logging"  "check"
       check_dockerd   "unused" "daemon" "log-level"  "info"
       check_dockerd   "used"   "daemon" "log-driver" ""
       check_dockerd   "used"   "daemon" "log-opt"    ""
     fi
+  else
+    na_message "${string}"
   fi
 }

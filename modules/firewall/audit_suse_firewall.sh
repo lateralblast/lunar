@@ -13,11 +13,14 @@
 
 audit_suse_firewall () {
   print_function "audit_suse_firewall"
+  string="SuSE Firewall"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "SuSE" ]; then
-      verbose_message     "SuSE Firewall"       "check"
       check_linux_service "SuSEfirewall2_init"  "on"
       check_linux_service "SuSEfirewall2_setup" "on"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,12 +13,13 @@
 
 audit_system_auth_nullok () {
   print_function "audit_system_auth_nullok"
+  string="Ensure null passwords are not accepted"
+  check_message "${string}"
   temp_file="${temp_dir}/audit_system_auth_nullok"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "${check_file}" ]; then
-          verbose_message "For \"nullok\" entry in \"${check_file}\"" "check"
           check_value=0
           check_value=$( grep -v '^#' "${check_file}" | grep "nullok" | head -1 | wc -l | sed "s/ //g" )
           lockdown_command="sed 's/ nullok//' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
@@ -44,5 +45,7 @@ audit_system_auth_nullok () {
         restore_file "${check_file}" "${restore_dir}"
       done 
     fi
+  else
+    na_message "${string}"
   fi
 }

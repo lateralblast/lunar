@@ -14,9 +14,10 @@
 
 audit_icloud_drive () {
   print_function "audit_icloud_drive"
+  string="iCloud Drive"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "iCloud Drive" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -37,5 +38,7 @@ audit_icloud_drive () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

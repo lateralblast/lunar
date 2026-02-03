@@ -28,6 +28,8 @@
 
 audit_system_accounting () {
   print_function "audit_system_accounting"
+  string="System Accounting"
+  check_message "${string}"
   max_log_file="8"
   max_log_file_action="keep_logs"
   disk_full_action="single"
@@ -35,7 +37,6 @@ audit_system_accounting () {
   space_left_action="single"
   admin_space_left_action="single"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "System Accounting" "check"
     if [ "${os_name}" = "AIX" ]; then
       check_file_perms "/var/adm/sa"         "0755" "adm"  "adm"
       check_file_perms "/etc/security/audit" "0750" "root" "audit"
@@ -238,5 +239,7 @@ audit_system_accounting () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

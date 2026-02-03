@@ -13,10 +13,13 @@
 
 audit_dhcpsd () {
   print_function "audit_dhcpsd"
+  string="DHCP Server Daemon"
+  check_message "${string}"
   if [ "${dhcpsd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      verbose_message "DHCP Server Daemon" "check"
       check_rctcp     "dhcpsd" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

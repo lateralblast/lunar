@@ -13,8 +13,11 @@
 
 audit_i4ls () {
   print_function "audit_i4ls"
+  string="License Manager"
+  check_message "${string}"
   if [ "${os_name}" = "AIX" ]; then
-    verbose_message "License Manager" "check"
-    check_itab      "i4ls" "off"
+    check_itab "i4ls" "off"
+  else
+    na_message "${string}"
   fi
 }

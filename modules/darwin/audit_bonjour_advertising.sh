@@ -15,12 +15,13 @@
 
 audit_bonjour_advertising() {
   print_function "audit_bonjour_advertising"
+  string="Bonjour Multicast Advertising"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     if [ "${long_os_version}" -ge 1014 ]; then
       check_osx_defaults_bool "/Library/Preferences/com.apple.mDNSResponder.plist" "NoMulticastAdvertisements" "1"
     else
-      verbose_message "Bonjour Multicast Advertising" "check"
       temp_file="${temp_dir}/mdnsmcast"
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
@@ -67,5 +68,7 @@ audit_bonjour_advertising() {
       check_launchctl_service   "com.apple.mDNSResponder"       "off"
       check_launchctl_service   "com.apple.mDNSResponderHelper" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

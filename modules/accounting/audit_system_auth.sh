@@ -18,8 +18,9 @@
 
 audit_system_auth () {
   print_function "audit_system_auth"
+  string="Check system auth settings"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message "PAM Authentication" "check"
     check_file="/etc/security/pwquality.conf"
     check=0
     if [ "${os_vendor}" = "Amazon" ] && [ "${os_version}" = "2016" ]; then
@@ -82,5 +83,7 @@ audit_system_auth () {
       check_file_value  "is" "${check_file}" "unlock_time"      "eq" "900" "hash"  
       check_file_value  "is" "${check_file}" "deny"             "eq" "5"   "hash"  
     fi
+  else
+    na_message "${string}"
   fi
 }

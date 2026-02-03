@@ -13,9 +13,10 @@
 
 audit_safari_show_statusbar () {
   print_function "audit_safari_show_statusbar"
+  string="Safari Show Status Bar"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Safari Show Status Bar" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -27,5 +28,7 @@ audit_safari_show_statusbar () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

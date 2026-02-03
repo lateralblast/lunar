@@ -14,12 +14,14 @@
 
 audit_ufw () {
   print_function "audit_ufw"
+  string="UFW"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] && [ "${os_vendor}" = "Ubuntu" ]; then
-    verbose_message     "UFW"       "check"
     check_linux_package "install"   "ufw"
     check_linux_service "ufw"       "on"
     check_file_value    "is"        "/etc/ufw/ufw.conf"   "LOGLEVEL" "eq" "high" "hash"
     check_linux_package "uninstall" "iptables-persistent"
-    #check_ufw_rule      ""
+  else
+    na_message "${string}"
   fi
 }

@@ -24,8 +24,9 @@
 
 audit_core_dumps () {
   print_function "audit_core_dumps"
+  string="Core Dumps"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message "Core Dumps" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" != "6" ]; then
         cores_dir="/var/cores"
@@ -133,5 +134,7 @@ audit_core_dumps () {
     if [ "${os_name}" = "FreeBSD" ]; then
       check_file_value    "is" "/etc/sysctl.conf"     "kern.coredump"     "eq"  "0" "hash"
     fi
+  else
+    na_message "${string}"
   fi
 }

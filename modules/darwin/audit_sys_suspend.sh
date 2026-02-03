@@ -11,8 +11,11 @@
 
 audit_sys_suspend () {
   print_function "audit_sys_suspend"
+  string="System Suspend"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message  "System Suspend" "check"
     check_file_value "is" "/etc/default/sys-suspend" "PERMS" "eq" "-" "hash"
+  else
+    na_message "${string}"
   fi
 }

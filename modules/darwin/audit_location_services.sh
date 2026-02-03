@@ -16,13 +16,16 @@
 
 audit_location_services () {
   print_function "audit_location_services"
+  string="Location Services"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Location Services" "check"
       if [ "${audit_mode}" != 2 ]; then
         check_osx_defaults_bool "/var/db/locationd/Library/Preferences/ByHost/com.apple.locationd" "LocationServicesEnabled" "0"
         check_osx_defaults_bool "/Library/Preferences/com.apple.locationmenu.plist"                "ShowSystemServices"      "1"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

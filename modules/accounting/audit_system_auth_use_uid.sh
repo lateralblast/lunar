@@ -14,6 +14,8 @@
 
 audit_system_auth_use_uid () {
   print_function "audit_system_auth_use_uid"
+  string="Check the use of su is restricted by sudo"
+  check_message "${string}"
   auth_string="auth"
   search_string="use_uid"
   check_file="/etc/pam.d/su"
@@ -21,7 +23,6 @@ audit_system_auth_use_uid () {
   if [ -f "${check_file}" ]; then
     if [ "${os_name}" = "Linux" ]; then
       if [ "${audit_mode}" != 2 ]; then
-        verbose_message  "The use of su is restricted by sudo" "check"
         lockdown_command="sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
         check_value=$( grep "^${auth_string}" ${check_file} | grep "${search_string}$" | awk '{print $8}' )
         if [ "${check_value}" != "${search_string}" ]; then
@@ -43,5 +44,7 @@ audit_system_auth_use_uid () {
         restore_file "${check_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

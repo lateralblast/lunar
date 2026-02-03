@@ -16,8 +16,9 @@
 
 audit_bluetooth () {
   print_function "audit_bluetooth"
+  string="Bluetooth services and file sharing"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Bluetooth services and file sharing"      "check"
     check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0"
     check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "PANServices"               "0"
     check_osx_defaults_bool "/Library/Preferences/com.apple.Bluetooth" "BluetoothSystemWakeEnable" "0"
@@ -52,6 +53,8 @@ audit_bluetooth () {
     if [ "${os_name}" = "Linux" ]; then
       check_linux_service     "bluez"     "off"
       check_linux_package     "uninstall" "bluez"
+    else
+      na_message "${string}"
     fi
   fi
 }

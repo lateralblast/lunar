@@ -13,9 +13,9 @@
 
 audit_safe_downloads () {
   print_function "audit_safe_downloads"
+  string="Safe Downloads list"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Safe Downloads list" "check"
-    log_file="gatekeeper.log"
     if [ "${audit_mode}" != 2 ]; then
       update_file="/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.plist"
       if [ ! -f "${update_file}" ]; then
@@ -43,5 +43,7 @@ audit_safe_downloads () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,9 +13,10 @@
 
 audit_safari_history () {
   print_function "audit_safari_history"
+  string="Safari History"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Safari History" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -27,5 +28,7 @@ audit_safari_history () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

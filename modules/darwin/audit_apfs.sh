@@ -14,9 +14,10 @@
 
 audit_apfs () {
   print_function "audit_apfs"
+  string="APFS Volumes"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "APFS Volumes" "check"
       if [ "${audit_mode}" != 2 ]; then
         insecure_vols=$( diskutil ap list | grep -Ev "Snapshot|Not Mounted|Sealed|Capacity" | grep -A1 "/" | grep -v "\-" | sed "s/\|//g" | sed "s/ //g" | grep -B1 "FileVault:No" | grep "MountPoint" | cut -f2 -d: )
         for volume in ${insecure_vols}; do
@@ -28,5 +29,7 @@ audit_apfs () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

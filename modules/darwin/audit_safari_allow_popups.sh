@@ -13,9 +13,10 @@
 
 audit_safari_allow_popups () {
   print_function "audit_safari_allow_popups"
+  string="Safari Allow Popups"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Safari Allow Popups" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -27,5 +28,7 @@ audit_safari_allow_popups () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

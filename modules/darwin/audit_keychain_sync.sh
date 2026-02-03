@@ -12,7 +12,9 @@
 #.
 
 audit_keychain_sync () {
-  print_module "audit_keychain_sync"
+  print_function "audit_keychain_sync"
+  string="Keychain sync"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       verbose_message "Keychain sync" "check"
@@ -32,5 +34,7 @@ audit_keychain_sync () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

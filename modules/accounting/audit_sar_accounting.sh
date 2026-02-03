@@ -14,8 +14,9 @@
 
 audit_sar_accounting () {
   print_function "audit_sar_accounting"
+  string="SAR Accounting"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "SAR Accounting" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -48,6 +49,8 @@ audit_sar_accounting () {
       mkdir -p "${check_dir}"
     fi
     check_file_perms "${check_dir}" "0750" "adm" "adm"
+  else
+    na_message "${string}"
   fi
 }
 

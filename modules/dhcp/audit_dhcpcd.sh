@@ -13,10 +13,13 @@
 
 audit_dhcpcd () {
   print_function "audit_dhcpcd"
+  string="DHCP Client Daemon"
+  check_message "${string}"
   if [ "${dhcpcd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      verbose_message "DHCP Client Daemon" "check"
       check_rctcp     "dhcpcd" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

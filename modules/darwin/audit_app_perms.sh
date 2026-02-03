@@ -14,8 +14,9 @@
 
 audit_app_perms () {
   print_function "audit_app_perms"
+  string="Application Permissions"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Application Permissions" "check"
     if [ "${audit_mode}" != 2 ]; then
       OFS=$IFS
       IFS=$(printf '\n+'); IFS=${IFS%?}
@@ -27,5 +28,7 @@ audit_app_perms () {
       done
       IFS=$OFS
     fi
+  else
+    na_message "${string}"
   fi
 }

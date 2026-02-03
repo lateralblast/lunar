@@ -14,8 +14,9 @@
 
 audit_dvfilter () {
   print_function "audit_dvfilter"
+  string="Dvfilter"
+  check_message "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
-    verbose_message "Dvfilter" "check"
     backup_file="${work_dir}/dvfilter"
     current_value=$( esxcli --formatter=csv --format-param=fields="Path,Int Value" system settings advanced list | grep /Net/DVFilterBindIpAddress | cut -f2 -d, )
     if [ "${audit_mode}" != "2" ]; then
@@ -44,5 +45,7 @@ audit_dvfilter () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

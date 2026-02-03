@@ -23,9 +23,10 @@
 
 audit_filesystem_partitions () {
   print_function "audit_filesystem_partitions"
+  string="Filesystem Partitions"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for filesystem in /tmp /var /var/log /var/log/audit /home /dev/shm /var/tmp; do
-      verbose_message "Filesystem \"${filesystem}\" is a separate filesystem" "check"
       mount_test=$( df | awk '{print $6}' | grep -c "^${filesystem}$" | sed "s/ //g" )
       if [ ! "${mount_test}" = "0" ]; then
         increment_secure   "Filesystem \"${filesystem}\" is a separate filesystem"
@@ -33,5 +34,7 @@ audit_filesystem_partitions () {
         increment_insecure "Filesystem \"${filesystem}\" is not a separate filesystem"
       fi
     done
+  else
+    na_message "${string}"
   fi
 }

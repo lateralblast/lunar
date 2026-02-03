@@ -15,9 +15,10 @@
 
 audit_routing_daemons () {
   print_function "audit_routing_daemons"
+  string="Routing Daemons"
+  check_message "${string}"
   if [ "$routed_disable" = "yes" ]; then
     if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
-      verbose_message "Routing Daemons" "check"
       if [ "${os_name}" = "SunOS" ]; then
         if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
           for service_name in "svc:/network/routing/zebra:quagga" \
@@ -47,5 +48,7 @@ audit_routing_daemons () {
         check_rctcp "${service_name}" "off"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

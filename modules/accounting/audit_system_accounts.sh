@@ -23,8 +23,9 @@
 
 audit_system_accounts () {
   print_function "audit_system_accounts"
+  string="System Accounts that do not have a shell"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message "System Accounts that do not have a shell" "check"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
       return
@@ -60,5 +61,7 @@ audit_system_accounts () {
         restore_file "${password_file}" "${restore_dir}"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

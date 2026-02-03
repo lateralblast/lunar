@@ -14,9 +14,10 @@
 
 audit_core_storage () {
   print_function "audit_core_storage"
+  string="Core Storage Volumes"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Core Storage Volumes" "check"
       if [ "${audit_mode}" != 2 ]; then
         insecure_vols=$( diskutil cs list | egrep -v "Snapshot|Not Mounted|Sealed|Capacity" | grep -A1 "/" | grep -v "\-" | sed "s/\|//g" | sed "s/ //g" | grep -B1 "FileVault:No" | grep "MountPoint" | cut -f2 -d: )
         for volume in ${insecure_vols}; do
@@ -28,5 +29,7 @@ audit_core_storage () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

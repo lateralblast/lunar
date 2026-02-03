@@ -15,12 +15,12 @@
 
 audit_account_switching () {
   print_function "audit_account_switching"
+  string="Administrator Account Login to Another User Session"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       ansible_counter=$((ansible_counter+1))
       ansible_value="audit_account_switching_${ansible_counter}"
-      string="Administrator Account Login to Another User Session"
-      verbose_message "${string}"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -56,5 +56,7 @@ audit_account_switching () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -15,9 +15,14 @@
 #.
 
 audit_screen_sharing () {
-  print_function "audit_screen_sharing]"
+  print_function "audit_screen_sharing"
+  string="Screen Sharing"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message         "Screen Sharing"          "check"
-    check_launchctl_service "com.apple.screensharing" "off"
+    if [ "${audit_mode}" != 2 ]; then
+      check_launchctl_service "com.apple.screensharing" "off"
+    fi
+  else
+    na_message "${string}"
   fi
 }

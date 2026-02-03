@@ -11,8 +11,9 @@
 
 audit_bootparams () {
   print_function "audit_bootparams"
+  string="Bootparams Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "Bootparams Daemon" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/network/rpc/bootparams:default" "disabled"
@@ -21,5 +22,7 @@ audit_bootparams () {
     if [ "${os_name}" = "Linux" ]; then
       check_linux_service   "bootparamd" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

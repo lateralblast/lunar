@@ -14,9 +14,10 @@
 
 audit_air_drop () {
   print_function "audit_air_drop"
+  string="Air Drop"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Air Drop" "check"
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
@@ -24,5 +25,7 @@ audit_air_drop () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

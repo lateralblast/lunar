@@ -20,6 +20,8 @@
 
 audit_dns_server () {
   print_function "audit_dns_server"
+  string="DNS Server"
+  check_message "${string}"
   if [ "${named_disable}" = "yes" ]; then
     if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
       verbose_message "DNS Server" "check"
@@ -44,5 +46,7 @@ audit_dns_server () {
         check_file_value      "is" "/etc/rc.conf" "named_enable" "eq" "NO" "hash"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

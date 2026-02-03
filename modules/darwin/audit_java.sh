@@ -13,6 +13,8 @@
 
 audit_java () {
   print_function "audit_java"
+  string="Java"
+  check_message "${string}"
   minimum_value=7
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
@@ -30,5 +32,7 @@ audit_java () {
         increment_secure "Java not installed"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

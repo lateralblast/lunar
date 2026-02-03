@@ -16,9 +16,9 @@
 
 audit_auto_login() {
   print_function "audit_auto_login"
+  string="Autologin"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    string="Autologin"
-    verbose_message         "${string}" "check"
     check_osx_defaults_bool "/Library/Preferences/.GlobalPreferences" "com.apple.userspref.DisableAutoLogin" "yes"
     if [ ! "${audit_mode}" != 2 ]; then
       get_command="defaults read /Library/Preferences/com.apple.loginwindow | grep -c autoLoginUser | sed 's/ //g'"
@@ -51,5 +51,7 @@ audit_auto_login() {
         execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

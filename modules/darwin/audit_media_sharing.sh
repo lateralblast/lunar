@@ -13,9 +13,10 @@
 
 audit_media_sharing () {
   print_function "audit_media_sharing"
+  string="Media Sharing"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Media Sharing" "check"
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
@@ -23,5 +24,7 @@ audit_media_sharing () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -81,10 +81,11 @@
 
 audit_docker_daemon () {
   print_function "audit_docker_daemon"
+  string="Docker Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then
-      verbose_message "Docker Daemon" "check"
       check_file="/etc/audit/audit.rules"
       for docker_file in /usr/bin/docker /var/lib/docker /etc/docker /etc/default/docker /etc/docker/daemon.json /usr/bin/docker-containerd /usr/bin/docker-runc; do
         check_auditctl    "${docker_file}" "docker_file"
@@ -153,5 +154,7 @@ audit_docker_daemon () {
         check_dockerd   "equal"       "config" "MaximumRetryCount"        "5"
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

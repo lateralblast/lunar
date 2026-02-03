@@ -71,10 +71,11 @@
 
 audit_docker_security () {
   print_function "audit_docker_security"
+  string="Docker Security"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then
-      verbose_message "Docker Security"     "check"
       check_dockerd   "notequal"  "config"  "SecurityOpt"     "<no value>"
       check_dockerd   "include"   "config"  "SecurityOpt"     "userns"
       check_dockerd   "include"   "config"  "SecurityOpt"     "no-new-privileges"
@@ -105,5 +106,7 @@ audit_docker_security () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

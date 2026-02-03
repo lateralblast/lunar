@@ -20,8 +20,9 @@
 
 audit_dhcp_server () {
   print_function "audit_dhcp_server"
+  string="DHCP Server"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
-    verbose_message "DHCP Server" "check"
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_sunos_service "svc:/network/dhcp-server:default" "disabled"
@@ -34,5 +35,7 @@ audit_dhcp_server () {
       check_linux_package "uninstall"         "dhcpd"
       check_linux_package "uninstall"         "isc-dhcp-server"
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -14,9 +14,10 @@
 
 audit_safari_warn () {
   print_function "audit_safari_warn"
+  string="Safari Fraudulent Website Warning"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Safari Fraudulent Website Warning" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -28,5 +29,7 @@ audit_safari_warn () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -24,10 +24,11 @@
 
 audit_docker_users () {
   print_function "audit_docker_users"
+  string="Docker Users"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then
-      verbose_message "Docker Users" "check"
       check_file="/etc/group"
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( grep "^${docker_group}:" "${check_file}" | cut -f4 -d: | sed 's/,/ /g' )
@@ -83,5 +84,7 @@ audit_docker_users () {
         check_dockerd "notequal" "config" "User" ""
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,9 +13,9 @@
 
 audit_core_limit () {
   print_function "audit_core_limit"
+  string="Core dump limits"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    string="Core dump limits"
-    verbose_message "${string}" "check"
     log_file="corelimit"
     backup_file="${work_dir}/${log_file}"
     current_value=$( launchctl limit core | awk '{print $3}' )
@@ -62,5 +62,7 @@ audit_core_limit () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

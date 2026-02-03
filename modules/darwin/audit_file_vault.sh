@@ -15,8 +15,9 @@
 
 audit_file_vault () {
   print_function "audit_file_vault"
+  string="File Vault"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "File Vault" "check"
     if [ "${audit_mode}" != 2 ]; then
       actual_value=$( diskutil cs list )
       if [ "${actual_value}" = "No CoreStorage logical volume groups found" ]; then
@@ -40,5 +41,7 @@ audit_file_vault () {
       verbose_message     "Select FileVault"          "fix"
       verbose_message     "Select Turn on FileVault"  "fix"
     fi
+  else
+    na_message "${string}"
   fi
 }

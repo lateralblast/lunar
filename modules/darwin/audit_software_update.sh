@@ -17,8 +17,9 @@
 
 audit_software_update () {
   print_function "audit_software_update"
+  string="Software Update"
+  check_message "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
-    verbose_message "Software Update" "check"
     vmware_depot="http://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml"
     current_update=$( esxcli software profile get 2>&1 | head -1 )
     log_file="softwareupdate.log"
@@ -101,5 +102,7 @@ audit_software_update () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

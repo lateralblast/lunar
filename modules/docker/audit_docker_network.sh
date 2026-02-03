@@ -25,10 +25,11 @@
 
 audit_docker_network () {
   print_function "audit_docker_network"
+  string="Docker Network"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then
-      verbose_message "Docker Network" "check"
       backup_file="network_bridge"
       new_state="false"
       old_state="true"
@@ -62,5 +63,7 @@ audit_docker_network () {
       check_dockerd "unused" "daemon" "iptables" "true"
       check_dockerd "used"   "daemon" "opt"      "encrypted"
     fi
+  else
+    na_message "${string}"
   fi
 }

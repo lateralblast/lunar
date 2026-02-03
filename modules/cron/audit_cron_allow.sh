@@ -21,8 +21,9 @@
 
 audit_cron_allow () {
   print_function "audit_cron_allow"
+  string="At/Cron Authorized Users"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
-    verbose_message "At/Cron Authorized Users" "check"
     if [ "${os_name}" = "FreeBSD" ]; then
       cron_base_dir="/var/cron"
       at_base_dir="/var/at"
@@ -122,5 +123,7 @@ audit_cron_allow () {
         check_file_perms "${check_file}"  "0600" "root" "root"
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

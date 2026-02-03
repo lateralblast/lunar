@@ -14,11 +14,14 @@
 
 audit_asl () {
   print_function "audit_asl"
+  string="System Logging"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message   "System Logging" "check"
     check_append_file "/etc/asl.conf"              "> system.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"                 "hash"
     check_append_file "/etc/asl.conf"              "> appfirewall.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"            "hash"
     check_append_file "/etc/asl/com.apple.authd"   "* file /var/log/authd.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"    "hash"
     check_append_file "/etc/asl/com.apple.install" "* file /var/log/install.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=365" "hash"
+  else
+    na_message "${string}"
   fi
 }

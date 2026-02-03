@@ -19,8 +19,9 @@
 
 audit_auditd () {
   print_function "audit_auditd"
+  string="Audit Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Audit Daemon" "check"
     if [ "${os_name}" = "Linux" ]; then
       check_linux_package "install" "auditd"
       check_linux_package "install" "audispd-plugins" 
@@ -132,5 +133,7 @@ audit_auditd () {
     if [ -f "${check_file}" ]; then
       check_file_perms "${check_file}" "0640" "root" "root"
     fi
+  else
+    na_message "${string}"
   fi
 }

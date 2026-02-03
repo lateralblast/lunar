@@ -31,8 +31,9 @@
 
 audit_sleep () {
   print_function "audit_sleep"
+  string="Sleep"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    verbose_message "Sleep" "check"
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${os_machine}" = "arm64" ]; then
         check_pmset "sleep"                 "10"
@@ -50,5 +51,7 @@ audit_sleep () {
     else
       check_pmset   "sleep"                 "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

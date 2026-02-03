@@ -13,9 +13,12 @@
 
 audit_ipfw () {
   print_function "audit_ipfw"
+  string="IP Firewall"
+  check_message "${string}"
   if [ "${os_name}" = "FreeBSD" ]; then
-    verbose_message  "IP Firewall"        "check"
     check_file_value "is" "/etc/rc.conf"  "firewall_enable" "eq" "YES"    "hash"
     check_file_value "is" "/etc/rc.conf"  "firewall_type"   "eq" "client" "hash"
+  else
+    na_message "${string}"
   fi
 }

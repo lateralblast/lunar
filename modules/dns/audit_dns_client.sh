@@ -11,8 +11,11 @@
 
 audit_dns_client () {
   print_function "audit_dns_client"
+  string="Name Server Caching Daemon"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    verbose_message     "Name Server Caching Daemon" "check"
     check_linux_service "nscd" "off"
+  else
+    na_message "${string}"
   fi
 }

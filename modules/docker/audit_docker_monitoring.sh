@@ -17,6 +17,8 @@
 
 audit_docker_monitoring () {
   print_function "audit_docker_monitoring"
+  string="Docker Healthcheck"
+  check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       docker_bin=$( command -v docker )
@@ -35,5 +37,7 @@ audit_docker_monitoring () {
         done
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

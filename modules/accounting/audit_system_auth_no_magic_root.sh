@@ -11,6 +11,8 @@
 
 audit_system_auth_no_magic_root () {
   print_function "audit_system_auth_no_magic_root"
+  string="Make sure root account isn't locked as part of account locking"
+  check_message "${string}"
   auth_string="${1}"
   search_string="${2}"
   temp_file="${temp_dir}/audit_system_auth_no_magic_root"
@@ -18,7 +20,6 @@ audit_system_auth_no_magic_root () {
     if [ "${audit_mode}" != 2 ]; then
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do 
         if [ -f "${check_file}" ]; then
-          verbose_message "Auth entry not enabled in \"${check_file}\""
           check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk '{print $5}' )
           if [ "${check_value}" != "${search_string}" ]; then
             if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
@@ -47,5 +48,7 @@ audit_system_auth_no_magic_root () {
         restore_file "${restore_file}" "${restore_dir}"
       done 
     fi
+  else
+    na_message "${string}"
   fi
 }

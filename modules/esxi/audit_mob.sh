@@ -13,8 +13,9 @@
 
 audit_mob () {
   print_function "audit_mob"
+  string="Managed Object Browser"
+  check_message "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
-    verbose_message "Managed Object Browser" "check"
     log_file="mob_status"
     backup_file="${work_dir}/${log_file}"
     current_value=$( vim-cmd proxysvc/service_list | grep "/mob" | awk '{print $3}' | cut -f1 -d, | sed 's/"//g' )
@@ -51,5 +52,7 @@ audit_mob () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

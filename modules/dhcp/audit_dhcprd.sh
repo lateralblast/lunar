@@ -13,10 +13,13 @@
 
 audit_dhcprd () {
   print_function "audit_dhcprd"
+  string="DHCP Relay Daemon"
+  check_message "${string}"
   if [ "${dhcprd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      verbose_message "DHCP Relay Daemon" "check"
       check_rctcp     "dhcprd" "off"
     fi
+  else
+    na_message "${string}"
   fi
 }

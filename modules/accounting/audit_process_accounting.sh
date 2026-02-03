@@ -11,8 +11,9 @@
 
 audit_process_accounting () {
   print_function "audit_process_accounting"
+  string="Process Accounting"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    verbose_message "Process Accounting" "check"
     check_file="/etc/rc3.d/S99acct"
     init_file="/etc/init.d/acct"
     log_file="${work_dir}/acct.log"
@@ -43,5 +44,7 @@ audit_process_accounting () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

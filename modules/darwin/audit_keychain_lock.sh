@@ -14,10 +14,10 @@
 
 audit_keychain_lock () {
   print_function "audit_keychain_lock"
+  string="Keychain Lock"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    string="Keychain Lock"
     timeout="21600"
-    verbose_message "${string}" "check"
     if [ "${audit_mode}" != 2 ]; then
       for check_value in timeout lock-on-sleep; do
        verbose_message "Keychain has \"${check_value}\" set" "check"
@@ -52,5 +52,7 @@ audit_keychain_lock () {
         fi
       done
     fi
+  else
+    na_message "${string}"
   fi
 }

@@ -13,6 +13,8 @@
 
 audit_dcui () {
   print_function "audit_dcui"
+  string="DCUI"
+  check_message "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
     service_name="DCUI"
     verbose_message     "${service_name} Lockdown" "check"
@@ -49,5 +51,7 @@ audit_dcui () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

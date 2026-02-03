@@ -17,10 +17,10 @@
 
 audit_asset_cache () {
   print_function "audit_asset_cache"
+  string="Asset Cache Activation"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1013 ]; then
-      string="Asset Cache Activation"
-      verbose_message "${string}" "check"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
         verbose_message "Requires sudo to check" "notice"
         return
@@ -57,5 +57,7 @@ audit_asset_cache () {
         fi
       fi
     fi
+  else
+    na_message "${string}"
   fi
 }

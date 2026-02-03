@@ -17,9 +17,10 @@
 
 audit_screen_lock () {
   print_function "audit_screen_lock"
+  string="Screen Lock"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
-      verbose_message "Screen Idle Time" "check"
       if [ "${audit_mode}" != 2 ]; then
         user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
         for user_name in ${user_list}; do
@@ -60,5 +61,7 @@ audit_screen_lock () {
       verbose_message "Hot Corners" "fix"
       verbose_message "Remove any corners which are set to Disable Screen Saver" "fix"
     fi
+  else
+    na_message "${string}"
   fi
 }
