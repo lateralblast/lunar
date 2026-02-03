@@ -12,7 +12,7 @@
 audit_setup_file () {
   print_function "audit_setup_file"
   string="Setup file"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_file_perms "/var/db/.AppleSetupDone" "0400" "root" "${wheel_group}"
   else

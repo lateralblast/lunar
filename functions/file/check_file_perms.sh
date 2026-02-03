@@ -54,9 +54,13 @@ check_file_perms () {
     return
   fi
   if [ "${check_owner}" != "" ]; then
-    check_result=$( find "${check_file}" -maxdepth 0 -perm "${check_perms}" -user "${check_owner}" -group "${check_group}" 2> /dev/null | wc -l | sed "s/ //g" )
+    command="find \"${check_file}\" -maxdepth 0 -perm \"${check_perms}\" -user \"${check_owner}\" -group \"${check_group}\" 2> /dev/null | wc -l | sed \"s/ //g\""
+    command_message "${command}"
+    check_result=$( eval "${command}" )
   else
-    check_result=$( find "${check_file}" -maxdepth 0 -perm "${check_perms}" 2> /dev/null | wc -l | sed "s/ //g" )
+    command="find \"${check_file}\" -maxdepth 0 -perm \"${check_perms}\" 2> /dev/null | wc -l | sed \"s/ //g\""
+    command_message "${command}"
+    check_result=$( eval "${command}" )
   fi
   log_file="fileperms.log"
   if [ "${check_result}" != "1" ]; then
@@ -72,18 +76,28 @@ check_file_perms () {
     if [ "${audit_mode}" = 0 ]; then
       log_file="${work_dir}/${log_file}"
       if [ "${os_name}" = "SunOS" ]; then
-        file_perms=$( truss -vstat -tstat ls -ld "${check_file}" 2>&1 | grep 'm=' | tail -1 | awk '{print $3}' | cut -f2 -d'=' | cut -c4-7 )
+        command="truss -vstat -tstat ls -ld \"${check_file}\" 2>&1 | grep 'm=' | tail -1 | awk '{print $3}' | cut -f2 -d'=' | cut -c4-7"
+        command_message "${command}"
+        file_perms=$( eval "${command}" )
       else
         if [ "${os_name}" = "Darwin" ]; then
-          file_perms=$( stat -f %p "${check_file}" | tail -c 4 )
+          command="stat -f %p \"${check_file}\" | tail -c 4"
+          command_message "${command}"
+          file_perms=$( eval "${command}" )
         else
-          file_perms=$( stat -c %a "${check_file}" )
+          command="stat -c %a \"${check_file}\""
+          command_message "${command}"
+          file_perms=$( eval "${command}" )
         fi
       fi
       if [ "${os_name}" = "Linux" ]; then
-        file_owner=$( stat -c "%U,%G" "${check_file}" )
+        command="stat -c "%U,%G" \"${check_file}\""
+        command_message "${command}"
+        file_owner=$( eval "${command}" )
       else
-        file_owner=$( ls -ld "${check_file}" | awk '{print $3","$4}' )
+        command="ls -ld \"${check_file}\" | awk '{print $3","$4}'"
+        command_message "${command}"
+        file_owner=$( eval "${command}" )
       fi
       update_log_file "${log_file}" "${check_file},${file_perms},${file_owner}"
       lockdown_message="File \"${check_file}\" to have correct permissions"
@@ -105,8 +119,10 @@ check_file_perms () {
   if [ "${audit_mode}" = 2 ]; then
     restore_file="${restore_dir}/${log_file}"
     if [ -f "${restore_file}" ]; then
-      restore_check=$( grep "${check_file}" "${restore_file}" | cut -f1 -d"," )
-      if [ "$restore_check" = "${check_file}" ]; then
+      command="grep \"${check_file}\" \"${restore_file}\" | cut -f1 -d,"
+      command_message "${command}"
+      restore_check=$( eval "${command}" )
+      if [ "${restore_check}" = "${check_file}" ]; then
         restore_info=$( grep "${check_file}" "${restore_file}" )
         restore_perms=$( echo "${restore_info}" | cut -f2 -d"," )
         restore_owner=$( echo "${restore_info}" | cut -f3 -d"," )

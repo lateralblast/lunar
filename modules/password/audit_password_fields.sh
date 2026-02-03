@@ -61,7 +61,7 @@ audit_password_fields () {
         command_message "${command}"
         user_list=$( eval "${command}" )
       else
-        command="awk -F':' '{print \$1\":\"\${2}\":\"}' < /etc/shadow | grep \"::$\" | cut -f1 -d:"
+        command="awk -F':' '{ print \$1\":\"\$2\":\" }' < /etc/shadow | grep \"::$\" | cut -f1 -d:"
         command_message "${command}"
         user_list=$( eval "${command}" )
       fi

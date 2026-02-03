@@ -21,7 +21,9 @@ audit_system_auth_nullok () {
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do
         if [ -f "${check_file}" ]; then
           check_value=0
-          check_value=$( grep -v '^#' "${check_file}" | grep "nullok" | head -1 | wc -l | sed "s/ //g" )
+          command="grep -v '^#' \"${check_file}\" | grep \"nullok\" | head -1 | wc -l | sed \"s/ //g\""
+          command_message "${command}"
+          check_value=$( eval "${command}" )
           lockdown_command="sed 's/ nullok//' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" = 1 ]; then
             if [ "${audit_mode}" = "1" ]; then

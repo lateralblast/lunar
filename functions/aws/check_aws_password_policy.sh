@@ -16,9 +16,13 @@ check_aws_password_policy () {
   param="${1}"
   value="${2}"
   switch="${3}"
-  policy=$( aws iam get-account-password-policy 2> /dev/null | grep "${param}" )
+  command="aws iam get-account-password-policy 2> /dev/null | grep \"${param}\""
+  command_message "${command}"
+  policy=$( eval "${command}" )
   cli_fix="aws iam update-account-password-policy ${switch}"
-  check=$( grep "${param}" "${policy}" | cut -f2 -d: | sed "s/ //g" | sed "s/,//g" )
+  command="grep \"${param}\" \"${policy}\" | cut -f2 -d: | sed \"s/ //g\" | sed \"s/,//g\""
+  command_message "${command}"
+  check=$( eval "${command}" )
   secure_string="The password policy has \"${param}\" set to \"${value}\""
   insecure_string="The password policy does not has \"${param}\" set to \"${value}\""
   verbose_message "${secure_string}" "check"

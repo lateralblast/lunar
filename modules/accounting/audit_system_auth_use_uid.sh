@@ -24,7 +24,9 @@ audit_system_auth_use_uid () {
     if [ "${os_name}" = "Linux" ]; then
       if [ "${audit_mode}" != 2 ]; then
         lockdown_command="sed 's/^auth.*use_uid$/&\nauth\t\trequired\t\t\tpam_wheel.so use_uid\n/' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
-        check_value=$( grep "^${auth_string}" ${check_file} | grep "${search_string}$" | awk '{print $8}' )
+        command="grep \"^${auth_string}\" ${check_file} | grep \"${search_string}$\" | awk '{print \"\$8\"}'"
+        command_message "${command}"
+        check_value=$( eval "${command}" )
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
             increment_insecure "The use of su is not restricted by sudo in ${check_file}"

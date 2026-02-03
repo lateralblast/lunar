@@ -36,7 +36,9 @@ check_osx_systemsetup () {
           echo "  when: ${ansible_value}.rc == 0 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi
-        check=$( eval "sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'" )
+        command="sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'"
+        command_message "${command}"
+        check=$( eval "${command}" )
         if [ "${check}" != "${value}" ]; then
           increment_insecure "Parameter \"${param}\" not set to \"${value}\""
           update_log_file  "${log_file}" "${check_file}"
@@ -49,7 +51,9 @@ check_osx_systemsetup () {
       else
         restore_file="${restore_dir}/${log_file}"
         if [ -f "${restore_file}" ]; then
-          now=$( eval "sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'" )
+          command="sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'"
+          command_message "${command}"
+          now=$( eval "${command}" )
           old=$( cat "${restore_file}" )
           if [ "${now}" != "${old}" ]; then
             restore_command="systemsetup -${param} ${old}"

@@ -21,7 +21,7 @@
 audit_samba () {
   print_function "audit_samba"
   string="Samba Daemons"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then

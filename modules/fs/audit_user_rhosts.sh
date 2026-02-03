@@ -25,7 +25,7 @@
 audit_user_rhosts () {
   print_function "audit_user_rhosts"
   string="User RHosts Files"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     check_fail=0
     home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d":" )

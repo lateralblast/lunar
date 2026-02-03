@@ -124,7 +124,9 @@ audit_auditd () {
       fi
     done
     if [ -d "/etc/audit" ]; then
-      file_list=$( find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) )
+      command="find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \)"
+      command_message "${command}"
+      file_list=$( eval "${command}" )
       for check_file in ${file_list}; do
         check_file_perms "${check_file}" "0640" "root" "root"
       done

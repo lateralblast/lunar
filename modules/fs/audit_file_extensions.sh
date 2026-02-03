@@ -16,7 +16,7 @@
 audit_file_extensions() {
   print_function "audit_file_extensions"
   string="File Extensions"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_defaults_int "NSGlobalDomain"  "AppleShowAllExtensions" "1"
   else

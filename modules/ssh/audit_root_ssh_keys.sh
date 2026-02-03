@@ -17,7 +17,7 @@ audit_root_ssh_keys () {
     if [ "${audit_mode}" != 2 ]; then
       command="grep '^root' /etc/passwd | cut -f6 -d:"
       command_message "${command}"
-      root_home=$( ${command} )
+      root_home=$( eval "${command}" )
       for check_file in $root_home/.ssh/authorized_keys $root_home/.ssh/authorized_keys2; do
         if [ -f "${check_file}" ]; then
           command="wc -l \"${check_file}\" | awk '{print \$1}'"

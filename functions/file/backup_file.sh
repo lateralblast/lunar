@@ -17,7 +17,9 @@ backup_file () {
       backup_file="${work_dir}${check_file}"
       if [ ! -f "${backup_file}" ]; then
         verbose_message "File \"${check_file}\" to \"${backup_file}\"" "backup"
-        find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
+        command="find \"${check_file}\" | cpio -pdm \"${work_dir}\" 2> /dev/null"
+        command_message "${command}"
+        eval "${command}"
         if [ "${check_file}" = "/etc/system" ]; then
           reboot_required=1
         	verbose_message "Notice:    Reboot required"

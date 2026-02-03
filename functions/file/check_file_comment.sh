@@ -37,7 +37,8 @@ check_file_comment () {
           echo "    create: yes"
           echo ""
         else
-          execute_lockdown "sed 's/${line}/${comment}\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+          command="sed 's/${line}/${comment}\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+          execute_lockdown "${command}"
         fi
         if [ "${audit_mode}" = 0 ]; then
           backup_file      "${check_file}"

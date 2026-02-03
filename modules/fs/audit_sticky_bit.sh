@@ -21,7 +21,7 @@
 audit_sticky_bit () {
   print_function "audit_sticky_bit"
   string="World Writable Directories and Sticky Bits"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${do_fs}" = 1 ]; then
       if [ "${os_version}" = "10" ]; then

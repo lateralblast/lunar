@@ -17,7 +17,7 @@
 audit_file_perms () {
   print_function "audit_file_perms"
   string="System File Permissions"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     log_file="fileperms.log"
     if [ "${audit_mode}" != 2 ]; then

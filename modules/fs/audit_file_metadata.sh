@@ -14,7 +14,7 @@
 audit_file_metadata () {
   print_function "audit_file_metadata"
   string="Auditing of File Metadata Modification Events"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       check_append_file "/etc/security/audit_event" "lck:AUE_CHMOD"     "hash"

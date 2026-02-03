@@ -18,6 +18,12 @@ audit_old_users () {
       verbose_message "Requires sudo to check" "notice"
       return
     fi
+    last_test=$( command -v last)
+    if [ "${last_test}" = "" ]; then
+      increment_insecure "last command not found"
+      verbose_message    "Install wtmpdb package" "fix"
+      return
+    fi
     never_count=0
     if [ "${audit_mode}" = 2 ]; then
       restore_file "/etc/shadow" "${restore_dir}"

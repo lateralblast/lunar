@@ -267,6 +267,24 @@ na_message () {
   fi
 }
 
+# fix_message
+#
+# Fix message
+#.
+
+fix_message () {
+  verbose_message "${1}" "fix"
+}
+
+# insecure_message
+#
+# Insecure message
+#.
+
+insecure_message () {
+  verbose_message "${1}" "fix"
+}
+
 # print_audit_info
 #
 # This function searches the script for the information associated

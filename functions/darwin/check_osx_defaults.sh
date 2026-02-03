@@ -49,15 +49,21 @@ check_osx_defaults () {
         backup_file="$HOME/Library/Preferences/ByHost/${defaults_file}*"
         defaults_command="defaults"
       fi
-      null_check=$( eval "${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | wc -l |sed 's/ //g'" )
+      command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | wc -l |sed 's/ //g'"
+      command_message "${command}"
+      null_check=$( eval "${command}" )
       if [ "$null_check" = "0" ]; then
         check_value="not-found"
       else
-        zero_check=$( eval "${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g' |grep '0' |wc -l |sed 's/ //g'" )
+        command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g' |grep '0' |wc -l |sed 's/ //g'"
+        command_message "${command}"
+        zero_check=$( eval "${command}" )
         if [ "${zero_check}" = "1" ]; then
           check_value="0"
         else
-          check_vale=$( eval "${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g'" )
+          command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g'"
+          command_message "${command}"
+          check_value=$( eval "${command}" )
         fi
       fi
       temp_value="${defaults_value}"

@@ -28,11 +28,15 @@ check_pmset() {
       state="on"
     fi
     log_file="pmset_${service}.log"
-    actual_test=$( pmset -g | grep "${service}" | awk '{print $2}' | grep -c "${value}" | sed "s/ //g" )
+    command="pmset -g | grep \"${service}\" | awk '{print \$2}' | grep -c \"${value}\" | sed \"s/ //g\""
+    command_message "${command}"
+    actual_test=$( eval "${command}" )
     if [ "$actual_test" = "0" ]; then
       actual_value="not-found"
     else
-      actual_value=$( pmset -g | grep "${service}" | awk '{print $2}' | grep "${value}" )
+      command="pmset -g | grep \"${service}\" | awk '{print \$2}' | grep \"${value}\""
+      command_message "${command}"
+      actual_value=$( eval "${command}" )
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Sleep is disabled when powered"

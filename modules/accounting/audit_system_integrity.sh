@@ -18,14 +18,18 @@ audit_system_integrity () {
   check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
-      check=$( /usr/bin/csrutil status | grep enabled )
+      command="/usr/bin/csrutil status | grep enabled"
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ ! "${check}" ]; then
         increment_insecure "System Integrity Protection is not enabled"
       else
         increment_secure   "System Integrity Protection is enabled"
       fi
       if [ "${os_version}" -ge 11 ]; then
-        check=$( /usr/bin/csrutil authenticated-root status | grep enabled )
+        command="/usr/bin/csrutil authenticated-root status | grep enabled"
+        command_message "${command}"
+        check=$( eval "${command}" )
         if [ -z "${check}" ]; then
           increment_insecure "Sealed System Volume is not enabled"
         else

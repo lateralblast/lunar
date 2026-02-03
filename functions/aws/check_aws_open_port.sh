@@ -19,7 +19,9 @@ check_aws_open_port () {
   service="${4}"
   app="${5}"
   instance="${6}"
-  open_port=$( aws ec2 describe-security-groups --region "${aws_region}" --group-ids "${sg}" --filters "Name=ip-permission.to-port,Values=${port}" "Name=ip-permission.cidr,Values=0.0.0.0/0" "Name=ip-permission.protocol,Values=${protocol}" --output text )
+  command="aws ec2 describe-security-groups --region \"${aws_region}\" --group-ids \"${sg}\" --filters \"Name=ip-permission.to-port,Values=${port}\" \"Name=ip-permission.cidr,Values=0.0.0.0/0\" \"Name=ip-permission.protocol,Values=${protocol}\" --output text"
+  command_message "${command}"
+  open_port=$( eval "${command}" )
   if [ "${app}" = "none" ]; then
     string="Security Group \"${sg}\" does not have service \"${service}\" on port \"${port}\" open to the world"
   else

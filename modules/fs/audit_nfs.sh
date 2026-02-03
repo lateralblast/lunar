@@ -25,7 +25,7 @@
 audit_nfs () {
   print_function "audit_nfs"
   string="NFS Services"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "$nfsd_disable" = "yes" ]; then
       if [ "${os_name}" = "AIX" ]; then

@@ -2335,3 +2335,15 @@
 # Improved output for modules in other directories
 # 12.6.1: Tue 03 Feb 2026 11:23:43 AEDT
 # Fixed typo in audit_wireless.sh
+# 12.6.2: Tue 03 Feb 2026 12:24:54 AEDT
+# Update some more functions to use command_message
+# 12.6.3: Tue 03 Feb 2026 12:25:13 AEDT
+# Updated audit_system_accounts.sh to allow single ! in shadow field
+# 12.6.4: Tue 03 Feb 2026 15:32:34 AEDT
+# Updated more modules to use command_message
+# 12.6.5: Tue 03 Feb 2026 16:36:34 AEDT
+# Improved user account check for shells
+# 12.6.6: Tue 03 Feb 2026 17:18:22 AEDT
+# Typo fixes
+# 12.6.7: Tue 03 Feb 2026 20:13:17 AEDT
+# Updates and bug fixes

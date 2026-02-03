@@ -203,7 +203,9 @@ audit_system_accounting () {
         check_file="/var/spool/cron/crontabs/sys"
         check_append_file "${check_file}" "" ""
         if [ -f "${check_file}" ]; then
-          sar_check=$( grep -v "^#" "${check_file}" | grep "sa2" )
+          command="grep -v \"^\\*\" \"${check_file}\" | grep \"sa2\""
+          command_message "${command}"
+          sar_check=$( eval "${command}" )
         fi
         if [ $( expr "${sar_check}" : "[A-z]" ) != 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
@@ -219,14 +221,26 @@ audit_system_accounting () {
               echo "Saving:    File ${check_file} to ${work_dir}${check_file}"
               find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
             fi
-            echo "0,20,40 * * * * /usr/lib/sa/sa1" >> "${check_file}"
-            echo "45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A" >> "${check_file}"
-            chown sys:sys /var/adm/sa/*
-            chmod go-wx /var/adm/sa/*
+            command="echo \"0,20,40 * * * * /usr/lib/sa/sa1\" >> \"${check_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="echo \"45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A\" >> \"${check_file}\""
+            command_message "${command}"
+            eval "${command}"
+            command="chown sys:sys /var/adm/sa/*"
+            command_message "${command}"
+            eval "${command}"
+            command="chmod go-wx /var/adm/sa/*"
+            command_message "${command}"
+            eval "${command}"
             if [ "${os_version}" = "10" ]; then
-              pkgchk -f -n -p "${check_file}" 2> /dev/null
+              command="pkgchk -f -n -p \"${check_file}\" 2> /dev/null"
+              command_message "${command}"
+              eval "${command}"
             else
-              pkg fix $( pkg search "${check_file}" | grep pkg | awk '{print $4}' )
+              command="pkg fix $( pkg search \"${check_file}\" | grep pkg | awk '{print $4}' )"
+              command_message "${command}"
+              eval "${command}"
             fi
           fi
         else

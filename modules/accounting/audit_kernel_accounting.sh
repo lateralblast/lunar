@@ -24,8 +24,10 @@ audit_kernel_accounting () {
       if [ "${os_version}" = "10" ]; then
         if [ -f "${check_file}" ]; then
           verbose_message "Kernel and Process Accounting" "check"
-          check_acc=$( grep -v "^\*" "${check_file}" | grep "c2audit:audit_load" )
-          if [ -z "$check_acc" ]; then
+          command="grep -v \"^\\*\" \"${check_file}\" | grep \"c2audit:audit_load\""
+          command_message "${command}"
+          check_acc=$( eval "${command}" )
+          if [ -z "${check_acc}" ]; then
             check_file_value  "is" "${check_file}" "c2audit"  "colon" "audit_load"  "star"
             if [ "${audit_mode}" = 0 ]; then
               log_file="${work_dir}/bsmconv.log"

@@ -23,7 +23,7 @@
 audit_user_dotfiles () {
   print_function "audit_user_dotfiles"
   string="User Dot Files"
-  check_command "${string}"
+  check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
@@ -31,7 +31,9 @@ audit_user_dotfiles () {
     fi
     home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d":" )
     for home_dir in ${home_dirs}; do
-      file_list=$( find "${home_dir}" -name ".[A-Za-z0-9]*" -depth 1 )
+      command="find \"${home_dir}\" -depth 1 -name \".[A-Za-z0-9]*\" 2>/dev/null"
+      command_message "${command}"
+      file_list=$( eval "${command}" )
       for check_file in ${file_list}; do
         if [ -f "${check_file}" ]; then
           check_file_perms "${check_file}" "0600" "" ""

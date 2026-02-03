@@ -63,7 +63,9 @@ check_append_file () {
             echo "    line: '${parameter}'"
             echo ""
           fi
-          check_value=$( grep -v "^${comment_value}" "${check_file}" | grep -- "${parameter}" | uniq | wc -l | sed "s/ //g" )
+          command="grep -v \"^${comment_value}\" \"${check_file}\" | grep -- \"${parameter}\" | uniq | wc -l | sed \"s/ //g\""
+          command_message "${command}"
+          check_value=$( eval "${command}" )
           if [ "${check_value}" != "1" ]; then
             increment_insecure "${insecure_string}"
             backup_file        "${check_file}"
