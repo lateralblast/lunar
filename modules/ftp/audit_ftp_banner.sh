@@ -17,26 +17,34 @@ audit_ftp_banner () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      package_name="bos.msg.$language_suffix.net.tcp.client"
+      package_name="bos.msg.${language_suffix}.net.tcp.client"
       check_lslpp "${package_name}"
       if [ "${lslpp_check}" = "${package_name}" ]; then
-        message_file="/usr/lib/nls/msg/$language_suffix/ftpd.cat"
-        actual_value=$( dspcat -g "${message_file}" | grep "^9[[:blank:]]" | awk '{print $3}' )
+        message_file="/usr/lib/nls/msg/${language_suffix}/ftpd.cat"
+        command="dspcat -g \"${message_file}\" | grep \"^9[[:blank:]]\" | awk '{print \$3}'"
+        command_message "${command}"
+        actual_value=$( eval "${command}" )
         if [ "${audit_mode}" != 2 ]; then
           if [ "${actual_value}" != "Authorised" ]; then
             if [ "${audit_mode}" = 1 ]; then
               increment_secure  "FTP warning message isn't enabled"
-              verbose_message   "dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > ${temp_dir}/ftpd.tmp" fix
-              verbose_message   "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" ${temp_dir}/ftpd.tmp > ${temp_dir}/ftpd.msg" fix
-              verbose_message   "gencat /usr/lib/nls/msg/en_US/ftpd.cat ${temp_dir}/ftpd.msg" fix
-              verbose_message   "rm ${temp_dir}/ftpd.tmp ${temp_dir}/ftpd.msg" fix
+              verbose_message   "dspcat -g \"${message_file}\" > \"${temp_dir}/ftpd.tmp\"" fix
+              verbose_message   "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" \"${temp_dir}/ftpd.tmp\" > \"${temp_dir}/ftpd.msg\"" fix
+              verbose_message   "gencat \"${message_file}\" \"${temp_dir}/ftpd.msg\"" fix
+              verbose_message   "rm \"${temp_dir}/ftpd.tmp\" \"${temp_dir}/ftpd.msg\"" fix
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${message_file}"
-              dspcat -g /usr/lib/nls/msg/en_US/ftpd.cat > "${temp_dir}/ftpd.tmp"
+              command="dspcat -g \"${message_file}\" > \"${temp_dir}/ftpd.tmp\""
+              command_message "${command}"
+              eval "${command}"
               sed    "s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/" "${temp_dir}/ftpd.tmp" > "${temp_dir}/ftpd.msg"
-              gencat /usr/lib/nls/msg/en_US/ftpd.cat "${temp_dir}/ftpd.msg"
-              rm "${temp_dir}/ftpd.tmp" "${temp_dir}/ftpd.msg"
+              command="gencat \"${message_file}\" \"${temp_dir}/ftpd.msg\""
+              command_message "${command}"
+              eval "${command}"
+              command="rm \"${temp_dir}/ftpd.tmp\" \"${temp_dir}/ftpd.msg\""
+              command_message "${command}"
+              eval "${command}"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
@@ -60,7 +68,7 @@ audit_ftp_banner () {
       fi
       if [ "${os_version}" = "11" ]; then
         check_file="/etc/proftpd.conf"
-        check_file_value is ${check_file} DisplayConnect space /etc/issue hash
+        check_file_value is "${check_file}" DisplayConnect space /etc/issue hash
         if [ "${audit_mode}" = 0 ]; then
           svcadm restart ftp
         fi

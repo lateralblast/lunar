@@ -29,7 +29,7 @@ audit_user_dotfiles () {
       verbose_message "Requires sudo to check" "notice"
       return
     fi
-    home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d":" )
+    home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d:)
     for home_dir in ${home_dirs}; do
       command="find \"${home_dir}\" -depth 1 -name \".[A-Za-z0-9]*\" 2>/dev/null"
       command_message "${command}"

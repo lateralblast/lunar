@@ -64,9 +64,9 @@ check_initd_service () {
         if [ "${audit_mode}" = 2 ]; then
           restore_file="${restore_dir}/${log_file}"
           if [ -f "${restore_file}" ]; then
-            check_name=$( grep "${service_name}" "${restore_file}" | cut -f1 -d"," )
+            check_name=$( grep "${service_name}" "${restore_file}" | cut -f1 -d, )
             if [ "$check_name" = "${service_name}" ]; then
-              check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d"," )
+              check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d, )
               restore_message="Service ${service_name} to ${check_status}"
               if [ "${check_status}" = "disabled" ]; then
                 restore_command="/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}"

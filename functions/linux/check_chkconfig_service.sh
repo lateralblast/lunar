@@ -25,7 +25,7 @@ check_chkconfig_service () {
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"
       if [ -f "${restore_file}" ]; then
-        check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d"," )
+        check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d, )
         if [ "${check_status}" = "on" ] || [ "${check_status}" = "off" ]; then
           if [ "${check_status}" != "${actual_status}" ]; then
             restore_command="${chk_config} --level ${service_level} ${service_name} ${check_status}"
@@ -80,7 +80,7 @@ check_chkconfig_service () {
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"
       if [ -f "${restore_file}" ]; then
-        check_status=$( grep "${service_name}" "${restore_file}" | grep ",${service_level}," | cut -f3 -d"," )
+        check_status=$( grep "${service_name}" "${restore_file}" | grep ",${service_level}," | cut -f3 -d, )
         if [ "${check_status}" = "on" ] || [ "${check_status}" = "off" ]; then
           if [ "${check_status}" != "${actual_status}" ]; then
             restore_command="${chk_config} --level ${service_level} ${service_name} ${check_status}"

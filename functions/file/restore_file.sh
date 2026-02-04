@@ -28,7 +28,7 @@ restore_file () {
   if [ "${audit_mode}" = 2 ]; then
     if [ -f "${restore_file}" ]; then
       if [ -f "${log_file}" ]; then
-        operation=$( grep "${check_file}" < "${log_file}" | cut -f1 -d"," )
+        operation=$( grep "${check_file}" < "${log_file}" | cut -f1 -d, )
         if [ -n "${operation}" ]; then
           restore_command="${operation} \"${check_file}\""
           restore_message="${restore_command}"
@@ -69,7 +69,7 @@ restore_file () {
       fi
     else
       if [ -f "${log_file}" ]; then
-        operation=$( grep "${check_file}" < "${log_file}" | cut -f1 -d"," )
+        operation=$( grep "${check_file}" < "${log_file}" | cut -f1 -d, )
         if [ -n "${operation}" ]; then
           restore_command="${operation} \"${check_file}\""
           restore_message="${restore_command}"

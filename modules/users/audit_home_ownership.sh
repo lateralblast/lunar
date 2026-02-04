@@ -37,10 +37,10 @@ audit_home_ownership () {
         command="lsuser -c ALL | grep -v \"^#name\" | cut -f1 -d:"
         command_message "${command}"
         lsuser -c ALL | grep -v "^#name" | cut -f1 -d: | while read -r check_user; do
-          user_check=$( lsuser -f "${check_user}" | grep id | cut -f2 -d"=" )
+          user_check=$( lsuser -f "${check_user}" | grep id | cut -f2 -d= )
           if [ "${user_check}" -ge 200 ]; then
             found=0
-            command="lsuser -a home \"${check_user}\" | cut -f2 -d"=""
+            command="lsuser -a home \"${check_user}\" | cut -f2 -d="
             command_message "${command}"
             home_dir=$( eval "${command}" )
           else

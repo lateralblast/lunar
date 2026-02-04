@@ -37,7 +37,7 @@ audit_duplicate_ids () {
         if [ "${file_check}" = 1 ]; then
           file_check=$( expr "${file_info}" : "2" )
           if [ "${file_check}" = 1 ]; then
-            file_id=$( echo "${file_info}" |cut -f2 -d":" )
+            file_id=$( echo "${file_info}" |cut -f2 -d:)
             if [ "${audit_mode}" = 1 ];then
               increment_insecure "There are multiple \"${function}\" with \"${term}\" \"${file_id}\""
               duplicate=1

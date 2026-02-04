@@ -21,7 +21,9 @@ audit_ftp_users () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       for user_name in $( lsuser -c ALL | grep -v ^#name | grep -v root | cut -f1 -d: ); do
-        user_check=$( lsuser -f "${user_name}" | grep id | cut -f2 -d= )
+        command="lsuser -f \"${user_name}\" | grep id | cut -f2 -d="
+        command_message "${command}"
+        user_check=$( eval "${command}" )
         if [ "${user_check}" -lt 200 ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure  "User \"${user_name}\" not in \"${check_file}\""
@@ -45,10 +47,14 @@ audit_ftp_users () {
       for user_name in adm bin daemon gdm listen lp noaccess \
         nobody nobody4 nuucp postgres root smmsp svctag \
         sys uucp webserverd; do
-        user_check=$( cut -f1 -d":" < /etc/passwd | grep "^${user_name}$" )
+        command="cut -f1 -d:< /etc/passwd | grep \"^${user_name}$\""
+        command_message "${command}"
+        user_check=$( eval "${command}" )
         user_check=$( expr "${user_check}" : "[A-z]" )
         if [ "${user_check}" = 1 ]; then
-          ftpuser_check=$( grep -v '^#' < "${check_file}" | grep "^${user_name}$" )
+          command="grep -v '^#' < \"${check_file}\" | grep \"^${user_name}$\""
+          command_message "${command}"
+          ftpuser_check=$( eval "${command}" )
           ftpuser_check=$( expr "${ftpuser_check}" : "[A-z]" )
           if [ "${ftpuser_check}" != 1 ]; then
             if [ "${audit_mode}" = 1 ]; then
@@ -73,10 +79,14 @@ audit_ftp_users () {
     if [ "${os_name}" = "Linux" ]; then
       for user_name in root bin daemon adm lp sync shutdown halt mail \
         news uucp operator games nobody; do
-        user_check=$( cut -f1 -d":" < /etc/passwd | grep "^${user_name}$" )
+        command="cut -f1 -d:< /etc/passwd | grep \"^${user_name}$\""
+        command_message "${command}"
+        user_check=$( eval "${command}" )
         user_check=$( expr "${user_check}" : "[A-z]" )
         if [ "${user_check}" = 1 ]; then
-          ftpuser_check=$( grep -v '^#' < "${check_file}" | grep "^${user_name}$" )
+          command="grep -v '^#' < \"${check_file}\" | grep \"^${user_name}$\""
+          command_message "${command}"
+          ftpuser_check=$( eval "${command}" )
           ftpuser_check=$( expr "${ftpuser_check}" : "[A-z]" )
           if [ "${ftpuser_check}" != 1 ]; then
             if [ "${audit_mode}" = 1 ]; then

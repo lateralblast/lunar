@@ -66,12 +66,12 @@ audit_file_perms () {
     else
       restore_file="${restore_dir}/${log_file}"
       if [ -f "${restore_file}" ]; then
-        restore_check=$( grep "${check_file}" "${restore_file}" | cut -f1 -d"," )
+        restore_check=$( grep "${check_file}" "${restore_file}" | cut -f1 -d, )
         if [ "$restore_check" = "${check_file}" ]; then
           restore_info=$( grep "${check_file}" "${restore_file}" )
-          restore_perms=$( echo "${restore_info}" | cut -f2 -d"," )
-          restore_owner=$( echo "${restore_info}" | cut -f3 -d"," )
-          restore_group=$( echo "${restore_info}" | cut -f4 -d"," )
+          restore_perms=$( echo "${restore_info}" | cut -f2 -d, )
+          restore_owner=$( echo "${restore_info}" | cut -f3 -d, )
+          restore_group=$( echo "${restore_info}" | cut -f4 -d, )
           verbose_message "Restoring: File ${check_file} to previous permissions"
           chmod "${restore_perms}" "${check_file}"
           if [ "${restore_owner}" != "" ]; then
@@ -114,12 +114,12 @@ audit_file_perms () {
     else
       restore_file="${restore_dir}/${log_file}"
       if [ -f "${restore_file}" ]; then
-        restore_check=$( grep "${check_file}" "${restore_file}" | cut -f1 -d"," )
+        restore_check=$( grep "${check_file}" "${restore_file}" | cut -f1 -d, )
         if [ "$restore_check" = "${check_file}" ]; then
           restore_info=$( grep "${check_file}" "${restore_file}" )
-          restore_perms=$( echo "${restore_info}" | cut -f2 -d"," )
-          restore_owner=$( echo "${restore_info}" | cut -f3 -d"," )
-          restore_group=$( echo "${restore_info}" | cut -f4 -d"," )
+          restore_perms=$( echo "${restore_info}" | cut -f2 -d, )
+          restore_owner=$( echo "${restore_info}" | cut -f3 -d, )
+          restore_group=$( echo "${restore_info}" | cut -f4 -d, )
           verbose_message "Restoring: File \"${check_file}\" to previous permissions"
           chmod "${restore_perms}" "${check_file}"
           if [ "${restore_owner}" != "" ]; then

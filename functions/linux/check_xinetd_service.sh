@@ -59,9 +59,9 @@ audit_xinetd_service () {
       else
         restore_file="${restore_dir}/${log_file}"
         if [ -f "${restore_file}" ]; then
-          check_name=$( grep "${service_name}" "${restore_file}" | cut -f1 -d"," )
+          check_name=$( grep "${service_name}" "${restore_file}" | cut -f1 -d, )
           if [ "$check_name" = "${service_name}" ]; then
-            check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d"," )
+            check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d, )
             if [ "${actual_status}" != "${check_status}" ]; then
               restore_file "${check_file}" "${restore_dir}"
             fi

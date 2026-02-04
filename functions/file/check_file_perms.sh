@@ -124,9 +124,9 @@ check_file_perms () {
       restore_check=$( eval "${command}" )
       if [ "${restore_check}" = "${check_file}" ]; then
         restore_info=$( grep "${check_file}" "${restore_file}" )
-        restore_perms=$( echo "${restore_info}" | cut -f2 -d"," )
-        restore_owner=$( echo "${restore_info}" | cut -f3 -d"," )
-        restore_group=$( echo "${restore_info}" | cut -f4 -d"," )
+        restore_perms=$( echo "${restore_info}" | cut -f2 -d, )
+        restore_owner=$( echo "${restore_info}" | cut -f3 -d, )
+        restore_group=$( echo "${restore_info}" | cut -f4 -d, )
         restore_message="File \"${check_file}\" to previous permissions"
         restore_command="chmod ${restore_perms} ${check_file}"
         execute_restore "${restore_command}" "${restore_message}" "sudo"

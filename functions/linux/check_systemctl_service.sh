@@ -68,7 +68,7 @@ check_systemctl_service () {
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"
       if [ -f "${restore_file}" ]; then
-        check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d"," )
+        check_status=$( grep "${service_name}" "${restore_file}" | cut -f2 -d, )
         if [ "${check_status}" = "enabled" ] || [ "${check_status}" = "disabled" ]; then
           if [ "${check_status}" != "${actual_status}" ]; then
             verbose_message "Restoring: Service ${service_name} at run level ${service_level} to ${check_status}"

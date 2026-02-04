@@ -22,7 +22,7 @@ check_svcadm_service () {
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${file_header}.log"
       if [ -f "${restore_file}" ]; then
-        restore_status=$( grep "^${service_name}" "${restore_file}" | cut -f2 -d"," )
+        restore_status=$( grep "^${service_name}" "${restore_file}" | cut -f2 -d, )
         restore_test=$( echo "${restore_status}" | grep "[A-z]" )
         if [ -n "${restore_test}" ]; then
           if [ "${restore_status}" != "${service_status}" ]; then

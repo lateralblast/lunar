@@ -197,7 +197,7 @@ check_os_release () {
   fi
   if [ "${os_name}" = "SunOS" ]; then
     os_vendor="Oracle Solaris"
-    os_version=$( uname -r |cut -f2 -d"." )
+    os_version=$( uname -r |cut -f2 -d. )
     if [ "${os_version}" = "11" ]; then
       os_update=$( grep Solaris /etc/release | awk '{print $3}' | cut -f2 -d. )
     fi

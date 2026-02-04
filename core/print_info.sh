@@ -180,8 +180,8 @@ print_changes () {
     echo ""
     file_list=$( find "${base_dir}" -type f -print )
     for saved_file in ${file_list}; do
-      check_file=$( echo "${saved_file}" | cut -f 5- -d"/" )
-      top_dir=$( echo "${saved_file}" | cut -f 1-4 -d"/" )
+      check_file=$( echo "${saved_file}" | cut -f 5- -d/ )
+      top_dir=$( echo "${saved_file}" | cut -f 1-4 -d/ )
       echo "Directory: \"${top_dir}\""
       log_test=$( echo "${check_file}" |grep "log$" )
       if [ -n "${log_test}" ]; then

@@ -51,7 +51,7 @@ audit_grub_security () {
 #        fi
 #        echo -n "Enter password: "
 #        read $password_string
-#        password_string=`htpasswd -nb test $password_string |cut -f2 -d":"`
+#        password_string=`htpasswd -nb test $password_string |cut -f2 -d:`
 #        echo "password --md5 $password_string" >> ${check_file}
 #        chmod 600 ${check_file}
 #        lock_check=`cat ${check_file} |grep lock`
