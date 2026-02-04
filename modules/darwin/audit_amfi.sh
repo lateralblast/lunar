@@ -24,7 +24,9 @@ audit_amfi () {
       get_command="sh -c \"sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed 's/ //g'"
       set_command="sudo /usr/sbin/nvram boot-args=\\\"\\\""
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed "s/ //g" )
+        command="sudo nvram -p > /dev/null 2>&1 | grep -c amfi | sed 's/ //g'"
+        command_message "${command}"
+        check_value=$( eval "${command}" )
         if [ "${check_value}" = "0" ]; then
           increment_secure   "Apple Mobile File Integrity is not \"disabled\""
         else

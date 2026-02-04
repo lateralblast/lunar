@@ -24,7 +24,9 @@ audit_software_update () {
     current_update=$( esxcli software profile get 2>&1 | head -1 )
     log_file="softwareupdate.log"
     backup_file="${work_dir}/${log_file}"
-    available_update=$( esxcli software sources profile list -d "${vmware_depot}" | grep "${os_version}" | head -1 | awk '{print $1}' )
+    command="esxcli software sources profile list -d \"${vmware_depot}\" | grep \"${os_version}\" | head -1 | awk '{print \$1}'"
+    command_message "${command}"
+    available_update=$( eval "${command}" )
     if [ "${audit_mode}" != 2 ]; then
       if [ "${current_update}" != "${available_update}" ]; then
         if [ "${audit_mode}" = 0 ]; then
@@ -68,7 +70,9 @@ audit_software_update () {
         verbose_message "Requires sudo to check" "notice"
         return
       fi
-      actual_status=$( sudo softwareupdate --schedule |awk '{print $4}' )
+      command="sudo softwareupdate --schedule |awk '{print \$4}'"
+      command_message "${command}"
+      actual_status=$( eval "${command}" )
       log_file="softwareupdate.log"
       correct_status="on"
       if [ "${audit_mode}" != 2 ]; then

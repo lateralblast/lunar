@@ -29,7 +29,9 @@ audit_usage_data () {
         return
       fi
       if [ "${audit_mode}" != 2 ]; then
-        user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
+        command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.assistant.support" "Siri Data Sharing Opt-In Status" "2" "int" "${user_name}"
         done

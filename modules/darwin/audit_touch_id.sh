@@ -55,9 +55,13 @@ audit_touch_id () {
         for item in unlock ApplePay ; do
           string="Touch ID ${item}"
           verbose_message "${string}" "check"
-          user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
+          command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
+          command_message "${command}"
+          user_list=$( eval "${command}" )
           for user_name in ${user_list}; do
-            check_value=$( sudo -u "${user_name}" bioutil -r -s | grep "${item}" | head -1 | cut -f2 -d: | sed "s/ //g" > /dev/null 2>&1 )
+            command="sudo -u \"${user_name}\" bioutil -r -s | grep \"${item}\" | head -1 | cut -f2 -d: | sed \"s/ //g\" > /dev/null 2>&1"
+            command_message "${command}"
+            check_value=$( eval "${command}" )
             if [ "${check_value}" = "${touchid_timeout}" ]; then
               increment_secure   "Touch ID Timeout for user \"${user_name}\" is set to \"${touchid_timeout}\""
             else

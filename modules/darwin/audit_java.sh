@@ -21,7 +21,9 @@ audit_java () {
       java_bin=$( command -v java )
       if [ -n "$java_bin" ]; then
         verbose_message "Java version" "check"
-        version_value=$( java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -f1 -d. )
+        command="java -version 2>&1 | awk -F '\"' '/version/ {print \$2}' | cut -f1 -d."
+        command_message "${command}"
+        version_value=$( eval "${command}" )
         if [ -n "${version_value}" ]; then
           if [ "${version_value}" -ge "${minimum_value}" ]; then
             increment_secure   "Java version is greater than \"${minimum_value}\""

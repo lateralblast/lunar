@@ -25,15 +25,21 @@ audit_bluetooth () {
     backup_file="bluetooth_discover"
     if [ "${audit_mode}" != 2 ]; then
       if [ "${os_version}" -ge 14 ]; then
-        user_list=$( find /Users -maxdepth 1 -type d |grep -vE "localized|Shared" |cut -f3 -d/ )
+        command="find /Users -maxdepth 1 -type d |grep -vE \"localized|Shared\" |cut -f3 -d/"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.Bluetooth"           "PrefKeyServicesEnabled" "0"  "bool" "${user_name}"
           check_osx_defaults_user "com.apple.controlcenter.plist" "Bluetooth"              "18" "int"  "${user_name}"
         done
       fi
-      bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i power | cut -f2 -d: | sed "s/ //g" )
+      command="system_profiler SPBluetoothDataType | grep -i power | cut -f2 -d: | sed \"s/ //g\""
+      command_message "${command}"
+      bt_check=$( eval "${command}" )
       if [ ! "${bt_check}" = "Off" ]; then
-        bt_check=$( /usr/sbin/system_profiler SPBluetoothDataType | grep -i discoverable | cut -f2 -d: | sed "s/ //g" )
+        command="system_profiler SPBluetoothDataType | grep -i discoverable | cut -f2 -d: | sed \"s/ //g\""
+        command_message "${command}"
+        bt_check=$( eval "${command}" )
         if [ "${bt_check}" = "Off" ]; then
           increment_secure    "Bluetooth is not discoverable"
         else
@@ -42,7 +48,9 @@ audit_bluetooth () {
       else
         increment_secure      "Bluetooth is turned off"
       fi
-      defaults_check=$( defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed "s/[ ,\",\,]//g" )
+      command="defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed \"s/[ ,\",\,]//g\""
+      command_message "${command}"
+      defaults_check=$( eval "${command}" )
       if [ "${defaults_check}" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
         increment_secure      "Bluetooth status menu is enabled"
       else

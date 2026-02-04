@@ -56,9 +56,13 @@ audit_cron_allow () {
     if [ "${audit_mode}" = 0 ]; then
       for dir_name in var/spool/cron var/spool/cron/crontabs ; do
         if [ -d "${dir_name}" ]; then
-          user_list=$( find "${dir_name}" -maxdepth 1 -type f -exec basename {} \; )
+          command="find \"${dir_name}\" -maxdepth 1 -type f -exec basename {} \;"
+          command_message "${command}"
+          user_list=$( eval "${command}" )
           for user_name in ${user_list}; do
-            check_id=$( grep "^${user_name}" < /etc/passwd | cut -f 1 -d: )
+            command="grep \"^${user_name}\" < /etc/passwd | cut -f 1 -d:"
+            command_message "${command}"
+            check_id=$( eval "${command}" )
             if [ "${check_id}" = "${user_name}" ]; then
               echo "${user_name}" >> "${cron_file}"
               echo "${user_name}" >> "${at_file}"
@@ -68,9 +72,13 @@ audit_cron_allow () {
       done
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
         if [ -d "${dir_name}" ]; then
-          user_list=$( find "${dir_name}" -type f -not -user root -printf '%u\n' | sort -u )
+          command="find \"${dir_name}\" -type f -not -user root -printf '%u\n' | sort -u"
+          command_message "${command}"
+          user_list=$( eval "${command}" )
           for user_name in ${user_list}; do
-            user_check=$( grep "${user_name}" "${check_file}" )
+            command="grep \"${user_name}\" \"${check_file}\""
+            command_message "${command}"
+            user_check=$( eval "${command}" )
             if [ "${user_check}" != "${user_name}" ]; then
               echo "${user_name}" >> "${at_base_dir}/at.allow"
               echo "${user_name}" >> "${cron_base_dir}/cron.allow"    
@@ -88,9 +96,13 @@ audit_cron_allow () {
         if [ "$f_check" = "0" ]; then
           dir_name="/var/spool/cron/atjobs"
           if [ -d "${dir_name}" ]; then
-            user_list=$( ls ${dir_name} )
+            command="ls ${dir_name}"
+            command_message "${command}"
+            user_list=$( eval "${command}" )
             for user_name in ${user_list}; do
-              user_check=$( grep "${user_name}" "${check_file}" )
+              command="grep \"${user_name}\" \"${check_file}\""
+              command_message "${command}"
+              user_check=$( eval "${command}" )
               if [ "${user_check}" != "${user_name}" ]; then
                 echo "${user_name}" >> "${check_file}"
               fi
@@ -103,9 +115,13 @@ audit_cron_allow () {
         if [ "$f_check" = "0" ]; then
           dir_name="/var/spool/at/spool"
           if [ -d "${dir_name}" ]; then
-            user_list=$( ls /var/spool/at/spool )
+            command="ls /var/spool/at/spool"
+            command_message "${command}"
+            user_list=$( eval "${command}" )
             for user_name in ${user_list}; do
-              user_check=$( grep "${user_name}" "${check_file}" )
+              command="grep \"${user_name}\" \"${check_file}\""
+              command_message "${command}"
+              user_check=$( eval "${command}" )
               if [ "${user_check}" != "${user_name}" ]; then
                 echo "${user_name}" >> "${check_file}"
               fi
@@ -114,10 +130,14 @@ audit_cron_allow () {
         fi
       fi
     fi
-    check_file_perms "${check_file}" "0640" "root" "root"
+    command="check_file_perms \"${check_file}\" \"0640\" \"root\" \"root\""
+    command_message "${command}"
+    eval "${command}"
     if [ "${os_name}" = "Linux" ]; then
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
-        check_file_perms "${dir_name}"    "0700" "root" "root"
+        command="check_file_perms \"${dir_name}\" \"0700\" \"root\" \"root\""
+        command_message "${command}"
+        eval "${command}"
       done
       for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
         check_file_perms "${check_file}"  "0600" "root" "root"

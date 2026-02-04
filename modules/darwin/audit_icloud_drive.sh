@@ -23,11 +23,15 @@ audit_icloud_drive () {
         return
       fi
       if [ "${audit_mode}" != 2 ]; then
-        user_list=$( find /Users -maxdepth 1 |grep -vE "localized|Shared" |cut -f3 -d/ )
+        command="find /Users -maxdepth 1 |grep -vE \"localized|Shared\" |cut -f3 -d/"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           for dir_name in Documents Desktop; do
             if [ -f "/Users/${user_name}/Library/Mobile\ Documents/com~apple~CloudDocs/${dir_name}" ]; then
-              check_value=$( sudo -u "${user_name}" sh -c "ls -l /Users/${user_name}/Library/Mobile\ Documents/com~apple~CloudDocs/${dir_name}/" | grep -c total | sed "s/ //g" )
+              command="sudo -u \"${user_name}\" sh -c \"ls -l /Users/${user_name}/Library/Mobile\ Documents/com~apple~CloudDocs/${dir_name}/\" | grep -c total | sed \"s/ //g\""
+              command_message "${command}"
+              check_value=$( eval "${command}" )
               if [ "${check_value}" = "0" ]; then
                 increment_secure   "Documents in \"${dir_name}\" for \"${user_name}\" are not syncing "
               else

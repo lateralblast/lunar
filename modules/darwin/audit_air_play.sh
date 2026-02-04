@@ -19,7 +19,9 @@ audit_air_play () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${audit_mode}" != 2 ]; then
-        user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
+        command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
+        command_message "${command}"
+        user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.controlcenter.plist" "AirplayRecieverEnabled" "0" "bool" "currentHost" "${user_name}"
         done

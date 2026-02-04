@@ -24,13 +24,17 @@ audit_wireless () {
       return
     fi
     if [ "${os_name}" = "Darwin" ] && [ "${os_version}" -ge 14 ]; then
-      user_list=$( find /Users -maxdepth 1 | grep -vE "localized|Shared" | cut -f3 -d/ )
+      command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
+      command_message "${command}"
+      user_list=$( eval "${command}" )
       for user_name in ${user_list}; do
         check_osx_defaults_user "com.apple.controlcenter.plist" "WiFi" "2" "int" "currentHost" "${user_name}"
       done
     else
       # answer="/System/Library/CoreServices/MenuExtras/AirPort.menu"
-      check=$( defaults read com.apple.systemuiserver menuExtras 2> /dev/null | grep "AirPort.menu" | sed "s/[ ,\",\,]//g" | grep -c "AirPort" |sed "s/ //g" )
+      command="defaults read com.apple.systemuiserver menuExtras 2> /dev/null | grep \"AirPort.menu\" | sed \"s/[ ,\\\",\\\,]//g\" | grep -c \"AirPort\" |sed \"s/ //g\""
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ "${check}" = "0" ]; then
         increment_secure   "Wireless status menu is not enabled"
       else
@@ -39,11 +43,17 @@ audit_wireless () {
     fi
   else
     if [ "${os_name}" = "Linux" ]; then
-      check=$( command -v nmcli 2> /dev/null | sed "s/ //g" )
+      command="command -v nmcli 2> /dev/null | sed \"s/ //g\""
+      command_message "${command}"
+      check=$( eval "${command}" )
       if [ "${check}" = "1" ]; then
-        check=$( nmcli radio all | grep -c enabled )
+        command="nmcli radio all | grep -c enabled"
+        command_message "${command}"
+        check=$( eval "${command}" )
       else
-        check=$( find /sys/class/net/*/ -type d -name wireless | wc -l | sed "s/ //g" )
+        command="find /sys/class/net/*/ -type d -name wireless | wc -l | sed \"s/ //g\""
+        command_message "${command}"
+        check=$( eval "${command}" )
       fi
       if [ "${check}" = "0" ]; then
         increment_secure   "Wireless is enabled"
