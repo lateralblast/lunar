@@ -2351,3 +2351,5 @@
 # Updates and bug fixes for AWS modules
 # 12.6.9: Wed 04 Feb 2026 11:01:40 AEDT
 # Added command_message support to modules in audit directory
+# 12.7.0: Wed 04 Feb 2026 13:19:29 AEDT
+# Added command_message support to modules in esxi directory
