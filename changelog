@@ -2353,3 +2353,5 @@
 # Added command_message support to modules in audit directory
 # 12.7.0: Wed 04 Feb 2026 13:19:29 AEDT
 # Added command_message support to modules in esxi directory
+# 12.7.1: Wed 04 Feb 2026 13:23:29 AEDT
+# Added command_message support to modules in firewall directory

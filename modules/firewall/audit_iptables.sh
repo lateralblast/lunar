@@ -28,7 +28,9 @@ audit_iptables () {
       iptables_check=$( command -v iptables 2> /dev/null )
       if [ "${iptables_check}" ]; then
         if [ "${my_id}" = "0" ]; then
-          rules_check=$( iptables -L INPUT -v -n | grep "127.0.0.0" | grep "0.0.0.0" | grep DROP | uniq | wc -l | sed "s/ //g" )
+          command="iptables -L INPUT -v -n | grep \"127.0.0.0\" | grep \"0.0.0.0\" | grep DROP | uniq | wc -l | sed \"s/ //g\""
+          command_message "${command}"
+          rules_check=$( eval "${command}" )
         fi
         if [ "${rules_check}" = "0" ]; then
           increment_insecure "All other devices allow trafic to the loopback network"
