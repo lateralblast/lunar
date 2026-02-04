@@ -35,10 +35,14 @@ audit_writable_files () {
       fi
       if [ "${audit_mode}" != 2 ]; then
         if [ "${os_name}" = "Linux" ]; then
-          file_systems=$( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null )
-          for file_system in ${file_system}s; do
-            check_files=$( find "${file_system}" -xdev -type f -perm -0002 2> /dev/null )
-            for check_file in ${check_file}s; do
+          command="df --local -P | awk {'if (NR!=1) print \$6'} 2> /dev/null"
+          command_message "${command}"
+          file_systems=$( eval "${command}" )
+          for file_system in ${file_systems}; do
+            command="find \"${file_system}\" -xdev -type f -perm -0002 2> /dev/null"
+            command_message "${command}"
+            check_files=$( eval "${command}" )
+            for check_file in ${check_files}; do
               if [ "${ansible_mode}" = 1 ]; then
                 echo ""
                 echo "- name: Checking write permissions for ${check_file}"

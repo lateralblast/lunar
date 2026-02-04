@@ -35,8 +35,12 @@ audit_file_perms () {
           if [ "${os_version}" = "10" ]; then
             verbose_message "Setting:   Correct permissions on file \"${check_file}\""
             log_file="${work_dir}/${log_file}"
-            file_perms=$( ls -l "${check_file}" | echo "obase=8;ibase=2;\`awk '{print $1}' | cut -c2-10 | tr 'xrws-' '11110'\`" | /usr/bin/bc )
-            file_owner=$( ls -l "${check_file}" | awk '{print $3","$4}' )
+            command="ls -l \"${check_file}\" | echo \"obase=8;ibase=2;\`awk '{print \$1}' | cut -c2-10 | tr 'xrws-' '11110'\`\" | /usr/bin/bc"
+            command_message "${command}"
+            file_perms=$( eval "${command}" )
+            command="ls -l \"${check_file}\" | awk '{print \$3","\$4}'"
+            command_message "${command}"
+            file_owner=$( eval "${command}" )
             echo "${check_file},${file_perms},${file_owner}" >> "${log_file}"
             pkgchk -f -n -p "${file_name}" 2> /dev/null
           else
@@ -48,8 +52,12 @@ audit_file_perms () {
         if [ "${audit_mode}" = 0 ]; then
           if [ "$error" = 1 ]; then
             log_file="${work_dir}/${log_file}"
-            file_perms=$( ls -l "${check_file}" | echo "obase=8;ibase=2;\`awk '{print $1}' | cut -c2-10 | tr 'xrws-' '11110'\`" | /usr/bin/bc )
-            file_owner=$( ls -l "${check_file}" | awk '{print $3","$4}' )
+            command="ls -l \"${check_file}\" | echo \"obase=8;ibase=2;\`awk '{print \$1}' | cut -c2-10 | tr 'xrws-' '11110'\`\" | /usr/bin/bc"
+            command_message "${command}"
+            file_perms=$( eval "${command}" )
+            command="ls -l \"${check_file}\" | awk '{print \$3","\$4}'"
+            command_message "${command}"
+            file_owner=$( eval "${command}" )
             echo "${check_file},${file_perms},${file_owner}" >> "${log_file}"
             pkg fix
           fi
@@ -66,7 +74,7 @@ audit_file_perms () {
           restore_group=$( echo "${restore_info}" | cut -f4 -d"," )
           verbose_message "Restoring: File ${check_file} to previous permissions"
           chmod "${restore_perms}" "${check_file}"
-          if [ "${check_owner}" != "" ]; then
+          if [ "${restore_owner}" != "" ]; then
             chown "${restore_owner}:${restore_group}" "${check_file}"
           fi
         fi
@@ -114,7 +122,7 @@ audit_file_perms () {
           restore_group=$( echo "${restore_info}" | cut -f4 -d"," )
           verbose_message "Restoring: File \"${check_file}\" to previous permissions"
           chmod "${restore_perms}" "${check_file}"
-          if [ "${check_owner}" != "" ]; then
+          if [ "${restore_owner}" != "" ]; then
             chown "${restore_owner}:${restore_group}" "${check_file}"
           fi
         fi

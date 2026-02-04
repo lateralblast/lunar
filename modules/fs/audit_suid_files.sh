@@ -30,18 +30,22 @@ audit_suid_files () {
     log_file="setuidfiles.log"
     if [ "${audit_mode}" = 1 ]; then
       if [ "${os_name}" = "Linux" ]; then
-        file_systems=$( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null )
+        command="df --local -P | awk {'if (NR!=1) print \$6'}"
+        command_message "${command}"
+        file_systems=$( eval "${command}" )
         for file_system in ${file_systems}; do
-          check_files=$( find "${file_system}" -xdev -type f -perm -4000 -print 2> /dev/null )
+          command="find \"${file_system}\" -xdev -type f -perm -4000 -print 2> /dev/null"
+          command_message "${command}"
+          check_files=$( eval "${command}" )
           for check_file in ${check_files}; do
             increment_insecure "File \"${check_file}\" is SUID/SGID"
-            lockdown_command="chmod o-S ${check_file}"
+            lockdown_command="chmod o-S \"${check_file}\""
             lockdown_message="Setting file \"${check_file}\" to be non world writable"
             if [ "${ansible_mode}" = 1 ]; then
               echo ""
-              echo "- name: Checking write permissions for ${check_file}"
+              echo "- name: Checking write permissions for \"${check_file}\""
               echo "  file:"
-              echo "    path: ${check_file}"
+              echo "    path: \"${check_file}\""
               echo "    mode: o-S"
               echo ""
             fi

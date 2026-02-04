@@ -34,11 +34,15 @@ audit_unowned_files () {
     fi
     if [ "${audit_mode}" = 1 ]; then
       if [ "${os_name}" = "Linux" ]; then
-        file_systems=$( df --local -P | awk {'if (NR!=1) print $6'} 2> /dev/null )
-        for file_system in ${file_system}s; do
-          check_files=$( find "${file_system}" -xdev -nouser -ls 2> /dev/null )
-          for check_file in ${check_file}s; do
-            increment_insecure "File ${check_file} is unowned"
+        command="df --local -P | awk {'if (NR!=1) print \$6'}"
+        command_message "${command}"
+        file_systems=$( eval "${command}" )
+        for file_system in ${file_systems}; do
+          command="find \"${file_system}\" -xdev -nouser -ls 2> /dev/null"
+          command_message "${command}"
+          check_files=$( eval "${command}" )
+          for check_file in ${check_files}; do
+            increment_insecure "File \"${check_file}\" is unowned"
           done
         done
       else

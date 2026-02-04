@@ -31,7 +31,9 @@ audit_user_netrc () {
       return
     fi
     check_fail=0
-    home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d":" )
+    command="grep -v '^/$' < /etc/passwd | cut -f6 -d':'"
+    command_message "${command}"
+    home_dirs=$( eval "${command}" )
     for home_dir in ${home_dirs}; do
       check_file="${home_dir}/.netrc"
       if [ -f "${check_file}" ]; then
