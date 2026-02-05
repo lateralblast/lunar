@@ -33,7 +33,7 @@ audit_azure_nsg_security_rules () {
     command_message "${command}"
     rule_ids=$( eval "${command}" )
     for rule_id in ${rule_ids}; do
-      for port_no in 3389 22 53 123 161 389; do
+      for port_no in 3389 22 53 80 123 161 389 443 1900; do
         service_name=$( get_service_name_from_port_no "${port_no}" )
         check_azure_nsg_security_rule_value "${service_name}" "${rule_id}" "Inbound" "access"                "ne" "Allow"
         check_azure_nsg_security_rule_value "${service_name}" "${rule_id}" "Inbound" "destinationPortRange"  "ne" "${port_no}"

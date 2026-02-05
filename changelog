@@ -2365,3 +2365,5 @@
 # Improved Azure NSG Security Rules check
 # 12.7.6: Thu 05 Feb 2026 21:10:24 AEDT
 # Added Azure NSG Security Rules check for UDP access
+# 12.7.7: Fri 06 Feb 2026 11:15:24 AEDT
+# Added Azure NSG Security Rules check for HTTP(S)
