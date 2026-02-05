@@ -2359,3 +2359,5 @@
 # Added command_message support to modules in fs directory
 # 12.7.3: Wed 04 Feb 2026 13:28:29 AEDT
 # Bug fixes and improvements
+# 12.7.4: Thu 05 Feb 2026 20:45:10 AEDT
+# Added Azure NSG Security Rules check for RDP and SSH access
