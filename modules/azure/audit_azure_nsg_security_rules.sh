@@ -12,7 +12,7 @@
 # 7.2 Ensure that SSH access from the Internet is evaluated and restricted
 # 7.3 Ensure that UDP access from the Internet is evaluated and restricted
 # 7.4 Ensure that HTTP(S) access from the Internet is evaluated and restricted
-# Refer to Section(s) 7.1-4 Pages 288-302 CIS Microsoft Azure Foundations Benchmark
+# Refer to Section(s) 7.1-4 Pages 288-302 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.

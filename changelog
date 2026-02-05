@@ -2369,3 +2369,5 @@
 # Added Azure NSG Security Rules check for HTTP(S)
 # 12.7.8: Fri 06 Feb 2026 11:22:24 AEDT
 # Updated documentation for Azure NSG Security Rules check
+# 12.7.9: Fri 06 Feb 2026 11:26:24 AEDT
+# Added Azure Network Watcher check

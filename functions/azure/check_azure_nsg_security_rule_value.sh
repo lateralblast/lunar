@@ -18,7 +18,6 @@ check_azure_nsg_security_rule_value () {
   parameter_name="${4}"
   function="${5}"
   correct_value="${6}"
-  
   short_id=$( basename "${rule_id}" )
   print_function "check_azure_nsg_security_rule_value"
   verbose_message "NSG Rule ID \"${short_id}\" is \"${direction}\"" "check"
