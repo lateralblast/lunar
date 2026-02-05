@@ -33,4 +33,5 @@
 audit_azure_networking_services () {
   print_function  "audit_azure_networking_services"
   verbose_message "Azure Networking Services" "check"
+  audit_azure_nsg_security_rules
 }
