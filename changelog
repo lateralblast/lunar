@@ -2363,3 +2363,5 @@
 # Added Azure NSG Security Rules check for RDP and SSH access
 # 12.7.5: Thu 05 Feb 2026 21:01:24 AEDT
 # Improved Azure NSG Security Rules check
+# 12.7.6: Thu 05 Feb 2026 21:10:24 AEDT
+# Added Azure NSG Security Rules check for UDP access

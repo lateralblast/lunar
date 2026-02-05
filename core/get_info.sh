@@ -17,8 +17,13 @@
 get_service_name_from_port_no () {
   port_no="${1}"
   case "${port_no}" in
-    3389) echo "RDP" ;;
     22)   echo "SSH" ;;
+    53)   echo "DNS" ;;
+    123)  echo "NTP" ;;
+    161)  echo "SNMP" ;;
+    389)  echo "LDAP" ;;
+    1900) echo "SSDP" ;;
+    3389) echo "RDP" ;;
     *)    echo "Unknown" ;;
   esac
 }
