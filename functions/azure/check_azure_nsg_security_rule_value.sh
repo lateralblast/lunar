@@ -31,8 +31,8 @@ check_azure_nsg_security_rule_value () {
       command="az network nsg rule show --id ${rule_id} --query \"${parameter_name}\" --output tsv 2> /dev/null"
       command_message "${command}"
       actual_value=$( eval "${command}" )
-      if [ "${actual_value}" = "${correct_value}" ] || [ "${actual_value}" = "*" ]; then
-        increment_insecure "${description} \"${short_id}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\" or \"*\""
+      if [ "${actual_value}" = "${correct_value}" ] || [ "${actual_value}" = "*" ] || [ "${actual_value}" = "" ]; then
+        increment_insecure "${description} \"${short_id}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\" or \"*\" or \"\""
       else
         increment_secure   "${description} \"${short_id}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       fi

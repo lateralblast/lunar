@@ -2361,3 +2361,5 @@
 # Bug fixes and improvements
 # 12.7.4: Thu 05 Feb 2026 20:45:10 AEDT
 # Added Azure NSG Security Rules check for RDP and SSH access
+# 12.7.5: Thu 05 Feb 2026 21:01:24 AEDT
+# Improved Azure NSG Security Rules check

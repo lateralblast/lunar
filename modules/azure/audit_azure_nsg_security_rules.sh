@@ -9,6 +9,8 @@
 # Check Azure NSG Security Rules
 #
 # 7.1 Ensure that RDP access from the Internet is evaluated and restricted
+# 7.2 Ensure that SSH access from the Internet is evaluated and restricted
+# 
 #
 # This requires the Azure CLI to be installed and configured
 #.
