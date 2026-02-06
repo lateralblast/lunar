@@ -2377,3 +2377,9 @@
 # Added Azure Public IPs check
 # 12.8.2: Fri 06 Feb 2026 15:37:24 AEDT
 # Added Azure Network Watcher Flow Logs check
+# 12.8.3: Fri 06 Feb 2026 16:01:24 AEDT
+# Updated Azure Network Watcher Flow Logs check
+# 12.8.4: Fri 06 Feb 2026 16:07:24 AEDT
+# Added Azure Authentication Type check stub
+# 12.8.5: Fri 06 Feb 2026 17:29:24 AEDT
+# Added Azure WAF check

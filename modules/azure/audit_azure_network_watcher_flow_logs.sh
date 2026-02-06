@@ -26,7 +26,7 @@ audit_azure_network_watcher_flow_logs () {
     command_message "$command"
     flow_logs=$(eval "$command")
     for flow_log in $flow_logs; do
-      check_azure_network_watcher_flow_logs_value "${location}" "${flow_log}" "retentionPolicy.days" "90"
+      check_azure_network_watcher_flow_logs_value "${location}" "${flow_log}" "retentionPolicy.days" "90" "retention"
     done
   done
 }

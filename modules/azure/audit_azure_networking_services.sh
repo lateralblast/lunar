@@ -16,7 +16,7 @@
 # 7.6   Ensure that Network Watcher is 'Enabled' for Azure Regions that are in use
 # 7.7   Ensure that Public IP addresses are Evaluated on a Periodic Basis (Manual)
 # 7.8   Ensure that virtual network flow log retention days is set to greater than or equal to 90
-# 7.9   Ensure 'Authentication type' is set to 'Azure Active Directory' only for Azure VPN Gateway point-to-site configuration
+# 7.9   Ensure 'Authentication type' is set to 'Azure Active Directory' only for Azure VPN Gateway point-to-site configuration - TBD
 # 7.10  Ensure Azure Web Application Firewall (WAF) is enabled on Azure Application Gateway
 # 7.11  Ensure subnets are associated with network security groups
 # 7.12  Ensure the SSL policy's 'Min protocol version' is set to 'TLSv1_2' or higher on Azure Application Gateway
@@ -36,4 +36,6 @@ audit_azure_networking_services () {
   audit_azure_nsg_security_rules
   audit_azure_network_watcher
   audit_azure_public_ips
+  audit_azure_network_watcher_flow_logs
+  audit_azure_authentication_type
 }
