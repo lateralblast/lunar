@@ -2383,3 +2383,5 @@
 # Added Azure Authentication Type check stub
 # 12.8.5: Fri 06 Feb 2026 17:29:24 AEDT
 # Added Azure WAF check
+# 12.8.6: Fri 06 Feb 2026 17:31:24 AEDT
+# Added Azure VNet check
