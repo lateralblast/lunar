@@ -9,6 +9,7 @@
 # Check Azure Key Vault Public Network Access
 #
 # 8.3.7 Ensure Public Network Access is Disabled
+#
 # Refer to Section(s) 8.3.7 Page(s) 447-50 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

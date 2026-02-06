@@ -9,6 +9,7 @@
 # Check Azure User Access Administrator Role
 #
 # 5.3.3 Ensure that User Access Administrator Role is restricted
+#
 # Refer to Section(s) 5.3.3 Page(s) 115-6 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

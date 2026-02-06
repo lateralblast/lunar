@@ -9,6 +9,7 @@
 # Check Azure Key Vault Logging
 #
 # 6.1.1.4  Ensure that logging for Azure Key Vault is 'Enabled'
+#
 # Refer to Section(s) 6.1.1.4 Page(s) 207-10 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

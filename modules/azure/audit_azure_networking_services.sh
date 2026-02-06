@@ -6,7 +6,7 @@
 
 # audit_azure_networking_services
 #
-# Check Azure Networking Services
+# Audit Azure Networking Services
 #
 # 7.1   Ensure that RDP access from the Internet is evaluated and restricted
 # 7.2   Ensure that SSH access from the Internet is evaluated and restricted
@@ -35,4 +35,5 @@ audit_azure_networking_services () {
   verbose_message "Azure Networking Services" "check"
   audit_azure_nsg_security_rules
   audit_azure_network_watcher
+  audit_azure_public_ips
 }

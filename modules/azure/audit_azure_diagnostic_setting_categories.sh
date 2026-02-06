@@ -9,6 +9,7 @@
 # Check Azure Diagnostic Setting Categories
 #
 # 6.1.1.2  Ensure Diagnostic Setting captures appropriate categories
+#
 # Refer to Section(s) 6.1.1.2 Page(s) 199-202 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

@@ -9,6 +9,7 @@
 # Check Azure Virtual Network Flow Logs
 #
 # 6.1.1.7  Ensure that virtual network flow logs are captured and sent to Log Analytics
+#
 # Refer to Section(s) 6.1.1.7 Page(s) 215-7 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

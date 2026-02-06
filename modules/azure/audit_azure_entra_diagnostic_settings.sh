@@ -9,7 +9,10 @@
 # Check Azure Entra Diagnostic Settings
 #
 # 6.1.1.9  Ensure that a Microsoft Entra diagnostic setting exists to send Microsoft Entra activity logs to an appropriate destination
+#
 # Refer to Section(s) 6.1.1.9 Page(s) 220-2 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# This requires the Azure CLI to be installed and configured
 #.
 
 audit_azure_entra_diagnostic_settings () {

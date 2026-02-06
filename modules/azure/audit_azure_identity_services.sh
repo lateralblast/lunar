@@ -50,6 +50,7 @@
 # 5.26  Ensure fewer than 5 users have global administrator assignment - TBD
 # 5.27  Ensure there are between 2 and 3 subscription owners
 # 5.28  Ensure passwordless authentication methods are considered - TBD
+#
 # Refer to Section(s) 5.1-28 Page(s) 70-190 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

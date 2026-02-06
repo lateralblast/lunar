@@ -13,6 +13,7 @@
 # 8.3.3 Ensure that the Expiration Date is set for all Secrets in RBAC Key Vaults
 # 8.3.4 Ensure that the Expiration Date is set for all Secrets in Non-RBAC Key Vaults
 # 8.3.9 Ensure automatic key rotation is enabled within Azure Key Vault
+#
 # Refer to Section(s) 8.3.1-4,9 Page(s) 425-39,456-9 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # Azure and NIST recommend that keys be rotated every two years or less. Refer to

@@ -9,6 +9,7 @@
 # Check Azure Key Vault RBAC
 #
 # 8.3.5 Ensure that Purge Protection is enabled for all Key Vaults
+#
 # Refer to Section(s) 8.3.5 Page(s) 440-3 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

@@ -2371,3 +2371,7 @@
 # Updated documentation for Azure NSG Security Rules check
 # 12.7.9: Fri 06 Feb 2026 11:26:24 AEDT
 # Added Azure Network Watcher check
+# 12.8.0: Fri 06 Feb 2026 13:32:24 AEDT
+# Documentation updates
+# 12.8.1: Fri 06 Feb 2026 13:35:24 AEDT
+# Added Azure Public IPs check

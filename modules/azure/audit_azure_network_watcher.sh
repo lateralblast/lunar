@@ -9,6 +9,7 @@
 # Check Azure Network Watcher
 #
 # 7.6 Ensure that Network Watcher is 'Enabled' for Azure Regions that are in use
+#
 # Refer to Section(s) 7.6 Page(s) 306-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured

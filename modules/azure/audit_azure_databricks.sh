@@ -19,6 +19,7 @@
 # 2.1.9  Ensure 'No Public IP' is set to 'Enabled'
 # 2.1.10 Ensure 'Allow Public Network Access' is set to 'Disabled'
 # 2.1.11 Ensure private endpoints are used to access Azure Databricks workspaces
+#
 # Refer to Section(s) 2.1.1-11 Page(s) 27-62 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured
