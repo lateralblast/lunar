@@ -9,8 +9,9 @@
 # Check Azure WAF
 #
 # 7.10 Ensure Azure Web Application Firewall (WAF) is enabled on Azure Application Gateway
+# 7.13 Ensure 'HTTP2' is set to 'Enabled' on Azure Application Gateway
 #
-# Refer to Section(s) 7.10 Page(s) 319-21 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 7.10,13 Page(s) 319-21,325-7 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -26,7 +27,8 @@ audit_azure_waf () {
     command_message "$command"
     waf_list=$(eval "$command")
     for waf_name in $waf_list; do
-      check_azure_waf_value "" "${waf_name}" "${resource_group}" "firewallPolicy.id" "ne" ""
+      check_azure_waf_value "" "${waf_name}" "${resource_group}" "firewallPolicy.id" "ne" ""     ""        ""
+      check_azure_waf_value "" "${waf_name}" "${resource_group}" "enableHttp2"       "eq" "true" "--http2" "Enabled"
     done
   done
 }

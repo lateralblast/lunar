@@ -26,7 +26,7 @@ audit_azure_waf_ssl_policy () {
     command_message "$command"
     waf_list=$(eval "$command")
     for waf_name in $waf_list; do
-      check_azure_waf_value "ssl-policy" "${waf_name}" "${resource_group}" "firewallPolicy.id" "ne" ""
+      check_azure_waf_value "ssl-policy" "${waf_name}" "${resource_group}" "firewallPolicy.id" "ne" "" "" ""
     done
   done
 }

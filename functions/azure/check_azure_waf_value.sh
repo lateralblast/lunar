@@ -15,31 +15,36 @@ check_azure_waf_value () {
   waf_name="${1}"
   policy_name="${2}"
   resource_group="${3}"
-  parameter_name="${4}"
+  query_string="${4}"
   function="${5}"
   correct_value="${6}"
+  parameter_name="${7}"
+  parameter_value="${8}"
   print_function  "check_azure_waf_value"
   verbose_message "Azure WAF" "check"
   if [ "${policy_name}" = "" ]; then
     policy_string=""
-    command="az network application-gateway show --name "${waf_name}" --resource-group "${resource_group}" --query "${parameter_name}" --output tsv 2> /dev/null"
+    command="az network application-gateway show --name "${waf_name}" --resource-group "${resource_group}" --query "${query_string}" --output tsv 2> /dev/null"
   else
     policy_string=" Policy \"${policy_name}\""
-    command="az network application-gateway ${policy_name} show --name "${waf_name}" --resource-group "${resource_group}" --query "${parameter_name}" --output tsv 2> /dev/null"
+    command="az network application-gateway ${policy_name} show --name "${waf_name}" --resource-group "${resource_group}" --query "${query_string}" --output tsv 2> /dev/null"
   fi
   command_message "$command"
   actual_value=$(eval "$command")
   if [ "${function}" = "ne" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${parameter_name}\" ${function} to \"${correct_value}\""
+      increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
     else
-      increment_secure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
+      increment_secure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\""
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
+      increment_secure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\""
     else
-      increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${parameter_name}\" ${function} to \"${correct_value}\""
+      increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
+      if [ "${parameter_name}" != "" ]; then
+        verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" "${parameter_name}" "${parameter_value}"" "fix"
+      fi
     fi
   fi
 }

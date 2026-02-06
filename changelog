@@ -2387,3 +2387,5 @@
 # Added Azure VNet check
 # 12.8.7: Sat 07 Feb 2026 11:35:30 AEDT
 # Added Azure WAF SSL Policy check
+# 12.8.8: Sat 07 Feb 2026 11:58:30 AEDT
+# Added Azure WAF HTTP2 check
