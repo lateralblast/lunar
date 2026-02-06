@@ -2375,3 +2375,5 @@
 # Documentation updates
 # 12.8.1: Fri 06 Feb 2026 13:35:24 AEDT
 # Added Azure Public IPs check
+# 12.8.2: Fri 06 Feb 2026 15:37:24 AEDT
+# Added Azure Network Watcher Flow Logs check
