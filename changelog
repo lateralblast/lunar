@@ -2389,3 +2389,5 @@
 # Added Azure WAF SSL Policy check
 # 12.8.8: Sat 07 Feb 2026 11:58:30 AEDT
 # Added Azure WAF HTTP2 check
+# 12.8.9: Sat 07 Feb 2026 18:40:30 AEDT
+# Added Azure WAF Request Body check
