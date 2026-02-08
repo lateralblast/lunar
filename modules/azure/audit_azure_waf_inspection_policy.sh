@@ -9,8 +9,9 @@
 # Check Azure WAF Inspection Policy
 #
 # 7.14 Ensure request body inspection is enabled in Azure Web Application Firewall policy on Azure Application Gateway
+# 7.15 Ensure bot protection is enabled in Azure Web Application Firewall policy on Azure Application Gateway - TBD
 #
-# Refer to Section(s) 7.14 Page(s) 328-30 CIS Microsoft Azure Foundations Benchmark v5.0.0
+# Refer to Section(s) 7.14-15 Page(s) 328-33 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -30,7 +31,9 @@ audit_azure_waf_inspection_policy () {
       command_message "$command"
       waf_ids=$(eval "$command")
       for waf_id in $waf_ids; do
-        check_azure_waf_value "waf-policy" "${waf_id}" "" "policySettings.requestBodyCheck" "eq" "true" "request-body-check" "true"
+        check_azure_waf_value "waf-policy" "${waf_id}" "" "policySettings.requestBodyCheck" "eq" "true"                        "request-body-check" "true"
+        check_azure_waf_value "waf-policy" "${waf_id}" "" "managedRules.managedRuleSets"    "eq" "Microsoft_BotManagerRuleSet" ""                   ""
+        check_azure_waf_value "waf-policy" "${waf_id}" "" "managedRules.managedRuleSets"    "ne" "Disabled"                    ""                   ""
       done
     done
   done

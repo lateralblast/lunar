@@ -24,7 +24,11 @@ check_azure_waf_value () {
   print_function  "check_azure_waf_value"
   if [ "${policy_name}" = "waf-policy" ]; then
     verbose_message "Azure WAF \"${waf_id}\" has \"${query_string}\" ${function} to \"${correct_value}\"" "check"
-    command="az network application-gateway ${policy_name} show --id \"${waf_id}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+    if [ "${query_string}" = "managedRules.managedRuleSets" ]; then
+      command="az network application-gateway ${policy_name} show --id \"${waf_id}\" --query \"${query_string}\" | grep \"${correct_value}\" | cut -f4 -d\\\" 2> /dev/null"
+    else
+      command="az network application-gateway ${policy_name} show --id \"${waf_id}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+    fi
     command_message "$command"
     actual_value=$(eval "$command")
     if [ "${function}" = "ne" ]; then
