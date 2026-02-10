@@ -28,8 +28,8 @@ check_azure_monitor_value () {
   fi
   verbose_message "Azure Monitor value for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is \"${function}\" to \"${correct_value}\"" "check"
   command="az monitor "${monitor_property}" show --name "${workspace_name}" --resource-id "${resource_id}" --query "${parameter_name}" --output tsv 2> /dev/null"
-  actual_value=$( eval "${command}" )
   command_message "${command}"
+  actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_secure "${description} for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is \"${function}\" to \"${correct_value}\""

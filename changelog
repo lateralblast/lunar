@@ -2403,3 +2403,7 @@
 # Added Azure Storage SAS check
 # 12.9.5: Tue 10 Feb 2026 16:50:15 AEDT
 # Added Azure Storage SAS HTTPS Only check
+# 12.9.6: Tue 10 Feb 2026 18:01:15 AEDT
+# Added Azure Storage SAS token expiration check stub
+# 12.9.7: Tue 10 Feb 2026 18:05:15 AEDT
+# Updates and improvements

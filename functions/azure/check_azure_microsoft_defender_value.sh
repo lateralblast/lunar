@@ -34,9 +34,9 @@ check_azure_microsoft_defender_value () {
       increment_secure "Microsoft Defender \"${description}\" exists"
     else
       verbose_message  "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\"" "check"
-      command="az security pricing show --name \"${parameter_name}\" --query pricingTier --output tsv 2> /dev/null"
-      actual_value=$( eval "${command}" )
+      command="az security pricing show --name \"${parameter_name}\" --query \"pricingTier\" --output tsv 2> /dev/null"
       command_message "${command}"
+      actual_value=$( eval "${command}" )
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       else
@@ -49,7 +49,9 @@ check_azure_microsoft_defender_value () {
       fi
       if [ ! "${correct_status}" = "" ]; then
         verbose_message     "Azure Microsoft Defender \"${description}\" Status is \"${function}\" to \"${correct_status}\"" "check"
-        actual_status=$( az security pricing show --name "${parameter_name}" --query "[operationStatus]" --output tsv )
+        command="az security pricing show --name \"${parameter_name}\" --query \"[operationStatus]\" --output tsv 2> /dev/null"
+        command_message "${command}"
+        actual_status=$( eval "${command}" )
         if [ "${actual_status}" = "${correct_status}" ]; then
           increment_secure    "Microsoft Defender \"${description}\" Status is \"${function}\" to \"${correct_status}\""
         else

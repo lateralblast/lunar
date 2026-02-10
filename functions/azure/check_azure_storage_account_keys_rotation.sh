@@ -16,8 +16,8 @@ check_azure_storage_account_keys_rotation () {
   resource_id="${2}"
   correct_value="${3}"
   command="az monitor activity-log list --namespace Microsoft.Storage --offset ${correct_value}d --query \"[?contains(authorization.action, 'regenerateKey')]\" --resource-id \"${resource_id}\" 2> /dev/null |grep \"Succeeded\""
-  status_check=$( eval "${command}" )
   command_message "${command}"
+  status_check=$( eval "${command}" )
   if [ -n "${status_check}" ]; then
     increment_secure "Storage Account \"${storage_account}\" has access keys regenerated in the last \"${correct_value}\" days"
   else

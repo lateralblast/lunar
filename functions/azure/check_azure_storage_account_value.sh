@@ -23,8 +23,8 @@ check_azure_storage_account_value () {
   if [ "${resource_group}" = "" ]; then
     verbose_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
     command="az storage account show --name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-    actual_value=$( eval "${command}" )
     command_message "${command}"
+    actual_value=$( eval "${command}" )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
@@ -44,9 +44,9 @@ check_azure_storage_account_value () {
     else
       if [ "${function}" = "ne" ]; then
         if [ "${actual_value}" != "${correct_value}" ]; then
-          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} "${function}" to "${correct_value}"
+          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
         else
-          increment_insecure "Storage Account \"${storage_account}\" has ${description} "${function}" to "${correct_value}"
+          increment_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
           if [ ! -z "${set_name}" ]; then
             case "${set_name}" in
               "--"*)
@@ -61,9 +61,13 @@ check_azure_storage_account_value () {
       fi
     fi
   else
-    resource_group=$( az storage account show --name "${storage_account}" --query "resourceGroup" --output tsv )
+    command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv 2> /dev/null"
+    command_message "${command}"
+    resource_group=$( eval "${command}" )
     verbose_message "${description} for Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\"" "check"
-    actual_value=$( az storage account show --name "${storage_account}" --resource-group "${resource_group}" --query "${parameter_name}" --output tsv )
+    command="az storage account show --name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
+    command_message "${command}"
+    actual_value=$( eval "${command}" )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
         increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
