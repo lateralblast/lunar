@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 12.9.2
+Current version 12.9.5
 
 Refer to lunar.sh and changelog for more up to date version information
 
@@ -100,7 +100,10 @@ Supported Services
 The following services are supported:
 
 - AWS
-- Azure (not complete)
+- Azure
+  - Entra ID (not complete)
+  - Storage (not complete)
+  - Compute (not complete)
 - Docker
 - Kubernetes (not complete)
 - Apache (not complete)

@@ -38,17 +38,23 @@ check_azure_storage_container_value () {
     increment_insecure "Storage Containers on Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${set_name}" ]; then
       if [ "${resource_group}" = "" ]; then
-        if [[ ${set_name} =~ -- ]]; then
-          verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} ${set_name} ${correct_value}" "fix"
-        else
-          verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --set ${set_name}=${correct_value}" "fix"
-        fi
+        case "${set_name}" in
+          "--"*)
+            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} ${set_name} ${correct_value}" "fix"
+            ;;
+          *)
+            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+            ;;
+        esac
       else
-        if [[ ${set_name} =~ -- ]]; then
-          verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
-        else
-          verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
-        fi
+        case "${set_name}" in
+          "--"*)
+            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
+            ;;
+          *)
+            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
+            ;;
+        esac
       fi
     fi
   fi

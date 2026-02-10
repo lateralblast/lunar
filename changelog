@@ -2397,3 +2397,9 @@
 # Added Azure Network Security Perimeter module check
 # 12.9.2: Sun 08 Feb 2026 16:00:15 AEDT
 # Added Azure Network Security Perimeter check
+# 12.9.3: Tue 10 Feb 2026 16:00:15 AEDT
+# Replaced regex with case statement in several functions
+# 12.9.4: Tue 10 Feb 2026 16:45:15 AEDT
+# Added Azure Storage SAS check
+# 12.9.5: Tue 10 Feb 2026 16:50:15 AEDT
+# Added Azure Storage SAS HTTPS Only check

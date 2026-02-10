@@ -36,11 +36,14 @@ check_azure_storage_blob_value () {
   else
     increment_insecure "Storage Blob \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${set_name}" ]; then
-      if [[ ${set_name} =~ -- ]]; then
-        verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} ${set_name} ${correct_value}" "fix"
-      else
-        verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
-      fi
+      case "${set_name}" in
+        "--"*)
+          verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} ${set_name} ${correct_value}" "fix"
+          ;;
+        *)
+          verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+          ;;
+      esac
     fi
   fi
 }

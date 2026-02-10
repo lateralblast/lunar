@@ -31,6 +31,11 @@
 # 9.3.11  Ensure Redundancy is set to 'geo-redundant storage (GRS)' on critical Azure Storage Accounts
 #
 # Refer to Section(s) 9 Page(s) 473-549 CIS Microsoft Azure Foundations Benchmark v5.0.0
+#
+# 2.1.1.1 Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
+#
+# Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
+#
 # Refer to CIS Microsoft Azure Compute Services Benchmark
 #.
 

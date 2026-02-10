@@ -43,11 +43,14 @@ check_azure_waf_value () {
       else
         increment_insecure "Azure WAF \"${waf_id}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
         if [ "${parameter_name}" != "" ]; then
-          if [[ "${parameter_name}" =~ -- ]]; then
-            verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" "${parameter_name}" "${parameter_value}"" "fix"
-          else
-            verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" --set "${parameter_name}"="${parameter_value}"" "fix"
-          fi
+          case "${parameter_name}" in
+            "--"*)
+              verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" "${parameter_name}" "${parameter_value}"" "fix"
+              ;;
+            *)
+              verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" --set "${parameter_name}"="${parameter_value}"" "fix"
+              ;;
+          esac
         fi
       fi
     fi
@@ -75,11 +78,14 @@ check_azure_waf_value () {
       else
         increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
         if [ "${parameter_name}" != "" ]; then
-          if [[ "${parameter_name}" =~ -- ]]; then
-            verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" "${parameter_name}" "${parameter_value}"" "fix"
-          else
-            verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" --set "${parameter_name}"="${parameter_value}"" "fix"
-          fi
+          case "${parameter_name}" in
+            "--"*)
+              verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" "${parameter_name}" "${parameter_value}"" "fix"
+              ;;
+            *)
+              verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" --set "${parameter_name}"="${parameter_value}"" "fix"
+              ;;
+          esac
         fi
       fi
     fi

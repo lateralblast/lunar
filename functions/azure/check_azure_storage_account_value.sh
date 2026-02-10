@@ -31,11 +31,14 @@ check_azure_storage_account_value () {
       else
         increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
         if [ ! -z "${set_name}" ]; then
-          if [[ ${set_name} =~ -- ]]; then
-            verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
-          else
-            verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
-          fi
+          case "${set_name}" in
+            "--"*)
+              verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
+              ;;
+            *)
+              verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+              ;;
+          esac
         fi
       fi
     else
@@ -45,11 +48,14 @@ check_azure_storage_account_value () {
         else
           increment_insecure "Storage Account \"${storage_account}\" has ${description} "${function}" to "${correct_value}"
           if [ ! -z "${set_name}" ]; then
-            if [[ ${set_name} =~ -- ]]; then
-              verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
-            else
-              verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
-            fi
+            case "${set_name}" in
+              "--"*)
+                verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
+                ;;
+              *)
+                verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+                ;;
+            esac
           fi
         fi
       fi
@@ -64,11 +70,14 @@ check_azure_storage_account_value () {
       else
         increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
         if [ ! -z "${set_name}" ]; then
-          if [[ ${set_name} =~ -- ]]; then
-            verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
-          else
-            verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
-          fi
+          case "${set_name}" in
+            "--"*)
+              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
+              ;;
+            *)
+              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
+              ;;
+          esac
         fi
       fi
     else
@@ -78,11 +87,14 @@ check_azure_storage_account_value () {
         else
           increment_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
           if [ ! -z "${set_name}" ]; then
-            if [[ ${set_name} =~ -- ]]; then
-              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
-            else
-              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
-            fi
+            case "${set_name}" in
+              "--"*)
+                verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
+                ;;
+              *)
+                verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
+                ;;
+            esac
           fi
         fi
       fi
