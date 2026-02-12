@@ -29,6 +29,7 @@
 #
 # 2.1.1.1 Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
 # 2.1.1.3   Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - Needs verification
+# 2.2.1.1   Ensure public network access is Disabled
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -59,7 +60,8 @@ audit_azure_storage_accounts () {
     # 9.3.2.1 Ensure Private Endpoints are used to access Storage Accounts
     check_azure_storage_account_value         "Private Endpoints are used to access"              "${storage_account}"  ""                  "privateEndpointConnections[0].id"    "ne" ""              ""
     # 9.3.2.2 Ensure that 'Public Network Access' is 'Disabled' for storage accounts
-    check_azure_storage_account_value         "Public Network Access is"                          "${storage_account}"  "${resource_group}" "publicNetworkAccess"                 "eq" "Disabled"      "--public-network-access"
+    # 2.2.1.1 Ensure public network access is Disabled
+    check_azure_storage_account_value         "Public Network Access"                             "${storage_account}"  "${resource_group}" "publicNetworkAccess"                 "eq" "Disabled"      "--public-network-access"
     # 9.3.2.3 Ensure default network access rule for storage accounts is set to deny
     check_azure_storage_account_value         "Default network access rule"                       "${storage_account}"  "${resource_group}" "networkRuleSet.defaultAction"        "eq" "Deny"          "--default-action"
     # 9.3.3.1 Ensure that 'Default to Microsoft Entra authorization in the Azure portal' is set to 'Enabled' 

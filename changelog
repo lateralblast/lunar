@@ -2409,4 +2409,7 @@
 # Updates and improvements
 # 12.9.8: Thu 12 Feb 2026 13:13:41 AEDT
 # Updated and improvements
-
+# 12.9.9: Thu 12 Feb 2026 16:27:41 AEDT
+# Added Azure Elastic SAN module check
+# 13.0.0: Thu 12 Feb 2026 16:32:31 AEDT
+# Updated and improvements
