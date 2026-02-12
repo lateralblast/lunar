@@ -2413,3 +2413,7 @@
 # Added Azure Elastic SAN module check
 # 13.0.0: Thu 12 Feb 2026 16:32:31 AEDT
 # Updated and improvements
+# 13.0.1: Thu 12 Feb 2026 16:55:41 AEDT
+# Added execute_command function
+# 13.0.2: Thu 12 Feb 2026 18:01:47 AEDT
+# Added Azure Elastic SAN check

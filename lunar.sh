@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      13.0.0
+# Version:      13.0.2
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -199,29 +199,33 @@ verbose_message () {
     fi
   else
     case $style in
-      audit|auditing)
+      audit*)
         echo "Auditing:   ${text}"
         ;;
       backup)
         echo "Backup:     ${text}"
         ;;
-      check|checking)
+      check*)
         echo "Checking:   ${text}"
         output_csv="${output_csv},${text}"
         ;;
-      create|creating)
+      creat*)
         echo "Creating:   ${text}"
         ;;
-      delete|deleting)
+      delet*)
         echo "Deleting:   ${text}"
         ;;
-      exec|execute|executing)
-        echo "Executing:  ${text}"
+      exec*)
+        if [ "${dryrun_mode}" = 0 ]; then
+          echo "Executing:  ${text}"
+        else
+          echo "Command:    ${text}"
+        fi
         ;;
-      install|installing)
+      install*)
         echo "Installing: ${text}"
         ;;
-      load|loading)
+      load*)
         echo "Loading:    ${text}"
         ;;
       module)
@@ -234,25 +238,25 @@ verbose_message () {
       notice)
         echo "Notice:     ${text}"
         ;;
-      remove|removing)
+      remov*)
         echo "Removing:   ${text}"
         ;;
-      run|running)
+      run*)
         echo "Running:    ${text}"
         ;;
-      save|saving)
+      sav*)
         echo "Saving:     ${text}"
         ;;
-      set|setting)
+      set*)
         echo "Setting:    ${text}"
         ;;
-      secure)
+      secur*)
         echo "Secure:     ${text}"
         ;;
-      update)
+      updat*)
         echo "Updating:   ${text}"
         ;;
-      warn|warning)
+      warn*)
         echo "Warning:    ${text}"
         ;;
       na)
@@ -374,6 +378,21 @@ check_virtual_platform () {
     fi
   fi
   echo "Platform:   ${virtual}"
+}
+
+# execute_command
+#
+# Execute a command
+#.
+
+execute_command () {
+  command="${1}"
+  message="${2}"
+  verbose_message "${command}" "execute"
+  if [ "${dryrun_mode}" = 0 ]; then
+    result=$( eval "${command}" )
+    echo "${result}"
+  fi
 }
 
 # execute_lockdown
