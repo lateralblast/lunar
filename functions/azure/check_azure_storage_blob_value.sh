@@ -15,7 +15,7 @@ check_azure_storage_blob_value () {
   print_function  "check_azure_storage_account_value"
   description="${1}"
   storage_account="${2}"
-  blob_propery="${3}"
+  blob_property="${3}"
   blob_policy="${4}"
   parameter_name="${5}"
   function="${6}"
@@ -23,11 +23,11 @@ check_azure_storage_blob_value () {
   set_name="${8}"
   verbose_message "${description} for Storage Blobs on account \"${storage_account}\" is \"${correct_value}\"" "check"
   if [ "${azure_auth_mode}" = "login" ]; then
-    command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\" 2> /dev/null"
+    command="az storage blob ${blob_property} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\" 2> /dev/null"
     command_message "${command}"
     actual_value=$( eval "${command}" )
   else
-    command="az storage blob ${blob_propery} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
+    command="az storage blob ${blob_property} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     command_message "${command}"
     actual_value=$( eval "${command}" )
   fi
@@ -38,10 +38,10 @@ check_azure_storage_blob_value () {
     if [ ! -z "${set_name}" ]; then
       case "${set_name}" in
         "--"*)
-          verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} ${set_name} ${correct_value}" "fix"
+          verbose_message    "az storage blob ${blob_property} ${blob_policy} update --name ${storage_account} ${set_name} ${correct_value}" "fix"
           ;;
         *)
-          verbose_message    "az storage blob ${blob_propery} ${blob_policy} update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+          verbose_message    "az storage blob ${blob_property} ${blob_policy} update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
           ;;
       esac
     fi

@@ -27,10 +27,10 @@
 #
 # Refer to Section(s) 9.3.1-9.3.11 Page(s) 497-549 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
-# Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
-#
 # 2.1.1.1 Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
-# 2.1.1.2 Ensure that shared access signature (SAS) tokens expire within an hour - TBD
+# 2.1.1.3   Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - Needs verification
+#
+# Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -83,6 +83,7 @@ audit_azure_storage_accounts () {
     # 2.1.1.1 Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
     check_azure_storage_account_value         "Allow Shared Key Access"                           "${storage_account}"  "${resource_group}" "allowSharedKeyAccess"                "eq" "false"         ""
     check_azure_storage_account_value         "Allowed Protocols for SAS tokens is HTTPS Only"    "${storage_account}"  "${resource_group}" "enableHttpsTrafficOnly"              "eq" "true"          ""
-    # 2.1.1.2 Ensure that shared access signature (SAS) tokens expire within an hour - TBD
+    # 2.1.1.3 Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - Need verification
+    check_azure_storage_account_value         "SAP are used when generating SAS tokens"           "${storage_account}"  "${resource_group}" "sasPolicy"                           "ne" ""              ""
   done
 }

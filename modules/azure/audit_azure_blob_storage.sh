@@ -14,6 +14,10 @@
 #
 # Refer to Section(s) 9.2.1-3 Page(s) 485-95 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
+# 2.1.2.1.1 Ensure Critical Data is Encrypted with Microsoft Managed Keys - Needs verification
+#
+# Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
+#
 # This requires the Azure CLI to be installed and configured
 #.
 
@@ -28,7 +32,7 @@ audit_azure_blob_storage () {
     check_azure_storage_blob_value "Soft delete"   "${storage_account}" "service-properties" "delete-policy" "enabled" "eq" "true" "--enable"
     check_azure_storage_blob_value "Days retained" "${storage_account}" "service-properties" "delete-policy" "days"    "eq" "7"    "--days-retained"
     # 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
-    check_azure_storage_container_value "Versioning" "${storage_account}" "" "service-properties" "isVersioningEnabled" "eq" "true" "--enable-versioning"
+    check_azure_storage_account_container_value "Versioning" "${storage_account}" "" "service-properties" "isVersioningEnabled" "eq" "true" "--enable-versioning"
     # 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
     command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
     command_message "${command}"
@@ -39,8 +43,10 @@ audit_azure_blob_storage () {
       container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" --output tsv )
     fi
     for container_name in ${container_names}; do
-      check_azure_storage_container_value "Soft delete"   "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.enabled" "eq" "true" "--enable-container-delete-retention"
-      check_azure_storage_container_value "Days retained" "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.days"    "eq" "7"    "--container-delete-retention-days"
+      check_azure_storage_account_container_value "Soft delete"   "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.enabled" "eq" "true" "--enable-container-delete-retention"
+      check_azure_storage_account_container_value "Days retained" "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.days"    "eq" "7"    "--container-delete-retention-days"
+      # 2.1.2.1.1 Ensure Critical Data is Encrypted with Microsoft Managed Keys - Needs verification
+      check_azure_storage_container_value         "Data is encrytped with Microsoft Managed Keys" "${storage_account}" "${resource_group}" "encryptionScope.defaultEncryptionScope" "eq" "\$account-encryption-key"
     done 
   done
 }

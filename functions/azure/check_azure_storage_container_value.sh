@@ -12,50 +12,28 @@
 #.
 
 check_azure_storage_container_value () {
-  print_function  "check_azure_storage_container_value"
   description="${1}"
   storage_account="${2}"
-  resource_group="${3}"
-  container_propery="${4}"
-  parameter_name="${5}"
-  function="${6}"
-  correct_value="${7}"
-  set_name="${8}"
-  if [ "${resource_group}" = "" ]; then
-    verbose_message "${description} for Storage Containers on Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
-    command="az storage account blob-${container_propery} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-    command_message "${command}"
-    actual_value=$( eval "${command}" )
-  else
-    verbose_message "${description} for Storage Containers on Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\"" "check"
-    command="az storage account blob-${container_propery} show --account-name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-    command_message "${command}"
-    actual_value=$( eval "${command}" )
-  fi
-  if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Storage Containers on Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
-  else
-    increment_insecure "Storage Containers on Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
-    if [ ! -z "${set_name}" ]; then
-      if [ "${resource_group}" = "" ]; then
-        case "${set_name}" in
-          "--"*)
-            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} ${set_name} ${correct_value}" "fix"
-            ;;
-          *)
-            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --set ${set_name}=${correct_value}" "fix"
-            ;;
-        esac
-      else
-        case "${set_name}" in
-          "--"*)
-            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
-            ;;
-          *)
-            verbose_message    "az storage account blob-${container_propery} update --account-name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
-            ;;
-        esac
-      fi
+  container_name="${3}"
+  query_string="${4}"
+  function="${5}"
+  correct_value="${6}"
+  print_function  "check_azure_storage_container_value"
+  verbose_message "${description} for Storage Container \"${container_name}\" for Storage Account \"${storage_account}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}\"" "check"
+  command="az storage container show --account-name \"${storage_account}\" --name \"${container_name}\" --query \"${query_string}\" --auth-mode login --output tsv 2> /dev/null"
+  command_message "${command}"
+  actual_value=$( eval "${command}" )
+  if [ "${function}" = "eq" ]; then
+    if [ "${actual_value}" = "${correct_value}" ]; then
+      increment_secure   "${description} for Storage Container \"${container_name}\" on Storage Account \"${storage_account}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    else
+      increment_insecure "${description} for Storage Container \"${container_name}\" on Storage Account \"${storage_account}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    fi
+  elif [ "${function}" = "ne" ]; then
+    if [ "${actual_value}" != "${correct_value}" ]; then
+      increment_secure   "${description} for Storage Container \"${container_name}\" on Storage Account \"${storage_account}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    else
+      increment_insecure "${description} for Storage Container \"${container_name}\" on Storage Account \"${storage_account}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
     fi
   fi
 }
