@@ -2417,3 +2417,7 @@
 # Added execute_command function
 # 13.0.2: Thu 12 Feb 2026 18:01:47 AEDT
 # Added Azure Elastic SAN check
+# 13.0.3: Fri 13 Feb 2026 11:01:47 AEDT
+# Added Azure Site Recovery module check
+# 13.0.4: Fri 13 Feb 2026 17:15:47 AEDT
+# Added Azure Recovery Service Vaults check

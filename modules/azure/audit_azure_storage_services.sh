@@ -51,4 +51,5 @@ audit_azure_storage_services () {
   audit_azure_blob_storage
   audit_azure_file_shares
   audit_azure_storage_accounts
+  audit_azure_recovery_service_vaults
 }
