@@ -2423,3 +2423,5 @@
 # Added Azure Recovery Service Vaults check
 # 13.0.5: Fri 13 Feb 2026 17:29:47 AEDT
 # Added Azure Virtual Network Access Rules check
+# 13.0.6: Fri 13 Feb 2026 17:51:47 AEDT
+# Added Azure Network Private Endpoints check
