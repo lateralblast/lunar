@@ -2421,3 +2421,5 @@
 # Added Azure Site Recovery module check
 # 13.0.4: Fri 13 Feb 2026 17:15:47 AEDT
 # Added Azure Recovery Service Vaults check
+# 13.0.5: Fri 13 Feb 2026 17:29:47 AEDT
+# Added Azure Virtual Network Access Rules check
