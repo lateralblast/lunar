@@ -2433,3 +2433,5 @@
 # Added Azure Storage File System check
 # 13.1.0: Sat 14 Feb 2026 11:58:20 AEDT
 # Added Azure dataprotection extension check
+# 13.1.1: Sat 14 Feb 2026 03:50:57 PM AEDT
+# Added initial code for Azure Data Protection Backup Vault check
