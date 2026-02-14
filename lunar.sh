@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      13.0.6
+# Version:      13.0.9
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -387,7 +387,6 @@ check_virtual_platform () {
 
 execute_command () {
   command="${1}"
-  message="${2}"
   verbose_message "${command}" "execute"
   if [ "${dryrun_mode}" = 0 ]; then
     result=$( eval "${command}" )

@@ -2425,3 +2425,9 @@
 # Added Azure Virtual Network Access Rules check
 # 13.0.6: Fri 13 Feb 2026 17:51:47 AEDT
 # Added Azure Network Private Endpoints check
+# 13.0.7: Fri 13 Feb 2026 17:55:47 AEDT
+# Added Azure amlfs extension check
+# 13.0.8: Sat 14 Feb 2026 11:52:20 AEDT
+# Added Azure Managed Lustre check
+# 13.0.9: Sat 14 Feb 2026 11:55:20 AEDT
+# Added Azure Storage File System check
