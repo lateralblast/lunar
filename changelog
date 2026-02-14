@@ -2431,3 +2431,5 @@
 # Added Azure Managed Lustre check
 # 13.0.9: Sat 14 Feb 2026 11:55:20 AEDT
 # Added Azure Storage File System check
+# 13.1.0: Sat 14 Feb 2026 11:58:20 AEDT
+# Added Azure dataprotection extension check
