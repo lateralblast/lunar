@@ -40,19 +40,19 @@ check_azure_storage_account_container_value () {
       if [ "${resource_group}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message    "az storage account blob-${container_property} update --account-name ${storage_account} ${set_name} ${correct_value}" "fix"
+            verbose_message  "az storage account blob-${container_property} update --account-name ${storage_account} ${set_name} ${correct_value}" "fix"
             ;;
           *)
-            verbose_message    "az storage account blob-${container_property} update --account-name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+            verbose_message  "az storage account blob-${container_property} update --account-name ${storage_account} --set ${set_name}=${correct_value}" "fix"
             ;;
         esac
       else
         case "${set_name}" in
           "--"*)
-            verbose_message    "az storage account blob-${container_property} update --account-name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
+            verbose_message  "az storage account blob-${container_property} update --account-name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
             ;;
           *)
-            verbose_message    "az storage account blob-${container_property} update --account-name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
+            verbose_message  "az storage account blob-${container_property} update --account-name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
             ;;
         esac
       fi

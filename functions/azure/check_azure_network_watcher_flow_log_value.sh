@@ -23,7 +23,7 @@ check_azure_network_watcher_flow_log_value () {
   command_message "$command"
   actual_value=$(eval "$command")
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure "Azure Network Watcher Flow Log \"${flow_log}\" has \"${query_string}\" set to \"${correct_value}\""
+    increment_secure   "Azure Network Watcher Flow Log \"${flow_log}\" has \"${query_string}\" set to \"${correct_value}\""
   else
     increment_insecure "Azure Network Watcher Flow Log \"${flow_log}\" has \"${query_string}\" not set to \"${correct_value}\""
     verbose_message    "az network watcher flow-log update --location \"${location}\" --name \"${flow_log}\" --\"${parameter_name}\" \"${correct_value}\""

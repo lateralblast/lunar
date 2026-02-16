@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      13.1.7
+# Version:      13.2.0
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -62,6 +62,8 @@
 
 # Azure
 azure_auth_mode="login"
+azure_tenant_id=""
+azure_allow_no_subscriptions="no"
 
 # Defaults for AWS
 
@@ -316,7 +318,7 @@ if [ "${os_name}" != "VMkernel" ]; then
   else
     id_check=$( id -u )
   fi
-  arg_test=$(echo "$@" | grep -cE "\-h|\-V|\-\-help|\-\-version|info" )
+  arg_test=$(echo "$@" | grep -cE "\-h|-V|--help|--version|info" )
   if [ "${arg_test}" != "1" ]; then
     if [ "${id_check}" != "0" ]; then
       verbose_message "$0 may need root" "warn"
@@ -617,7 +619,13 @@ fi
 
 case "$*" in
   *azure*)
-    check_azure_environment
+    case "$*" in
+      *--checkenv*)
+        ;;
+      *)
+        check_azure_environment
+        ;;
+    esac
     ;;
   *aws*) 
     check_aws_environment
@@ -960,6 +968,14 @@ do
       shift
       exit
       ;;
+    --tenant-id|--tenantid)         # switch - Azure tenant ID
+      azure_tenant_id="${2}"
+      shift 2
+      ;;
+    --allow-no-subscriptions)       # switch - Azure login allow no subscriptions
+      azure_allow_no_subscriptions="yes"
+      shift
+      ;;
     *)
       print_help >&2
       exit 1
@@ -975,10 +991,10 @@ if [ "${do_check}" = 1 ]; then
       check_shellcheck
       ;;
     *azure*)
-      check_azure
+      check_azure_environment
       ;;
     *aws*)
-      check_aws
+      check_aws_environment
       ;;
     *docker*)
       check_docker

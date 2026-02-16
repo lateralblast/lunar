@@ -3,6 +3,7 @@
 # shellcheck disable=SC1090
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
+# shellcheck disable=SC3046
 
 # check_aws_environment
 #
@@ -45,8 +46,14 @@ check_azure_environment () {
       command_message "${command}"
       ext_test=$( eval "${command}" )
       if [ -z "${ext_test}" ]; then
-        echo "Azure ${cli_ext} extension is not installed"
-        exit
+        if [ "${force}" = "1" ]; then
+          command="az extension add --name \"${cli_ext}\""
+          command_message "${command}"
+          eval "${command}"
+        else
+          echo "Azure ${cli_ext} extension is not installed"
+          exit
+        fi
       fi
     done
   else
@@ -57,7 +64,15 @@ check_azure_environment () {
   command_message "${command}"
   azure_display_name=$( eval "${command}" )
   if [ -z "${azure_display_name}" ]; then
-    az login
+    if [ "${azure_allow_no_subscriptions}" = "yes" ]; then
+      az login --allow-no-subscriptions
+    else
+      if [ -n "${azure_tenant_id}" ]; then
+        az login --tenant "${azure_tenant_id}"
+      else
+        az login
+      fi
+    fi
   else
     verbose_message "Logged in as ${azure_display_name}" "notice"
   fi

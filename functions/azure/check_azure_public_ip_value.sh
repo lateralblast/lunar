@@ -29,14 +29,14 @@ check_azure_public_ip_value () {
   if [ "${parameter_name}" = "ipAddress" ]; then
     if [ "${correct_value}" = "" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure "No Azure Public IP found for \"${short_id}\""
+        increment_secure   "No Azure Public IP found for \"${short_id}\""
       else
         increment_insecure "Azure Public IP found for \"${short_id}\": \"${actual_value}\""
       fi
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Azure Public IP \"${parameter_name}\" is ${function} to \"${correct_value}\""
+      increment_secure   "Azure Public IP \"${parameter_name}\" is ${function} to \"${correct_value}\""
     else
       increment_insecure "Azure Public IP \"${parameter_name}\" is not ${function} to \"${correct_value}\""
     fi
