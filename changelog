@@ -2461,3 +2461,7 @@
 # Updates and improvements
 # 13.2.4: Mon 16 Feb 2026 05:45:38 PM AEDT
 # Added additional checks to Azure Backup Vaults check
+# 13.2.5: Mon 16 Feb 2026 06:38:57 PM AEDT
+# Added Azure Recovery Services Vault check
+# 13.2.6: Mon 16 Feb 2026 06:41:57 PM AEDT
+# Updates and improvements

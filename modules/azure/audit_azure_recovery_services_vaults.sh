@@ -4,9 +4,9 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_backup_vaults
+# audit_azure_recovery_services_vaults
 #
-# Check Azure Backup Vaults
+# Check Azure Recovery Services Vaults
 #
 # 5.1.1 Ensure soft delete on Backup vaults is Enabled
 # 5.1.2 Ensure immutability for Backup vaults is Enabled
@@ -20,9 +20,9 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_backup_vaults () {
-  print_function  "audit_azure_backup_vaults"
-  verbose_message "Azure Backup Vaults" "check"
+audit_azure_recovery_services_vaults () {
+  print_function  "audit_azure_recovery_services_vaults"
+  verbose_message "Azure Recovery Services Vaults" "check"
   immutability_state="Locked"
   retention_days="90"
   command="az backup vault list --query \"[].id\" --output tsv"

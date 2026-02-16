@@ -21,7 +21,7 @@ check_azure_backup_vault_value () {
   set_name="${7}"
   print_function  "check_azure_backup_vault_value"
   verbose_message "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
-  command="az backup vault show --name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+  command="az dataprotection backup-vault show --name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
   command_message "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
