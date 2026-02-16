@@ -23,7 +23,7 @@ audit_azure_waf () {
   command_message "$command"
   resource_groups=$(eval "$command")
   for resource_group in $resource_groups; do
-    command="az network application-gateway list --resource-group "${resource_group}" --query '[].name' --output tsv 2> /dev/null"
+    command="az network application-gateway list --resource-group \"${resource_group}\" --query '[].name' --output tsv 2> /dev/null"
     command_message "$command"
     waf_list=$(eval "$command")
     for waf_name in $waf_list; do

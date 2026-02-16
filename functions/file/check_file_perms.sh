@@ -91,11 +91,11 @@ check_file_perms () {
         fi
       fi
       if [ "${os_name}" = "Linux" ]; then
-        command="stat -c "%U,%G" \"${check_file}\""
+        command="stat -c \"%U,%G\" \"${check_file}\""
         command_message "${command}"
         file_owner=$( eval "${command}" )
       else
-        command="ls -ld \"${check_file}\" | awk '{print $3","$4}'"
+        command="ls -ld \"${check_file}\" | awk '{print \"\$3\",\"\$4\"}'"
         command_message "${command}"
         file_owner=$( eval "${command}" )
       fi

@@ -36,7 +36,7 @@ audit_azure_key_vault_purge_protection () {
         increment_secure   "Azure Key Vault \"${resource_name}\" purge protection is enabled"
       else
         increment_insecure "Azure Key Vault \"${resource_name}\" purge protection is not enabled"
-        verbose_message    "az resource update --resource-group ${resource_group} --name ${resource_name} --resource-type "Microsoft.KeyVault/vaults" --set properties.enablePurgeProtection=true" "fix"
+        verbose_message    "az resource update --resource-group ${resource_group} --name ${resource_name} --resource-type \"Microsoft.KeyVault/vaults\" --set properties.enablePurgeProtection=true" "fix"
       fi
     done
   done

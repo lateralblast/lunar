@@ -22,11 +22,11 @@ audit_azure_network_security_perimeter () {
   command_message "$command"
   group_names=$(eval "$command")
   for group_name in $group_names; do
-    command="az network perimeter list --resource-group "${group_name}" --query '[].name' --output tsv 2> /dev/null"
+    command="az network perimeter list --resource-group \"${group_name}\" --query '[].name' --output tsv 2> /dev/null"
     command_message "$command"
     nsp_list=$(eval "$command")
     if [ -z "${nsp_list}" ]; then
-      increment_insecure "No Azure Network Security Perimeter found for resource group "${group_name}""
+      increment_insecure "No Azure Network Security Perimeter found for resource group \"${group_name}\""
     else
       for nsp_name in $nsp_list; do
         check_azure_network_security_perimeter_value "${nsp_name}" "${group_name}" "association" "[].resourceGroup" "eq" "${group_name}"

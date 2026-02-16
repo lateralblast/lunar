@@ -22,20 +22,20 @@ audit_azure_key_vault_logging () {
   command_message "${command}"
   key_vault_ids=$( eval "${command}" )
   for key_vault_id in ${key_vault_ids}; do
-    command="az monitor diagnostic-settings list --resource ${key_vault_id} --query \"[].name\" --output tsv 2>/dev/null"
+    command="az monitor diagnostic-settings list --resource \"${key_vault_id}\" --query \"[].name\" --output tsv 2>/dev/null"
     command_message "${command}"
     resource_names=$( eval "${command}" )
     for resource_name in ${resource_names}; do
-      command="az monitor diagnostic-settings show --resource ${key_vault_id} --name ${resource_name} --query \"logs\" --output tsv 2>/dev/null"
+      command="az monitor diagnostic-settings show --resource \"${key_vault_id}\" --name \"${resource_name}\" --query \"logs\" --output tsv 2>/dev/null"
       command_message "${command}"
-      az monitor diagnostic-settings show --resource ${key_vault_id} --name ${resource_name} --query "logs" --output tsv 2>/dev/null |
+      az monitor diagnostic-settings show --resource "${key_vault_id}" --name "${resource_name}" --query "logs" --output tsv 2>/dev/null |
       while read -r line; do
         category=$( echo "${line}" | awk '{print $1}' )
         enabled=$( echo "${line}" | awk '{print $2}' )
         if [ "${enabled}" = "True" ]; then
-          increment_secure "Key Vault ${resource_name} logging enabled for ${category}"
+          increment_secure   "Key Vault \"${resource_name}\" logging enabled for \"${category}\""
         else
-          increment_insecure "Key Vault ${resource_name} logging disabled for ${category}"
+          increment_insecure "Key Vault \"${resource_name}\" logging disabled for \"${category}\""
         fi
       done
     done
