@@ -13,6 +13,7 @@
 # 5.1.3 Ensure backup data in Backup vaults is encrypted using customer-managed keys (CMK)
 # 5.1.4 Ensure 'Use infrastructure encryption for this vault' is enabled on Backup vaults
 # 5.1.5 Ensure 'Cross Region Restore' is set to 'Enabled' on Backup vaults
+# 5.1.6 Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Backup vaults 
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
