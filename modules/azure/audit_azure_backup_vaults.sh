@@ -9,6 +9,7 @@
 # Check Azure Backup Vaults
 #
 # 5.1.1 Ensure soft delete on Backup vaults is Enabled
+# 5.1.2 Ensure immutability for Backup vaults is Enabled
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -18,6 +19,8 @@
 audit_azure_backup_vaults () {
   print_function  "audit_azure_backup_vaults"
   verbose_message "Azure Backup Vaults" "check"
+  immutability_state="Locked"
+  retention_days="90"
   command="az backup vault list --query \"[].id\" --output tsv"
   command_message "${command}"
   vault_ids=$( eval "${command}" )
@@ -28,6 +31,16 @@ audit_azure_backup_vaults () {
     command="az backup vault show --id \"${vault_id}\" --query \"name\" --output tsv"
     command_message "${command}"
     vault_name=$( eval "${command}" )
+    # 5.1.1 Ensure soft delete on Backup vaults is Enabled
     check_azure_backup_vault_value "Soft Delete" "${vault_name}" "${resource_group}" "properties.softDeleteFeatureState" "eq" "Enabled" "properties.softDeleteFeatureState"
+    # 5.1.2 Ensure immutability for Backup vaults is Enabled
+    command="az backup policy list --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"[].name\" --output tsv"
+    command_message "${command}"
+    policy_names=$( eval "${command}" )
+    for policy_name in ${policy_names}; do
+      check_azure_backup_policy_value "Immutability" "${policy_name}" "${vault_name}" "${resource_group}" "immutabilitySettings"                         "ne" ""                      ""
+      check_azure_backup_policy_value "Immutability" "${policy_name}" "${vault_name}" "${resource_group}" "immutabilitySettings.state"                   "eq" "${immutability_state}" "--immutability-state"
+      check_azure_backup_policy_value "Immutability" "${policy_name}" "${vault_name}" "${resource_group}" "immutabilitySettings.retentionDurationInDays" "eq" "${retention_days}"     "--retention-days"
+    done
   done
 }

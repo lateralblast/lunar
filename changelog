@@ -2453,3 +2453,5 @@
 # Added Azure allow no subscriptions support
 # 13.2.0: Mon 16 Feb 2026 05:01:57 PM AEDT
 # Added Azure Backup Vaults check
+# 13.2.1: Mon 16 Feb 2026 05:49:38 PM AEDT
+# Added additional checks to Azure Backup Vaults check

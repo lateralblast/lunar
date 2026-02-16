@@ -40,6 +40,7 @@
 # 2.2.1.1   Ensure public network access is Disabled
 # 4.1.1     Ensure 'Key encryption key' is set to a customer-managed key for Azure Managed Lustre file systems
 # 5.1.1     Ensure soft delete on Backup vaults is Enabled
+# 5.1.2     Ensure immutability for Backup vaults is Enabled
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
