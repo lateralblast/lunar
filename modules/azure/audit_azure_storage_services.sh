@@ -45,6 +45,13 @@
 # 5.1.4     Ensure 'Use infrastructure encryption for this vault' is enabled on Backup vaults
 # 5.1.5     Ensure 'Cross Region Restore' is set to 'Enabled' on Backup vaults
 # 5.1.6     Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Backup vaults
+# 5.2.1     Ensure soft delete on Recovery Services vaults is Enabled
+# 5.2.2     Ensure immutability for Recovery Services vaults is Enabled
+# 5.2.3     Ensure backup data in Recovery Services vaults is encrypted using customer-managed keys (CMK)
+# 5.2.4     Ensure 'Use infrastructure encryption for this vault' is enabled on Recovery Services vaults
+# 5.2.5     Ensure public network access on Recovery Services vaults is Disabled
+# 5.2.6     Ensure 'Cross Region Restore' is set to 'Enabled' on Recovery Services vaults
+# 5.2.7     Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Recovery Services vaults
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #

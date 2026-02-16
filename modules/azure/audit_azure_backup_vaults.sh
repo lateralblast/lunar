@@ -25,14 +25,14 @@ audit_azure_backup_vaults () {
   verbose_message "Azure Backup Vaults" "check"
   immutability_state="Locked"
   retention_days="90"
-  command="az backup vault list --query \"[].id\" --output tsv"
+  command="az dataprotection backup-vault list --query \"[].id\" --output tsv"
   command_message "${command}"
   vault_ids=$( eval "${command}" )
   for vault_id in ${vault_ids}; do
-    command="az backup vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
+    command="az dataprotection backup-vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
     command_message "${command}"
     resource_group=$( eval "${command}" )
-    command="az backup vault show --id \"${vault_id}\" --query \"name\" --output tsv"
+    command="az dataprotection backup-vault show --id \"${vault_id}\" --query \"name\" --output tsv"
     command_message "${command}"
     vault_name=$( eval "${command}" )
     # 5.1.1 Ensure soft delete on Backup vaults is Enabled

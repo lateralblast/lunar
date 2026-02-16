@@ -8,12 +8,13 @@
 #
 # Check Azure Recovery Services Vaults
 #
-# 5.1.1 Ensure soft delete on Backup vaults is Enabled
-# 5.1.2 Ensure immutability for Backup vaults is Enabled
-# 5.1.3 Ensure backup data in Backup vaults is encrypted using customer-managed keys (CMK)
-# 5.1.4 Ensure 'Use infrastructure encryption for this vault' is enabled on Backup vaults
-# 5.1.5 Ensure 'Cross Region Restore' is set to 'Enabled' on Backup vaults
-# 5.1.6 Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Backup vaults
+# 5.2.1 Ensure soft delete on Recovery Services vaults is Enabled
+# 5.2.2 Ensure immutability for Recovery Services vaults is Enabled
+# 5.2.3 Ensure backup data in Recovery Services vaults is encrypted using customer-managed keys (CMK)
+# 5.2.4 Ensure 'Use infrastructure encryption for this vault' is enabled on Recovery Services vaults
+# 5.2.5 Ensure public network access on Recovery Services vaults is Disabled
+# 5.2.6 Ensure 'Cross Region Restore' is set to 'Enabled' on Recovery Services vaults
+# 5.2.7 Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Recovery Services vaults
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -35,17 +36,19 @@ audit_azure_recovery_services_vaults () {
     command="az backup vault show --id \"${vault_id}\" --query \"name\" --output tsv"
     command_message "${command}"
     vault_name=$( eval "${command}" )
-    # 5.1.1 Ensure soft delete on Backup vaults is Enabled
-    check_azure_backup_vault_value "Soft Delete"               "${vault_name}" "${resource_group}" "properties.encryption.keyUri"               "ne" ""        ""
-    # 5.1.3 Ensure backup data in Backup vaults is encrypted using customer-managed keys (CMK)  
-    check_azure_backup_vault_value "Customer Managed Keys"     "${vault_name}" "${resource_group}" "properties.softDeleteFeatureState"          "eq" "Enabled" "properties.softDeleteFeatureState"
-    # 5.1.4 Ensure 'Use infrastructure encryption for this vault' is enabled on Backup vaults
-    check_azure_backup_vault_value "Infrastructure Encryption" "${vault_name}" "${resource_group}" "properties.infrastructureEncryptionEnabled" "eq" "true"    "--infrastructure-encryption-enabled"
-    # 5.1.5 Ensure 'Cross Region Restore' is set to 'Enabled' on Backup vaults
-    check_azure_backup_vault_value "Cross Region Restore"      "${vault_name}" "${resource_group}" "properties.crossRegionRestoreFlag"          "eq" "Enabled" "properties.crossRegionRestoreFlag"
-    # 5.1.6 Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Backup vaults 
-    check_azure_backup_vault_value "Cross Subscription Restore" "${vault_name}" "${resource_group}" "properties.crossSubscriptionRestoreFlag"   "eq" "Disabled" "properties.crossSubscriptionRestoreFlag"
-    # 5.1.2 Ensure immutability for Backup vaults is Enabled
+    # 5.2.1 Ensure soft delete on Recovery Services vaults is Enabled
+    check_azure_backup_vault_value "Soft Delete"                "${vault_name}" "${resource_group}" "properties.encryption.keyUri"               "ne" ""         ""
+    # 5.2.3 Ensure backup data in Recovery Services vaults is encrypted using customer-managed keys (CMK)  
+    check_azure_backup_vault_value "Customer Managed Keys"      "${vault_name}" "${resource_group}" "properties.softDeleteFeatureState"          "eq" "Enabled"  "properties.softDeleteFeatureState"
+    # 5.2.4 Ensure 'Use infrastructure encryption for this vault' is enabled on Recovery Services vaults
+    check_azure_backup_vault_value "Infrastructure Encryption"  "${vault_name}" "${resource_group}" "properties.infrastructureEncryptionEnabled" "eq" "true"     "--infrastructure-encryption-enabled"
+    # 5.2.6 Ensure 'Cross Region Restore' is set to 'Enabled' on Recovery Services vaults
+    check_azure_backup_vault_value "Cross Region Restore"       "${vault_name}" "${resource_group}" "properties.crossRegionRestoreFlag"          "eq" "Enabled"  "properties.crossRegionRestoreFlag"
+    # 5.2.7 Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Recovery Services vaults 
+    check_azure_backup_vault_value "Cross Subscription Restore" "${vault_name}" "${resource_group}" "properties.crossSubscriptionRestoreFlag"    "eq" "Disabled" "properties.crossSubscriptionRestoreFlag"
+    # 5.2.5 Ensure public network access on Recovery Services vaults is Disabled
+    check_azure_backup_vault_value "Public Network Access"      "${vault_name}" "${resource_group}" "properties.publicNetworkAccess"             "eq" "Disabled" "properties.publicNetworkAccess"
+    # 5.2.2 Ensure immutability for Recovery Services vaults is Enabled
     command="az backup policy list --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"[].name\" --output tsv"
     command_message "${command}"
     policy_names=$( eval "${command}" )
