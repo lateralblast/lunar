@@ -38,7 +38,7 @@ audit_file_perms () {
             command="ls -l \"${check_file}\" | echo \"obase=8;ibase=2;\`awk '{print \$1}' | cut -c2-10 | tr 'xrws-' '11110'\`\" | /usr/bin/bc"
             command_message "${command}"
             file_perms=$( eval "${command}" )
-            command="ls -l \"${check_file}\" | awk '{print \$3","\$4}'"
+            command="ls -l \"${check_file}\" | awk '{print \$3\",\"\$4}'"
             command_message "${command}"
             file_owner=$( eval "${command}" )
             echo "${check_file},${file_perms},${file_owner}" >> "${log_file}"
@@ -55,7 +55,7 @@ audit_file_perms () {
             command="ls -l \"${check_file}\" | echo \"obase=8;ibase=2;\`awk '{print \$1}' | cut -c2-10 | tr 'xrws-' '11110'\`\" | /usr/bin/bc"
             command_message "${command}"
             file_perms=$( eval "${command}" )
-            command="ls -l \"${check_file}\" | awk '{print \$3","\$4}'"
+            command="ls -l \"${check_file}\" | awk '{print \$3\",\"\$4}'"
             command_message "${command}"
             file_owner=$( eval "${command}" )
             echo "${check_file},${file_perms},${file_owner}" >> "${log_file}"

@@ -24,7 +24,7 @@ audit_kubernetes_apiserver () {
   string="Kubernetes API Server"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
-    daemon_check=`ps -ef | grep "kube-apiserver" |grep -v grep`
+    daemon_check=$( ps -ef | grep "kube-apiserver" |grep -v grep )
     if [ "${daemon_check}" ]; then
       check_file="/etc/kubernetes/manifests/kube-apiserver.yaml"
       if [ -f "${check_file}" ]; then

@@ -66,7 +66,7 @@ audit_tcp_wrappers () {
       if [ "${check}" ]; then
         command="ifconfig -a | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print \$2}' | cut -f2 -d':'"
         command_message "${command}"
-        ip_list=$( eval ${command} )
+        ip_list=$( eval "${command}" )
         for ip_address in ${ip_list}; do
           netmask=$( ifconfig -a | grep "${ip_address}" | awk '{print $3}' | cut -f2 -d:)
           for daemon in ${tcpd_allow}; do
@@ -78,7 +78,7 @@ audit_tcp_wrappers () {
         if [ "${check}" ]; then
           command="ip addr | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print \$2}'"
           command_message "${command}"
-          ip_values=$( eval ${command} )
+          ip_values=$( eval "${command}" )
           for ip_value in $ip_values; do
             set -- $( echo "$ip_value" | awk -F"/" '{print $1" "$2 }' )
             ip_address="${1}"

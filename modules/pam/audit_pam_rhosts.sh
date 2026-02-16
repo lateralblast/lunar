@@ -27,7 +27,7 @@ audit_pam_rhosts () {
         restore_file "${check_file}" "${restore_dir}"
       else
         if [ -f "${check_file}" ]; then
-          command="grep -v "^#" ${check_file} | grep "${pam_module}" | head -1 | wc -l | sed "s/ //g""
+          command="grep -v \"^#\" \"${check_file}\" | grep \"${pam_module}\" | head -1 | wc -l | sed \"s/ //g\""
           command_message "${command}"
           pam_check=$( eval "${command}" )
           if [ "${ansible_mode}" = 1 ]; then
@@ -57,15 +57,15 @@ audit_pam_rhosts () {
               log_file="${work_dir}${check_file}"
               if [ ! -f "${log_file}" ]; then
                 verbose_message "File ${check_file} to ${work_dir}${check_file}" "save"
-                command="find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null"
+                command="find \"${check_file}\" | cpio -pdm \"${work_dir}\" 2> /dev/null"
                 command_message "${command}"
                 file_list=$( eval "${command}" )
               fi
               verbose_message "Rhost authentication to disabled in ${check_file}" "set"
-              command="sed -e 's/^.*${pam_module}/#&/' "${check_file}" > "${temp_file}""
+              command="sed -e 's/^.*${pam_module}/#&/' \"${check_file}\" > \"${temp_file}\""
               command_message "${command}"
               file_list=$( eval "${command}" )
-              command="cat "${temp_file}" > "${check_file}""
+              command="cat \"${temp_file}\" > \"${check_file}\""
               command_message "${command}"
               file_list=$( eval "${command}" )
               if [ -f "${temp_file}" ]; then

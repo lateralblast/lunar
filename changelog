@@ -2445,3 +2445,5 @@
 # Updates and improvements
 # 13.1.6: Mon 16 Feb 2026 02:02:57 PM AEDT
 # Applied shellcheck recommendations to azure modules
+# 13.1.7: Mon 16 Feb 2026 02:27:57 PM AEDT
+# Applied shellcheck recommendations to several modules

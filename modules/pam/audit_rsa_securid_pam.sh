@@ -52,13 +52,13 @@ audit_rsa_securid_pam () {
             backup_file     "${check_file}"
             verbose_message "Configuring RSA SecurID PAM Agent for sudo" "set"
             if [ "${os_name}" = "Linux" ]; then
-              command="sed 's/^auth/#\\&/' < "${check_file}" > "${temp_file}""
+              command="sed -e 's/^auth/#\\&/' < \"${check_file}\" > \"${temp_file}\""
               command_message "${command}"
               file_list=$( eval "${command}" )
-              command="cat "${temp_file}" > "${check_file}""
+              command="cat \"${temp_file}\" > \"${check_file}\""
               command_message "${command}"
               file_list=$( eval "${command}" )
-              command="echo \"auth\trequired\tpam_securid.so reserve\" >> "${check_file}""
+              command="echo \"auth\trequired\tpam_securid.so reserve\" >> \"${check_file}\""
               command_message "${command}"
               file_list=$( eval "${command}" )
               if [ -f "${temp_file}" ]; then

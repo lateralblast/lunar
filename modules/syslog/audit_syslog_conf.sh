@@ -52,7 +52,7 @@ audit_syslog_conf () {
       backup_file="${work_dir}/${log_file}"
       command="esxcli system syslog config get | grep 'Local Log Output:' | awk '{print \$4}'"
       command_message "${command}"
-      current_value=$( eval ${command} )
+      current_value=$( eval "${command}" )
       if [ "${audit_mode}" != "2" ]; then
         if [ "${current_value}" = "/scratch/log" ]; then
           if [ "${audit_mode}" = "0" ]; then
