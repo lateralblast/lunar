@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+
+# audit_azure_backup_vaults
+#
+# Check Azure Backup Vaults
+#
+# 5.1.1 Ensure soft delete on Backup vaults is Enabled
+#
+# Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
+#
+# This requires the Azure CLI to be installed and configured
+#.
+
+audit_azure_backup_vaults () {
+  print_function  "audit_azure_backup_vaults"
+  verbose_message "Azure Backup Vaults" "check"
+  command="az backup vault list --query \"[].id\" --output tsv"
+  command_message "${command}"
+  vault_ids=$( eval "${command}" )
+  for vault_id in ${vault_ids}; do
+    command="az backup vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
+    command_message "${command}"
+    resource_group=$( eval "${command}" )
+    command="az backup vault show --id \"${vault_id}\" --query \"name\" --output tsv"
+    command_message "${command}"
+    vault_name=$( eval "${command}" )
+    check_azure_backup_vault_value "Soft Delete" "${vault_name}" "${resource_group}" "properties.softDeleteFeatureState" "eq" "Enabled" "properties.softDeleteFeatureState"
+  done
+}
