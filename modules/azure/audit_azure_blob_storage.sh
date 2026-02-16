@@ -38,9 +38,13 @@ audit_azure_blob_storage () {
     command_message "${command}"
     resource_group=$( eval "${command}" )
     if [ "${azure_auth_mode}" = "login" ]; then
-      container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" --output tsv --auth-mode "${azure_auth_mode}" )
+      command="az storage container list --account-name \"${storage_account}\" --query \"[].name\" --output tsv --auth-mode \"${azure_auth_mode}\""
+      command_message "${command}"
+      container_names=$( eval "${command}" )
     else
-      container_names=$( az storage container list --account-name "${storage_account}" --query "[].name" --output tsv )
+      command="az storage container list --account-name \"${storage_account}\" --query \"[].name\" --output tsv"
+      command_message "${command}"
+      container_names=$( eval "${command}" )
     fi
     for container_name in ${container_names}; do
       check_azure_storage_account_container_value "Soft delete"   "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.enabled" "eq" "true" "--enable-container-delete-retention"

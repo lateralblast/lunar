@@ -45,10 +45,10 @@ check_azure_waf_value () {
         if [ "${parameter_name}" != "" ]; then
           case "${parameter_name}" in
             "--"*)
-              verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" "${parameter_name}" "${parameter_value}"" "fix"
+              verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" \"${parameter_name}\" \"${parameter_value}\"" "fix"
               ;;
             *)
-              verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" --set "${parameter_name}"="${parameter_value}"" "fix"
+              verbose_message "az network application-gateway ${policy_name} update --id \"${waf_id}\" --set \"${parameter_name}\"=\"\"${parameter_value}\"" "fix"
               ;;
           esac
         fi
@@ -58,11 +58,11 @@ check_azure_waf_value () {
     if [ "${policy_name}" = "" ]; then
       policy_string=""
       verbose_message "Azure WAF \"${waf_name}\" in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\"" "check"
-      command="az network application-gateway show --name "${waf_name}" --resource-group "${resource_group}" --query "${query_string}" --output tsv 2> /dev/null"
+      command="az network application-gateway show --name \"${waf_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
     else
       policy_string=" Policy \"${policy_name}\""
       verbose_message "Azure WAF Policy \"${policy_name}\" in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\"" "check"
-      command="az network application-gateway ${policy_name} show --name "${waf_name}" --resource-group "${resource_group}" --query "${query_string}" --output tsv 2> /dev/null"
+      command="az network application-gateway ${policy_name} show --name \"${waf_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
     fi
     command_message "$command"
     actual_value=$(eval "$command")
@@ -80,10 +80,10 @@ check_azure_waf_value () {
         if [ "${parameter_name}" != "" ]; then
           case "${parameter_name}" in
             "--"*)
-              verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" "${parameter_name}" "${parameter_value}"" "fix"
+              verbose_message "az network application-gateway ${policy_name} update --name \"${waf_name}\" --resource-group \"${resource_group}\" \"${parameter_name}\" \"${parameter_value}\"" "fix"
               ;;
             *)
-              verbose_message "az network application-gateway ${policy_name} update --name "${waf_name}" --resource-group "${resource_group}" --set "${parameter_name}"="${parameter_value}"" "fix"
+              verbose_message "az network application-gateway ${policy_name} update --name \"${waf_name}\" --resource-group \"${resource_group}\" --set \"${parameter_name}\"=\"${parameter_value}\"" "fix"
               ;;
           esac
         fi

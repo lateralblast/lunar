@@ -53,7 +53,7 @@ check_azure_key_vault_value () {
           verbose_message  "5. Look for the property networkInterfaces then id; the value must be placed on <privateEndpointNIC> in step 7." "fix"
           verbose_message  "az network nic show --ids <privateEndpointName>" "fix"
           verbose_message  "6. Create a Private DNS record within the DNS Zone you created for the Private Endpoint:" "fix"
-          verbose_message  "az network private-dns record-set a add-record -g <resourcecGroupName> -z "privatelink.vaultcore.azure.net" -n <keyVaultName> -a <privateEndpointNIC>" "fix"
+          verbose_message  "az network private-dns record-set a add-record -g <resourcecGroupName> -z \"privatelink.vaultcore.azure.net\" -n <keyVaultName> -a <privateEndpointNIC>" "fix"
           verbose_message  "7. nslookup the private endpoint to determine if the DNS record is correct:" "fix"
           verbose_message  "nslookup <keyVaultName>.vault.azure.net" "fix"
           verbose_message  "nslookup <keyVaultName>.privatelink.vaultcore.azure.net" "fix"

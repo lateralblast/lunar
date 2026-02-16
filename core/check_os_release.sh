@@ -236,7 +236,6 @@ check_os_release () {
       os_platform=$( uname -p )
     fi
   fi
-  os_hostname=$( hostname -f )
   echo "Hostname:   ${os_hostname}"
   os_domain=$( hostname -d )
   if [ "${os_domain}" = "" ]; then

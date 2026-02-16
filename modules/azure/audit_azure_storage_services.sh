@@ -38,6 +38,7 @@
 # 2.1.2.1.1 Ensure Critical Data is Encrypted with Microsoft Managed Keys - Needs verification
 # 2.1.2.2.1 Ensure Critical Data is Encrypted with Customer Managed Keys - TBD
 # 2.2.1.1   Ensure public network access is Disabled
+# 4.1.1     Ensure 'Key encryption key' is set to a customer-managed key for Azure Managed Lustre file systems
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -52,4 +53,5 @@ audit_azure_storage_services () {
   audit_azure_file_shares
   audit_azure_storage_accounts
   audit_azure_recovery_service_vaults
+  audit_azure_managed_lustre
 }

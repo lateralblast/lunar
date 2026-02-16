@@ -20,7 +20,7 @@ check_azure_storage_container_value () {
   correct_value="${6}"
   print_function  "check_azure_storage_container_value"
   verbose_message "${description} for Storage Container \"${container_name}\" for Storage Account \"${storage_account}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}\"" "check"
-  command="az storage container show --account-name \"${storage_account}\" --name \"${container_name}\" --query \"${query_string}\" --auth-mode login --output tsv 2> /dev/null"
+  command="az storage container show --account-name \"${storage_account}\" --name \"${container_name}\" --query \"${query_string}\" --auth-mode \"${azure_auth_mode}\" --output tsv 2> /dev/null"
   command_message "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then

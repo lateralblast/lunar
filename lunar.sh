@@ -108,6 +108,7 @@ total_count=0
 
 # Set up some global variables/defaults
 
+os_hostname=$( hostname -f )
 app_dir=$( dirname "$0" )
 args="$@"
 use_sudo=0
@@ -690,12 +691,12 @@ do
       use_sudo=1
       shift
       ;;
-    -9|--shellcheck)                # switch - Run shellcheck against script
-      check_shellcheck
-      shift
-      exit
+    -9|--checkenv)                  # switch - Run environment check
+      check="${2}"
+      do_check=1
+      shift 2
       ;;
-    -0|--force)                     # switch - Force action
+    -0|--force|--install)           # switch - Force action or install requirements
       force=1
       shift
       ;;
@@ -965,6 +966,39 @@ do
       ;;
   esac
 done
+
+# Run check if specified
+
+if [ "${do_check}" = 1 ]; then
+  case "${check}" in
+    *shell*)
+      check_shellcheck
+      ;;
+    *azure*)
+      check_azure
+      ;;
+    *aws*)
+      check_aws
+      ;;
+    *docker*)
+      check_docker
+      ;;
+    *multipass*)
+      check_multipass
+      ;;
+    *env*)
+      check_environment
+      ;;
+    *all*)
+      check_all
+      ;;
+    *)
+      verbose_message "Unknown check: ${check}" "error"
+      exit
+      ;;
+  esac
+  exit
+fi
 
 # Set Restore Directory if not set
 

@@ -2,6 +2,7 @@
 
 # shellcheck disable=SC1090
 # shellcheck disable=SC2034
+# shellcheck disable=SC2086
 # shellcheck disable=SC2154
 
 # check_azure_storage_account_keys_rotation

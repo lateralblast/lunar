@@ -17,7 +17,7 @@ check_shellcheck () {
   fi
   for dir_name in "${functions_dir}" "${modules_dir}"; do
     if [ -d "${dir_name}" ]; then
-      file_list=$( ls "${dir_name}"/*.sh )
+      file_list=$( find "${dir_name}" -name "*.sh" -type f -print )
       for file_name in ${file_list}; do
         if [ "${verbose_mode}" = "1" ]; then
           verbose_message "\"${file_name}\"" "load"
