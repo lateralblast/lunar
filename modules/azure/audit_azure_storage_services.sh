@@ -41,6 +41,9 @@
 # 4.1.1     Ensure 'Key encryption key' is set to a customer-managed key for Azure Managed Lustre file systems
 # 5.1.1     Ensure soft delete on Backup vaults is Enabled
 # 5.1.2     Ensure immutability for Backup vaults is Enabled
+# 5.1.3     Ensure backup data in Backup vaults is encrypted using customer-managed keys (CMK)
+# 5.1.4     Ensure 'Use infrastructure encryption for this vault' is enabled on Backup vaults
+# 5.1.5     Ensure 'Cross Region Restore' is set to 'Enabled' on Backup vaults
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #

@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      13.2.1
+# Version:      13.2.3
 # Release:      1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
@@ -319,11 +319,6 @@ if [ "${os_name}" != "VMkernel" ]; then
     id_check=$( id -u )
   fi
   arg_test=$(echo "$@" | grep -cE "\-h|-V|--help|--version|info" )
-  if [ "${arg_test}" != "1" ]; then
-    if [ "${id_check}" != "0" ]; then
-      verbose_message "$0 may need root" "warn"
-    fi
-  fi
 fi
 
 # Reset base dirs if not running as root
@@ -629,6 +624,13 @@ case "$*" in
     ;;
   *aws*) 
     check_aws_environment
+    ;;
+  *)
+    if [ "${arg_test}" != "1" ]; then
+      if [ "${id_check}" != "0" ]; then
+        verbose_message "$0 may need root" "warn"
+      fi
+    fi
     ;;
 esac
 
