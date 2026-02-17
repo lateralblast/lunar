@@ -13,39 +13,73 @@
 
 check_azure_elastic_san_value () {
   description="${1}"
-  elastic_san="${2}"
-  query_string="${3}"
-  function="${4}"
-  correct_value="${5}"
-  set_name="${6}"
-  set_value="${7}"
+  elastic_san_id="${2}"
+  elastic_san_name="${3}"
+  resource_group="${4}"
+  volume_group_name="${5}"
+  query_string="${6}"
+  function="${7}"
+  correct_value="${8}"
+  set_name="${9}"
+  set_value="${10}"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  short_name=$( basename "${elastic_san}" )
-  print_function  "check_azure_elastic_san_value"
-  verbose_message "${description} for Elastic SAN \"${short_name}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}\"" "check"
-  command="az elastic-san show --id \"${elastic_san}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  command_message "${command}"
-  actual_value=$( eval "${command}" )
-  if [ "${function}" = "eq" ]; then
-    if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "${description} for Elastic SAN \"${short_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+  if [ "${volume_group_name}" = "" ]; then
+    short_name=$( basename "${elastic_san_id}" )
+    print_function  "check_azure_elastic_san_value"
+    verbose_message "${description} for Elastic SAN \"${short_name}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}\"" "check"
+    command="az elastic-san show --id \"${elastic_san_id}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+    command_message "${command}"
+    actual_value=$( eval "${command}" )
+    if [ "${function}" = "eq" ]; then
+      if [ "${actual_value}" = "${correct_value}" ]; then
+        increment_secure   "${description} for Elastic SAN \"${short_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+      else
+        increment_insecure "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
+        if [ "${set_name}" != "" ]; then
+          command="az elastic-san update --id \"${elastic_san_id}\" ${set_name} \"${set_value}\""
+          verbose_message "${command}" "fix"
+        fi
+      fi
     else
-      increment_insecure "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
-      if [ "${set_name}" != "" ]; then
-        command="az elastic-san update --id \"${elastic_san}\" ${set_name} \"${set_value}\""
-        verbose_message "${command}" "fix"
+      if [ "${function}" = "ne" ]; then
+        if [ "${actual_value}" != "${correct_value}" ]; then
+          increment_secure   "${description} for Elastic SAN \"${short_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+        else
+          increment_insecure "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
+          if [ "${set_name}" != "" ]; then
+            command="az elastic-san update --id \"${elastic_san_id}\" ${set_name} \"${set_value}\""
+            verbose_message "${command}" "fix"
+          fi
+        fi
       fi
     fi
-  elif [ "${function}" = "ne" ]; then
-    if [ "${actual_value}" != "${correct_value}" ]; then
-      increment_secure   "${description} for Elastic SAN \"${short_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+  else
+    command="az elastic-san volume-group show --resource-group \"${resource_group}\" --elastic-san \"${elastic_san_name}\" --name \"${volume_group_name}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+    command_message "${command}"
+    actual_value=$( eval "${command}" )
+    if [ "${function}" = "eq" ]; then
+      if [ "${actual_value}" = "${correct_value}" ]; then
+        increment_secure   "${description} for Elastic SAN \"${elastic_san_name}\" Volume Group \"${volume_group_name}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}""
+      else
+        increment_insecure "${description} for Elastic SAN \"${elastic_san_name}\" Volume Group \"${volume_group_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}""
+        if [ "${set_name}" != "" ]; then
+          command="az elastic-san volume-group update --resource-group \"${resource_group}\" --elastic-san \"${elastic_san_name}\" --name \"${volume_group_name}\" ${set_name} \"${set_value}\""
+          verbose_message "${command}" "fix"
+        fi
+      fi
     else
-      increment_insecure "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
-      if [ "${set_name}" != "" ]; then
-        command="az elastic-san update --id \"${elastic_san}\" ${set_name} \"${set_value}\""
-        verbose_message "${command}" "fix"
+      if [ "${function}" = "ne" ]; then
+        if [ "${actual_value}" != "${correct_value}" ]; then
+          increment_secure   "${description} for Elastic SAN \"${elastic_san_name}\" Volume Group \"${volume_group_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}""
+        else
+          increment_insecure "${description} for Elastic SAN \"${elastic_san_name}\" Volume Group \"${volume_group_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}""
+          if [ "${set_name}" != "" ]; then
+            command="az elastic-san volume-group update --resource-group \"${resource_group}\" --elastic-san \"${elastic_san_name}\" --name \"${volume_group_name}\" ${set_name} \"${set_value}\""
+            verbose_message "${command}" "fix"
+          fi
+        fi
       fi
     fi
   fi

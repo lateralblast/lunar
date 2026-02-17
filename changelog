@@ -2475,3 +2475,5 @@
 # Added Azure NetApp Files check
 # 13.3.1: Tue 17 Feb 2026 02:27:28 PM AEDT
 # Updates and improvements
+# 13.3.2: Tue 17 Feb 2026 05:14:46 PM AEDT
+# Added additional Azure Elastic SAN checks

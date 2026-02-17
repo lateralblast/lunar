@@ -63,6 +63,7 @@
 # 11.4      Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - TBD
 # 11.5      Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
 # 11.6      Ensure locked immutability policies are used for containers storing business-critical blob data 
+# 12.1      Ensure double encryption is used for Azure Data Box in high-security environments - TBD
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
