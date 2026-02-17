@@ -2477,3 +2477,5 @@
 # Updates and improvements
 # 13.3.2: Tue 17 Feb 2026 05:14:46 PM AEDT
 # Added additional Azure Elastic SAN checks
+# 13.3.3: Tue 17 Feb 2026 05:45:46 PM AEDT
+# Improved Arch Linux support

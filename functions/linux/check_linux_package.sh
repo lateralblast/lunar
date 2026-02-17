@@ -41,11 +41,15 @@ check_linux_package_with_group () {
       if [ "${linux_dist}" = "debian" ]; then
         package_name=$( dpkg -l "${package_check}" 2>&1 | grep "${package_check}" | awk '{print $2}' )
       else
-        if [ ! "${group_check}" = "" ]; then
-          package_type="Group"
-          package_name=$( yum grouplist 2>&1 | grep "${package_check}" | sed "s/^   //g" )
+        if [ "${linux_dist}" = "arch" ]; then
+          package_name=$( pacman -Qi "${package_check}" 2>&1 | grep '^Name' | awk '{print $3}' )
         else
-          package_name=$( rpm -qi "${package_check}" | grep '^Name' | awk '{print $3}' )
+          if [ ! "${group_check}" = "" ]; then
+            package_type="Group"
+            package_name=$( yum grouplist 2>&1 | grep "${package_check}" | sed "s/^   //g" )
+          else
+            package_name=$( rpm -qi "${package_check}" | grep '^Name' | awk '{print $3}' )
+          fi
         fi
       fi
       if [ "${package_mode}" = "install" ] && [ "${package_name}" = "${package_check}" ]; then
@@ -71,6 +75,9 @@ check_linux_package_with_group () {
         if [ "${linux_dist}" = "debian" ]; then
           package_command="apt-get install ${package_check}"
         fi
+        if [ "${linux_dist}" = "arch" ]; then
+          package_command="pacman -S ${package_check}"
+        fi
         if [ "${package_check}" = "aide" ]; then
           if [ -f "/usr/sbin/aide" ]; then
             if [ ! -f "/var/lib/aide/aide.db.gz" ]; then
@@ -92,6 +99,9 @@ check_linux_package_with_group () {
         fi
         if [ "${linux_dist}" = "debian" ]; then
           package_command="apt-get purge ${package_check}"
+        fi
+        if [ "${linux_dist}" = "arch" ]; then
+          package_command="pacman -R ${package_check}"
         fi
       fi
       lockdown_message="${package_type} \"${package_check}\" to \"${package_status}\""
@@ -128,6 +138,9 @@ check_linux_package_with_group () {
             if [ "${linux_dist}" = "suse" ]; then
               restore_command="zypper remove ${package_check}"
             fi
+            if [ "${linux_dist}" = "arch" ]; then
+              restore_command="pacman -R ${package_check}"
+            fi
           else
             if [ "${linux_dist}" = "redhat" ]; then
               if [ "${group_check}" ]; then
@@ -141,6 +154,9 @@ check_linux_package_with_group () {
             fi
             if [ "${linux_dist}" = "suse" ]; then
               restore_command="zypper install ${package_check}"
+            fi
+            if [ "${linux_dist}" = "arch" ]; then
+              restore_command="pacman -S ${package_check}"
             fi
           fi
           execute_restore "${restore_command}" "${restore_message}" "sudo"

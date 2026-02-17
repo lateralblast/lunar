@@ -126,6 +126,7 @@ check_os_release () {
     fi
   fi
   if [ "${os_name}" = "Linux" ]; then
+    linux_dist=$( lsb_release -i -s | tr '[:upper:]' '[:lower:]' )
     os_release=$(lsb_release -r 2> /dev/null |awk '{print $2}')
     if [ -f "/etc/redhat-release" ]; then
       os_version=$( awk '{print $3}' < /etc/redhat-release | cut -f1 -d. )
@@ -186,10 +187,15 @@ check_os_release () {
           os_vendor="SuSE"
           linux_dist="suse"
         else
-          if [ -f "/etc/os-release" ]; then
-            os_vendor="Amazon"
-            os_version=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f1 -d. )
-            os_update=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f2 -d. )
+          if [ -f "/etc/arch-release" ]; then
+            os_vendor="Arch"
+            linux_dist="arch"
+          else
+            if [ -f "/etc/os-release" ]; then
+              os_vendor="Amazon"
+              os_version=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f1 -d. )
+              os_update=$( grep 'CPE_NAME' /etc/os-release | cut -f2 -d: | cut -f2 -d. )
+            fi
           fi
         fi
       fi
