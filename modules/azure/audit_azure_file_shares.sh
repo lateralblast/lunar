@@ -18,7 +18,7 @@
 # 8.3 Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
 # 8.4 Ensure 'SMB channel encryption' is set to 'AES-256-GCM' or higher for SMB file shares
 #
-# Refer to Sections(s) 8 Page(s) 106- Microsoft Azure Storage Services Benchmark v1.0.0
+# Refer to Sections(s) 8 Page(s) 106-19 Microsoft Azure Storage Services Benchmark v1.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.

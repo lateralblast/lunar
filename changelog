@@ -2471,3 +2471,5 @@
 # Added Azure File Shares check for NFS Root Squash
 # 13.2.9: Tue 17 Feb 2026 01:54:28 PM AEDT
 # Updates and improvements
+# 13.3.0: Tue 17 Feb 2026 02:17:28 PM AEDT
+# Added Azure NetApp Files check
