@@ -30,6 +30,8 @@
 # 2.1.1.3 Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - Needs verification
 # 2.2.1.1 Ensure public network access is Disabled
 # 2.2.1.2 Ensure Network Access Rules are set to Deny-by-default
+# 11.1    Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only' - TBD
+# 11.2    Ensure that shared access signature (SAS) tokens expire within an hour - TBD
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #

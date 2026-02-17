@@ -15,6 +15,10 @@
 # Refer to Section(s) 9.2.1-3 Page(s) 485-95 CIS Microsoft Azure Foundations Benchmark v5.0.0
 #
 # 2.1.2.1.1 Ensure Critical Data is Encrypted with Microsoft Managed Keys - Needs verification
+# 11.3      Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled - TBD
+# 11.4      Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - TBD
+# 11.5      Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
+# 11.6      Ensure locked immutability policies are used for containers storing business-critical blob data 
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -24,14 +28,17 @@
 audit_azure_blob_storage () {
   print_function  "audit_azure_blob_storage"
   verbose_message "Azure Blob Storage" "check"
+  immutability_state="Locked"
+  retention_days="7"
   command="az storage account list --query \"[].name\" --output tsv"
   command_message "${command}"
   storage_accounts=$( eval "${command}" )
   for storage_account in ${storage_accounts}; do
     # 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
-    check_azure_storage_blob_value "Soft delete"   "${storage_account}" "service-properties" "delete-policy" "enabled" "eq" "true" "--enable"
-    check_azure_storage_blob_value "Days retained" "${storage_account}" "service-properties" "delete-policy" "days"    "eq" "7"    "--days-retained"
+    check_azure_storage_blob_value "Soft delete"   "${storage_account}" "service-properties" "delete-policy" "enabled" "eq" "true"                 "--enable"
+    check_azure_storage_blob_value "Days retained" "${storage_account}" "service-properties" "delete-policy" "days"    "eq" "${retention_days}"    "--days-retained"
     # 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
+    # 11.5  Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
     check_azure_storage_account_container_value "Versioning" "${storage_account}" "" "service-properties" "isVersioningEnabled" "eq" "true" "--enable-versioning"
     # 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
     command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
@@ -47,10 +54,12 @@ audit_azure_blob_storage () {
       container_names=$( eval "${command}" )
     fi
     for container_name in ${container_names}; do
-      check_azure_storage_account_container_value "Soft delete"   "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.enabled" "eq" "true" "--enable-container-delete-retention"
-      check_azure_storage_account_container_value "Days retained" "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.days"    "eq" "7"    "--container-delete-retention-days"
+      check_azure_storage_account_container_value "Soft delete"                "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.enabled" "eq" "true"                     "--enable-container-delete-retention"
+      check_azure_storage_account_container_value "Days retained"              "${storage_account}" "${resource_group}" "service-properties" "containerDeleteRetentionPolicy.days"    "eq" "${retention_days}"        "--container-delete-retention-days"
       # 2.1.2.1.1 Ensure Critical Data is Encrypted with Microsoft Managed Keys - Needs verification
-      check_azure_storage_container_value         "Data is encrytped with Microsoft Managed Keys" "${storage_account}" "${resource_group}" "encryptionScope.defaultEncryptionScope" "eq" "\$account-encryption-key"
+      check_azure_storage_container_value         "Data is encrytped with MMK" "${storage_account}" "${resource_group}" "encryptionScope.defaultEncryptionScope"                      "eq" "\$account-encryption-key"
+      # 11.6      Ensure locked immutability policies are used for containers storing business-critical blob data 
+      check_azure_storage_account_container_value "Immutability policy state"  "${storage_account}" "${resource_group}" "immutability-policy" "immutabilitySettings.state"            "eq" "${immutability_state}"    "--immutability-policy-state"
     done 
   done
 }

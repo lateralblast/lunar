@@ -56,6 +56,13 @@
 # 8.2       Ensure root squash for NFS file shares is configured
 # 8.3       Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
 # 8.4       Ensure 'SMB channel encryption' is set to 'AES-256-GCM' or higher for SMB file shares
+# 10.1      Ensure 'Encryption key source' is set to 'Customer Managed Key' for Azure NetApp Files accounts
+# 11.1      Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
+# 11.2      Ensure that shared access signature (SAS) tokens expire within an hour - TBD
+# 11.3      Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
+# 11.4      Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - TBD
+# 11.5      Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
+# 11.6      Ensure locked immutability policies are used for containers storing business-critical blob data 
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -72,4 +79,5 @@ audit_azure_storage_services () {
   audit_azure_recovery_services_vaults
   audit_azure_managed_lustre
   audit_azure_backup_vaults
+  audit_azure_netapp_files
 }
