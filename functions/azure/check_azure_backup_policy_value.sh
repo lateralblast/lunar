@@ -20,6 +20,7 @@ check_azure_backup_policy_value () {
   function="${6}"
   correct_value="${7}"
   set_name="${8}"
+  set_value="${9}"
   print_function  "check_azure_backup_policy_value"
   verbose_message "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
   command="az backup policy show --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"

@@ -2467,3 +2467,7 @@
 # Updates and improvements
 # 13.2.7: Tue 17 Feb 2026 10:45:57 AM AEDT
 # Updated Azure Recovery Services Vault check
+# 13.2.8: Tue 17 Feb 2026 12:54:28 PM AEDT
+# Added Azure File Shares check for NFS Root Squash
+# 13.2.9: Tue 17 Feb 2026 01:54:28 PM AEDT
+# Updates and improvements

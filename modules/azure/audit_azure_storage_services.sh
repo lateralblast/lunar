@@ -52,6 +52,10 @@
 # 5.2.5     Ensure public network access on Recovery Services vaults is Disabled
 # 5.2.6     Ensure 'Cross Region Restore' is set to 'Enabled' on Recovery Services vaults
 # 5.2.7     Ensure 'Cross Subscription Restore' is set to 'Disabled' or 'Permanently Disabled' on Recovery Services vaults
+# 8.1       Ensure soft delete for Azure File Shares is Enabled
+# 8.2       Ensure root squash for NFS file shares is configured
+# 8.3       Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
+# 8.4       Ensure 'SMB channel encryption' is set to 'AES-256-GCM' or higher for SMB file shares
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
