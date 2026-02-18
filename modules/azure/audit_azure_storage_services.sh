@@ -70,6 +70,12 @@
 # 16.2      Ensure that shared access signature (SAS) tokens expire within an hour - TBD
 # 16.3      Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - TBD
 # 17.1.1    Ensure that 'Enable key rotation reminders' is enabled for each Storage Account
+# 17.1.2    Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
+# 17.1.3    Ensure that Storage Account Access Keys are Periodically Regenerated
+# 17.1.4    Ensure that shared access signature (SAS) tokens expire within an hour
+# 17.1.5    Ensure 'Allow storage account key access' for Azure Storage Accounts is 'Disabled'
+# 17.1.6    Ensure Storage for Critical Data are Encrypted with Customer Managed Keys (CMK)
+# 17.2.1    Ensure Private Endpoints are used to access Storage Accounts
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #

@@ -38,6 +38,9 @@
 # 17.1.4   Ensure that shared access signature (SAS) tokens expire within an hour - TBD
 # 17.1.5   Ensure 'Allow storage account key access' for Azure Storage Accounts is 'Disabled'
 # 17.1.6   Ensure Storage for Critical Data are Encrypted with Customer Managed Keys (CMK) - TBD
+# 17.2.1   Ensure Private Endpoints are used to access Storage Accounts
+# 17.2.2   Ensure that 'Public Network Access' is 'Disabled' for storage accounts
+# 17.2.3   Ensure default network access rule for storage accounts is set to deny
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -69,11 +72,14 @@ audit_azure_storage_accounts () {
     # 17.1.5   Ensure 'Allow storage account key access' for Azure Storage Accounts is 'Disabled'
     check_azure_storage_account_value         "Allow storage account key access"                  "${storage_account}"  "${resource_group}" "allowSharedKeyAccess"                "eq" "false"           "--allow-shared-key-access"
     # 9.3.2.1  Ensure Private Endpoints are used to access Storage Accounts
+    # 17.2.1   Ensure Private Endpoints are used to access Storage Accounts
     check_azure_storage_account_value         "Private Endpoints are used to access"              "${storage_account}"  ""                  "privateEndpointConnections[0].id"    "ne" ""                ""
     # 9.3.2.2  Ensure that 'Public Network Access' is 'Disabled' for storage accounts
+    # 17.2.2   Ensure that 'Public Network Access' is 'Disabled' for storage accounts
     # 2.2.1.1  Ensure public network access is Disabled
     check_azure_storage_account_value         "Public Network Access"                             "${storage_account}"  "${resource_group}" "publicNetworkAccess"                 "eq" "Disabled"        "--public-network-access"
     # 9.3.2.3  Ensure default network access rule for storage accounts is set to deny
+    # 17.2.3   Ensure default network access rule for storage accounts is set to deny
     check_azure_storage_account_value         "Default network access rule"                       "${storage_account}"  "${resource_group}" "networkRuleSet.defaultAction"        "eq" "Deny"            "--default-action"
     # 9.3.3.1  Ensure that 'Default to Microsoft Entra authorization in the Azure portal' is set to 'Enabled' 
     check_azure_storage_account_value         "Microsoft Entra authorization"                     "${storage_account}"  "${resource_group}" "defaultToOAuthAuthentication"        "eq" "true"            "defaultToOAuthAuthentication"
