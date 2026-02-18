@@ -76,6 +76,10 @@
 # 17.1.5    Ensure 'Allow storage account key access' for Azure Storage Accounts is 'Disabled'
 # 17.1.6    Ensure Storage for Critical Data are Encrypted with Customer Managed Keys (CMK)
 # 17.2.1    Ensure Private Endpoints are used to access Storage Accounts
+# 17.2.2    Ensure that 'Public Network Access' is 'Disabled' for storage accounts
+# 17.2.3    Ensure default network access rule for storage accounts is set to deny
+# 17.4      Ensure that 'Secure transfer required' is set to 'Enabled'
+# 17.5      Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Account in Azure Storage is Set to ‘enabled’
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
