@@ -20,6 +20,7 @@
 # 11.5      Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
 # 11.6      Ensure locked immutability policies are used for containers storing business-critical blob data 
 # 17.5      Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Blob in Azure Storage is Set to ‘enabled’ 
+# 17.7      Ensure Soft Delete is Enabled for Azure Containers and Blob Storage
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -36,6 +37,7 @@ audit_azure_blob_storage () {
   storage_accounts=$( eval "${command}" )
   for storage_account in ${storage_accounts}; do
     # 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
+    # 17.7  Ensure Soft Delete is Enabled for Azure Containers and Blob Storage
     check_azure_storage_blob_policy_value "Soft delete"   "${storage_account}" "service-properties" "delete-policy" "enabled" "eq" "true"                 "--enable"
     check_azure_storage_blob_policy_value "Days retained" "${storage_account}" "service-properties" "delete-policy" "days"    "eq" "${retention_days}"    "--days-retained"
     # 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts

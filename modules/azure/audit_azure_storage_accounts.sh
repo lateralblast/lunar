@@ -43,6 +43,7 @@
 # 17.2.3   Ensure default network access rule for storage accounts is set to deny
 # 17.4     Ensure that 'Secure transfer required' is set to 'Enabled'
 # 17.5     Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Account in Azure Storage is Set to ‘enabled’
+# 17.6     Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -88,6 +89,7 @@ audit_azure_storage_accounts () {
     # 9.3.4    Ensure that 'Secure transfer required' is set to 'Enabled'
     check_azure_storage_account_value         "Secure transfer required"                          "${storage_account}"  "${resource_group}" "enableHttpsTrafficOnly"                      "eq" "true"            "--https-only"
     # 9.3.5    Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access
+    # 17.6     Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access
     check_azure_storage_account_value         "Azure services on the trusted services list"       "${storage_account}"  "${resource_group}" "networkRuleSet.bypass"                       "eq" "AzureServices"   "--bypass"
     # 9.3.6    Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
     check_azure_storage_account_value         "Minimum TLS version"                               "${storage_account}"  "${resource_group}" "minimumTlsVersion"                           "eq" "TLS1_2"          "--minimum-tls-version"
