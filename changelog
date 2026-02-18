@@ -2491,3 +2491,5 @@
 # Added Azure Storage Blob Policy Value check
 # 13.3.9: Wed 18 Feb 2026 09:05:55 PM AEDT
 # Updates and improvements
+# 13.4.0: Wed 18 Feb 2026 11:22:55 PM AEDT
+# Added Azure Storage Logging check

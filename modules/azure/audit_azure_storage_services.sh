@@ -80,6 +80,7 @@
 # 17.2.3    Ensure default network access rule for storage accounts is set to deny
 # 17.4      Ensure that 'Secure transfer required' is set to 'Enabled'
 # 17.5      Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Account in Azure Storage is Set to ‘enabled’
+# 17.8      Ensure Storage Logging is Enabled for Queue Service for 'Read', 'Write', and 'Delete' requests
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -99,4 +100,5 @@ audit_azure_storage_services () {
   audit_azure_netapp_files
   audit_azure_databox
   audit_azure_elastic_san
+  audit_azure_storage_logging
 }
