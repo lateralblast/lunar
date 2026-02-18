@@ -82,6 +82,7 @@
 # 17.5      Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Account in Azure Storage is Set to ‘enabled’
 # 17.8      Ensure Storage Logging is Enabled for Queue Service for 'Read', 'Write', and 'Delete' requests
 # 17.9      Ensure Storage Logging is Enabled for Blob Service for 'Read', 'Write', and 'Delete' requests
+# 17.10     Ensure Storage Logging is Enabled for Table Service for 'Read', 'Write', and 'Delete' Requests
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #

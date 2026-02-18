@@ -2495,3 +2495,5 @@
 # Added Azure Storage Logging check for queues
 # 13.4.1: Wed 18 Feb 2026 11:40:55 PM AEDT
 # Added Azure Storage Logging check for blobs
+# 13.4.2: Thu 19 Feb 2026 06:45:51 AM AEDT
+# Added Azure Storage Logging check for tables
