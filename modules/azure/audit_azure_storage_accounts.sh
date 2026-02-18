@@ -44,6 +44,8 @@
 # 17.4     Ensure that 'Secure transfer required' is set to 'Enabled'
 # 17.5     Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Account in Azure Storage is Set to ‘enabled’
 # 17.6     Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access
+# 17.11    Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
+# 17.12    Ensure 'Cross Tenant Replication' is not enabled
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -92,8 +94,10 @@ audit_azure_storage_accounts () {
     # 17.6     Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access
     check_azure_storage_account_value         "Azure services on the trusted services list"       "${storage_account}"  "${resource_group}" "networkRuleSet.bypass"                       "eq" "AzureServices"   "--bypass"
     # 9.3.6    Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
+    # 17.11    Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
     check_azure_storage_account_value         "Minimum TLS version"                               "${storage_account}"  "${resource_group}" "minimumTlsVersion"                           "eq" "TLS1_2"          "--minimum-tls-version"
     # 9.3.7    Ensure 'Cross Tenant Replication' is not enabled
+    # 17.12    Ensure 'Cross Tenant Replication' is not enabled
     check_azure_storage_account_value         "Cross Tenant Replication"                          "${storage_account}"  "${resource_group}" "allowCrossTenantReplication"                 "eq" "false"           "--allow-cross-tenant-replication"
     # 9.3.8    Ensure 'Allow blob public access' is set to 'Disabled'
     check_azure_storage_account_value         "Allow Blob Public Access"                          "${storage_account}"  "${resource_group}" "allowBlobPublicAccess"                       "eq" "false"           "allowBlobPublicAccess"

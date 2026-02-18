@@ -83,6 +83,7 @@
 # 17.8      Ensure Storage Logging is Enabled for Queue Service for 'Read', 'Write', and 'Delete' requests
 # 17.9      Ensure Storage Logging is Enabled for Blob Service for 'Read', 'Write', and 'Delete' requests
 # 17.10     Ensure Storage Logging is Enabled for Table Service for 'Read', 'Write', and 'Delete' Requests
+# 17.11     Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
