@@ -81,4 +81,5 @@ audit_azure_storage_services () {
   audit_azure_managed_lustre
   audit_azure_backup_vaults
   audit_azure_netapp_files
+  audit_azure_databox
 }

@@ -2479,3 +2479,7 @@
 # Added additional Azure Elastic SAN checks
 # 13.3.3: Tue 17 Feb 2026 05:45:46 PM AEDT
 # Improved Arch Linux support
+# 13.3.4: Wed 18 Feb 2026 11:10:46 AM AEDT
+# Added Azure Databox extension check
+# 13.3.5: Wed 18 Feb 2026 01:06:14 PM AEDT
+# Added Azure Databox check
