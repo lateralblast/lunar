@@ -64,6 +64,12 @@
 # 11.5      Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
 # 11.6      Ensure locked immutability policies are used for containers storing business-critical blob data 
 # 12.1      Ensure double encryption is used for Azure Data Box in high-security environments - TBD
+# 15.1      Ensure 'Public network access' is set to 'Disabled' on Azure Elastic SAN
+# 15.2      Ensure customer-managed keys (CMK) are used to encrypt data at rest on Azure Elastic SAN volume groups
+# 16.1      Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only' - TBD
+# 16.2      Ensure that shared access signature (SAS) tokens expire within an hour - TBD
+# 16.3      Ensure stored access policies (SAP) are used when generating shared access signature (SAS) tokens - TBD
+# 17.1.1    Ensure that 'Enable key rotation reminders' is enabled for each Storage Account
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -82,4 +88,5 @@ audit_azure_storage_services () {
   audit_azure_backup_vaults
   audit_azure_netapp_files
   audit_azure_databox
+  audit_azure_elastic_san
 }
