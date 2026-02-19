@@ -47,8 +47,12 @@
 # 17.11    Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
 # 17.12    Ensure 'Cross Tenant Replication' is not enabled
 # 17.13    Ensure that 'Allow Blob Anonymous Access' is set to 'Disabled'
+# 17.16    Ensure Redundancy is set to 'geo-redundant storage (GRS)' on critical Azure Storage Accounts
+# 18.1     Ensure that shared access signature (SAS) tokens expire within an hour - TBD
+# 18.2     Ensure that stored access policies (SAP) are used when generating shared access signature (SAS) tokens - TBD
+# 18.3     Ensure Storage Explorer is using the latest version - TBD
 #
-# Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
+# Refer to Section(s) 2-19 Page(s) 25-240 CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -108,6 +112,7 @@ audit_azure_storage_accounts () {
     # 9.3.10   Ensure Azure Resource Manager ReadOnly locks are applied to Azure Storage Accounts
     check_azure_resource_manager_lock         "Azure Resource Manager ReadOnly locks are applied" "${storage_account}"  "${resource_group}" "[].level"                                    "eq" "ReadOnly"        "Microsoft.Storage/storageAccounts"
     # 9.3.11   Ensure Redundancy is set to 'geo-redundant storage (GRS)' on critical Azure Storage Accounts
+    # 17.16    Ensure Redundancy is set to 'geo-redundant storage (GRS)' on critical Azure Storage Accounts
     check_azure_storage_account_value         "Redundancy is set to geo-redundant storage (GRS)"  "${storage_account}"  "${resource_group}" "sku.name"                                    "eq" "Standard_GRS"    "--sku"
     # 2.1.1.1  Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
     # 17.1.2   Ensure 'Allowed Protocols' for shared access signature (SAS) tokens is set to 'HTTPS Only'
