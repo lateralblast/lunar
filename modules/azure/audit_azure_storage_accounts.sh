@@ -46,6 +46,7 @@
 # 17.6     Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access
 # 17.11    Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
 # 17.12    Ensure 'Cross Tenant Replication' is not enabled
+# 17.13    Ensure that 'Allow Blob Anonymous Access' is set to 'Disabled'
 #
 # Refer to Section(s) 2 Page(s) 25- CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -100,6 +101,7 @@ audit_azure_storage_accounts () {
     # 17.12    Ensure 'Cross Tenant Replication' is not enabled
     check_azure_storage_account_value         "Cross Tenant Replication"                          "${storage_account}"  "${resource_group}" "allowCrossTenantReplication"                 "eq" "false"           "--allow-cross-tenant-replication"
     # 9.3.8    Ensure 'Allow blob public access' is set to 'Disabled'
+    # 17.13    Ensure that 'Allow Blob Anonymous Access' is set to 'Disabled'
     check_azure_storage_account_value         "Allow Blob Public Access"                          "${storage_account}"  "${resource_group}" "allowBlobPublicAccess"                       "eq" "false"           "allowBlobPublicAccess"
     # 9.3.9    Ensure Azure Resource Manager Delete locks are applied to Azure Storage Accounts
     check_azure_resource_manager_lock         "Azure Resource Manager Delete locks are applied"   "${storage_account}"  "${resource_group}" "[].level"                                    "eq" "CanNotDelete"    "Microsoft.Storage/storageAccounts"

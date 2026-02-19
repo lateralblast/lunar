@@ -2499,3 +2499,5 @@
 # Added Azure Storage Logging check for tables
 # 13.4.3: Thu 19 Feb 2026 06:45:51 AM AEDT
 # Updates and improvements
+# 13.4.4: Thu 19 Feb 2026 06:45:51 AM AEDT
+# Added Azure Storage Account Locks check

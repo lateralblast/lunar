@@ -84,6 +84,9 @@
 # 17.9      Ensure Storage Logging is Enabled for Blob Service for 'Read', 'Write', and 'Delete' requests
 # 17.10     Ensure Storage Logging is Enabled for Table Service for 'Read', 'Write', and 'Delete' Requests
 # 17.11     Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'
+# 17.12     Ensure 'Cross Tenant Replication' is not enabled
+# 17.13     Ensure that 'Allow Blob Anonymous Access' is set to 'Disabled'
+# 17.14     Ensure Azure Resource Manager Delete locks are applied to Azure Storage Accounts
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #
@@ -104,4 +107,5 @@ audit_azure_storage_services () {
   audit_azure_databox
   audit_azure_elastic_san
   audit_azure_storage_logging
+  audit_azure_storage_accounts_locks
 }
