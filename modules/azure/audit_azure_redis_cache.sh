@@ -11,7 +11,8 @@
 # Refer to Section(s) 4 Page(s) 69 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to CIS Microsoft Azure Database Services Benchmark
 #
-# 2.2 Ensure that 'Allow access only via SSL' is set to 'Yes' - TBD
+# 2.2 Ensure that 'Allow access only via SSL' is set to 'Yes'
+# 2.3 Ensure that 'Minimum TLS version' is set to TLS v1.2 (or higher)
 #
 # Refer to Section(s) 2 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -32,6 +33,7 @@ audit_azure_redis_cache () {
     command="az redis show --name \"${redis_name}\" --query \"[].resourceGroup\" --output tsv"
     command_message "${command}"
     resource_group=$( eval "${command}" )
-    check_redis_cache_value "Allow access only via SSL" "${redis_name}" "${resource_group}" "sslEnabled" "eq" "true" "enableSsl"
+    check_redis_cache_value "Allow access only via SSL" "${redis_name}" "${resource_group}" "sslEnabled"        "eq" "true" "enableSsl"
+    check_redis_cache_value "Minimum TLS version"       "${redis_name}" "${resource_group}" "minimumTlsVersion" "eq" "1.2"  "--minimum-tls-version"
   done
 }
