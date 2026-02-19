@@ -87,6 +87,7 @@
 # 17.12     Ensure 'Cross Tenant Replication' is not enabled
 # 17.13     Ensure that 'Allow Blob Anonymous Access' is set to 'Disabled'
 # 17.14     Ensure Azure Resource Manager Delete locks are applied to Azure Storage Accounts
+# 17.15     Ensure Azure Resource Manager Read-only locks are applied to Azure Storage Accounts
 #
 # Refer to Sections(s) 2 Page(s) 25- Microsoft Azure Storage Services Benchmark v1.0.0
 #

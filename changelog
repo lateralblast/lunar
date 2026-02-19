@@ -2499,5 +2499,7 @@
 # Added Azure Storage Logging check for tables
 # 13.4.3: Thu 19 Feb 2026 06:45:51 AM AEDT
 # Updates and improvements
-# 13.4.4: Thu 19 Feb 2026 06:45:51 AM AEDT
-# Added Azure Storage Account Locks check
+# 13.4.4: Thu 19 Feb 2026 12:45:51 PM AEDT
+# Added Azure Storage Account Delete Locks check
+# 13.4.5: Thu 19 Feb 2026 01:15:51 PM AEDT
+# Added Azure Storage Account Read-only Locks check

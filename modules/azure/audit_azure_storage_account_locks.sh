@@ -9,8 +9,9 @@
 # Audit Azure Storage Account Locks
 #
 # 17.14 Ensure Azure Resource Manager Delete locks are applied to Azure Storage Accounts
+# 17.15 Ensure Azure Resource Manager Read-only locks are applied to Azure Storage Accounts
 #
-# Refer to Section(s) 17.14 Page(s) 224- CIS Microsoft Azure Storage Services Benchmark v1.0.0
+# Refer to Section(s) 17.14-15 Page(s) 224-8 CIS Microsoft Azure Storage Services Benchmark v1.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #
@@ -19,5 +20,6 @@ audit_azure_storage_account_locks () {
   print_function  "audit_azure_storage_account_locks"
   verbose_message "Azure Storage Account Locks" "check"
   resource_type="Microsoft.Storage/storageAccounts"
-  audit_azure_locks "${resource_type}"
+  audit_azure_locks "${resource_type}" "CanNotDelete"
+  audit_azure_locks "${resource_type}" "ReadOnly"
 }
