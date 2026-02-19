@@ -13,7 +13,11 @@
 #
 # Redis
 # 2.1 Ensure 'Microsoft Entra Authentication' is 'Enabled' - TBD
-# 2.2 Ensure that 'Allow access only via SSL' is set to 'Yes' - TBD
+# 2.2 Ensure that 'Allow access only via SSL' is set to 'Yes'
+# 2.3 Ensure that 'Minimum TLS version' is set to '1.2'
+# 2.4 Ensure that 'Access Policies' are Implemented and Reviewed Periodically - TBD
+# 2.5 Ensure that 'System Assigned Managed Identity' is set to 'On' - TBD
+# 2.6 Ensure that 'Public Network Access' is 'Disabled'
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #

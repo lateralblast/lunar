@@ -2511,3 +2511,5 @@
 # Updates and improvements
 # 13.4.9: Fri 20 Feb 2026 06:24:27 AM AEDT
 # Added Azure Redis Cache TLS check
+# 13.5.0: Fri 20 Feb 2026 06:24:27 AM AEDT
+# Added Azure Redis Cache Public Network Access check
