@@ -24,6 +24,10 @@ audit_azure_nsg_security_rules () {
   command="az network nsg list --query \"[].id\" --output tsv 2> /dev/null"
   command_message "${command}"
   resource_ids=$( eval "${command}" )
+  if [ -z "${resource_ids}" ]; then
+    verbose_message "No NSG instances found" "info"
+    return
+  fi
   for resource_id in ${resource_ids}; do
     command="az network nsg show --ids ${resource_id} --query \"name\" --output tsv 2> /dev/null"
     command_message "${command}"

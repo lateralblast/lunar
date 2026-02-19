@@ -22,7 +22,11 @@ audit_azure_key_vault_purge_protection () {
   verbose_message "Azure Key Vault Purge Protection" "check"
   command="az resource list --query \"[?type=='Microsoft.KeyVault/vaults'].name\" --output tsv"
   command_message "${command}"
-  resource_names=$( eval "${command}" )
+  resource_names=$( eval "${command}" 2> /dev/null )
+  if [ -z "${resource_names}" ]; then
+    verbose_message "No Key Vaults found" "info"
+    return
+  fi
   for resource_name in ${resource_names}; do
     command="az resource list --name \"${resource_name}\" --query \"[].resourceGroup\" --output tsv"
     command_message "${command}"

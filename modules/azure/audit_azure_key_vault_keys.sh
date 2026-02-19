@@ -31,7 +31,11 @@ audit_azure_key_vault_keys () {
   verbose_message "Azure Key Vault Keys" "check"
   command="az keyvault list --query \"[].name\" --output tsv"
   command_message "${command}"
-  key_vaults=$( eval "${command}" )
+  key_vaults=$( eval "${command}" 2> /dev/null )
+  if [ -z "${key_vaults}" ]; then
+    verbose_message "No Key Vaults found" "info"
+    return
+  fi
   for key_vault in ${key_vaults}; do
     command="az keyvault key list --vault-name \"${key_vault}\" --query \"[].name\" --output tsv"
     command_message "${command}"

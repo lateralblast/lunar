@@ -21,11 +21,11 @@ audit_azure_public_ips () {
   command="az network public-ip list --query '[].id' --output tsv"
   command_message "${command}"
   resource_ids=$( eval "$command" )
-  if [ "${resource_ids}" = "" ]; then
+  if [ -z "${resource_ids}" ]; then
     verbose_message "No Public IPs found" "notice"
-  else
-    for resource_id in $resource_ids; do
-      check_azure_public_ip_value "${resource_id}" "ipAddress" "eq" ""
-    done
+    return
   fi
+  for resource_id in $resource_ids; do
+    check_azure_public_ip_value "${resource_id}" "ipAddress" "eq" ""
+  done
 }

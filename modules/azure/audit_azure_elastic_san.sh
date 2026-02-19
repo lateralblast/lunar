@@ -22,7 +22,11 @@ audit_azure_elastic_san () {
   verbose_message "Azure Elastic SAN" "check"
   command="az elastic-san list --query \"[].id\" --output tsv"
   command_message "${command}"
-  elastic_san_ids=$( eval "${command}" )
+  elastic_san_ids=$( eval "${command}" 2> /dev/null )
+  if [ -z "${elastic_san_ids}" ]; then
+    verbose_message "No Elastic SANs found" "info"
+    return
+  fi
   for elastic_san_id in ${elastic_san_ids}; do
     # 2.2.1.1 Ensure public network access is Disabled
     # 15.1    Ensure 'Public network access' is set to 'Disabled' on Azure Elastic SAN

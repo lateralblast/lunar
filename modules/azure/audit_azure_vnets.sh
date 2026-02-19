@@ -21,6 +21,10 @@ audit_azure_vnets () {
   command="az network vnet list --query '[].resourceGroup' --output tsv 2> /dev/null"
   command_message "$command"
   resource_groups=$(eval "$command")
+  if [ -z "${resource_groups}" ]; then
+    verbose_message "No VNet instances found" "info"
+    return
+  fi
   for resource_group in $resource_groups; do
     command="az network vnet list --resource-group \"${resource_group}\" --query '[].name' --output tsv 2> /dev/null"
     command_message "$command"

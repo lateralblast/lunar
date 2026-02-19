@@ -20,11 +20,19 @@ audit_azure_managed_lustre () {
   verbose_message "Azure Managed Lustre" "check"
   command="az storage account list --query \"[].name\" --output tsv"
   command_message "${command}"
-  storage_accounts=$( eval "${command}" )
+  storage_accounts=$( eval "${command}" 2> /dev/null )
+  if [ -z "${storage_accounts}" ]; then
+    verbose_message "No Storage Accounts found" "info"
+    return
+  fi
   for storage_account in ${storage_accounts}; do
     command="az amlfs list --query \"[].resourceGroup\" --output tsv"
     command_message "${command}"
     resource_groups=$( eval "${command}" )
+    if [ -z "${resource_groups}" ]; then
+      verbose_message "No Managed Lustre instances found" "info"
+      return
+    fi
     for resource_group in ${resource_groups}; do
       command="az amlfs list --resource-group \"${resource_group}\" --query \"[].name\" --output tsv"
       command_message "${command}"

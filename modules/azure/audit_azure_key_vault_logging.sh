@@ -20,7 +20,11 @@ audit_azure_key_vault_logging () {
   verbose_message "Azure Key Vault Logging" "check"
   command="az keyvault list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"
-  key_vault_ids=$( eval "${command}" )
+  key_vault_ids=$( eval "${command}" 2> /dev/null )
+  if [ -z "${key_vault_ids}" ]; then
+    verbose_message "No Key Vaults found" "info"
+    return
+  fi
   for key_vault_id in ${key_vault_ids}; do
     command="az monitor diagnostic-settings list --resource \"${key_vault_id}\" --query \"[].name\" --output tsv 2>/dev/null"
     command_message "${command}"

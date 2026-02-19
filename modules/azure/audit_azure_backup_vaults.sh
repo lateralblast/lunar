@@ -27,7 +27,11 @@ audit_azure_backup_vaults () {
   retention_days="90"
   command="az dataprotection backup-vault list --query \"[].id\" --output tsv"
   command_message "${command}"
-  vault_ids=$( eval "${command}" )
+  vault_ids=$( eval "${command}" 2> /dev/null )
+  if [ -z "${vault_ids}" ]; then
+    verbose_message "No Backup Vaults found" "info"
+    return
+  fi
   for vault_id in ${vault_ids}; do
     command="az dataprotection backup-vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
     command_message "${command}"

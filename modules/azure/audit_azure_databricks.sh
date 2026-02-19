@@ -30,7 +30,11 @@ audit_azure_databricks () {
   verbose_message "Azure Databricks" "check"
   command="az databricks workspace list --query \"[].name\" --output tsv"
   command_message "${command}"
-  workspace_list=$( eval "${command}" )
+  workspace_list=$( eval "${command}" 2> /dev/null )
+  if [ -z "${workspace_list}" ]; then
+    verbose_message "No Databricks workspaces found" "info"
+    return
+  fi
   for workspace_name in ${workspace_list}; do
     command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[resourceGroup]\" --output tsv"
     command_message "${command}"

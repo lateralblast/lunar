@@ -34,7 +34,11 @@ audit_azure_blob_storage () {
   retention_days="7"
   command="az storage account list --query \"[].name\" --output tsv"
   command_message "${command}"
-  storage_accounts=$( eval "${command}" )
+  storage_accounts=$( eval "${command}" 2> /dev/null )
+  if [ -z "${storage_accounts}" ]; then
+    verbose_message "No Storage Accounts found" "info"
+    return
+  fi
   for storage_account in ${storage_accounts}; do
     # 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
     # 17.7  Ensure Soft Delete is Enabled for Azure Containers and Blob Storage

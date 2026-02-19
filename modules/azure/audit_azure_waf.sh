@@ -22,6 +22,10 @@ audit_azure_waf () {
   command="az network application-gateway list --query '[].resourceGroup' --output tsv 2> /dev/null"
   command_message "$command"
   resource_groups=$(eval "$command")
+  if [ -z "${resource_groups}" ]; then
+    verbose_message "No WAF instances found" "info"
+    return
+  fi
   for resource_group in $resource_groups; do
     command="az network application-gateway list --resource-group \"${resource_group}\" --query '[].name' --output tsv 2> /dev/null"
     command_message "$command"

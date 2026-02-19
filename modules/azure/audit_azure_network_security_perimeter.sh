@@ -21,6 +21,10 @@ audit_azure_network_security_perimeter () {
   command="az group list --query '[].name' --output tsv 2> /dev/null"
   command_message "$command"
   group_names=$(eval "$command")
+  if [ -z "${group_names}" ]; then
+    verbose_message "No NSP instances found" "info"
+    return
+  fi
   for group_name in $group_names; do
     command="az network perimeter list --resource-group \"${group_name}\" --query '[].name' --output tsv 2> /dev/null"
     command_message "$command"

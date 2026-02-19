@@ -29,6 +29,10 @@ audit_azure_recovery_services_vaults () {
   command="az backup vault list --query \"[].id\" --output tsv"
   command_message "${command}"
   vault_ids=$( eval "${command}" )
+  if [ -z "${vault_ids}" ]; then
+    verbose_message "No Recovery Services Vaults found" "info"
+    return
+  fi
   for vault_id in ${vault_ids}; do
     command="az backup vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
     command_message "${command}"

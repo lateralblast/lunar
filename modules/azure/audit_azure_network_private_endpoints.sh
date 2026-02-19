@@ -20,7 +20,11 @@ audit_azure_network_private_endpoints () {
   verbose_message "Azure Network Private Endpoints" "check"
   command="az network private-endpoint list --query \"[].id\" --output tsv"
   command_message "${command}"
-  private_endpoints=$( eval "${command}" )
+  private_endpoints=$( eval "${command}" 2> /dev/null )
+  if [ -z "${private_endpoints}" ]; then
+    verbose_message "No Private Endpoints found" "info"
+    return
+  fi
   for private_endpoint in ${private_endpoints}; do
     command="az network private-endpoint show --id \"${private_endpoint}\" --query \"id\" --output tsv"
     command_message "${command}"

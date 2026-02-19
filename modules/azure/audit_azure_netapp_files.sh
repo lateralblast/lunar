@@ -21,6 +21,10 @@ audit_azure_netapp_files () {
   command="az netappfiles account list --query \"[].name\" --output tsv"
   command_message "${command}"
   storage_accounts=$( eval "${command}" )
+  if [ -z "${storage_accounts}" ]; then
+    verbose_message "No NetApp Files instances found" "info"
+    return
+  fi
   for storage_account in ${storage_accounts}; do
     command="az netappfiles account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
     command_message "${command}"

@@ -2505,3 +2505,7 @@
 # Added Azure Storage Account Read-only Locks check
 # 13.4.6: Thu 19 Feb 2026 01:26:27 PM AEDT
 # Updates and improvements
+# 13.4.7: Fri 20 Feb 2026 06:24:27 AM AEDT
+# Added initial Redis Cache tests
+# 13.4.8: Fri 20 Feb 2026 06:24:27 AM AEDT
+# Updates and improvements

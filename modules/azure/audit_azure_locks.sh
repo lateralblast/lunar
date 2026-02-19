@@ -18,7 +18,11 @@ audit_azure_locks () {
   verbose_message "Azure Locks with Resource Type ${resource_type}" "check"
   command="az lock list --query \"[].name\" --resource-type \"${resource_type}\" --output tsv"
   command_message "${command}"
-  lock_names=$( eval "${command}" )
+  lock_names=$( eval "${command}" 2> /dev/null )
+  if [ -z "${lock_names}" ]; then
+    verbose_message "No Locks found" "info"
+    return
+  fi
   for lock_name in ${lock_names}; do
     command="az lock show --name \"${lock_name}\" --query \"[].resourceGroup\" --output tsv"
     command_message "${command}"

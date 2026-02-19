@@ -65,6 +65,10 @@ audit_azure_storage_accounts () {
   command="az storage account list --query \"[].name\" --output tsv"
   command_message "${command}"
   storage_accounts=$( eval "${command}" )
+  if [ -z "${storage_accounts}" ]; then
+    verbose_message "No Storage Accounts found" "info"
+    return
+  fi
   for storage_account in ${storage_accounts}; do
     command="az storage account show --name \"${storage_account}\" --query \"id\" --output tsv"
     command_message "${command}"
