@@ -18,6 +18,7 @@
 # 2.4 Ensure that 'Access Policies' are Implemented and Reviewed Periodically - TBD
 # 2.5 Ensure that 'System Assigned Managed Identity' is set to 'On' - TBD
 # 2.6 Ensure that 'Public Network Access' is 'Disabled'
+# 2.7 Ensure Azure Cache for Redis is Using a Private Link
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
