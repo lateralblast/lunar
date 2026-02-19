@@ -41,7 +41,8 @@ check_aws_environment () {
 check_azure_environment () {
   azure_bin=$( command -v az 2> /dev/null )
   if [ -f "$azure_bin" ]; then
-    for cli_ext in databricks bastion resource-graph application-insights nsp elastic-san site-recovery amlfs dataprotection databox; do
+    for cli_ext in databricks bastion resource-graph application-insights nsp \
+      elastic-san site-recovery amlfs dataprotection databox redisenterprise; do
       command="az extension list | grep \"${cli_ext}\""
       command_message "${command}"
       ext_test=$( eval "${command}" )

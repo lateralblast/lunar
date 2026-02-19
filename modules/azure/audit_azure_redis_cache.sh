@@ -15,6 +15,7 @@
 # 2.3 Ensure that 'Minimum TLS version' is set to TLS v1.2 (or higher)
 # 2.6 Ensure that 'Public Network Access' is 'Disabled'
 # 2.7 Ensure Azure Cache for Redis is Using a Private Link
+# 2.8 Ensure that Azure Cache for Redis is Using Customer-Managed Keys
 #
 # Refer to Section(s) 2 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -39,5 +40,19 @@ audit_azure_redis_cache () {
     check_redis_cache_value "Minimum TLS version"       "${redis_name}" "${resource_group}" "minimumTlsVersion"                     "eq" "1.2"      "--minimum-tls-version"
     check_redis_cache_value "Public Network Access"     "${redis_name}" "${resource_group}" "publicNetworkAccess"                   "eq" "disabled" "--public-network-access"
     check_redis_cache_value "Private Link"              "${redis_name}" "${resource_group}" "properties.privateEndpointConnections" "eq" "Approved" "privateEndpointConnections[0].privateLinkServiceConnectionState.status"
+  done
+  command="az redisenterprise list --query \"[].name\" --output tsv"
+  command_message "${command}"
+  redis_names=$( eval "${command}" )
+  if [ -z "${redis_names}" ]; then
+    verbose_message "No Redis Enterprise instances found" "info"
+    return
+  fi
+  for redis_name in ${redis_names}; do
+    command="az redis enterprise show --name \"${redis_name}\" --query \"[].resourceGroup\" --output tsv"
+    command_message "${command}"
+    resource_group=$( eval "${command}" )
+    check_redis_enterprise_cache_value "Customer-Managed Keys"     "${redis_name}" "${resource_group}" "properties.encryption.customerManagedKeyEncryptionEnabled"    "eq" "true" "--customer-managed-key-encryption-enabled"
+    check_redis_enterprise_cache_value "Customer-Managed Keys URL" "${redis_name}" "${resource_group}" "properties.encryption.customerManagedKeyEncryptionKeyUrl"     "ne" ""     ""
   done
 }
