@@ -28,6 +28,7 @@
 # 3.3  Ensure that 'disableLocalAuth' is set to 'true'
 # 3.4  Ensure `Public Network Access` is `Disabled`
 # 3.5  Ensure critical data is encrypted with customer-managed keys (CMK)
+# 3.6  Ensure the firewall does not allow all network traffic
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
