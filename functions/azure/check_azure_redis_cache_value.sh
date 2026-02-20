@@ -8,8 +8,6 @@
 #
 # Check Azure Redis Cache value
 #
-#   check_azure_redis_cache_value "redis-cache" "resource-group" "sslEnabled" "eq" "true" "enableSsl"
-#
 # This requires the Azure CLI to be installed and configured
 #.
 
