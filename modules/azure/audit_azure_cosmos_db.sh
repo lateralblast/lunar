@@ -11,6 +11,7 @@
 # 3.1 Ensure That 'Firewalls & Networks' Is Limited to Use Selected Networks Instead of All Networks
 # 3.2 Ensure that Cosmos DB uses Private Endpoints where possible
 # 3.3 Ensure that 'disableLocalAuth' is set to 'true'
+# 3.4 Ensure `Public Network Access` is `Disabled`
 #
 # Refer to Section(s) 3 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -35,9 +36,10 @@ audit_azure_cosmos_db () {
     check_cosmos_db_value "Firewalls & Networks Filter"   "${cosmosdb_name}" "${resource_group}" "isVirtualNetworkFilterEnabled" "eq" "true"     ""
     check_cosmos_db_value "Firewalls & Networks IP Rules" "${cosmosdb_name}" "${resource_group}" "ipRules"                       "ne" ""         ""
     # 3.2 Ensure that Cosmos DB uses Private Endpoints where possible
-    check_cosmos_db_value "Private Endpoints"             "${cosmosdb_name}" "${resource_group}" "publicNetworkAccess"           "eq" "Disabled" ""
-    check_cosmos_db_value "Private Network Access"        "${cosmosdb_name}" "${resource_group}" "privateEndpointConnections"    "ne" ""         ""
+    check_cosmos_db_value "Private Endpoints"             "${cosmosdb_name}" "${resource_group}" "privateEndpointConnections"    "ne" ""         ""
     # 3.3 Ensure that 'disableLocalAuth' is set to 'true'
     check_cosmos_db_value "Disable Local Auth"            "${cosmosdb_name}" "${resource_group}" "disableLocalAuth"              "eq" "true"     "properties.disableLocalAuth"
+    # 3.4 Ensure `Public Network Access` is `Disabled`
+    check_cosmos_db_value "Public Network Access"         "${cosmosdb_name}" "${resource_group}" "publicNetworkAccess"           "eq" "Disabled" ""
   done
 }
