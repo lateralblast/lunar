@@ -25,6 +25,7 @@
 # Cosmos DB
 # 3.1  Ensure That 'Firewalls & Networks' Is Limited to Use Selected Networks Instead of All Networks
 # 3.2  Ensure that Cosmos DB uses Private Endpoints where possible
+# 3.3  Ensure that 'disableLocalAuth' is set to 'true'
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #

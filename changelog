@@ -2529,3 +2529,5 @@
 # Added Azure Cosmos DB Firewalls & Networks check
 # 13.5.8: Fri 20 Feb 2026 11:22:30 AM AEDT
 # Added Azure Cosmos DB Private Endpoints check
+# 13.5.9: Fri 20 Feb 2026 15:59:23 AM AEDT
+# Added Azure Cosmos DB Disable Local Auth check
