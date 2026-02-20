@@ -20,6 +20,7 @@
 # 2.6 Ensure that 'Public Network Access' is 'Disabled'
 # 2.7 Ensure Azure Cache for Redis is Using a Private Link
 # 2.8 Ensure that Azure Cache for Redis is Using Customer-Managed Keys
+# 2.9 Ensure 'Access Keys Authentication' is set to 'Disabled'
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
