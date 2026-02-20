@@ -31,5 +31,6 @@ audit_azure_cosmos_db () {
     resource_group=$( eval "${command}" )
     # 3.1 Ensure That 'Firewalls & Networks' Is Limited to Use Selected Networks Instead of All Networks
     check_cosmos_db_value "Firewalls & Networks Filter"   "${cosmosdb_name}" "${resource_group}" "isVirtualNetworkFilterEnabled" "eq" "true" ""
-    check_cosmos_db_value "Firewalls & Networks IP Rules" "${cosmosdb_name}" "${resource_group}" "ipRules" "ne"                   ""  ""     ""
+    check_cosmos_db_value "Firewalls & Networks IP Rules" "${cosmosdb_name}" "${resource_group}" "ipRules"                       "ne" ""     ""
+  done
 }
