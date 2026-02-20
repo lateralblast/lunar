@@ -12,6 +12,7 @@
 # 3.2 Ensure that Cosmos DB uses Private Endpoints where possible
 # 3.3 Ensure that 'disableLocalAuth' is set to 'true'
 # 3.4 Ensure `Public Network Access` is `Disabled`
+# 3.5 Ensure critical data is encrypted with customer-managed keys (CMK)
 #
 # Refer to Section(s) 3 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -41,5 +42,7 @@ audit_azure_cosmos_db () {
     check_cosmos_db_value "Disable Local Auth"            "${cosmosdb_name}" "${resource_group}" "disableLocalAuth"              "eq" "true"     "properties.disableLocalAuth"
     # 3.4 Ensure `Public Network Access` is `Disabled`
     check_cosmos_db_value "Public Network Access"         "${cosmosdb_name}" "${resource_group}" "publicNetworkAccess"           "eq" "Disabled" ""
+    # 3.5 Ensure critical data is encrypted with customer-managed keys (CMK)
+    check_cosmos_db_value "Customer-Managed Keys"       "${cosmosdb_name}" "${resource_group}" "keyVaultKeyUri"                "ne" ""         ""
   done
 }

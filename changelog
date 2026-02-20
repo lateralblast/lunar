@@ -2533,3 +2533,5 @@
 # Added Azure Cosmos DB Disable Local Auth check
 # 13.6.0: Fri 20 Feb 2026 16:09:23 AM AEDT
 # Updates and improvements
+# 13.6.1: Fri 20 Feb 2026 16:24:23 AM AEDT
+# Added Azure Cosmos DB Customer-Managed Keys check
