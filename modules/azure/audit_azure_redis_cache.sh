@@ -49,7 +49,7 @@ audit_azure_redis_cache () {
     # 2.9 Ensure 'Access Keys Authentication' is set to 'Disabled'
     check_redis_cache_value "Access Keys Authentication" "${redis_name}" "${resource_group}" "properties.auth.type"                 "eq" "Microsoft.KeyVault" "--auth-type"
     # 2.10 Ensure 'Update Channel' is set to 'Stable' 
-    check_redis_cache_value "Update Channel"             "${redis_name}" "${resource_group}" "properties.updateChannel"              "eq" "Stable"            "--update-channel"
+    check_redis_cache_value "Update Channel"             "${redis_name}" "${resource_group}" "updateChannel"                        "eq" "Stable"             "updateChannel"
   done
   command="az redisenterprise list --query \"[].name\" --output tsv"
   command_message "${command}"
