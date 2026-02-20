@@ -2523,3 +2523,5 @@
 # Added Azure Redis Enterprise Cache Customer-Managed Keys check
 # 13.5.5: Fri 20 Feb 2026 11:17:30 AM AEDT
 # Added Azure Redis Cache Access Keys Authentication check
+# 13.5.6: Fri 20 Feb 2026 11:22:30 AM AEDT
+# Added Azure Redis Cache Update Channel check
