@@ -2537,3 +2537,5 @@
 # Added Azure Cosmos DB Customer-Managed Keys check
 # 13.6.2: Fri 20 Feb 2026 16:24:23 AM AEDT
 # Added Azure Cosmos DB Firewalls & Networks IP Rules check
+# 13.6.3: Fri 20 Feb 2026 16:24:23 AM AEDT
+# Added Azure Cosmos DB Logging check

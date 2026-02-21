@@ -14,6 +14,7 @@
 # 3.4 Ensure `Public Network Access` is `Disabled`
 # 3.5 Ensure critical data is encrypted with customer-managed keys (CMK)
 # 3.6 Ensure the firewall does not allow all network traffic
+# 3.7 Ensure that Cosmos DB Logging is Enabled
 #
 # Refer to Section(s) 3 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -47,5 +48,11 @@ audit_azure_cosmos_db () {
     check_cosmos_db_value "Customer-Managed Keys"         "${cosmosdb_name}" "${resource_group}" "keyVaultKeyUri"                "ne" ""         ""                            ""
     # 3.6 Ensure the firewall does not allow all network traffic
     check_cosmos_db_value "Firewalls & Networks IP Rules" "${cosmosdb_name}" "${resource_group}" "ipRules"                       "ne" "0.0.0.0"  "--ip-range-filter"           "comma-separated-list-of-allowed-ip-addresses"
+  done
+  command="az cosmosdb list --query \"[].id\" --output tsv"
+  command_message "${command}"
+  resource_ids=$( eval "${command}" )
+  for resource_id in ${resource_ids}; do
+    check_azure_monitoring_diagnostics_value "${resource_id}"
   done
 }
