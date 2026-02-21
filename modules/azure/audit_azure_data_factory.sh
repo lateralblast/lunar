@@ -9,6 +9,9 @@
 # Check Azure Data Factory
 #
 # 4.1 Ensure Data Factory is encrypted using Customer Managed Keys
+# 4.2 Ensure Data Factory is using Managed Identities - TBD
+# 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
+# 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
 #
 # Refer to Section(s) 4 Page(s) 73- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -30,6 +33,14 @@ audit_azure_data_factory () {
     command_message "${command}"
     resource_group=$( eval "${command}" )
     # 4.1 Ensure Data Factory is encrypted using Customer Managed Keys
-    check_data_factory_value "Customer-Managed Keys" "${data_factory_name}" "${resource_group}" "keyVaultKeyUri" "ne" "" ""
+    check_data_factory_value "Customer-Managed Keys" "${data_factory_name}" "${resource_group}" "keyVaultKeyUri"           "ne" ""               ""
+    # 4.2 Ensure Data Factory is using Managed Identities - TBD
+    check_data_factory_value "Managed Identities"    "${data_factory_name}" "${resource_group}" "identity.type"            "eq" "SystemAssigned" ""
+    # 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
+    check_data_factory_value "Using Azure Key Vault" "${data_factory_name}" "${resource_group}" "properties.type.baseUrl"  "ne" ""               ""
+    # 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
+    for item in principalName principalId principalType roleDefinitionName scope; do
+      check_data_factory_value "Using RBAC"          "${data_factory_name}" "${resource_group}" "[].${item}"               "ne" ""               ""
+    done
   done
 }

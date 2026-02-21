@@ -2529,17 +2529,25 @@
 # Added Azure Cosmos DB Firewalls & Networks check
 # 13.5.8: Fri 20 Feb 2026 11:22:30 AM AEDT
 # Added Azure Cosmos DB Private Endpoints check
-# 13.5.9: Fri 20 Feb 2026 15:59:23 AM AEDT
+# 13.5.9: Fri 20 Feb 2026 03:59:23 PM AEDT
 # Added Azure Cosmos DB Disable Local Auth check
-# 13.6.0: Fri 20 Feb 2026 16:09:23 AM AEDT
+# 13.6.0: Fri 20 Feb 2026 04:09:23 PM AEDT
 # Updates and improvements
-# 13.6.1: Fri 20 Feb 2026 16:24:23 AM AEDT
+# 13.6.1: Fri 20 Feb 2026 04:24:23 PM AEDT
 # Added Azure Cosmos DB Customer-Managed Keys check
-# 13.6.2: Fri 20 Feb 2026 16:24:23 AM AEDT
+# 13.6.2: Fri 20 Feb 2026 06:09:23 PM AEDT
 # Added Azure Cosmos DB Firewalls & Networks IP Rules check
-# 13.6.3: Sat 21 Feb 2026 16:24:23 AM AEDT
+# 13.6.3: Sat 21 Feb 2026 06:09:23 PM AEDT
 # Added Azure Cosmos DB Logging check
-# 13.6.4: Sat 21 Feb 2026 17:27:23 AM AEDT
+# 13.6.4: Sat 21 Feb 2026 07:09:23 PM AEDT
 # Added Azure Data Factory module check
-# 13.6.5: Sat 21 Feb 2026 17:27:23 AM AEDT
+# 13.6.5: Sat 21 Feb 2026 07:09:23 PM AEDT
 # Added Azure Data Factory Customer-Managed Keys check
+# 13.6.6: Sat 21 Feb 2026 07:09:23 PM AEDT
+# Added Azure Data Factory Managed Identities check
+# 13.6.7: Sat 21 Feb 2026 09:09:23 PM AEDT
+# Added Azure Data Factory Using Azure Key Vault check
+# 13.6.8: Sun 22 Feb 2026 09:39:23 PM AEDT
+# Added Azure Data Factory Using RBAC check
+# 13.6.9: Sun 22 Feb 2026 09:39:23 PM AEDT
+# Updates and improvements

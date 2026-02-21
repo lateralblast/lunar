@@ -34,6 +34,9 @@
 #
 # Data Factory
 # 4.1 Ensure Data Factory is encrypted using Customer Managed Keys
+# 4.2 Ensure Data Factory is using Managed Identities - TBD
+# 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
+# 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
