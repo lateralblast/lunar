@@ -29,7 +29,11 @@
 # 3.4  Ensure `Public Network Access` is `Disabled`
 # 3.5  Ensure critical data is encrypted with customer-managed keys (CMK)
 # 3.6  Ensure the firewall does not allow all network traffic
-# 3.7 Ensure that Cosmos DB Logging is Enabled
+# 3.7  Ensure that Cosmos DB Logging is Enabled
+# 3.8  Ensure Data Factory is encrypted using Customer Managed Keys
+#
+# Data Factory
+# 4.1 Ensure Data Factory is encrypted using Customer Managed Keys
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -41,4 +45,5 @@ audit_azure_database_services () {
   verbose_message "Azure Database Services" "check"
   audit_azure_redis_cache
   audit_azure_cosmos_db
+  audit_azure_data_factory
 }

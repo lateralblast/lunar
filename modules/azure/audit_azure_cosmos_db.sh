@@ -16,7 +16,7 @@
 # 3.6 Ensure the firewall does not allow all network traffic
 # 3.7 Ensure that Cosmos DB Logging is Enabled
 #
-# Refer to Section(s) 3 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
+# Refer to Section(s) 3 Page(s) 51-72 Microsoft Azure Database Services Benchmark v1.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
