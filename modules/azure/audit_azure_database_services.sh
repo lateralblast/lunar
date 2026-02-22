@@ -37,9 +37,10 @@
 # 4.2 Ensure Data Factory is using Managed Identities - TBD
 # 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
 # 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
+# 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
 #
 # Azure Database for MySQL
-# 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest
+# 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -52,4 +53,5 @@ audit_azure_database_services () {
   audit_azure_redis_cache
   audit_azure_cosmos_db
   audit_azure_data_factory
+  audit_azure_mysql_db
 }

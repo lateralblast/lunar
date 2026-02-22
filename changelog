@@ -2555,3 +2555,13 @@
 # Added initial Azure MySQL DB module
 # 13.7.1: Sun 22 Feb 2026 02:19:13 PM AEDT
 # Added initial Azure MySQL DB function
+# 13.7.2: Sun 22 Feb 2026 03:19:13 PM AEDT
+# Added support for Azure MySQL Flexible Server
+# 13.7.3: Sun 22 Feb 2026 03:22:13 PM AEDT
+# Added support for Azure MySQL Single Server
+# 13.7.4: Sun 22 Feb 2026 03:22:13 PM AEDT
+# Added check for Azure MySQL DB Customer-Managed Keys
+# 13.7.5: Sun 22 Feb 2026 03:22:13 PM AEDT
+# Added check for Azure MySQL DB Microsoft Entra Authentication
+# 13.7.6: Sun 22 Feb 2026 03:22:13 PM AEDT
+# Updates and improvements
