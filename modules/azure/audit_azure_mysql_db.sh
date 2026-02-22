@@ -15,6 +15,7 @@
 # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
 # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
 # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
+# 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
 #
 # Refer to Section(s) 5- Page(s) 84- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -46,6 +47,8 @@ audit_azure_mysql_db () {
       # check_mysql_db_value "Audit Log"             "server" "${mysql_server}" "${resource_group}" "" "audit_log_enabled"          "eq" "ON"         "" ""
       # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL server - TBD
       # check_mysql_db_value "Audit Log Events"       "server" "${mysql_server}" "${resource_group}" "" "audit_log_events"           "eq" "CONNECTION"   "" ""
+      # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
+      # check_mysql_db_value "Error Server Log File" "server" "${mysql_server}" "${resource_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
     done
   fi
   command="az mysql flexible-server list --query \"[].name\" --output tsv"
@@ -74,6 +77,8 @@ audit_azure_mysql_db () {
         # check_mysql_db_value "Audit Log"             "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "audit_log_enabled"          "eq" "ON"       "" ""
         # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
         # check_mysql_db_value "Audit Log Events"      "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "audit_log_events"           "eq" "CONNECTION"   "" ""
+        # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
+        # check_mysql_db_value "Error Server Log File" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "error_server_log_file"        "eq" "Enabled"    "" ""
       done
     done
   fi
