@@ -2567,3 +2567,5 @@
 # Updates and improvements
 # 13.7.7: Sun 22 Feb 2026 03:38:13 PM AEDT
 # Added check for Azure MySQL DB Public Network Access
+# 13.7.8: Sun 22 Feb 2026 03:43:13 PM AEDT
+# Added check for Azure MySQL DB Private Endpoints

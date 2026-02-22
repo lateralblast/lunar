@@ -12,6 +12,7 @@
 # 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
 # 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
 # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
+# 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
 #
 # Refer to Section(s) 5- Page(s) 84- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -32,11 +33,13 @@ audit_azure_mysql_db () {
       command_message "${command}" "check"
       resource_group=$( eval "${command}" )
       # 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
-      check_mysql_db_value "Customer-Managed Keys" "server" "${mysql_server}" "${resource_group}" "" "keyVaultKeyUri"      "ne" ""         "" ""
+      check_mysql_db_value "Customer-Managed Keys" "server" "${mysql_server}" "${resource_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
       # 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
       # check_mysql_db_value "Microsoft Entra Authentication" "server" "${mysql_server}" "${resource_group}" "" "" "" "" "" ""
       # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
-      check_mysql_db_value "Public Network Access" "server" "${mysql_server}" "${resource_group}" "" "publicNetworkAccess" "eq" "Disabled" "" ""
+      check_mysql_db_value "Public Network Access" "server" "${mysql_server}" "${resource_group}" "" "publicNetworkAccess"        "eq" "Disabled" "" ""
+      # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
+      check_mysql_db_value "Private Endpoints"     "server" "${mysql_server}" "${resource_group}" "" "privateEndpointConnections" "ne" ""         "" ""
     done
   fi
   command="az mysql flexible-server list --query \"[].name\" --output tsv"
@@ -54,11 +57,13 @@ audit_azure_mysql_db () {
       db_names=$( eval "${command}" )
       for db_name in ${db_names}; do
         # 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
-        check_mysql_db_value "Customer-Managed Keys" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "keyVaultKeyUri"      "ne" ""         "" ""
+        check_mysql_db_value "Customer-Managed Keys" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "keyVaultKeyUri"             "ne" ""         "" ""
         # 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
         # check_mysql_db_value "Microsoft Entra Authentication" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "" "" "" "" ""
         # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
-        check_mysql_db_value "Public Network Access" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "publicNetworkAccess" "eq" "Disabled" "" ""
+        check_mysql_db_value "Public Network Access" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "publicNetworkAccess"        "eq" "Disabled" "" ""
+        # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
+        check_mysql_db_value "Private Endpoints"     "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "privateEndpointConnections" "ne" ""         "" ""
       done
     done
   fi
