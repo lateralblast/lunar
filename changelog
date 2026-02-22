@@ -2569,3 +2569,5 @@
 # Added check for Azure MySQL DB Public Network Access
 # 13.7.8: Sun 22 Feb 2026 03:43:13 PM AEDT
 # Added check for Azure MySQL DB Private Endpoints
+# 13.7.9: Sun 22 Feb 2026 03:43:13 PM AEDT
+# Added check for Azure MySQL DB Audit Log

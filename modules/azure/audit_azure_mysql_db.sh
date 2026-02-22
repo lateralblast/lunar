@@ -13,6 +13,7 @@
 # 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
 # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
 # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
+# 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
 #
 # Refer to Section(s) 5- Page(s) 84- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -40,6 +41,8 @@ audit_azure_mysql_db () {
       check_mysql_db_value "Public Network Access" "server" "${mysql_server}" "${resource_group}" "" "publicNetworkAccess"        "eq" "Disabled" "" ""
       # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
       check_mysql_db_value "Private Endpoints"     "server" "${mysql_server}" "${resource_group}" "" "privateEndpointConnections" "ne" ""         "" ""
+      # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL server - TBD
+      # check_mysql_db_value "Audit Log"             "server" "${mysql_server}" "${resource_group}" "" "audit_log_enabled"          "eq" "ON"         "" ""
     done
   fi
   command="az mysql flexible-server list --query \"[].name\" --output tsv"
@@ -64,6 +67,8 @@ audit_azure_mysql_db () {
         check_mysql_db_value "Public Network Access" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "publicNetworkAccess"        "eq" "Disabled" "" ""
         # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
         check_mysql_db_value "Private Endpoints"     "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "privateEndpointConnections" "ne" ""         "" ""
+        # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
+        # check_mysql_db_value "Audit Log"             "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "audit_log_enabled"          "eq" "ON"       "" ""
       done
     done
   fi
