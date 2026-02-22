@@ -17,6 +17,7 @@
 # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
 # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
 # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
+# 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
 #
 # Refer to Section(s) 5- Page(s) 84- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -52,6 +53,8 @@ audit_azure_mysql_db () {
       # check_mysql_db_value "Error Server Log File" "server" "${mysql_server}" "${resource_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
       # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
       # check_mysql_db_value "Require Secure Transport" "server" "${mysql_server}" "${resource_group}" "" "require_secure_transport" "eq" "ON"         "" ""
+      # 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
+      # check_mysql_db_value "TLS Version" "server" "${mysql_server}" "${resource_group}" "" "tls_version" "eq" "TLSv1.2" "" ""
     done
   fi
   command="az mysql flexible-server list --query \"[].name\" --output tsv"
@@ -84,6 +87,8 @@ audit_azure_mysql_db () {
         # check_mysql_db_value "Error Server Log File" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "error_server_log_file"        "eq" "Enabled"    "" ""
         # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
         # check_mysql_db_value "Require Secure Transport" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "require_secure_transport" "eq" "ON"         "" ""
+        # 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
+        # check_mysql_db_value "TLS Version" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "tls_version" "eq" "TLSv1.2" "" ""
       done
     done
   fi

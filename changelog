@@ -2577,3 +2577,5 @@
 # Added check stub for Azure MySQL DB Error Server Log File
 # 13.8.2: Sun 22 Feb 2026 03:55:37 PM AEDT
 # Added check stub for Azure MySQL DB Require Secure Transport
+# 13.8.3: Sun 22 Feb 2026 03:59:37 PM AEDT
+# Added check stub for Azure MySQL DB TLS Version
