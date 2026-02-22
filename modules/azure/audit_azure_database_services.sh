@@ -41,6 +41,8 @@
 #
 # Azure Database for MySQL
 # 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
+# 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
+# 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #

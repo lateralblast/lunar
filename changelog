@@ -2565,3 +2565,5 @@
 # Added check for Azure MySQL DB Microsoft Entra Authentication
 # 13.7.6: Sun 22 Feb 2026 03:22:13 PM AEDT
 # Updates and improvements
+# 13.7.7: Sun 22 Feb 2026 03:38:13 PM AEDT
+# Added check for Azure MySQL DB Public Network Access
