@@ -45,6 +45,7 @@
 # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
 # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
 # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
+# 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
