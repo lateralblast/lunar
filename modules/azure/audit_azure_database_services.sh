@@ -47,6 +47,7 @@
 # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
 # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
 # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
+# 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
 #
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #

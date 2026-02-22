@@ -16,6 +16,7 @@
 # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
 # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
 # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
+# 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
 #
 # Refer to Section(s) 5- Page(s) 84- Microsoft Azure Database Services Benchmark v1.0.0
 #
@@ -49,6 +50,8 @@ audit_azure_mysql_db () {
       # check_mysql_db_value "Audit Log Events"       "server" "${mysql_server}" "${resource_group}" "" "audit_log_events"           "eq" "CONNECTION"   "" ""
       # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
       # check_mysql_db_value "Error Server Log File" "server" "${mysql_server}" "${resource_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
+      # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
+      # check_mysql_db_value "Require Secure Transport" "server" "${mysql_server}" "${resource_group}" "" "require_secure_transport" "eq" "ON"         "" ""
     done
   fi
   command="az mysql flexible-server list --query \"[].name\" --output tsv"
@@ -79,6 +82,8 @@ audit_azure_mysql_db () {
         # check_mysql_db_value "Audit Log Events"      "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "audit_log_events"           "eq" "CONNECTION"   "" ""
         # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
         # check_mysql_db_value "Error Server Log File" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "error_server_log_file"        "eq" "Enabled"    "" ""
+        # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
+        # check_mysql_db_value "Require Secure Transport" "flexible-server" "${mysql_server}" "${resource_group}" "${db_name}" "require_secure_transport" "eq" "ON"         "" ""
       done
     done
   fi
