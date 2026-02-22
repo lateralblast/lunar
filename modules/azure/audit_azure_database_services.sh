@@ -38,6 +38,9 @@
 # 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
 # 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
 #
+# Azure Database for MySQL
+# 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest
+#
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
 #
 # This requires the Azure CLI to be installed and configured

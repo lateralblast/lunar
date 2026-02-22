@@ -2551,3 +2551,7 @@
 # Added Azure Data Factory Using RBAC check
 # 13.6.9: Sun 22 Feb 2026 09:39:23 PM AEDT
 # Updates and improvements
+# 13.7.0: Sun 22 Feb 2026 02:19:13 PM AEDT
+# Added initial Azure MySQL DB module
+# 13.7.1: Sun 22 Feb 2026 02:19:13 PM AEDT
+# Added initial Azure MySQL DB function
