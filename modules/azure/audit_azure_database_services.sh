@@ -63,6 +63,16 @@
 # 6.10 Ensure server parameter 'require_secure_transport' is set to 'ON' for PostgreSQL server - TBD
 # 6.11 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for PostgreSQL server - TBD
 #
+# Azure SQL Database
+# 9.1 Ensure that 'Auditing' is set to 'On' - TBD
+# 9.2 Ensure that 'Public Network Access' is set to 'Disable' - TBD
+# 9.3 Ensure no Azure SQL Database firewall rule is overly permissive - TBD
+# 9.4 Ensure SQL server's Transparent Data Encryption (TDE) protector is encrypted with Customer-managed key - TBD
+# 9.5 Ensure that Microsoft Entra authentication is Configured for SQL Servers - TBD
+# 9.6 Ensure that 'Data encryption' is set to 'On' on a SQL Database - TBD
+# 9.7 Ensure that 'Auditing' Retention is 'greater than 90 days' - TBD
+# 9.8 Ensure 'Minimum TLS Version' is set to 'TLS 1.2' or higher - TBD
+#
 # Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
@@ -76,4 +86,5 @@ audit_azure_database_services () {
   audit_azure_data_factory
   audit_azure_mysql_db
   audit_azure_postgresql_db
+  audit_azure_sql_db
 }
