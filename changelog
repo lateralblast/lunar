@@ -2579,3 +2579,13 @@
 # Added check stub for Azure MySQL DB Require Secure Transport
 # 13.8.3: Sun 22 Feb 2026 03:59:37 PM AEDT
 # Added check stub for Azure MySQL DB TLS Version
+# 13.8.4: Tue 24 Feb 2026 01:24:08 PM AEDT
+# Added initial Azure PostgreSQL DB module
+# 13.8.5: Tue 24 Feb 2026 01:34:08 PM AEDT
+# Added initial support for Azure PostgreSQL Flexible Server
+# 13.8.6: Tue 24 Feb 2026 01:44:08 PM AEDT
+# Added initial support for Azure PostgreSQL Single Server
+# 13.8.7: Tue 24 Feb 2026 01:54:08 PM AEDT
+# Add initial Azure PostgreSQL DB checks
+# 13.8.8: Tue 24 Feb 2026 02:04:08 PM AEDT
+# Updates and improvements

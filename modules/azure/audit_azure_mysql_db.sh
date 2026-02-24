@@ -19,7 +19,7 @@
 # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
 # 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
 #
-# Refer to Section(s) 5- Page(s) 84- Microsoft Azure Database Services Benchmark v1.0.0
+# Refer to Section(s) 5 Page(s) 84-105 Microsoft Azure Database Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.

@@ -33,24 +33,37 @@
 # 3.8  Ensure Data Factory is encrypted using Customer Managed Keys
 #
 # Data Factory
-# 4.1 Ensure Data Factory is encrypted using Customer Managed Keys
-# 4.2 Ensure Data Factory is using Managed Identities - TBD
-# 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
-# 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
-# 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
+# 4.1  Ensure Data Factory is encrypted using Customer Managed Keys
+# 4.2  Ensure Data Factory is using Managed Identities - TBD
+# 4.3  Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
+# 4.4  Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
+# 5.2  Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
 #
 # Azure Database for MySQL
-# 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
-# 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
-# 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
-# 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
-# 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
-# 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
-# 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
-# 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
-# 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
+# 5.1  Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
+# 5.2  Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
+# 5.3  Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
+# 5.4  Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
+# 5.5  Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
+# 5.6  Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
+# 5.7  Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
+# 5.8  Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
+# 5.9  Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
 #
-# Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v1.0.0
+# Azure Database for PostgreSQL
+# 6.1  Ensure Azure Database for PostgreSQL uses Customer Managed Keys for Encryption at Rest - TBD
+# 6.2  Ensure Azure Database for PostgreSQL uses only Microsoft Entra Authentication - TBD
+# 6.3  Ensure `Public Network Access` is `Disabled` for Azure Database for PostgreSQL - TBD
+# 6.4  Ensure Private Endpoints Are Used for Azure PostgreSQL Databases - TBD
+# 6.5  Ensure server parameter 'connection_throttle.enable' is set to 'ON' for PostgreSQL server - TBD
+# 6.6  Ensure server parameter 'logfiles.retention_days' is greater than 3 days for PostgreSQL server - TBD
+# 6.7  Ensure server parameter 'log_checkpoints' is set to 'ON' for PostgreSQL server - TBD
+# 6.8  Ensure server parameter 'log_disconnections' is set to 'ON' for PostgreSQL servers - TBD
+# 6.9  Ensure server parameter 'log_connections' is set to 'ON' for PostgreSQL servers - TBD
+# 6.10 Ensure server parameter 'require_secure_transport' is set to 'ON' for PostgreSQL server - TBD
+# 6.11 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for PostgreSQL server - TBD
+#
+# Refer to Section(s) 2- Page(s) 11- Microsoft Azure Database Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -62,4 +75,5 @@ audit_azure_database_services () {
   audit_azure_cosmos_db
   audit_azure_data_factory
   audit_azure_mysql_db
+  audit_azure_postgresql_db
 }

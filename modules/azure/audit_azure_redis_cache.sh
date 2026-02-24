@@ -19,7 +19,7 @@
 # 2.9  Ensure 'Access Keys Authentication' is set to 'Disabled'
 # 2.10 Ensure 'Update Channel' is set to 'Stable' 
 #
-# Refer to Section(s) 2 Page(s) 11-12 Microsoft Azure Database Services Benchmark v1.0.0
+# Refer to Section(s) 2 Page(s) 11-12 Microsoft Azure Database Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.

@@ -115,6 +115,14 @@ check_os_release () {
   echo ""
   os_codename=""
   os_minorrev=""
+  os_domain="unknown"
+  os_platform="unknown"
+  os_processor="unknown"
+  os_vendor="unknown"
+  os_release="unknown"
+  os_version="unknown"
+  os_update="unknown"
+  os_codename="unknown"
   os_name=$( uname )
   if [ "${os_name}" = "Darwin" ]; then
     os_release=$( sw_vers |grep ProductVersion |awk '{print $2}' )
@@ -247,6 +255,17 @@ check_os_release () {
   if [ "${os_domain}" = "" ]; then
     os_domain=$( hostname -f | cut -f2- -d. )
   fi
+  if [ "${os_domain}" = "" ]; then
+    if [ -f "/etc/domainname" ]; then
+      os_domain=$( cat /etc/domainname )
+    fi
+  fi
+  if [ "${os_domain}" = "" ]; then
+    os_domain="unknown"
+  fi
+  if [ "${os_domain}" = "(none)" ]; then
+    os_domain="none"
+  fi
   echo "Domain:     ${os_domain}"
   os_machine=$( uname -m )
   check_virtual_platform
@@ -265,9 +284,7 @@ check_os_release () {
   if [ ! "${os_minorrev}" = "" ]; then
     echo "Minor Rev:  ${os_minorrev}"
   fi
-  if [ ! "${os_codename}" = "" ]; then
-    echo "Codename:   ${os_codename}"
-  fi
+  echo "Codename:   ${os_codename}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_update}" -lt 10 ]; then
       long_update="0${os_update}"
