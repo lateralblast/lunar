@@ -2621,5 +2621,7 @@
 # Added Azure App Service App check for HTTP Version
 # 14.0.4: Wed 25 Feb 2026 03:20:53 PM AEDT
 # Added Azure App Service App check for HTTPS Only
-# 14.0.5: Wed 25 Feb 2026 03:20:53 PM AEDT
+# 14.0.5: Wed 25 Feb 2026 04:20:53 PM AEDT
 # Added Azure App Service App check for Minimum Inbound TLS Version
+# 14.0.6: Wed 25 Feb 2026 04:50:53 PM AEDT
+# Added Azure App Service App check for end to end TLS encryption

@@ -15,11 +15,12 @@ check_azure_app_service_app_value () {
   description="${1}"
   app_name="${2}"
   resource_group="${3}"
-  query_string="${4}"
-  function="${5}"
-  correct_value="${6}"
-  set_name="${8}"
-  set_value="${9}"
+  resource_type="${4}"
+  query_string="${5}"
+  function="${6}"
+  correct_value="${7}"
+  set_name="${9}"
+  set_value="${10}"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
@@ -39,7 +40,11 @@ check_azure_app_service_app_value () {
             verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
             ;;
           *)
-            verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            if [ "${resource_type}" = "" ]; then
+              verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            else
+              verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            fi
             ;;
         esac
       fi
@@ -53,7 +58,11 @@ check_azure_app_service_app_value () {
             verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
             ;;
           *)
-            verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            if [ "${resource_type}" = "" ]; then
+              verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            else
+              verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            fi
             ;;
         esac
       fi
