@@ -2629,3 +2629,5 @@
 # Added Azure App Service App check for Remote Debugging
 # 14.0.8: Wed 25 Feb 2026 05:50:53 PM AEDT
 # Added Azure App Service App check for Client Certificates
+# 14.0.9: Wed 25 Feb 2026 06:20:53 PM AEDT
+# Added Azure App Service App check for Authentication
