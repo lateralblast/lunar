@@ -54,5 +54,7 @@ audit_azure_app_service_apps () {
     check_azure_app_service_app_value "Java Container Version" "${app_name}" "${resource_group}" "javaContainerVersion" "eq" "${azure_java_version}"   "" "--java-container-version"
     # 2.1.2   Ensure 'Python version' is currently supported (if in use) 
     check_azure_app_service_app_value "Python Version"         "${app_name}" "${resource_group}" "pythonVersion"        "eq" "${azure_python_version}" "" "--python-version"
+    # 2.1.3   Ensure 'PHP version' is currently supported (if in use)
+    check_azure_app_service_app_value "PHP Version"            "${app_name}" "${resource_group}" "phpVersion"           "eq" "${azure_php_version}"    "" "--php-version"
   done
 }

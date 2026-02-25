@@ -2609,3 +2609,5 @@
 # Updates and improvements
 # 13.9.8: Wed 25 Feb 2026 12:52:53 PM AEDT
 # Added Azure App Service App check for Python
+# 13.9.9: Wed 25 Feb 2026 01:12:53 PM AEDT
+# Added Azure App Service App check for PHP
