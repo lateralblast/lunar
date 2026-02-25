@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      13.9.7
+# Version:      13.9.8
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -60,12 +60,16 @@
 # audit_mode = 2 : Restore Mode
 
 # Azure
+check_azure=0
 azure_auth_mode="login"
 azure_tenant_id=""
 azure_allow_no_subscriptions="no"
+azure_python_version="3.8"
+azure_java_version="11"
 
 # Defaults for AWS
 
+check_aws=0
 aws_iam_master_role="iam-master"
 aws_iam_manager_role="iam-manager"
 aws_cloud_trail_name="aws-audit-log"
@@ -166,8 +170,6 @@ ubuntu_codename=""
 output_type="cli"
 output_file=""
 output_csv="Module,Check,Status,Fix"
-check_azure=0
-check_aws=0
 
 # Disable daemons
 

@@ -38,7 +38,6 @@
 audit_azure_app_service_apps () {
   print_function "audit_azure_app_service_apps"
   verbose_message "Azure App Service Apps" "check"
-  java_version="1.8"
   command="az webapp list --query \"[].name\" --output tsv"
   command_message "${command}"
   app_names=$( eval "${command}" 2> /dev/null )
@@ -51,10 +50,9 @@ audit_azure_app_service_apps () {
     command_message "${command}"
     resource_group=$( eval "${command}" )
     # 2.1.1   Ensure 'Java version' is currently supported (if in use) 
-    check_azure_app_service_app_value "Linux Java Version"     "${app_name}" "${resource_group}" "linuxFxVersion"       "eq" "${java_version}" "" ""
-    check_azure_app_service_app_value "Windows Java Version"   "${app_name}" "${resource_group}" "windowsFxVersion"     "eq" "${java_version}" "" ""
-    check_azure_app_service_app_value "Java Version"           "${app_name}" "${resource_group}" "javaVersion"          "eq" "${java_version}" "" ""
-    check_azure_app_service_app_value "Java Container Version" "${app_name}" "${resource_group}" "javaContainerVersion" "eq" "${java_version}" "" ""
-    check_azure_app_service_app_value "Java Container"         "${app_name}" "${resource_group}" "javaContainer"        "eq" "${java_version}" "" ""
+    check_azure_app_service_app_value "Java Version"           "${app_name}" "${resource_group}" "javaVersion"          "eq" "${azure_java_version}"   "" "--java-version"
+    check_azure_app_service_app_value "Java Container Version" "${app_name}" "${resource_group}" "javaContainerVersion" "eq" "${azure_java_version}"   "" "--java-container-version"
+    # 2.1.2   Ensure 'Python version' is currently supported (if in use) 
+    check_azure_app_service_app_value "Python Version"         "${app_name}" "${resource_group}" "pythonVersion"        "eq" "${azure_python_version}" "" "--python-version"
   done
 }
