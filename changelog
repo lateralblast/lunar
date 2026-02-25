@@ -2619,3 +2619,5 @@
 # Bug fixes
 # 14.0.3: Wed 25 Feb 2026 03:20:53 PM AEDT
 # Added Azure App Service App check for HTTP Version
+# 14.0.4: Wed 25 Feb 2026 03:20:53 PM AEDT
+# Added Azure App Service App check for HTTPS Only
