@@ -436,7 +436,7 @@
 # 3.1.1 Mon 24 Mar 2014 10:02:57 EST
 # Added CIS reference to password hashing algorithm test
 # 3.1.2 Mon 24 Mar 2014 10:10:33 EST
-@ Added CIS reference to password policy test
+# Added CIS reference to password policy test
 # 3.1.3 Mon 24 Mar 2014 10:26:28 EST
 # Added CIS reference for account lockout timeout test
 # 3.1.4 Mon 24 Mar 2014 17:31:53 EST
@@ -1348,7 +1348,7 @@
 # 7.6.6: Sun 03 May 2020 13:13:14 AEST
 # Ansible output tweaks
 # 7.6.7: Sun 03 May 2020 14:34:48 AEST
-@ More ansible output tweaks
+# More ansible output tweaks
 # 7.6.8: Mon 04 May 2020 12:01:58 AEST
 # More ansible output tweaks
 # 7.6.9: Mon 18 May 2020 19:25:17 AEST
@@ -2637,3 +2637,5 @@
 # Added Azure App Service App check for Public Network Access
 # 14.1.2: Wed 25 Feb 2026 06:20:53 PM AEDT
 # Added Azure App Service App check for App Service Plan SKU
+# 14.1.3: Wed 25 Feb 2026 10:20:21 PM AEDT
+# Added Azure App Service App check for Private Endpoints

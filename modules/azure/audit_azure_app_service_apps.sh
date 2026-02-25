@@ -88,4 +88,11 @@ audit_azure_app_service_apps () {
     check_azure_basic_authentication_publishing_credential_value    "${app_name}" "${resource_group}" "ftp" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
     check_azure_basic_authentication_publishing_credential_value    "${app_name}" "${resource_group}" "scm" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
   done
+  # 2.1.16  Ensure private endpoints are used to access App Service apps
+  command="az webapp list --query \"[].id\" --output tsv"
+  command_message "${command}"
+  app_ids=$( eval "${command}" 2> /dev/null )
+  for app_id in ${app_ids}; do
+    check_azure_network_private_endpoint_value "App Service App" "${app_id}" "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]" "eq" "Approved"
+  done
 }
