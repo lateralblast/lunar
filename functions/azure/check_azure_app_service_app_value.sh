@@ -26,11 +26,14 @@ check_azure_app_service_app_value () {
   fi
   print_function  "check_azure_app_service_app_value"
   verbose_message "Azure App Service App ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
-  if [ "${resource_type}" = "auth" ]; then
-    command="az webapp auth show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  else
-    command="az webapp show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  fi
+  case "${resource_type}" in
+    "auth|identity")
+      command="az webapp ${resource_type} show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+      ;;
+    *)
+      command="az webapp show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+      ;;
+  esac
   command_message "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
@@ -41,22 +44,36 @@ check_azure_app_service_app_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            if [ "${resource_type}" = "auth" ]; then
-              verbose_message  "az webapp auth update --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
-            else
-              verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""  "fix"
-            fi
+            case "${resource_type}" in
+              "Microsoft.Web/sites")
+                verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+              "auth")
+                verbose_message  "az webapp ${resource_type} update --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+              "identity")
+                verbose_message  "az webapp ${resource_type} assign --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+              *)
+                verbose_message  "az webapp update --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+            esac
             ;;
           *)
-            if [ "${resource_type}" = "" ]; then
-              if [ "${resource_type}" = "auth" ]; then
-                verbose_message  "az webapp auth update --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
-              else
-                verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\""  "fix"
-              fi
-            else
-              verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
-            fi
+            case "${resource_type}" in
+              "Microsoft.Web/sites")
+                verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+              "auth")
+                verbose_message  "az webapp ${resource_type} update --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+              "identity")
+                verbose_message  "az webapp ${resource_type} assign --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+              *)
+                verbose_message  "az webapp update --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+            esac
             ;;
         esac
       fi
@@ -67,22 +84,36 @@ check_azure_app_service_app_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            if [ "${resource_type}" = "auth" ]; then
-              verbose_message  "az webapp auth update --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
-            else
-              verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""  "fix"
-            fi
+            case "${resource_type}" in
+              "Microsoft.Web/sites")
+                verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+              "auth")
+                verbose_message  "az webapp ${resource_type} update --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+              "identity")
+                verbose_message  "az webapp ${resource_type} assign --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+              *)
+                verbose_message  "az webapp update --name \"${app_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+                ;;
+            esac
             ;;
           *)
-            if [ "${resource_type}" = "" ]; then
-              if [ "${resource_type}" = "auth" ]; then
-                verbose_message  "az webapp auth update --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
-              else
-                verbose_message  "az webapp config set --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\""  "fix"
-              fi
-            else
-              verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
-            fi
+            case "${resource_type}" in
+              "Microsoft.Web/sites")
+                verbose_message  "az resource update --resource-type \"${resource_type}\" --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+              "auth")
+                verbose_message  "az webapp ${resource_type} update --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+              "identity")
+                verbose_message  "az webapp ${resource_type} assign --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+              *)
+                verbose_message  "az webapp update --name \"${app_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+                ;;
+            esac
             ;;
         esac
       fi
