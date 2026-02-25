@@ -56,5 +56,8 @@ audit_azure_app_service_apps () {
     check_azure_app_service_app_value "Python Version"         "${app_name}" "${resource_group}" "pythonVersion"        "eq" "${azure_python_version}" "" "--python-version"
     # 2.1.3   Ensure 'PHP version' is currently supported (if in use)
     check_azure_app_service_app_value "PHP Version"            "${app_name}" "${resource_group}" "phpVersion"           "eq" "${azure_php_version}"    "" "--php-version"
+    # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled'
+    check_azure_basic_authentication_publishing_credential_value "Basic Authentication Publishing Credentials" "${app_name}" "${resource_group}" "ftp" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
+    check_azure_basic_authentication_publishing_credential_value "Basic Authentication Publishing Credentials" "${app_name}" "${resource_group}" "scm" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
   done
 }
