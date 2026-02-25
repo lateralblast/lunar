@@ -2617,3 +2617,5 @@
 # Added Azure App Service App check for FTP State
 # 14.0.2: Wed 25 Feb 2026 03:07:53 PM AEDT
 # Bug fixes
+# 14.0.3: Wed 25 Feb 2026 03:20:53 PM AEDT
+# Added Azure App Service App check for HTTP Version

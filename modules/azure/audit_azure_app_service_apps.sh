@@ -58,6 +58,8 @@ audit_azure_app_service_apps () {
     check_azure_app_service_app_value "PHP Version"            "${app_name}" "${resource_group}" "phpVersion"           "eq" "${azure_php_version}"    "--php-version"            ""
     # 2.1.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' 
     check_azure_app_service_app_value "FTP State"              "${app_name}" "${resource_group}" "ftpState"             "eq" "${azure_ftp_state}"      "--ftp-state"              ""
+    # 2.1.6   Ensure 'HTTP version' is set to '2.0' (if in use)
+    check_azure_app_service_app_value "HTTP Version"           "${app_name}" "${resource_group}" "http20Enabled"        "eq" "true"                   "--http20-enabled"          ""
     # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled'
     check_azure_basic_authentication_publishing_credential_value "Basic Authentication Publishing Credentials" "${app_name}" "${resource_group}" "ftp" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
     check_azure_basic_authentication_publishing_credential_value "Basic Authentication Publishing Credentials" "${app_name}" "${resource_group}" "scm" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
