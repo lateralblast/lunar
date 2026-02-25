@@ -71,12 +71,19 @@ audit_azure_app_service_apps () {
     # 2.1.11  Ensure incoming client certificates are enabled and required (if in use)
     check_azure_app_service_app_value "Client Certificates"         "${app_name}" "${resource_group}" "Microsoft.Web/sites" "clientCertEnabled"             "eq" "true"                          "clientCertEnabled"                              ""
     # 2.1.12  Ensure 'App Service authentication' is set to 'Enabled' 
-    check_azure_app_service_app_value "App Service Auth v1"         "${app_name}" "${resource_group}" "auth"                 "enabled"                      "eq" "true"                          "--enabled"                                     ""
-    check_azure_app_service_app_value "App Service Auth v2"         "${app_name}" "${resource_group}" "auth"                 "properties.platform.enabled"  "eq" "true"                          "--enabled"                                     ""
+    check_azure_app_service_app_value "App Service Auth v1"         "${app_name}" "${resource_group}" "auth"                "enabled"                       "eq" "true"                          "--enabled"                                      ""
+    check_azure_app_service_app_value "App Service Auth v2"         "${app_name}" "${resource_group}" "auth"                "properties.platform.enabled"   "eq" "true"                          "--enabled"                                      ""
     # 2.1.13  Ensure managed identities are configured
-    check_azure_app_service_app_value "Managed Identities"          "${app_name}" "${resource_group}" "identity"             "type"                         "eq" "${azure_managed_identity}"     ""                                              ""
+    check_azure_app_service_app_value "Managed Identities"          "${app_name}" "${resource_group}" "identity"            "type"                          "eq" "${azure_managed_identity}"     ""                                               ""
     # 2.1.14  Ensure public network access is disabled
-    check_azure_app_service_app_value "Public Network Access"       "${app_name}" "${resource_group}" ""                     "publicNetworkAccess"           "eq" "Disabled"                      "properties.publicNetworkAccess"               ""
+    check_azure_app_service_app_value "Public Network Access"       "${app_name}" "${resource_group}" ""                    "publicNetworkAccess"           "eq" "Disabled"                      "properties.publicNetworkAccess"                 ""
+    # 2.1.15  Ensure App Service plan SKU supports private endpoints 
+    command="az webapp show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"appServicePlanId\" --output tsv"
+    command_message "${command}"
+    app_plans=$( eval "${command}" )
+    for app_plan in ${app_plans}; do
+      check_azure_app_service_plan_value "App Service Plan SKU"      "${app_plan}" "${resource_group}" ""                   "sku.tier"                      "eq" "${azure_sku_tier}"             "--sku"                                          ""
+    done
     # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled'
     check_azure_basic_authentication_publishing_credential_value    "${app_name}" "${resource_group}" "ftp" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
     check_azure_basic_authentication_publishing_credential_value    "${app_name}" "${resource_group}" "scm" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
