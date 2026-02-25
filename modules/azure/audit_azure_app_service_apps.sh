@@ -66,6 +66,8 @@ audit_azure_app_service_apps () {
     check_azure_app_service_app_value "Minimum Inbound TLS Version" "${app_name}" "${resource_group}" ""                    "minTlsVersion"                "eq"  "1.2"                           "--min-tls-version"                              ""
     # 2.1.9   Ensure end-to-end TLS encryption is enabled
     check_azure_app_service_app_value "End-to-End TLS Encryption"   "${app_name}" "${resource_group}" "Microsoft.Web/sites" "endToEndEncryptionEnabled"    "eq"  "true"                          "properties.endToEndEncryptionEnabled"           ""
+    # 2.1.10  Ensure 'Remote debugging' is set to 'Off'
+    check_azure_app_service_app_value "Remote Debugging"            "${app_name}" "${resource_group}" ""                    "remoteDebuggingEnabled"       "eq"  "false"                         "--remote-debugging-enabled"                     ""
     # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled'
     check_azure_basic_authentication_publishing_credential_value    "${app_name}" "${resource_group}" "ftp" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""
     check_azure_basic_authentication_publishing_credential_value    "${app_name}" "${resource_group}" "scm" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false" "--auth-settings.publishing-credentials-enabled" ""

@@ -2625,3 +2625,5 @@
 # Added Azure App Service App check for Minimum Inbound TLS Version
 # 14.0.6: Wed 25 Feb 2026 04:50:53 PM AEDT
 # Added Azure App Service App check for end to end TLS encryption
+# 14.0.7: Wed 25 Feb 2026 05:20:53 PM AEDT
+# Added Azure App Service App check for Remote Debugging
