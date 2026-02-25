@@ -2613,3 +2613,5 @@
 # Added Azure App Service App check for PHP
 # 14.0.0: Wed 25 Feb 2026 01:59:53 PM AEDT
 # Added Azure App Service App check for Basic Authentication Publishing Credentials
+# 14.0.1: Wed 25 Feb 2026 02:10:53 PM AEDT
+# Added Azure App Service App check for FTP State
