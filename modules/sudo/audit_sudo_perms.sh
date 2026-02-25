@@ -19,7 +19,10 @@ audit_sudo_perms () {
       check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
     fi
     if [ -d "/etc/sudoers.d" ]; then
-      file_list=$( find /etc/sudoers.d -type file )
+      if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
+        verbose_message "May require sudo to check" "notice"
+      fi
+      file_list=$( find /etc/sudoers.d -type f 2> /dev/null )
       for check_file in ${file_list}; do
         check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
       done

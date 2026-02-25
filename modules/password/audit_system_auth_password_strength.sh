@@ -24,7 +24,7 @@ audit_system_auth_password_strength () {
           command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
           command_message "${command}"
           check_value=$( eval "${command}" )
-          lockdown_command="sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' < ${check_file} > ${temo_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}" "fix"
+          lockdown_command="sed 's/^password.*pam_deny.so$/&\npassword\t\trequisite\t\t\tpam_passwdqc.so min=disabled,disabled,16,12,8/' < ${check_file} > ${temo_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" != "${search_string}" ]; then
             if [ "${audit_mode}" = "1" ]; then
               increment_insecure "Password strength settings not enabled in \"${check_file}\""

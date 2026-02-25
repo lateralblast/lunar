@@ -24,17 +24,17 @@ audit_nis_entries () {
     for check_file in /etc/passwd /etc/shadow /etc/group; do
       if test -r "${check_file}"; then
         if [ "${audit_mode}" != 2 ]; then
-          command="grep -c \"^\+\" \"${check_file}\" | sed \"s/ //g\""
+          command="grep -c \"^+\" \"${check_file}\" | sed \"s/ //g\""
           command_message "${command}"
           entry_check=$( eval "${command}" )
           if [ ! "${entry_check}" = "0" ]; then
-            command="grep \"^\+\" \"${check_file}\""
+            command="grep \"^+\" \"${check_file}\""
             command_message "${command}"
             file_entries=$( eval "${command}" )
             for file_entry in ${file_entries}; do
               if [ "${audit_mode}" = 1 ]; then
                 increment_insecure "NIS entry \"${file_entry}\" in ${check_file}"
-                verbose_message    "sed -e \"s/^\+/#&/\" < ${check_file} > ${temp_file}" "fix"
+                verbose_message    "sed -e \"s/^+/#&/\" < ${check_file} > ${temp_file}" "fix"
                 verbose_message    "cat ${temp_file} > ${check_file}" "fix"
               fi
               if [ "${audit_mode}" = 0 ]; then
