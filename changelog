@@ -2639,5 +2639,7 @@
 # Added Azure App Service App check for App Service Plan SKU
 # 14.1.3: Wed 25 Feb 2026 10:20:21 PM AEDT
 # Added Azure App Service App check for Private Endpoints
-# 14.1.4: Thu 26 Feb 2026 10:37:21 PM AEDT
+# 14.1.4: Thu 26 Feb 2026 10:37:21 AM AEDT
 # Added Azure App Service App check for Private DNS Zone
+# 14.1.5: Thu 26 Feb 2026 10:47:21 AM AEDT
+# Added Azure App Service App check for Virtual Network Integration
