@@ -6,7 +6,7 @@
 
 # check_azure_network_watcher_value
 #
-# Check Azure Network Watcher Value
+# Check Azure Network Watcher value
 #
 # This requires the Azure CLI to be installed and configured
 #.

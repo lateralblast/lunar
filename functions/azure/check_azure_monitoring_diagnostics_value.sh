@@ -7,7 +7,7 @@
 
 # check_azure_monitoring_diagnostics_value
 #
-# Check Azure Monitoring Diagnostics Value
+# Check Azure Monitoring Diagnostics value
 #
 # This requires the Azure CLI to be installed and configured
 #.

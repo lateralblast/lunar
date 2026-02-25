@@ -6,7 +6,7 @@
 
 # check_azure_vnet_value
 #
-# Check Azure VNet Value
+# Check Azure VNet value
 #
 # This requires the Azure CLI to be installed and configured
 #.

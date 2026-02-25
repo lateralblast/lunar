@@ -11,7 +11,7 @@
 # Refer to Section(s) 3 Page(s) 63-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to CIS Microsoft Azure Compute Services Benchmark
 #
-# App Service App
+# App Service Apps
 # 2.1.1   Ensure 'Java version' is currently supported (if in use) 
 # 2.1.2   Ensure 'Python version' is currently supported (if in use) 
 # 2.1.3   Ensure 'PHP version' is currently supported (if in use)

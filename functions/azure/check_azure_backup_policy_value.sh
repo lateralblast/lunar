@@ -6,7 +6,7 @@
 
 # check_azure_backup_policy_value
 #
-# Check Azure Backup policy values
+# Check Azure Backup policy value
 #
 # This requires the Azure CLI to be installed and configured
 #.

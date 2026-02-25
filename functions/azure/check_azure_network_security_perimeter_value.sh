@@ -6,7 +6,7 @@
 
 # check_azure_network_security_perimeter_value
 #
-# Check Azure Network Security Perimeter Value
+# Check Azure Network Security Perimeter value
 #
 # This requires the Azure CLI to be installed and configured
 #.

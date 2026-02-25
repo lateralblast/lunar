@@ -6,7 +6,7 @@
 
 # check_azure_monitor_value
 #
-# Check Azure Monitor values
+# Check Azure Monitor value
 #
 # This requires the Azure CLI to be installed and configured
 #.

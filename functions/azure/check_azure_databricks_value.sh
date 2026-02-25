@@ -6,7 +6,7 @@
 
 # check_azure_databricks_value
 #
-# Check Azure Databricks values
+# Check Azure Databricks value
 #
 # This requires the Azure CLI to be installed and configured
 #.

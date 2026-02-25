@@ -6,7 +6,7 @@
 
 # check_azure_security_contact_value 
 #
-# Check Azure Security Contact Value
+# Check Azure Security Contact value
 #
 # Refer to https://learn.microsoft.com/en-us/cli/azure/security/contact?view=azure-cli-latest
 #

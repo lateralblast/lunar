@@ -6,7 +6,7 @@
 
 # check_azure_security_setting_value
 #
-# Check Azure security setting values
+# Check Azure Security Setting value
 #
 # This requires the Azure CLI to be installed and configured
 #.

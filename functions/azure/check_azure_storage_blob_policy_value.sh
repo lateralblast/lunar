@@ -6,7 +6,7 @@
 
 # check_azure_storage_blob_policy_value
 #
-# Check Azure Storage Blob Policy Value
+# Check Azure Storage Blob Policy value
 #
 # This requires the Azure CLI to be installed and configured
 #.

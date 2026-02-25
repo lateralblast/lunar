@@ -6,7 +6,7 @@
 
 # check_azure_activity_log_alert_value
 #
-# Check Azure Activity Log Alert values
+# Check Azure Activity Log Alert value
 #
 # This requires the Azure CLI to be installed and configured
 #.

@@ -6,7 +6,7 @@
 
 # check_azure_recovery_services_vault_value
 #
-# Check Azure Recovery Services values
+# Check Azure Recovery Services Vault value
 #
 # This requires the Azure CLI to be installed and configured
 #.

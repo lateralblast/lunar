@@ -6,7 +6,7 @@
 
 # check_azure_storage_logging_value
 #
-# Check Azure Storage Logging Value
+# Check Azure Storage Logging value
 #
 # This requires the Azure CLI to be installed and configured
 #.

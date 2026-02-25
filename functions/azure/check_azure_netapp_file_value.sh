@@ -6,7 +6,7 @@
 
 # check_azure_netapp_file_value
 #
-# Check Azure NetApp Files Value
+# Check Azure NetApp File value
 #
 # This requires the Azure CLI to be installed and configured
 #.

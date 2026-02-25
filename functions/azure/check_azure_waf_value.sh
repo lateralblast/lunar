@@ -6,7 +6,7 @@
 
 # check_azure_waf_value
 #
-# Check Azure WAF Value
+# Check Azure WAF value
 #
 # This requires the Azure CLI to be installed and configured
 #.

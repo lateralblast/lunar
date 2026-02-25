@@ -6,7 +6,7 @@
 
 # check_azure_file_share_value
 #
-# Check Azure File Share Value
+# Check Azure File Share value
 #
 # This requires the Azure CLI to be installed and configured
 #.

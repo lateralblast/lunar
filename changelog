@@ -2597,3 +2597,13 @@
 # Updates and improvements
 # 13.9.2: Tue 24 Feb 2026 21:33:43 PM AEDT
 # Updates and improvements
+# 13.9.3: Wed 25 Feb 2026 11:42:53 AM AEDT
+# Added initial Azure App Service App module
+# 13.9.4: Wed 25 Feb 2026 11:42:53 AM AEDT
+# Added initial Azure App Service App function
+# 13.9.5: Wed 25 Feb 2026 11:42:53 AM AEDT
+# Formating updates
+# 13.9.6: Wed 25 Feb 2026 11:52:53 AM AEDT
+# Added Azure App Service App check for Java
+# 13.9.7: Wed 25 Feb 2026 11:52:53 AM AEDT
+# Updates and improvements

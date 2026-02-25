@@ -6,7 +6,7 @@
 
 # check_azure_key_vault_key_value
 #
-# Check Azure Key Vault key values
+# Check Azure Key Vault key value
 #
 # This requires the Azure CLI to be installed and configured
 # Audit account needs to have the 'Key Vault Reader' role

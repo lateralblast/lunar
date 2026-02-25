@@ -6,7 +6,7 @@
 
 # check_azure_nsg_security_rule_value
 #
-# Check Azure NSG Security Rule values
+# Check Azure NSG Security Rule value
 #
 # This requires the Azure CLI to be installed and configured
 #.

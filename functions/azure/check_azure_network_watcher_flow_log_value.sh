@@ -6,7 +6,7 @@
 
 # check_azure_network_watcher_flow_log_value
 #
-# Check Azure Network Watcher Flow Log Value
+# Check Azure Network Watcher Flow Log value
 #
 # This requires the Azure CLI to be installed and configured
 #.

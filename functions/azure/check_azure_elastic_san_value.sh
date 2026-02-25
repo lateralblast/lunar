@@ -6,7 +6,7 @@
 
 # check_azure_elastic_san_value
 #
-# Check Azure Elastic SAN Value
+# Check Azure Elastic SAN value
 #
 # This requires the Azure CLI to be installed and configured
 #.

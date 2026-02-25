@@ -6,7 +6,7 @@
 
 # check_azure_backup_vault_value
 #
-# Check Azure Backup values
+# Check Azure Backup value
 #
 # This requires the Azure CLI to be installed and configured
 #.

@@ -6,7 +6,7 @@
 
 # check_azure_storage_account_container_value
 #
-# Check Azure Storage Account Container Value
+# Check Azure Storage Account Container value
 #
 # This requires the Azure CLI to be installed and configured
 #.

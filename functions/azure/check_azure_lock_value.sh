@@ -6,7 +6,7 @@
 
 # check_azure_lock_value
 #
-# Check Azure Lock Value
+# Check Azure Lock value
 #
 # This requires the Azure CLI to be installed and configured
 #

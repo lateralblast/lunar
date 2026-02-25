@@ -6,7 +6,7 @@
 
 # check_azure_public_ip_value
 #
-# Check Azure Public IP Value
+# Check Azure Public IP value
 #
 # 7.7   Ensure that Public IP addresses are Evaluated on a Periodic Basis (Manual)
 #

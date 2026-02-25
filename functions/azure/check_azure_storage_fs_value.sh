@@ -6,7 +6,7 @@
 
 # check_azure_storage_fs_value
 #
-# Check Azure Storage File System Value
+# Check Azure Storage File System value
 #
 # This requires the Azure CLI to be installed and configured
 #.

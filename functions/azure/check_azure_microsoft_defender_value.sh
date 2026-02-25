@@ -6,7 +6,7 @@
 
 # check_azure_microsoft_defender_value
 #
-# Check Azure Microsoft Defender Value
+# Check Azure Microsoft Defender value
 #
 # This requires the Azure CLI to be installed and configured
 #.

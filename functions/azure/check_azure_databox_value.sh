@@ -6,7 +6,7 @@
 
 # check_azure_databox_value
 #
-# Check Azure Databox values
+# Check Azure Databox value
 #
 # This requires the Azure CLI to be installed and configured
 #.
