@@ -2633,3 +2633,5 @@
 # Added Azure App Service App check for Authentication
 # 14.1.0: Wed 25 Feb 2026 06:20:53 PM AEDT
 # Added Azure App Service App check for Managed Identities
+# 14.1.1: Wed 25 Feb 2026 06:20:53 PM AEDT
+# Added Azure App Service App check for Public Network Access
