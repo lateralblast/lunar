@@ -2647,3 +2647,5 @@
 # Added Azure App Service App check for VNet Image Pull
 # 14.1.7: Thu 26 Feb 2026 11:00:21 AM AEDT
 # Added Azure App Service App check for VNet Content Share
+# 14.1.8: Thu 26 Feb 2026 11:13:09 AM AEDT
+# Added Azure App Service App check for Cross-Origin Resource Sharing
