@@ -2649,3 +2649,41 @@
 # Added Azure App Service App check for VNet Content Share
 # 14.1.8: Thu 26 Feb 2026 11:13:09 AM AEDT
 # Added Azure App Service App check for Cross-Origin Resource Sharing
+# 14.1.9: Thu 26 Feb 2026 12:42:49 PM AEDT
+# Added Azure App Service Deployment Slot audit module
+# 14.2.0: Thu 26 Feb 2026 12:44:59 AEDT
+# Added Azure App Service Deployment Slot function
+# 14.2.1: Thu 26 Feb 2026 12:47:19 AEDT
+# Added Azure App Service Deployment Slot Java version check
+# 14.2.2: Thu 26 Feb 2026 12:49:16 AEDT
+# Added Azure App Service Deployment Slot Python version check
+# 14.2.3: Thu 26 Feb 2026 12:50:09 AEDT
+# Added Azure App Service Deployment Slot PHP version check
+# 14.2.4: Thu 26 Feb 2026 13:08:16 AEDT
+# Added Azure App Service Deployment Slot Basic Authentication Publishing Credentials
+# 14.2.4: Thu 26 Feb 2026 13:10:25 AEDT
+# Added Azure App Service Deployment Slot FTP state check
+# 14.2.5: Thu 26 Feb 2026 13:11:07 AEDT
+# Added Azure App Service Deployment HTTP version check
+# 14.2.6: Thu 26 Feb 2026 13:13:38 AEDT
+# Added Azure App Service Deployment HTTPs check
+# 14.2.7: Thu 26 Feb 2026 13:14:36 AEDT
+# Added Azure App Service Deployment Slot TLS version check
+# 14.2.8: Thu 26 Feb 2026 13:16:53 AEDT
+# Added Azure App Service Deployment Slot end to end TLS encryptions check
+# 14.2.9: Thu 26 Feb 2026 13:20:20 AEDT
+# Added Azure App Service Deployment Slot Remote Debugging check
+# 14.2.9: Thu 26 Feb 2026 13:27:03 AEDT
+# Added Azure App Service Deployment Slot Client Certificates check
+# 14.2.9: Thu 26 Feb 2026 13:28:00 AEDT
+# Added Azure App Service Deployment Slot Managed Identities check
+# 14.3.0: Thu 26 Feb 2026 13:28:23 AEDT
+# Added Azure App Service Deployment Slot Public Network Access check
+# 14.3.1: Thu 26 Feb 2026 13:39:41 AEDT
+# Added Azure App Service Deployment Slot VNet check
+# 14.3.2: Thu 26 Feb 2026 13:40:33 AEDT
+# Added Azure App Service Deployment Slot VNet Routing check
+# 14.3.3: Thu 26 Feb 2026 13:41:45 AEDT
+# Added Azure App Service Deployment Slot Cross-Origin Resource Sharing check
+# 14.3.4: Thu 26 Feb 2026 13:44:47 AEDT
+# Updates and improvements
