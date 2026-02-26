@@ -2643,3 +2643,7 @@
 # Added Azure App Service App check for Private DNS Zone
 # 14.1.5: Thu 26 Feb 2026 10:47:21 AM AEDT
 # Added Azure App Service App check for Virtual Network Integration
+# 14.1.6: Thu 26 Feb 2026 11:00:21 AM AEDT
+# Added Azure App Service App check for VNet Image Pull
+# 14.1.7: Thu 26 Feb 2026 11:00:21 AM AEDT
+# Added Azure App Service App check for VNet Content Share

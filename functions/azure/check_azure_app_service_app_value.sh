@@ -41,6 +41,9 @@ check_azure_app_service_app_value () {
       increment_secure   "Azure App Service App ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
       increment_insecure "Azure App Service App ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      if [ "${query_string}" = "virtualNetworkSubnetId" ]; then
+        verbose_message "az webapp vnet-integration add --resource-group <resource-group-name> --name <app-name> --vnet <virtual-network-name> --subnet <subnet-name>" "fix" 
+      fi
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -81,6 +84,9 @@ check_azure_app_service_app_value () {
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_insecure "Azure App Service App ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      if [ "${query_string}" = "virtualNetworkSubnetId" ]; then
+        verbose_message "az webapp vnet-integration add --resource-group <resource-group-name> --name <app-name> --vnet <virtual-network-name> --subnet <subnet-name>" "fix" 
+      fi
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)

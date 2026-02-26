@@ -81,6 +81,10 @@ audit_azure_app_service_apps () {
     check_azure_app_service_app_value "Private DNS Zones"           "${app_name}" "${resource_group}" "Microsoft.Web/sites" "dnsConfiguration.dnsServers"   "ne" ""                              ""                                               ""
     # 2.1.18  Ensure app is integrated with a virtual network - TBD
     check_azure_app_service_app_value "Virtual Network Integration" "${app_name}" "${resource_group}" ""                    "virtualNetworkSubnetId"        "ne" ""                              ""                                               ""
+    # 2.1.19  Ensure configuration is routed through the virtual network integration - TBD
+    # 2.1.20  Ensure all traffic is routed through the virtual network - TBD
+    check_azure_app_service_app_value "VNet Image Pull"             "${app_name}" "${resource_group}" "Microsoft.Web/sites" "vnetRouteAllEnabled"           "eq" "true"                          "properties.vnetRouteAllEnabled"                 ""
+    check_azure_app_service_app_value "VNet Content Share"          "${app_name}" "${resource_group}" "Microsoft.Web/sites" "vnetContentShareEnabled"       "eq" "true"                          "properties.vnetContentShareEnabled"             ""
     # 2.1.15  Ensure App Service plan SKU supports private endpoints - TBD
     command="az webapp show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"appServicePlanId\" --output tsv"
     command_message "${command}"
