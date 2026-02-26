@@ -2735,3 +2735,45 @@
 # Added Azure Function App check for Cross-Origin Resource Sharing
 # 14.5.8: Thu 26 Feb 2026 17:21:47 AEDT
 # Updates and improvements
+# 14.5.9: Thu 26 Feb 2026 17:38:47 AEDT
+# Added Azure Function App Deployment Slot audit module
+# 14.6.0: Thu 26 Feb 2026 17:39:47 AEDT
+# Added Azure Function App Deployment Slot function
+# 14.6.1: Thu 26 Feb 2026 17:40:47 AEDT
+# Added Azure Function App Deployment Slot check for Java version
+# 14.6.2: Thu 26 Feb 2026 17:41:47 AEDT
+# Added Azure Function App Deployment Slot check for Python version
+# 14.6.3: Thu 26 Feb 2026 17:42:47 AEDT
+# Added Azure Function App Deployment Slot check for PHP version
+# 14.6.4: Thu 26 Feb 2026 17:43:47 AEDT
+# Added Azure Function App Deployment Slot check for Basic Authentication Publishing Credentials
+# 14.6.5: Thu 26 Feb 2026 17:44:47 AEDT
+# Added Azure Function App Deployment Slot check for FTP state
+# 14.6.6: Thu 26 Feb 2026 17:45:47 AEDT
+# Added Azure Function App Deployment Slot check for HTTP version
+# 14.6.7: Thu 26 Feb 2026 17:46:47 AEDT
+# Added Azure Function App Deployment Slot check for HTTPS only
+# 14.6.8: Thu 26 Feb 2026 17:47:47 AEDT
+# Added Azure Function App Deployment Slot check for Minimum Inbound TLS Version
+# 14.6.9: Thu 26 Feb 2026 17:48:47 AEDT
+# Added Azure Function App Deployment Slot check for end to end TLS encryption
+# 14.7.0: Thu 26 Feb 2026 17:49:47 AEDT
+# Added Azure Function App Deployment Slot check for Remote Debugging
+# 14.7.1: Thu 26 Feb 2026 17:50:47 AEDT
+# Added Azure Function App Deployment Slot check for Client Certificates
+# 14.7.2: Thu 26 Feb 2026 17:51:47 AEDT
+# Added Azure Function App Deployment Slot check for Authentication
+# 14.7.3: Thu 26 Feb 2026 17:52:47 AEDT
+# Added Azure Function App Deployment Slot check for Managed Identities
+# 14.7.4: Thu 26 Feb 2026 17:53:47 AEDT
+# Added Azure Function App Deployment Slot check for Public Network Access
+# 14.7.5: Thu 26 Feb 2026 17:54:47 AEDT
+# Added Azure Function App Deployment Slot check for Virtual Network Integration
+# 14.7.6: Thu 26 Feb 2026 17:55:47 AEDT
+# Added Azure Function App Deployment Slot check for VNet Image Pull
+# 14.7.7: Thu 26 Feb 2026 17:56:47 AEDT
+# Added Azure Function App Deployment Slot check for VNet Content Share
+# 14.7.8: Thu 26 Feb 2026 17:57:47 AEDT
+# Added Azure Function App Deployment Slot check for Cross-Origin Resource Sharing
+# 14.7.9: Thu 26 Feb 2026 17:58:47 AEDT
+# Updates and improvements
