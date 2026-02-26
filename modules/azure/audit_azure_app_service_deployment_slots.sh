@@ -25,7 +25,7 @@
 # 2.2.16  Ensure all traffic is routed through the virtual network - TBD
 # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
 #
-# Refer to Section(s) 2 Page(s) 23-89 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.1-17 Page(s) 90-141 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -67,13 +67,13 @@ audit_azure_app_service_deployment_slots () {
       # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
       check_azure_app_service_deployment_slot_value "HTTP Version"                                "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Web/sites" "http20Enabled"                     "eq" "true"                          "--http20-enabled"                               ""
       # 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
-      check_azure_app_service_deployment_slot_value "HTTPS Only"                                  "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Wbe/sites" "httpsOnly"                         "eq" "true"                          "httpsOnly"                                      ""
+      check_azure_app_service_deployment_slot_value "HTTPS Only"                                  "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Web/sites" "httpsOnly"                         "eq" "true"                          "httpsOnly"                                      ""
       # 2.2.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
-      check_azure_app_service_deployment_slot_value "Minimum Inbound TLS Version"                 "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Wbe/sites" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
+      check_azure_app_service_deployment_slot_value "Minimum Inbound TLS Version"                 "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Web/sites" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
       # 2.2.9   Ensure end-to-end TLS encryption is enabled - TBD
       check_azure_app_service_deployment_slot_value "End-to-End TLS Encryption"                   "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Web/sites" "endToEndEncryptionEnabled"         "eq" "true"                          "properties.endToEndEncryptionEnabled"           ""
       # 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
-      check_azure_app_service_deployment_slot_value "Remote Debugging"                            "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Wbe/sites" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"                     ""
+      check_azure_app_service_deployment_slot_value "Remote Debugging"                            "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Web/sites" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"                     ""
       # 2.2.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
       check_azure_app_service_deployment_slot_value "Client Certificates"                         "${app_name}" "${slot_name}" "${resource_group}" "config"                             "web" "Microsoft.Web/sites" "clientCertEnabled"                 "eq" "true"                          "clientCertEnabled"                              ""
       # 2.2.12  Ensure managed identities are configured - TBD

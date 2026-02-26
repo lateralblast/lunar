@@ -2687,3 +2687,51 @@
 # Added Azure App Service Deployment Slot Cross-Origin Resource Sharing check
 # 14.3.4: Thu 26 Feb 2026 13:44:47 AEDT
 # Updates and improvements
+# 14.3.5: Thu 26 Feb 2026 15:46:47 AEDT
+# Added Azure Function App module
+# 14.3.6: Thu 26 Feb 2026 16:47:47 AEDT
+# Added Azure Function App function
+# 14.3.7: Thu 26 Feb 2026 16:48:47 AEDT
+# Added Azure Function App check for Java version
+# 14.3.8: Thu 26 Feb 2026 16:49:47 AEDT
+# Added Azure Function App check for Python version
+# 14.3.9: Thu 26 Feb 2026 16:50:47 AEDT
+# Added Azure Function App check for PHP version
+# 14.4.0: Thu 26 Feb 2026 16:51:47 AEDT
+# Added Azure Function App check for Basic Authentication Publishing Credentials
+# 14.4.1: Thu 26 Feb 2026 16:52:47 AEDT
+# Added Azure Function App check for FTP state
+# 14.4.2: Thu 26 Feb 2026 16:53:47 AEDT
+# Added Azure Function App check for HTTP version
+# 14.4.3: Thu 26 Feb 2026 16:54:47 AEDT
+# Added Azure Function App check for HTTPS only
+# 14.4.4: Thu 26 Feb 2026 16:55:47 AEDT
+# Added Azure Function App check for Minimum Inbound TLS Version
+# 14.4.5: Thu 26 Feb 2026 16:56:47 AEDT
+# Added Azure Function App check for end to end TLS encryption
+# 14.4.6: Thu 26 Feb 2026 16:57:47 AEDT
+# Added Azure Function App check for Remote Debugging
+# 14.4.7: Thu 26 Feb 2026 16:58:47 AEDT
+# Added Azure Function App check for Client Certificates
+# 14.4.8: Thu 26 Feb 2026 16:59:47 AEDT
+# Added Azure Function App check for Authentication
+# 14.4.9: Thu 26 Feb 2026 17:00:47 AEDT
+# Added Azure Function App check for Managed Identities
+# 14.5.0: Thu 26 Feb 2026 17:01:47 AEDT
+# Added Azure Function App check for Public Network Access
+# 14.5.1: Thu 26 Feb 2026 17:02:47 AEDT
+# Added Azure Function App check for App Service Plan SKU
+# 14.5.2: Thu 26 Feb 2026 17:03:47 AEDT
+# Added Azure Function App check for Private Endpoints
+# 14.5.3: Thu 26 Feb 2026 17:04:47 AEDT
+# Added Azure Function App check for Private DNS Zone
+# 14.5.4: Thu 26 Feb 2026 17:05:47 AEDT
+# Added Azure Function App check for Virtual Network Integration
+# 14.5.5: Thu 26 Feb 2026 17:06:47 AEDT
+# Added Azure Function App check for VNet Image Pull
+# 14.5.6: Thu 26 Feb 2026 17:07:47 AEDT
+# Added Azure Function App check for VNet Content Share
+# 14.5.7: Thu 26 Feb 2026 17:08:47 AEDT
+# Added Azure Function App check for Cross-Origin Resource Sharing
+# 14.5.8: Thu 26 Feb 2026 17:21:47 AEDT
+# Updates and improvements

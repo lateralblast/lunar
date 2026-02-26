@@ -30,7 +30,7 @@
 # 2.1.20  Ensure all traffic is routed through the virtual network - TBD
 # 2.1.21  Ensure cross-origin resource sharing does not allow all origins - TBD
 #
-# Refer to Section(s) 2 Page(s) 23-89 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.1.1-21 Page(s) 23-89 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
