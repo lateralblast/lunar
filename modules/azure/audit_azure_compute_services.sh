@@ -94,6 +94,9 @@
 # 2.8     Ensure App Service Environment has internal encryption enabled - TBD
 # 2.9     Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
+# Azure Container Instances
+# 3.1 Ensure Private Virtual Networks are used for Container Instances
+#
 # Refer to Section(s) 2 Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
@@ -108,4 +111,6 @@ audit_azure_compute_services () {
   audit_azure_function_deployment_slots
   audit_azure_key_vault_certificates
   audit_azure_key_vault_secrets
+  audit_azure_app_service_ase
+  audit_azure_container_instances
 }
