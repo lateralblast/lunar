@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      14.8.5
+# Version:      14.8.6
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -69,6 +69,7 @@ azure_java_version="11"
 azure_ftp_state="Disabled"
 azure_managed_identity="SystemAssigned"
 azure_sku_tier="Basic"
+azure_ase_version="ASEV3"
 #azure_ftp_state="FtpsOnly"
 
 # Defaults for AWS

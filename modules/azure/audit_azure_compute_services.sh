@@ -72,22 +72,24 @@
 # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
 #
 # Functions Deployment Slots
-# 2.4.1 Ensure 'Java version' is currently supported (if in use) - TBD
-# 2.4.2 Ensure 'Python version' is currently supported (if in use) - TBD
-# 2.4.3 Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-# 2.4.4 Ensure 'FTP state' is set to 'FTPS only' or 'Disabled' - TBD
-# 2.4.5 Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
-# 2.4.6 Ensure 'HTTPS Only' is set to 'On' - TBD
-# 2.4.7 Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
-# 2.4.8 Ensure end-to-end TLS encryption is enabled - TBD
-# 2.4.9 Ensure 'Remote debugging' is set to 'Off' - TBD
-# 2.4.10 Ensure incoming client certificates are enabled and required (if in use) - TBD
-# 2.4.11 Ensure managed identities are configured - TBD
-# 2.4.12 Ensure public network access is disabled - TBD
-# 2.4.13 Ensure deployment slot is integrated with a virtual network - TBD
-# 2.4.14 Ensure configuration is routed through the virtual network integration - TBD
-# 2.4.15 Ensure all traffic is routed through the virtual network - TBD
-# 2.4.16 Ensure cross-origin resource sharing does not allow all origins - TBD
+# 2.4.1   Ensure 'Java version' is currently supported (if in use) - TBD
+# 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
+# 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
+# 2.4.4   Ensure 'FTP state' is set to 'FTPS only' or 'Disabled' - TBD
+# 2.4.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
+# 2.4.6   Ensure 'HTTPS Only' is set to 'On' - TBD
+# 2.4.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
+# 2.4.8   Ensure end-to-end TLS encryption is enabled - TBD
+# 2.4.9   Ensure 'Remote debugging' is set to 'Off' - TBD
+# 2.4.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
+# 2.4.11  Ensure managed identities are configured - TBD
+# 2.4.12  Ensure public network access is disabled - TBD
+# 2.4.13  Ensure deployment slot is integrated with a virtual network - TBD
+# 2.4.14  Ensure configuration is routed through the virtual network integration - TBD
+# 2.4.15  Ensure all traffic is routed through the virtual network - TBD
+# 2.4.16  Ensure cross-origin resource sharing does not allow all origins - TBD
+# 2.5     Ensure Azure Key Vaults are Used to Store Secrets - TBD
+# 2.6     Ensure App Service Environment is deployed with an internal load balancer - TBD
 #
 # Refer to Section(s) 2 Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #

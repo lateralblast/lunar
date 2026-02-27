@@ -9,8 +9,9 @@
 # Check Azure App Service ASE
 #
 # 2.6 Ensure App Service Environment is deployed with an internal load balancer
+# 2.7 Ensure App Service Environment is provisioned with v3 or higher
 #
-# Refer to Section(s) 2.6 Page(s) 243-4 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.6-7 Page(s) 243-6 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -25,6 +26,7 @@ audit_azure_app_service_ase () {
     info_message "No App Service ASE found"
   fi
   for ase_name in ${ase_list}; do
-    check_azure_app_service_ase_value "Deployed with an internal load balancer" "${ase_name}" "internalLoadBalancingMode" "ne" "None"
+    check_azure_app_service_ase_value "Deployed with an internal load balancer"         "${ase_name}" "internalLoadBalancingMode" "ne" "None"
+    check_azure_app_service_ase_value "Provisioned with ${azure_ase_version} or higher" "${ase_name}" "kind"                      "eq" "${azure_ase_version}"
   done
 }
