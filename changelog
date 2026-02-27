@@ -2823,3 +2823,9 @@
 # Added Azure Batch check for public network access
 # 15.0.2: Fri 27 Feb 2026 20:10:48 AEDT
 # Updates and improvements
+# 15.0.3: Sat 28 Feb 2026 11:47:48 AEDT
+# Added Azure Virtual Machines audit module
+# 15.0.4: Sat 28 Feb 2026 11:48:48 AEDT
+# Added Azure Virtual Machines function
+# 15.0.5: Sat 28 Feb 2026 11:49:48 AEDT
+# Updates and improvements

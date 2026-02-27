@@ -94,44 +94,65 @@
 # 2.8     Ensure App Service Environment has internal encryption enabled - TBD
 # 2.9     Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
-# 3.   Azure Container Instances
-# 3.1  Ensure Private Virtual Networks are used for Container Instances - TBD
-# 3.2  Ensure a Managed Identity is used for interactions with other Azure services - TBD
-# 3.3  Ensure the principle of least privilege is used when assigning roles to a Managed Identity - TBD
+# 3.      Azure Container Instances
+# 3.1     Ensure Private Virtual Networks are used for Container Instances - TBD
+# 3.2     Ensure a Managed Identity is used for interactions with other Azure services - TBD
+# 3.3     Ensure the principle of least privilege is used when assigning roles to a Managed Identity - TBD
 #
-# 4.   Azure CycleCloud
-# 4.1  Ensure SSL is configured for CycleCloud
+# 4.      Azure CycleCloud
+# 4.1     Ensure SSL is configured for CycleCloud
 #
-# 5.   Azure Dedicated Host
+# 5.      Azure Dedicated Host
 #
-# 6.   Azure Functions
+# 6.      Azure Functions
 #
-# 7.   Azure Kubernetes Service
+# 7.      Azure Kubernetes Service
 #
-# 8.   Azure Quantum
+# 8.      Azure Quantum
 #
-# 9.   Azure Service Fabric
+# 9.      Azure Service Fabric
 #
-# 10.  Azure Spot Virtual Machines
+# 10.     Azure Spot Virtual Machines
 #
-# 11.  Azure Spring Apps
+# 11.     Azure Spring Apps
 #
-# 12.  Azure Virtual Desktop
+# 12.     Azure Virtual Desktop
 #
-# 13.  Azure VM Image Builder
+# 13.     Azure VM Image Builder
 #
-# 14.  Azure VMware Solution
+# 14.     Azure VMware Solution
 #
-# 15.  Azure Batch
-# 15.1 Ensure Batch account is set to use customer-managed keys to encrypt data - TBD
-# 15.2 Ensure Batch pools disk encryption is set enabled - TBD
-# 15.3 Ensure local authentication methods for accounts are disabled - TBD
-# 15.4 Ensure Private endpoints are considered for Batch accounts - TBD
-# 15.5 Ensure public network access is disabled for Batch accounts - TBD
-# 15.6 Ensure private DNS zones for private endpoints that connect to Batch accounts are configured - TBD
-# 15.7 Ensure Diagnostics settings logs for Batch accounts are enabled - TBD
+# 15.     Azure Batch
+# 15.1    Ensure Batch account is set to use customer-managed keys to encrypt data - TBD
+# 15.2    Ensure Batch pools disk encryption is set enabled - TBD
+# 15.3    Ensure local authentication methods for accounts are disabled - TBD
+# 15.4    Ensure Private endpoints are considered for Batch accounts - TBD
+# 15.5    Ensure public network access is disabled for Batch accounts - TBD
+# 15.6    Ensure private DNS zones for private endpoints that connect to Batch accounts are configured - TBD
+# 15.7    Ensure Diagnostics settings logs for Batch accounts are enabled - TBD
 #
-# Refer to Section(s) 2- Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# 16.     Linux Virtual Machines
+#
+# 17.     SQL Server on Azure Virtual Machines
+#
+# 18.     Static Web Apps
+#
+# 19.     VM Scale Sets
+#
+# 20.     Virtual Machines
+# 20.1    Ensure Virtual Machines are utilizing Managed Disks
+# 20.2    Ensure that 'OS and Data' disks are encrypted with 'Customer Managed Key' (CMK)
+# 20.3    Ensure that 'Unattached disks' are encrypted with 'Customer Managed Key' (CMK)
+# 20.4    Ensure that 'Disk Network Access' is NOT set to 'Enable public access from all networks'
+# 20.5    Ensure that 'Enable Data Access Authentication Mode' is 'Checked'
+# 20.6    Ensure that Only Approved Extensions Are Installed
+# 20.7    Ensure that Endpoint Protection for all Virtual Machines is installed
+# 20.8    [Legacy] Ensure that VHDs are Encrypted
+# 20.9    Ensure only MFA enabled identities can access privileged Virtual Machine 
+# 20.10   Ensure Trusted Launch is enabled on Virtual Machines 
+# 20.11   Ensure that encryption at host is enabled
+#
+# Refer to Section(s) 2-20 Page(s) 22-341 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -149,4 +170,5 @@ audit_azure_compute_services () {
   audit_azure_container_instances
   audit_azure_cycle_cloud
   audit_azure_batch
+  audit_azure_vms
 }
