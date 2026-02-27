@@ -52,7 +52,7 @@ audit_azure_logging_and_monitoring () {
   # 6.1.1.5  Ensure that Network Security Group Flow logs are captured and sent to Log Analytics - TBD
   audit_azure_nsg_flow_logs
   # 6.1.1.6  Ensure that logging for Azure AppService 'HTTP logs' is enabled - TBD
-  audit_azure_appservice_http_logs
+  audit_azure_app_service_http_logs
   # 6.1.1.7  Ensure that virtual network flow logs are captured and sent to Log Analytics
   audit_azure_virtual_network_flow_logs
   # 6.1.1.8  Ensure that a Microsoft Entra diagnostic setting exists to send Microsoft Graph activity logs to an appropriate destination

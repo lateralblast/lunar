@@ -2783,4 +2783,9 @@
 # Added Azure Key Vault Secrets audit module
 # 14.8.2: Fri 27 Feb 2026 11:33:09 AEDT
 # Updates and improvements
-
+# 14.8.3: Fri 27 Feb 2026 12:41:09 AEDT
+# Added Azure App Service ASE audit module
+# 14.8.4: Fri 27 Feb 2026 12:42:09 AEDT
+# Added Azure App Service ASE function
+# 14.8.5: Fri 27 Feb 2026 12:43:09 AEDT
+# Added Azure App Service ASE check for internal load balancing mode

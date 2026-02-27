@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      14.8.2
+# Version:      14.8.5
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -287,6 +287,16 @@ verbose_message () {
 warning_message () {
   message="${1}"
   verbose_message "${message}" "warn"
+}
+
+# info_message
+#
+# Info message
+#.
+
+info_message () {
+  message="${1}"
+  verbose_message "${message}" "info"
 }
 
 # lockdown_warning

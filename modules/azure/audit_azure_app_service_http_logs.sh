@@ -4,9 +4,9 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_appservice_http_logs
+# audit_azure_app_service_http_logs
 #
-# Check Azure AppService HTTP Logs
+# Check Azure App Service HTTP Logs
 #
 # 6.1.1.6  Ensure that logging for Azure AppService 'HTTP logs' is enabled
 #
@@ -15,7 +15,7 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_appservice_http_logs () {
-  print_function  "audit_azure_appservice_http_logs"
-  verbose_message "Azure AppService HTTP Logs" "check"
+audit_azure_app_service_http_logs () {
+  print_function  "audit_azure_app_service_http_logs"
+  verbose_message "Azure App Service HTTP Logs" "check"
 }
