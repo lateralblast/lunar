@@ -10,6 +10,7 @@
 #
 # 3.1  Ensure Private Virtual Networks are used for Container Instances - TBD
 # 3.2  Ensure a Managed Identity is used for interactions with other Azure services - TBD
+# 3.3  Ensure the principle of least privilege is used when assigning roles to a Managed Identity - TBD
 #
 # Refer to Section(s) 3.1- Page(s) 255- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #

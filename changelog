@@ -2805,3 +2805,5 @@
 # Added Azure Container Instances check for Private Virtual Networks
 # 14.9.3: Fri 27 Feb 2026 15:35:11 AEDT
 # Added Azure Container Instances check for Managed Identity
+# 14.9.4: Fri 27 Feb 2026 16:05:11 AEDT
+# Added Azure CycleCloud audit module

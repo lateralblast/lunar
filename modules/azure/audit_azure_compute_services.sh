@@ -11,7 +11,7 @@
 # Refer to Section(s) 3 Page(s) 63-8 CIS Microsoft Azure Foundations Benchmark v5.0.0
 # Refer to CIS Microsoft Azure Compute Services Benchmark
 #
-# App Service Apps
+# 2.1     App Service Apps
 # 2.1.1   Ensure 'Java version' is currently supported (if in use) - TBD
 # 2.1.2   Ensure 'Python version' is currently supported (if in use) - TBD
 # 2.1.3   Ensure 'PHP version' is currently supported (if in use) - TBD
@@ -34,7 +34,7 @@
 # 2.1.20  Ensure all traffic is routed through the virtual network - TBD
 # 2.1.21  Ensure cross-origin resource sharing does not allow all origins - TBD
 #
-# App Service Deployment Slots
+# 2.2     App Service Deployment Slots
 # 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
 # 2.2.2   Ensure 'Python version' is currently supported (if in use) - TBD
 # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD
@@ -53,7 +53,7 @@
 # 2.2.16  Ensure all traffic is routed through the virtual network - TBD
 # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
 # 
-# Function Apps
+# 2.3     Function Apps
 # 2.3.1   Ensure 'Java version' is currently supported (if in use) - TBD
 # 2.3.2   Ensure 'Python version' is currently supported (if in use) - TBD
 # 2.3.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
@@ -71,7 +71,7 @@
 # 2.3.16  Ensure all traffic is routed through the virtual network - TBD
 # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
 #
-# Functions Deployment Slots
+# 2.4     Functions Deployment Slots
 # 2.4.1   Ensure 'Java version' is currently supported (if in use) - TBD
 # 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
 # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
@@ -94,9 +94,35 @@
 # 2.8     Ensure App Service Environment has internal encryption enabled - TBD
 # 2.9     Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
-# Azure Container Instances
+# 3.  Azure Container Instances
 # 3.1 Ensure Private Virtual Networks are used for Container Instances - TBD
 # 3.2 Ensure a Managed Identity is used for interactions with other Azure services - TBD
+# 3.3 Ensure the principle of least privilege is used when assigning roles to a Managed Identity - TBD
+#
+# 4.  Azure CycleCloud
+# 4.1 Ensure SSL is configured for CycleCloud
+#
+# 5.  Azure Dedicated Host
+#
+# 6.  Azure Functions
+#
+# 7.  Azure Kubernetes Service
+#
+# 8.  Azure Quantum
+#
+# 9.  Azure Service Fabric
+#
+# 10. Azure Spot Virtual Machines
+#
+# 11. Azure Spring Apps
+#
+# 12. Azure Virtual Desktop
+#
+# 13. Azure VM Image Builder
+#
+# 14. Azure VMware Solution
+#
+# 15. Azure Batch
 #
 # Refer to Section(s) 2- Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
@@ -114,4 +140,5 @@ audit_azure_compute_services () {
   audit_azure_key_vault_secrets
   audit_azure_app_service_ase
   audit_azure_container_instances
+  audit_azure_cycle_cloud
 }
