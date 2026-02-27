@@ -2777,3 +2777,10 @@
 # Added Azure Function App Deployment Slot check for Cross-Origin Resource Sharing
 # 14.7.9: Thu 26 Feb 2026 17:58:47 AEDT
 # Updates and improvements
+# 14.8.0: Fri 27 Feb 2026 11:31:09 AEDT
+# Added Azure Key Vault Certificates audit module
+# 14.8.1: Fri 27 Feb 2026 11:32:09 AEDT
+# Added Azure Key Vault Secrets audit module
+# 14.8.2: Fri 27 Feb 2026 11:33:09 AEDT
+# Updates and improvements
+

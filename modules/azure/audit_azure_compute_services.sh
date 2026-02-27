@@ -100,5 +100,7 @@ audit_azure_compute_services () {
   audit_azure_app_service_apps
   audit_azure_app_service_deployment_slots
   audit_azure_function_apps
-  audit_azure_function_apps_deployment_slots
+  audit_azure_function_deployment_slots
+  audit_azure_key_vault_certificates
+  audit_azure_key_vault_secrets
 }
