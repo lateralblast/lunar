@@ -127,6 +127,7 @@
 # 15.2 Ensure Batch pools disk encryption is set enabled - TBD
 # 15.3 Ensure local authentication methods for accounts are disabled - TBD
 # 15.4 Ensure Private endpoints are considered for Batch accounts - TBD
+# 15.5 Ensure public network access is disabled for Batch accounts - TBD
 #
 # Refer to Section(s) 2- Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #

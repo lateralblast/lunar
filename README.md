@@ -8,7 +8,7 @@ Lockdown UNix Auditing and Reporting
 Version
 -------
 
-Current version 15.0.0
+Current version 15.0.1
 
 Refer to lunar.sh and changelog for more up to date version information
 

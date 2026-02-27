@@ -2819,3 +2819,5 @@
 # Added Azure Batch check for local authentication methods
 # 15.0.0: Fri 27 Feb 2026 18:07:48 AEDT
 # Added Azure Batch check for private endpoints
+# 15.0.1: Fri 27 Feb 2026 18:08:48 AEDT
+# Added Azure Batch check for public network access
