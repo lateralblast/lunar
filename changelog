@@ -2815,3 +2815,5 @@
 # Added Azure Batch check for customer managed keys
 # 14.9.8: Fri 27 Feb 2026 16:25:11 AEDT
 # Added Azure Batch check for pool disk encryption
+# 14.9.9: Fri 27 Feb 2026 18:06:48 AEDT
+# Added Azure Batch check for local authentication methods
