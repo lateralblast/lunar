@@ -22,11 +22,22 @@ check_azure_app_service_ase_value () {
   verbose_message "${description} for App Service ASE ${ase_name} parameter ${parameter_name} is ${function} to ${correct_value}" "check"
   if [ -z "${sub_name}" ]; then
     command="az appservice ase show --name ${ase_name} --query \"${parameter_name}\" --output tsv"
+    command_message "${command}"
+    actual_value=$( eval "${command}" 2> /dev/null )
   else
-    command="az appservice ase show --name ${ase_name} --query \"[?contains(${sub_name}.name, '${parameter_name}')]\" --query \"value\" --output tsv"
+    if [ "${function}" = "has" ]; then
+      command="az appservice ase show --name ${ase_name} --query \"[?contains(${sub_name}.name, '${parameter_name}')]\" --query \"value\" --output tsv | grep \"${correct_value}\""
+      command_message "${command}"
+      actual_value=$( eval "${command}" 2> /dev/null )
+      if [ -z "${actual_value}" ]; then
+        actual_value="${correct_value}"
+      fi
+    else
+      command="az appservice ase show --name ${ase_name} --query \"[?contains(${sub_name}.name, '${parameter_name}')]\" --query \"value\" --output tsv"
+      command_message "${command}"
+      actual_value=$( eval "${command}" 2> /dev/null )
+    fi
   fi
-  command_message "${command}"
-  actual_value=$( eval "${command}" 2> /dev/null )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" != "${correct_value}" ]; then
       insecure_message "${description} for App Service ASE ${ase_name} parameter ${parameter_name} is not ${correct_value}"
