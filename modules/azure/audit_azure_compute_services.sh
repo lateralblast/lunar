@@ -94,35 +94,36 @@
 # 2.8     Ensure App Service Environment has internal encryption enabled - TBD
 # 2.9     Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
-# 3.  Azure Container Instances
-# 3.1 Ensure Private Virtual Networks are used for Container Instances - TBD
-# 3.2 Ensure a Managed Identity is used for interactions with other Azure services - TBD
-# 3.3 Ensure the principle of least privilege is used when assigning roles to a Managed Identity - TBD
+# 3.   Azure Container Instances
+# 3.1  Ensure Private Virtual Networks are used for Container Instances - TBD
+# 3.2  Ensure a Managed Identity is used for interactions with other Azure services - TBD
+# 3.3  Ensure the principle of least privilege is used when assigning roles to a Managed Identity - TBD
 #
-# 4.  Azure CycleCloud
-# 4.1 Ensure SSL is configured for CycleCloud
+# 4.   Azure CycleCloud
+# 4.1  Ensure SSL is configured for CycleCloud
 #
-# 5.  Azure Dedicated Host
+# 5.   Azure Dedicated Host
 #
-# 6.  Azure Functions
+# 6.   Azure Functions
 #
-# 7.  Azure Kubernetes Service
+# 7.   Azure Kubernetes Service
 #
-# 8.  Azure Quantum
+# 8.   Azure Quantum
 #
-# 9.  Azure Service Fabric
+# 9.   Azure Service Fabric
 #
-# 10. Azure Spot Virtual Machines
+# 10.  Azure Spot Virtual Machines
 #
-# 11. Azure Spring Apps
+# 11.  Azure Spring Apps
 #
-# 12. Azure Virtual Desktop
+# 12.  Azure Virtual Desktop
 #
-# 13. Azure VM Image Builder
+# 13.  Azure VM Image Builder
 #
-# 14. Azure VMware Solution
+# 14.  Azure VMware Solution
 #
-# 15. Azure Batch
+# 15.  Azure Batch
+# 15.1 Ensure Batch account is set to use customer-managed keys to encrypt data
 #
 # Refer to Section(s) 2- Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
@@ -141,4 +142,5 @@ audit_azure_compute_services () {
   audit_azure_app_service_ase
   audit_azure_container_instances
   audit_azure_cycle_cloud
+  audit_azure_batch
 }

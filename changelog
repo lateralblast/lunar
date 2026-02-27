@@ -2807,3 +2807,9 @@
 # Added Azure Container Instances check for Managed Identity
 # 14.9.4: Fri 27 Feb 2026 16:05:11 AEDT
 # Added Azure CycleCloud audit module
+# 14.9.5: Fri 27 Feb 2026 16:22:11 AEDT
+# Added Azure Batch audit module
+# 14.9.6: Fri 27 Feb 2026 16:23:11 AEDT
+# Added Azure Batch function
+# 14.9.7: Fri 27 Feb 2026 16:24:11 AEDT
+# Added Azure Batch check for customer managed keys
