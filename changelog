@@ -2803,3 +2803,5 @@
 # Added Azure Container Instances function
 # 14.9.2: Fri 27 Feb 2026 15:34:11 AEDT
 # Added Azure Container Instances check for Private Virtual Networks
+# 14.9.3: Fri 27 Feb 2026 15:35:11 AEDT
+# Added Azure Container Instances check for Managed Identity

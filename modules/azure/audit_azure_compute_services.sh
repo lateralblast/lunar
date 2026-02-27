@@ -95,9 +95,10 @@
 # 2.9     Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
 # Azure Container Instances
-# 3.1 Ensure Private Virtual Networks are used for Container Instances
+# 3.1 Ensure Private Virtual Networks are used for Container Instances - TBD
+# 3.2 Ensure a Managed Identity is used for interactions with other Azure services - TBD
 #
-# Refer to Section(s) 2 Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2- Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.

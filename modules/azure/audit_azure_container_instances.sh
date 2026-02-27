@@ -9,6 +9,7 @@
 # Check Azure Container Instances
 #
 # 3.1  Ensure Private Virtual Networks are used for Container Instances - TBD
+# 3.2  Ensure a Managed Identity is used for interactions with other Azure services - TBD
 #
 # Refer to Section(s) 3.1- Page(s) 255- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
@@ -29,5 +30,6 @@ audit_azure_container_instances () {
     command_message "${command}"
     resource_group=$( eval "${command}" )
     check_azure_container_instance_value "Private Virtual Networks" "${container_name}" "${resource_group}" "ipAddress.type" "eq" "Private"
+    check_azure_container_instance_value "Managed Identity"         "${container_name}" "${resource_group}" "identity.type"  "eq" "${azure_managed_identity}"
   done
 }
