@@ -2821,3 +2821,5 @@
 # Added Azure Batch check for private endpoints
 # 15.0.1: Fri 27 Feb 2026 18:08:48 AEDT
 # Added Azure Batch check for public network access
+# 15.0.2: Fri 27 Feb 2026 20:10:48 AEDT
+# Updates and improvements
