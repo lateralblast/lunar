@@ -23,7 +23,7 @@ check_azure_app_service_ase_value () {
   if [ -z "${sub_name}" ]; then
     command="az appservice ase show --name ${ase_name} --query \"${parameter_name}\" --output tsv"
   else
-    command="az appservice ase show --name ${ase_name} --query \"[?contains(name, '${sub_name}')]\" --query \"${parameter_name}\" --output tsv"
+    command="az appservice ase show --name ${ase_name} --query \"[?contains(${sub_name}.name, '${parameter_name}')]\" --query \"value\" --output tsv"
   fi
   command_message "${command}"
   actual_value=$( eval "${command}" 2> /dev/null )

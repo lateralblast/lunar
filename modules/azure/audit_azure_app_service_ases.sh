@@ -8,11 +8,12 @@
 #
 # Check Azure App Service ASE
 #
-# 2.6 Ensure App Service Environment is deployed with an internal load balancer
-# 2.7 Ensure App Service Environment is provisioned with v3 or higher
-# 2.8 Ensure App Service Environment has internal encryption enabled
+# 2.6 Ensure App Service Environment is deployed with an internal load balancer - TBD
+# 2.7 Ensure App Service Environment is provisioned with v3 or higher - TBD
+# 2.8 Ensure App Service Environment has internal encryption enabled - TBD
+# 2.9 Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
-# Refer to Section(s) 2.6-8 Page(s) 243-9 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.6-9 Page(s) 243-51 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -30,5 +31,7 @@ audit_azure_app_service_ase () {
     check_azure_app_service_ase_value "Deployed with an internal load balancer"         "${ase_name}" ""                "internalLoadBalancingMode" "ne" "None"
     check_azure_app_service_ase_value "Provisioned with ${azure_ase_version} or higher" "${ase_name}" ""                "kind"                      "eq" "${azure_ase_version}"
     check_azure_app_service_ase_value "Internal encryption enabled"                     "${ase_name}" "clusterSettings" "internalEncryption"        "eq" "true"
+    check_azure_app_service_ase_value "TLS 1.0 disabled"                                "${ase_name}" "clusterSettings" "DisableTls1.0"             "eq" "1"
+    check_azure_app_service_ase_value "TLS 1.1 disabled"                                "${ase_name}" "clusterSettings" "DisableTls1.1"             "eq" "1"
   done
 }

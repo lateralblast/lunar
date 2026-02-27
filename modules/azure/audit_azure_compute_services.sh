@@ -92,6 +92,7 @@
 # 2.6     Ensure App Service Environment is deployed with an internal load balancer - TBD
 # 2.7     Ensure App Service Environment is provisioned with v3 or higher - TBD
 # 2.8     Ensure App Service Environment has internal encryption enabled - TBD
+# 2.9     Ensure App Service Environment has TLS 1.0 and 1.1 disabled - TBD
 #
 # Refer to Section(s) 2 Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #

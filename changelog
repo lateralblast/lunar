@@ -2793,3 +2793,5 @@
 # Added Azure App Service ASE check for ASE version
 # 14.8.7: Fri 27 Feb 2026 12:51:11 AEDT
 # Added Azure App Service ASE check for internal encryption
+# 14.8.8: Fri 27 Feb 2026 12:52:11 AEDT
+# Added Azure App Service ASE check for TLS 1.0 and 1.1 disabled
