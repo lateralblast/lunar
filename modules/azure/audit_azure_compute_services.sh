@@ -90,6 +90,8 @@
 # 2.4.16  Ensure cross-origin resource sharing does not allow all origins - TBD
 # 2.5     Ensure Azure Key Vaults are Used to Store Secrets - TBD
 # 2.6     Ensure App Service Environment is deployed with an internal load balancer - TBD
+# 2.7     Ensure App Service Environment is provisioned with v3 or higher - TBD
+# 2.8     Ensure App Service Environment has internal encryption enabled - TBD
 #
 # Refer to Section(s) 2 Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #

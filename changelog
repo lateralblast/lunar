@@ -2791,3 +2791,5 @@
 # Added Azure App Service ASE check for internal load balancing mode
 # 14.8.6: Fri 27 Feb 2026 12:50:11 AEDT
 # Added Azure App Service ASE check for ASE version
+# 14.8.7: Fri 27 Feb 2026 12:51:11 AEDT
+# Added Azure App Service ASE check for internal encryption
