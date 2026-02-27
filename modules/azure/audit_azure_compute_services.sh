@@ -123,7 +123,10 @@
 # 14.  Azure VMware Solution
 #
 # 15.  Azure Batch
-# 15.1 Ensure Batch account is set to use customer-managed keys to encrypt data
+# 15.1 Ensure Batch account is set to use customer-managed keys to encrypt data - TBD
+# 15.2 Ensure Batch pools disk encryption is set enabled - TBD
+# 15.3 Ensure local authentication methods for accounts are disabled - TBD
+# 15.4 Ensure Private endpoints are considered for Batch accounts - TBD
 #
 # Refer to Section(s) 2- Page(s) 22- CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #

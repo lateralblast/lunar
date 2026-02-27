@@ -21,13 +21,27 @@ check_azure_network_private_endpoint_value () {
   command="az network private-endpoint list --query \"${query_string}\" --output tsv"
   command_message "${command}"
   actual_value=$( eval "${command}" 2> /dev/null )
-  if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure "Azure Network Private Endpoint \"${endpoint_id}\" is \"${function}\" to \"${correct_value}\""
+  if [ "${function}" = "eq" ]; then
+    if [ "${actual_value}" = "${correct_value}" ]; then
+      increment_secure "Azure Network Private Endpoint \"${endpoint_id}\" is \"${function}\" to \"${correct_value}\""
+    else
+      increment_insecure "Azure Network Private Endpoint \"${endpoint_id}\" is not \"${function}\" to \"${correct_value}\""
+      verbose_message "az network private-endpoint create --resource-group <resource-group-name> \ " "fix"
+      verbose_message "--location <location> --name <private-endpoint-name> --vnet-name <virtual-network-name> \ " "fix"
+      verbose_message "--subnet <subnet-name> --private-connection-resource-id <fully-qualified-app-id> \ " "fix"
+      verbose_message "--connection-name <connection-name> --group-id sites" "fix"
+    fi
   else
-    increment_insecure "Azure Network Private Endpoint \"${endpoint_id}\" is not \"${function}\" to \"${correct_value}\""
-    verbose_message "az network private-endpoint create --resource-group <resource-group-name> \ " "fix"
-    verbose_message "--location <location> --name <private-endpoint-name> --vnet-name <virtual-network-name> \ " "fix"
-    verbose_message "--subnet <subnet-name> --private-connection-resource-id <fully-qualified-app-id> \ " "fix"
-    verbose_message "--connection-name <connection-name> --group-id sites" "fix"
+    if [ "${function}" = "ne" ]; then
+      if [ "${actual_value}" != "${correct_value}" ]; then
+        increment_secure "Azure Network Private Endpoint \"${endpoint_id}\" is \"${function}\" to \"${correct_value}\""
+      else
+        increment_insecure "Azure Network Private Endpoint \"${endpoint_id}\" is not \"${function}\" to \"${correct_value}\""
+        verbose_message "az network private-endpoint create --resource-group <resource-group-name> \ " "fix"
+        verbose_message "--location <location> --name <private-endpoint-name> --vnet-name <virtual-network-name> \ " "fix"
+        verbose_message "--subnet <subnet-name> --private-connection-resource-id <fully-qualified-app-id> \ " "fix"
+        verbose_message "--connection-name <connection-name> --group-id sites" "fix"
+      fi
+    fi
   fi
 }
