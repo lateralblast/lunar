@@ -37,7 +37,7 @@ audit_azure_sql_db () {
       command_message "${command}" "check"
       resource_group=$( eval "${command}" )
       # 9.1 Ensure that 'Auditing' is set to 'On' - TBD
-      check_sql_db_value "Auditing" "server" "${sql_server}" "${resource_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
+      check_sql_db_value "Auditing"              "server" "${sql_server}" "${resource_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
       # 9.2 Ensure that 'Public Network Access' is set to 'Disable' - TBD
       # check_mysql_db_value "Microsoft Entra Authentication" "server" "${mysql_server}" "${resource_group}" "" "" "" "" "" ""
       # 9.3 Ensure no Azure SQL Database firewall rule is overly permissive - TBD

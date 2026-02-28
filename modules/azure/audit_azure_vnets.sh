@@ -16,7 +16,7 @@
 #.
 
 audit_azure_vnets () {
-  print_function "audit_azure_vnets"
+  print_function  "audit_azure_vnets"
   verbose_message "Azure VNets" "check"
   command="az network vnet list --query '[].resourceGroup' --output tsv 2> /dev/null"
   command_message "$command"

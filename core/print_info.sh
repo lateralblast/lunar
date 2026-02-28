@@ -245,6 +245,10 @@ setting_message () {
   verbose_message "${1}" "set"
 }
 
+set_message () {
+  verbose_message "${1}" "set"
+}
+
 # command_message
 #
 # Command message

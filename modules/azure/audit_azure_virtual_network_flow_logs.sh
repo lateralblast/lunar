@@ -16,6 +16,6 @@
 #.
 
 audit_azure_virtual_network_flow_logs () {
-  print_function "audit_azure_virtual_network_flow_logs"
+  print_function  "audit_azure_virtual_network_flow_logs"
   verbose_message "Azure Virtual Network Flow Logs" "check"
 }

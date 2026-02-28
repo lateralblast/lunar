@@ -16,7 +16,7 @@
 #.
 
 audit_azure_subscription_diagnostic_settings () {
-  print_function "audit_azure_subscription_diagnostic_settings"
+  print_function  "audit_azure_subscription_diagnostic_settings"
   verbose_message "Azure Subscription Diagnostic Settings Activity Logs" "check"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"

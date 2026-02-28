@@ -16,6 +16,6 @@
 #.
 
 audit_azure_entra_diagnostic_settings () {
-  print_function "audit_azure_entra_diagnostic_settings"
+  print_function  "audit_azure_entra_diagnostic_settings"
   verbose_message "Azure Entra Diagnostic Settings" "check"
 }

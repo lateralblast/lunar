@@ -16,7 +16,7 @@
 #.
 
 audit_azure_activity_logs_cmk () {
-  print_function "audit_azure_activity_logs_cmk"
+  print_function  "audit_azure_activity_logs_cmk"
   verbose_message "Azure Activity Logs CMK" "check"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"
@@ -43,7 +43,7 @@ audit_azure_activity_logs_cmk () {
           increment_insecure "Storage account ${storage_account} is encrypted with customer-managed key but no key vault is specified"
         fi
       else
-        increment_insecure "Storage account ${storage_account} is not encrypted with customer-managed key"
+        increment_insecure   "Storage account ${storage_account} is not encrypted with customer-managed key"
       fi
     done 
   done

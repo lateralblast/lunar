@@ -38,8 +38,8 @@ audit_azure_file_shares () {
     command_message "${command}"
     resource_group=$( eval "${command}" )
     # 9.1.1 Ensure soft delete for Azure File Shares is Enabled
-    check_azure_file_share_value "Days retained"           "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.days"        "eq" "7"           "--share-delete-retention-days"   ""
-    check_azure_file_share_value "Soft Delete"             "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.enabled"     "eq" "true"        "--enable-share-delete-retention" ""
+    check_azure_file_share_value "Days retained"             "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.days"        "eq" "7"           "--share-delete-retention-days"   ""
+    check_azure_file_share_value "Soft Delete"               "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.enabled"     "eq" "true"        "--enable-share-delete-retention" ""
     command="az storage account file-service-properties show --name \"${storage_account}\" --resource-group \"${resource_group}\" |grep -i smb"
     command_message "${command}"
     protocol_check=$( eval "${command}" )

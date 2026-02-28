@@ -18,7 +18,7 @@ check_azure_app_service_ase_value () {
   parameter_name="${4}"
   function="${5}"
   correct_value="${6}"
-  print_function "check_azure_app_service_ase_value"
+  print_function  "check_azure_app_service_ase_value"
   verbose_message "${description} for App Service ASE ${ase_name} parameter ${parameter_name} is ${function} to ${correct_value}" "check"
   if [ -z "${sub_name}" ]; then
     command="az appservice ase show --name ${ase_name} --query \"${parameter_name}\" --output tsv"

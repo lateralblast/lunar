@@ -16,6 +16,6 @@
 #.
 
 audit_azure_nsg_flow_logs () {
-  print_function "audit_azure_nsg_flow_logs"
+  print_function  "audit_azure_nsg_flow_logs"
   verbose_message "Azure NSG Flow Logs" "check"
 }

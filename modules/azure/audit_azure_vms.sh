@@ -26,6 +26,6 @@
 #.
 
 audit_azure_vms () {
-  print_function "audit_azure_vms"
+  print_function  "audit_azure_vms"
   verbose_message "Azure Virtual Machines" "check"
 }

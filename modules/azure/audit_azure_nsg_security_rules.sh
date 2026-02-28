@@ -19,7 +19,7 @@
 #.
 
 audit_azure_nsg_security_rules () {
-  print_function "audit_azure_nsg_security_rules"
+  print_function  "audit_azure_nsg_security_rules"
   verbose_message "Azure NSG Security Rules" "check"
   command="az network nsg list --query \"[].id\" --output tsv 2> /dev/null"
   command_message "${command}"

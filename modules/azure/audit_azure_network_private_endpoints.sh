@@ -39,7 +39,7 @@ audit_azure_network_private_endpoints () {
     if [ -z "${private_endpoints}" ]; then
       increment_insecure "Private Endpoints are not used to access ${resource_name}"
     else
-      increment_secure "Private Endpoints are used to access ${resource_name}"
+      increment_secure   "Private Endpoints are used to access ${resource_name}"
     fi
   done
 }

@@ -36,7 +36,7 @@
 #.
 
 audit_azure_app_service_apps () {
-  print_function "audit_azure_app_service_apps"
+  print_function  "audit_azure_app_service_apps"
   verbose_message "Azure App Service Apps" "check"
   command="az webapp list --query \"[].name\" --output tsv"
   command_message "${command}"
@@ -103,6 +103,6 @@ audit_azure_app_service_apps () {
   command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
   for app_id in ${app_ids}; do
-    check_azure_network_private_endpoint_value "App Service App" "${app_id}" "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]"   "eq" "Approved"
+    check_azure_network_private_endpoint_value      "App Service App" "${app_id}"   "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]" "eq"        "Approved"
   done
 }

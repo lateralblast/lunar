@@ -15,7 +15,7 @@
 # This requires the Azure CLI to be installed and configured
 #.
 audit_azure_subscription_owners () {
-  print_function "audit_azure_subscription_owners"
+  print_function  "audit_azure_subscription_owners"
   verbose_message "Azure Subscription Owners" "check"
   command="az account list --query \"[].id\" --output tsv"
   command_message "${command}"
@@ -26,7 +26,7 @@ audit_azure_subscription_owners () {
     command_message "${command}"
     role_owners=$( eval "${command}" )
     if [ -z "${role_owners}" ]; then
-      increment_secure   "There are members with the Subscription Owner role"
+      increment_secure     "There are members with the Subscription Owner role"
     else
       owner_count=$( echo "${role_owners}" | wc -l )
       if [ "${owner_count}" -gt "${max_owners}" ]; then
@@ -35,7 +35,7 @@ audit_azure_subscription_owners () {
         increment_secure   "There are ${owner_count} members with the Subscription Owner role"
       fi
       role_assignment_ids=$( echo "${role_owners}" | tr '\n' ' ' )
-      verbose_message    "az role assignment delete --ids \"${role_assignment_ids}\"" "fix"
+      verbose_message      "az role assignment delete --ids \"${role_assignment_ids}\"" "fix"
     fi
   done
 }

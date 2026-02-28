@@ -31,7 +31,7 @@
 #.
 
 audit_azure_app_service_deployment_slots () {
-  print_function "audit_azure_app_service_deployment_slots"
+  print_function  "audit_azure_app_service_deployment_slots"
   verbose_message "Azure Function App Deployment Slots" "check"
   command="az functionapp list --query \"[].name\" --output tsv"
   command_message "${command}"

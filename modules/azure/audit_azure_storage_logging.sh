@@ -35,7 +35,7 @@ audit_azure_storage_logging () {
     # 17.10 Ensure Storage Logging is Enabled for Table Service for 'Read', 'Write', and 'Delete' Requests
     for service_type in queue blob table; do
       for request_type in read write delete; do
-        check_azure_storage_logging_value "Storage Logging" "${storage_account}" "${service_type}" "[].${service_type}.${request_type}"      "eq" "true" ""
+        check_azure_storage_logging_value "Storage Logging" "${storage_account}" "${service_type}" "[].${service_type}.${request_type}"      "eq" "true"              ""
       done
       check_azure_storage_logging_value   "Storage Logging" "${storage_account}" "${service_type}" "[].${service_type}.retentionPolicy.days" "eq" "${retention_days}" "${log_value}"
     done

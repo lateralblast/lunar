@@ -35,33 +35,33 @@
 #.
 
 audit_azure_activity_log_alerts () {
-  print_function "audit_azure_activity_log_alerts"
+  print_function  "audit_azure_activity_log_alerts"
   verbose_message "Azure Activity Log Alerts" "check"
   command="az account show --query id --output tsv"
   command_message "${command}"
   subscription_ids="$( eval "${command}" )"
   for subscription_id in $subscription_ids; do
     # 6.1.2.1 Ensure that Activity Log Alert for Create Policy Assignment is enabled
-    check_azure_activity_log_alert_value "Create Policy Assignment" "${subscription_id}" "Microsoft.Authorization/policyAssignments/write"
+    check_azure_activity_log_alert_value "Create Policy Assignment"                  "${subscription_id}" "Microsoft.Authorization/policyAssignments/write"
     # 6.1.2.2 Ensure that Activity Log Alert for Delete Policy Assignment is enabled
-    check_azure_activity_log_alert_value "Delete Policy Assignment" "${subscription_id}" "Microsoft.Authorization/policyAssignments/delete"
+    check_azure_activity_log_alert_value "Delete Policy Assignment"                  "${subscription_id}" "Microsoft.Authorization/policyAssignments/delete"
     # 6.1.2.3 Ensure that Activity Log Alert exists for Create or Update Network Security Group
-    check_azure_activity_log_alert_value "Create or Update Network Security Group" "${subscription_id}" "Microsoft.Network/networkSecurityGroups/write"
+    check_azure_activity_log_alert_value "Create or Update Network Security Group"   "${subscription_id}" "Microsoft.Network/networkSecurityGroups/write"
     # 6.1.2.4 Ensure that Activity Log Alert exists for Delete Network Security Group
-    check_azure_activity_log_alert_value "Delete Network Security Group" "${subscription_id}" "Microsoft.Network/networkSecurityGroups/delete"
+    check_azure_activity_log_alert_value "Delete Network Security Group"             "${subscription_id}" "Microsoft.Network/networkSecurityGroups/delete"
     # 6.1.2.5 Ensure that Activity Log Alert exists for Create or Update Security Solution
-    check_azure_activity_log_alert_value "Create or Update Security Solution" "${subscription_id}" "Microsoft.Security/securitySolutions/write"
+    check_azure_activity_log_alert_value "Create or Update Security Solution"        "${subscription_id}" "Microsoft.Security/securitySolutions/write"
     # 6.1.2.6 Ensure that Activity Log Alert exists for Delete Security Solution
-    check_azure_activity_log_alert_value "Delete Security Solution" "${subscription_id}" "Microsoft.Security/securitySolutions/delete"
+    check_azure_activity_log_alert_value "Delete Security Solution"                  "${subscription_id}" "Microsoft.Security/securitySolutions/delete"
     # 6.1.2.7 Ensure that Activity Log Alert exists for Create or Update SQL Server Firewall Rule
     check_azure_activity_log_alert_value "Create or Update SQL Server Firewall Rule" "${subscription_id}" "Microsoft.Sql/servers/firewallRules/write"
     # 6.1.2.8 Ensure that Activity Log Alert exists for Delete SQL Server Firewall Rule
-    check_azure_activity_log_alert_value "Delete SQL Server Firewall Rule" "${subscription_id}" "Microsoft.Sql/servers/firewallRules/delete"
+    check_azure_activity_log_alert_value "Delete SQL Server Firewall Rule"           "${subscription_id}" "Microsoft.Sql/servers/firewallRules/delete"
     # 6.1.2.9 Ensure that Activity Log Alert exists for Create or Update Public IP Address rule
-    check_azure_activity_log_alert_value "Create or Update Public IP Address rule" "${subscription_id}" "Microsoft.Network/publicIPAddresses/write"
+    check_azure_activity_log_alert_value "Create or Update Public IP Address rule"   "${subscription_id}" "Microsoft.Network/publicIPAddresses/write"
     # 6.1.2.10 Ensure that Activity Log Alert exists for Delete Public IP Address rule
-    check_azure_activity_log_alert_value "Delete Public IP Address rule" "${subscription_id}" "Microsoft.Network/publicIPAddresses/delete"
+    check_azure_activity_log_alert_value "Delete Public IP Address rule"             "${subscription_id}" "Microsoft.Network/publicIPAddresses/delete"
     # 6.1.2.11 Ensure that Activity Log Alert exists for Service Health
-    check_azure_activity_log_alert_value "Service Health" "${subscription_id}" "ServiceHealth"
+    check_azure_activity_log_alert_value "Service Health"                            "${subscription_id}" "ServiceHealth"
   done
 }

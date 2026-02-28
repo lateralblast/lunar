@@ -16,7 +16,7 @@
 #.
 
 audit_azure_public_ips () {
-  print_function "audit_azure_public_ips"
+  print_function  "audit_azure_public_ips"
   verbose_message "Azure Public IPs" "check"
   command="az network public-ip list --query '[].id' --output tsv"
   command_message "${command}"
