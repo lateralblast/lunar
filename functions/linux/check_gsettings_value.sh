@@ -19,16 +19,16 @@
 #.
 
 check_gsettings_value () {
-  print_function "check_gsettings_value"
   parameter_root="${1}"
   parameter_name="${2}" 
   correct_value="${3}"
+  print_function "check_gsettings_value"
   command_name="gsettings"
   log_file="${command_name}.log"
   check=$( command -v gsettings 2> /dev/null | wc -l | sed "s/ //g" )
   if [ "${check}" = "1" ]; then
     string="Parameter \"${parameter_name}\" to \"${correct_value}\""
-    verbose_message "${string}" "check"
+    check_message "${string}"
     set_command="gsettings set"
     get_command="gsettings get"
     if [ "${os_name}" = "Linux" ]; then
@@ -58,7 +58,7 @@ check_gsettings_value () {
               echo "    ${parameter_root}.${parameter_name}: ${correct_value}"
               echo ""
             fi
-            verbose_message "${set_command} ${parameter_root} ${parameter_name} \"${correct_value}\"" "fix"
+            fix_message "${set_command} ${parameter_root} ${parameter_name} \"${correct_value}\""
           else
             current_value=$( gsettings get "${parameter_root}" "${parameter_name}" 2> /dev/null )
             if [ "${audit_mode}" = 0 ]; then

@@ -18,7 +18,7 @@ check_dscl () {
     dir="/var/db/dslocal/nodes/Default"
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_dscl_${ansible_counter}"
@@ -44,11 +44,11 @@ check_dscl () {
       else
         command="sudo dscl . -read \"${file}\" \"${param}\" 2> /dev/null"
         command_message "${command}"
-        check=$( eval "${command}" )
+        check=$( eval   "${command}" )
       fi
       if [ "${check}" != "${value}" ]; then
         increment_insecure "Parameter \"${param}\" not set to \"${value}\" in \"${file}\""
-        verbose_message    "sudo dscl . -create ${file} ${param} \"${value}\"" "fix"
+        fix_message        "sudo dscl . -create ${file} ${param} \"${value}\""
         if [ "${audit_mode}" = 0 ]; then
           backup_file      "${dir}/${file}"
           lockdown_message="Parameter \"${param}\" to \"${value}\" in ${file}"
@@ -57,7 +57,7 @@ check_dscl () {
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure    "Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
+          increment_secure "Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
         fi
       fi
     else

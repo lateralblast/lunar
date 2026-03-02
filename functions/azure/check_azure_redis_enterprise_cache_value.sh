@@ -19,10 +19,10 @@ check_azure_redis_enterprise_cache_value () {
   function="${5}"
   correct_value="${6}"
   set_name="${7}"
-  print_function  "check_azure_redis_enterprise_cache_value"
-  verbose_message "${description} for Redis Enterprise Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_redis_enterprise_cache_value"
+  check_message  "${description} for Redis Enterprise Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az redisenterprise show --name \"${redis_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
@@ -32,10 +32,10 @@ check_azure_redis_enterprise_cache_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""           "fix"
+            fix_message "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
             ;;
           *)
-            verbose_message  "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${correct_value}\"" "fix"
+            fix_message "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${correct_value}\""
             ;;
         esac
       fi
@@ -46,15 +46,15 @@ check_azure_redis_enterprise_cache_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""           "fix"
+            fix_message "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
             ;;
           *)
-            verbose_message  "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${correct_value}\"" "fix"
+            fix_message "az redisenterprise update --name \"${redis_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${correct_value}\""
             ;;
         esac
       fi
     else
-      increment_secure   "${description} for Redis Enterprise Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      increment_secure  "${description} for Redis Enterprise Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

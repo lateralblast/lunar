@@ -57,17 +57,17 @@ audit_system_accounting () {
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "System accounting not enabled"
           if [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "CentOS" ]; then
-            verbose_message "yum -y install ${package_check}" "fix"
+            fix_message "yum -y install ${package_check}"
           fi
           if [ "${os_vendor}" = "SuSE" ]; then
-            verbose_message "zypper install ${package_check}" "fix"
+            fix_message "zypper install ${package_check}"
           fi
           if [ "${os_vendor}" = "Debian" ] || [ "${os_vendor}" = "Ubuntu" ]; then
-            verbose_message "apt-get install ${package_check}" "fix"
+            fix_message "apt-get install ${package_check}"
           fi
         fi
         if [ "${audit_mode}" = 0 ]; then
-          verbose_message "System Accounting to enabled" "set"
+          set_message "System Accounting to enabled"
           log_file="${work_dir}/${log_file}"
           echo "Installed sysstat" >> "${log_file}"
           check_linux_package "install" "sysstat"
@@ -210,13 +210,13 @@ audit_system_accounting () {
         if [ $( expr "${sar_check}" : "[A-z]" ) != 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
             increment_insecure "System Accounting is not enabled"
-            verbose_message    "echo \"0,20,40 * * * * /usr/lib/sa/sa1\" >> ${check_file}" "fix"
-            verbose_message    "echo \"45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A\" >> ${check_file}" "fix"
-            verbose_message    "chown sys:sys /var/adm/sa/*" "fix"
-            verbose_message    "chmod go-wx /var/adm/sa/*" "fix"
+            fix_message    "echo \"0,20,40 * * * * /usr/lib/sa/sa1\" >> ${check_file}"
+            fix_message    "echo \"45 23 * * * /usr/lib/sa/sa2 -s 0:00 -e 23:59 -i 1200 -A\" >> ${check_file}"
+            fix_message    "chown sys:sys /var/adm/sa/*"
+            fix_message    "chmod go-wx /var/adm/sa/*"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Setting:   System Accounting to enabled"
+            set_message "System Accounting to enabled"
             if [ ! -f "${log_file}" ]; then
               echo "Saving:    File ${check_file} to ${work_dir}${check_file}"
               find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null

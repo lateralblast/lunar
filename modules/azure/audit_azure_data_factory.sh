@@ -19,28 +19,28 @@
 #.
 
 audit_azure_data_factory () {
-  print_function  "audit_azure_data_factory"
-  verbose_message "Azure Data Factory" "check"
+  print_function "audit_azure_data_factory"
+  check_message  "Azure Data Factory"
   command="az datafactory list --query \"[].name\" --output tsv"
-  command_message "${command}"
-  data_factory_names=$( eval "${command}" )
-  if [ -z "${data_factory_names}" ]; then
-    verbose_message "No Data Factory instances found" "info"
+  command_message       "${command}"
+  factory_names=$( eval "${command}" )
+  if [ -z "${factory_names}" ]; then
+    info_message "No Data Factory instances found"
     return
   fi
-  for data_factory_name in ${data_factory_names}; do
-    command="az datafactory show --name \"${data_factory_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message "${command}"
+  for factory_name in ${factory_names}; do
+    command="az datafactory show --name \"${factory_name}\" --query \"[].resourceGroup\" --output tsv"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     # 4.1 Ensure Data Factory is encrypted using Customer Managed Keys
-    check_data_factory_value   "Customer-Managed Keys" "${data_factory_name}" "${resource_group}" "keyVaultKeyUri"           "ne" ""                          ""
+    check_data_factory_value   "Customer-Managed Keys" "${factory_name}" "${resource_group}" "keyVaultKeyUri"           "ne" ""                          ""
     # 4.2 Ensure Data Factory is using Managed Identities - TBD
-    check_data_factory_value   "Managed Identities"    "${data_factory_name}" "${resource_group}" "identity.type"            "eq" "${azure_managed_identity}" ""
+    check_data_factory_value   "Managed Identities"    "${factory_name}" "${resource_group}" "identity.type"            "eq" "${azure_managed_identity}" ""
     # 4.3 Ensure that Data Factory is using Azure Key Vault to store Credentials and Secrets - TBD
-    check_data_factory_value   "Using Azure Key Vault" "${data_factory_name}" "${resource_group}" "properties.type.baseUrl"  "ne" ""                          ""
+    check_data_factory_value   "Using Azure Key Vault" "${factory_name}" "${resource_group}" "properties.type.baseUrl"  "ne" ""                          ""
     # 4.4 Ensure that Data Factory is using RBAC to manage privilege assignment - TBD
     for item in principalName principalId principalType roleDefinitionName scope; do
-      check_data_factory_value "Using RBAC"            "${data_factory_name}" "${resource_group}" "[].${item}"               "ne" ""                          ""
+      check_data_factory_value "Using RBAC"            "${factory_name}" "${resource_group}" "[].${item}"               "ne" ""                          ""
     done
   done
 }

@@ -15,14 +15,14 @@ check_azure_network_watcher_value () {
   watcher_id="${1}"
   parameter_name="${2}"
   correct_value="${3}"
-  short_id=$( basename "${watcher_id}")
+  short_id=$( basename "${watcher_id}" )
   print_function "check_azure_network_watcher_value"
-  verbose_message "Azure Network Watcher ID \"${short_id}\" has \"${parameter_name}\" set to \"${correct_value}\"" "check"
+  check_message  "Azure Network Watcher ID \"${short_id}\" has \"${parameter_name}\" set to \"${correct_value}\""
   command="az network watcher list --query \"[?contains(id,'${watcher_id}')].${parameter_name}\" --output tsv 2> /dev/null"
-  command_message "$command"
-  actual_value=$(eval "$command")
+  command_message      "${command}"
+  actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure "${parameter_name} is set to ${correct_value} for ${short_id}"
+    increment_secure   "${parameter_name} is set to ${correct_value} for ${short_id}"
   else
     increment_insecure "${parameter_name} is not set to ${correct_value} for ${short_id}"
   fi

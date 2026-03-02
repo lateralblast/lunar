@@ -12,7 +12,6 @@
 #.
 
 check_azure_storage_account_value () {
-  print_function  "check_azure_storage_account_value"
   description="${1}"
   storage_account="${2}"
   resource_group="${3}"
@@ -20,8 +19,9 @@ check_azure_storage_account_value () {
   function="${5}"
   correct_value="${6}"
   set_name="${7}"
+  print_function "check_azure_storage_account_value"
   if [ "${resource_group}" = "" ]; then
-    verbose_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\"" "check"
+    check_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\""
     command="az storage account show --name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     command_message "${command}"
     actual_value=$( eval "${command}" )
@@ -33,10 +33,10 @@ check_azure_storage_account_value () {
         if [ ! -z "${set_name}" ]; then
           case "${set_name}" in
             "--"*)
-              verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
+              fix_message "az storage account update --name ${storage_account} ${set_name} ${correct_value}"
               ;;
             *)
-              verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+              fix_message "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}"
               ;;
           esac
         fi
@@ -50,10 +50,10 @@ check_azure_storage_account_value () {
           if [ ! -z "${set_name}" ]; then
             case "${set_name}" in
               "--"*)
-                verbose_message    "az storage account update --name ${storage_account} ${set_name} ${correct_value}" "fix"
+                fix_message "az storage account update --name ${storage_account} ${set_name} ${correct_value}"
                 ;;
               *)
-                verbose_message    "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}" "fix"
+                fix_message "az storage account update --name ${storage_account} --set ${set_name}=${correct_value}"
                 ;;
             esac
           fi
@@ -64,7 +64,7 @@ check_azure_storage_account_value () {
     command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv 2> /dev/null"
     command_message "${command}"
     resource_group=$( eval "${command}" )
-    verbose_message "${description} for Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\"" "check"
+    check_message "${description} for Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\""
     command="az storage account show --name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
     command_message "${command}"
     actual_value=$( eval "${command}" )
@@ -76,10 +76,10 @@ check_azure_storage_account_value () {
         if [ ! -z "${set_name}" ]; then
           case "${set_name}" in
             "--"*)
-              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
+              fix_message "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}"
               ;;
             *)
-              verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
+              fix_message "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}"
               ;;
           esac
         fi
@@ -93,10 +93,10 @@ check_azure_storage_account_value () {
           if [ ! -z "${set_name}" ]; then
             case "${set_name}" in
               "--"*)
-                verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}" "fix"
+                fix_message "az storage account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}"
                 ;;
               *)
-                verbose_message    "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}" "fix"
+                fix_message "az storage account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}"
                 ;;
             esac
           fi

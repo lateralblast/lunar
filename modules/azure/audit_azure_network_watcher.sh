@@ -16,13 +16,13 @@
 #.
 
 audit_azure_network_watcher () {
-  print_function  "audit_azure_network_watcher"
-  verbose_message "Azure Network Watcher" "check"
+  print_function "audit_azure_network_watcher"
+  check_message  "Azure Network Watcher"
   command="az network watcher list --query '[].id' --output tsv 2> /dev/null"
-  command_message "$command"
-  watcher_ids=$(eval "$command")
+  command_message    "${command}"
+  watcher_ids=$(eval "${command}")
   if [ -z "${watcher_ids}" ]; then
-    verbose_message "No Network Watcher instances found" "info"
+    info_message "No Network Watcher instances found"
     return
   fi
   for watcher_id in $watcher_ids; do

@@ -10,9 +10,9 @@
 #.
 
 funct_audit_select () {
-  print_function "funct_audit_select"
   audit_mode="${1}"
   module_name="${2}"
+  print_function "funct_audit_select"
   module_test=$( echo "${module_name}" | grep -c aws )
   if [ "$module_test" = "1" ]; then
     check_aws
@@ -31,19 +31,19 @@ funct_audit_select () {
   module_test=$( echo "${module_name}" | grep "audit" )
   if [ -n "$module_test" ]; then
     command="find \"${modules_dir}\" -name \"${module_name}.sh\""
-    command_message "${command}"
+    command_message   "${command}"
     file_name=$( eval "${command}" )
     if [ -f "${file_name}" ]; then
       print_audit_info "${module_name}"
       eval "${module_name}"
     else
-      verbose_message "Audit function \"${module_name}\" does not exist" "warn"
+      warn_message    "Audit function \"${module_name}\" does not exist"
       verbose_message "" ""
       exit
     fi 
     print_results
   else
-    verbose_message "Audit function \"${module_name}\" does not exist" "warn"
+    warn_message    "Audit function \"${module_name}\" does not exist"
     verbose_message "" ""
   fi
 }

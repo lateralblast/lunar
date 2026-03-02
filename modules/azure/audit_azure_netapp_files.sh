@@ -16,18 +16,18 @@
 #.
 
 audit_azure_netapp_files () {
-  print_function  "audit_azure_netapp_files"
-  verbose_message "Azure NetApp Files" "check"
+  print_function "audit_azure_netapp_files"
+  check_message  "Azure NetApp Files"
   command="az netappfiles account list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message          "${command}"
   storage_accounts=$( eval "${command}" )
   if [ -z "${storage_accounts}" ]; then
-    verbose_message "No NetApp Files instances found" "info"
+    info_message "No NetApp Files instances found"
     return
   fi
   for storage_account in ${storage_accounts}; do
     command="az netappfiles account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     # 10.1 Ensure 'Encryption key source' is set to 'Customer Managed Key' for Azure NetApp Files accounts
     check_azure_netapp_file_value "Encryption key source" "${storage_account}" "${resource_group}" "encryptionKeySource" "eq" "CustomerManagedKey"

@@ -31,8 +31,8 @@
 #.
 
 audit_azure_networking_services () {
-  print_function  "audit_azure_networking_services"
-  verbose_message "Azure Networking Services" "check"
+  print_function "audit_azure_networking_services"
+  check_message  "Azure Networking Services"
   audit_azure_nsg_security_rules
   audit_azure_network_watcher
   audit_azure_public_ips

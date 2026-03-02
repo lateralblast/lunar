@@ -18,7 +18,7 @@ audit_sar_accounting () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-      verbose_message "Requires sudo to check" "notice"
+      notice_message "Requires sudo to check"
       return
     fi
     if [ "${os_name}" = "SunOS" ]; then
@@ -41,7 +41,7 @@ audit_sar_accounting () {
         check_append_file "/var/spool/cron/crontabs/adm" "0 18-7 * * 1-5 /usr/lib/sa/sa1 &"                                   "hash"
         check_append_file "/var/spool/cron/crontabs/adm" "5 18 * * 1-5 /usr/lib/sa/sa2 -s 8:00 -e 18:01 -i 3600 -ubcwyaqvm &" "hash"
       else
-        verbose_message "Sar accounting requires \"${package_name}\" to be installed" "fix"
+        fix_message "Sar accounting requires \"${package_name}\" to be installed"
       fi
     fi
     check_dir="/var/adm/sa"

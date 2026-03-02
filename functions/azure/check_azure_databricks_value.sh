@@ -19,28 +19,28 @@ check_azure_databricks_value () {
   function="${5}"
   correct_value="${6}"
   parameter_name="${7}"
-  print_function  "check_azure_databrick_value"
-  verbose_message "Azure Databricks ${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_databricks_value"
+  check_message  "Azure Databricks ${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az databricks workspace show --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure   "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
       increment_insecure "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${parameter_name}" = "" ]; then
-        verbose_message "az databricks workspace update --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv" "fix"
+        fix_message "az databricks workspace update --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv"
       fi
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_insecure "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${parameter_name}" = "" ]; then
-        verbose_message "az databricks workspace update --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv" "fix"
+        fix_message "az databricks workspace update --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv"
       fi
     else
-      increment_secure "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure   "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

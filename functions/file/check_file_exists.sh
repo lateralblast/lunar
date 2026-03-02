@@ -14,14 +14,14 @@
 #.
 
 check_file_exists () {
-  print_function "check_file_exists"
   check_file="${1}"
   check_exists="${2}"
+  print_function "check_file_exists"
   log_file="file.log"
   if [ "${check_exists}" = "no" ]; then
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" does not exist"
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_file_exists_${ansible_counter}"

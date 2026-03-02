@@ -22,17 +22,17 @@
 #.
 
 audit_azure_batch () {
-  print_function  "audit_azure_batch"
-  verbose_message "Azure Batch" "check"
+  print_function "audit_azure_batch"
+  check_message  "Azure Batch"
   command="az batch account list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message    "${command}"
   batch_list=$( eval "${command}" 2> /dev/null )
   if [ -z "${batch_list}" ]; then
     info_message "No Batch accounts found"
   fi
   for batch_name in ${batch_list}; do
     command="az batch account show --name \"${batch_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     # 15.1 Ensure Batch account is set to use customer-managed keys to encrypt data - TBD
     check_azure_batch_value "Customer Managed Keys"        "${batch_name}" "${resource_group}" "keyVaultReference"          "ne" ""         "--encryption-key-identifier" "https://<keyvault_name>.vault.azure.net/keys/<key_name>/<Version>"
@@ -42,7 +42,7 @@ audit_azure_batch () {
     check_azure_batch_value "Public Network Access"        "${batch_name}" "${resource_group}" "publicNetworkAccess"        "eq" "Disabled" ""                            ""
     # 15.2 Ensure Batch pools disk encryption is set enabled - TBD
     command="az batch pool list --account-name \"${batch_name}\" --query \"[].id\" --output tsv"
-    command_message "${command}"
+    command_message  "${command}"
     pool_ids=$( eval "${command}" )
     for pool_id in ${pool_ids}; do
       for disk_name in OsDisk TemporaryDisk; do

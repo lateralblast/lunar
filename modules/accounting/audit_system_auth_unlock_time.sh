@@ -14,12 +14,12 @@
 #.
 
 audit_system_auth_unlock_time () {
-  print_function "audit_system_auth_unlock_time"
-  string="Check lockout time for failed password attempts enabled"
-  check_message "${string}"
   auth_string="${1}"
   search_string="${2}"
   search_value="${3}"
+  print_function "audit_system_auth_unlock_time"
+  string="Check lockout time for failed password attempts enabled"
+  check_message "${string}"
   temp_file="${temp_dir}/audit_system_auth_unlock_time"
   if [ "${os_name}" = "Linux" ]; then
     os_check=0

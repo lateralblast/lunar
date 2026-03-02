@@ -14,16 +14,16 @@
 #.
 
 check_append_file () {
-  print_function "check_append_file"
   check_file="${1}"
   parameter="${2}"
   comment_value="${3}"
+  print_function "check_append_file"
   dir_name=$( dirname "${check_file}" )
   if [ ! -f "${check_file}" ]; then
-    verbose_message "File \"${check_file}\" does not exist" "warn"
+    warn_message "File \"${check_file}\" does not exist"
   fi
   if [ ! -d "${dir_name}" ]; then
-    verbose_message "Directory \"${dir_name}\" does not exist" "warn"
+    warn_message "Directory \"${dir_name}\" does not exist"
   else
     if [ "${comment_value}" = "star" ]; then
       comment_value="*"
@@ -36,7 +36,7 @@ check_append_file () {
     else
       secure_string="Parameter \"${parameter}\" is set in \"${check_file}\""
       insecure_string="Parameter \"${parameter}\" is not set in \"${check_file}\""
-      verbose_message "${secure_string}" "check"
+      check_message "${secure_string}"
       if [ ! -f "${check_file}" ]; then
         increment_insecure "Parameter \"${parameter}\" does not exist in \"${check_file}\""
         lockdown_command="echo \"${parameter}\" >> ${check_file}"
@@ -73,7 +73,7 @@ check_append_file () {
             lockdown_message="Parameter \"${parameter}\" in \"${check_file}\""
             execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
-            increment_secure   "${secure_string}"
+            increment_secure "${secure_string}"
           fi
         fi
       fi

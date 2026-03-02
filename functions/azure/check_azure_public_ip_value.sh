@@ -21,10 +21,10 @@ check_azure_public_ip_value () {
   function="${3}"
   correct_value="${4}"
   print_function "check_azure_public_ip_value"
-  verbose_message "Azure Public IP \"${parameter_name}\" is ${function} to \"${correct_value}\"" "check"
+  check_message  "Azure Public IP \"${parameter_name}\" is ${function} to \"${correct_value}\""
   short_id=$( basename "${resource_id}" )
   command="az network public-ip show --id \"${resource_id}\" --query '${parameter_name}' --output tsv"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${parameter_name}" = "ipAddress" ]; then
     if [ "${correct_value}" = "" ]; then

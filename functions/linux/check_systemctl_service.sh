@@ -14,9 +14,9 @@
 #.
 
 check_systemctl_service () {
-  print_function "check_systemctl_service"
   temp_status="${1}"
   temp_name="${2}"
+  print_function "check_systemctl_service"
   use_systemctl="no"
   if [ "${temp_name}" = "on" ] || [ "${temp_name}" = "off" ]; then
     correct_status="${temp_name}" 

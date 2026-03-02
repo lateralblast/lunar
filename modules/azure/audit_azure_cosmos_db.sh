@@ -22,18 +22,18 @@
 #.
 
 audit_azure_cosmos_db () {
-  print_function  "audit_azure_cosmos_db"
-  verbose_message "Azure Cosmos DB" "check"
+  print_function "audit_azure_cosmos_db"
+  check_message  "Azure Cosmos DB"
   command="az cosmosdb list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message        "${command}"
   cosmosdb_names=$( eval "${command}" )
   if [ -z "${cosmosdb_names}" ]; then
-    verbose_message "No Cosmos DB instances found" "info"
+    info_message "No Cosmos DB instances found"
     return
   fi
   for cosmosdb_name in ${cosmosdb_names}; do
     command="az cosmosdb show --name \"${cosmosdb_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     # 3.1 Ensure That 'Firewalls & Networks' Is Limited to Use Selected Networks Instead of All Networks
     check_cosmos_db_value "Firewalls & Networks Filter"   "${cosmosdb_name}" "${resource_group}" "isVirtualNetworkFilterEnabled" "eq" "true"     ""                            ""
@@ -50,7 +50,7 @@ audit_azure_cosmos_db () {
     check_cosmos_db_value "Firewalls & Networks IP Rules" "${cosmosdb_name}" "${resource_group}" "ipRules"                       "ne" "0.0.0.0"  "--ip-range-filter"           "comma-separated-list-of-allowed-ip-addresses"
   done
   command="az cosmosdb list --query \"[].id\" --output tsv"
-  command_message "${command}"
+  command_message      "${command}"
   resource_ids=$( eval "${command}" )
   for resource_id in ${resource_ids}; do
     check_azure_monitoring_diagnostics_value "${resource_id}"

@@ -19,22 +19,22 @@ check_azure_databox_value () {
   function="${5}"
   correct_value="${6}"
   set_name="${7}"
-  print_function  "check_azure_databox_value"
-  verbose_message "${description} for Databox job \"${job_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_databox_value"
+  check_message  "${description} for Databox job \"${job_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
   command="az databox job show --name ${job_name} --resource-group ${resource_group} --query '${query_string}' --output tsv 2> /dev/null"
   command_message "$command"
   actual_value=$(eval "$command")
   if [ "${actual_value}" = "${correct_value}" ]; then
-    secure_message "${description} for Databox job \"${job_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    secure_message   "${description} for Databox job \"${job_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
   else
     insecure_message "${description} for Databox job \"${job_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
     if [ ! "${set_name}" = "" ]; then
       case "${set_name}" in
         "--"*)
-          verbose_message  "az databox job update --name \"${job_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\"" "fix"
+          fix_message "az databox job update --name \"${job_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
           ;;
         *)
-          verbose_message  "az databox job update --name \"${job_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\"" "fix"
+          fix_message "az databox job update --name \"${job_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
           ;;
       esac
     fi

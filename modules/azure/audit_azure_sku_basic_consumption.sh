@@ -16,12 +16,12 @@
 #.
 
 audit_azure_sku_basic_consumption () {
-  print_function  "audit_azure_sku_basic_consumption"
-  verbose_message "Azure SKU Basic/Consumption" "check"
+  print_function "audit_azure_sku_basic_consumption"
+  check_message  "Azure SKU Basic/Consumption"
   command="az graph query -q \"Resources | where sku contains 'Basic' or sku contains 'consumption' | order by type\" --query count --output tsv 2> /dev/null"
-  command_message "${command}"
-  resource_check="$( eval "${command}" )"
-  if [ "${resource_check}" -eq 0 ]; then
+  command_message    "${command}"
+  res_check="$( eval "${command}" )"
+  if [ "${res_check}" -eq 0 ]; then
     increment_secure   "No resources that are being monitored are using SKU Basic/Consumption"
   else
     increment_insecure "Resources that are being monitored are using SKU Basic/Consumption"

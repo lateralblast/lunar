@@ -19,19 +19,19 @@ check_azure_vnet_value () {
   function="${5}"
   correct_value="${6}"
   print_function "check_azure_vnet_value"
-  verbose_message "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" has \"${parameter_name}\" ${function} to \"${correct_value}\"" "check"
+  check_message  "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
   command="az network vnet subnet show --name \"${subnet_name}\" --resource-group \"${resource_group}\" --vnet-name \"${vnet_name}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-  command_message "$command"
+  command_message      "$command"
   actual_value=$( eval "$command" )
   if [ "${function}" = "ne" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_insecure "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" does not have \"${parameter_name}\" ${function} to \"${correct_value}\""
     else
-      increment_secure "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
+      increment_secure   "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
+      increment_secure   "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" has \"${parameter_name}\" ${function} to \"${correct_value}\""
     else
       increment_insecure "Azure VNet \"${vnet_name}\" in Resource Group \"${resource_group}\" Subnet \"${subnet_name}\" does not have \"${parameter_name}\" ${function} to \"${correct_value}\""
     fi

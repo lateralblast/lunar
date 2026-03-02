@@ -28,15 +28,15 @@
 #.
 
 audit_azure_blob_storage () {
-  print_function  "audit_azure_blob_storage"
-  verbose_message "Azure Blob Storage" "check"
+  print_function "audit_azure_blob_storage"
+  check_message  "Azure Blob Storage"
   immutability_state="Locked"
   retention_days="7"
   command="az storage account list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message          "${command}"
   storage_accounts=$( eval "${command}" 2> /dev/null )
   if [ -z "${storage_accounts}" ]; then
-    verbose_message "No Storage Accounts found" "info"
+    info_message "No Storage Accounts found"
     return
   fi
   for storage_account in ${storage_accounts}; do
@@ -49,15 +49,15 @@ audit_azure_blob_storage () {
     check_azure_storage_account_container_value "Versioning"    "${storage_account}" "" "service-properties" "isVersioningEnabled" "eq"      "true"    "--enable-versioning"
     # 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
     command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     if [ "${azure_auth_mode}" = "login" ]; then
       command="az storage container list --account-name \"${storage_account}\" --query \"[].name\" --output tsv --auth-mode \"${azure_auth_mode}\""
-      command_message "${command}"
+      command_message         "${command}"
       container_names=$( eval "${command}" )
     else
       command="az storage container list --account-name \"${storage_account}\" --query \"[].name\" --output tsv"
-      command_message "${command}"
+      command_message         "${command}"
       container_names=$( eval "${command}" )
     fi
     for container_name in ${container_names}; do
@@ -69,7 +69,7 @@ audit_azure_blob_storage () {
       check_azure_storage_account_container_value "Immutability policy state"  "${storage_account}" "${resource_group}" "immutability-policy" "immutabilitySettings.state"            "eq" "${immutability_state}"    "--immutability-policy-state"
       # 17.5      Ensure that ‘Enable Infrastructure Encryption’ for Each Storage Blob in Azure Storage is Set to ‘enabled’ 
       command="az storage blob list --container-name \"${container_name}\" --account-name \"${storage_account}\" --query \"[].name\" --output tsv"
-      command_message "${command}"
+      command_message    "${command}"
       blob_names=$( eval "${command}" )
       for blob_name in ${blob_names}; do
         check_azure_storage_blob_value            "Infrastructure encryption"  "${storage_account}" "${container_name}" "${blob_name}"        "properties.serverEncrypted"            "eq" "Enabled"

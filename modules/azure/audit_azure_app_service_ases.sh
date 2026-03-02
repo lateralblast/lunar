@@ -20,10 +20,10 @@
 #.
 
 audit_azure_app_service_ase () {
-  print_function  "audit_azure_app_service_ase"
-  verbose_message "Azure App Service ASE" "check"
+  print_function "audit_azure_app_service_ase"
+  check_message  "Azure App Service ASE"
   command="az appservice ase list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message  "${command}"
   ase_list=$( eval "${command}" 2> /dev/null )
   if [ -z "${ase_list}" ]; then
     info_message "No App Service ASE found"

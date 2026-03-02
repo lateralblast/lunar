@@ -19,10 +19,10 @@ check_azure_recovery_services_vault_value () {
   function="${5}"
   correct_value="${6}"
   set_name="${7}"
-  print_function  "check_azure_recovery_services_vault_value"
-  verbose_message "Azure Recovery Services Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_recovery_services_vault_value"
+  check_message  "Azure Recovery Services Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az dataprotection backup-vault show --name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
@@ -30,16 +30,16 @@ check_azure_recovery_services_vault_value () {
     else
       increment_insecure "Azure Recovery Services Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ "${query_string}" = "properties.encryption.keyUri" ]; then
-        verbose_message "az keyvault set-policy --name <keyvault-name> --object-id <vault-managed-identity-object-id> --key-permissions get wrapKey unwrapKey"       "fix"
-        verbose_message "az dataprotection backup-vault encryption enable --resource-group <resource-group> --vault-name <vault-name> --key-uri <key-vault-key-uri>" "fix"
+        fix_message "az keyvault set-policy --name <keyvault-name> --object-id <vault-managed-identity-object-id> --key-permissions get wrapKey unwrapKey"
+        fix_message "az dataprotection backup-vault encryption enable --resource-group <resource-group> --vault-name <vault-name> --key-uri <key-vault-key-uri>"
       else
         if [ ! "${set_name}" = "" ]; then
           case "${set_name}" in
             "--"*)
-              verbose_message  "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""           "fix"
+              fix_message "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
               ;;
             *)
-              verbose_message  "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\"" "fix"
+              fix_message "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
               ;;
           esac
         fi
@@ -49,22 +49,22 @@ check_azure_recovery_services_vault_value () {
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_insecure "Azure Recovery Services Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ "${query_string}" = "properties.encryption.keyUri" ]; then
-        verbose_message "az keyvault set-policy --name <keyvault-name> --object-id <vault-managed-identity-object-id> --key-permissions get wrapKey unwrapKey"       "fix"
-        verbose_message "az dataprotection backup-vault encryption enable --resource-group <resource-group> --vault-name <vault-name> --key-uri <key-vault-key-uri>" "fix"
+        fix_message "az keyvault set-policy --name <keyvault-name> --object-id <vault-managed-identity-object-id> --key-permissions get wrapKey unwrapKey"
+        fix_message "az dataprotection backup-vault encryption enable --resource-group <resource-group> --vault-name <vault-name> --key-uri <key-vault-key-uri>"
       else
         if [ ! "${set_name}" = "" ]; then
           case "${set_name}" in
             "--"*)
-              verbose_message  "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""           "fix"
+              fix_message "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
               ;;
             *)
-              verbose_message  "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\"" "fix"
+              fix_message "az dataprotection backup-vault update --name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
               ;;
           esac
         fi
       fi
     else
-      increment_secure   "Azure Recovery Services Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure "Azure Recovery Services Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

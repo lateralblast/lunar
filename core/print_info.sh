@@ -271,6 +271,17 @@ na_message () {
   fi
 }
 
+# notice_message
+#
+# Notice message
+#.
+
+notice_message () {
+  if [ "${command_mode}" = 1 ]; then
+    verbose_message "${1}" "notice"
+  fi
+}
+
 # fix_message
 #
 # Fix message
@@ -280,6 +291,15 @@ fix_message () {
   verbose_message "${1}" "fix"
 }
 
+# restore_message
+#
+# Restore message
+#.
+
+restore_message () {
+  verbose_message "${1}" "restore"
+}
+
 # insecure_message
 #
 # Insecure message
@@ -287,6 +307,24 @@ fix_message () {
 
 insecure_message () {
   verbose_message "${1}" "fix"
+}
+
+# backup_message
+#
+# Backup message
+#.
+
+backup_message () {
+  verbose_message "${1}" "backup"
+}
+
+# install_message
+#
+# Install message
+#.
+
+install_message () {
+  verbose_message "${1}" "install"
 }
 
 # print_audit_info

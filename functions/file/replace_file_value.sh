@@ -19,13 +19,13 @@
 #.
 
 replace_file_value () {
-  print_function "replace_file_value"
   check_file="${1}"
   check_value="${2}"
   new_check_value="${check_value}"
   correct_value="${3}"
   new_correct_value="${correct_value}"
   position="${4}"
+  print_function "replace_file_value"
   if [ "${position}" = "start" ]; then
     position="^"
   else
@@ -42,7 +42,7 @@ replace_file_value () {
   new_check_value="${position}${new_check_value}"
   if [ "${audit_mode}" != 2 ]; then
     string="File \"${check_file}\" contains \"${correct_value}\" rather than \"${check_value}\""
-    verbose_message "${string}" "check"
+    check_message "${string}"
   fi
   if [ -f "${check_file}" ]; then
     check_dfs=$( grep -c "${new_check_value}" < "${check_file}" | sed "s/ //g" )

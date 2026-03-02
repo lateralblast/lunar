@@ -15,10 +15,10 @@
 #.
 
 disable_value () {
-  print_function "disable_value"
   check_file="${1}"
   parameter_name="${2}"
   comment_value="${3}"
+  print_function "disable_value"
   if [ -f "${check_file}" ]; then
     if [ "${comment_value}" = "star" ]; then
       comment_value="*"
@@ -32,7 +32,7 @@ disable_value () {
     if [ "${audit_mode}" = 2 ]; then
       restore_file "${check_file}" "${restore_dir}"
     else
-      verbose_message "Parameter \"${parameter_name}\" in \"${check_file}\" is disabled" "check"
+      check_message "Parameter \"${parameter_name}\" in \"${check_file}\" is disabled"
       if [ "${separator}" = "tab" ]; then
         param_hyphen=$( echo "${parameter_name}" | grep "^[\-]" )
         if [ "${param_hyphen}" ]; then
@@ -46,13 +46,13 @@ disable_value () {
         if [ "${check_value}" != "${parameter_name}" ]; then
           increment_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\" in ${check_file}"
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Setting:   Parameter \"${parameter_name}\" to \"${correct_value}\" in ${check_file}"
+            set_message "Parameter \"${parameter_name}\" to \"${correct_value}\" in ${check_file}"
             if [ "${check_file}" = "/etc/system" ]; then
               reboot_required=1
-              verbose_message "Reboot required" "notice"
+              notice_message "Reboot required"
             fi
             if [ "${check_file}" = "/etc/ssh/sshd_config" ] || [ "${check_file}" = "/etc/sshd_config" ]; then
-              verbose_message "Service restart required SSH" "notice"
+              notice_message "Service restart required SSH"
             fi
             backup_file "${check_file}"
             sed "s/${parameter_name}/${comment_value}&" < "${check_file}" > "${temp_file}"

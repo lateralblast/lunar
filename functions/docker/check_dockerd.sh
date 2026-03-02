@@ -21,22 +21,22 @@ check_dockerd () {
       value="${4}"
       if [ "${type}" = "config" ]; then
         if [ "${value}" ]; then
-         verbose_message "Docker \"${type}\" parameter \"${param}\" has value \"${value}\"" "check"
+         check_message "Docker \"${type}\" parameter \"${param}\" has value \"${value}\""
         else
-         verbose_message "Docker \"${type}\" parameter \"${param}\" has no value" "check"
+         check_message "Docker \"${type}\" parameter \"${param}\" has no value"
         fi
       else
         if [ "${value}" ]; then
-         verbose_message "Docker \"${type}\" parameter \"${param}\" is \"${used}\" and has value \"${value}\"" "check"
+         check_message "Docker \"${type}\" parameter \"${param}\" is \"${used}\" and has value \"${value}\""
         else
-         verbose_message "Docker \"${type}\" parameter \"${param}\" is \"${used}\"" "check"
+         check_message "Docker \"${type}\" parameter \"${param}\" is \"${used}\""
         fi
       fi
       case "${type}" in
         "daemon")
           command="ps -ef | grep dockerd | grep \"${param}\""
           command_message "${command}"
-          check=$( eval "${command}" )
+          check=$( eval   "${command}" )
           if [ "${check}" ] && [ "${value}" ] && [ "${used}" = "unused" ]; then
             command="ps -ef | grep dockerd | grep \"${param}\" | grep \"${value}\""
             command_message "${command}"
@@ -77,18 +77,18 @@ check_dockerd () {
           OFS=$IFS
           IFS=$(printf '\n+'); IFS=${IFS%?}
           command="docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapAdd }}' 2> /dev/null"
-          command_message "${command}"
+          command_message     "${command}"
           docker_info=$( eval "${command}" )
           if [ ! "${docker_info}" ]; then
             verbose_message "No Docker instances" notice
           fi
           for info in ${docker_info}; do
             command="echo \"${info}\" | cut -f1 -d:"
-            command_message "${command}"
+            command_message   "${command}"
             docker_id=$( eval "${command}" )
             command="echo \"${info}\" | cut -f2 -d: | cut -f2 -d= | grep \"${param}\""
             command_message "${command}"
-            check=$( eval "${command}" )
+            check=$( eval   "${command}" )
             if [ "${used}" = "used" ]; then
               if [ "${profile}" ]; then
                 increment_secure   "Docker instance \"${docker_id}\" has capability \"${param}\""
@@ -103,7 +103,7 @@ check_dockerd () {
               fi
               command="docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapDrop }}' \"${docker_id}\" | cut -f2 -d= | grep \"${param}\""
               command_message "${command}"
-              check=$( eval "${command}" )
+              check=$( eval   "${command}" )
               if [ "${check}" ]; then
                 increment_secure   "Docker instance \"${docker_id}\" forcibly drops capability \"${param}\""
               else
@@ -119,32 +119,32 @@ check_dockerd () {
           case ${param} in
             "AppArmorProfile")
               command="docker ps --quiet --all | xargs docker inspect --format \"{{ .Id }}: ${param}={{ .${param} }}\" 2> /dev/null"
-              command_message "${command}"
+              command_message     "${command}"
               docker_info=$( eval "${command}" )
               ;;
             "User")
               command="docker ps --quiet --all | xargs docker inspect --format \"{{ .Id }}: ${param}={{ .Config.${param} }}\" 2> /dev/null"
-              command_message "${command}"
+              command_message     "${command}"
               docker_info=$( eval "${command}" )
               ;;
             "Ports")
               command="docker ps --quiet --all | xargs docker inspect --format \"{{ .Id }}: ${param}={{ .NetworkSettings.${param} }}\" 2> /dev/null"
-              command_message "${command}"
+              command_message     "${command}"
               docker_info=$( eval "${command}" )
               ;;
             "Propagation")
               command="docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Propagation={{range $mnt := .Mounts}} {{json $mnt.Propagation}} {{end}}' 2> /dev/null"
-              command_message "${command}"
+              command_message     "${command}"
               docker_info=$( eval "${command}" )
               ;;
             "Health")
               command="docker ps --quiet | xargs docker inspect --format '{{ .Id }}: Health={{ .State.Health.Status }}' 2> /dev/null"
-              command_message "${command}"
+              command_message     "${command}"
               docker_info=$( eval "${command}" )
               ;;
             *)
               command="docker ps --quiet --all | xargs docker inspect --format \"{{ .Id }}: ${param}={{ .HostConfig.${param} }}\" 2> /dev/null"
-              command_message "${command}"
+              command_message     "${command}"
               docker_info=$( eval "${command}" )
               ;;
           esac
@@ -153,7 +153,7 @@ check_dockerd () {
           fi
           for info in ${docker_info}; do
             command="echo \"${info}\" | cut -f1 -d:"
-            command_message "${command}"
+            command_message   "${command}"
             docker_id=$( eval "${command}" )
             case ${used} in
               "notequal")
@@ -162,9 +162,9 @@ check_dockerd () {
                 profile=$( eval "${command}" )
                 if [ ! "${value}" ]; then
                   if [ "${profile}" ]; then
-                    increment_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\" set"
+                    increment_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\"
                   else
-                    increment_insecure "Docker instance \"${docker_id}\" has parameter \"${param}\" set"
+                    increment_insecure "Docker instance \"${docker_id}\" has parameter \"${param}\"
                   fi
                 else
                   if [ ! "${profile}" = "${value}" ]; then
@@ -180,9 +180,9 @@ check_dockerd () {
                 profile=$( eval "${command}" )
                 if [ ! "${value}" ]; then
                   if [ ! "${profile}" ]; then
-                    increment_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\" set"
+                    increment_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\"
                   else
-                    increment_insecure "Docker instance \"${docker_id}\" has parameter \"${param}\" set"
+                    increment_insecure "Docker instance \"${docker_id}\" has parameter \"${param}\"
                   fi
                 else
                   if [ "${profile}" = "${value}" ]; then

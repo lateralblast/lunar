@@ -18,17 +18,17 @@
 #.
 
 audit_azure_container_instances () {
-  print_function  "audit_azure_container_instances"
-  verbose_message "Azure Container Instances" "check"
+  print_function "audit_azure_container_instances"
+  check_message  "Azure Container Instances"
   command="az container list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message        "${command}"
   container_list=$( eval "${command}" 2> /dev/null )
   if [ -z "${container_list}" ]; then
     info_message "No Container Instances found"
   fi
   for container_name in ${container_list}; do
     command="az container show --name \"${container_name}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     check_azure_container_instance_value "Private Virtual Networks" "${container_name}" "${resource_group}" "ipAddress.type" "eq" "Private"
     check_azure_container_instance_value "Managed Identity"         "${container_name}" "${resource_group}" "identity.type"  "eq" "${azure_managed_identity}"

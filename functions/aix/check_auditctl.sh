@@ -17,7 +17,7 @@ check_auditctl () {
     if [ "${audit_mode}" != 2 ]; then
       secure_string="Auditing is enabled on file \"${check_file}\""
       insecure_string="Auditing is not enabled on file \"${check_file}\""
-      verbose_message "${secure_string}" "check"
+      check_message "${secure_string}"
       get_command="auditctl -l | grep ${check_file}"
       set_command="auditctl -w ${file} -p wa -k ${audit_tag}"
       if [ -e "${check_file}" ]; then

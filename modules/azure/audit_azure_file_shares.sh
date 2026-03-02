@@ -24,24 +24,24 @@
 #.
 
 audit_azure_file_shares () {
-  print_function  "audit_azure_file_shares"
-  verbose_message "Azure File Shares" "check"
+  print_function "audit_azure_file_shares"
+  check_message  "Azure File Shares"
   command="az storage account list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message          "${command}"
   storage_accounts=$( eval "${command}" 2> /dev/null )
   if [ -z "${storage_accounts}" ]; then
-    verbose_message "No Storage Accounts found" "info"
+    info_message "No Storage Accounts found"
     return
   fi
   for storage_account in ${storage_accounts}; do
     command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     # 9.1.1 Ensure soft delete for Azure File Shares is Enabled
     check_azure_file_share_value "Days retained"             "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.days"        "eq" "7"           "--share-delete-retention-days"   ""
     check_azure_file_share_value "Soft Delete"               "${storage_account}" "${resource_group}" "service-properties" "shareDeleteRetentionPolicy.enabled"     "eq" "true"        "--enable-share-delete-retention" ""
     command="az storage account file-service-properties show --name \"${storage_account}\" --resource-group \"${resource_group}\" |grep -i smb"
-    command_message "${command}"
+    command_message        "${command}"
     protocol_check=$( eval "${command}" )
     if [ -n "${protocol_check}" ]; then
       # 9.1.2 Ensure 'SMB protocol version' is set to 'SMB 3.1.1' or higher for SMB file shares
@@ -52,7 +52,7 @@ audit_azure_file_shares () {
       check_azure_file_share_value "SMB Channel Encryption"  "${storage_account}" "${resource_group}" "service-properties" "protocolSettings.smb.channelEncryption" "eq" "AES-256-GCM" "--channel-encryption"
     fi
     command="az storage account file-service-properties show --name \"${storage_account}\" --resource-group \"${resource_group}\" |grep -i nfs"
-    command_message "${command}"
+    command_message        "${command}"
     protocol_check=$( eval "${command}" )
     if [ -n "${protocol_check}" ]; then
       # 8.2 Ensure root squash for NFS file shares is configured 

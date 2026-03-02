@@ -18,10 +18,10 @@
 #.
 
 audit_azure_key_vault_certificates () {
-  print_function  "audit_azure_key_vault_certificates"
-  verbose_message "Azure Key Vault Certificates" "check"
+  print_function "audit_azure_key_vault_certificates"
+  check_message  "Azure Key Vault Certificates"
   command="az keyvault list --query \"[].id\" --output tsv"
-  command_message "${command}"
+  command_message    "${command}"
   key_vaults=$( eval "${command}" 2> /dev/null )
   if [ -z "${key_vaults}" ]; then
     insecure_message "No Key Vault Certificates found"

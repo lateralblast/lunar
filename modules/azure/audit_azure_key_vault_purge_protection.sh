@@ -18,24 +18,24 @@
 #.
 
 audit_azure_key_vault_purge_protection () {
-  print_function  "audit_azure_key_vault_purge_protection"
-  verbose_message "Azure Key Vault Purge Protection" "check"
+  print_function "audit_azure_key_vault_purge_protection"
+  check_message  "Azure Key Vault Purge Protection"
   command="az resource list --query \"[?type=='Microsoft.KeyVault/vaults'].name\" --output tsv"
-  command_message "${command}"
+  command_message        "${command}"
   resource_names=$( eval "${command}" 2> /dev/null )
   if [ -z "${resource_names}" ]; then
-    verbose_message "No Key Vaults found" "info"
+    info_message "No Key Vaults found"
     return
   fi
   for resource_name in ${resource_names}; do
     command="az resource list --name \"${resource_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message         "${command}"
     resource_groups=$( eval "${command}" )
     for resource_group in ${resource_groups}; do
       command="az resource show --resource-group \"${resource_group}\" --name \"${resource_name}\" --resource-type \"Microsoft.KeyVault/vaults\" --query \"properties.enablePurgeProtection\" --output tsv"
-      command_message "${command}"
+      command_message          "${command}"
       purge_protection=$( eval "${command}" )
-      verbose_message "Azure Key Vault \"${resource_name}\" purge protection" "check"
+      check_message "Azure Key Vault \"${resource_name}\" purge protection"
       if [ "${purge_protection}" = "true" ]; then
         increment_secure   "Azure Key Vault \"${resource_name}\" purge protection is enabled"
       else

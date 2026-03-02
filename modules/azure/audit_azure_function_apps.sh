@@ -30,18 +30,18 @@
 #.
 
 audit_azure_function_apps () {
-  print_function  "audit_azure_functions_apps"
-  verbose_message "Azure Function Apps" "check"
+  print_function "audit_azure_functions_apps"
+  check_message  "Azure Function Apps"
   command="az functionapp list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message   "${command}"
   app_names=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_names}" ]; then
-    verbose_message "No Function Apps found" "info"
+    info_message "No Function Apps found"
     return
   fi
   for app_name in ${app_names}; do
     command="az functionapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     # 2.3.1   Ensure 'Java version' is currently supported (if in use) - TBD
     check_azure_app_service_deployment_slot_value "Java Version"                                "${app_name}" "${resource_group}" "config"                             "web" "" "javaVersion"                       "eq" "${azure_java_version}"         "--java-version"                                 ""

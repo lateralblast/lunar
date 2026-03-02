@@ -112,10 +112,10 @@ check_linux_package_with_group () {
           execute_lockdown "${lockdown_command}" "${lockdown_message}"
         else
           increment_insecure "Not uninstalling package as package uninstall has been set to no"
-          verbose_message    "${package_command}" "fix"
+          fix_message        "${package_command}"
         fi
       else
-        verbose_message "${package_command}" "fix"
+        fix_message "${package_command}"
       fi
     else
       restore_file="${restore_dir}/${log_file}"

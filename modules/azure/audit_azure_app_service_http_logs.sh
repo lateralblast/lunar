@@ -16,6 +16,6 @@
 #.
 
 audit_azure_app_service_http_logs () {
-  print_function  "audit_azure_app_service_http_logs"
-  verbose_message "Azure App Service HTTP Logs" "check"
+  print_function "audit_azure_app_service_http_logs"
+  check_message  "Azure App Service HTTP Logs"
 }

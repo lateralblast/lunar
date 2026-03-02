@@ -16,20 +16,20 @@
 #.
 
 audit_azure_diagnostic_setting_categories () {
-  print_function  "audit_azure_diagnostic_setting_categories"
-  verbose_message "Azure Diagnostic Setting Categories" "check"
+  print_function "audit_azure_diagnostic_setting_categories"
+  check_message  "Azure Diagnostic Setting Categories"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"
-  subscription_ids=$( eval "${command}" )
-  for subscription_id in ${subscription_ids}; do
+  sub_ids=$( eval "${command}" )
+  for sub_id in ${sub_ids}; do
     for setting in Administrative Alert Policy Security; do
-      command="az monitor diagnostic-settings subscription list --subscription ${subscription_id} | grep \"${setting}\" | grep -i \"enabled\" | grep true"
-      command_message "${command}"
-      diagnostic_setting=$( eval "${command}" )
-      if [ -z "${diagnostic_setting}" ]; then
-        increment_insecure "There is no diagnostic setting for ${setting} for subscription ${subscription_id}"
+      command="az monitor diagnostic-settings subscription list --subscription ${sub_id} | grep \"${setting}\" | grep -i \"enabled\" | grep true"
+      command_message  "${command}"
+      settings=$( eval "${command}" )
+      if [ -z "${settings}" ]; then
+        increment_insecure "There is no diagnostic setting for ${setting} for subscription ${sub_id}"
       else
-        increment_secure   "There is a diagnostic setting for ${setting} for subscription ${subscription_id}"
+        increment_secure   "There is a diagnostic setting for ${setting} for subscription ${sub_id}"
       fi
     done
   done

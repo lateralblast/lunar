@@ -28,7 +28,7 @@ check_rctcp() {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Service \"${service_name}\" is \"${correct_value}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
@@ -42,22 +42,22 @@ check_rctcp() {
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Service \"${service_name}\" is not \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            verbose_message "chrctcp -d ${service_name}" "fix"
-            verbose_message "stopsrc -s ${service_name}" "fix"
-            verbose_message "sed \"/${service_name} /s/^/#/g\" < /etc/rc.tcpip > ${temp_file}" "fix"
-            verbose_message "cat ${temp_file} > /etc/rc.tcpip" "fix"
-            verbose_message "rm ${temp_file}" "fix"
+            fix_message "chrctcp -d ${service_name}"
+            fix_message "stopsrc -s ${service_name}"
+            fix_message "sed \"/${service_name} /s/^/#/g\" < /etc/rc.tcpip > ${temp_file}"
+            fix_message "cat ${temp_file} > /etc/rc.tcpip"
+            fix_message "rm ${temp_file}"
           else
-            verbose_message "chrctcp -a ${service_name}" "fix"
-            verbose_message "startsrc -s ${service_name}" "fix"
-            verbose_message "sed \"/${service_name} /s/^#.//g\" < /etc/rc.tcpip > ${temp_file}" "fix"
-            verbose_message "cat ${temp_file} > /etc/rc.tcpip" "fix"
-            verbose_message "rm ${temp_file}" "fix"
+            fix_message "chrctcp -a ${service_name}"
+            fix_message "startsrc -s ${service_name}"
+            fix_message "sed \"/${service_name} /s/^#.//g\" < /etc/rc.tcpip > ${temp_file}"
+            fix_message "cat ${temp_file} > /etc/rc.tcpip"
+            fix_message "rm ${temp_file}"
           fi
         fi
         if [ "${audit_mode}" = 0 ]; then
           log_file="${work_dir}/${log_file}"
-          verbose_message "Service \"${service_name}\" to \"${correct_value}\"" "set"
+          set_message "Service \"${service_name}\" to \"${correct_value}\""
           echo "${actual_value}" > "${log_file}"
           if [ "${correct_value}" = "off" ]; then
             chrctcp -d "${service_name}"
@@ -83,7 +83,7 @@ check_rctcp() {
       if [ -f "${log_file}" ]; then
         previous_value=$( cat "${log_file}" )
         if [ "${previous_value}" != "${actual_value}" ]; then
-          verbose_message "Service \"${service_name}\" to \"${previous_value}\"" "restore"
+          restore_message "Service \"${service_name}\" to \"${previous_value}\""
           if [ "${previous_value}" = "off" ]; then
             chrctcp -d "${service_name}"
             stopsrc -s "${service_name}"

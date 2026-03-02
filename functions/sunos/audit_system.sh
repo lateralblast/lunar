@@ -10,8 +10,8 @@
 #.
 
 funct_audit_system () {
-  print_function "funct_audit_system"
   audit_mode="${1}"
+  print_function "funct_audit_system"
   if [ "${audit_mode}" = 0 ]; then
     if [ ! -d "${work_dir}" ]; then
       mkdir -p "${work_dir}"
@@ -37,7 +37,7 @@ funct_audit_system () {
       echo "Restore directory \"${restore_dir}\" does not exit"
       exit
     else
-      verbose_message "Restore directory to \"${restore_dir}\"" "set"
+      set_message "Restore directory to \"${restore_dir}\""
     fi
   fi
   audit_system_all

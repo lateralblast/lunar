@@ -79,8 +79,8 @@
 #.
 
 audit_azure_database_services () {
-  print_function  "audit_azure_database_services"
-  verbose_message "Azure Database Services" "check"
+  print_function "audit_azure_database_services"
+  check_message  "Azure Database Services"
   audit_azure_redis_cache
   audit_azure_cosmos_db
   audit_azure_data_factory

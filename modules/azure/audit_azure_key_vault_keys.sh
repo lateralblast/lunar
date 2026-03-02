@@ -27,18 +27,18 @@
 #.
 
 audit_azure_key_vault_keys () {
-  print_function  "audit_azure_key_vault_keys"
-  verbose_message "Azure Key Vault Keys" "check"
+  print_function "audit_azure_key_vault_keys"
+  check_message  "Azure Key Vault Keys"
   command="az keyvault list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message    "${command}"
   key_vaults=$( eval "${command}" 2> /dev/null )
   if [ -z "${key_vaults}" ]; then
-    verbose_message "No Key Vaults found" "info"
+    info_message "No Key Vaults found"
     return
   fi
   for key_vault in ${key_vaults}; do
     command="az keyvault key list --vault-name \"${key_vault}\" --query \"[].name\" --output tsv"
-    command_message "${command}"
+    command_message  "${command}"
     key_list=$( eval "${command}" )
     for key_name in ${key_list}; do
       check_azure_key_vault_key_value "${key_vault}" "${key_name}" "attributes.enabled"     "eq" "true" ""                ""

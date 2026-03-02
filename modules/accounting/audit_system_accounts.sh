@@ -27,7 +27,7 @@ audit_system_accounts () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-      verbose_message "Requires sudo to check" "notice"
+      notice_message "Requires sudo to check"
       return
     fi
     password_file="/etc/passwd"
@@ -46,10 +46,10 @@ audit_system_accounts () {
               increment_insecure "System account \"${user_name}\" has an invalid shell"
               if [ "${os_name}" = "FreeBSD" ]; then
                 lockdown_command="pw moduser ${user_name} -s /sbin/nologin"
-                verbose_message  "${lockdown_command}" "fix"
+                fix_message "${lockdown_command}"
               else
                 lockdown_command="usermod -s /sbin/nologin ${user_name}"
-                verbose_message  "${lockdown_command}" "fix"
+                fix_message "${lockdown_command}"
               fi
             fi
             if [ "${audit_mode}" = 0 ]; then

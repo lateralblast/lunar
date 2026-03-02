@@ -10,8 +10,8 @@
 #.
 
 backup_file () {
-  print_function "backup_file"
   check_file="${1}"
+  print_function "backup_file"
   if [ -f "${check_file}" ]; then
     if [ "${audit_mode}" = 0 ]; then
       backup_file="${work_dir}${check_file}"
@@ -39,6 +39,6 @@ backup_file () {
       fi
     fi
   else
-    verbose_message "File \"${check_file}\" does not exist" "warn"
+    warn_message "File \"${check_file}\" does not exist"
   fi
 }

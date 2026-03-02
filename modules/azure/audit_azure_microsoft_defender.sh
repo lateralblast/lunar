@@ -31,8 +31,8 @@
 #.
 
 audit_azure_microsoft_defender () {
-  print_function  "audit_azure_microsoft_defender"
-  verbose_message "Azure Microsoft Defender" "check"
+  print_function "audit_azure_microsoft_defender"
+  check_message  "Azure Microsoft Defender"
   # 8.1.1.1 Ensure Microsoft Defender CSPM is set to 'On'
   check_azure_microsoft_defender_value "Cloud Security Posture Management (CSPM)"            "CloudPosture"                  "Standard" "On"     ""
   # 8.1.2.1 Ensure Microsoft Defender CWP is set to 'On'

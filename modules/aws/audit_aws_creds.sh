@@ -23,15 +23,15 @@ audit_aws_creds () {
   command_message "${command}"
   entries=$( eval "${command}" )
   for entry in ${entries}; do
-    aws_user=$( echo "${entry}" | cut -d, -f1 )
-    aws_pass=$( echo "${entry}" | cut -d, -f2 )
-    aws_last=$( echo "${entry}" | cut -d, -f3 )
-    aws_rot=$( echo "${entry}" | cut -d, -f4 )
-    key1_use=$( echo "${entry}" | cut -d, -f5 )
-    key1_rot=$( echo "${entry}" | cut -d, -f6 )
+    aws_user=$(  echo "${entry}" | cut -d, -f1 )
+    aws_pass=$(  echo "${entry}" | cut -d, -f2 )
+    aws_last=$(  echo "${entry}" | cut -d, -f3 )
+    aws_rot=$(   echo "${entry}" | cut -d, -f4 )
+    key1_use=$(  echo "${entry}" | cut -d, -f5 )
+    key1_rot=$(  echo "${entry}" | cut -d, -f6 )
     key1_last=$( echo "${entry}" | cut -d, -f7 )
-    key2_use=$( echo "${entry}" | cut -d, -f8 )
-    key2_rot=$( echo "${entry}" | cut -d, -f9 )
+    key2_use=$(  echo "${entry}" | cut -d, -f8 )
+    key2_rot=$(  echo "${entry}" | cut -d, -f9 )
     key2_last=$( echo "${entry}" | cut -d, -f10 )
     cur_sec=$( date "+%s" )
     if [ "${aws_user}" = "<root_account>" ]; then

@@ -18,12 +18,12 @@
 #.
 
 audit_azure_storage_logging () {
-  print_function  "audit_azure_storage_logging"
-  verbose_message "Azure Storage Logging" "check"
+  print_function "audit_azure_storage_logging"
+  check_message  "Azure Storage Logging"
   retention_days="90"
   log_value="rwd"
   command="az storage account list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message          "${command}"
   storage_accounts=$( eval "${command}" )
   if [ -z "${storage_accounts}" ]; then
     verbose_message "No Storage Accounts found" "info"

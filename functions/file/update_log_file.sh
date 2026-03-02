@@ -13,9 +13,9 @@
 #.
 
 update_log_file () {
-  print_function "update_log_file"
   log_file="${1}"
   log_value="${2}"
+  print_function "update_log_file"
   log_dir=$( dirname "${log_file}" )
   if [ "${log_dir}" = "." ]; then
     log_file="${restore_dir}/${log_file}"

@@ -14,12 +14,14 @@
 
 check_azure_monitoring_diagnostics_value () {
   resource_id="${1}"
+  print_function "check_azure_monitoring_diagnostics_value"
+  check_message  "Checking Azure Monitoring Diagnostics for \"${resource_id}\""
   command="az monitor diagnostic-settings list --resource \"${resource_id}\" --output tsv"
   command_message "${command}"
   stderr=$( { stdout=$( az monitor diagnostic-settings list --resource "${resource_id}" --output tsv ); } 2>&1 )
   if [ -n "${stderr}" ]; then
     stderr=$( echo "${stderr}" | tr "\n" " " | cut -f2 -d: | cut -f3-11 -d" " )
-    verbose_message "${stderr}" "notice"
+    notice_message "${stderr}"
   else
     if [ -n "${stdout}" ]; then
       increment_secure   "Resource logging is enabled for ${resource_id}"

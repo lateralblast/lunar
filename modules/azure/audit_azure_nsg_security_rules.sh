@@ -19,24 +19,24 @@
 #.
 
 audit_azure_nsg_security_rules () {
-  print_function  "audit_azure_nsg_security_rules"
-  verbose_message "Azure NSG Security Rules" "check"
+  print_function "audit_azure_nsg_security_rules"
+  check_message  "Azure NSG Security Rules"
   command="az network nsg list --query \"[].id\" --output tsv 2> /dev/null"
   command_message "${command}"
-  resource_ids=$( eval "${command}" )
-  if [ -z "${resource_ids}" ]; then
-    verbose_message "No NSG instances found" "info"
+  res_ids=$( eval "${command}" )
+  if [ -z "${res_ids}" ]; then
+    info_message "No NSG instances found"
     return
   fi
-  for resource_id in ${resource_ids}; do
-    command="az network nsg show --ids ${resource_id} --query \"name\" --output tsv 2> /dev/null"
-    command_message "${command}"
-    resource_name=$( eval "${command}" )
-    command="az network nsg show --ids ${resource_id} --query \"resourceGroup\" --output tsv 2> /dev/null"
-    command_message "${command}"
-    resource_group=$( eval "${command}" )
-    command="az network nsg rule list --resource-group ${resource_group} --nsg-name ${resource_name} --query \"[].id\" --output tsv 2> /dev/null"
-    command_message "${command}"
+  for res_id in ${res_ids}; do
+    command="az network nsg show --ids ${res_id} --query \"name\" --output tsv 2> /dev/null"
+    command_message  "${command}"
+    res_name=$( eval "${command}" )
+    command="az network nsg show --ids ${res_id} --query \"resourceGroup\" --output tsv 2> /dev/null"
+    command_message   "${command}"
+    res_group=$( eval "${command}" )
+    command="az network nsg rule list --resource-group ${res_group} --nsg-name ${res_name} --query \"[].id\" --output tsv 2> /dev/null"
+    command_message  "${command}"
     rule_ids=$( eval "${command}" )
     for rule_id in ${rule_ids}; do
       for port_no in 3389 22 53 80 123 161 389 443 1900; do

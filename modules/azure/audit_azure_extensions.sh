@@ -16,17 +16,17 @@
 #.
 
 audit_azure_extensions () {
-  print_function  "audit_azure_extensions"
-  verbose_message "Azure extensions settings" "check"
+  print_function "audit_azure_extensions"
+  check_message  "Azure extensions settings"
   for parameter_name in "extension.use_dynamic_install" "extension.run_after_dynamic_install" "extension.dynamic_install_allow_preview"; do
     if [ "${parameter_name}" = "extension.dynamic_install_allow_preview" ]; then
       correct_value="false"
     else
       correct_value="no"
     fi
-    verbose_message "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\"" "check"
+    check_message "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\""
     command="az config get \"${parameter_name}\" --query value --output tsv 2> /dev/null"
-    command_message "${command}"
+    command_message      "${command}"
     actual_value=$( eval "${command}" )
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_secure   "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\""

@@ -18,7 +18,7 @@ check_osx_systemsetup () {
       log_file="systemsetup_${param}.log"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
-        verbose_message "${string}" "check"
+        check_message "${string}"
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="check_osx_systemsetup_${ansible_counter}"
@@ -38,7 +38,7 @@ check_osx_systemsetup () {
         fi
         command="sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'"
         command_message "${command}"
-        check=$( eval "${command}" )
+        check=$( eval   "${command}" )
         if [ "${check}" != "${value}" ]; then
           increment_insecure "Parameter \"${param}\" not set to \"${value}\""
           update_log_file  "${log_file}" "${check_file}"
@@ -53,11 +53,11 @@ check_osx_systemsetup () {
         if [ -f "${restore_file}" ]; then
           command="sudo systemsetup -${param} | cut -f2 -d: | sed 's/ //g' | tr '[:upper:]' '[:lower:]'"
           command_message "${command}"
-          now=$( eval "${command}" )
+          now=$( eval     "${command}" )
           old=$( cat "${restore_file}" )
           if [ "${now}" != "${old}" ]; then
             restore_command="systemsetup -${param} ${old}"
-            restore_message="Parameter \"${param}\" back to \"${old}\"" "set"
+            restore_message="Parameter \"${param}\" back to \"${old}\""
             execute_restore "${restore_command}" "${restore_message}" "sudo"
           fi
         fi

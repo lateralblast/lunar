@@ -111,8 +111,8 @@
 #.
 
 audit_azure_storage_services () {
-  print_function  "audit_azure_storage_services"
-  verbose_message "Azure Storage Services" "check"
+  print_function "audit_azure_storage_services"
+  check_message  "Azure Storage Services"
   audit_azure_databricks
   audit_azure_blob_storage
   audit_azure_file_shares

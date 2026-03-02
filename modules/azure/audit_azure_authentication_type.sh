@@ -16,6 +16,6 @@
 #.
 
 audit_azure_authentication_type () {
-  print_function  "audit_azure_authentication_type"
-  verbose_message "Azure Authentication Type" "check"
+  print_function "audit_azure_authentication_type"
+  check_message  "Azure Authentication Type"
 }

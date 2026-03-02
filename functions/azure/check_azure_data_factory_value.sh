@@ -23,8 +23,8 @@ check_azure_data_factory_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function  "check_azure_data_factory_value"
-  verbose_message "${description} for Data Factory \"${data_factory_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_data_factory_value"
+  check_message  "${description} for Data Factory \"${data_factory_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az datafactory show --name \"${data_factory_name}\" --resource-group \"${resource_group}\" --query \"[].${query_string}\" --output tsv"
   command_message "${command}"
   actual_value=$( eval "${command}" )
@@ -36,10 +36,10 @@ check_azure_data_factory_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""           "fix"
+            fix_message "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
+            fix_message "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\""
             ;;
         esac
       fi
@@ -50,15 +50,15 @@ check_azure_data_factory_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""           "fix"
+            fix_message "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
+            fix_message "az datafactory update --name \"${data_factory_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\""
             ;;
         esac
       fi
     else
-      increment_secure   "${description} for Data Factory \"${data_factory_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      increment_secure  "${description} for Data Factory \"${data_factory_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

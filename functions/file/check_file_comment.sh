@@ -13,16 +13,16 @@
 #.
 
 check_file_comment () {
-  print_function "check_file_comment"
   file="${1}"
   search="${2}"
   comment="${3}"
+  print_function "check_file_comment"
   line="^(\s*${search}.*)"
   if [ "${comment}" = "hash" ]; then
     comment="#"
   fi
   string="File ${file} with line containing ${search} is commented out"
-  verbose_message "${string}" "check"
+  check_message "${string}"
   if [ "${audit_mode}" != 2 ]; then
     if [ -f "${file}" ]; then
       check=$( grep "${search}" < "${file}" | grep -cv "^${comment}" )

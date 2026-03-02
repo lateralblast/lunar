@@ -36,13 +36,13 @@
 #.
 
 audit_azure_app_service_apps () {
-  print_function  "audit_azure_app_service_apps"
-  verbose_message "Azure App Service Apps" "check"
+  print_function "audit_azure_app_service_apps"
+  check_message  "Azure App Service Apps"
   command="az webapp list --query \"[].name\" --output tsv"
   command_message "${command}"
   app_names=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_names}" ]; then
-    verbose_message "No App Service Apps found" "info"
+    info_message "No App Service Apps found"
     return
   fi
   for app_name in ${app_names}; do

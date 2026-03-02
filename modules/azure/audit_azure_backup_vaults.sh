@@ -21,23 +21,23 @@
 #.
 
 audit_azure_backup_vaults () {
-  print_function  "audit_azure_backup_vaults"
-  verbose_message "Azure Backup Vaults" "check"
+  print_function "audit_azure_backup_vaults"
+  check_message  "Azure Backup Vaults"
   immutability_state="Locked"
   retention_days="90"
   command="az dataprotection backup-vault list --query \"[].id\" --output tsv"
-  command_message "${command}"
+  command_message   "${command}"
   vault_ids=$( eval "${command}" 2> /dev/null )
   if [ -z "${vault_ids}" ]; then
-    verbose_message "No Backup Vaults found" "info"
+    info_message "No Backup Vaults found"
     return
   fi
   for vault_id in ${vault_ids}; do
     command="az dataprotection backup-vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     command="az dataprotection backup-vault show --id \"${vault_id}\" --query \"name\" --output tsv"
-    command_message "${command}"
+    command_message    "${command}"
     vault_name=$( eval "${command}" )
     # 5.1.1 Ensure soft delete on Backup vaults is Enabled
     check_azure_backup_vault_value "Soft Delete"                "${vault_name}" "${resource_group}" "properties.encryption.keyUri"               "ne" ""         ""
@@ -51,7 +51,7 @@ audit_azure_backup_vaults () {
     check_azure_backup_vault_value "Cross Subscription Restore" "${vault_name}" "${resource_group}" "properties.crossSubscriptionRestoreFlag"    "eq" "Disabled" "properties.crossSubscriptionRestoreFlag"
     # 5.1.2 Ensure immutability for Backup vaults is Enabled
     command="az backup policy list --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"[].name\" --output tsv"
-    command_message "${command}"
+    command_message      "${command}"
     policy_names=$( eval "${command}" )
     for policy_name in ${policy_names}; do
       check_azure_backup_policy_value "Immutability Settings"           "${policy_name}" "${vault_name}" "${resource_group}" "immutabilitySettings"                         "ne" ""                      ""

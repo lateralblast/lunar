@@ -10,8 +10,8 @@
 #.
 
 check_package () {
-  print_function "check_package"
   package_name="${1}"
+  print_function "check_package"
   if [ "${os_name}" = "Linux" ]; then
   	check_linux_package   "${package_name}"
   fi

@@ -16,12 +16,12 @@
 #.
 
 audit_azure_user_access_admin_role () {
-  print_function  "audit_azure_user_access_admin_role"
-  verbose_message "Azure User Access Administrator Role" "check"
+  print_function "audit_azure_user_access_admin_role"
+  check_message  "Azure User Access Administrator Role"
   command="az role assignment list --role \"User Access Administrator\" --scope \"/\" --output tsv"
-  command_message "${command}"
-  role_assignments=$( eval "${command}" )
-  if [ -z "${role_assignments}" ]; then
+  command_message     "${command}"
+  assignments=$( eval "${command}" )
+  if [ -z "${assignments}" ]; then
     increment_secure   "User Access Administrator Role is restricted"
   else
     increment_insecure "User Access Administrator Role is not restricted"

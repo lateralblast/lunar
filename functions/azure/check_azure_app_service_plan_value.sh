@@ -12,7 +12,6 @@
 #.
 
 check_azure_app_service_plan_value () {
-  print_function  "check_azure_app_service_plan_value"
   plan_name="${1}"
   resource_group="${2}"
   query_string="${3}"
@@ -23,37 +22,39 @@ check_azure_app_service_plan_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
+  print_function "check_azure_app_service_plan_value"
+  check_message  "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az appservice plan show --name \"${plan_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null" 
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
     else
       increment_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+            fix_message "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            fix_message "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\""
             ;;
         esac
       fi
     fi
   else
     if [ "${actual_value}" != "${correct_value}" ]; then
-      increment_secure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
+      increment_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
     else
       increment_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\"" "fix"
+            fix_message "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\"" "fix"
+            fix_message "az appservice plan update --name \"${plan_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\""
             ;;
         esac
       fi

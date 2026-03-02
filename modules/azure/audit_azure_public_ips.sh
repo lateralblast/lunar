@@ -16,16 +16,16 @@
 #.
 
 audit_azure_public_ips () {
-  print_function  "audit_azure_public_ips"
-  verbose_message "Azure Public IPs" "check"
+  print_function "audit_azure_public_ips"
+  check_message  "Azure Public IPs"
   command="az network public-ip list --query '[].id' --output tsv"
   command_message "${command}"
-  resource_ids=$( eval "$command" )
-  if [ -z "${resource_ids}" ]; then
-    verbose_message "No Public IPs found" "notice"
+  res_ids=$( eval "${command}" )
+  if [ -z "${res_ids}" ]; then
+    info_message "No Public IPs found"
     return
   fi
-  for resource_id in $resource_ids; do
-    check_azure_public_ip_value "${resource_id}" "ipAddress" "eq" ""
+  for res_id in ${res_ids}; do
+    check_azure_public_ip_value "${res_id}" "ipAddress" "eq" ""
   done
 }

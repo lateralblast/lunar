@@ -23,7 +23,7 @@ audit_kernel_accounting () {
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then
         if [ -f "${check_file}" ]; then
-          verbose_message "Kernel and Process Accounting" "check"
+          check_message "Kernel and Process Accounting"
           command="grep -v \"^\\*\" \"${check_file}\" | grep \"c2audit:audit_load\""
           command_message "${command}"
           check_acc=$( eval "${command}" )

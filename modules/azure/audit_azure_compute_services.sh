@@ -158,8 +158,8 @@
 #.
 
 audit_azure_compute_services () {
-  print_function  "audit_azure_compute_services"
-  verbose_message "Azure Compute Services" "check"
+  print_function "audit_azure_compute_services"
+  check_message  "Azure Compute Services"
   audit_azure_app_service_apps
   audit_azure_app_service_deployment_slots
   audit_azure_function_apps

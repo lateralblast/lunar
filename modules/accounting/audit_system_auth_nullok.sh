@@ -28,7 +28,7 @@ audit_system_auth_nullok () {
           if [ "${check_value}" = 1 ]; then
             if [ "${audit_mode}" = "1" ]; then
               increment_insecure "Found nullok \"entry\" in \"${check_file}\""
-              verbose_message    "${lockdown_command}" "fix"
+              fix_message        "${lockdown_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file      "${check_file}"

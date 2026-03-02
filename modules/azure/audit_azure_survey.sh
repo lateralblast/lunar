@@ -15,11 +15,11 @@
 
 audit_azure_survey () {
   print_function  "audit_azure_survey"
-  verbose_message "Azure survey setting" "check"
+  check_message   "Azure survey setting"
   command="az config get core.survey_message --query value --output tsv 2> /dev/null"
   command_message "${command}"
-  survey_check=$( eval "${command}" )
-  if [ "$survey_check" = "false" ]; then
+  survey=$( eval  "${command}" )
+  if [ "${survey}" = "false" ]; then
     increment_secure   "Azure survey reminder is disabled"
   else
     increment_insecure "Azure survey reminder is enabled"

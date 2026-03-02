@@ -29,7 +29,7 @@ check_ausearch () {
           secure_string="Binary \"${bin}\" has commands \"${command}\" with option \"${mode}\" is set"
           insecure_string="Binary \"${bin}\" has commands \"${command}\" with option \"${mode}\" is unset"
         fi
-        verbose_message "${secure_string}" "check"
+        check_message "${secure_string}"
         if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${secure_string}"

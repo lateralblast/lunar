@@ -42,7 +42,7 @@ check_osx_defaults () {
       else
         string="Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
       fi
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${defaults_host}" = "currentHost" ]; then
         defaults_read="-currentHost ${defaults_read}"
         defaults_write="-currentHost ${defaults_write}"
@@ -50,19 +50,19 @@ check_osx_defaults () {
         defaults_command="defaults"
       fi
       command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | wc -l |sed 's/ //g'"
-      command_message "${command}"
+      command_message    "${command}"
       null_check=$( eval "${command}" )
       if [ "$null_check" = "0" ]; then
         check_value="not-found"
       else
         command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g' |grep '0' |wc -l |sed 's/ //g'"
-        command_message "${command}"
+        command_message    "${command}"
         zero_check=$( eval "${command}" )
         if [ "${zero_check}" = "1" ]; then
           check_value="0"
         else
           command="${defaults_command} ${defaults_read} ${defaults_file} ${defaults_parameter} 2> /dev/null | sed 's/^ //g'"
-          command_message "${command}"
+          command_message     "${command}"
           check_value=$( eval "${command}" )
         fi
       fi
@@ -82,29 +82,29 @@ check_osx_defaults () {
           increment_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
         fi
         if [ "${defaults_value}" = "" ]; then
-          verbose_message "${defaults_command} delete ${defaults_file} ${defaults_parameter}" "fix"
+          fix_message "${defaults_command} delete ${defaults_file} ${defaults_parameter}"
           set_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
         else
           if [ "${defaults_type}" = "bool" ]; then
-            verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\"" "fix"
+            fix_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\""
             set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool \"${defaults_value}\""
           else
             if [ "${defaults_type}" = "int" ]; then
-              verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}" "fix"
+              fix_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
               set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
             else
               if [ "${defaults_type}" = "dict" ]; then
                 if [ "${defaults_second_type}" = "bool" ]; then
-                  verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}" "fix"
+                  fix_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
                   set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
                 else
                   if [ "${defaults_second_type}" = "int" ]; then
-                    verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}" "fix"
+                    fix_message "${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
                     set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
                   fi
                 fi
               else
-                verbose_message "${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\"" "fix"
+                fix_message "${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
                 set_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
               fi
             fi

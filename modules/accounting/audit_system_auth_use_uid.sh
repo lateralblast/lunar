@@ -30,7 +30,7 @@ audit_system_auth_use_uid () {
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
             increment_insecure "The use of su is not restricted by sudo in ${check_file}"
-            verbose_message     "${lockdown_command}" "fix"
+            fix_message        "${lockdown_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file      "${check_file}"

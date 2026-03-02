@@ -19,14 +19,15 @@ check_azure_resource_manager_lock () {
   function="${5}"
   correct_value="${6}"
   resource_type="${7}"
+  print_function "check_azure_resource_manager_lock"
+  check_message  "${description} for Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" had a \"${correct_value}\" lock applied"
   command="az resource lock list --resource-group \"${resource_group}\" --resource-type \"${resource_type}\" --resource-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
-  verbose_message "${description} for Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" had a \"${correct_value}\" lock applied" "check"
   if [ "${actual_value}" = "${correct_value}" ]; then
     increment_secure   "Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" has a \"${correct_value}\" lock applied"
   else
     increment_insecure "Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" does not have a \"${correct_value}\" lock applied"
-    verbose_message    "az lock create --name ${correct_value} --resource-group ${resource_group} --resource-name ${storage_account} --resource-type ${resource_type} --lock-type ${correct_value}" "fix"
+    fix_message        "az lock create --name ${correct_value} --resource-group ${resource_group} --resource-name ${storage_account} --resource-type ${resource_type} --lock-type ${correct_value}"
   fi
 }

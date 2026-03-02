@@ -57,8 +57,8 @@
 #.
 
 audit_azure_identity_services () {
-  print_function  "audit_azure_identity_services"
-  verbose_message "Azure Identity Services" "check"
+  print_function "audit_azure_identity_services"
+  check_message  "Azure Identity Services"
   # 5.1.1 Ensure that 'security defaults' is enabled in Microsoft Entra ID - TBD
   # 5.1.2 Ensure that 'multifactor authentication' is 'enabled' for all users - TBD
   # 5.1.3 Ensure that 'Allow users to remember multifactor authentication on devices they trust' is disabled - TBD

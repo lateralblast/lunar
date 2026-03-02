@@ -53,8 +53,8 @@
 #.
 
 audit_azure_security_services () {
-  print_function  "audit_azure_security_services"
-  verbose_message "Azure Security Services" "check"
+  print_function "audit_azure_security_services"
+  check_message  "Azure Security Services"
   # 8.1.1.1 Ensure Microsoft Defender CSPM is set to 'On'
   audit_azure_microsoft_defender
   # 8.1.3.2 Ensure that 'Vulnerability assessment for machines' component status is set to 'On' - TBD

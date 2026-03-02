@@ -16,21 +16,21 @@
 #.
 
 audit_azure_network_watcher_flow_logs () {
-  print_function  "audit_azure_network_watcher_flow_logs"
-  verbose_message "Azure Network Watcher Flow Logs" "check"
+  print_function "audit_azure_network_watcher_flow_logs"
+  check_message  "Azure Network Watcher Flow Logs"
   command="az network watcher list --query '[].location' --output tsv 2> /dev/null"
-  command_message "$command"
-  locations=$(eval "$command")
+  command_message  "${command}"
+  locations=$(eval "${command}")
   if [ -z "${locations}" ]; then
-    verbose_message "No Network Watcher instances found" "info"
+    info_message "No Network Watcher instances found"
     return
   fi
   for location in $locations; do
     command="az network watcher list-flow-logs --location \"${location}\" --query '[].name' --output tsv 2> /dev/null"
-    command_message "$command"
-    flow_logs=$(eval "$command")
+    command_message  "${command}"
+    flow_logs=$(eval "${command}")
     if [ -z "${flow_logs}" ]; then
-      verbose_message "No Flow Logs found" "info"
+      info_message "No Flow Logs found"
       return
     fi
     for flow_log in $flow_logs; do

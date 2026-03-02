@@ -14,6 +14,6 @@
 #.
 
 audit_azure_cycle_cloud () {
-  print_function  "audit_azure_cycle_cloud"
-  verbose_message "Azure CycleCloud" "check"
+  print_function "audit_azure_cycle_cloud"
+  check_message  "Azure CycleCloud"
 }

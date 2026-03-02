@@ -31,24 +31,24 @@
 #.
 
 audit_azure_app_service_deployment_slots () {
-  print_function  "audit_azure_app_service_deployment_slots"
-  verbose_message "Azure Function App Deployment Slots" "check"
+  print_function "audit_azure_app_service_deployment_slots"
+  check_message  "Azure Function App Deployment Slots"
   command="az functionapp list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message   "${command}"
   app_names=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_names}" ]; then
-    verbose_message "No Function App Apps found" "info"
+    info_message "No Function App Apps found"
     return
   fi
   for app_name in ${app_names}; do
     command="az functionapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
     command="az functionapp deployment slot list --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"[].name\" --output tsv"
-    command_message "${command}"
+    command_message    "${command}"
     slot_names=$( eval "${command}" 2> /dev/null )
     if [ -z "${slot_names}" ]; then
-      verbose_message "No Function App Deployment Slots found" "info"
+      info_message "No Function App Deployment Slots found"
       return
     fi
     for slot_name in ${slot_names}; do

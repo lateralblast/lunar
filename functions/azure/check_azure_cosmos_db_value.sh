@@ -23,10 +23,10 @@ check_azure_cosmos_db_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function  "check_azure_cosmos_db_value"
-  verbose_message "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_cosmos_db_value"
+  check_message  "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az cosmosdb show --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" --query \"[].${query_string}\" --output tsv"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
@@ -36,10 +36,10 @@ check_azure_cosmos_db_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""           "fix"
+            fix_message "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
+            fix_message "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
             ;;
         esac
       fi
@@ -50,15 +50,15 @@ check_azure_cosmos_db_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""           "fix"
+            fix_message "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
+            fix_message "az cosmosdb update --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\""
             ;;
         esac
       fi
     else
-      increment_secure   "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      increment_secure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

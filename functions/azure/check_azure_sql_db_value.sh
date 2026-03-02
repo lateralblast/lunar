@@ -4,14 +4,14 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# check_azure_mysql_db_value
+# check_azure_sql_db_value
 #
-# Check Azure MySQL DB value
+# Check Azure SQL DB value
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-check_azure_mysql_db_value () {
+check_azure_sql_db_value () {
   description="${1}"
   server_type="${2}"
   server_name="${3}"
@@ -25,16 +25,16 @@ check_azure_mysql_db_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function  "check_azure_mysql_db_value"
+  print_function "check_azure_sql_db_value"
   if [ "${server_type}" = "server" ]; then
-    header_string="${description} for MySQL ${server_type} DB Server \"${server_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\""
-    verbose_message "${header_string} is \"${function}\" to \"${correct_value}\"" "check"
-    command="az mysql ${server_type} show --name \"${server_name}\" --resource-group \"${resource_group}\" --query \"[].${query_string}\" --output tsv"
+    header_string="${description} for SQL ${server_type} DB Server \"${server_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\""
+    check_message "${header_string} is \"${function}\" to \"${correct_value}\""
+    command="az sql ${server_type} show --name \"${server_name}\" --resource-group \"${resource_group}\" --query \"[].${query_string}\" --output tsv"
     command_message "${command}"
   else
-    header_string="${description} for MySQL ${server_type} DB \"${server_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\""
-    verbose_message "${header_string} is \"${function}\" to \"${correct_value}\"" "check"
-    command="az mysql ${server_type} show --server-name \"${server_name}\" --resource-group \"${resource_group}\" --database-name \"${db_name}\" --query \"[].${query_string}\" --output tsv"
+    header_string="${description} for SQL ${server_type} DB \"${server_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\""
+    check_message "${header_string} is \"${function}\" to \"${correct_value}\""
+    command="az sql ${server_type} show --server-name \"${server_name}\" --resource-group \"${resource_group}\" --database-name \"${db_name}\" --query \"[].${query_string}\" --output tsv"
     command_message "${command}"
   fi
   actual_value=$( eval "${command}" )
@@ -46,10 +46,10 @@ check_azure_mysql_db_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az mysql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""           "fix"
+            fix_message "az sql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az mysql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
+            fix_message "az sql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\""
             ;;
         esac
       fi
@@ -60,15 +60,15 @@ check_azure_mysql_db_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az mysql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""           "fix"
+            fix_message "az sql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            verbose_message  "az mysql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\"" "fix"
+            fix_message "az sql ${server_type} update --name \"${server_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"\"${set_value}\""
             ;;
         esac
       fi
     else
-      increment_secure   "${header_string} is not \"${function}\" to \"${correct_value}\""
+      increment_secure  "${header_string} is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

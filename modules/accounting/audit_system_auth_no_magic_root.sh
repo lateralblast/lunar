@@ -10,11 +10,11 @@
 #.
 
 audit_system_auth_no_magic_root () {
-  print_function "audit_system_auth_no_magic_root"
   string="Make sure root account isn't locked as part of account locking"
   check_message "${string}"
   auth_string="${1}"
   search_string="${2}"
+  print_function "audit_system_auth_no_magic_root"
   temp_file="${temp_dir}/audit_system_auth_no_magic_root"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
@@ -29,7 +29,7 @@ audit_system_auth_no_magic_root () {
             fi
             if [ "${audit_mode}" = "1" ]; then
               increment_insecure "Auth entry not enabled in \"${check_file}\""
-              verbose_message    "rm ${lockdown_command}" "fix"
+              fix_message        "rm ${lockdown_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file      "${check_file}"

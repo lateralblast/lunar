@@ -16,26 +16,26 @@
 #.
 
 audit_azure_managed_lustre () {
-  print_function  "audit_azure_managed_lustre"
-  verbose_message "Azure Managed Lustre" "check"
+  print_function "audit_azure_managed_lustre"
+  check_message  "Azure Managed Lustre"
   command="az storage account list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message          "${command}"
   storage_accounts=$( eval "${command}" 2> /dev/null )
   if [ -z "${storage_accounts}" ]; then
-    verbose_message "No Storage Accounts found" "info"
+    info_message "No Storage Accounts found"
     return
   fi
   for storage_account in ${storage_accounts}; do
     command="az amlfs list --query \"[].resourceGroup\" --output tsv"
-    command_message "${command}"
+    command_message         "${command}"
     resource_groups=$( eval "${command}" )
     if [ -z "${resource_groups}" ]; then
-      verbose_message "No Managed Lustre instances found" "info"
+      info_message "No Managed Lustre instances found"
       return
     fi
     for resource_group in ${resource_groups}; do
       command="az amlfs list --resource-group \"${resource_group}\" --query \"[].name\" --output tsv"
-      command_message "${command}"
+      command_message      "${command}"
       file_systems=$( eval "${command}" )
       for file_system in ${file_systems}; do
         # 4.1 Ensure 'Key encryption key' is set to a customer-managed key for Azure Managed Lustre file systems

@@ -26,21 +26,21 @@
 #.
 
 audit_azure_databricks () {
-  print_function  "audit_azure_databricks"
-  verbose_message "Azure Databricks" "check"
+  print_function "audit_azure_databricks"
+  check_message  "Azure Databricks"
   command="az databricks workspace list --query \"[].name\" --output tsv"
-  command_message "${command}"
-  workspace_list=$( eval "${command}" 2> /dev/null )
-  if [ -z "${workspace_list}" ]; then
-    verbose_message "No Databricks workspaces found" "info"
+  command_message    "${command}"
+  space_list=$( eval "${command}" 2> /dev/null )
+  if [ -z "${space_list}" ]; then
+    info_message "No Databricks workspaces found"
     return
   fi
-  for workspace_name in ${workspace_list}; do
-    command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[resourceGroup]\" --output tsv"
-    command_message "${command}"
+  for space_name in ${space_list}; do
+    command="az databricks workspace list --query \"[?contains(name, '${space_name}')].[resourceGroup]\" --output tsv"
+    command_message        "${command}"
     resource_group=$( eval "${command}" )
-    command="az databricks workspace list --query \"[?contains(name, '${workspace}')].[id]\" --output tsv"
-    command_message "${command}"
+    command="az databricks workspace list --query \"[?contains(name, '${space_name}')].[id]\" --output tsv"
+    command_message     "${command}"
     resource_id=$( eval "${command}" )
     # 2.1.1  Ensure that Azure Databricks is deployed in a customer-managed virtual network (VNet) - TBD
     # 2.1.2  Ensure that network security groups are configured for Databricks subnets - TBD
@@ -53,10 +53,10 @@ audit_azure_databricks () {
     # 2.1.9  Ensure 'No Public IP' is set to 'Enabled'
     # 2.1.10 Ensure 'Allow Public Network Access' is set to 'Disabled'
     # 2.1.11 Ensure private endpoints are used to access Azure Databricks workspaces - Needs check of each endpoint
-    check_azure_monitor_value    "Diagnostic Log Delivery"     "${workspace_name}" "${resource_id}"    "diagnostic-settings"               ""   "ne"                  ""                      ""
-    check_azure_databricks_value "Customer Managed Keys"       "${workspace_name}" "${resource_group}" "encryption.keySource"              "eq" "Microsoft.KeyVault." ""
-    check_azure_databricks_value "No Public IP"                "${workspace_name}" "${resource_group}" "parameters.enableNoPublicIp.value" "eq" "true"                "--enable-no-public-ip"
-    check_azure_databricks_value "Allow Public Network Access" "${workspace_name}" "${resource_group}" "publicNetworkAccess"               "eq" "Disabled"            "--public-network-access"
-    check_azure_databricks_value "Private Endpoints"           "${workspace_name}" "${resource_group}" "privateEndpointConnections"        "ne" ""                    ""
+    check_azure_monitor_value    "Diagnostic Log Delivery"     "${space_name}" "${resource_id}"    "diagnostic-settings"               ""   "ne"                  ""                        ""
+    check_azure_databricks_value "Customer Managed Keys"       "${space_name}" "${resource_group}" "encryption.keySource"              "eq" "Microsoft.KeyVault." ""
+    check_azure_databricks_value "No Public IP"                "${space_name}" "${resource_group}" "parameters.enableNoPublicIp.value" "eq" "true"                "--enable-no-public-ip"
+    check_azure_databricks_value "Allow Public Network Access" "${space_name}" "${resource_group}" "publicNetworkAccess"               "eq" "Disabled"            "--public-network-access"
+    check_azure_databricks_value "Private Endpoints"           "${space_name}" "${resource_group}" "privateEndpointConnections"        "ne" ""                    ""
   done
 }

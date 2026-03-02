@@ -21,10 +21,10 @@ check_azure_backup_policy_value () {
   correct_value="${7}"
   set_name="${8}"
   set_value="${9}"
-  print_function  "check_azure_backup_policy_value"
-  verbose_message "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_backup_policy_value"
+  check_message  "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az backup policy show --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
@@ -34,10 +34,10 @@ check_azure_backup_policy_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\"" "fix"
+            fix_message "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
             ;;
           *)
-            verbose_message  "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\"" "fix"
+            fix_message "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
             ;;
         esac
       fi
@@ -48,15 +48,15 @@ check_azure_backup_policy_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            verbose_message  "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\"" "fix"
+            fix_message "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
             ;;
           *)
-            verbose_message  "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\"" "fix"
+            fix_message "az backup policy update --name \"${policy_name}\" --vault-name \"${vault_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
             ;;
         esac
       fi
     else
-      increment_secure   "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      increment_secure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

@@ -17,22 +17,22 @@
 #.
 
 audit_azure_waf () {
-  print_function  "audit_azure_waf"
-  verbose_message "Azure WAF" "check"
+  print_function "audit_azure_waf"
+  check_message  "Azure WAF"
   command="az network application-gateway list --query '[].resourceGroup' --output tsv 2> /dev/null"
-  command_message "$command"
-  resource_groups=$(eval "$command")
-  if [ -z "${resource_groups}" ]; then
-    verbose_message "No WAF instances found" "info"
+  command_message    "${command}"
+  res_groups=$( eval "${command}" )
+  if [ -z "${res_groups}" ]; then
+    info_message "No WAF instances found"
     return
   fi
-  for resource_group in $resource_groups; do
-    command="az network application-gateway list --resource-group \"${resource_group}\" --query '[].name' --output tsv 2> /dev/null"
-    command_message "$command"
-    waf_list=$(eval "$command")
+  for res_group in $res_groups; do
+    command="az network application-gateway list --resource-group \"${res_group}\" --query '[].name' --output tsv 2> /dev/null"
+    command_message  "${command}"
+    waf_list=$( eval "${command}" )
     for waf_name in $waf_list; do
-      check_azure_waf_value "" "${waf_name}" "${resource_group}" "firewallPolicy.id" "ne" ""     ""        ""
-      check_azure_waf_value "" "${waf_name}" "${resource_group}" "enableHttp2"       "eq" "true" "--http2" "Enabled"
+      check_azure_waf_value "" "${waf_name}" "${res_group}" "firewallPolicy.id" "ne" ""     ""        ""
+      check_azure_waf_value "" "${waf_name}" "${res_group}" "enableHttp2"       "eq" "true" "--http2" "Enabled"
     done
   done
 }

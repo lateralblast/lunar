@@ -24,7 +24,7 @@ check_itab() {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Service \"${service_name}\" is not \"${correct_value}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"
@@ -38,9 +38,9 @@ check_itab() {
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Service \"${service_name}\" is \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            verbose_message "rmitab $( lsitab | grep \"^${service_name}\" )" "fix"
+            fix_message "rmitab $( lsitab | grep \"^${service_name}\" )"
           else
-            verbose_message "chitab \"${correct_value}\"" "fix"
+            fix_message "chitab \"${correct_value}\""
           fi
         fi
         if [ "${audit_mode}" = 0 ]; then

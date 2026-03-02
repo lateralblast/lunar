@@ -17,9 +17,9 @@
 #
 
 audit_azure_storage_account_locks () {
-  print_function  "audit_azure_storage_account_locks"
-  verbose_message "Azure Storage Account Locks" "check"
-  resource_type="Microsoft.Storage/storageAccounts"
-  audit_azure_locks "${resource_type}" "CanNotDelete"
-  audit_azure_locks "${resource_type}" "ReadOnly"
+  print_function "audit_azure_storage_account_locks"
+  check_message  "Azure Storage Account Locks"
+  res_type="Microsoft.Storage/storageAccounts"
+  audit_azure_locks "${res_type}" "CanNotDelete"
+  audit_azure_locks "${res_type}" "ReadOnly"
 }

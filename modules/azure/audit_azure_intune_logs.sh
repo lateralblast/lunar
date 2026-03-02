@@ -16,6 +16,6 @@
 #.
 
 audit_azure_intune_logs () {
-  print_function  "audit_azure_intune_logs"
-  verbose_message "Azure Intune Logs" "check"
+  print_function "audit_azure_intune_logs"
+  check_message  "Azure Intune Logs"
 }

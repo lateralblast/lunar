@@ -20,15 +20,15 @@ check_azure_monitor_value () {
   function="${6}"
   correct_value="${7}"
   set_name="${8}"
-  print_function  "check_azure_monitor_value"
   if [ "${parameter_name}" = "" ]; then
     parameter_string=""
   else
     parameter_string=" and parameter \"${parameter_name}\""
   fi
-  verbose_message "Azure Monitor value for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is \"${function}\" to \"${correct_value}\"" "check"
+  print_function "check_azure_monitor_value"
+  check_message  "Azure Monitor value for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is \"${function}\" to \"${correct_value}\""
   command="az monitor \"${monitor_property}\" show --name \"${workspace_name}\" --resource-id \"${resource_id}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
@@ -36,14 +36,14 @@ check_azure_monitor_value () {
     else
       increment_insecure "${description} for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is not \"${function}\" to \"${correct_value}\""
       if [ ! "${parameter_name}" = "" ]; then
-        verbose_message "az monitor log-analytics workspace update --name \"${workspace_name}\" --resource-id \"${resource_id}\" --query \"${parameter_name}\" --output tsv" "fix"
+        fix_message "az monitor log-analytics workspace update --name \"${workspace_name}\" --resource-id \"${resource_id}\" --query \"${parameter_name}\" --output tsv"
       fi
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
       increment_insecure "${description} for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is not \"${function}\" to \"${correct_value}\""
       if [ ! "${parameter_name}" = "" ]; then
-        verbose_message "az monitor log-analytics workspace update --name \"${workspace_name}\" --resource-id \"${resource_id}\" --query \"${parameter_name}\" --output tsv" "fix"
+        fix_message "az monitor log-analytics workspace update --name \"${workspace_name}\" --resource-id \"${resource_id}\" --query \"${parameter_name}\" --output tsv"
       fi
     else
       increment_secure "${description} for workspace \"${workspace_name}\" with Resource ID \"${resource_id}\"${parameter_string} is \"${function}\" to \"${correct_value}\""

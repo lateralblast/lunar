@@ -16,8 +16,10 @@ check_azure_storage_account_keys_rotation () {
   storage_account="${1}"
   resource_id="${2}"
   correct_value="${3}"
+  print_function "check_azure_storage_account_keys_rotation"
+  check_message  "Storage Account \"${storage_account}\" has access keys regenerated in the last \"${correct_value}\" days"
   command="az monitor activity-log list --namespace Microsoft.Storage --offset ${correct_value}d --query \"[?contains(authorization.action, 'regenerateKey')]\" --resource-id \"${resource_id}\" 2> /dev/null |grep \"Succeeded\""
-  command_message "${command}"
+  command_message      "${command}"
   status_check=$( eval "${command}" )
   if [ -n "${status_check}" ]; then
     increment_secure "Storage Account \"${storage_account}\" has access keys regenerated in the last \"${correct_value}\" days"
@@ -25,11 +27,11 @@ check_azure_storage_account_keys_rotation () {
     creation_date=$( az storage account show --name "${storage_account}" --query "creationTime" --output tsv | cut -d T -f 1 )
     if [ "${os_name}" = "Linux" ]; then
       creation_secs=$( date -d "${creation_date}" +%s )
-      current_secs=$( date +%s )
+      current_secs=$(  date +%s )
     else 
       if [ "${os_name}" = "Darwin" ]; then
         creation_secs=$( date -j -f "%Y-%m-%d" "${creation_date}" +%s )
-        current_secs=$( date +%s )
+        current_secs=$(  date +%s )
       fi
     fi
     diff_secs=$(( current_secs - creation_secs ))

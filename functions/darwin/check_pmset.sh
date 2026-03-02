@@ -29,18 +29,18 @@ check_pmset() {
     fi
     log_file="pmset_${service}.log"
     command="pmset -g | grep \"${service}\" | awk '{print \$2}' | grep -c \"${value}\" | sed \"s/ //g\""
-    command_message "${command}"
+    command_message     "${command}"
     actual_test=$( eval "${command}" )
     if [ "$actual_test" = "0" ]; then
       actual_value="not-found"
     else
       command="pmset -g | grep \"${service}\" | awk '{print \$2}' | grep \"${value}\""
-      command_message "${command}"
+      command_message      "${command}"
       actual_value=$( eval "${command}" )
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Sleep is disabled when powered"
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_pmset_${ansible_counter}"

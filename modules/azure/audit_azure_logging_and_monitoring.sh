@@ -39,8 +39,8 @@
 #.
 
 audit_azure_logging_and_monitoring () {
-  print_function  "audit_azure_logging_and_monitoring"
-  verbose_message "Azure Logging and Monitoring" "check"
+  print_function "audit_azure_logging_and_monitoring"
+  check_message  "Azure Logging and Monitoring"
   # 6.1.1.1  Ensure that a 'Diagnostic Setting' exists for Subscription Activity Logs
   audit_azure_subscription_diagnostic_settings
   # 6.1.1.2  Ensure Diagnostic Setting captures appropriate categories

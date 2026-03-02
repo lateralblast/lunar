@@ -16,25 +16,25 @@
 #.
 
 audit_azure_vnets () {
-  print_function  "audit_azure_vnets"
-  verbose_message "Azure VNets" "check"
+  print_function "audit_azure_vnets"
+  check_message  "Azure VNets"
   command="az network vnet list --query '[].resourceGroup' --output tsv 2> /dev/null"
-  command_message "$command"
-  resource_groups=$(eval "$command")
-  if [ -z "${resource_groups}" ]; then
-    verbose_message "No VNet instances found" "info"
+  command_message    "${command}"
+  res_groups=$( eval "${command}" )
+  if [ -z "${res_groups}" ]; then
+    info_message "No VNets found"
     return
   fi
-  for resource_group in $resource_groups; do
-    command="az network vnet list --resource-group \"${resource_group}\" --query '[].name' --output tsv 2> /dev/null"
-    command_message "$command"
-    vnet_list=$(eval "$command")
+  for res_group in $res_groups; do
+    command="az network vnet list --resource-group \"${res_group}\" --query '[].name' --output tsv 2> /dev/null"
+    command_message   "${command}"
+    vnet_list=$( eval "${command}" )
     for vnet_name in $vnet_list; do
-      command="az network vnet show --name \"${vnet_name}\" --resource-group \"${resource_group}\" --query 'subnets[].name' --output tsv 2> /dev/null"
-      command_message "$command"
-      subnet_list=$(eval "$command")
+      command="az network vnet show --name \"${vnet_name}\" --resource-group \"${res_group}\" --query 'subnets[].name' --output tsv 2> /dev/null"
+      command_message     "${command}"
+      subnet_list=$( eval "${command}" )
       for subnet_name in $subnet_list; do
-        check_azure_vnet_value "${vnet_name}" "${resource_group}" "${subnet_name}" "networkSecurityGroup.id" "ne" ""
+        check_azure_vnet_value "${vnet_name}" "${res_group}" "${subnet_name}" "networkSecurityGroup.id" "ne" ""
       done
     done
   done

@@ -16,10 +16,10 @@
 #.
 
 audit_azure_guest_users () {
-  print_function  "audit_azure_guest_users"
-  verbose_message "Azure Guest Users" "check"
+  print_function "audit_azure_guest_users"
+  check_message  "Azure Guest Users"
   command="az ad user list --query \"[?contains(userType, 'Guest')]\" --query \"id\" --output tsv"
-  command_message "${command}"
+  command_message     "${command}"
   guest_users=$( eval "${command}" )
   if [ -z "$guest_users" ]; then
     increment_secure   "No guest users found"

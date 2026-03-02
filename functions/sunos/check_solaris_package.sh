@@ -50,7 +50,7 @@ funct_check_pkg () {
           increment_insecure "Package \"${package_name}\" is not installed"
           pkg_dir="${base_dir}/pkg/${package_name}"
           if [ -d "$pkg_dir" ]; then
-            verbose_message "Package \"${package_name}\"" "install"
+            install_message "Package \"${package_name}\""
             if [ "${os_version}" = "11" ]; then
               pkgadd "${package_name}"
             else
@@ -59,7 +59,7 @@ funct_check_pkg () {
             fi
             package_test=$( echo "${package_check}" | grep "ERROR" )
             if [ -z "${package_check}" ]; then
-              verbose_message "${package_name}" >> "${log_file}" "fix"
+              fix_message "${package_name}" >> "${log_file}"
             fi
           fi
         fi

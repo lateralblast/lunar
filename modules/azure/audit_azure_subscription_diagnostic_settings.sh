@@ -16,31 +16,31 @@
 #.
 
 audit_azure_subscription_diagnostic_settings () {
-  print_function  "audit_azure_subscription_diagnostic_settings"
-  verbose_message "Azure Subscription Diagnostic Settings Activity Logs" "check"
+  print_function "audit_azure_subscription_diagnostic_settings"
+  check_message  "Azure Subscription Diagnostic Settings Activity Logs"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"
-  subscription_ids=$( eval "${command}" )
-  for subscription_id in ${subscription_ids}; do
-    command="az monitor diagnostic-settings list --scope /subscriptions/${subscription_id} --query \"[].value\" --output tsv 2>/dev/null"
-    command_message "${command}"
-    diagnostic_settings=$( eval "${command}" )
-    if [ -z "${diagnostic_settings}" ]; then
-      increment_insecure "There are no diagnostic settings for subscription ${subscription_id}"
+  sub_ids=$( eval "${command}" )
+  for sub_id in ${sub_ids}; do
+    command="az monitor diagnostic-settings list --scope /subscriptions/${sub_id} --query \"[].value\" --output tsv 2>/dev/null"
+    command_message     "${command}"
+    settings=$( eval "${command}" )
+    if [ -z "${settings}" ]; then
+      increment_insecure "There are no diagnostic settings for subscription ${sub_id}"
     else
-      increment_secure   "There are diagnostic settings for subscription ${subscription_id}"
+      increment_secure   "There are diagnostic settings for subscription ${sub_id}"
     fi
-    command="az resource list --subscription ${subscription_id} --query \"[].id\" --output tsv"
-    command_message "${command}"
-    resource_ids=$( eval "${command}" )
-    for resource_id in ${resource_ids}; do
-      command="az monitor diagnostic-settings list --resource ${resource_id} --query \"[].value\" --output tsv 2>/dev/null"
-      command_message "${command}"
-      diagnostic_settings=$( eval "${command}" )
-      if [ -z "${diagnostic_settings}" ]; then
-        increment_insecure "There are no diagnostic settings for resource ${resource_id}"
+    command="az resource list --subscription ${sub_id} --query \"[].id\" --output tsv"
+    command_message     "${command}"
+    res_ids=$( eval "${command}" )
+    for res_id in ${res_ids}; do
+      command="az monitor diagnostic-settings list --resource ${res_id} --query \"[].value\" --output tsv 2>/dev/null"
+      command_message     "${command}"
+      settings=$( eval "${command}" )
+      if [ -z "${settings}" ]; then
+        increment_insecure "There are no diagnostic settings for resource ${res_id}"
       else
-        increment_secure   "There are diagnostic settings for resource ${resource_id}"
+        increment_secure   "There are diagnostic settings for resource ${res_id}"
       fi    
     done
   done

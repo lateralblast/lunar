@@ -26,7 +26,6 @@
 #.
 
 check_file_value_with_position () {
-  print_function "check_file_value_with_position"
   operator="${1}"
   check_file="${2}"
   parameter_name="${3}"
@@ -35,15 +34,16 @@ check_file_value_with_position () {
   comment_value="${6}"
   position="${7}"
   search_value="${8}"
+  print_function "check_file_value_with_position"
   temp_file=$( basename ${check_file} )
   temp_file="${temp_dir}/${temp_file}"
   dir_name=$( dirname "${check_file}" )
   sshd_test=$( echo "${check_file}" | grep -c "sshd_config" | sed "s/ //g" )
   if [ ! -f "${check_file}" ]; then
-    verbose_message "File \"${check_file}\" does not exist" "warn"
+    warn_message "File \"${check_file}\" does not exist"
   fi
   if [ ! -d "${dir_name}" ]; then
-    verbose_message "Directory \"${dir_name}\" does not exist" "warn"
+    warn_message "Directory \"${dir_name}\" does not exist"
   else
     if [ "${operator}" = "set" ]; then
       correct_value="[A-Z,a-z,0-9]"
@@ -100,7 +100,7 @@ check_file_value_with_position () {
       restore_file "${check_file}" "${restore_dir}"
     else
       string="Value of \"${parameter_name}\" ${operator} set to \"${correct_value}\" in \"${check_file}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
       string="Parameter ${parameter_name} to ${correct_value} in ${check_file}"
       lockdown_message="Value of \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\""
       if [ ! -f "${check_file}" ]; then
@@ -112,7 +112,7 @@ check_file_value_with_position () {
         lockdown_command="echo '${line}' >> ${check_file}"
         if [ "${audit_mode}" = 1 ]; then
           increment_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
-          verbose_message "${lockdown_command}" "fix"
+          fix_message        "${lockdown_command}"
         else
           if [ "${audit_mode}" = 0 ]; then
             log_file="${restore_dir}/fileops.log"
@@ -120,10 +120,10 @@ check_file_value_with_position () {
             backup_file "${check_file}"
             if [ "${check_file}" = "/etc/system" ]; then
               reboot_required=1
-              verbose_message "Reboot required" "notice"
+              notice_message "Reboot required"
             fi
             if [ "$sshd_test" =  "1" ]; then
-              verbose_message "Service restart required for SSH" "notice"
+              notice_message "Service restart required for SSH"
             fi
             execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
@@ -215,31 +215,31 @@ check_file_value_with_position () {
             increment_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
             if [ "${check_parameter}" != "${parameter_name}" ]; then
               if [ "${separator}" = "tab" ]; then
-                verbose_message "echo -e \"${parameter_name}\t${correct_value}\" >> ${check_file}" "fix"
+                fix_message "echo -e \"${parameter_name}\t${correct_value}\" >> ${check_file}"
               else
                 if [ "${position}" = "after" ]; then
-                  verbose_message "${cat_command} ${check_file} | sed \"s,${search_value},&\\\n${parameter_name}${separator}${correct_value},\" > ${temp_file}" "fix"
-                  verbose_message "${cat_command} ${temp_file} > ${check_file}" "fix"
+                  fix_message "${cat_command} ${check_file} | sed \"s,${search_value},&\\\n${parameter_name}${separator}${correct_value},\" > ${temp_file}"
+                  fix_message "${cat_command} ${temp_file} > ${check_file}"
                 else
-                  verbose_message "echo \"${parameter_name}${separator}${correct_value}\" >> ${check_file}" "fix"
+                  fix_message "echo \"${parameter_name}${separator}${correct_value}\" >> ${check_file}"
                 fi
               fi
             else
               if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
-                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\"${correct_value}\"/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}" "fix"
+                fix_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\"${correct_value}\"/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
               else
-                verbose_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}" "fix"
+                fix_message "${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
               fi
             fi
           else
             if [ "${audit_mode}" = 0 ]; then
-              verbose_message "Parameter \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\"" "set"
+              set_message "Parameter \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\""
               if [ "${check_file}" = "/etc/system" ]; then
                 reboot_required=1
-                verbose_message "Reboot required" "notice"
+                notice_message "Reboot required"
               fi
               if [ "${check_file}" = "/etc/ssh/sshd_config" ] || [ "${check_file}" = "/etc/sshd_config" ]; then
-                verbose_message "Service restart required for SSH" "notice"
+                notice_message "Service restart required for SSH"
               fi
               backup_file "${check_file}"
               if [ "${check_parameter}" != "${parameter_name}" ]; then

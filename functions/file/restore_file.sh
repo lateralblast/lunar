@@ -16,9 +16,9 @@
 #.
 
 restore_file () {
-  print_function "restore_file"
   check_file="${1}"
   check_dir="${2}"
+  print_function "restore_file"
   if [ ! "${check_dir}" ]; then
     restore_file="${restore_dir}${check_file}"
   else

@@ -19,11 +19,11 @@
 #.
 
 check_file_perms () {
-  print_function "check_file_perms"
   check_file="${1}"
   check_perms="${2}"
   check_owner="${3}"
   check_group="${4}"
+  print_function "check_file_perms"
   if [ "${id_check}" = "0" ]; then
     find_command="find"
   else
@@ -31,7 +31,7 @@ check_file_perms () {
   fi
   if [ "${audit_mode}" != 2 ]; then
     string="File permissions on \"${check_file}\""
-    verbose_message "${string}" "check"
+    check_message "${string}"
     if [ "${ansible_mode}" = 1 ]; then
       echo ""
       echo "- name: Checking ${string}"
@@ -49,27 +49,27 @@ check_file_perms () {
   fi
   if [ ! -e "${check_file}" ]; then
     if [ "${audit_mode}" != 2 ]; then
-      verbose_message "File \"${check_file}\" does not exist" "warn"
+      warn_message "File \"${check_file}\" does not exist"
     fi
     return
   fi
   if [ "${check_owner}" != "" ]; then
     command="find \"${check_file}\" -maxdepth 0 -perm \"${check_perms}\" -user \"${check_owner}\" -group \"${check_group}\" 2> /dev/null | wc -l | sed \"s/ //g\""
-    command_message "${command}"
+    command_message      "${command}"
     check_result=$( eval "${command}" )
   else
     command="find \"${check_file}\" -maxdepth 0 -perm \"${check_perms}\" 2> /dev/null | wc -l | sed \"s/ //g\""
-    command_message "${command}"
+    command_message      "${command}"
     check_result=$( eval "${command}" )
   fi
   log_file="fileperms.log"
   if [ "${check_result}" != "1" ]; then
     if [ "${audit_mode}" = 1 ] && [ -n "${check_result}" ]; then
       increment_insecure "File \"${check_file}\" has incorrect permissions"
-      verbose_message    "chmod ${check_perms} ${check_file}" "fix"
+      fix_message        "chmod ${check_perms} ${check_file}"
       if [ "${check_owner}" != "" ]; then
         if [ "${check_result}" != "1" ]; then
-          verbose_message "chown ${check_owner}:${check_group} ${check_file}" "fix"
+          fix_message "chown ${check_owner}:${check_group} ${check_file}"
         fi
       fi
     fi
@@ -77,26 +77,26 @@ check_file_perms () {
       log_file="${work_dir}/${log_file}"
       if [ "${os_name}" = "SunOS" ]; then
         command="truss -vstat -tstat ls -ld \"${check_file}\" 2>&1 | grep 'm=' | tail -1 | awk '{print $3}' | cut -f2 -d'=' | cut -c4-7"
-        command_message "${command}"
+        command_message    "${command}"
         file_perms=$( eval "${command}" )
       else
         if [ "${os_name}" = "Darwin" ]; then
           command="stat -f %p \"${check_file}\" | tail -c 4"
-          command_message "${command}"
+          command_message    "${command}"
           file_perms=$( eval "${command}" )
         else
           command="stat -c %a \"${check_file}\""
-          command_message "${command}"
+          command_message    "${command}"
           file_perms=$( eval "${command}" )
         fi
       fi
       if [ "${os_name}" = "Linux" ]; then
         command="stat -c \"%U,%G\" \"${check_file}\""
-        command_message "${command}"
+        command_message    "${command}"
         file_owner=$( eval "${command}" )
       else
         command="ls -ld \"${check_file}\" | awk '{print \"\$3\",\"\$4\"}'"
-        command_message "${command}"
+        command_message    "${command}"
         file_owner=$( eval "${command}" )
       fi
       update_log_file "${log_file}" "${check_file},${file_perms},${file_owner}"

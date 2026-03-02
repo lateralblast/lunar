@@ -16,14 +16,14 @@
 #.
 audit_azure_subscription_owners () {
   print_function  "audit_azure_subscription_owners"
-  verbose_message "Azure Subscription Owners" "check"
+  check_message   "Azure Subscription Owners"
   command="az account list --query \"[].id\" --output tsv"
   command_message "${command}"
-  subscription_ids=$( eval "${command}" )
+  sub_ids=$( eval "${command}" )
   max_owners="3"
-  for subscription_id in ${subscription_ids}; do
-    command="az role assignment list --role Owner --scope /subscriptions/${subscription_id} --query \"[].id\" --output tsv"
-    command_message "${command}"
+  for sub_id in ${sub_ids}; do
+    command="az role assignment list --role Owner --scope /subscriptions/${sub_id} --query \"[].id\" --output tsv"
+    command_message     "${command}"
     role_owners=$( eval "${command}" )
     if [ -z "${role_owners}" ]; then
       increment_secure     "There are members with the Subscription Owner role"
@@ -35,7 +35,7 @@ audit_azure_subscription_owners () {
         increment_secure   "There are ${owner_count} members with the Subscription Owner role"
       fi
       role_assignment_ids=$( echo "${role_owners}" | tr '\n' ' ' )
-      verbose_message      "az role assignment delete --ids \"${role_assignment_ids}\"" "fix"
+      fix_message "az role assignment delete --ids \"${role_assignment_ids}\""
     fi
   done
 }
