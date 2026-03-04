@@ -42,7 +42,7 @@ audit_nis_server () {
     if [ "${os_name}" = "Linux" ]; then
       for service_name in yppasswdd ypserv ypxfrd; do
         check_linux_service "${service_name}" "off"
-        check_linux_package "uninstall"     "${service_name}"
+        check_linux_package "uninstall"       "${service_name}"
       done
     fi
     if [ "${os_name}" = "FreeBSD" ]; then

@@ -12,10 +12,10 @@
 #.
 
 check_aws_password_policy () {
-  print_function "check_aws_password_policy"
   param="${1}"
   value="${2}"
   switch="${3}"
+  print_function "check_aws_password_policy"
   command="aws iam get-account-password-policy 2> /dev/null | grep \"${param}\""
   command_message "${command}"
   policy=$( eval  "${command}" )
@@ -27,11 +27,11 @@ check_aws_password_policy () {
   insecure_string="The password policy does not has \"${param}\" set to \"${value}\""
   verbose_message "${secure_string}" "check"
   if [ "${check}" = "${value}" ]; then
-    increment_secure   "${secure_string}"
+    inc_secure   "${secure_string}"
   else
-    increment_insecure "${insecure_string}"
+    inc_insecure "${insecure_string}"
     lockdown_command="${cli_fix}"
     lockdown_message="IAM Account password policy parameter \"${param}\" to \"${value}\""
-    execute_lockdown "${lockdown_command}" "${lockdown_message}"
+    exec_lockdown "${lockdown_command}" "${lockdown_message}"
   fi
 }

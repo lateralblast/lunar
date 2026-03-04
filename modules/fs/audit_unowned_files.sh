@@ -42,7 +42,7 @@ audit_unowned_files () {
           command_message "${command}"
           check_files=$( eval "${command}" )
           for check_file in ${check_files}; do
-            increment_insecure "File \"${check_file}\" is unowned"
+            inc_insecure "File \"${check_file}\" is unowned"
           done
         done
       else
@@ -58,7 +58,7 @@ audit_unowned_files () {
         fi
         check_files=$( eval "${find_command}" )
         for check_file in ${check_file}s; do
-          increment_insecure "File \"${check_file}\" is unowned"
+          inc_insecure "File \"${check_file}\" is unowned"
         done
       fi
     fi

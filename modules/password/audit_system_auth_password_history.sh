@@ -40,17 +40,17 @@ audit_system_auth_password_history () {
           lockdown_command="awk '( \$1 == \"password\" && \$3 == \"pam_unix.so\" ) { print \$0 \" ${search_string}=${search_value}\"; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" != "${search_value}" ]; then
             if [ "${audit_mode}" = "1" ]; then
-              increment_insecure "Password entry ${search_string} is not set to ${search_value} in ${check_file}"
-              verbose_message    "${lockdown_command}" "fix"
+              inc_insecure  "Password entry \"${search_string}\" is not set to \"${search_value}\" in \"${check_file}\""
+              fix_message   "${lockdown_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file      "${check_file}"
-              lockdown_message="Password entry in ${check_file}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              backup_file   "${check_file}"
+              fix_message   "Password entry in \"${check_file}\""
+              exec_lockdown "${lockdown_command}" "Password entry in ${check_file}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "Password entry \"${search_string}\" set to \"${search_value}\" in \"${check_file}\""
+              inc_secure "Password entry \"${search_string}\" set to \"${search_value}\" in \"${check_file}\""
             fi
           fi
         else

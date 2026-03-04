@@ -10,11 +10,11 @@
 #.
 
 check_subserver() {
-  print_function "check_subserver"
   if [ "${os_name}" = "AIX" ]; then
     service_name="${1}"
     protocol_name="${2}"
     correct_value="${3}"
+    print_function "check_subserver"
     log_file="${service_name}.log"
     actual_value=$( grep "${service_name} " /etc/inetd.conf | grep "${protocol_name} " | grep -v "^#" | awk "{print $1}" )
     if [ "${actual_value}" != "${service_name}" ]; then
@@ -36,7 +36,7 @@ check_subserver() {
       fi
       if [ "${actual_value}" != "${service_name}" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Service \"${service_name}\" Protocol \"${protocol_name}\" is not \"${correct_value}\""
+          inc_insecure "Service \"${service_name}\" Protocol \"${protocol_name}\" is not \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
             fix_command="chsubserver -r inetd -C /etc/inetd.conf -d -v \"${service_name}\" -p \"${protocol_name}\""
             verbose_message "${fix_command}" "fix"
@@ -50,14 +50,14 @@ check_subserver() {
           lockdown_message="Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
             lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         fi
       else
-        increment_secure "Service \"${service_name}\" Protocol \"${protocol_name}\" is \"${correct_value}\""
+        inc_secure "Service \"${service_name}\" Protocol \"${protocol_name}\" is \"${correct_value}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

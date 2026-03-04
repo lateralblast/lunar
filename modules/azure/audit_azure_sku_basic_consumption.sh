@@ -22,8 +22,8 @@ audit_azure_sku_basic_consumption () {
   command_message    "${command}"
   res_check="$( eval "${command}" )"
   if [ "${res_check}" -eq 0 ]; then
-    increment_secure   "No resources that are being monitored are using SKU Basic/Consumption"
+    inc_secure   "No resources that are being monitored are using SKU Basic/Consumption"
   else
-    increment_insecure "Resources that are being monitored are using SKU Basic/Consumption"
+    inc_insecure "Resources that are being monitored are using SKU Basic/Consumption"
   fi
 }

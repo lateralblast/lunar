@@ -10,7 +10,6 @@
 #.
 
 check_chuser() {
-  print_function "check_chuser"
   if [ "${os_name}" = "AIX" ]; then
     sec_file="${1}"
     parameter_name="${2}"
@@ -18,6 +17,7 @@ check_chuser() {
     group_name="${4}"
     group_value="${5}"
     user_name="${6}"
+    print_function "check_chuser"
     log_file="${sec_file}_${parameter_name}_${group_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
@@ -43,13 +43,13 @@ check_chuser() {
       fi
       actual_value=$( eval "${get_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
-        update_log_file "${log_file}" "chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
-        increment_insecure "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\" for \"${user_name}\""
+        update_log_file  "${log_file}" "chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
+        inc_insecure     "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\" for \"${user_name}\""
         lockdown_command="chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
         lockdown_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""
-        execute_lockdown "${lockdown_command}" "${lockdown_message}"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}"
       else
-        increment_secure   "Security Policy for \"${parameter_name}\" is set to \"${correct_value}\" for \"${user_name}\""
+        inc_secure       "Security Policy for \"${parameter_name}\" is set to \"${correct_value}\" for \"${user_name}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

@@ -41,9 +41,9 @@ audit_apparmor () {
       command_message "${get_command}"
       profile_test=$( eval "${get_command}" )
       if [ "${profile_test}" = "0" ]; then
-        increment_secure    "There are no unconfined applications"
+        inc_secure   "There are no unconfined applications"
       else
-        increment_insecure  "There are unconfined applications"
+        inc_insecure "There are unconfined applications"
       fi
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
@@ -64,7 +64,7 @@ audit_apparmor () {
       else
         lockdown_command="${set_command}"
         lockdown_message="Confine AppArmor Applications"
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     fi
     for check_file in ${check_list}; do
@@ -86,9 +86,9 @@ audit_apparmor () {
             package_enabled_test=0
           fi
           if [ "${package_disabled_test}" = "1" ]; then
-            increment_insecure "Application \"${app_name}\" is disabled in \"${check_file}\""
+            inc_insecure "Application \"${app_name}\" is disabled in \"${check_file}\""
             temp_file="${temp_dir}/${package_name}"
-            backup_file      "${check_file}"
+            backup_file "${check_file}"
             lockdown_command="cat ${check_file} |sed 's/${package_name}=0//g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*"
             lockdown_message="Disabled Application/Package \"${app_name}\" in \"${check_file}\" to removed"
             if [ "${ansible_mode}" = 1 ]; then
@@ -110,37 +110,37 @@ audit_apparmor () {
             fi
           fi
           if [ "${package_enabled_test}" = "1" ]; then
-            increment_secure "Application \"${app_name}\" is enabled in \"${check_file}\""
+            inc_secure   "Application \"${app_name}\" is enabled in \"${check_file}\""
           else
-            increment_insecure "Application \"${app_name}\" is not enabled in \"${check_file}\""
+            inc_insecure "Application \"${app_name}\" is not enabled in \"${check_file}\""
             temp_file="${temp_dir}/${package_name}"
             backup_file "${check_file}"
             if [ "${check_file}" = "/etc/default/grub" ]; then
               command="grep -c \"^GRUB_CMDLINE_LINUX\" \"${check_file}\""
-              command_message "${command}"
+              command_message    "${command}"
               line_check=$( eval "${command}" )
               if [ -n "${line_check}" ]; then
                 command="grep \"^GRUB_CMDLINE_LINUX\" < \"${check_file}\" |cut -f2 -d= |sed \"s/\"//g\""
-                command_message "${command}"
+                command_message        "${command}"
                 existing_value=$( eval "${command}" )
                 new_value="GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor ${existing_value}\""
                 lockdown_command="cat ${check_file} |sed 's/^GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX=\"${new_value}\"/g' > ${temp_file} ; cat ${temp_file} > ${check_file}"
                 lockdown_message="Disabled Application/Package \"${app_name}\" removed"
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
               else
                 lockdown_command="echo 'GRUB_CMDLINE_LINUX=\"apparmor=1 security=apparmor\"' >> ${check_file}"
                 lockdown_message="Enabled ${app_name}"
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             else
               if [ "${check_file}" = "/boot/grub/grub.cfg" ]; then
                 lockdown_command="cat ${check_file} |sed 's/^\s*linux.*/& apparmor=1 security=apparmor/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; aa-enforce /etc/${package_name}.d/*"
                 lockdown_message="Application/Package \"${app_name}\" in \"${check_file}\" to enabled"
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
               else
                 lockdown_command="cat ${check_file} |sed 's/^\s*kernel.*/& apparmor=1 security=apparmor/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; enforce /etc/${package_name}.d/*"
                 lockdown_message="Application/Package \"${app_name}\" in \"${check_file}\" to enabled"
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             fi
           fi

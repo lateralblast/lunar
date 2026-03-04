@@ -33,9 +33,9 @@ audit_iptables () {
           rules_check=$( eval "${command}" )
         fi
         if [ "${rules_check}" = "0" ]; then
-          increment_insecure "All other devices allow trafic to the loopback network"
+          inc_insecure "All other devices allow trafic to the loopback network"
         else
-          increment_secure   "All other devices deny trafic to the loopback network"
+          inc_secure   "All other devices deny trafic to the loopback network"
         fi
       fi
     fi

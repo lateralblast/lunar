@@ -25,9 +25,9 @@ audit_remote_shell () {
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         for service_name in "svc:/network/shell:kshell" \
-          "svc:/network/login:eklogin" "svc:/network/login:klogin" \
+          "svc:/network/login:eklogin"   "svc:/network/login:klogin" \
           "svc:/network/rpc/rex:default" "svc:/network/rexec:default" \
-          "svc:/network/shell:default" "svc:/network/login:rlogin" \
+          "svc:/network/shell:default"   "svc:/network/login:rlogin" \
           "svc:/network/telnet:default"; do
           check_sunos_service "${service_name}" "disabled"
         done

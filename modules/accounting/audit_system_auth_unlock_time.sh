@@ -44,17 +44,17 @@ audit_system_auth_unlock_time () {
               lockdown_command="awk '( \$1 == \"auth\" && \$2 == \"required\" && \$3 == \"pam_tally2.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail audit silent deny=5 unlock_time=900\"; print \$0; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             fi
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Lockout time for failed password attempts not enabled in \"${check_file}\""
-              verbose_message "${lockdown_command}" "fix"
+              inc_insecure "Lockout time for failed password attempts not enabled in \"${check_file}\""
+              fix_message  "${lockdown_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file      "${check_file}"
-              lockdown_message="Password minimum length in \"${check_file}\""
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              lockdown_message="Lockout time for failed password attempts in \"${check_file}\""
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "Lockout time for failed password attempts enabled in \"${check_file}\""
+              inc_secure "Lockout time for failed password attempts enabled in \"${check_file}\""
             fi
           fi
         else

@@ -19,7 +19,7 @@ audit_media_sharing () {
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${audit_mode}" != 2 ]; then
         command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.amp.mediasharingd" "home-sharing-enabled" "0" "bool" "${user_name}"

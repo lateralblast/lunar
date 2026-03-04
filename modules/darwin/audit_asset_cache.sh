@@ -22,7 +22,7 @@ audit_asset_cache () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1013 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-        verbose_message "Requires sudo to check" "notice"
+        notice_message "Requires sudo to check"
         return
       fi
       if [ "${audit_mode}" != 2 ]; then
@@ -30,9 +30,9 @@ audit_asset_cache () {
         set_command="sudo /usr/bin/AssetCacheManagerUtil deactivate"
         check_value=$( eval "${get_command}" )
         if [ "${check_value}" = "0" ]; then
-          increment_secure   "Content Caching is not activated"
+          inc_secure   "Content Caching is not activated"
         else
-          increment_insecure "Content Caching is activated"
+          inc_insecure "Content Caching is activated"
         fi
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
@@ -53,7 +53,7 @@ audit_asset_cache () {
         else
           lockdown_command="${set_command}"
           lockdown_message="Disable ${string}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi

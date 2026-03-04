@@ -10,6 +10,7 @@
 #.
 
 print_version () {
+  print_function "print_version"
   echo "${script_version}"
 }
 
@@ -20,6 +21,7 @@ print_version () {
 
 print_info () {
   info="${1}"
+  print_function "print_info"
   echo ""
   echo "Usage: $0 -${info}|--${info}"
   echo ""
@@ -48,7 +50,8 @@ print_info () {
 #.
 
 print_help () {
-  print_info "switch"
+  print_function "print_help"
+  print_info     "switch"
 }
 
 # print_usage
@@ -58,6 +61,7 @@ print_help () {
 #.
 
 print_usage () {
+  print_function "print_usage"
   echo ""
   echo "Examples:"
   echo ""
@@ -103,6 +107,7 @@ print_usage () {
 #.
 
 print_backups () {
+  print_function "print_backups"
   echo ""
   echo "Previous backups:"
   echo ""
@@ -118,6 +123,7 @@ print_backups () {
 
 print_tests () {
   test_string="${1}"
+  print_function "print_tests"
   echo ""
   if [ "${test_string}" = "UNIX" ]; then
     grep_string="-v aws"
@@ -174,6 +180,7 @@ print_function() {
 #.
 
 print_changes () {
+  print_function "print_changes"
   if [ -f "${base_dir}" ]; then
     echo ""
     echo "Printing changes:"
@@ -203,6 +210,7 @@ print_changes () {
 #.
 
 print_previous () {
+  print_function "print_previous"
   if [ -d "${base_dir}" ]; then
     echo ""
     echo "Printing previous settings:"
@@ -327,6 +335,24 @@ install_message () {
   verbose_message "${1}" "install"
 }
 
+# remove_message
+#
+# Remove message
+#.
+
+remove_message () {
+  verbose_message "${1}" "remove"
+}
+
+# save_message
+#
+# Save message
+#.
+
+save_message () {
+  verbose_message "${1}" "save"
+}
+
 # print_audit_info
 #
 # This function searches the script for the information associated
@@ -337,6 +363,7 @@ install_message () {
 
 print_audit_info () {
   module="${1}"
+  print_function "print_audit_info"
   comment_text="0"
   dir_name=$( pwd )
   check=$( echo "${module}" | grep "audit" )
@@ -370,6 +397,7 @@ print_audit_info () {
 #.
 
 print_results () {
+  print_function "print_results"
   echo ""
   if [ "${reboot_required}" = 1 ]; then
     reboot_required="Required"

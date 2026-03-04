@@ -12,11 +12,11 @@
 #
 
 audit_azure_locks () {
-  resource_type="${1}"
+  res_type="${1}"
   lock_type="${2}"
   print_function "audit_azure_locks"
-  check_message  "Azure Locks with Resource Type ${resource_type}"
-  command="az lock list --query \"[].name\" --resource-type \"${resource_type}\" --output tsv"
+  check_message  "Azure Locks with Resource Type ${res_type}"
+  command="az lock list --query \"[].name\" --resource-type \"${res_type}\" --output tsv"
   command_message    "${command}"
   lock_names=$( eval "${command}" 2> /dev/null )
   if [ -z "${lock_names}" ]; then
@@ -25,8 +25,8 @@ audit_azure_locks () {
   fi
   for lock_name in ${lock_names}; do
     command="az lock show --name \"${lock_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message        "${command}"
-    resource_group=$( eval "${command}" )
-    check_azure_lock_value "${lock_name}" "${resource_group}" "${resource_type}" "properties.level" "eq" "${lock_type}" "--lock-type"
+    command_message   "${command}"
+    res_group=$( eval "${command}" )
+    check_azure_lock_value "${lock_name}" "${res_group}" "${res_type}" "properties.level" "eq" "${lock_type}" "--lock-type"
   done
 }

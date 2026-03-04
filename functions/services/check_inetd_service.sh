@@ -12,10 +12,10 @@
 #.
 
 check_inetd_service () {
-  print_function "check_inetd_service"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     service_name="${1}"
     correct_status="${2}"
+    print_function "check_inetd_service"
     check_file="/etc/inetd.conf"
     log_file="${service_name}.log"
     if [ -f "${check_file}" ]; then
@@ -38,15 +38,15 @@ check_inetd_service () {
           echo ""
         fi
         if [ "${actual_status}" != "" ]; then
-          increment_insecure "Service \"${service_name}\" does not have \"${parameter_name}\" set to \"${correct_status}\""
-          backup_file        "${check_file}"
+          inc_insecure "Service \"${service_name}\" does not have \"${parameter_name}\" set to \"${correct_status}\""
+          backup_file  "${check_file}"
           if [ "${correct_status}" = "disable" ]; then
-            disable_value    "${check_file}" "${service_name}" "hash"
+            disable_value "${check_file}" "${service_name}" "hash"
           else
             :
           fi
         else
-          increment_secure "Service \"${service_name}\" is set to \"${correct_status}\""
+          inc_secure "Service \"${service_name}\" is set to \"${correct_status}\""
         fi
       else
         restore_file "${check_file}" "${restore_dir}"

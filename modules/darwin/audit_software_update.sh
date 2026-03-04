@@ -30,16 +30,16 @@ audit_software_update () {
     if [ "${audit_mode}" != 2 ]; then
       if [ "${current_update}" != "${available_update}" ]; then
         if [ "${audit_mode}" = 0 ]; then
-          verbose_message "Updating software" "notice"
+          notice_message "Updating software"
           esxcli software profile install -d "${vmware_depot}" -p "${available_update}" --ok-to-remove
         fi
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Software is not up to date (Current: ${current_update} Available: ${available_update})"
-          verbose_message    "esxcli software profile install -d ${vmware_depot} -p ${available_update} --ok-to-remove" "fix"
+          inc_insecure "Software is not up to date (Current: ${current_update} Available: ${available_update})"
+          fix_message  "esxcli software profile install -d ${vmware_depot} -p ${available_update} --ok-to-remove"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Software is up to date"
+          inc_secure   "Software is up to date"
         fi
       fi
     else
@@ -47,7 +47,7 @@ audit_software_update () {
       if [ -f "${restore_file}" ]; then
         previous_update=$( cat "${restore_file}" )
         if [ "${current_update}" != "${previous_update}" ]; then
-          verbose_message "Software to \"${previous_value}\"" "restore"
+          restore_message "Software to \"${previous_value}\""
           esxcli software profile install -d "${vmware_depot}" -p "${previous_update}" --ok-to-remove --alow-downgrades
         fi
       fi
@@ -55,23 +55,23 @@ audit_software_update () {
   fi
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1012 ]; then
-      check_osx_defaults_int    "/Library/Preferences/com.apple.SoftwareUpdate"   "AutomaticCheckEnabled"            "1"
-      check_osx_defaults_bool   "/Library/Preferences/com.apple.commerce"         "AutoUpdate"                       "1"
-      check_osx_defaults_bool   "/Library/Preferences/com.apple.SoftwareUpdate"   "ConfigDataInstall"                "1"
-      check_osx_defaults_bool   "/Library/Preferences/com.apple.SoftwareUpdate"   "CriticalUpdateInstall"            "1"
-      check_osx_defaults_bool   "/Library/Preferences/com.apple.commerce"         "AutoUpdateRestartRequired"        "1"
+      check_osx_defaults_int    "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticCheckEnabled"            "1"
+      check_osx_defaults_bool   "/Library/Preferences/com.apple.commerce"       "AutoUpdate"                       "1"
+      check_osx_defaults_bool   "/Library/Preferences/com.apple.SoftwareUpdate" "ConfigDataInstall"                "1"
+      check_osx_defaults_bool   "/Library/Preferences/com.apple.SoftwareUpdate" "CriticalUpdateInstall"            "1"
+      check_osx_defaults_bool   "/Library/Preferences/com.apple.commerce"       "AutoUpdateRestartRequired"        "1"
       if [ "${long_os_version}" -ge 1013 ]; then
-        check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate"   "AutomaticDownload"                "1"
-        check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate"   "AutomaticallyInstallMacOSUpdates" "1"
+        check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticDownload"                "1"
+        check_osx_defaults_bool "/Library/Preferences/com.apple.SoftwareUpdate" "AutomaticallyInstallMacOSUpdates" "1"
       fi
     else
-      verbose_message "Software Autoupdate" "check"
+      check_message "Software Autoupdate"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-        verbose_message "Requires sudo to check" "notice"
+        notice_message "Requires sudo to check"
         return
       fi
       command="sudo softwareupdate --schedule |awk '{print \$4}'"
-      command_message "${command}"
+      command_message       "${command}"
       actual_status=$( eval "${command}" )
       log_file="softwareupdate.log"
       correct_status="on"
@@ -79,20 +79,20 @@ audit_software_update () {
        verbose_message "If Software Update is enabled"
         if [ "${actual_status}" != "${correct_status}" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Software Update is not \"${correct_status}\""
+            inc_insecure "Software Update is not \"${correct_status}\""
             command_line="sudo softwareupdate --schedule ${correct_status}"
-            verbose_message "${command_line}" "fix"
+            fix_message  "${command_line}"
           else
             if [ "${audit_mode}" = 0 ]; then
               log_file="${work_dir}/${log_file}"
               echo "${actual_status}" > "${log_file}"
-              verbose_message "Software Update schedule to \"${correct_status}\"" "set"
+              set_message "Software Update schedule to \"${correct_status}\""
               sudo softwareupdate --schedule ${correct_status}
             fi
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Software Update is ${correct_status}"
+            inc_secure "Software Update is ${correct_status}"
           fi
         fi
       else
@@ -100,8 +100,8 @@ audit_software_update () {
         if [ -f "${restore_file}" ]; then
           previous_status=$( cat "${restore_file}" )
           if [ "${previous_status}" != "${actual_status}" ]; then
-            verbose_message "Software Update to \"${previous_status}\"" "restore"
-            sudo suftwareupdate --schedule "${previous_status}"
+            restore_message "Software Update to \"${previous_status}\""
+            sudo softwareupdate --schedule "${previous_status}"
           fi
         fi
       fi

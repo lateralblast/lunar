@@ -42,7 +42,7 @@ audit_password_expiry () {
             check_chsec "/etc/security/login.cfg" "usw" "pwd_algorithm" "ssha256"
           fi
         else
-          check_chsec "/etc/security/login.cfg"   "usw" "pwd_algorithm" "ssha256"
+          check_chsec   "/etc/security/login.cfg" "usw" "pwd_algorithm" "ssha256"
         fi
       fi
     fi
@@ -57,7 +57,7 @@ audit_password_expiry () {
       check_file_value "is" "/etc/login.defs"     "PASS_MIN_DAYS" "eq"  "7"     "hash"
       check_file_value "is" "/etc/login.defs"     "PASS_WARN_AGE" "eq"  "14"    "hash"
       check_file_value "is" "/etc/login.defs"     "PASS_MIN_LEN"  "eq"  "9"     "hash"
-      check_file_perms "/etc/login.defs"          "0640" "root"   "root"
+      check_file_perms      "/etc/login.defs"     "0640" "root"   "root"
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
       if [ "${os_version}" -gt 5 ]; then

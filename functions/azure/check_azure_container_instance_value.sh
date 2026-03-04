@@ -24,9 +24,9 @@ check_azure_container_instance_value () {
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    secure_message   "${description} for Container Instance \"${container_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    secure_message     "${description} for Container Instance \"${container_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
   else
-    insecure_message "${description} for Container Instance \"${container_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    insecure_message   "${description} for Container Instance \"${container_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
     if [ ! "${set_name}" = "" ]; then
       case "${set_name}" in
         "--"*)

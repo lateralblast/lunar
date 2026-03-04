@@ -29,17 +29,17 @@ audit_system_auth_use_uid () {
         check_value=$( eval "${command}" )
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "The use of su is not restricted by sudo in ${check_file}"
-            fix_message        "${lockdown_command}"
+            inc_insecure "The use of su is not restricted by sudo in ${check_file}"
+            fix_message  "${lockdown_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file      "${check_file}"
             lockdown_message="The use of su to be restricted by sudo in ${check_file}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "The use of su is restricted by sudo in \"${check_file}\""
+            inc_secure "The use of su is restricted by sudo in \"${check_file}\""
           fi
         fi
       else

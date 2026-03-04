@@ -19,12 +19,12 @@ audit_xlogin () {
   temp_file="${temp_dir}/audit_xlogin"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      verbose_message "CDE Startup" "check"
-      check_itab dt off
+      check_message "CDE Startup" "check"
+      check_itab    "dt" "off"
     fi
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-       verbose_message "XDMCP Listening"
+       check_message "XDMCP Listening"
       fi
       if [ "${os_version}" = "10" ]; then
         check_sunos_service "svc:/application/gdm2-login"                  "disabled"
@@ -41,11 +41,11 @@ audit_xlogin () {
       check_file="/etc/ttys"
       check_string="nodaemon"
       command="grep ${check_string} ${check_file} | awk '{print \$5}'"
-      command_message "${command}"
+      command_message   "${command}"
       ttys_test=$( eval "${command}" )
       secure_string="X Wrapper is disabled"
       insecure_string="X Wrapper is not disabled"
-      verbose_message "${search_string}" "check"
+      check_message "${secure_string}" "check"
       if [ "${ttys_test}" != "on" ]; then
         if [ "${audit_mode}" != 2 ]; then
           if [ "${ansible_mode}" = 1 ]; then
@@ -57,20 +57,20 @@ audit_xlogin () {
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           fi
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "${insecure_string}"
+            inc_insecure     "${insecure_string}"
           fi
           if [ "${audit_mode}" = 2 ]; then
             backup_file      "${check_file}"
             lockdown_message="X wrapper to disabled"
             lockdown_command="sed -e '/xdm -nodaemon/s/off/on/' ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "${secure_string}"
+          inc_secure "${secure_string}"
         fi
       fi
     fi
@@ -87,15 +87,15 @@ audit_xlogin () {
             greet_mesg="This is a private system --- Authorized use only!"
             lockdown_command="awk '/xlogin\*greeting:/ { print GreetValue; next }; { print }' GreetValue=\"${greet_mesg}\" < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "File ${check_file} does not have a security message"
-              verbose_message    "${lockdown_command}" "fix"
+              inc_insecure "File ${check_file} does not have a security message"
+              fix_message  "${lockdown_command}"
             else
-              backup_file "${check_file}"
+              backup_file      "${check_file}"
               lockdown_message="Security message in ${check_file}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
-            increment_secure "File \"${check_file}\" has security message"
+            inc_secure "File \"${check_file}\" has security message"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
@@ -113,15 +113,15 @@ audit_xlogin () {
             verbose_message "File ${check_file} for security message"
             lockdown_message="cat ${check_file} |awk '/GreetString=/ { print \"GreetString=\" GreetString; next }; { print }' GreetString=\"${greet_mesg}\" > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "File ${check_file} does not have a security message"
-              verbose_message    "${lockdown_command}" "fix"
+              inc_insecure "File ${check_file} does not have a security message"
+              fix_message  "${lockdown_command}"
             else
               backup_file      "${check_file}"
               lockdown_message="Security message in ${check_file}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
-            increment_secure "File ${check_file} has security message"
+            inc_secure "File ${check_file} has security message"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
@@ -140,19 +140,19 @@ audit_xlogin () {
             lockdown_command_2="awk '( \$1 !~ /^#/ && \$3 == \"/usr/bin/X\" ) { \$3 = \$3 \" -nolisten tcp\" }; { print }' < ${check_file} > ${temp_file}"
             lockdown_command_3="cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "X11 nolisten directive not found in file \"${check_file}\""
-              verbose_message "${lockdown_command_1}" "fix"
-              verbose_message "${lockdown_command_2}" "fix"
-              verbose_message "${lockdown_command_3}" "fix"
+              inc_insecure "X11 nolisten directive not found in file \"${check_file}\""
+              fix_message  "${lockdown_command_1}"
+              fix_message  "${lockdown_command_2}"
+              fix_message  "${lockdown_command_3}"
             else
               backup_file      "${check_file}"
               lockdown_message="Security message in file \"${check_file}\""
-              execute_lockdown "${lockdown_command_1}" "${lockdown_message}" "sudo"
-              execute_lockdown "${lockdown_command_2}" "${lockdown_message}" "sudo"
-              execute_lockdown "${lockdown_command_3}" "${lockdown_message}" "sudo"
+              exec_lockdown "${lockdown_command_1}" "${lockdown_message}" "sudo"
+              exec_lockdown "${lockdown_command_2}" "${lockdown_message}" "sudo"
+              exec_lockdown "${lockdown_command_3}" "${lockdown_message}" "sudo"
             fi
           else
-            increment_secure "X11 nolisten directive found in file \"${check_file}\""
+            inc_secure "X11 nolisten directive found in file \"${check_file}\""
           fi
         else
           restore_file "${check_file}" "${restore_dir}"

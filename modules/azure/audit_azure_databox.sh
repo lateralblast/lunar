@@ -27,11 +27,11 @@ audit_azure_databox () {
   fi
   for job_id in $job_ids; do
     command="az databox job show --id ${job_id} --query '[].name' --output tsv 2> /dev/null"
-    command_message  "${command}"
-    job_name=$( eval "${command}" )
+    command_message   "${command}"
+    job_name=$( eval  "${command}" )
     command="az databox job show --id ${job_id} --query '[].resourceGroup' --output tsv 2> /dev/null"
-    command_message        "${command}"
-    resource_group=$( eval "${command}" )
-    check_azure_databox_value "Double encryption" "${job_name}" "${resource_group}" "DoubleEncryptionEnabled" "eq" "true"
+    command_message   "${command}"
+    res_group=$( eval "${command}" )
+    check_azure_databox_value "Double encryption" "${job_name}" "${res_group}" "DoubleEncryptionEnabled" "eq" "true"
   done
 }

@@ -16,7 +16,7 @@ audit_secure_empty_trash () {
   string="Secure Empty Trash"
   check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
-    check_osx_defaults_int "com.apple.finder"   "EmptyTrashSecurely" "1"
+    check_osx_defaults_int "com.apple.finder" "EmptyTrashSecurely" "1"
   else
     na_message "${string}"
   fi

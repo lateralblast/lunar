@@ -17,13 +17,13 @@ audit_file_metadata () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
-      check_append_file "/etc/security/audit_event" "lck:AUE_CHMOD"     "hash"
-      check_append_file "/etc/security/audit_event" "lck:AUE_CHOWN"     "hash"
-      check_append_file "/etc/security/audit_event" "lck:AUE_FCHOWN"    "hash"
-      check_append_file "/etc/security/audit_event" "lck:AUE_FCHMOD"    "hash"
-      check_append_file "/etc/security/audit_event" "lck:AUE_LCHOWN"    "hash"
-      check_append_file "/etc/security/audit_event" "lck:AUE_ACLSET"    "hash"
-      check_append_file "/etc/security/audit_event" "lck:AUE_FACLSET"   "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_CHMOD"   "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_CHOWN"   "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_FCHOWN"  "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_FCHMOD"  "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_LCHOWN"  "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_ACLSET"  "hash"
+      check_append_file "/etc/security/audit_event" "lck:AUE_FACLSET" "hash"
     fi
   else
     na_message "${string}"

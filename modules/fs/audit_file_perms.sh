@@ -29,7 +29,7 @@ audit_file_perms () {
       fi
       for check_file in ${command}; do
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Incorrect permissions on file \"${check_file}\""
+          inc_insecure "Incorrect permissions on file \"${check_file}\""
         fi
         if [ "${audit_mode}" = 0 ]; then
           if [ "${os_version}" = "10" ]; then
@@ -98,7 +98,7 @@ audit_file_perms () {
         file_list=$( rpm -Va --nomtime --nosize --nomd5 --nolinkt | awk '{print $2}' ) 
         for check_file in ${file_list}; do
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Incorrect permissions on ${file_name}"
+            inc_insecure "Incorrect permissions on ${file_name}"
             verbose_message "yum reinstall ${rpm_name}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
@@ -116,7 +116,7 @@ audit_file_perms () {
       if [ -f "${restore_file}" ]; then
         restore_check=$( grep "${check_file}" "${restore_file}" | cut -f1 -d, )
         if [ "$restore_check" = "${check_file}" ]; then
-          restore_info=$( grep "${check_file}" "${restore_file}" )
+          restore_info=$(  grep "${check_file}" "${restore_file}" )
           restore_perms=$( echo "${restore_info}" | cut -f2 -d, )
           restore_owner=$( echo "${restore_info}" | cut -f3 -d, )
           restore_group=$( echo "${restore_info}" | cut -f4 -d, )

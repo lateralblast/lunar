@@ -26,9 +26,9 @@ check_azure_backup_vault_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ "${query_string}" = "properties.encryption.keyUri" ]; then
         fix_message "az keyvault set-policy --name <keyvault-name> --object-id <vault-managed-identity-object-id> --key-permissions get wrapKey unwrapKey"
         fix_message "az backup vault encryption enable --resource-group <resource-group> --vault-name <vault-name> --key-uri <key-vault-key-uri>"
@@ -47,7 +47,7 @@ check_azure_backup_vault_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ "${query_string}" = "properties.encryption.keyUri" ]; then
         fix_message "az keyvault set-policy --name <keyvault-name> --object-id <vault-managed-identity-object-id> --key-permissions get wrapKey unwrapKey"
         fix_message "az backup vault encryption enable --resource-group <resource-group> --vault-name <vault-name> --key-uri <key-vault-key-uri>"
@@ -64,7 +64,7 @@ check_azure_backup_vault_value () {
         fi
       fi
     else
-      increment_secure "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure "Azure Backup Vault ${description} for vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

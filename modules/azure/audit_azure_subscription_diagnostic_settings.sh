@@ -23,24 +23,24 @@ audit_azure_subscription_diagnostic_settings () {
   sub_ids=$( eval "${command}" )
   for sub_id in ${sub_ids}; do
     command="az monitor diagnostic-settings list --scope /subscriptions/${sub_id} --query \"[].value\" --output tsv 2>/dev/null"
-    command_message     "${command}"
+    command_message  "${command}"
     settings=$( eval "${command}" )
     if [ -z "${settings}" ]; then
-      increment_insecure "There are no diagnostic settings for subscription ${sub_id}"
+      inc_insecure "There are no diagnostic settings for subscription ${sub_id}"
     else
-      increment_secure   "There are diagnostic settings for subscription ${sub_id}"
+      inc_secure   "There are diagnostic settings for subscription ${sub_id}"
     fi
     command="az resource list --subscription ${sub_id} --query \"[].id\" --output tsv"
     command_message     "${command}"
     res_ids=$( eval "${command}" )
     for res_id in ${res_ids}; do
       command="az monitor diagnostic-settings list --resource ${res_id} --query \"[].value\" --output tsv 2>/dev/null"
-      command_message     "${command}"
+      command_message  "${command}"
       settings=$( eval "${command}" )
       if [ -z "${settings}" ]; then
-        increment_insecure "There are no diagnostic settings for resource ${res_id}"
+        inc_insecure "There are no diagnostic settings for resource ${res_id}"
       else
-        increment_secure   "There are diagnostic settings for resource ${res_id}"
+        inc_secure   "There are diagnostic settings for resource ${res_id}"
       fi    
     done
   done

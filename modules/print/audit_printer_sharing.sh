@@ -23,25 +23,25 @@ audit_printer_sharing () {
     if [ "${audit_mode}" != 2 ]; then
       if [ "${long_os_version}" -ge 1014 ]; then
         command="/usr/bin/sudo /usr/sbin/cupsctl | grep -c \"_share_printers=0\""
-        command_message "${command}"
+        command_message      "${command}"
         printer_test=$( eval "${command}" )
       else
         command="system_profiler SPPrintersDataType | grep Shared | awk '{print \$2}' | grep -c 'Yes' | sed \"s/ //g\""
-        command_message "${command}"
+        command_message      "${command}"
         printer_test=$( eval "${command}" )
       fi
       if [ "${printer_test}" = "0" ]; then
-        increment_insecure  "Printer sharing is enabled"
-        verbose_message     "Open System Preferences"   "fix"
-        verbose_message     "Select Sharing"            "fix"
-        verbose_message     "Uncheck Printer Sharing"   "fix"
+        inc_insecure "Printer sharing is enabled"
+        fix_message  "Open System Preferences"
+        fix_message  "Select Sharing"
+        fix_message  "Uncheck Printer Sharing"
       else
-        increment_secure    "Printer Sharing is disabled"
+        inc_secure   "Printer Sharing is disabled"
       fi
     else
-      verbose_message       "Open System Preferences"   "fix"
-      verbose_message       "Select Sharing"            "fix"
-      verbose_message       "Uncheck Printer Sharing"   "fix"
+      fix_message    "Open System Preferences"
+      fix_message    "Select Sharing"
+      fix_message    "Uncheck Printer Sharing"
     fi
   else
     na_message "${string}"

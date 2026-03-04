@@ -19,15 +19,15 @@ audit_serial_login () {
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       command="lsitab –a | grep \"on:/usr/sbin/getty\" | awk '{print \$2}'"
-      command_message "${command}"
+      command_message  "${command}"
       tty_list=$( eval "${command}" )
       if [ -z "${tty_list}" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Serial port logins disabled"
+          inc_secure "Serial port logins disabled"
         fi
         if [ "${audit_mode}" = 2 ]; then
           command="lsitab –a | grep \"/usr/sbin/getty\" | awk '{print \$2}'"
-          command_message "${command}"
+          command_message  "${command}"
           tty_list=$( eval "${command}" )
           for tty_name in ${tty_list}; do
             log_file="${restore_dir}/${tty_name}"
@@ -35,7 +35,7 @@ audit_serial_login () {
               command="cat \"${log_file}\""
               command_message "${command}"
               previous_value=$( eval "${command}" )
-              verbose_message "TTY \"${tty_name}\" to \"${previous_value}\"" "restore"
+              restore_message "TTY \"${tty_name}\" to \"${previous_value}\""
               command="chitab \"${previous_value} ${tty_name}\""
               command_message "${command}"
               eval "${command}"
@@ -47,14 +47,14 @@ audit_serial_login () {
           if [ "${audit_mode}" != 2 ]; then
             log_file="${work_dir}/${tty_name}"
             command="lsitab -a | grep \"on:/usr/sbin/getty\" | grep \"${tty_name}\""
-            command_message "${command}"
+            command_message      "${command}"
             actual_value=$( eval "${command}" )
             command="echo \"${actual_value}\" | sed 's/on/off/g'"
-            command_message "${command}"
-            new_value=$( eval "${command}" )
+            command_message      "${command}"
+            new_value=$( eval    "${command}" )
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Serial port logins not disabled on \"${tty_name}\""
-              verbose_message    "chitab \"${new_value}\"" "fix"
+              inc_insecure "Serial port logins not disabled on \"${tty_name}\""
+              fix_message  "chitab \"${new_value}\""
             fi
             if [ "${audit_mode}" = 0 ]; then
               command="echo \"${actual_value}\" > \"${log_file}\""
@@ -68,7 +68,7 @@ audit_serial_login () {
             log_file="${restore_dir}/${tty_name}"
             if [ -f "${log_file}" ]; then
               command="cat \"${log_file}\""
-              command_message "${command}"
+              command_message        "${command}"
               previous_value=$( eval "${command}" )
               verbose_message "Restoring: TTY \"${tty_name}\" to \"${previous_value}\""
               command="chitab \"${previous_value} ${tty_name}\""
@@ -82,24 +82,24 @@ audit_serial_login () {
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" != "11" ]; then
         command="pmadm -L | grep -E \"ttya|ttyb\" | cut -f4 -d \":\" | grep -c \"ux\""
-        command_message "${command}"
-        serial_test=$( eval "${command}" )
+        command_message      "${command}"
+        serial_test=$( eval  "${command}" )
         log_file="${work_dir}/pmadm.log"
         command="expr \"$serial_test\" : \"2\""
-        command_message "${command}"
+        command_message      "${command}"
         serial_check=$( eval "${command}" )
         if [ "${serial_check}" = "1" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Serial port logins disabled"
+            inc_secure "Serial port logins disabled"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Serial port logins not disabled"
-            verbose_message    "pmadm -d -p zsmon -s ttya" "fix"
-            verbose_message    "pmadm -d -p zsmon -s ttyb" "fix"
+            inc_insecure "Serial port logins not disabled"
+            fix_message  "pmadm -d -p zsmon -s ttya"
+            fix_message  "pmadm -d -p zsmon -s ttyb"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Serial port logins to disabled" "set"
+            set_message "Serial port logins to disabled"
             command="echo \"ttya,ttyb\" >> \"${log_file}\""
             command_message "${command}"
             eval "${command}"
@@ -114,7 +114,7 @@ audit_serial_login () {
         if [ "${audit_mode}" = 2 ]; then
           restore_file="${restore_dir}/pmadm.log"
           if [ -f "${restore_file}" ]; then
-            verbose_message "Serial port logins to enabled" "restore"
+            restore_message "Serial port logins to enabled"
             command="pmadm -e -p zsmon -s ttya"
             command_message "${command}"
             eval "${command}"
@@ -129,16 +129,16 @@ audit_serial_login () {
       check_file="/etc/ttys"
       check_string="dialup"
       command="grep \"${check_string}\" \"${check_file}\" |awk '{print \$5}'"
-      command_message "${command}"
+      command_message   "${command}"
       ttys_test=$( eval "${command}" )
       if [ "${ttys_test}" != "off" ]; then
         if [ "${audit_mode}" != 2 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Serial port logins not disabled"
+            inc_insecure "Serial port logins not disabled"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            verbose_message "Serial port logins to disabled" "set"
-            backup_file     "${check_file}"
+            set_message "Serial port logins to disabled"
+            backup_file "${check_file}"
             temp_file="${temp_dir}/ttys_${check_string}"
             command="awk '(\\$4 == \"dialup\") { \\$5 = \"off\" } { print }' < \"${check_file}\" > \"${temp_file}\""
             command_message "${command}"
@@ -152,7 +152,7 @@ audit_serial_login () {
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Serial port logins disabled"
+          inc_secure "Serial port logins disabled"
         fi
       fi
     fi

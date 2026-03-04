@@ -23,27 +23,27 @@ audit_azure_activity_logs_cmk () {
   sub_ids=$( eval "${command}" )
   for sub_id in ${sub_ids}; do
     command="az monitor diagnostic-settings subscription list --subscription ${sub_id} --query 'value[*].storageAccountId' --output tsv"
-    command_message          "${command}"
-    storage_accounts=$( eval "${command}" 2> /dev/null )
-    if [ -z "${storage_accounts}" ]; then
+    command_message    "${command}"
+    s_accounts=$( eval "${command}" 2> /dev/null )
+    if [ -z "${s_accounts}" ]; then
       info_message "No Storage Accounts found"
       continue
     fi
-    for storage_account in ${storage_accounts}; do
-      command="az storage account show --name ${storage_account} --query 'encryption.keySource' --output tsv 2>/dev/null"
+    for s_account in ${s_accounts}; do
+      command="az storage account show --name ${s_account} --query 'encryption.keySource' --output tsv 2>/dev/null"
       command_message    "${command}"
       key_source=$( eval "${command}" )
-      command="az storage account show --name ${storage_account} --query 'encryption.keyVaultProperties' --output tsv 2>/dev/null"
-      command_message   "${command}"
-      key_vault=$( eval "${command}" )
+      command="az storage account show --name ${s_account} --query 'encryption.keyVaultProperties' --output tsv 2>/dev/null"
+      command_message    "${command}"
+      key_vault=$( eval  "${command}" )
       if [ "${key_source}" = "Microsoft.Keyvault" ]; then
         if [ ! -z "${key_vault}" ] && [ ! "${key_vault}" = "null" ]; then
-          increment_secure   "Storage account ${storage_account} is encrypted with customer-managed key"
+          inc_secure   "Storage account ${s_account} is encrypted with customer-managed key"
         else
-          increment_insecure "Storage account ${storage_account} is encrypted with customer-managed key but no key vault is specified"
+          inc_insecure "Storage account ${s_account} is encrypted with customer-managed key but no key vault is specified"
         fi
       else
-        increment_insecure   "Storage account ${storage_account} is not encrypted with customer-managed key"
+        inc_insecure   "Storage account ${s_account} is not encrypted with customer-managed key"
       fi
     done 
   done

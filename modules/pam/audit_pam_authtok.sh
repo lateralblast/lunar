@@ -45,14 +45,14 @@ audit_pam_authtok () {
         fi
         if [ "${pam_check}" = "0" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure  "PAM ${pam_module} not enabled in \"${check_file}\""
-            verbose_message     "sed \"s/\(^password.*pam_unix\.so\)\(.*\)/\1 ${pam_module} \2/g\" < ${check_file} > ${temp_file}" "fix"
-            verbose_message     "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message     "rm ${temp_file}" "fix"
+            inc_insecure "PAM ${pam_module} not enabled in \"${check_file}\""
+            fix_message  "sed \"s/\(^password.*pam_unix\.so\)\(.*\)/\1 ${pam_module} \2/g\" < ${check_file} > ${temp_file}"
+            fix_message  "cat ${temp_file} > ${check_file}"
+            fix_message  "rm ${temp_file}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file     "${check_file}"
-            verbose_message "PAM ${pam_module} enabled in \"${check_file}\"" "set"
+            backup_file "${check_file}"
+            fix_message "PAM ${pam_module} enabled in \"${check_file}\""
             sed "s/\(^password.*pam_unix\.so\)\(.*\)/\1 ${pam_module} \2/g" < "${check_file}" > "${temp_file}"
             cat "${temp_file}" > "${check_file}"
             if [ -f "${temp_file}" ]; then
@@ -60,7 +60,7 @@ audit_pam_authtok () {
             fi
           fi
         else
-          increment_secure "PAM ${pam_module} enabled in \"${check_file}\""
+          inc_secure "PAM ${pam_module} enabled in \"${check_file}\""
         fi
       fi
     else

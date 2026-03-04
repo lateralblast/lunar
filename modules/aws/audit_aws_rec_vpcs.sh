@@ -25,7 +25,7 @@ audit_aws_rec_vpcs () {
       command_message       "${command}"
       ansible_value=$( eval "${command}" )
       if [ -z "${ansible_value}" ]; then
-        increment_insecure "AWS VPC ${vpc} does not have a Name tag"
+        inc_insecure "AWS VPC ${vpc} does not have a Name tag"
         verbose_message    "aws ec2 create-tags --region ${aws_region} --resources ${image} --tags Key=Name,Value=<valid_name_tag>" "fix"
       else
         if [ "${strict_valid_names}" = "y" ]; then
@@ -33,9 +33,9 @@ audit_aws_rec_vpcs () {
           command_message "${command}"
           check=$( eval   "${command}" )
           if [ "${check}" ]; then
-            increment_secure   "AWS VPC \"${vpc}\" has a valid Name tag"
+            inc_secure   "AWS VPC \"${vpc}\" has a valid Name tag"
           else
-            increment_insecure "AWS VPC \"${vpc}\" does not have a valid Name tag"
+            inc_insecure "AWS VPC \"${vpc}\" does not have a valid Name tag"
           fi
         fi
       fi
@@ -48,11 +48,11 @@ audit_aws_rec_vpcs () {
   for tunnel in ${tunnels}; do
     command="aws ec2 describe-vpn-connections --region \"${aws_region}\" --vpc-connection-ids \"${tunnel}\" --query \"VpnConnections[].VgwTelemetry[].Status\" |grep \"DOWN\""
     command_message "${command}"
-    check=$( eval "${command}" )
+    check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_insecure "AWS VPC \"${vpc}\" does not have VPN tunnel redundancy"
+      inc_insecure "AWS VPC \"${vpc}\" does not have VPN tunnel redundancy"
     else
-      increment_secure   "AWS VPC \"${vpc}\" has VPN tunnel redundancy"
+      inc_secure   "AWS VPC \"${vpc}\" has VPN tunnel redundancy"
     fi
   done
 }

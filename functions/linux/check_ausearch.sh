@@ -10,7 +10,6 @@
 #.
 
 check_ausearch () {
-  print_function "check_ausearch"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       funct="${1}"
@@ -18,6 +17,7 @@ check_ausearch () {
       command="${3}"
       mode="${4}"
       value="${5}" 
+      print_function "check_ausearch"
       exists=$( command -v "${bin}" )
       if [ "${exists}" ]; then
         if [ "${value}" ]; then
@@ -41,29 +41,29 @@ check_ausearch () {
         if [ "$funct" = "equal" ]; then
           if [ "${value}" ]; then
             if [ -z "${check}" ]; then
-              increment_insecure "${insecure_string}"
+              inc_insecure "${insecure_string}"
             else
-              increment_secure   "${secure_string}"
+              inc_secure   "${secure_string}"
             fi
           else
             if [ "${check}" ]; then
-              increment_insecure "${insecure_string}"
+              inc_insecure "${insecure_string}"
             else
-              increment_secure   "${secure_string}"
+              inc_secure   "${secure_string}"
             fi
           fi
         else
           if [ "${value}" ]; then
             if [ "${check}" ]; then
-              increment_insecure "${insecure_string}"
+              inc_insecure "${insecure_string}"
             else
-              increment_secure   "${secure_string}"
+              inc_secure   "${secure_string}"
             fi
           else
             if [ -z "${check}" ]; then
-              increment_insecure "${insecure_string}"
+              inc_insecure "${insecure_string}"
             else
-              increment_secure   "${secure_string}"
+              inc_secure   "${secure_string}"
             fi
           fi
         fi

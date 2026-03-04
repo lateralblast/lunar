@@ -20,18 +20,18 @@ check_azure_batch_value () {
   correct_value="${6}"
   set_name="${7}"
   set_value="${8}"
+  print_function "check_azure_batch_value"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function "check_azure_batch_value"
   check_message  "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
   command="az batch account show --name ${batch_name} --resource-group ${resource_group} --query '${query_string}' --output tsv 2> /dev/null"
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    secure_message   "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    secure_message     "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
   else
-    insecure_message "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    insecure_message   "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
     if [ ! "${set_name}" = "" ]; then
       fix_message "az batch account set --name \"${batch_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
     fi

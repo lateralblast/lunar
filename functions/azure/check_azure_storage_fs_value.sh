@@ -25,15 +25,15 @@ check_azure_storage_fs_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+      inc_secure   "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
+      inc_insecure "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
     fi
   elif [ "${function}" = "ne" ]; then
     if [ "${actual_value}" != "${correct_value}" ]; then
-      increment_secure   "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+      inc_secure   "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
+      inc_insecure "${description} for File System \"${file_system}\" on Storage Account \"${storage_account}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

@@ -38,13 +38,13 @@ disable_value () {
         if [ "${param_hyphen}" ]; then
           parameter_name="\\${parameter_name}"
         fi
-        check_value=$( grep -v "^${comment_value}" "${check_file}" | grep "${parameter_name}" | uniq )
+        check_value=$(  grep -v "^${comment_value}" "${check_file}" | grep "${parameter_name}" | uniq )
         param_hyphen=$( echo "${parameter_name}" | grep "^[\\]" )
         if [ "${param_hyphen}" ]; then
           parameter_name=$( echo "${parameter_name}" | sed "s/^[\\]//g" )
         fi
         if [ "${check_value}" != "${parameter_name}" ]; then
-          increment_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\" in ${check_file}"
+          inc_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\" in ${check_file}"
           if [ "${audit_mode}" = 0 ]; then
             set_message "Parameter \"${parameter_name}\" to \"${correct_value}\" in ${check_file}"
             if [ "${check_file}" = "/etc/system" ]; then
@@ -69,7 +69,7 @@ disable_value () {
           fi
         fi
       else
-        increment_secure "Parameter \"${parameter_name}\" already set to \"${correct_value}\" in ${check_file}"
+        inc_secure "Parameter \"${parameter_name}\" already set to \"${correct_value}\" in ${check_file}"
       fi
     fi
   fi

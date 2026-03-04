@@ -29,11 +29,11 @@ audit_dhcp_server () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "isc-dhcp-server"   "off"
-      check_linux_service "isc-dhcp-server6"  "off"
-      check_linux_service "dhcpd"             "off"
-      check_linux_package "uninstall"         "dhcpd"
-      check_linux_package "uninstall"         "isc-dhcp-server"
+      check_linux_service "isc-dhcp-server"  "off"
+      check_linux_service "isc-dhcp-server6" "off"
+      check_linux_service "dhcpd"            "off"
+      check_linux_package "uninstall"        "dhcpd"
+      check_linux_package "uninstall"        "isc-dhcp-server"
     fi
   else
     na_message "${string}"

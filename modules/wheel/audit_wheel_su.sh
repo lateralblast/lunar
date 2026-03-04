@@ -15,9 +15,9 @@ audit_wheel_su () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     command="command -v su 2> /dev/null"
-    command_message "${command}"
+    command_message    "${command}"
     check_file=$( eval "${command}" )
-    check_file_perms "${check_file}" "4750" "root" "${wheel_group}"
+    check_file_perms   "${check_file}" "4750" "root" "${wheel_group}"
   else
     na_message "${string}"
   fi

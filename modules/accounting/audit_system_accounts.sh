@@ -35,15 +35,15 @@ audit_system_accounts () {
     if test -r "$shadow_file"; then
       if [ "${audit_mode}" != 2 ]; then
         command="awk -F: '(\$1!=\"root\" && \$1!=\"sync\" && \$1!=\"shutdown\" && \$1!=\"halt\" && \$3<500 && \$7!=\"/sbin/nologin\" && \$7!=\"/bin/false\" && \$7!=\"/usr/sbin/nologin\") {print \$1}' < \"${password_file}\""
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           command="grep \"${user_name}:\" \"${password_file}\" | cut -f7 -d:"
-          command_message "${command}"
+          command_message     "${command}"
           shell_field=$( eval "${command}" )
           if [ ! -f "${shell_field}" ] || [ "${shell_field}" = "" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "System account \"${user_name}\" has an invalid shell"
+              inc_insecure "System account \"${user_name}\" has an invalid shell"
               if [ "${os_name}" = "FreeBSD" ]; then
                 lockdown_command="pw moduser ${user_name} -s /sbin/nologin"
                 fix_message "${lockdown_command}"
@@ -55,7 +55,7 @@ audit_system_accounts () {
             if [ "${audit_mode}" = 0 ]; then
               lockdown_message="System account \"${user_name}\" to have shell /sbin/nologin"
               backup_file      "${password_file}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           fi
         done

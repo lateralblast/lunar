@@ -33,7 +33,7 @@ audit_reserved_ids () {
         done
         if [ "${found}" = 0 ]; then
           if [ "${audit_mode}" = 1 ];then
-            increment_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
+            inc_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
           fi
         fi
       done
@@ -41,7 +41,7 @@ audit_reserved_ids () {
   else
     if [ "${os_name}" = "Linux" ]; then
       if [ "${audit_mode}" != 2 ]; then
-       verbose_message "Whether reserved UUIDs are assigned to system accounts" "check"
+        check_message "Reserved UUIDs are assigned to system accounts"
       fi
       if [ "${audit_mode}" != 2 ]; then
         command="getent passwd | awk -F: '(\$3 < 500) { print \"\$1\" \"\$3\" }'"
@@ -58,7 +58,7 @@ audit_reserved_ids () {
           done
           if [ "${found}" = 0 ]; then
             if [ "${audit_mode}" = 1 ];then
-              increment_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
+              inc_insecure "User \"${check_user}\" has a reserved UID \"${check_uid}\""
             fi
           fi
         done

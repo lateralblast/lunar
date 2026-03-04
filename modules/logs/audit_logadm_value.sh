@@ -28,12 +28,12 @@ audit_logadm_value () {
       log_file="/var/log/${log_name}"
       if [ -z "$log_check" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure  "Logging for \"${log_name}\" not enabled"
-          verbose_message     "logadm -w ${log_name} -C 13 -a 'pkill -HUP syslogd' ${log_file}" "fix"
-          verbose_message     "svcadm refresh svc:/system/system-log" "fix"
+          inc_insecure "Logging for \"${log_name}\" not enabled"
+          fix_message  "logadm -w ${log_name} -C 13 -a 'pkill -HUP syslogd' ${log_file}"
+          fix_message  "svcadm refresh svc:/system/system-log"
         else
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message   "Syslog to capture \"${log_facility}\"" "set"
+            set_message "Syslog to capture \"${log_facility}\""
           fi
           backup_file "${check_file}"
           if [ "${log_facility}" != "none" ]; then
@@ -91,7 +91,7 @@ audit_logadm_value () {
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Logging for \"${log_name}\" already enabled"
+          inc_secure "Logging for \"${log_name}\" already enabled"
         fi
       fi
     fi

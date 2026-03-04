@@ -32,22 +32,22 @@ audit_aws_rec_ec () {
       start_secs=$( eval "${command}" )
     else
       command="date -j -f \"%Y-%m-%dT%H:%M:%SS\" \"${start_date}\" \"+%s\""
-      command_message "${command}"
+      command_message    "${command}"
       start_secs=$( eval "${command}" )
     fi
     command="echo \"(${start_secs} + ${dur_secs})\" | bc"
-    command_message "${command}"
-    exp_secs=$( eval "${command}" )
+    command_message   "${command}"
+    exp_secs=$( eval  "${command}" )
     command="echo \"(7 * 84600)\" |bc"
-    command_message "${command}"
+    command_message   "${command}"
     test_secs=$( eval "${command}" )
     command="echo \"(${exp_secs} - ${curr_secs})\" | bc"
-    command_message "${command}"
+    command_message   "${command}"
     left_secs=$( eval "${command}" )
     if [ "${left_secs}" -lt "${test_secs}" ]; then
-      increment_secure   "Reserved ElastiCache instance \"${cache}\" has more than 7 days remaining"
+      inc_secure   "Reserved ElastiCache instance \"${cache}\" has more than 7 days remaining"
     else
-      increment_insecure "Reserved ElastiCache instance \"${cache}\" has less than 7 days remaining"
+      inc_insecure "Reserved ElastiCache instance \"${cache}\" has less than 7 days remaining"
     fi
   done
 }

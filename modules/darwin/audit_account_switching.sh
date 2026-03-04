@@ -31,9 +31,9 @@ audit_account_switching () {
         set_command="sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui"
         current_value=$( eval "${get_command}" )
         if [ "${current_value}" = "${correct_value}" ]; then
-          increment_secure   "Administrator Account Login to Another User Session is set to \"${correct_value}\""
+          inc_secure   "Administrator Account Login to Another User Session is set to \"${correct_value}\""
         else
-          increment_insecure "Administrator Account Login to Another User Session is not set to \"${correct_value}\""
+          inc_insecure "Administrator Account Login to Another User Session is not set to \"${correct_value}\""
         fi
         if [ "${ansible_mode}" = 1 ]; then
           echo ""
@@ -52,7 +52,7 @@ audit_account_switching () {
         else
           lockdown_command="${set_command}"
           lockdown_message="Disable ${string}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi

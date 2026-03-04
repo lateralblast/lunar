@@ -39,17 +39,17 @@ audit_core_limit () {
       fi
       if [ "${current_value}" != "0" ]; then
         if [ ! "${audit_mode}" = 0 ]; then
-          increment_insecure "Core dumps unlimited"
-          verbose_message    "launchctl limit core 0" "fix"
+          inc_insecure "Core dumps unlimited"
+          fix_message  "launchctl limit core 0"
         fi
         if [ "${audit_mode}" = 0 ]; then
-          verbose_message "Core dump limits" "set"
+          set_message "Core dump limits"
           echo "${current_value}" > "${log_file}"
           launchctl limit core 0
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Core dump limits exist"
+          inc_secure "Core dump limits exist"
         fi
       fi
     else
@@ -57,7 +57,7 @@ audit_core_limit () {
       if [ -f "${restore_file}" ]; then
         previous_value=$( cat "${restore_file}" )
         if [ "${current_value}" != "${previous_value}" ]; then
-          verbose_message "Core limit to \"${previous_value}\"" "restore"
+          restore_message "Core limit to \"${previous_value}\""
           launchctl limit core unlimited
         fi
       fi

@@ -10,7 +10,6 @@
 #.
 
 check_osx_defaults () {
-  print_function "check_osx_defaults"
   if [ "${os_name}" = "Darwin" ]; then
     defaults_file="${1}"
     defaults_parameter="${2}"
@@ -24,6 +23,7 @@ check_osx_defaults () {
       defaults_host="${5}"
       defaults_user="${6}"
     fi
+    print_function "check_osx_defaults"
     defaults_read="read"
     defaults_write="write"
     backup_file=${defaults_file}
@@ -77,9 +77,9 @@ check_osx_defaults () {
       fi
       if [ "${check_value}" != "${temp_value}" ]; then
         if [ "${defaults_user}" = "" ]; then
-          increment_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\""
+          inc_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\""
         else
-          increment_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
+          inc_insecure "Parameter \"${defaults_parameter}\" not set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
         fi
         if [ "${defaults_value}" = "" ]; then
           fix_message "${defaults_command} delete ${defaults_file} ${defaults_parameter}"
@@ -116,15 +116,15 @@ check_osx_defaults () {
           lockdown_message="${string}"
           if [ "${defaults_value}" = "" ]; then
             lockdown_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             if [ "${defaults_type}" = "bool" ]; then
               lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
             else
               if [ "${defaults_type}" = "int" ]; then
                 lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                 if [ "${defaults_file}" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
@@ -132,16 +132,16 @@ check_osx_defaults () {
                 if [ "${defaults_type}" = "dict" ]; then
                   if [ "${defaults_second_type}" = "bool" ]; then
                     lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
-                    execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                    exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                   else
                     if [ "${defaults_second_type}" = "int" ]; then
                       lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
-                      execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                     fi
                   fi
                 else
                   lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
-                  execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                  exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                 fi
               fi
             fi
@@ -167,9 +167,9 @@ check_osx_defaults () {
         fi
       else
         if [ "${defaults_user}" = "" ]; then
-          increment_secure "Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\""
+          inc_secure "Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\""
         else
-          increment_secure "Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
+          inc_secure "Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
         fi
       fi
     else

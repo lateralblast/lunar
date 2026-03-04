@@ -13,11 +13,11 @@
 #.
 
 check_linux_package_with_group () {
-  print_function "check_linux_package_with_group"
   if [ "${os_name}" = "Linux" ]; then
     package_mode="${1}"
     package_check="${2}"
     group_check="${3}"
+    print_function "check_linux_package_with_group"
     package_type="Package"
     if [ "${package_mode}" = "install" ]; then
       package_status="installed"
@@ -53,12 +53,12 @@ check_linux_package_with_group () {
         fi
       fi
       if [ "${package_mode}" = "install" ] && [ "${package_name}" = "${package_check}" ]; then
-        increment_secure "${package_type} \"${package_check}\" is \"${package_status}\""
+        inc_secure "${package_type} \"${package_check}\" is \"${package_status}\""
       else
         if [ "${package_mode}" = "uninstall" ] && [ "${package_name}" != "${package_check}" ] || [ "${package_name}" = "" ]; then
-          increment_secure   "${package_type} \"${package_check}\" is \"${package_status}\""
+          inc_secure   "${package_type} \"${package_check}\" is \"${package_status}\""
         else
-          increment_insecure "${package_type} \"${package_check}\" is not \"${package_status}\""
+          inc_insecure "${package_type} \"${package_check}\" is not \"${package_status}\""
         fi
       fi
       if [ "${package_mode}" = "install" ]; then
@@ -109,13 +109,13 @@ check_linux_package_with_group () {
         if [ "$package_uninstall" = "yes" ]; then
           update_log_file  "${log_file}" "${package_check},${package_mode}"
           lockdown_command="${package_command}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}"
         else
-          increment_insecure "Not uninstalling package as package uninstall has been set to no"
-          fix_message        "${package_command}"
+          inc_insecure  "Not uninstalling package as package uninstall has been set to no"
+          fix_message   "${package_command}"
         fi
       else
-        fix_message "${package_command}"
+        fix_message     "${package_command}"
       fi
     else
       restore_file="${restore_dir}/${log_file}"

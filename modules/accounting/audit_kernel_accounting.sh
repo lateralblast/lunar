@@ -25,7 +25,7 @@ audit_kernel_accounting () {
         if [ -f "${check_file}" ]; then
           check_message "Kernel and Process Accounting"
           command="grep -v \"^\\*\" \"${check_file}\" | grep \"c2audit:audit_load\""
-          command_message "${command}"
+          command_message   "${command}"
           check_acc=$( eval "${command}" )
           if [ -z "${check_acc}" ]; then
             check_file_value  "is" "${check_file}" "c2audit"  "colon" "audit_load"  "star"
@@ -52,7 +52,7 @@ audit_kernel_accounting () {
       check_file_perms "/var/audit" "0750" "root" "${wheel_group}"
       check_file_value "is" "/etc/security/audit_control"     "flags" "colon" "lo,ad,fd,fm,-all"  "hash"
       if [ "${os_version}" -ge 14 ]; then
-        check_file_value "is" "/etc/security/audit_control"    "expire-after" "colon" "60d"       "hash"
+        check_file_value "is" "/etc/security/audit_control"   "expire-after"  "colon" "60d"       "hash"
       fi
     fi
   else

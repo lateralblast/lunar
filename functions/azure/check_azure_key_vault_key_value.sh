@@ -39,15 +39,15 @@ check_azure_key_vault_key_value () {
   fi
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
     else
-      increment_secure "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Key \"${key_name}\" in key vault \"${key_vault}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

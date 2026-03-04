@@ -10,10 +10,10 @@
 #.
 
 check_trust() {
-  print_function "check_trust"
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="${1}"
     correct_value="${2}"
+    print_function "check_trust"
     log_file="trustchk_${parameter_name}.log"
     actual_value=$( trustchk -p "${parameter_name}" | cut -f2 -d= )
     policy_command="trustchk -p ${parameter_name} | cut -f2 -d= | grep ${correct_value}"
@@ -22,12 +22,12 @@ check_trust() {
       string="Trusted Execution setting for \"${parameter_name}\" is set to \"${correct_value}\""
       check_message "${string}"
       if [ "${actual_value}" != "${correct_value}" ]; then
-        increment_insecure "Trusted Execution setting for \"${parameter_name}\" is not set to \"${correct_value}\""
+        inc_insecure     "Trusted Execution setting for \"${parameter_name}\" is not set to \"${correct_value}\""
         update_log_file  "${log_file}" "trustchk-p ${parameter_name}=${actual_value}"
         lockdown_message="Trusted Execution setting for \"${parameter_name}\" to \"${correct_value}\""
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        increment_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
+        inc_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       fi
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))

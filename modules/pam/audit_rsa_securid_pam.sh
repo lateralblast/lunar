@@ -37,20 +37,20 @@ audit_rsa_securid_pam () {
       if [ "${audit_mode}" != 2 ]; then
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "RSA SecurID PAM Agent is not enabled for sudo"
+            inc_insecure "RSA SecurID PAM Agent is not enabled for sudo"
             if [ "${os_name}" = "Linux" ]; then
-              verbose_message "cat ${check_file} |sed 's/^auth/#\&/' > ${temp_file}" "fix"
-              verbose_message "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message "echo \"auth\trequired\tpam_securid.so reserve\" >> ${check_file}" "fix"
-              verbose_message "rm ${temp_file}" "fix"
+              fix_message "cat ${check_file} |sed 's/^auth/#\&/' > ${temp_file}"
+              fix_message "cat ${temp_file} > ${check_file}"
+              fix_message "echo \"auth\trequired\tpam_securid.so reserve\" >> ${check_file}"
+              fix_message "rm ${temp_file}"
             fi
             if [ "${os_name}" = "SunOS" ]; then
-              verbose_message "echo \"sudo\tauth\trequired\tpam_securid.so reserve\" >> ${check_file}" "fix"
+              fix_message "echo \"sudo\tauth\trequired\tpam_securid.so reserve\" >> ${check_file}"
             fi
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file     "${check_file}"
-            verbose_message "Configuring RSA SecurID PAM Agent for sudo" "set"
+            backup_file "${check_file}"
+            set_message "Configuring RSA SecurID PAM Agent for sudo"
             if [ "${os_name}" = "Linux" ]; then
               command="sed -e 's/^auth/#\\&/' < \"${check_file}\" > \"${temp_file}\""
               command_message "${command}"
@@ -75,7 +75,7 @@ audit_rsa_securid_pam () {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "RSA SecurID PAM Agent is configured for sudo"
+            inc_secure "RSA SecurID PAM Agent is configured for sudo"
           fi
         fi
       else

@@ -23,7 +23,7 @@ audit_xwindows_server () {
       if [ -z "${no_rego}" ]; then
         check_linux_package_with_group "uninstalled" "X Windows Server" "group"
       else
-        verbose_message "Warning:   System not registered with a repository"
+        warn_message "System not registered with a repository"
       fi
     else
       if [ "${os_vendor}" = "Ubuntu" ]; then

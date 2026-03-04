@@ -11,8 +11,8 @@
 #.
 
 check_lslpp () {
-  print_function "check_lslpp"
   package_name="${1}"
+  print_function "check_lslpp"
   if [ "${os_name}" = "AIX" ]; then
     lslpp_check="lslpp -L |grep \"${package_name}\""
   fi

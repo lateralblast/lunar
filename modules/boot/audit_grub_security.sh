@@ -22,12 +22,12 @@ audit_grub_security () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-      verbose_message "Requires sudo to check" "notice"
+      notice_message "Requires sudo to check"
       return
     fi
     if [ "${os_name}" = "Linux" ]; then
       for check_file in /etc/grub.conf /boot/grub/grub.cfg /boot/grub/menu.list; do
-        check_file_perms "${check_file}" "0600"   "root" "root"
+        check_file_perms    "${check_file}"       "0600" "root"     "root"
       done
       check_file_value "is" "/boot/grub/grub.cfg" "set superusers"  "eq"      "root"  "hash"
       check_file_value "is" "/boot/grub/grub.cfg" "password_pbkdf2" "space"   "root"  "hash"
@@ -40,7 +40,7 @@ audit_grub_security () {
 #    grub_check=`cat ${check_file} |grep "^password --md5" |awk '{print $1}'`
 #    if [ "$grub_check" != "password" ]; then
 #      if [ "${audit_mode}" = 1 ]; then
-#        increment_insecure "Grub password not set"
+#        inc_insecure "Grub password not set"
 #      fi
 #      This code needs work
 #      if [ "${audit_mode}" = 0 ]; then
@@ -63,7 +63,7 @@ audit_grub_security () {
 #      fi
 #    else
 #      if [ "${audit_mode}" = 1 ]; then
-#        increment_secure "Set-UID not restricted on user mounted devices"
+#        inc_secure "Set-UID not restricted on user mounted devices"
 #      fi
 #      if [ "${audit_mode}" = 2 ]; then
 #        restore_file="${restore_dir}${check_file}"

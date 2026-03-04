@@ -23,9 +23,9 @@ audit_root_access () {
     fi
     access_test=$( passwd -S root | awk '{ print $2}' | grep -cE "L"  )
     if [ "${access_test}" = "0" ]; then
-      increment_insecure "Root account is not locked"
+      inc_insecure "Root account is not locked"
     else
-      increment_secure   "Root account is locked"
+      inc_secure   "Root account is locked"
     fi
   else
     na_message "${string}"

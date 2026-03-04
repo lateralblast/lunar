@@ -13,11 +13,11 @@
 #.
 
 audit_xinetd_service () {
-  print_function "audit_xinetd_service"
   if [ "${os_name}" = "Linux" ]; then
     service_name="${1}"
     parameter_name="${2}"
     correct_status="${3}"
+    print_function "audit_xinetd_service"
     check_file="/etc/xinetd.d/${service_name}"
     log_file="${work_dir}/${service_name}.log"
     if [ -f "${check_file}" ]; then
@@ -31,13 +31,13 @@ audit_xinetd_service () {
           else
             command="chkconfig ${service_name} ${correct_status}"
           fi
-          increment_insecure "Service \"${service_name}\" does not have \"${parameter_name}\" set to \"${correct_status}\""
+          inc_insecure     "Service \"${service_name}\" does not have \"${parameter_name}\" set to \"${correct_status}\""
           lockdown_command="${check_file} |sed 's/${parameter_name}.*/${parameter_name} = ${correct_status}/g' > ${temp_file} ; cat ${temp_file} > ${check_file} ; ${command}"
           backup_file      "${check_file}"
           update_log_file  "${log_file}" "${parameter_name},${actual_status}"
-          execute_lockdown "${lockdown_command}" "Service to ${parameter_name}" "sudo"
+          exec_lockdown    "${lockdown_command}" "Service to ${parameter_name}" "sudo"
         else
-          increment_secure   "Service \"${service_name}\" has \"${parameter_name}\" set to \"${correct_status}\""
+          inc_secure       "Service \"${service_name}\" has \"${parameter_name}\" set to \"${correct_status}\""
         fi
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))

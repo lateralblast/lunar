@@ -22,8 +22,8 @@ audit_azure_application_insights () {
   command_message        "${command}"
   insights_check=$( eval "${command}" )
   if [ -z "${insights_check}" ]; then
-    increment_secure   "Application Insights is enabled"
+    inc_secure   "Application Insights is enabled"
   else
-    increment_insecure "Application Insights is not enabled"
+    inc_insecure "Application Insights is not enabled"
   fi 
 }

@@ -19,9 +19,9 @@ audit_gnome_automount () {
   string="Automount/Autorun for GNOME Users"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    check_gsettings_value "org.gnome.desktop.media-handling"  "automount-open" "false"
-    check_gsettings_value "org.gnome.desktop.media-handling"  "automount"      "false"
-    check_gsettings_value "org.gnome.desktop.media-handling"  "autorun-never"  "true"
+    check_gsettings_value "org.gnome.desktop.media-handling" "automount-open" "false"
+    check_gsettings_value "org.gnome.desktop.media-handling" "automount"      "false"
+    check_gsettings_value "org.gnome.desktop.media-handling" "autorun-never"  "true"
     if [ "${os_vendor}" = "Ubuntu" ]; then
       if [ "${os_version}" -ge 22 ]; then 
         if [ -d "/etc/dconf" ]; then
@@ -42,11 +42,11 @@ audit_gnome_automount () {
             check_file_value_with_position "is" "${check_file}" "autorun-never"  "eq" "true"  "hash after" "handling"
           else
             if [ "${audit_mode}" = 1 ]; then
-              verbose_message "echo \"[org/gnome/desktop/media-handling]\"  >  ${check_file}" "fix"
-              verbose_message "echo \"automount-open=false\"                >> ${check_file}" "fix"
-              verbose_message "echo \"automount=false\"                     >> ${check_file}" "fix"
-              verbose_message "echo \"autorun-never=true\"                  >> ${check_file}" "fix"
-              verbose_message "dconf update" "fix"
+              fix_message "echo \"[org/gnome/desktop/media-handling]\"  >  ${check_file}"
+              fix_message "echo \"automount-open=false\"                >> ${check_file}"
+              fix_message "echo \"automount=false\"                     >> ${check_file}"
+              fix_message "echo \"autorun-never=true\"                  >> ${check_file}"
+              fix_message "dconf update" "fix"
             fi 
             if [ "${audit_mode}" = 0 ]; then
               echo "[org/gnome/desktop/media-handling]" >  "${check_file}"
@@ -78,11 +78,11 @@ audit_gnome_automount () {
             check_append_file "${check_file}" "/org/gnome/desktop/media-handling/autorun-never"   "hash"
           else
             if [ "${audit_mode}" = 1 ]; then
-              verbose_message "mkdir -p /etc/dconf/db/ibus.d/locks" "fix"
-              verbose_message "echo \"/org/gnome/desktop/media-handling/automount\"       >  ${check_file}"   "fix"
-              verbose_message "echo \"/org/gnome/desktop/media-handling/automount-open\"  >> ${check_file}"   "fix"
-              verbose_message "echo \"/org/gnome/desktop/media-handling/autorun-never\"   >> ${check_file}"   "fix"
-              verbose_message "dconf update" "fix"
+              fix_message "mkdir -p /etc/dconf/db/ibus.d/locks"
+              fix_message "echo \"/org/gnome/desktop/media-handling/automount\"       >  ${check_file}"
+              fix_message "echo \"/org/gnome/desktop/media-handling/automount-open\"  >> ${check_file}"
+              fix_message "echo \"/org/gnome/desktop/media-handling/autorun-never\"   >> ${check_file}"
+              fix_message "dconf update" "fix"
             fi 
             if [ "${audit_mode}" = 0 ]; then
               mkdir -p /etc/dconf/db/ibus.d/locks

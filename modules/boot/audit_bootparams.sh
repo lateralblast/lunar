@@ -15,7 +15,7 @@ audit_bootparams () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "SunOS" ]; then
-      if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
+      if [ "${os_version}" -gt 9 ]; then
         check_sunos_service "svc:/network/rpc/bootparams:default" "disabled"
       fi
     fi

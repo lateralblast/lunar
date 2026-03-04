@@ -23,17 +23,17 @@ audit_aws_es () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      increment_secure   "Elasticsearch domain \"${domain}\" is not publicly accessible"
+      inc_secure    "Elasticsearch domain \"${domain}\" is not publicly accessible"
     else
-      increment_insecure "Elasticsearch domain \"${domain}\" is publicly accessible"
+      inc_insecure  "Elasticsearch domain \"${domain}\" is publicly accessible"
     fi
     command="aws es describe-elasticsearch-domain --domain-name \"${domain}\" --query 'DomainStatus.AccessPolicies' --output text | grep \"aws:SourceIp\" | grep \"[0-9]\.\""
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Elasticsearch doamin \"${domain}\" has an IP based access policy"
+      inc_secure    "Elasticsearch doamin \"${domain}\" has an IP based access policy"
     else
-      increment_insecure "Elasticsearch domain \"${domain}\" does not have and IP based access policy"
+      inc_insecure  "Elasticsearch domain \"${domain}\" does not have and IP based access policy"
     fi
   done
 }

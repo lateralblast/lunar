@@ -25,9 +25,9 @@ audit_auto_login() {
       set_command="sudo /usr/bin/defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser"
       defaults_check=$( eval "${get_command}" ) 
       if [ "${defaults_check}" = "0" ]; then
-        increment_insecure  "${string} Disabled"
+        inc_insecure  "${string} Disabled"
       else
-        increment_secure    "${string} Enabled"
+        inc_secure    "${string} Enabled"
       fi
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
@@ -48,7 +48,7 @@ audit_auto_login() {
       else
         lockdown_command="${set_command}"
         lockdown_message="Disable ${string}"
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     fi
   else

@@ -20,7 +20,7 @@ audit_vnc () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service "vncserver" "off"
+      check_linux_service   "vncserver" "off"
     fi
   else
     na_message "${string}"

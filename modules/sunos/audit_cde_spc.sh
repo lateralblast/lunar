@@ -15,7 +15,7 @@ audit_cde_spc () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      check_sunos_service "svc:/network/cde-spc:default"  "disabled"
+      check_sunos_service "svc:/network/cde-spc:default" "disabled"
     fi
   else
     na_message "${string}"

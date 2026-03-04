@@ -26,7 +26,7 @@ audit_user_dotfiles () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-      verbose_message "Requires sudo to check" "notice"
+      notice_message "Requires sudo to check"
       return
     fi
     home_dirs=$( grep -v "^/$" < /etc/passwd | cut -f6 -d:)

@@ -19,9 +19,9 @@ audit_system_preferences () {
     if [ ! "${audit_mode}" != 2 ]; then
       check=$( security authorizationdb read system.preferences 2> /dev/null | grep -A1 shared | grep true )
       if [ "${check}" ]; then
-        increment_insecure "An Administrator password is not required to access system-wide preferences"
+        inc_insecure "An Administrator password is not required to access system-wide preferences"
       else
-        increment_secure   "An Administrator password is required to access system-wide preferences"
+        inc_secure   "An Administrator password is required to access system-wide preferences"
       fi
     fi
   else

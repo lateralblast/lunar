@@ -23,19 +23,19 @@ audit_password_lock () {
       check_file="/etc/shadow"
       inactive_time="45"
       command="useradd -D | grep INACTIVE | cut -f2 -d="
-      command_message "${command}"
+      command_message       "${command}"
       inactive_test=$( eval "${command}" )
       if [ "${inactive_test}" -lt "${inactive_time}" ]; then
-        increment_insecure  "Inactive password lock is less than ${inactive_time}"
+        inc_insecure  "Inactive password lock is less than ${inactive_time}"
       else
-        increment_secure    "Inactive password lock is equal to or greater than ${inactive_time}"
+        inc_secure    "Inactive password lock is equal to or greater than ${inactive_time}"
       fi
       user_list=$( awk -F: '($2~/^\$.+\$/) {if($7 > $inactive || $7 < 0)print $1 }' "${check_file}" )
       if [ "${user_list}" = "" ]; then
-        increment_secure    "No users with inactive password locks less that ${inactive_time}"
+        inc_secure    "No users with inactive password locks less that ${inactive_time}"
       else
         for user_name in ${user_list}; do
-          increment_insecure  "User ${user_name} has an inactive password lock less than ${inactive_time}"
+          inc_insecure  "User ${user_name} has an inactive password lock less than ${inactive_time}"
         done
       fi
     else

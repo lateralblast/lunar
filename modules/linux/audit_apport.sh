@@ -17,7 +17,7 @@ audit_apport () {
   string="Automatic Error Reporting"
   check_message "${string}"
   if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
-    check_file_value    "is" "/etc/default/apport"  "enabled" "eq" "0" "hash"
+    check_file_value    "is"     "/etc/default/apport"  "enabled" "eq" "0" "hash"
     check_linux_service "apport" "off"
   else
     na_message "${string}"

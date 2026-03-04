@@ -23,8 +23,8 @@ audit_rsh_client () {
   string="RSH Client"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    check_linux_package "uninstall"   "rsh"
-    check_linux_package "uninstall"   "rsh-client"
+    check_linux_package "uninstall" "rsh"
+    check_linux_package "uninstall" "rsh-client"
   else
     na_message "${string}"
   fi

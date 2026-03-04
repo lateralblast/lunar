@@ -19,9 +19,9 @@ audit_pae () {
     if [ -f "/var/log/dmesg" ]; then
       check_nx=$( grep NX < /var/log/dmesg | grep "protection: active" | tail -1 | grep -c active | sed "s/ //g" )
       if [ "${check_nx}" = "1" ]; then
-        increment_secure   "XD/NX is enabled"
+        inc_secure   "XD/NX is enabled"
       else
-        increment_insecure "XD/NX is not enabled"
+        inc_insecure "XD/NX is not enabled"
       fi
     fi
   else

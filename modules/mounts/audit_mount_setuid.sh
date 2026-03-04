@@ -36,16 +36,16 @@ audit_mount_setuid () {
           log_file="${work_dir}/${check_file}"
           if [ -n "$nosuid_check" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Set-UID not restricted on user mounted devices"
+              inc_insecure      "Set-UID not restricted on user mounted devices"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              verbose_message   "Set-UID restricted on user mounted devices" "check"
+              check_message     "Set-UID restricted on user mounted devices"
               backup_file       "${check_file}"
               check_append_file "${check_file}" "mount * hsfs udfs ufs -o nosuid" "hash"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure "Set-UID not restricted on user mounted devices"
+              inc_secure "Set-UID not restricted on user mounted devices"
             fi
             if [ "${audit_mode}" = 2 ]; then
               restore_file "${check_file}" "${restore_dir}"
@@ -64,10 +64,10 @@ audit_mount_setuid () {
           nodev_check=$( eval "${command}" )
           if [ ! "$nodev_check" = "0" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure  "Found filesystems that should be mounted nodev"
-              verbose_message     "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
-              verbose_message     "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message     "rm ${temp_file}" "fix"
+              inc_insecure    "Found filesystems that should be mounted nodev"
+              verbose_message "cat ${check_file} | awk '( \$3 ~ /^ext[2,3,4]|tmpfs$/ && \$2 != \"/\" ) { \$4 = \$4 \",nosuid\" }; { printf \"%-26s %-22s %-8s %-16s %-1s %-1s\\n\",\$1,\$2,\$3,\$4,\$5,\$6 }' > ${temp_file}" "fix"
+              verbose_message "cat ${temp_file} > ${check_file}" "fix"
+              verbose_message "rm ${temp_file}" "fix"
             fi
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "Setting nodev on filesystems" "set"
@@ -84,14 +84,14 @@ audit_mount_setuid () {
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure "No filesystem that should be mounted with nodev"
+              inc_secure "No filesystem that should be mounted with nodev"
             fi
             if [ "${audit_mode}" = 2 ]; then
-              restore_file  "${check_file}" "${restore_dir}"
+              restore_file "${check_file}" "${restore_dir}"
             fi
           fi
         fi
-        check_file_perms    "${check_file}" "0644" "root" "root"
+        check_file_perms "${check_file}" "0644" "root" "root"
       fi
     fi
   else

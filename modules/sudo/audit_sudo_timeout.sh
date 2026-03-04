@@ -28,8 +28,8 @@ audit_sudo_timeout () {
     else
       check_file="/etc/sudoers"
     fi
-    check_file_value "is"  "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash"
-    check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
+    check_file_value "is" "${check_file}" "Defaults timestamp_timeout" "eq" "15" "hash"
+    check_file_perms      "${check_file}" "440" "root" "${wheel_group}"
   else
     na_message "${string}"
   fi

@@ -10,9 +10,9 @@
 #.
 
 check_auditctl () {
-  print_function "check_auditctl"
   check_file="${1}"
   audit_tag="${2}"
+  print_function "check_auditctl"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       secure_string="Auditing is enabled on file \"${check_file}\""
@@ -40,12 +40,12 @@ check_auditctl () {
             echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           fi
-          increment_insecure "${insecure_string}"
+          inc_insecure     "${insecure_string}"
           lockdown_command="${set_command}"
           lockdown_message="${secure_string}" 
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure "${secure_string}"
+          inc_secure "${secure_string}"
         fi
       fi
     fi

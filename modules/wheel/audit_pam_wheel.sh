@@ -50,10 +50,10 @@ audit_pam_wheel () {
         fi
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Wheel group membership not required for su in \"${check_file}\""
-            verbose_message    "cp ${check_file} ${temp_file}" "fix"
-            verbose_message    "cat ${temp_file} |awk '( \$1==\"#auth\" && \$2==\"required\" && \$3~\"${pam_module}.so\" ) { print \"auth\t\trequired\t\",\$3,\"\tuse_uid\"; next }; { print }' > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            inc_insecure    "Wheel group membership not required for su in \"${check_file}\""
+            verbose_message "cp ${check_file} ${temp_file}" "fix"
+            verbose_message "cat ${temp_file} |awk '( \$1==\"#auth\" && \$2==\"required\" && \$3~\"${pam_module}.so\" ) { print \"auth\t\trequired\t\",\$3,\"\tuse_uid\"; next }; { print }' > ${check_file}" "fix"
+            verbose_message "rm ${temp_file}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file     "${check_file}"
@@ -66,7 +66,7 @@ audit_pam_wheel () {
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "Wheel group membership required for su in \"${check_file}\""
+            inc_secure "Wheel group membership required for su in \"${check_file}\""
           fi
         fi
       else

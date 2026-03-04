@@ -21,18 +21,18 @@ audit_selinux () {
   string="SELinux"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    check_file_value "is" "/etc/selinux/config" "SELINUX"     "eq" "enforcing" "hash"
-    check_file_value "is" "/etc/selinux/config" "SELINUXTYPE" "eq" "targeted"  "hash"
-    check_file_perms "/etc/selinux/config"      "0400" "root" "root"
+    check_file_value     "is" "/etc/selinux/config" "SELINUX"     "eq"   "enforcing" "hash"
+    check_file_value     "is" "/etc/selinux/config" "SELINUXTYPE" "eq"   "targeted"  "hash"
+    check_file_perms          "/etc/selinux/config" "0400" "root" "root"
     for check_file in /etc/grub.conf /boot/grub/grub.cfg; do
       if [ -e "${check_file}" ]; then
-        check_file_perms "${check_file}".     "0400"      "root" "root"
-        check_file_value "is" "${check_file}" "selinux"   "eq"   "1"    "hash"
-        check_file_value "is" "${check_file}" "enforcing" "eq"   "1"    "hash"
+        check_file_perms      "${check_file}"       "0400"        "root" "root"
+        check_file_value "is" "${check_file}"       "selinux"     "eq"   "1"         "hash"
+        check_file_value "is" "${check_file}"       "enforcing"   "eq"   "1"         "hash"
       fi
     done
-    check_linux_package "uninstall" "setroubleshoot"
-    check_linux_package "uninstall" "mctrans"
+    check_linux_package  "uninstall" "setroubleshoot"
+    check_linux_package  "uninstall" "mctrans"
   else
     na_message "${string}"
   fi

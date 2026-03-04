@@ -10,10 +10,10 @@
 #.
 
 check_pwpolicy() {
-  print_function "check_pwpolicy"
   if [ "${os_name}" = "Darwin" ]; then
     parameter_name="${1}"
     correct_value="${2}"
+    print_function "check_pwpolicy"
     log_file="${parameter_name}.log"
     if [ "${audit_mode}" != 2 ]; then
       string="Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
@@ -30,20 +30,20 @@ check_pwpolicy() {
       actual_value=$( eval "${policy_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
         lockdown_message="Password Policy for \"${parameter_name}\" to \"${correct_value}\""
-        increment_insecure "Password Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
+        inc_insecure     "Password Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
         if [ "${os_version}" -ge 12 ]; then
           lockdown_command="sudo pwpolicy -setglobalpolicy ${parameter_name}=${correct_value}"
           update_log_file  "${log_file}" "${actual_value}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         else
           if [ "${managed_node}" = "Error" ]; then
             lockdown_command="pwpolicy -n /Local/Default -setglobalpolicy ${parameter_name}=${correct_value}"
             update_log_file  "${log_file}" "${actual_value}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             lockdown_command="pwpolicy -n -setglobalpolicy ${parameter_name}=${correct_value}"
             update_log_file  "${log_file}" "${actual_value}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         fi
         if [ "${ansible_mode}" = 1 ]; then
@@ -65,7 +65,7 @@ check_pwpolicy() {
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
+          inc_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
         fi
       fi
     else

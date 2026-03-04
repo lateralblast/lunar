@@ -27,10 +27,10 @@ audit_shadow_group () {
       shadow_check=$( grep -v "^#" "${check_file}" | grep ^shadow | cut -f4 -d:| wc -c | sed "s/ //g" )
       if [ "$shadow_check" != 0 ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Shadow group contains members"
-          verbose_message    "cat ${check_file} |awk -F':' '( \$1 == \"shadow\" ) {print \$1\":\"\$2\":\"\$3\":\" ; next}; {print}' > ${temp_file}" "fix"
-          verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-          verbose_message    "rm ${temp_file}" "fix"
+          inc_insecure "Shadow group contains members"
+          fix_message  "cat ${check_file} |awk -F':' '( \$1 == \"shadow\" ) {print \$1\":\"\$2\":\"\$3\":\" ; next}; {print}' > ${temp_file}"
+          fix_message  "cat ${temp_file} > ${check_file}"
+          fix_message  "rm ${temp_file}"
         fi
         if [ "${audit_mode}" = 0 ]; then
           backup_file "${check_file}"
@@ -46,7 +46,7 @@ audit_shadow_group () {
         fi
       else
         if [ "${audit_mode}" = 1 ];then
-          increment_secure "No members in shadow group"
+          inc_secure "No members in shadow group"
         fi
       fi
     fi

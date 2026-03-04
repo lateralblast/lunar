@@ -27,7 +27,7 @@ audit_syslog_conf () {
         systemd_check=$(command -v systemctl 2> /dev/null )
         if [ -n "$systemd_check" ]; then
           command="sudo systemctl | grep rsyslog | grep active | awk '{print \$1}'"
-          command_message "${command}"
+          command_message       "${command}"
           rsyslog_check=$( eval "${command}" )
           if [ "$rsyslog_check" = "rsyslog.service" ]; then
             if [ -f "/etc/rsyslog.d/90-cis.conf" ]; then
@@ -63,14 +63,14 @@ audit_syslog_conf () {
             fi
           fi
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Syslog log directory is not persistent"
+            inc_insecure  "Syslog log directory is not persistent"
             if [ "${syslog_logdir}" != "" ]; then
-              verbose_message "esxcli system syslog config set --logdir=${syslog_logdir}" "fix"
+              fix_message "esxcli system syslog config set --logdir=${syslog_logdir}"
             fi
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "Syslog log directory is on a persistent datastore"
+            inc_secure    "Syslog log directory is on a persistent datastore"
           fi
         fi
       else
@@ -88,7 +88,7 @@ audit_syslog_conf () {
       log_file="syslogremotehost"
       backup_file="${work_dir}/${log_file}"
       command="esxcli system syslog config get | grep Remote | awk '{print \$3}'"
-      command_message "${command}"
+      command_message       "${command}"
       current_value=$( eval "${command}" )
       if [ "${audit_mode}" != "2" ]; then
         if [ "${current_value}" = "<none>" ]; then
@@ -101,16 +101,16 @@ audit_syslog_conf () {
             fi
           fi
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Syslog remote host is not enabled"
+            inc_insecure "Syslog remote host is not enabled"
             if [ "${syslog_server}" = "" ]; then
-              verbose_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX" "fix"
+              fix_message "esxcli system syslog config set --loghost=XXX.XXX.XXX.XXX"
             else
-              verbose_message "esxcli system syslog config set --loghost=${syslog_server}"  "fix"
+              fix_message "esxcli system syslog config set --loghost=${syslog_server}"
             fi
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "Syslog remote host is enabled"
+            inc_secure "Syslog remote host is enabled"
           fi
         fi
       else

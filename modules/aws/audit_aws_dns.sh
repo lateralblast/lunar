@@ -25,12 +25,12 @@ audit_aws_dns () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      increment_insecure "Domain ${domain} does not auto renew"
+      inc_insecure "Domain ${domain} does not auto renew"
       lockdown_command="aws route53domains enable-domain-auto-renew --domain-name ${domain}"
       lockdown_message="Auto-Renew on Domain \"${domain}\" to enabled"
-      execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
     else
-      increment_secure "Domain \"${domain}\" auto renews"
+      inc_secure "Domain \"${domain}\" auto renews"
     fi
     command="date \"+%s\""
     command_message  "${command}"
@@ -39,17 +39,17 @@ audit_aws_dns () {
     command_message  "${command}"
     exp_secs=$( eval "${command}" )
     if [ "${exp_secs}" -lt "${cur_secs}" ]; then
-      increment_insecure "Warning:   Domain \"${domain}\" registration has expired" 
+      inc_insecure "Warning:   Domain \"${domain}\" registration has expired" 
     else
-      increment_secure   "Domain \"${domain}\" registration has not expired"
+      inc_secure   "Domain \"${domain}\" registration has not expired"
     fi
     command="aws route53domains get-domain-detail --domain-name \"${domain}\" --query \"Status\" --output text 2> /dev/null | grep clientTransferProhibited"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Domain \"${domain}\" has Domain Transfer Lock enabled"
+      inc_secure   "Domain \"${domain}\" has Domain Transfer Lock enabled"
     else
-      increment_insecure "Domain \"${domain}\" does not have Domain Transfer Lock enabled" 
+      inc_insecure "Domain \"${domain}\" does not have Domain Transfer Lock enabled" 
     fi
   done
   command="aws route53 list-hosted-zones --query \"HostedZones[].Id\" --output text 2> /dev/null | cut -f3 -d'/'"
@@ -60,9 +60,9 @@ audit_aws_dns () {
     command_message "${command}"
     spf=$( eval     "${command}" )
     if [ -n "${spf}" ]; then
-      increment_secure   "Zone \"${zone}\" has SPF records"
+      inc_secure   "Zone \"${zone}\" has SPF records"
     else
-      increment_insecure "Zone \"${zone}\" does not have SPF records" 
+      inc_insecure "Zone \"${zone}\" does not have SPF records" 
     fi
   done
 }

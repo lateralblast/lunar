@@ -25,22 +25,22 @@ check_azure_microsoft_defender_value () {
   fi
   if [ "${resource_check}" = "" ]; then
     if [ "${correct_value}" = "Exists" ]; then
-      increment_insecure "Microsoft Defender \"${description}\" does not exist"
+      inc_insecure    "Microsoft Defender \"${description}\" does not exist"
     else
-      verbose_message    "Azure Resource Type \"${resource_type}\" not found"
+      verbose_message "Azure Resource Type \"${resource_type}\" not found"
     fi
   else
     if [ "${correct_value}" = "Exists" ]; then
-      increment_secure "Microsoft Defender \"${description}\" exists"
+      inc_secure    "Microsoft Defender \"${description}\" exists"
     else
-      check_message    "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      check_message "Azure Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       command="az security pricing show --name \"${parameter_name}\" --query \"pricingTier\" --output tsv 2> /dev/null"
       command_message      "${command}"
       actual_value=$( eval "${command}" )
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+        inc_secure    "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       else
-        increment_insecure "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+        inc_insecure  "Microsoft Defender \"${description}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
         if [ "${parameter_name}" = "CloudPosture" ]; then
           fix_message "az security pricing update --name \"${parameter_name}\" --tier \"${correct_value}\" --extensions name=ApiPosture isEnabled=true"
         else
@@ -53,9 +53,9 @@ check_azure_microsoft_defender_value () {
         command_message       "${command}"
         actual_status=$( eval "${command}" )
         if [ "${actual_status}" = "${correct_status}" ]; then
-          increment_secure   "Microsoft Defender \"${description}\" Status is \"${function}\" to \"${correct_status}\""
+          inc_secure   "Microsoft Defender \"${description}\" Status is \"${function}\" to \"${correct_status}\""
         else
-          increment_insecure "Microsoft Defender \"${description}\" Status is not \"${function}\" to \"${correct_status}\""
+          inc_insecure "Microsoft Defender \"${description}\" Status is not \"${function}\" to \"${correct_status}\""
         fi
       fi
     fi

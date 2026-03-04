@@ -14,8 +14,8 @@ audit_crypt_policy () {
   string="Cryptographic Algorithms"
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    check_file_value "is" "/etc/security/policy.conf"   "CRYPT_DEFAULT"          "eq" "6" "hash"
-    check_file_value "is" "/etc/security/policy.conf"   "CRYPT_ALGORITHMS_ALLOW" "eq" "6" "hash"
+    check_file_value  "is" "/etc/security/policy.conf" "CRYPT_DEFAULT"          "eq" "6" "hash"
+    check_file_value  "is" "/etc/security/policy.conf" "CRYPT_ALGORITHMS_ALLOW" "eq" "6" "hash"
   else
     na_message "${string}"
   fi

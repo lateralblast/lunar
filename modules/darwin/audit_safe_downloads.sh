@@ -25,13 +25,13 @@ audit_safe_downloads () {
       fi
       if [ "${actual_value}" != "${update_file}" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Safe Downloads list has not be updated recently"
-          verbose_message    "Open System Preferences"                        "fix"
-          verbose_message    "Select Security & Privacy"                      "fix"
-          verbose_message    "Select the General tab"                         "fix"
-          verbose_message    "Select Advanced"                                "fix"
-          verbose_message    "Check Automatically update safe downloads list" "fix"
-          verbose_message    "sudo /usr/libexec/XProtectUpdater"              "fix"
+          inc_insecure   "Safe Downloads list has not be updated recently"
+          notice_message "Open System Preferences"
+          notice_message "Select Security & Privacy"
+          notice_message "Select the General tab"
+          notice_message "Select Advanced"
+          notice_message "Check Automatically update safe downloads list"
+          notice_message "sudo /usr/libexec/XProtectUpdater"
         fi
         if [ "${audit_mode}" = 0 ]; then
           verbose_message "Updating:  Safe Downloads list"
@@ -39,7 +39,7 @@ audit_safe_downloads () {
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Safe Downloads list has been updated recently"
+          inc_secure "Safe Downloads list has been updated recently"
         fi
       fi
     fi

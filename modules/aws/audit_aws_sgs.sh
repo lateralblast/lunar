@@ -33,7 +33,7 @@ audit_aws_sgs () {
     command_message  "${command}"
     in_check=$( eval "${command}" )
     if [ -z "${in_check}" ]; then
-      increment_secure    "Security Group \"${sg}\" does not have a open inbound rule"
+      inc_secure     "Security Group \"${sg}\" does not have a open inbound rule"
     else
       check_aws_open_port "${sg}" "-1"          "icmp" "ICMP"       "none" "none"
       check_aws_open_port "${sg}" "20,21"       "tcp"  "FTP"        "none" "none"
@@ -57,10 +57,10 @@ audit_aws_sgs () {
     command_message   "${command}"
     out_check=$( eval "${command}" )
     if [ -z "${out_check}" ]; then
-      increment_secure   "Security Group \"${sg}\" does not have a open outbound rule"
+      inc_secure      "Security Group \"${sg}\" does not have a open outbound rule"
     else
-      increment_insecure "Security Group \"${sg}\" has an open outbound rule"
-      verbose_message    "aws ec2 revoke-security-group-egress --region \"${aws_region}\" --group-name \"${sg}\" --protocol tcp --cidr 0.0.0.0/0" "fix"
+      inc_insecure    "Security Group \"${sg}\" has an open outbound rule"
+      verbose_message "aws ec2 revoke-security-group-egress --region \"${aws_region}\" --group-name \"${sg}\" --protocol tcp --cidr 0.0.0.0/0" "fix"
     fi
   done
 }

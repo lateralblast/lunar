@@ -24,17 +24,17 @@ check_azure_storage_blob_policy_value () {
   check_message  "${description} for Storage Blobs Property \"${blob_property}\" Policy \"${blob_policy}\" on account \"${storage_account}\" is \"${function}\" to \"${correct_value}\""
   if [ "${azure_auth_mode}" = "login" ]; then
     command="az storage blob ${blob_property} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\" 2> /dev/null"
-    command_message "${command}"
+    command_message      "${command}"
     actual_value=$( eval "${command}" )
   else
     command="az storage blob ${blob_property} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-    command_message "${command}"
+    command_message      "${command}"
     actual_value=$( eval "${command}" )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "${description} for Storage Blobs Property \"${blob_property}\" Policy \"${blob_policy}\" on account \"${storage_account}\" is \"${function}\" to \"${correct_value}\""
+    inc_secure   "${description} for Storage Blobs Property \"${blob_property}\" Policy \"${blob_policy}\" on account \"${storage_account}\" is \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "${description} for Storage Blobs Property \"${blob_property}\" Policy \"${blob_policy}\" on account \"${storage_account}\" is not \"${function}\" to \"${correct_value}\""
+    inc_insecure "${description} for Storage Blobs Property \"${blob_property}\" Policy \"${blob_policy}\" on account \"${storage_account}\" is not \"${function}\" to \"${correct_value}\""
     if [ ! -z "${set_name}" ]; then
       case "${set_name}" in
         "--"*)

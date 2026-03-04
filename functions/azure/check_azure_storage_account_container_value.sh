@@ -33,9 +33,9 @@ check_azure_storage_account_container_value () {
     actual_value=$( eval "${command}" )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "${description} for Storage Containers on Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
+    inc_secure   "${description} for Storage Containers on Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "${description} for Storage Containers on Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
+    inc_insecure "${description} for Storage Containers on Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${set_name}" ]; then
       if [ "${resource_group}" = "" ]; then
         case "${set_name}" in

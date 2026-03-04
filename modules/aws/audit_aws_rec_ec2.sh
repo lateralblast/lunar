@@ -33,9 +33,9 @@ audit_aws_rec_ec2 () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ ! "${check}" = "available" ]; then
-        increment_secure   "EC2 volume \"${volume}\" is attached to an instance"
+        inc_secure    "EC2 volume \"${volume}\" is attached to an instance"
       else
-        increment_insecure "EC2 volume \"${volume}\" is not attached to an instance"
+        inc_insecure  "EC2 volume \"${volume}\" is not attached to an instance"
       fi
     fi
     if [ "${check_volattach}" = "y" ]; then
@@ -44,17 +44,17 @@ audit_aws_rec_ec2 () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ -n "${check}" ]; then
-        increment_secure   "EC2 volume \"${volume}\" is using General Purpose SSD"
+        inc_secure    "EC2 volume \"${volume}\" is using General Purpose SSD"
       else
-        increment_insecure "EC2 volume \"${volume}\" is not using General Purpose SSD"
+        inc_insecure  "EC2 volume \"${volume}\" is not using General Purpose SSD"
       fi
     fi
   done
   # Check date of snapshots
   if [ "${check_snapage}" = "y" ]; then
     command="aws iam get-user --query \"User.Arn\" --output text | cut -f5 -d:"
-    command_message "${command}"
-    arn=$( eval     "${command}" )
+    command_message   "${command}"
+    arn=$( eval       "${command}" )
     command="aws ec2 describe-snapshots --region \"${aws_region}\" --owner-ids \"${arn}\" --filters ansible_value=status,Values=completed --query \"Snapshots[].SnapshotId\" --output text"
     command_message   "${command}"
     snapshots=$( eval "${command}" )
@@ -79,18 +79,18 @@ audit_aws_rec_ec2 () {
       command_message   "${command}"
       diff_days=$( eval "${command}" )
       if [ "${diff_days}" -gt "${aws_ec2_max_retention}" ]; then
-        increment_insecure "EC2 snapshot \"${snapshot}\" is more than \"${aws_ec2_max_retention}\" days old"
+        inc_insecure "EC2 snapshot \"${snapshot}\" is more than \"${aws_ec2_max_retention}\" days old"
       else
-        increment_secure   "EC2 snapshot \"${snapshot}\" is less than \"${aws_ec2_max_retention}\" days old"
+        inc_secure   "EC2 snapshot \"${snapshot}\" is less than \"${aws_ec2_max_retention}\" days old"
       fi
       if [ "${diff_days}" -gt "${aws_ec2_min_retention}" ]; then
         counter=$((counter+1))
       fi
     done
     if [ "${counter}" -gt 0 ]; then
-      increment_secure   "There are EC2 snapshots more than \"${aws_ec2_min_retention}\" days old"
+      inc_secure   "There are EC2 snapshots more than \"${aws_ec2_min_retention}\" days old"
     else
-      increment_insecure "There are no EC2 snapshots more than \"${aws_ec2_min_retention}\" days old"
+      inc_insecure "There are no EC2 snapshots more than \"${aws_ec2_min_retention}\" days old"
     fi
   fi
   # Check Security Groups have Name tags
@@ -103,7 +103,7 @@ audit_aws_rec_ec2 () {
       command_message       "${command}"
       ansible_value=$( eval "${command}" )
       if [ -z "${ansible_value}" ]; then
-        increment_insecure "AWS Security Group \"${sg}\" does not have a Name tag"
+        inc_insecure "AWS Security Group \"${sg}\" does not have a Name tag"
         verbose_message    "aws ec2 create-tags --region \"${aws_region}\" --resources \"${image}\" --tags Key=Name,Value=<valid_name_tag>" "fix"
       else
         if [ "${strict_valid_names}" = "y" ]; then
@@ -111,9 +111,9 @@ audit_aws_rec_ec2 () {
           command_message "${command}"
           check=$( eval "${command}" )
           if [ -n "${check}" ]; then
-            increment_secure   "AWS Security Group \"${sg}\" has a valid Name tag"
+            inc_secure   "AWS Security Group \"${sg}\" has a valid Name tag"
           else
-            increment_insecure "AWS Security Group \"${sg}\" does not have a valid Name tag"
+            inc_insecure "AWS Security Group \"${sg}\" does not have a valid Name tag"
           fi
         fi
       fi
@@ -128,7 +128,7 @@ audit_aws_rec_ec2 () {
     command_message       "${command}"
     ansible_value=$( eval "${command}" )
     if [ -z "${ansible_value}" ]; then
-      increment_insecure "AWS EC2 volume \"${volume}\" does not have a Name tag"
+      inc_insecure "AWS EC2 volume \"${volume}\" does not have a Name tag"
       verbose_message    "aws ec2 create-tags --region \"${aws_region}\" --resources \"${volume}\" --tags Key=Name,Value=<valid_name_tag>" "fix"
     else
       if [ "${strict_valid_names}" = "y" ]; then
@@ -136,9 +136,9 @@ audit_aws_rec_ec2 () {
         command_message "${command}"
         check=$( eval "${command}" )
         if [ -n "${check}" ]; then
-          increment_secure   "AWS EC2 volume \"${volume}\" has a valid Name tag"
+          inc_secure   "AWS EC2 volume \"${volume}\" has a valid Name tag"
         else
-          increment_insecure "AWS EC2 volume \"${volume}\" does not have a valid Name tag"
+          inc_insecure "AWS EC2 volume \"${volume}\" does not have a valid Name tag"
         fi
       fi
     fi
@@ -152,17 +152,17 @@ audit_aws_rec_ec2 () {
     command_message       "${command}"
     ansible_value=$( eval "${command}" )
     if [ -z "${ansible_value}" ]; then
-      increment_insecure "AWS AMI \"${image}\" does not have a Name tag"
+      inc_insecure "AWS AMI \"${image}\" does not have a Name tag"
       verbose_message    "aws ec2 create-tags --region \"${aws_region}\" --resources \"${image}\" --tags Key=Name,Value=<valid_name_tag>" "fix"
     else
       if [ "${strict_valid_names}" = "y" ]; then
         command="echo \"${ansible_value}\" |grep \"^ami-${valid_tag_string}\""
         command_message "${command}"
-        check=$( eval "${command}" )
+        check=$( eval   "${command}" )
         if [ -n "${check}" ]; then
-          increment_secure   "AWS AMI \"${image}\" has a valid Name tag"
+          inc_secure    "AWS AMI \"${image}\" has a valid Name tag"
         else
-          increment_insecure "AWS AMI \"${image}\" does not have a valid Name tag"
+          inc_insecure  "AWS AMI \"${image}\" does not have a valid Name tag"
         fi
       fi
     fi
@@ -177,17 +177,17 @@ audit_aws_rec_ec2 () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ -z "${check}" ]; then
-        increment_insecure "AWS Instance \"${instance}\" does not have a \"${tag}\" tag"
-        verbose_message    "aws ec2 create-tags --region \"${aws_region}\" --resources \"${instance}\" --tags Key=${tag},Value=<valid_name_tag>" "fix"
+        inc_insecure    "AWS Instance \"${instance}\" does not have a \"${tag}\" tag"
+        verbose_message "aws ec2 create-tags --region \"${aws_region}\" --resources \"${instance}\" --tags Key=${tag},Value=<valid_name_tag>" "fix"
       else
         if [ "${strict_valid_names}" = "y" ]; then
           command="echo \"${ansible_value}\" |grep \"^ec2-${valid_tag_string}\""
           command_message "${command}"
           check=$( eval   "${command}" )
           if [ -n "${check}" ]; then
-            increment_secure   "AWS Instance \"${instance}\" has a valid \"${tag}\" tag"
+            inc_secure   "AWS Instance \"${instance}\" has a valid \"${tag}\" tag"
           else
-            increment_insecure "AWS Instance \"${instance}\" does not have a valid \"${tag}\" tag"
+            inc_insecure "AWS Instance \"${instance}\" does not have a valid \"${tag}\" tag"
           fi
         fi
       fi
@@ -199,9 +199,9 @@ audit_aws_rec_ec2 () {
     command_message   "${command}"
     asg_check=$( eval "${command}" )
     if [ -n "${term_check}" ] && [ -z "${asg_check}" ]; then
-      increment_secure   "Termination Protection is enabled for instance \"${instance}\""
+      inc_secure   "Termination Protection is enabled for instance \"${instance}\""
     else
-      increment_insecure "Termination Protection is not enabled for instance \"${instance}\""
+      inc_insecure "Termination Protection is not enabled for instance \"${instance}\""
     fi
   done
   # Check Instances are from self produced images
@@ -213,10 +213,10 @@ audit_aws_rec_ec2 () {
     command_message "${command}"
     owner=$( eval   "${command}" )
     if [ "${owner}" = "self" ] || [ -z "${owner}" ]; then
-      increment_secure   "AWS AMI \"${image}\" is a self produced image"
+      inc_secure   "AWS AMI \"${image}\" is a self produced image"
     else
       
-      increment_insecure "AWS AMI \"${image}\" is not have a valid Name tag"
+      inc_insecure "AWS AMI \"${image}\" is not have a valid Name tag"
     fi
   done
   # Check number of Elastic IPs that are being used
@@ -227,9 +227,9 @@ audit_aws_rec_ec2 () {
   command_message "${command}"
   no_ips=$( eval  "${command}" )
   if [ "${max_ips}" -ne "${no_ips}" ]; then
-    increment_secure   "Number of Elastic IPs consumed is less than limit of \"${max_ips}\""
+    inc_secure   "Number of Elastic IPs consumed is less than limit of \"${max_ips}\""
   else
-    increment_insecure "Number of Elastic IPs consumed has reached limit of \"${max_ips}\""
+    inc_insecure "Number of Elastic IPs consumed has reached limit of \"${max_ips}\""
   fi
   # Check Instances are using EC2-VPC and not EC2-Classic
   command="aws ec2 describe-instances --region \"${aws_region}\" --query 'Reservations[*].Instances[*].InstanceId' --output text"
@@ -240,9 +240,9 @@ audit_aws_rec_ec2 () {
     command_message "${command}"
     vpc=$( eval     "${command}" )
     if [ -n "${vpc}" ]; then
-      increment_secure   "Instance \"${instance}\" is an EC2-VPC platform"
+      inc_secure   "Instance \"${instance}\" is an EC2-VPC platform"
     else
-      increment_insecure "Instance \"${instance}\" is an EC2-Classic platform"
+      inc_insecure "Instance \"${instance}\" is an EC2-Classic platform"
     fi 
   done
 }

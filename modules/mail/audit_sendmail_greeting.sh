@@ -19,18 +19,18 @@ audit_sendmail_greeting () {
       search_string="v/"
       if [ "${audit_mode}" != 2 ]; then
         command="grep -v '^#' \"${check_file}\" | grep 'O SmtpGreetingMessage' | awk '{print \$4}' | grep 'v/'"
-        command_message "${command}"
+        command_message     "${command}"
         check_value=$( eval "${command}" )
         if [ "${check_value}" = "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Found version information in sendmail greeting"
-            verbose_message    "cp ${check_file} ${temp_file}" fix
-            verbose_message    "awk '/O SmtpGreetingMessage=/ { print \"O SmtpGreetingMessage=Mail Server Ready; \$b\"; next} { print }' < ${temp_file} > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            inc_insecure "Found version information in sendmail greeting"
+            fix_message  "cp ${check_file} ${temp_file}"
+            fix_message  "awk '/O SmtpGreetingMessage=/ { print \"O SmtpGreetingMessage=Mail Server Ready; \$b\"; next} { print }' < ${temp_file} > ${check_file}"
+            fix_message  "rm ${temp_file}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file      "${check_file}"
-            verbose_message  "Sendmail greeting to have no version information" "set"
+            backup_file "${check_file}"
+            set_message "Sendmail greeting to have no version information"
             command="cp \"${check_file}\" \"${temp_file}\""
             command_message "${command}"
             eval "${command}"
@@ -43,7 +43,7 @@ audit_sendmail_greeting () {
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "No version information in sendmail greeting"
+            inc_secure "No version information in sendmail greeting"
           fi
         fi
       else
@@ -54,16 +54,16 @@ audit_sendmail_greeting () {
         check_value=$( grep -v '^#' ${check_file} | grep "${search_string}" )
         if [ "${check_value}" = "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Found help information in sendmail greeting"
+            inc_insecure     "Found help information in sendmail greeting"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file      "${check_file}"
-            verbose_message  "Sendmail to have no help information" "set"
+            backup_file "${check_file}"
+            set_message "Sendmail to have no help information"
             command="cp \"${check_file}\" \"${temp_file}\""
-            command_message "${command}"
+            command_message  "${command}"
             eval "${command}"
             command="sed 's/^O HelpFile=/#O HelpFile=/' < \"${temp_file}\" > \"${check_file}\""
-            command_message "${command}"
+            command_message  "${command}"
             eval "${command}"
             if [ -f "${temp_file}" ]; then
               rm "${temp_file}"
@@ -71,7 +71,7 @@ audit_sendmail_greeting () {
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "No help information in sendmail greeting"
+            inc_secure "No help information in sendmail greeting"
           fi
         fi
       else

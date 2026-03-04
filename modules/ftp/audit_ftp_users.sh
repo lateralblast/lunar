@@ -26,16 +26,16 @@ audit_ftp_users () {
         user_check=$( eval "${command}" )
         if [ "${user_check}" -lt 200 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure  "User \"${user_name}\" not in \"${check_file}\""
+            inc_insecure  "User \"${user_name}\" not in \"${check_file}\""
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file         "${check_file}"
-            verbose_message     "User \"${user_name}\" to not be allowed ftp access" "set"
-            check_append_file   "${check_file}" "${user_name}" "hash"
+            backup_file       "${check_file}"
+            set_message       "User \"${user_name}\" to not be allowed ftp access"
+            check_append_file "${check_file}" "${user_name}" "hash"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure    "User \"${user_name}\" in \"${check_file}\""
+            inc_secure        "User \"${user_name}\" in \"${check_file}\""
           fi
         fi
       done
@@ -58,16 +58,16 @@ audit_ftp_users () {
           ftpuser_check=$( expr "${ftpuser_check}" : "[A-z]" )
           if [ "${ftpuser_check}" != 1 ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "User \"${user_name}\" not in \"${check_file}\""
+              inc_insecure "User \"${user_name}\" not in \"${check_file}\""
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file       "${check_file}"
-              verbose_message   "User \"${user_name}\" to not be allowed ftp access" "set"
+              set_message       "User \"${user_name}\" to not be allowed ftp access"
               check_append_file "${check_file}" "${user_name}" "hash"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure  "User \"${user_name}\" in \"${check_file}\""
+              inc_secure  "User \"${user_name}\" in \"${check_file}\""
             fi
           fi
         fi
@@ -90,16 +90,16 @@ audit_ftp_users () {
           ftpuser_check=$( expr "${ftpuser_check}" : "[A-z]" )
           if [ "${ftpuser_check}" != 1 ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure  "User \"${user_name}\" not in \"${check_file}\""
+              inc_insecure  "User \"${user_name}\" not in \"${check_file}\""
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file       "${check_file}"
-              verbose_message   "User ${user_name} to not be allowed ftp access" "set"
+              set_message       "User \"${user_name}\" to not be allowed ftp access"
               check_append_file "${check_file}" "${user_name}" "hash"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure  "User \"${user_name}\" in \"${check_file}\""
+              inc_secure  "User \"${user_name}\" in \"${check_file}\""
             fi
           fi
         fi

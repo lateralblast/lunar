@@ -14,17 +14,17 @@
 #.
 
 check_command_value () {
-  print_function "check_command_value"
   command_name="${1}"
   parameter_name="${2}"
   correct_value="${3}"
   service_name="${4}"
+  print_function "check_command_value"
   if [ "${audit_mode}" = 2 ]; then
     restore_file="${restore_dir}/${command_name}.log"
     if [ -f "${restore_file}" ]; then
       parameter_name=$( grep "${parameter_name}" "${restore_file}" | cut -f1 -d',' )
-      correct_value=$( grep "${parameter_name}" "${restore_file}" | cut -f2 -d',' )
-      package_test=$( echo "${parameter_name}" | grep "[A-z]" )
+      correct_value=$(  grep "${parameter_name}" "${restore_file}" | cut -f2 -d',' )
+      package_test=$(   echo "${parameter_name}" | grep "[A-z]" )
       if [ -n "${package_test}" ]; then
         verbose_message "Returning \"${parameter_name}\" to \"${correct_value}\""
         if [ "${command_name}" = "routeadm" ]; then
@@ -88,7 +88,7 @@ check_command_value () {
   log_file="${command_name}.log"
   if [ "${current_value}" != "${correct_value}" ]; then
     if [ "${audit_mode}" = 1 ]; then
-      increment_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\""
+      inc_insecure "Parameter \"${parameter_name}\" not set to \"${correct_value}\""
       if [ "${command_name}" = "routeadm" ]; then
         if [ "${correct_value}" = "disabled" ]; then
           set_command="routeadm -d"
@@ -112,10 +112,10 @@ check_command_value () {
             set_command="routeadm -e"
           fi
           lockdown_command="${set_command} ${parameter_name}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
           lockdown_command="${set_command} ${parameter_name}=${correct_value}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi 
       fi
     fi
@@ -123,9 +123,9 @@ check_command_value () {
     if [ "${audit_mode}" != 2 ]; then
       if [ "${audit_mode}" = 1 ]; then
         if [ "${parameter_name}" = "tcp_wrappers" ]; then
-          increment_secure "Service \"${service_name}\" already has \"${parameter_name}\" set to \"${correct_value}\""
+          inc_secure "Service \"${service_name}\" already has \"${parameter_name}\" set to \"${correct_value}\""
         else
-          increment_secure "Output for command \"${command_name}\" parameter \"${parameter_name}\" already set to \"${correct_value}\""
+          inc_secure "Output for command \"${command_name}\" parameter \"${parameter_name}\" already set to \"${correct_value}\""
         fi
       fi
     fi

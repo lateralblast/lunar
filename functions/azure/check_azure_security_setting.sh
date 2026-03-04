@@ -22,8 +22,8 @@ check_azure_security_setting_value () {
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "${description} \"${setting_name}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+    inc_secure   "${description} \"${setting_name}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "${description} \"${setting_name}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+    inc_insecure "${description} \"${setting_name}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
   fi
 }

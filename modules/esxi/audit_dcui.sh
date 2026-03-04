@@ -27,18 +27,18 @@ audit_dcui () {
       if [ "${current_value}" != "true" ]; then
         if [ "${audit_mode}" = "0" ]; then
           echo "${current_value}" > "${backup_file}"
-          verbose_message     "DCUI Lockdown to true" "set"
+          set_message "DCUI Lockdown to true"
           command="vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter"
           command_message "${command}"
           eval "${command}"
         fi
         if [ "${audit_mode}" = "1" ]; then
-          increment_insecure  "DCUI Lockdown is disabled"
-          verbose_message     "vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter" "fix"
+          inc_insecure "DCUI Lockdown is disabled"
+          fix_message  "vim-cmd -U dcui vimsvc/auth/lockdown_mode_enter"
         fi
       else
         if [ "${audit_mode}" = "1" ]; then
-          increment_secure    "DCUI Lockdown is enabled"
+          inc_secure   "DCUI Lockdown is enabled"
         fi
       fi
     else

@@ -37,8 +37,8 @@ check_gsettings_value () {
         if [ -f "${restore_file}" ]; then
           parameter_root=$( grep "${parameter_name}" "${restore_file}" | cut -f1 -d',' )
           parameter_name=$( grep "${parameter_name}" "${restore_file}" | cut -f2 -d',' )
-          correct_value=$( grep "${parameter_name}" "${restore_file}" | cut -f3 -d',' )
-          package_test=$( echo "${parameter_name}" | grep "[A-z]" )
+          correct_value=$(  grep "${parameter_name}" "${restore_file}" | cut -f3 -d',' )
+          package_test=$(   echo "${parameter_name}" | grep "[A-z]" )
           if [ -n "${package_test}" ]; then
             restore_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
             restore_command="${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
@@ -49,7 +49,7 @@ check_gsettings_value () {
         value_check=$( gsettings get "${parameter_root}" "${parameter_name}" 2>  /dev/null | grep -c "${correct_value}" | sed "s/ //g" )
         if [ "${value_check}" = "0" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Parameter \"${parameter_name}\" is not set to \"${correct_value}\" in ${parameter_root}"
+            inc_insecure "Parameter \"${parameter_name}\" is not set to \"${correct_value}\" in ${parameter_root}"
             string="Parameter \"${parameter_root}.${parameter_name}\" to \"${correct_value}\""
             if [ "${ansible_mode}" = 1 ]; then
               echo ""
@@ -62,15 +62,15 @@ check_gsettings_value () {
           else
             current_value=$( gsettings get "${parameter_root}" "${parameter_name}" 2> /dev/null )
             if [ "${audit_mode}" = 0 ]; then
-              update_log_file "${log_file}" "${parameter_root},${parameter_name},${current_value}"
+              update_log_file  "${log_file}" "${parameter_root},${parameter_name},${current_value}"
               lockdown_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
               lockdown_command="${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Parameter \"${parameter_name}\" is set to \"${correct_value}\" in ${parameter_root}"
+            inc_secure "Parameter \"${parameter_name}\" is set to \"${correct_value}\" in ${parameter_root}"
           fi
         fi
       fi 

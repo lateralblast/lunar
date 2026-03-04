@@ -27,17 +27,17 @@ audit_system_auth_nullok () {
           lockdown_command="sed 's/ nullok//' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" = 1 ]; then
             if [ "${audit_mode}" = "1" ]; then
-              increment_insecure "Found nullok \"entry\" in \"${check_file}\""
-              fix_message        "${lockdown_command}"
+              inc_insecure "Found nullok \"entry\" in \"${check_file}\""
+              fix_message  "${lockdown_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file      "${check_file}"
               lockdown_message="Removing \"nullok\" entries from \"${check_file}\""
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "No \"nullok\" entries in \"${check_file}\""
+              inc_secure "No \"nullok\" entries in \"${check_file}\""
             fi
           fi
         fi

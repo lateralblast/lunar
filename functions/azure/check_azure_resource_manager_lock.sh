@@ -25,9 +25,9 @@ check_azure_resource_manager_lock () {
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" has a \"${correct_value}\" lock applied"
+    inc_secure   "Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" has a \"${correct_value}\" lock applied"
   else
-    increment_insecure "Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" does not have a \"${correct_value}\" lock applied"
-    fix_message        "az lock create --name ${correct_value} --resource-group ${resource_group} --resource-name ${storage_account} --resource-type ${resource_type} --lock-type ${correct_value}"
+    inc_insecure "Storage Account \"${storage_account}\" with resource group \"${resource_group}\" and resource type \"${resource_type}\" does not have a \"${correct_value}\" lock applied"
+    fix_message  "az lock create --name ${correct_value} --resource-group ${resource_group} --resource-name ${storage_account} --resource-type ${resource_type} --lock-type ${correct_value}"
   fi
 }

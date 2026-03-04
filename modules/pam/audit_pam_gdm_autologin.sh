@@ -42,14 +42,14 @@ audit_pam_gdm_autologin () {
           echo ""
         fi
         command="grep -v \"^#\" \"${check_file}\" | grep \"^${pam_module}\" | head -1 | wc -l | sed \"s/ //g\""
-        command_message "${command}"
+        command_message   "${command}"
         gdm_check=$( eval "${command}" )
         if [ "${gdm_check}" != 0 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "${string} is enabled"
-            verbose_message    "cat ${check_file} |sed 's/^${pam_module}/#&/g' > ${temp_file}" "fix"
-            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            inc_insecure "${string} is enabled"
+            fix_message  "cat ${check_file} |sed 's/^${pam_module}/#&/g' > ${temp_file}"
+            fix_message  "cat ${temp_file} > ${check_file}"
+            fix_message  "rm ${temp_file}"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file "${check_file}"
@@ -61,7 +61,7 @@ audit_pam_gdm_autologin () {
           fi
         else
           if [ "${audit_mode}" = 1 ];then
-            increment_secure "${string} is disabled"
+            inc_secure "${string} is disabled"
           fi
         fi
       fi

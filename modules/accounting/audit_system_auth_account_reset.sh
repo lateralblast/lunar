@@ -28,8 +28,8 @@ audit_system_auth_account_reset () {
             if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
               lockdown_command="awk '( \$1 == \"account\" && \$2 == \"required\" && \$3 == \"pam_failback.so\" ) { print \"auth\trequired\tpam_faillock.so onerr=fail no_magic_root reset\"; print $0; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
               if [ "${audit_mode}" = "1" ]; then
-                increment_insecure "Account reset entry not enabled in \"${check_file}\""
-                fix_message        "rm ${lockdown_command}"
+                inc_insecure "Account reset entry not enabled in \"${check_file}\""
+                fix_message  "rm ${lockdown_command}"
               fi
               if [ "${audit_mode}" = 0 ]; then
                 backup_file      "${check_file}"
@@ -39,18 +39,18 @@ audit_system_auth_account_reset () {
             else
               lockdown_command="awk '( \$1 == \"account\" && \$2 == \"required\" && \$3 == \"pam_tally2.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root reset\"; print $0; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
               if [ "${audit_mode}" = "1" ]; then
-                increment_insecure "Account reset entry not enabled in \"${check_file}\""
-                fix_message        "rm ${lockdown_command}"
+                inc_insecure "Account reset entry not enabled in \"${check_file}\""
+                fix_message  "rm ${lockdown_command}"
               fi
               if [ "${audit_mode}" = 0 ]; then
                 backup_file      "${check_file}"
                 lockdown_message="Account reset entry in \"${check_file}\""
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
               fi
             fi 
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "Account entry enabled in \"${check_file}\""
+              inc_secure "Account entry enabled in \"${check_file}\""
             fi
           fi
         fi

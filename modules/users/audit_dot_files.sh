@@ -25,15 +25,15 @@ audit_dot_files () {
         fi
         if [ -f "${dot_file}" ]; then
           if [ "${audit_mode}" = 1 ];then
-            increment_insecure "File \"${dot_file}\" ${exists}"
-            verbose_message    "mv ${dot_file} ${dot_file}.disabled" "fix"
+            inc_insecure "File \"${dot_file}\" ${exists}"
+            fix_message  "mv ${dot_file} ${dot_file}.disabled"
           fi
           if [ "${audit_mode}" = 0 ];then
             backup_file "${dot_file}"
           fi
         else
           if [ "${audit_mode}" = 1 ];then
-            increment_secure "File \"${dot_file}\" does not exist"
+            inc_secure "File \"${dot_file}\" does not exist"
           fi
         fi
       done

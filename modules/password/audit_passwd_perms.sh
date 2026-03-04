@@ -25,27 +25,27 @@ audit_passwd_perms () {
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       for check_file in /etc/passwd /etc/group; do
-        check_file_perms ${check_file} 0644 root security
+        check_file_perms "${check_file}" "0644" "root" "security"
       done
       check_dir="/etc/security"
-      check_file_perms ${check_dir} 0750 root security
+      check_file_perms   "${check_dir}" "0750"  "root" "security"
     fi
     if [ "${os_name}" = "Linux" ]; then
-      check_file_perms "/etc/passwd"        "0644" "root" "root"
-      check_file_perms "/etc/group"         "0644" "root" "root"
-      check_file_perms "/etc/shadow"        "0600" "root" "root"
-      check_file_perms "/etc/gshadow"       "0600" "root" "root"
-      check_file_perms "/etc/group-"        "0600" "root" "root"
-      check_file_perms "/etc/passwd-"       "0600" "root" "root"
-      check_file_perms "/etc/shadow-"       "0600" "root" "root"
-      check_file_perms "/etc/gshadow-"      "0600" "root" "root"
+      check_file_perms   "/etc/passwd"          "0644" "root" "root"
+      check_file_perms   "/etc/group"           "0644" "root" "root"
+      check_file_perms   "/etc/shadow"          "0600" "root" "root"
+      check_file_perms   "/etc/gshadow"         "0600" "root" "root"
+      check_file_perms   "/etc/group-"          "0600" "root" "root"
+      check_file_perms   "/etc/passwd-"         "0600" "root" "root"
+      check_file_perms   "/etc/shadow-"         "0600" "root" "root"
+      check_file_perms   "/etc/gshadow-"        "0600" "root" "root"
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
-      check_file_perms "/etc/passwd"        "0644" "root" "${wheel_group}"
-      check_file_perms "/etc/group"         "0644" "root" "${wheel_group}"
-      check_file_perms "/etc/pwd.db_file"   "0644" "root" "${wheel_group}"
-      check_file_perms "/etc/master.passwd" "0600" "root" "${wheel_group}"
-      check_file_perms "/etc/spwd.db"       "0600" "root" "${wheel_group}"
+      check_file_perms   "/etc/passwd"          "0644" "root" "${wheel_group}"
+      check_file_perms   "/etc/group"           "0644" "root" "${wheel_group}"
+      check_file_perms   "/etc/pwd.db_file"     "0644" "root" "${wheel_group}"
+      check_file_perms   "/etc/master.passwd"   "0600" "root" "${wheel_group}"
+      check_file_perms   "/etc/spwd.db"         "0600" "root" "${wheel_group}"
     fi
   else
     na_message "${string}"

@@ -41,7 +41,7 @@ audit_home_ownership () {
           if [ "${user_check}" -ge 200 ]; then
             found=0
             command="lsuser -a home \"${check_user}\" | cut -f2 -d="
-            command_message "${command}"
+            command_message  "${command}"
             home_dir=$( eval "${command}" )
           else
             found=1
@@ -49,21 +49,21 @@ audit_home_ownership () {
           if [ "${found}" = 0 ]; then
             if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
               if [ "${audit_mode}" = 1 ];then
-                increment_insecure "User \"${check_user}\" has no home directory defined"
+                inc_insecure "User \"${check_user}\" has no home directory defined"
               fi
             else
               if [ -d "${home_dir}" ]; then
                 command="ls -ld \"${home_dir}/.\" | awk '{ print \$3 }'"
-                command_message "${command}"
+                command_message   "${command}"
                 dir_owner=$( eval "${command}" )
                 if [ "${dir_owner}" != "${check_user}" ]; then
                   if [ "${audit_mode}" = 1 ];then
-                    increment_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
+                    inc_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
                   fi
                 else
                   if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
                     if [ "${audit_mode}" = 1 ];then
-                      increment_insecure "User \"${check_user}\" has no home directory"
+                      inc_insecure "User \"${check_user}\" has no home directory"
                     fi
                   fi
                 fi
@@ -86,7 +86,7 @@ audit_home_ownership () {
           if [ "${found}" = 0 ]; then
             if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
               if [ "${audit_mode}" = 1 ];then
-                increment_insecure "User \"${check_user}\" has no home directory defined"
+                inc_insecure "User \"${check_user}\" has no home directory defined"
               fi
             else
               if [ -d "${home_dir}" ]; then
@@ -95,12 +95,12 @@ audit_home_ownership () {
                 dir_owner=$( eval "${command}" )
                 if [ "${dir_owner}" != "${check_user}" ]; then
                   if [ "${audit_mode}" = 1 ];then
-                    increment_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
+                    inc_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
                   fi
                 else
                   if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
                     if [ "${audit_mode}" = 1 ];then
-                      increment_insecure "User \"${check_user}\" has no home directory"
+                      inc_insecure "User \"${check_user}\" has no home directory"
                     fi
                   fi
                 fi
@@ -126,7 +126,7 @@ audit_home_ownership () {
             if test -r "${home_dir}"; then
               if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
                 if [ "${audit_mode}" = 1 ];then
-                  increment_insecure "User \"${check_user}\" has no home directory defined"
+                  inc_insecure "User \"${check_user}\" has no home directory defined"
                 fi
               else
                 if [ -d "${home_dir}" ]; then
@@ -135,12 +135,12 @@ audit_home_ownership () {
                   dir_owner=$( eval "${command}" )
                   if [ "${dir_owner}" != "${check_user}" ]; then
                     if [ "${audit_mode}" = 1 ];then
-                      increment_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
+                      inc_insecure "Home Directory for \"${check_user}\" is owned by \"${dir_owner}\""
                     fi
                   else
                     if [ -z "${home_dir}" ] || [ "${home_dir}" = "/" ]; then
                       if [ "${audit_mode}" = 1 ];then
-                        increment_insecure "User \"${check_user}\" has no home directory"
+                        inc_insecure "User \"${check_user}\" has no home directory"
                       fi
                     fi
                   fi

@@ -21,19 +21,19 @@ check_azure_basic_authentication_publishing_credential_value () {
   correct_value="${7}"
   set_name="${8}"
   set_value="${9}"
+  print_function "check_azure_basic_authentication_publishing_credential_value"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function "check_azure_basic_authentication_publishing_credential_value"
   check_message  "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az resource show --name \"${resource_name}\" --resource-group \"${resource_group}\" --resource-type \"${resource_type}\" --parent \"sites/${app_name}\" --query \"${query_string}\" --output tsv 2> /dev/null"
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -47,7 +47,7 @@ check_azure_basic_authentication_publishing_credential_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -59,7 +59,7 @@ check_azure_basic_authentication_publishing_credential_value () {
         esac
       fi
     else
-      increment_secure "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

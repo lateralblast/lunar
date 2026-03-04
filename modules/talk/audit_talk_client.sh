@@ -23,7 +23,7 @@ audit_talk_client () {
   string="Talk Client"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    check_linux_package "uninstall"   "talk"
+    check_linux_package "uninstall" "talk"
   else
     na_message "${string}"
   fi

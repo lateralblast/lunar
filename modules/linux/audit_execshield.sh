@@ -26,7 +26,7 @@ audit_execshield () {
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       if [ "${os_version}" -gt 4 ]; then
-        check_linux_package "install" "kernel-PAE"
+        check_linux_package      "install"          "kernel-PAE"
         check_file_value    "is" "/etc/sysctl.conf" "kernel.exec-shield" "eq" "1" "hash"
         check_file_value    "is" "/etc/sysctl.conf" "fs.suid.dumpable"   "eq" "0" "hash"
       fi

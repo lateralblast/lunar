@@ -10,11 +10,11 @@
 #.
 
 check_osx_systemsetup () {
-  print_function "check_osx_systemsetup"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 12 ]; then
       param="${1}"
       value="${2}"
+      print_function "check_osx_systemsetup"
       log_file="systemsetup_${param}.log"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
@@ -40,13 +40,13 @@ check_osx_systemsetup () {
         command_message "${command}"
         check=$( eval   "${command}" )
         if [ "${check}" != "${value}" ]; then
-          increment_insecure "Parameter \"${param}\" not set to \"${value}\""
+          inc_insecure "Parameter \"${param}\" not set to \"${value}\""
           update_log_file  "${log_file}" "${check_file}"
           lockdown_command="systemsetup -${param} ${value}"
           lockdown_message="Parameter \"${param}\" to \"${value}\""
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure "Parameter \"${param}\" is set to \"${value}\""
+          inc_secure "Parameter \"${param}\" is set to \"${value}\""
         fi
       else
         restore_file="${restore_dir}/${log_file}"

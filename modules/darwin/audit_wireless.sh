@@ -20,7 +20,7 @@ audit_wireless () {
   check_message "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-      verbose_message "Requires sudo to check" "notice"
+      notice_message "Requires sudo to check"
       return
     fi
     if [ "${os_name}" = "Darwin" ] && [ "${os_version}" -ge 14 ]; then
@@ -34,31 +34,31 @@ audit_wireless () {
       # answer="/System/Library/CoreServices/MenuExtras/AirPort.menu"
       command="defaults read com.apple.systemuiserver menuExtras 2> /dev/null | grep \"AirPort.menu\" | sed \"s/[ ,\\\",\\\,]//g\" | grep -c \"AirPort\" |sed \"s/ //g\""
       command_message "${command}"
-      check=$( eval "${command}" )
+      check=$( eval   "${command}" )
       if [ "${check}" = "0" ]; then
-        increment_secure   "Wireless status menu is not enabled"
+        inc_secure   "Wireless status menu is not enabled"
       else
-        increment_insecure "Wireless status menu is enabled"
+        inc_insecure "Wireless status menu is enabled"
       fi
     fi
   else
     if [ "${os_name}" = "Linux" ]; then
       command="command -v nmcli 2> /dev/null | sed \"s/ //g\""
       command_message "${command}"
-      check=$( eval "${command}" )
+      check=$( eval   "${command}" )
       if [ "${check}" = "1" ]; then
         command="nmcli radio all | grep -c enabled"
         command_message "${command}"
-        check=$( eval "${command}" )
+        check=$( eval   "${command}" )
       else
         command="find /sys/class/net/*/ -type d -name wireless | wc -l | sed \"s/ //g\""
         command_message "${command}"
-        check=$( eval "${command}" )
+        check=$( eval   "${command}" )
       fi
       if [ "${check}" = "0" ]; then
-        increment_secure   "Wireless is enabled"
+        inc_secure   "Wireless is enabled"
       else
-        increment_insecure "Wireless not enabled"
+        inc_insecure "Wireless not enabled"
       fi
     else
       na_message "${string}"

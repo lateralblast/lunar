@@ -34,13 +34,13 @@ audit_sticky_bit () {
         for check_dir in ${file_list}; do
           lockdown_command="sudo chmod +t ${check_dir}"
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Sticky bit not set on \"${check_dir}\""
-            verbose_message    "${lockdown_command}" "fix"
+            inc_insecure "Sticky bit not set on \"${check_dir}\""
+            fix_message  "${lockdown_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
             update_log_file "${log_file}" "${check_dir}"
-            verbose_message "Sticky bit on \"${check_dir}\"" "set"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            set_message     "Sticky bit on \"${check_dir}\""
+            exec_lockdown   "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
           if [ "${ansible_mode}" = 1 ]; then
             echo ""
@@ -51,7 +51,7 @@ audit_sticky_bit () {
             echo ""
           else
             lockdown_message="Sticky bit from \"${check_dir}\""
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         done
         if [ "${audit_mode}" = 2 ]; then

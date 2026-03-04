@@ -28,7 +28,7 @@ audit_pam_rhosts () {
       else
         if [ -f "${check_file}" ]; then
           command="grep -v \"^#\" \"${check_file}\" | grep \"${pam_module}\" | head -1 | wc -l | sed \"s/ //g\""
-          command_message "${command}"
+          command_message   "${command}"
           pam_check=$( eval "${command}" )
           if [ "${ansible_mode}" = 1 ]; then
             ansible_counter=$((ansible_counter+1))
@@ -49,40 +49,40 @@ audit_pam_rhosts () {
           fi
           if [ "${pam_check}" = "1" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Rhost authentication enabled in \"${check_file}\""
-              verbose_message    "sed -e 's/^.*${pam_module}/#&/' < ${check_file} > ${temp_file}" "fix"
-              verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-              verbose_message    "rm ${temp_file}" "fix"
+              inc_insecure "Rhost authentication enabled in \"${check_file}\""
+              fix_message  "sed -e 's/^.*${pam_module}/#&/' < ${check_file} > ${temp_file}"
+              fix_message  "cat ${temp_file} > ${check_file}"
+              fix_message  "rm ${temp_file}"
             else
               log_file="${work_dir}${check_file}"
               if [ ! -f "${log_file}" ]; then
-                verbose_message "File ${check_file} to ${work_dir}${check_file}" "save"
+                save_message "File ${check_file} to ${work_dir}${check_file}"
                 command="find \"${check_file}\" | cpio -pdm \"${work_dir}\" 2> /dev/null"
-                command_message "${command}"
+                command_message   "${command}"
                 file_list=$( eval "${command}" )
               fi
-              verbose_message "Rhost authentication to disabled in ${check_file}" "set"
+              set_message "Rhost authentication to disabled in ${check_file}"
               command="sed -e 's/^.*${pam_module}/#&/' \"${check_file}\" > \"${temp_file}\""
-              command_message "${command}"
+              command_message   "${command}"
               file_list=$( eval "${command}" )
               command="cat \"${temp_file}\" > \"${check_file}\""
-              command_message "${command}"
+              command_message   "${command}"
               file_list=$( eval "${command}" )
               if [ -f "${temp_file}" ]; then
                 rm "${temp_file}"
               fi
               if [ "${os_version}" != "11" ]; then
                 command="pkgchk -f -n -p \"${check_file}\" 2> /dev/null"
-                command_message "${command}"
+                command_message   "${command}"
                 file_list=$( eval "${command}" )
               else
                 command="pkg fix $( pkg search \"${check_file}\" | grep pkg | awk '{print \$4}' )"
-                command_message "${command}"
+                command_message   "${command}"
                 file_list=$( eval "${command}" )
               fi
             fi
           else
-            increment_secure "Rhost authentication disabled in \"${check_file}\""
+            inc_secure "Rhost authentication disabled in \"${check_file}\""
           fi
         fi
       fi
@@ -117,14 +117,14 @@ audit_pam_rhosts () {
             fi
             if [ "${pam_check}" = "1" ]; then
               if [ "${audit_mode}" = 1 ]; then
-                increment_insecure  "Rhost authentication enabled in \"${check_file}\""
-                verbose_message     "sed -e 's/^.*rhosts_auth/#&/' < ${check_file} > ${temp_file}" "fix"
-                verbose_message     "cat ${temp_file} > ${check_file}" "fix"
-                verbose_message     "rm ${temp_file}" "fix"
+                inc_insecure  "Rhost authentication enabled in \"${check_file}\""
+                fix_message  "sed -e 's/^.*rhosts_auth/#&/' < ${check_file} > ${temp_file}"
+                fix_message  "cat ${temp_file} > ${check_file}"
+                fix_message  "rm ${temp_file}"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                backup_file     "${check_file}"
-                verbose_message "Rhost authentication to disabled in \"${check_file}\"" "set"
+                backup_file "${check_file}"
+                set_message "Rhost authentication to disabled in \"${check_file}\""
                 command="sed -e 's/^.*rhosts_auth/#&/' < \"${check_file}\" > \"${temp_file}\""
                 command_message "${command}"
                 file_list=$( eval "${command}" )
@@ -136,7 +136,7 @@ audit_pam_rhosts () {
                 fi
               fi
             else
-              increment_secure "Rhost authentication disabled in \"${check_file}\""
+              inc_secure "Rhost authentication disabled in \"${check_file}\""
             fi
           fi
         done

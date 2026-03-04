@@ -19,12 +19,12 @@ audit_safari_tracking () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-        verbose_message "Requires sudo to check" "notice"
+        notice_message "Requires sudo to check"
         return
       fi
       if [ "${audit_mode}" != 2 ]; then
         command="ls /Users | grep -v Shared"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.Safari" "BlockStoragePolicy"                               "2"        "int"  "${user_name}"

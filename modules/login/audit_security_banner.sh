@@ -32,12 +32,12 @@ audit_security_banner () {
       group_name="root"
     fi
     check_file="/etc/motd"
-    check_file_exists "${check_file}" "yes"
+    check_file_exists  "${check_file}" "yes"
     if [ -f "${check_file}" ]; then
       check_file_perms "${check_file}" "0644" "${user_name}" "${group_name}"
     fi
     check_file="/etc/issue"
-    check_file_exists "${check_file}" "yes"
+    check_file_exists  "${check_file}" "yes"
     if [ -f "${check_file}" ]; then
       check_file_perms "${check_file}" "0644" "${user_name}" "${group_name}"
     fi

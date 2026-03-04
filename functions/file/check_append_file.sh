@@ -38,10 +38,10 @@ check_append_file () {
       insecure_string="Parameter \"${parameter}\" is not set in \"${check_file}\""
       check_message "${secure_string}"
       if [ ! -f "${check_file}" ]; then
-        increment_insecure "Parameter \"${parameter}\" does not exist in \"${check_file}\""
+        inc_insecure     "Parameter \"${parameter}\" does not exist in \"${check_file}\""
         lockdown_command="echo \"${parameter}\" >> ${check_file}"
         lockdown_message="Parameter \"${parameter}\" in \"${check_file}\""
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         if [ "${parameter}" ]; then
           if [ "${ansible_mode}" = 1 ]; then
             echo ""
@@ -64,16 +64,16 @@ check_append_file () {
             echo ""
           fi
           command="grep -v \"^${comment_value}\" \"${check_file}\" | grep -- \"${parameter}\" | uniq | wc -l | sed \"s/ //g\""
-          command_message "${command}"
+          command_message     "${command}"
           check_value=$( eval "${command}" )
           if [ "${check_value}" != "1" ]; then
-            increment_insecure "${insecure_string}"
-            backup_file        "${check_file}"
+            inc_insecure     "${insecure_string}"
+            backup_file      "${check_file}"
             lockdown_command="echo \"${parameter}\" >> ${check_file}"
             lockdown_message="Parameter \"${parameter}\" in \"${check_file}\""
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           else
-            increment_secure "${secure_string}"
+            inc_secure       "${secure_string}"
           fi
         fi
       fi

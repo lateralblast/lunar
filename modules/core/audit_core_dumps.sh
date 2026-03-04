@@ -32,27 +32,27 @@ audit_core_dumps () {
         cores_dir="/var/cores"
         check_file="/etc/coreadm.conf"
         command="coreadm | head -1 | awk '{print \$5}' | grep \"/var/cores\""
-        command_message "${command}"
+        command_message     "${command}"
         cores_check=$( eval "${command}" )
         if [ -z "${cores_check}" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Cores are not restricted to a private directory"
+            inc_insecure "Cores are not restricted to a private directory"
           else
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "Making sure restricted to a private directory" "set"
               if [ -f "${check_file}" ]; then
                 verbose_message "File \"${check_file}\" to \"${work_dir}${check_file}\"" "save"
-                find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
+                find  "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
               else
                 touch "${check_file}"
-                find "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
+                find  "${check_file}" | cpio -pdm "${work_dir}" 2> /dev/null
                 if [ -f "${check_file}" ]; then
                   rm "${check_file}"
                 fi
                 log_file="${work_dir}/${check_file}"
                 coreadm | sed -e 's/^ *//g' | sed 's/ /_/g' | sed 's/:_/:/g' | awk -F: '{ print $1" "$2 }' | while read -r option value; do
                   if [ "$option" = "global_core_file_pattern" ]; then
-                    echo "COREADM_GLOB_PATTERN=${value}" > "${log_file}"
+                    echo "COREADM_GLOB_PATTERN=${value}" >  "${log_file}"
                   fi
                   if [ "$option" = "global_core_file_content" ]; then
                     echo "COREADM_GLOB_CONTENT=${value}" >> "${log_file}"
@@ -115,7 +115,7 @@ audit_core_dumps () {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Cores are restricted to a private directory"
+            inc_secure "Cores are restricted to a private directory"
           fi
         fi
         if [ "${audit_mode}" = 2 ]; then
@@ -128,13 +128,13 @@ audit_core_dumps () {
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
-      verbose_message     "Core Dumps" "check"
+      check_message       "Core Dumps"
       check_linux_service "kdump"      "off"
-      check_append_file   "/etc/security/limits.conf" "* hard core 0"     "hash"
-      check_file_value    "is" "/etc/sysctl.conf"     "fs.suid_dumpable"  "eq"  "0" "hash"
+      check_append_file                "/etc/security/limits.conf" "* hard core 0"              "hash"
+      check_file_value    "is"         "/etc/sysctl.conf"          "fs.suid_dumpable" "eq"  "0" "hash"
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
-      check_file_value    "is" "/etc/sysctl.conf"     "kern.coredump"     "eq"  "0" "hash"
+      check_file_value    "is"         "/etc/sysctl.conf"          "kern.coredump"    "eq"  "0" "hash"
     fi
   else
     na_message "${string}"

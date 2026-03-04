@@ -16,7 +16,7 @@ audit_debug_logging () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      audit_logadm_value "connlog"            "daemon.debug"
+      audit_logadm_value "connlog" "daemon.debug"
     fi
   else
     na_message "${string}"

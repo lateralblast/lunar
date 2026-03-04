@@ -22,10 +22,10 @@ audit_aws_ec2 () {
   command_message   "${command}"
   instances=$( eval "${command}" )
   if [ -z "${instances}" ]; then
-    increment_secure "There are no instances using the default security group"
+    inc_secure "There are no instances using the default security group"
   else
     for instance in ${instances}; do
-      increment_insecure "The instance \"${instance}\" is using the default security group"
+      inc_insecure "The instance \"${instance}\" is using the default security group"
     done
   fi
   command="aws ec2 describe-instances --region \"${aws_region}\" --query \"Reservations[].Instances[].InstanceId\" --output text"
@@ -36,9 +36,9 @@ audit_aws_ec2 () {
     command_message "${command}"
     profile=$( eval "${command}" )
     if [ -n "${profile}" ]; then
-      increment_secure   "Instances \"${instance}\" uses an IAM profile"
+      inc_secure   "Instances \"${instance}\" uses an IAM profile"
     else
-      increment_insecure "Warning:   Instance \"${instance}\" does not use an IAM profile"
+      inc_insecure "Warning:   Instance \"${instance}\" does not use an IAM profile"
     fi
   done
   command="aws ec2 describe-images --region \"${aws_region}\" --owners self --query \"Images[].ImageId\" --output text"
@@ -49,9 +49,9 @@ audit_aws_ec2 () {
     command_message "${command}"
     public=$( eval  "${command}" )
     if [ -z "${public}" ]; then
-      increment_secure   "Image \"${image}\" is not publicly shared"
+      inc_secure   "Image \"${image}\" is not publicly shared"
     else
-      increment_insecure "Image \"${image}\" is publicly shared"
+      inc_insecure "Image \"${image}\" is publicly shared"
       verbose_message    "aws ec2 modify-image-attribute --region ${aws_region} --image-id ${image} --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" "fix"
     fi
   done
@@ -63,18 +63,18 @@ audit_aws_ec2 () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "EBS Volume \"${volume}\" is encrypted"
+      inc_secure   "EBS Volume \"${volume}\" is encrypted"
     else
-      increment_insecure "EBS Volume \"${volume}\" is not encrypted"
+      inc_insecure "EBS Volume \"${volume}\" is not encrypted"
     fi
     # Check if KMS is being used
     command="aws ec2 describe-volumes --region \"${aws_region}\" --volume-ids \"${volume}\" --query 'Volumes[].KmsKeyId' --output text | cut -f2 -d/"
     command_message "${command}"
     key_id=$( eval  "${command}" )
     if [ -n "${key_id}" ]; then
-      increment_secure   "EBS Volume \"${volume}\" is encrypted with a KMS key"
+      inc_secure    "EBS Volume \"${volume}\" is encrypted with a KMS key"
     else
-      increment_insecure "EBS Volume \"${volume}\" is encrypted not with a KMS key"
+      inc_insecure  "EBS Volume \"${volume}\" is encrypted not with a KMS key"
     fi
   done
 }

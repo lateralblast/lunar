@@ -25,8 +25,8 @@ audit_aws_rec_inspector () {
     assessments=$( eval "${command}" )
     if [ "${assessments}" ]; then
       command="aws inspector list-findings --query nextToken --output text | grep -v None"
-      command_message "${command}"
-      token=$( eval   "${command}" )
+      command_message  "${command}"
+      token=$( eval    "${command}" )
       command="aws inspector list-findings --query findingArns --output text | grep -v None"
       command_message  "${command}"
       findings=$( eval "${command}" )
@@ -35,10 +35,10 @@ audit_aws_rec_inspector () {
         command_message  "${command}"
         instance=$( eval "${command}" )
         command="aws inspector describe-findings --finding-arns \"${finding}\" --query findings[].attributes[?key==\\\`CVE_ID\\\`].value --output text"
-        command_message "${command}"
-        cve_id=$( eval  "${command}" )
+        command_message  "${command}"
+        cve_id=$( eval   "${command}" )
         if [ "${cve_id}" ]; then
-          increment_insecure "Instance \"${instance}\" is vulnerable to \"${cve_id}\""
+          inc_insecure "Instance \"${instance}\" is vulnerable to \"${cve_id}\""
         fi
       done
       if [ -n "${token}" ]; then
@@ -51,10 +51,10 @@ audit_aws_rec_inspector () {
             command_message  "${command}"
             instance=$( eval "${command}" )
             command="aws inspector describe-findings --finding-arns \"${finding}\" --query findings[].attributes[?key==\\\`CVE_ID\\\`].value --output text"
-            command_message "${command}"
-            cve_id=$( eval  "${command}" )
+            command_message  "${command}"
+            cve_id=$( eval   "${command}" )
             if [ "${cve_id}" ]; then
-              increment_insecure "Instance \"${instance}\" is vulnerable to \"${cve_id}\""
+              inc_insecure "Instance \"${instance}\" is vulnerable to \"${cve_id}\""
             fi
           done
           command="aws inspector list-findings --next-token \"${token}\" --query nextToken --output text |grep -v None"
@@ -64,6 +64,6 @@ audit_aws_rec_inspector () {
       fi
     fi
   else
-    increment_insecure "No inspector templates exist"
+    inc_insecure "No inspector templates exist"
   fi
 }

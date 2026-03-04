@@ -20,14 +20,14 @@ audit_keychain_lock () {
     timeout="21600"
     if [ "${audit_mode}" != 2 ]; then
       for check_value in timeout lock-on-sleep; do
-       verbose_message "Keychain has \"${check_value}\" set" "check"
+        check_message "Keychain has \"${check_value}\" set"
         command="security show-keychain-info 2> /dev/null | grep \"${check_value}\" | grep -c \"${timeout}\" | sed 's/ //g'"
         command_message "${command}"
         actual_value=$( eval "${command}" )
         if [ "${actual_value}" = "0" ]; then
-          increment_insecure "Keychain \"${check_value}\" does not have \"${timeout}\" set"
+          inc_insecure "Keychain \"${check_value}\" does not have \"${timeout}\" set"
         else
-          increment_secure   "Keychain \"${check_value}\" has \"${timeout}\" set"
+          inc_secure   "Keychain \"${check_value}\" has \"${timeout}\" set"
         fi
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
@@ -50,7 +50,7 @@ audit_keychain_lock () {
           echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          execute_lockdown "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"
+          exec_lockdown "sudo /usr/bin/security authorizationdb write system.login.screensaver use-login-window-ui" "Disable ${string}"
         fi
       done
     fi

@@ -24,9 +24,9 @@ check_azure_monitoring_diagnostics_value () {
     notice_message "${stderr}"
   else
     if [ -n "${stdout}" ]; then
-      increment_secure   "Resource logging is enabled for ${resource_id}"
+      inc_secure   "Resource logging is enabled for ${resource_id}"
     else
-      increment_insecure "Resource logging is not enabled for ${resource_id}"
+      inc_insecure "Resource logging is not enabled for ${resource_id}"
     fi
   fi
 }

@@ -25,28 +25,28 @@ audit_aws_s3 () {
       command_message "${command}"
       grants=$( eval  "${command}" )
       if [ -n "${grants}" ]; then
-        increment_insecure "Bucket \"${bucket}\" grants access to Principal \"${user}\""
+        inc_insecure  "Bucket \"${bucket}\" grants access to Principal \"${user}\""
       else
-        increment_secure   "Bucket \"${bucket}\" does not grant access to Principal \"${user}\""
+        inc_secure    "Bucket \"${bucket}\" does not grant access to Principal \"${user}\""
       fi
     done
     command="aws s3api get-bucket-logging --region \"${aws_region}\" --bucket \"${bucket}\""
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      increment_insecure "Bucket ${bucket} does not have access logging enabled"
-      verbose_message    "aws s3api put-bucket-acl --region \"${aws_region}\" --bucket \"${bucket}\" --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" "fix"
-      verbose_message    "cd aws ; aws s3api put-bucket-logging --region \"${aws_region}\" --bucket \"${bucket}\" --bucket-logging-status file://server-access-logging.json"
+      inc_insecure    "Bucket ${bucket} does not have access logging enabled"
+      verbose_message "aws s3api put-bucket-acl --region \"${aws_region}\" --bucket \"${bucket}\" --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" "fix"
+      verbose_message "cd aws ; aws s3api put-bucket-logging --region \"${aws_region}\" --bucket \"${bucket}\" --bucket-logging-status file://server-access-logging.json"
     else
-      increment_secure   "Bucket \"${bucket}\" has access logging enabled"
+      inc_secure      "Bucket \"${bucket}\" has access logging enabled"
     fi
     command="aws s3api get-bucket-versioning --bucket \"${bucket}\" | grep Enabled"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Bucket \"${bucket}\" has versioning enabled"
+      inc_secure    "Bucket \"${bucket}\" has versioning enabled"
     else
-      increment_insecure "Bucket \"${bucket}\" does not have versioning enabled"
+      inc_insecure  "Bucket \"${bucket}\" does not have versioning enabled"
     fi
   done
 }

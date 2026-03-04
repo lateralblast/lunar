@@ -10,10 +10,10 @@
 #.
 
 check_no() {
-  print_function "check_no"
   if [ "${os_name}" = "AIX" ]; then
     parameter_name="${1}"
     correct_value="${2}"
+    print_function "check_no"
     log_file="${parameter_name}.log"
     get_command="no -a |grep '${parameter_name} ' |cut -f2 -d= |sed 's/ //g' |grep '${correct_value}'"
     set_command="no -p -o ${parameter_name}=${correct_value}"
@@ -39,13 +39,13 @@ check_no() {
         echo ""
       fi
       if [ "${actual_value}" != "${correct_value}" ]; then
-        increment_insecure "Parameter \"${parameter_name}\" is not \"${correct_value}\""
+        inc_insecure     "Parameter \"${parameter_name}\" is not \"${correct_value}\""
         update_log_file  "${log_file}" "${actual_value}"
         lockdown_command="no -p -o ${parameter_name}=${correct_value}"
         lockdown_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        increment_secure "Parameter \"${parameter_name}\" is \"${correct_value}\""
+        inc_secure       "Parameter \"${parameter_name}\" is \"${correct_value}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

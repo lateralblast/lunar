@@ -17,7 +17,7 @@ audit_dhcpsd () {
   check_message "${string}"
   if [ "${dhcpsd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      check_rctcp     "dhcpsd" "off"
+      check_rctcp "dhcpsd" "off"
     fi
   else
     na_message "${string}"

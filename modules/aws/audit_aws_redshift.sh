@@ -29,47 +29,47 @@ audit_aws_redshift () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Redshift instance \"${db}\" has version upgrades enabled"
+      inc_secure      "Redshift instance \"${db}\" has version upgrades enabled"
     else
-      increment_insecure "Redshift instance \"${db}\" does not have version upgrades enabled"
-      verbose_message    "aws redshift modify-cluster --region \"${aws_region}\" --cluster-identifier \"${db}\" --allow-version-upgrade" "fix"
+      inc_insecure    "Redshift instance \"${db}\" does not have version upgrades enabled"
+      verbose_message "aws redshift modify-cluster --region \"${aws_region}\" --cluster-identifier \"${db}\" --allow-version-upgrade" "fix"
     fi
     # Check if audit logging is enabled
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" | grep true"
     command_message "${command}"
     check=$( eval "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Redshift instance \"${db}\" has logging enabled"
+      inc_secure      "Redshift instance \"${db}\" has logging enabled"
     else
-      increment_insecure "Redshift instance \"${db}\" does not have logging enabled"
-      verbose_message    "aws redshift enable-logging --region \"${aws_region}\" --cluster-identifier \"${db}\" --bucket-name <aws-redshift-audit-logs>" "fix"
+      inc_insecure    "Redshift instance \"${db}\" does not have logging enabled"
+      verbose_message "aws redshift enable-logging --region \"${aws_region}\" --cluster-identifier \"${db}\" --bucket-name <aws-redshift-audit-logs>" "fix"
     fi
     # Check if encryption is enabled
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" --query 'Clusters[].Encrypted' | grep true"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Redshift instance \"${db}\" has encryption enabled"
+      inc_secure   "Redshift instance \"${db}\" has encryption enabled"
     else
-      increment_insecure "Redshift instance \"${db}\" does not have encryption enabled"
+      inc_insecure "Redshift instance \"${db}\" does not have encryption enabled"
     fi
     # Check if KMS keys are being used
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" --query 'Clusters[].[Encrypted,KmsKeyId]' | grep true"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Redshift instance \"${db}\" is using KMS keys"
+      inc_secure    "Redshift instance \"${db}\" is using KMS keys"
     else
-      increment_insecure "Redshift instance \"${db}\" is not using KMS keys"
+      inc_insecure  "Redshift instance \"${db}\" is not using KMS keys"
     fi
     # Check if EC2-VPC platform is being used rather than EC2-Classic
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" --query 'Clusters[].VpcId' --output text"
     command_message "${command}"
-    check=$( eval "${command}" )
+    check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Redshift instance \"${db}\" is using the EC2-VPC platform"
+      inc_secure    "Redshift instance \"${db}\" is using the EC2-VPC platform"
     else
-      increment_insecure "Redshift instance \"${db}\" may be using the EC2-Classic platform"
+      inc_insecure  "Redshift instance \"${db}\" may be using the EC2-Classic platform"
     fi
     # Check that parameter groups require SSL
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" --query 'Clusters[].ClusterParameterGroups[].ParameterGroupName[]' --output text"
@@ -80,9 +80,9 @@ audit_aws_redshift () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ -n "${check}" ]; then
-        increment_secure   "Redshift instance \"${db}\" parameter group \"$group\" is using SSL"
+        inc_secure    "Redshift instance \"${db}\" parameter group \"$group\" is using SSL"
       else
-        increment_insecure "Redshift instance \"${db}\" parameter group \"$group\" is not using SSL"
+        inc_insecure  "Redshift instance \"${db}\" parameter group \"$group\" is not using SSL"
       fi
     done
     # Check if Redshift is publicly available
@@ -90,9 +90,9 @@ audit_aws_redshift () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      increment_secure   "Redshift instance \"${db}\" is not publicly available"
+      inc_secure    "Redshift instance \"${db}\" is not publicly available"
     else
-      increment_insecure "Redshift instance \"${db}\" is publicly available"
+      inc_insecure  "Redshift instance \"${db}\" is publicly available"
     fi
   done
 }

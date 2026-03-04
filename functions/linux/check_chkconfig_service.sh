@@ -14,11 +14,11 @@
 #.
 
 check_chkconfig_service () {
-  print_function "check_chkconfig_service"
   if [ "${os_name}" = "VMkernel" ]; then
     service_name="${1}"
     service_level="${2}"
     correct_status="${3}"
+    print_function "check_chkconfig_service"
     chk_config="/bin/chkconfig"
     log_file="chkconfig.log"
     actual_status=$( ${chk_config} --list "${service_name}" | awk '{print $2}' )
@@ -37,15 +37,15 @@ check_chkconfig_service () {
     else
       if [ "${actual_status}" = "on" ] || [ "${actual_status}" = "off" ]; then
        string="Service \"${service_name}\" is \"${correct_status}\""
-       verbose_message "${string}" "check"
+       check_message "${string}"
         if [ "${actual_status}" != "${correct_status}" ]; then
-          increment_insecure "Service \"${service_name}\" is not \"${correct_status}\""
+          inc_insecure "Service \"${service_name}\" is not \"${correct_status}\""
           update_log_file  "${log_file}" "${service_name},${actual_status}"
           lockdown_command="${chk_config} ${service_name} ${correct_status}"
           lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure  "${string}"
+          inc_secure "${string}"
         fi
       fi
     fi
@@ -56,7 +56,7 @@ check_chkconfig_service () {
     correct_status="${3}"
     secure_string="Sevice \"${service_name}\" at run level \"${service_level}\" at rune level \"${service_level}\" is \"${correct_status}\""
     insecure_string="Service \"${service_name}\" at run level \"${service_level}\" at rune level \"${service_level}\" is \"${correct_status}\""
-    verbose_message "${secure_string}" "check"
+    check_message "${secure_string}"
     if [ "${correct_status}" = "on" ]; then
       enabled="yes"
     else
@@ -100,13 +100,13 @@ check_chkconfig_service () {
           echo ""
         fi
         if [ "${actual_status}" != "${correct_status}" ]; then
-          increment_insecure "${insecure_string}"
-          update_log_file "${log_file}" "${service_name},${service_level},${actual_status}"
+          inc_insecure "${insecure_string}"
+          update_log_file  "${log_file}" "${service_name},${service_level},${actual_status}"
           lockdown_command="${chk_config} --level ${service_level} ${service_name} ${correct_status}"
           lockdown_message="Service ${service_name} at run level ${service_level} to ${correct_status}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         else
-          increment_secure "${secure_string}"
+          inc_secure "${secure_string}"
         fi
       fi
     fi

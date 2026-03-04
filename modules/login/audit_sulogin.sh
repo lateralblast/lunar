@@ -32,20 +32,20 @@ audit_sulogin () {
       if [ "${ttys_test}" != "insecure" ]; then
         if [ "${audit_mode}" != 2 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Single user mode does not require a password"
+            inc_insecure "Single user mode does not require a password"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            verbose_message  "Setting:   Single user mode to require a password" "set"
-            backup_file      "${check_file}"
+            set_message "Single user mode to require a password"
+            backup_file "${check_file}"
             lockdown_command="awk '($4 == \"console\") { $5 = \"insecure\" } { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Single user login requires password"
+          inc_secure "Single user login requires password"
         fi
       fi
     fi
@@ -63,17 +63,17 @@ audit_sulogin () {
           lockdown_message="Single user mode to require authentication"
           lockdown_command="awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm $temp_file"
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "No Authentication required for single usermode"
-            verbose_message    "${lockdown_command}" "fix"
+            inc_insecure "No Authentication required for single usermode"
+            fix_message  "${lockdown_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file      "${check_file}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            backup_file   "${check_file}"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Single usermode requires authentication"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            inc_secure "Single usermode requires authentication"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
           if [ "${audit_mode}" = 2 ]; then
             restore_file   "${check_file}" "${restore_dir}"

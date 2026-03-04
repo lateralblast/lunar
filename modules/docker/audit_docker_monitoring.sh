@@ -24,15 +24,15 @@ audit_docker_monitoring () {
       docker_bin=$( command -v docker )
       if [ "${docker_bin}" ]; then
         string="Docker Healthcheck"
-        verbose_message "${string}" "check"
-        check_dockerd equal config Health ""
+        check_message "${string}"
+        check_dockerd "equal" "config" "Health" ""
         docker_ids=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}' 2> /dev/null )
         for docker_id in ${docker_ids}; do
           check=$( docker inspect --format='{{ .Config.Healthcheck }}' "${docker_id}" )
           if [ ! "${check}" = "<nil>" ]; then
-            increment_secure   "Docker instance \"${docker_id}\" has a Healthcheck instruction"
+            inc_secure   "Docker instance \"${docker_id}\" has a Healthcheck instruction"
           else
-            increment_insecure "Docker instance \"${docker_id}\" has no Healthcheck instruction"
+            inc_insecure "Docker instance \"${docker_id}\" has no Healthcheck instruction"
           fi
         done
       fi

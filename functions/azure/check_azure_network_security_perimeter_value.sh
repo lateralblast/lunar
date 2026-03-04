@@ -25,10 +25,10 @@ check_azure_network_security_perimeter_value () {
     command_message      "${command}"
     actual_value=$( eval "${command}" )
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure "Azure Network Security Perimeter \"${nsp_name}\" is associated with \"${correct_value}\""
+      inc_secure   "Azure Network Security Perimeter \"${nsp_name}\" is associated with \"${correct_value}\""
     else
-      increment_insecure "Azure Network Security Perimeter \"${nsp_name}\" is not associated with \"${correct_value}\""
-      fix_message "az network perimeter association create --perimeter-name <perimeter-name> --resource-group <resource-group> --association-name <association-name> --target-resource-id <target-resource-id>"
+      inc_insecure "Azure Network Security Perimeter \"${nsp_name}\" is not associated with \"${correct_value}\""
+      fix_message  "az network perimeter association create --perimeter-name <perimeter-name> --resource-group <resource-group> --association-name <association-name> --target-resource-id <target-resource-id>"
     fi
   fi
 }

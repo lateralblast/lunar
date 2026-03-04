@@ -29,17 +29,17 @@ audit_system_auth_password_hashing () {
         lockdown_command="sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure "Password strength settings not enabled in ${check_file}"
+            inc_insecure "Password strength settings not enabled in ${check_file}"
             verbose_message    "${lockdown_command}" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file      "${check_file}"
             lockdown_message="Password minimum length in \"${check_file}\""
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "Password strength settings enabled in \"${check_file}\""
+            inc_secure "Password strength settings enabled in \"${check_file}\""
           fi
         fi
       fi

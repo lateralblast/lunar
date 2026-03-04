@@ -10,10 +10,10 @@
 #.
 
 check_rctcp() {
-  print_function "check_rctcp"
   if [ "${os_name}" = "AIX" ]; then
     service_name="${1}"
     correct_value="${2}"
+    print_function "check_rctcp"
     if [ "${correct_value}" = "off" ]; then
       status_value="disabled"
     else
@@ -40,7 +40,7 @@ check_rctcp() {
       fi
       if [ "${actual_value}" != "${correct_value}" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Service \"${service_name}\" is not \"${correct_value}\""
+          inc_insecure "Service \"${service_name}\" is not \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
             fix_message "chrctcp -d ${service_name}"
             fix_message "stopsrc -s ${service_name}"
@@ -75,7 +75,7 @@ check_rctcp() {
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Service \"${service_name}\" is \"${correct_value}\""
+          inc_secure "Service \"${service_name}\" is \"${correct_value}\""
         fi
       fi
     else

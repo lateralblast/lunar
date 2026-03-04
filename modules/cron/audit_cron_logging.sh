@@ -17,8 +17,8 @@ audit_cron_logging () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
-      check_file_value  "is" "/etc/default/cron" "CRONLOG" "eq"  "YES" "hash"
-      check_file_perms  "/var/cron/log" "0640"   "root"    "root"
+      check_file_value  "is" "/etc/default/cron" "CRONLOG" "eq"   "YES"  "hash"
+      check_file_perms       "/var/cron/log"     "0640"    "root" "root"
     fi
   else
     na_message "${string}"

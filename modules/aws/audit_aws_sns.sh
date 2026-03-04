@@ -17,7 +17,7 @@ audit_aws_sns () {
   print_function  "audit_aws_sns"
   check_message   "SNS"
   command="aws sns list-topics --region \"${aws_region}\" --query 'Topics[].TopicArn' --output text"
-  command_message "${command}"
+  command_message    "${command}"
   topic_list=$( eval "${command}" )
   for topic in ${topic_list}; do
     # Check SNS topics have subscribers
@@ -25,18 +25,18 @@ audit_aws_sns () {
     command_message     "${command}"
     subscribers=$( eval "${command}" )
     if [ -z "${subscribers}" ]; then
-      increment_insecure "SNS topic \"${topic}\" has no subscribers"
+      inc_insecure "SNS topic \"${topic}\" has no subscribers"
     else
-      increment_secure   "SNS topic has subscribers, review subscribers"
+      inc_secure   "SNS topic has subscribers, review subscribers"
     fi
     #check SNS topics are not publicly accessible
     command="aws sns get-topic-attributes --region \"${aws_region}\" --topic-arn \"${topic}\" --query 'Attributes.Policy'  |grep -E \"\*|{\\\"AWS\\\":\\\"\*\\\"}\""
     command_message   "${command}"
     sns_check=$( eval "${command}" )
     if [ -n "${sns_check}" ]; then
-      increment_insecure "SNS topic \"${topic}\" is publicly accessible"
+      inc_insecure "SNS topic \"${topic}\" is publicly accessible"
     else
-      increment_secure   "SNS topic is not publicly accessible"
+      inc_secure   "SNS topic is not publicly accessible"
     fi
   done
 }

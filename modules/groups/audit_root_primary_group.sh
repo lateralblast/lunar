@@ -29,18 +29,18 @@ audit_root_primary_group () {
     if [ "${audit_mode}" != 2 ]; then
       if [ "${group_check}" != "0" ];then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Group \"${group_id}\" does not exist in group file \"${check_file}\""
-          verbose_message    "usermod -g 0 root" "fix"
+          inc_insecure "Group \"${group_id}\" does not exist in group file \"${check_file}\""
+          fix_message  "usermod -g 0 root"
         fi
         if [ "${audit_mode}" = 0 ];then
           log_file="${work_dir}/${log_file}"
           echo "${group_check}" > "${log_file}"
-          verbose_message "Primary group for root to root" "set"
+          set_message "Primary group for root to root"
           usermod -g 0 root
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Primary group for root is root"
+          inc_secure "Primary group for root is root"
         fi
       fi
     else

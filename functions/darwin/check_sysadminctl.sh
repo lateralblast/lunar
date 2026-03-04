@@ -10,10 +10,10 @@
 #.
 
 check_sysadminctl () {
-  print_function "check_sysadminctl"
   if [ "${os_name}" = "Darwin" ]; then
     param="${1}"
     value="${2}"
+    print_function "check_sysadminctl"
     log_file="sysadminctl.log"
     if [ "${value}" = "off" ]; then
       search_value="disabled"
@@ -49,17 +49,17 @@ check_sysadminctl () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ "${check}" != "1" ]; then
-        increment_insecure "Parameter \"${param}\" not set to \"${value}\""
-        fix_message        "sudo sysadminctl -${param} ${value}"
+        inc_insecure "Parameter \"${param}\" not set to \"${value}\""
+        fix_message  "sudo sysadminctl -${param} ${value}"
         if [ "${audit_mode}" = 0 ]; then
           update_log_file  "${log_file}" "${param},${other_value}"
           lockdown_message="Parameter \"${param}\" to \"${value}\""
           lockdown_command="${set_command}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Parameter \"${param}\" is set to \"${value}\""
+          inc_secure "Parameter \"${param}\" is set to \"${value}\""
         fi
       fi
     else

@@ -28,9 +28,9 @@ audit_amfi () {
         command_message "${command}"
         check_value=$( eval "${command}" )
         if [ "${check_value}" = "0" ]; then
-          increment_secure   "Apple Mobile File Integrity is not \"disabled\""
+          inc_secure   "Apple Mobile File Integrity is not \"disabled\""
         else
-          increment_insecure "Apple Mobile File Integrity is set to \"${check_value}\""
+          inc_insecure "Apple Mobile File Integrity is set to \"${check_value}\""
         fi
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
@@ -51,7 +51,7 @@ audit_amfi () {
         else
           lockdown_command="sudo /usr/sbin/nvram boot-args=\"\""
           lockdown_message="Enable ${string}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi

@@ -21,18 +21,18 @@ audit_azure_key_vault_rbac () {
   print_function "audit_azure_key_vault_rbac"
   check_message  "Azure Key Vault RBAC"
   command="az resource list --query \"[?type=='Microsoft.KeyVault/vaults'].name\" --output tsv"
-  command_message        "${command}"
-  resource_names=$( eval "${command}" 2> /dev/null )
-  if [ -z "${resource_names}" ]; then
+  command_message   "${command}"
+  res_names=$( eval "${command}" 2> /dev/null )
+  if [ -z "${res_names}" ]; then
     info_message "No Key Vaults found"
     return
   fi
-  for resource_name in ${resource_names}; do
-    command="az resource list --name \"${resource_name}\" --query \"[].resourceGroup\" --output tsv"
+  for res_name in ${res_names}; do
+    command="az resource list --name \"${res_name}\" --query \"[].resourceGroup\" --output tsv"
     command_message         "${command}"
-    resource_groups=$( eval "${command}" )
-    for resource_group in ${resource_groups}; do
-      check_azure_key_vault_value "${resource_name}" "${resource_group}" "properties.enableRbacAuthorization" "eq" "true" "--enable-rbac-authorization"
+    res_groups=$( eval "${command}" )
+    for res_group in ${res_groups}; do
+      check_azure_key_vault_value "${res_name}" "${res_group}" "properties.enableRbacAuthorization" "eq" "true" "--enable-rbac-authorization"
     done
   done
 }

@@ -26,7 +26,7 @@ audit_azure_security_contacts () {
   command_message       "${command}"
   contact_names=$( eval "${command}" )
   if [ -z "${contact_names}" ]; then
-    increment_insecure "No Azure Security Contacts found"
+    inc_insecure "No Azure Security Contacts found"
     verbose_message    "az security contact create --name <contact-name> --email <email-address> --notifications-by-role '{\"state\":\"On\",\"roles\":[\"Owner\"]}' --alert-notifications '{\"state\":\"On\",\"minimalSeverity\":\"Low\"}'" "fix"
   else
     for contact_name in ${contact_names}; do

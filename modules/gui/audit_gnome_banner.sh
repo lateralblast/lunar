@@ -35,8 +35,8 @@ audit_gnome_banner () {
             gdm_check=$( grep 'Security Message' "${check_file}" | cut -f3 -d= )
             if [ "${gdm_check}" != "/etc/issue" ]; then
               if [ "${audit_mode}" = 1 ]; then
-                increment_insecure "Warning banner not found in \"${check_file}\""
-                verbose_message "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> ${check_file}" "fix"
+                inc_insecure "Warning banner not found in \"${check_file}\""
+                fix_message  "echo \"   --title=\"Security Message\" --filename=/etc/issue\" >> ${check_file}"
               fi
               if [ "${audit_mode}" = 0 ]; then
                 backup_file "${check_file}"
@@ -51,7 +51,7 @@ audit_gnome_banner () {
             fi
             if [ "${file_entry}" = "" ]; then
               if [ "${audit_mode}" = 1 ]; then
-                increment_secure "Warning banner in \"${check_file}\""
+                inc_secure "Warning banner in \"${check_file}\""
               fi
             fi
           else
@@ -89,8 +89,8 @@ audit_gnome_banner () {
       if [ "${audit_mode}" != 2 ]; then
         if [ "${actual_value}" != "${warning_message}" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Warning banner not found in \"${check_file}\""
-            verbose_message    "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"${warning_message}\"" "fix"
+            inc_insecure "Warning banner not found in \"${check_file}\""
+            fix_message  "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -t string -s /apps/gdm/simple-greeter/banner_message_text \"${warning_message}\""
           fi
           if [ "${audit_mode}" = 0 ]; then
             verbose_message "Setting:   Warning banner to \"${warning_message}\""
@@ -100,7 +100,7 @@ audit_gnome_banner () {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Warning banner is set to \"${warning_message}\""
+            inc_secure "Warning banner is set to \"${warning_message}\""
           fi
         fi
       else
@@ -118,18 +118,18 @@ audit_gnome_banner () {
       if [ "${audit_mode}" != 2 ]; then
         if [ "${actual_value}" != "true" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Warning banner not found in \"${check_file}\""
-            verbose_message    "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true" "fix"
+            inc_insecure "Warning banner not found in \"${check_file}\""
+            fix_message  "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Warning banner to \"${warning_message}\"" "set"
+            set_message "Warning banner to \"${warning_message}\""
             log_file="${work_dir}/${log_file}"
             echo "${actual_value}" > "${log_file}"
             eval "gconftool-2 -direct -config-source=xml:readwrite:$HOME/.gconf -type bool -set /apps/gdm/simple-greeter/banner_message_enable true"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Warning banner is set to \"${warning_message}\""
+            inc_secure "Warning banner is set to \"${warning_message}\""
           fi
         fi
       else

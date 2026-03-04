@@ -18,14 +18,14 @@ audit_aws_rec_monitoring () {
   command_message   "${command}"
   trails=$( eval    "${command}" )
   if [ "${trails}" ]; then
-    increment_secure "CloudWatch log groups exits for CloudTrail"
+    inc_secure "CloudWatch log groups exits for CloudTrail"
     for trail in ${trails}; do
       command="aws logs describe-metric-filters --region \"${aws_region}\" --log-group-name \"${trail}\" --query \"metricFilters[].filterPattern\" --output text"
       command_message "${command}"
       metrics=$( eval "${command}" )
       if [ -z "${metrics}" ]; then
-        increment_insecure "CloudWatch log group \"${trail}\" has no metrics"
-        verbose_message    "aws logs put-metric-filter --region ${aws_region} --log-group-name ${trail} --filter-name ec2_size_changes_metric --metric-transformations metricName=ec2_size_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = RunInstances) && (($.requestParameters.instanceType = *.8xlarge) || ($.requestParameters.instanceType = *.4xlarge)) }'" "fix"
+        inc_insecure    "CloudWatch log group \"${trail}\" has no metrics"
+        verbose_message "aws logs put-metric-filter --region ${aws_region} --log-group-name ${trail} --filter-name ec2_size_changes_metric --metric-transformations metricName=ec2_size_changes_metric,metricNamespace='Audit',metricValue=1 --filter-pattern '{ ($.eventName = RunInstances) && (($.requestParameters.instanceType = *.8xlarge) || ($.requestParameters.instanceType = *.4xlarge)) }'" "fix"
 #        for sns_topic in ec2_size_changes; do
 #           verbose_message "aws sns create-topic --region ${aws_region} --name ${sns_topic}" fix
 #           verbose_message "aws sns subscribe --region ${aws_region} --topic-arn ${sns_topic} --protocol $sns_protocol notification-endpoint $sns_endpoints" fix 
@@ -36,15 +36,15 @@ audit_aws_rec_monitoring () {
           command_message "${command}"
           check=$( eval   "${command}" )
           if [ -n "${check}" ]; then
-            increment_secure   "CloudWatch log group \"${trail}\" metrics include \"${metric}\""
+            inc_secure    "CloudWatch log group \"${trail}\" metrics include \"${metric}\""
           else
-            increment_insecure "CloudWatch log groups \"${trail}\" metrics do not include \"${metric}\""
+            inc_insecure  "CloudWatch log groups \"${trail}\" metrics do not include \"${metric}\""
           fi
         done
       fi
     done
   else
-    increment_insecure "No CloudWatch log groups exist for CloudTrail"
+    inc_insecure "No CloudWatch log groups exist for CloudTrail"
   fi
 }
 

@@ -11,10 +11,10 @@
 #.
 
 check_itab() {
-  print_function "check_itab"
   if [ "${os_name}" = "AIX" ]; then
     service_name="${1}"
     correct_value="${2}"
+    print_function "check_itab"
     log_file="${service_name}.log"
     actual_value=$( lsitab "${service_name}" | cut -f1 -d: )
     if [ "${correct_value}" = "off" ]; then
@@ -36,7 +36,7 @@ check_itab() {
       fi
       if [ "${actual_value}" != "${correct_value}" ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Service \"${service_name}\" is \"${correct_value}\""
+          inc_insecure  "Service \"${service_name}\" is \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
             fix_message "rmitab $( lsitab | grep \"^${service_name}\" )"
           else
@@ -49,21 +49,21 @@ check_itab() {
           if [ "${correct_value}" = "off" ]; then
             update_log_file  "${log_file}" "${actual_value}"
             lockdown_command="rmitab ${service_name}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             if [ "${actual_value}" = "off" ]; then
               update_log_file  "${log_file}" "off"
               lockdown_command="mkitab ${correct_value}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             else
               update_log_file  "${log_file}" "${actual_value}"
               lockdown_command="chitab ${correct_value}"
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           fi
         fi
       else
-        increment_secure "Service \"${service_name}\" is \"${correct_value}\""
+        inc_secure "Service \"${service_name}\" is \"${correct_value}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

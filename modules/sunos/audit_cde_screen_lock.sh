@@ -25,7 +25,7 @@ audit_cde_screen_lock () {
       check_file="${dir_name}/sys.resources"
       check_file_value "is" "${check_file}" "dtsession*saverTimeout" "colon" " 10" "star"
       check_file_value "is" "${check_file}" "dtsession*lockTimeout"  "colon" " 10" "star"
-      check_file_perms "${check_file}"      "0444" "root" "sys"
+      check_file_perms      "${check_file}" "0444" "root" "sys"
     done
   else
     na_message "${string}"

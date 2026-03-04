@@ -48,25 +48,25 @@ audit_bonjour_advertising() {
         fi 
         if [ -n "$multicast_test" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure  "Bonjour Multicast Advertising enabled"
-            verbose_message     "${set_command}" "fix"
+            inc_insecure "Bonjour Multicast Advertising enabled"
+            fix_message  "${set_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file "${check_file}"
+            backup_file      "${check_file}"
             lockdown_message="Bonjour Multicast Advertising disabled"
             lockdown_command="${set_command}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure    "Bonjour Multicast Advertising disabled"
+            inc_secure    "Bonjour Multicast Advertising disabled"
           fi
         fi
       fi
     fi
     if [ "$osx_mdns_enable" != "yes" ]; then
-      check_launchctl_service   "com.apple.mDNSResponder"       "off"
-      check_launchctl_service   "com.apple.mDNSResponderHelper" "off"
+      check_launchctl_service "com.apple.mDNSResponder"       "off"
+      check_launchctl_service "com.apple.mDNSResponderHelper" "off"
     fi
   else
     na_message "${string}"

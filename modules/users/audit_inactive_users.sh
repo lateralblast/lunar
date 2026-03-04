@@ -31,33 +31,33 @@ audit_inactive_users () {
     if test -r "${check_file}"; then
       if [ "${audit_mode}" != 2 ]; then
         command="grep -v nobody4 < ${check_file} | grep -v root"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_check in ${user_list}; do
           command="echo \"${user_check}\" | cut -f 7 -d:"
-          command_message "${command}"
-          inactive_check=$( eval "${command}" )
+          command_message   "${command}"
+          inactive=$( eval  "${command}" )
           command="echo \"${user_check}\" | cut -f 1 -d:"
-          command_message "${command}"
+          command_message   "${command}"
           user_name=$( eval "${command}" )
-          if [ "$inactive_check" = "" ]; then
+          if [ "$inactive" = "" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure  "Inactive lockout not set for \"${user_name}\""
-              verbose_message     "usermod -f 35 ${user_name}" "fix"
+              inc_insecure "Inactive lockout not set for \"${user_name}\""
+              fix_message        "usermod -f 35 ${user_name}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "File \"${check_file}\" to \"${work_dir}${check_file}\"" "save"
               command="find \"${check_file}\" | cpio -pdm \"${work_dir}\" 2> /dev/null"
               command_message "${command}"
               eval "${command}"
-              verbose_message     "Inactive lockout for \"${user_name}\"" "set"
+              set_message "Inactive lockout for \"${user_name}\""
               command="usermod -f 35 \"${user_name}\""
               command_message "${command}"
               eval "${command}"
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure    "Inactive lockout set for user \"${user_name}\""
+              inc_secure "Inactive lockout set for user \"${user_name}\""
             fi
           fi
         done

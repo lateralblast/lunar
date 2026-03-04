@@ -12,8 +12,8 @@
 #.
 
 audit_search_fs () {
-  print_function "audit_search_fs"
   if [ "${os_name}" = "SunOS" ]; then
+    print_function  "audit_search_fs"
     verbose_message "Filesystem Search"
     command="pkginfo -l | grep SYMCnbclt | grep PKG | awk '{print \$2}'"
     command_message "${command}"

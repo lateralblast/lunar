@@ -13,9 +13,9 @@
 #.
 
 funct_check_pkg () {
-  print_function "funct_check_pkg"
   if [ "${os_name}" = "SunOS" ]; then
     package_name="${1}"
+    print_function "funct_check_pkg"
     package_check=$( pkginfo "${1}" )
     log_file="${work_dir}/pkg.log"
     if [ "${audit_mode}" = 2 ]; then
@@ -44,10 +44,10 @@ funct_check_pkg () {
       fi
       package_test=$( echo "${package_check}" | grep "ERROR" )
       if [ -z "${package_test}" ]; then
-        increment_secure "Package \"${package_name}\" is already installed"
+        inc_secure "Package \"${package_name}\" is already installed"
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Package \"${package_name}\" is not installed"
+          inc_insecure "Package \"${package_name}\" is not installed"
           pkg_dir="${base_dir}/pkg/${package_name}"
           if [ -d "$pkg_dir" ]; then
             install_message "Package \"${package_name}\""

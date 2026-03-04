@@ -10,6 +10,7 @@
 #.
 
 check_shellcheck () {
+  print_function "check_shellcheck"
   bin_test=$( command -v shellcheck | grep -c shellcheck )
   if [ ! "$bin_test" = "0" ]; then
     echo "Checking $0"

@@ -41,18 +41,18 @@ check_file_exists () {
     fi
     if [ -f "${check_file}" ]; then
       if [ "${audit_mode}" = 1 ]; then
-        increment_insecure "File \"${check_file}\" ${exists}"
+        inc_insecure "File \"${check_file}\" ${exists}"
       fi
       if [ "${audit_mode}" = 0 ]; then
         backup_file      "${check_file}"
         update_log_file  "${log_file}" "${check_file},rm"
         lockdown_message="File \"${check_file}\""
         lockdown_command="rm ${check_file}"
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     else
       if [ "${audit_mode}" = 1 ]; then
-        increment_secure "File \"${check_file}\" does not exist"
+        inc_secure "File \"${check_file}\" does not exist"
       fi
     fi
   else
@@ -78,17 +78,17 @@ check_file_exists () {
     fi
     if [ ! -f "${check_file}" ]; then
       if [ "${audit_mode}" = 1 ]; then
-        increment_insecure "File \"${check_file}\" does not exist"
+        inc_insecure "File \"${check_file}\" does not exist"
       fi
       if [ "${audit_mode}" = 0 ]; then
         update_log_file  "${log_file}" "${check_file},touch"
         lockdown_message="File \"${check_file}\""
         lockdown_command="touch ${check_file}"
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       fi
     else
       if [ "${audit_mode}" = 1 ]; then
-        increment_secure "File \"${check_file}\" ${exists}"
+        inc_secure "File \"${check_file}\" ${exists}"
       fi
     fi
   fi

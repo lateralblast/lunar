@@ -23,16 +23,16 @@ audit_password_history () {
       check_file="/etc/shadow"
       current_date=$( date +%s )
       command="awk -F: '\$2~/^\$.+\$/{print \$1}' \"${check_file}\""
-      command_message "${command}"
+      command_message   "${command}"
       user_list=$( eval "${command}" )
       for user_name in ${user_list}; do
         command="date -d \"\$(chage --list \"${user_name}\" | grep '^Last password change' | cut -d: -f2 | grep -v 'never\$')\" +%s"
-        command_message "${command}"
+        command_message     "${command}"
         change_date=$( eval "${command}" )
         if [ "${change_date}" -gt "${current_date}" ]; then
-          increment_insecure "User ${user_name} has a last password change date in the future"
+          inc_insecure "User ${user_name} has a last password change date in the future"
         else
-          increment_secure   "User ${user_name} has a last password change date in the past"
+          inc_secure   "User ${user_name} has a last password change date in the past"
         fi
       done
     else

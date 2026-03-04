@@ -100,9 +100,9 @@ audit_docker_security () {
       if [ "${audit_mode}" != 2 ]; then
         docker_check=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' | grep docker.sock )
         if [ "${docker_check}" ]; then
-          increment_insecure "Docker socket is mounted inside a container"
+          inc_insecure "Docker socket is mounted inside a container"
         else
-          increment_secure   "Docker socket is not mounted inside a container"
+          inc_secure   "Docker socket is not mounted inside a container"
         fi
       fi
     fi

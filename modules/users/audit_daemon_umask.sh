@@ -27,14 +27,14 @@ audit_daemon_umask () {
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "11" ]; then
         command="svcprop -p umask/umask svc:/system/environment:init"
-        command_message "${command}"
+        command_message     "${command}"
         umask_check=$( eval "${command}" )
         umask_value="022"
         log_file="umask.log"
         if [ "${umask_check}" != "${umask_value}" ]; then
           log_file="${work_dir}/${log_file}"
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure  "Default service file creation mask not set to ${umask_value}"
+            inc_insecure  "Default service file creation mask not set to ${umask_value}"
             verbose_message     "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"${umask_value}\"" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
@@ -46,7 +46,7 @@ audit_daemon_umask () {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Default service file creation mask set to ${umask_value}"
+            inc_secure "Default service file creation mask set to ${umask_value}"
           fi
           if [ "${audit_mode}" = 2 ]; then
             restore_file="${restore_dir}/${log_file}"
@@ -85,7 +85,7 @@ audit_daemon_umask () {
       check_file_value "is" "${check_file}" "umask" "space" "027" "hash"
       if [ "${audit_mode}" = "0" ]; then
         if [ -f "${check_file}" ]; then
-          check_file_perms  "${check_file}" "0755" "root" "root"
+          check_file_perms "${check_file}" "0755" "root" "root"
         fi
       fi
     fi

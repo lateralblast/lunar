@@ -27,9 +27,9 @@ check_azure_file_share_value () {
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Shares for Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
+    inc_secure   "Shares for Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "Shares for Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
+    inc_insecure "Shares for Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ ! -z "${set_name}" ]; then
       case "${set_name}" in
         "--"*)

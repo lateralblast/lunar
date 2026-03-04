@@ -21,9 +21,9 @@ audit_cron () {
   string="Cron Daemon"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    check_linux_service   "crond"       "on"
+    check_linux_service   "crond"   "on"
     if [ "${anacron_enable}" = "yes" ]; then
-      check_linux_service "anacron"     "on"
+      check_linux_service "anacron" "on"
     fi
   else
     na_message "${string}"

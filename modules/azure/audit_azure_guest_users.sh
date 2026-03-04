@@ -22,8 +22,8 @@ audit_azure_guest_users () {
   command_message     "${command}"
   guest_users=$( eval "${command}" )
   if [ -z "$guest_users" ]; then
-    increment_secure   "No guest users found"
+    inc_secure   "No guest users found"
   else
-    increment_insecure "Guest users found: ${guest_users}"
+    inc_insecure "Guest users found: ${guest_users}"
   fi
 }

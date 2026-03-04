@@ -10,12 +10,12 @@
 #.
 
 check_chsec() {
-  print_function "check_chsec"
   if [ "${os_name}" = "AIX" ]; then
     sec_file="${1}"
     sec_stanza="${2}"
     parameter_name="${3}"
     correct_value="${4}"
+    print_function "check_chsec"
     log_file="${sec_file}_${sec_stanza}_${parameter_name}.log"
     get_command="lssec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name} |awk '{print \$2}' |cut -f2 -d="
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
@@ -41,13 +41,13 @@ check_chsec() {
       fi
       actual_value=$( eval "${get_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
-        update_log_file "${log_file}" "chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${actual_value}"
-        increment_insecure "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
+        update_log_file  "${log_file}" "chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${actual_value}"
+        inc_insecure     "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
         lockdown_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
         lockdown_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""
-        execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        increment_secure   "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
+        inc_secure       "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

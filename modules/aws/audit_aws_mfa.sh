@@ -29,37 +29,37 @@ audit_aws_mfa () {
     mfa=$(  echo "${entry}" | cut -d, -f3 )
     if [ "${user}" = "<root_account>" ]; then
       if [ "${mfa}" = "false" ]; then
-        increment_insecure "Account \"${user}\" does not have MFA enabled"
+        inc_insecure "Account \"${user}\" does not have MFA enabled"
       else
-        increment_secure   "Account \"${user}\" has MFA enabled"
+        inc_secure   "Account \"${user}\" has MFA enabled"
       fi
     else
       if [ "${pass}" != "false" ]; then
         if [ "${mfa}" = "false" ]; then
-          increment_insecure "Account \"${user}\" does not have MFA enabled"
+          inc_insecure "Account \"${user}\" does not have MFA enabled"
         else
-          increment_secure   "Account \"${user}\" has MFA enabled"
+          inc_secure   "Account \"${user}\" has MFA enabled"
         fi
       else
-        increment_secure  "Account \"${user}\" does not log into console"
+        inc_secure  "Account \"${user}\" does not log into console"
       fi
     fi
   done
   command="aws iam get-account-summary | grep \"AccountMFAEnabled\" | cut -f1 -d: | sed \"s/ //g\" | sed \"s/,//g\""
   command_message "${command}"
-  check=$( eval "${command}" )
+  check=$( eval   "${command}" )
   if [ "${check}" = "1" ]; then
-    increment_secure "The root account has MFA enabled"
+    inc_secure "The root account has MFA enabled"
     command="iaws iam list-virtual-mfa-devices | grep \"SerialNumber\" | grep -c \"root_account\""
     command_message "${command}"
-    check=$( eval "${command}" )
+    check=$( eval   "${command}" )
     if [ "${check}" = "0" ]; then
-      increment_secure    "The root account does not have a virtual MFA"
+      inc_secure    "The root account does not have a virtual MFA"
     else
-      increment_insecure  "The root account does not have a hardware MFA"
+      inc_insecure  "The root account does not have a hardware MFA"
     fi
   else
-    increment_insecure    "The root account does not have MFA enabled"
-    increment_insecure    "The root account does not a hardware MFA"
+    inc_insecure    "The root account does not have MFA enabled"
+    inc_insecure    "The root account does not a hardware MFA"
   fi
 }

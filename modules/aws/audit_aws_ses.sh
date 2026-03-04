@@ -23,10 +23,10 @@ audit_aws_ses () {
     command_message "${command}"
     check=$( eval "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "Domain \"${domain}\" has DKIM enabled" 
+      inc_secure      "Domain \"${domain}\" has DKIM enabled" 
     else
-      increment_insecure "Domain \"${domain}\" does not have DKIM enabled"
-      verbose_message    "aws ses set-identity-dkim-enabled --region \"${aws_region}\" --identity \"${domain}\" --dkim-enabled" "fix"
+      inc_insecure    "Domain \"${domain}\" does not have DKIM enabled"
+      verbose_message "aws ses set-identity-dkim-enabled --region \"${aws_region}\" --identity \"${domain}\" --dkim-enabled" "fix"
     fi
   done
 }

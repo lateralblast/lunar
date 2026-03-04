@@ -26,12 +26,12 @@ audit_java () {
         version_value=$( eval "${command}" )
         if [ -n "${version_value}" ]; then
           if [ "${version_value}" -ge "${minimum_value}" ]; then
-            increment_secure   "Java version is greater than \"${minimum_value}\""
+            inc_secure   "Java version is greater than \"${minimum_value}\""
           else
-            increment_insecure "Java version is less than \"${minimum_value}\""
+            inc_insecure "Java version is less than \"${minimum_value}\""
           fi
         fi
-        increment_secure "Java not installed"
+        inc_secure "Java not installed"
       fi
     fi
   else

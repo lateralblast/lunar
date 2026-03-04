@@ -24,9 +24,9 @@ check_azure_netapp_file_value () {
   command_message "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Shares for Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
+    inc_secure   "Shares for Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "Shares for Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
+    inc_insecure "Shares for Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
     if [ "${parameter_name}" = "encryptionKeySource" ]; then
       fix_message "az keyvault set-policy --name <keyvault-name> --object-id <netapp-service-principal-object-id> --key-permissions get wrapKey unwrapKey"
       fix_message "az netappfiles account encryption-key-source update --resource-group <resource-group> --account-name <account-name> --encryption-key-source Microsoft.KeyVault --key-vault-key-uri <key-vault-key-uri>"

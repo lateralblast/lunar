@@ -18,8 +18,8 @@ check_azure_nsg_security_rule_value () {
   parameter_name="${4}"
   function="${5}"
   correct_value="${6}"
-  short_id=$( basename "${rule_id}" )
   print_function "check_azure_nsg_security_rule_value"
+  short_id=$( basename "${rule_id}" )
   check_message  "NSG Rule ID \"${short_id}\" is \"${direction}\""
   command="az network nsg rule show --id ${rule_id} --query \"direction\" --output tsv 2> /dev/null"
   command_message      "${command}"
@@ -31,9 +31,9 @@ check_azure_nsg_security_rule_value () {
       command_message      "${command}"
       actual_value=$( eval "${command}" )
       if [ "${actual_value}" = "${correct_value}" ] || [ "${actual_value}" = "*" ] || [ "${actual_value}" = "" ]; then
-        increment_insecure "${description} \"${short_id}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\" or \"*\" or \"\""
+        inc_insecure "${description} \"${short_id}\" parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\" or \"*\" or \"\""
       else
-        increment_secure   "${description} \"${short_id}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+        inc_secure   "${description} \"${short_id}\" parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       fi
     fi
   else

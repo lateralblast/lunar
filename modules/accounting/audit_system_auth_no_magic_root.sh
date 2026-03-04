@@ -28,17 +28,17 @@ audit_system_auth_no_magic_root () {
               lockdown_command="cat ${temp_file} |awk '( \$1 == \"auth\" && \$2 == \"required\" && \$3 == \"pam_deny.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail no_magic_root\"; print $0; next };' < ${check_file} > ${temp_file} ; cat ${temp} > ${check_file} ; rm ${temp_file}"
             fi
             if [ "${audit_mode}" = "1" ]; then
-              increment_insecure "Auth entry not enabled in \"${check_file}\""
-              fix_message        "rm ${lockdown_command}"
+              inc_insecure "Auth entry not enabled in \"${check_file}\""
+              fix_message  "rm ${lockdown_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file      "${check_file}"
               lockdown_message="Setting:   Auth entry in \"${check_file}\""
-              execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "Auth entry enabled in \"${check_file}\""
+              inc_secure "Auth entry enabled in \"${check_file}\""
             fi
           fi
         fi

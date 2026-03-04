@@ -26,7 +26,7 @@ audit_sudo_logfile () {
       check_file="/etc/sudoers"
     fi
     check_file_value "is"  "${check_file}" "Defaults logfile" "eq" "/var/log/sudo.log" "hash"
-    check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
+    check_file_perms       "${check_file}" "440" "root"            "${wheel_group}"
   else
     na_message "${string}"
   fi

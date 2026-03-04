@@ -28,9 +28,9 @@ check_azure_backup_policy_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -44,7 +44,7 @@ check_azure_backup_policy_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -56,7 +56,7 @@ check_azure_backup_policy_value () {
         esac
       fi
     else
-      increment_secure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure "Azure Backup Policy ${description} for policy \"${policy_name}\" with vault \"${vault_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

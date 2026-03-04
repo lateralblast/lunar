@@ -15,7 +15,7 @@ audit_slp () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
-      check_sunos_service "svc:/network/slp:default"  "disabled"
+      check_sunos_service "svc:/network/slp:default" "disabled"
     fi
   else
     na_message "${string}"

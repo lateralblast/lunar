@@ -43,9 +43,9 @@ audit_aws_certs () {
       exp_secs=$( eval "${command}" )
     fi
     if [ "${exp_secs}" -lt "${cur_secs}" ]; then
-      increment_insecure "Certificate \"${cert}\" has expired"
+      inc_insecure "Certificate \"${cert}\" has expired"
     else
-      increment_secure   "Certificate \"${cert}\" has not expired"
+      inc_secure   "Certificate \"${cert}\" has not expired"
     fi
   done
 }

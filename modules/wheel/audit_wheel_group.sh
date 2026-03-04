@@ -17,11 +17,11 @@ audit_wheel_group () {
     check_file="/etc/group"
     if [ "${audit_mode}" != 2 ]; then
       command="grep \"^${wheel_group}:\" \"${check_file}\" |wc -c"
-      command_message "${command}"
+      command_message     "${command}"
       check_value=$( eval "${command}" )
       if [ "${check_value}" = "0" ]; then
         if [ "${audit_mode}" = "1" ]; then
-          increment_insecure "Wheel group \"${wheel_group}\" does not exist in \"${check_file}\""
+          inc_insecure "Wheel group \"${wheel_group}\" does not exist in \"${check_file}\""
         fi
         if [ "${ansible_mode}" = 1 ]; then
           echo ""
@@ -31,14 +31,14 @@ audit_wheel_group () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}' or ansible_facts['ansible_system'] == '${os_name}'"
         fi
         if [ "${audit_mode}" = 0 ]; then
-          backup_file     "${check_file}"
+          backup_file      "${check_file}"
           lockdown_message="Adding wheel group \"${wheel_group}\" to \"${check_file}\""
           lockdown_command="groupadd ${wheel_group} ; usermod -G ${wheel_group} root"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = "1" ]; then
-          increment_secure "Wheel group \"${wheel_group}\" ${exists} in \"${check_file}\""
+          inc_secure "Wheel group \"${wheel_group}\" ${exists} in \"${check_file}\""
         fi
       fi
     else

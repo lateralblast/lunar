@@ -33,12 +33,12 @@ audit_tcp_wrappers () {
       if [ "${audit_mode}" != 2 ]; then
         if [ "${lslpp_check}" != "${package_name}" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "TCP Wrappers not installed"
-            verbose_message    "TCP Wrappers not installed" "fix"
-            verbose_message    "Install TCP Wrappers"       "fix"
+            inc_insecure "TCP Wrappers not installed"
+            fix_message  "TCP Wrappers not installed"
+            fix_message  "Install TCP Wrappers"
           fi
         else
-          increment_secure "TCP Wrappers installed"
+          inc_secure     "TCP Wrappers installed"
         fi
       fi
     fi
@@ -51,15 +51,15 @@ audit_tcp_wrappers () {
       fi
     fi
     if [ "${os_name}" = "FreeBSD" ]; then
-      check_file_value "is" "/etc/rc.conf" "inetd_enable" "eq" "YES"       "hash"
-      check_file_value "is" "/etc/rc.conf" "inetd_flags"  "eq" "-Wwl -C60" "hash"
+      check_file_value "is" "/etc/rc.conf"     "inetd_enable" "eq"     "YES"           "hash"
+      check_file_value "is" "/etc/rc.conf"     "inetd_flags"  "eq"     "-Wwl -C60"     "hash"
     fi
-    check_file_value "is" "/etc/hosts.deny"  "ALL" "colon" " ALL"       "hash"
-    check_file_value "is" "/etc/hosts.allow" "ALL" "colon" " localhost" "hash"
-    check_file_value "is" "/etc/hosts.allow" "ALL" "colon" " 127.0.0.1" "hash"
+    check_file_value   "is" "/etc/hosts.deny"  "ALL"          "colon" " ALL"           "hash"
+    check_file_value   "is" "/etc/hosts.allow" "ALL"          "colon" " localhost"     "hash"
+    check_file_value   "is" "/etc/hosts.allow" "ALL"          "colon" " 127.0.0.1"     "hash"
     ip_list=$( who | cut -d"(" -f2 | cut -d")" -f1 | sort -u )
     for ip_address in ${ip_list}; do
-      check_file_value "is" "/etc/hosts.allow" "ALL" "colon" " ${ip_address}" "hash"
+      check_file_value "is" "/etc/hosts.allow" "ALL"          "colon" " ${ip_address}" "hash"
     done
     if [ ! -f "${check_file}" ]; then
       check=$( command -v ifconfig 2> /dev/null )
@@ -77,7 +77,7 @@ audit_tcp_wrappers () {
         check=$( command -v ip 2> /dev/null )
         if [ "${check}" ]; then
           command="ip addr | grep 'inet [0-9]' | grep -v ' 127.' | awk '{print \$2}'"
-          command_message "${command}"
+          command_message   "${command}"
           ip_values=$( eval "${command}" )
           for ip_value in $ip_values; do
             set -- $( echo "$ip_value" | awk -F"/" '{print $1" "$2 }' )

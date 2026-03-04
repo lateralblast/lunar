@@ -20,10 +20,10 @@ audit_extended_attributes () {
     if [ "${audit_mode}" = 1 ]; then
       file_list=$( find / \( -fstype nfs -o -fstype cachefs \
       -o -fstype autofs -o -fstype ctfs -o -fstype mntfs \
-      -o -fstype objfs -o -fstype proc \) -prune \
+      -o -fstype objfs  -o -fstype proc \) -prune \
       -o -xattr -print )
       for check_file in ${file_list}; do
-        increment_insecure "File \"${check_file}\" has extended attributes"
+        inc_insecure "File \"${check_file}\" has extended attributes"
       done
     fi
   else

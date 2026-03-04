@@ -142,9 +142,9 @@ audit_docker_daemon () {
       if [ "${audit_mode}" != 2 ]; then
         check=$( docker swarm unlock-key 2> /dev/null )
         if [ "${check}" = "no unlock key is set" ]; then
-          increment_insecure "Docker swarm unlock is not set"
+          inc_insecure "Docker swarm unlock is not set"
         else
-          increment_secure   "Docker swarm unlock key is not set or swarm is not running"
+          inc_secure   "Docker swarm unlock key is not set or swarm is not running"
         fi
         check_dockerd   "notequal"    "config" "Memory"                   "0"
         check_dockerd   "notequal"    "config" "CpuShares"                "0"

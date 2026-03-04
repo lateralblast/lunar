@@ -23,31 +23,10 @@ audit_modprobe_conf () {
   string="Modprobe Configuration"
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    check_append_file "/etc/modprobe.conf"      "install cramfs /bin/false"        "hash"
-    check_append_file "/etc/modprobe.conf"      "install freevxfs /bin/false"      "hash"
-    check_append_file "/etc/modprobe.conf"      "install hfs /bin/false"           "hash"
-    check_append_file "/etc/modprobe.conf"      "install hfsplus /bin/false"       "hash"
-    check_append_file "/etc/modprobe.conf"      "install jffs2 /bin/false"         "hash"
-    check_append_file "/etc/modprobe.conf"      "install overlayfs /bin/false"     "hash"
-    check_append_file "/etc/modprobe.conf"      "install squashfs /bin/false"      "hash"
-    check_append_file "/etc/modprobe.conf"      "install udf /bin/false"           "hash"
-    check_append_file "/etc/modprobe.conf"      "install usb-storage /bin/false"   "hash"
-    check_append_file "/etc/modprobe.conf"      "install afs /bin/false"           "hash"
-    check_append_file "/etc/modprobe.conf"      "install ceph /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install cifs /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install ext /bin/false"           "hash"
-    check_append_file "/etc/modprobe.conf"      "install fat /bin/false"           "hash"
-    check_append_file "/etc/modprobe.conf"      "install fscache /bin/false"       "hash"
-    check_append_file "/etc/modprobe.conf"      "install fuse /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install gfs2 /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install nfs_common /bin/false"    "hash"
-    check_append_file "/etc/modprobe.conf"      "install nfsd /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install smbfs_common /bin/false"  "hash"
-    check_append_file "/etc/modprobe.conf"      "install tipc /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install rds /bin/false"           "hash"
-    check_append_file "/etc/modprobe.conf"      "install sctp /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install dccp /bin/false"          "hash"
-    check_append_file "/etc/modprobe.conf"      "install vfat /bin/false"          "hash"
+    for module in cramfs freevxfs hfs hfsplus jffs2 overlayfs squashfs udf usb-storage afs ceph \
+      cifs ext fat fscache fuse gfs2 nfs_common nfsd smbfs_common tipc rds sctp dccp vfat; do
+      check_append_file "/etc/modprobe.conf" "install ${module} /bin/false" "hash"
+    done
   else
     na_message "${string}"
   fi

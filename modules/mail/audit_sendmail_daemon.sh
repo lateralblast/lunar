@@ -37,7 +37,7 @@ audit_sendmail_daemon() {
           check_file_value  "is" "/etc/default/sendmail" "QUEUEINTERVAL" "eq" "15m" "hash"
           check_append_file "/etc/default/sendmail"      "MODE=" "hash"
         else
-          check_initd_service sendmail disable
+          check_initd_service "sendmail" "disable"
           check_file="/var/spool/cron/crontabs/root"
           check_string="0 * * * * /usr/lib/sendmail -q"
           check_append_file "${check_file}" "${check_string}" "hash"
@@ -74,20 +74,18 @@ audit_sendmail_daemon() {
         if [ "${audit_mode}" != 2 ]; then
          verbose_message "Mail transfer agent is running in local-only mode"
          command="grep -v '^#' \"${check_file}\" | grep \"O DaemonPortOptions\" | awk '{print \$3}' | grep \"${search_string}\""
-         command_message "${command}"
+         command_message     "${command}"
          check_value=$( eval "${command}" )
           if [ "${check_value}" = "${search_string}" ]; then
             if [ "${audit_mode}" = "1" ]; then
-              increment_insecure "Mail transfer agent is not running in local-only mode"
-              verbose_message "" fix
-              verbose_message "cp ${check_file} ${temp_file}" fix
-              verbose_message "cat ${temp_file} |awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA\"; next} { print }' > ${check_file}" fix
-              verbose_message "rm ${temp_file}" fix
-              verbose_message "" fix
+              inc_insecure "Mail transfer agent is not running in local-only mode"
+              fix_message  "cp ${check_file} ${temp_file}"
+              fix_message  "cat ${temp_file} |awk 'O DaemonPortOptions=/ { print \"O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, ansible_value=MTA\"; next} { print }' > ${check_file}"
+              fix_message  "rm ${temp_file}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file "${check_file}"
-              verbose_message "Setting:   Mail transfer agent to run in local-only mode"
+              backup_file  "${check_file}"
+              set_message  "Mail transfer agent to run in local-only mode"
               command="cp \"${check_file}\" \"${temp_file}\""
               command_message "${command}"
               eval "${command}"
@@ -100,7 +98,7 @@ audit_sendmail_daemon() {
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "Mail transfer agent is running in local-only mode"
+              inc_secure "Mail transfer agent is running in local-only mode"
             fi
           fi
         else

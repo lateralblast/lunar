@@ -31,7 +31,7 @@ audit_solaris_auditing () {
         rolemod -K audit_flags=lo,ad,ft,ex,lck:no root
         if [ -f "${check_file}" ]; then
           command="grep \"audit -n\" \"${check_file}\" | cut -f4 -d'/'"
-          command_message "${command}"
+          command_message     "${command}"
           audit_check=$( eval "${command}" )
           if [ "$audit_check" != "audit -n" ]; then
             if [ ! -f "${log_file}" ]; then

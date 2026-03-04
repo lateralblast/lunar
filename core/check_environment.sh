@@ -11,6 +11,7 @@
 #.
 
 check_aws_environment () {
+  print_function "check_aws_environment"
   aws_bin=$( command -v aws 2> /dev/null )
   if [ -f "$aws_bin" ]; then
     aws_creds="$HOME/.aws/credentials"
@@ -39,6 +40,7 @@ check_aws_environment () {
 #.
 
 check_azure_environment () {
+  print_function "check_azure_environment"
   azure_bin=$( command -v az 2> /dev/null )
   if [ -f "$azure_bin" ]; then
     for cli_ext in databricks bastion resource-graph application-insights nsp \
@@ -87,12 +89,13 @@ check_azure_environment () {
 #.
 
 check_environment () {
+  print_function "check_environment"
   check_os_release
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "" ""
     verbose_message "Checking if node is managed" "info"
     command="sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d:"
-    command_message "${command}"
+    command_message      "${command}"
     managed_node=$( eval "${command}" )
     if [ "${managed_node}" = "Error" ]; then
       verbose_message "Node is not managed" "notice"

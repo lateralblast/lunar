@@ -29,47 +29,47 @@ audit_aws_rds () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ "${check}" ]; then
-      increment_secure   "RDS instance \"${db}\" has auto minor version upgrades enabled"
+      inc_secure    "RDS instance \"${db}\" has auto minor version upgrades enabled"
     else
-      increment_insecure "RDS instance \"${db}\" does not have auto minor version upgrades enabled"
-      verbose_message    "aws rds modify-db-instance --region \"${aws_region}\" --db-instance-identifier \"${db}\" --auto-minor-version-upgrade --apply-immediately" "fix"
+      inc_insecure  "RDS instance \"${db}\" does not have auto minor version upgrades enabled"
+      fix_message   "aws rds modify-db-instance --region \"${aws_region}\" --db-instance-identifier \"${db}\" --auto-minor-version-upgrade --apply-immediately"
     fi
     # Check if automated backups are enabled
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[].BackupRetentionPeriod' --output text"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ ! "${check}" -eq "0" ]; then
-      increment_secure   "RDS instance \"${db}\" has automated backups enabled"
+      inc_secure    "RDS instance \"${db}\" has automated backups enabled"
     else
-      increment_insecure "RDS instance \"${db}\" does not have automated backups enabled"
-      verbose_message    "aws rds modify-db-instance --region \"${aws_region}\" --db-instance-identifier \"${db}\" --backup-retention-period \"${aws_rds_min_retention}\" --apply-immediately" "fix"
+      inc_insecure  "RDS instance \"${db}\" does not have automated backups enabled"
+      fix_message   "aws rds modify-db-instance --region \"${aws_region}\" --db-instance-identifier \"${db}\" --backup-retention-period \"${aws_rds_min_retention}\" --apply-immediately"
     fi
     # Check if RDS instance is encrypted
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[].StorageEncrypted' | grep true"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "RDS instance \"${db}\" is encrypted"
+      inc_secure    "RDS instance \"${db}\" is encrypted"
     else
-      increment_insecure "RDS instance \"${db}\" is not encrypted"
+      inc_insecure  "RDS instance \"${db}\" is not encrypted"
     fi
     # Check if KMS is being used
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[].KmsKeyId' --output text | cut -f2 -d/"
     command_message "${command}"
     key_id=$( eval  "${command}" )
     if [ -n "${key_id}" ]; then
-      increment_secure   "RDS instance \"${db}\" is encrypted with a KMS key"
+      inc_secure    "RDS instance \"${db}\" is encrypted with a KMS key"
     else
-      increment_insecure "RDS instance \"${db}\" is not encrypted with a KMS key"
+      inc_insecure  "RDS instance \"${db}\" is not encrypted with a KMS key"
     fi
     # Check if RDS instance is publicly accessible
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[].PubliclyAccessible' | grep true"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      increment_secure   "RDS instance \"${db}\" is not publicly accessible"
+      inc_secure    "RDS instance \"${db}\" is not publicly accessible"
     else
-      increment_insecure "RDS instance \"${db}\" is publicly accessible"
+      inc_insecure  "RDS instance \"${db}\" is publicly accessible"
     fi
     # Check if RDS instance VPC is publicly accessible
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[*].VpcSecurityGroups[].VpcSecurityGroupId' --output text"
@@ -87,9 +87,9 @@ audit_aws_rds () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ -z "${check}" ]; then
-        increment_secure   "RDS instance \"${db}\" is not on a public facing subnet"
+        inc_secure    "RDS instance \"${db}\" is not on a public facing subnet"
       else
-        increment_insecure "RDS instance \"${db}\" is on a public facing subnet"
+        inc_insecure  "RDS instance \"${db}\" is on a public facing subnet"
       fi
     done
     # Check that your Amazon RDS production databases are not using 'awsuser' as master 
@@ -97,9 +97,9 @@ audit_aws_rds () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      increment_secure   "RDS instance \"${db}\" is not using awsuser as master username"
+      inc_secure    "RDS instance \"${db}\" is not using awsuser as master username"
     else
-      increment_insecure "RDS instance \"${db}\" is using awsuser as master username"
+      inc_insecure  "RDS instance \"${db}\" is using awsuser as master username"
     fi
   done
 }

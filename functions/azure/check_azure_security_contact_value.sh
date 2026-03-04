@@ -25,17 +25,17 @@ check_azure_security_contact_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
-      fix_message        "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{\"state\":\"On\",\"roles\":[\"Owner\"]}' --alert-notifications '{\"state\":\"On\",\"minimalSeverity\":\"Low\"}'"
+      inc_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      fix_message  "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{\"state\":\"On\",\"roles\":[\"Owner\"]}' --alert-notifications '{\"state\":\"On\",\"minimalSeverity\":\"Low\"}'"
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
-      fix_message        "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{\"state\":\"On\",\"roles\":[\"Owner\"]}' --alert-notifications '{\"state\":\"On\",\"minimalSeverity\":\"Low\"}'"
+      inc_insecure "Azure Security Contact \"${contact_name}\" Parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      fix_message  "az security contact update --name ${contact_name} --email <email-address> --notifications-by-role '{\"state\":\"On\",\"roles\":[\"Owner\"]}' --alert-notifications '{\"state\":\"On\",\"minimalSeverity\":\"Low\"}'"
     fi
   fi
 }

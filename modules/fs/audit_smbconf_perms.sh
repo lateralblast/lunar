@@ -16,7 +16,7 @@ audit_smbconf_perms () {
   string="SMB Config Permissions"
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    check_file_perms "/etc/samba/smb.conf"    "0644" "root" "root"
+    check_file_perms  "/etc/samba/smb.conf" "0644" "root" "root"
   else
     na_message "${string}"
   fi

@@ -26,9 +26,9 @@ check_azure_redis_cache_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -42,7 +42,7 @@ check_azure_redis_cache_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_insecure "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -54,7 +54,7 @@ check_azure_redis_cache_value () {
         esac
       fi
     else
-      increment_secure  "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_secure  "${description} for Redis Cache \"${redis_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

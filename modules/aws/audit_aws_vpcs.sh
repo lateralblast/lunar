@@ -29,9 +29,9 @@ audit_aws_vpcs () {
 		command_message "${command}"
 		vpc=$( eval     "${command}" )
     if [ -n "${vpc}" ]; then
-      increment_insecure "VPC \"${vpc}\" has en exposed enpoint"
+      inc_insecure  "VPC \"${vpc}\" has en exposed enpoint"
     else
-      increment_secure   "VPC \"${vpc}\" does not have an exposed endpoint"
+      inc_secure    "VPC \"${vpc}\" does not have an exposed endpoint"
     fi
   done
   # Check for VPC peering
@@ -39,21 +39,21 @@ audit_aws_vpcs () {
 	command_message   "${command}"
 	vpc_peers=$( eval "${command}" )
   if [ -z "${vpc_peers}" ]; then
-    increment_secure "VPC peering is not being used"
+    inc_secure "VPC peering is not being used"
   else
     command="aws ec2 describe-vpcs --query Vpcs[].VpcId --output text"
 		command_message "${command}"
 		vpcs=$( eval    "${command}" )
     for vpc in ${vpcs}; do
       command="aws ec2 describe-route-tables --region \"${aws_region}\" --filter \"Name=vpc-id,Values=${vpc}\" --query \"RouteTables[*].{RouteTableId:RouteTableId, VpcId:VpcId, Routes:Routes,AssociatedSubnets:Associations[*].SubnetId}\" | grep GatewayID | grep pcx-"
-			command_message "${command}"
-			check=$( eval   "${command}" )
+			command_message  "${command}"
+			check=$( eval    "${command}" )
       if [ -z "${check}" ]; then
-        increment_secure   "VPC \"${vpc}\" does not have a peer as it's gateway"
+        inc_secure      "VPC \"${vpc}\" does not have a peer as it's gateway"
       else
-        increment_insecure "VPC peering is being used review VPC: \"${vpc}\""
-        verbose_message    "aws ec2 delete-route --region \"${aws_region}\" --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" "fix"
-        verbose_message    "aws ec2 create-route --region \"${aws_region}\" --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" "fix"
+        inc_insecure    "VPC peering is being used review VPC: \"${vpc}\""
+        verbose_message "aws ec2 delete-route --region \"${aws_region}\" --route-table-id <route_table_id> --destination-cidr-block <non_compliant_destination_CIDR>" "fix"
+        verbose_message "aws ec2 create-route --region \"${aws_region}\" --route-table-id <route_table_id> --destination-cidr-block <compliant_destination_CIDR> --vpc-peering-connection-id <peering_connection_id>" "fix"
       fi
     done
   fi
@@ -74,16 +74,16 @@ audit_aws_vpcs () {
 				command_message      "${command}"
 				active_check=$( eval "${command}" )
         if [ -n "${active_check}" ]; then
-          increment_secure   "VPC \"${vpc}\" has active flow logs"
+          inc_secure   "VPC \"${vpc}\" has active flow logs"
         else
-          increment_insecure "VPC \"${vpc}\" has flow logs but they are not active"
+          inc_insecure "VPC \"${vpc}\" has flow logs but they are not active"
         fi
       else
-        increment_insecure   "VPC \"${vpc}\" does not have flow logs"
+        inc_insecure   "VPC \"${vpc}\" does not have flow logs"
       fi
     done
   else
-    increment_insecure "There are no VPC flow logs"
+    inc_insecure "There are no VPC flow logs"
   fi
 }
 

@@ -25,9 +25,9 @@ check_azure_lock_value () {
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "Lock \"${lock_name}\" in resource group \"${resource_group}\" resource type \"${resource_type}\" parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+    inc_secure   "Lock \"${lock_name}\" in resource group \"${resource_group}\" resource type \"${resource_type}\" parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "Lock \"${lock_name}\" in resource group \"${resource_group}\" resource type \"${resource_type}\" parameter \"${query_string}\" is \"${function}\" to \"${actual_value}\" instead of \"${correct_value}\""
+    inc_insecure "Lock \"${lock_name}\" in resource group \"${resource_group}\" resource type \"${resource_type}\" parameter \"${query_string}\" is \"${function}\" to \"${actual_value}\" instead of \"${correct_value}\""
     if [ "${set_name}" != "" ]; then
       case "${set_name}" in
         *"--"*)

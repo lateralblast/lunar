@@ -23,9 +23,9 @@ audit_aws_rec_dynamodb () {
     command_message "${command}"
     size=$( eval    "${command}" )
     if [ ! "${size}" -eq 0 ]; then
-      increment_secure   "DynamoDB table \"${table}\" is not empty"
+      inc_secure    "DynamoDB table \"${table}\" is not empty"
     else
-      increment_insecure "DynamoDB table \"${table}\" is empty"
+      inc_insecure  "DynamoDB table \"${table}\" is empty"
     fi
   done
 }

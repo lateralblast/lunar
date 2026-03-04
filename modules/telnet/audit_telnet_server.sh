@@ -21,8 +21,8 @@ audit_telnet_server () {
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_name}" = "Amazon" ]; then
-      check_linux_service "telnet.socket"        "off"
-      check_linux_package "uninstall"            "telnet-server"
+      check_linux_service "telnet.socket" "off"
+      check_linux_package "uninstall"     "telnet-server"
     fi
   else
     na_message "${string}"

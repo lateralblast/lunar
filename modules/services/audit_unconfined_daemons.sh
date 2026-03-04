@@ -25,11 +25,11 @@ audit_unconfined_daemons () {
     daemon_check=$( eval "${command}" )
     if [ -z "${daemon_check}" ]; then
       if [ "${audit_mode}" = 1 ]; then
-        increment_insecure "Unconfined daemons \"${daemon_check}\""
+        inc_insecure "Unconfined daemons \"${daemon_check}\""
       fi
     else
       if [ "${audit_mode}" = 1 ]; then
-        increment_secure   "No unconfined daemons"
+        inc_secure   "No unconfined daemons"
       fi
     fi
   else

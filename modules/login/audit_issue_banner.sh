@@ -34,9 +34,9 @@ audit_issue_banner () {
     fi
     for check_file in ${file_list}; do
       if [ -f "${check_file}" ]; then
-        check_file_perms "${check_file}" 0644 root root
+        check_file_perms    "${check_file}" 0644 root root
         command="grep -cE \"NOTICE TO USERS|UNAUTHORIZED ACCESS\" \"${check_file}\" | sed \"s/ //g\""
-        command_message "${command}"
+        command_message     "${command}"
         issue_check=$( eval "${command}" )
       else
         issue_check=0
@@ -45,11 +45,11 @@ audit_issue_banner () {
        verbose_message "Security message in \"${check_file}\"" "check"
         if [ "${issue_check}" = 0 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "No security message in \"${check_file}\""
+            inc_insecure "No security message in \"${check_file}\""
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message "Setting:   Security message in \"${check_file}\"" "set"
-            backup_file     "${check_file}"
+            set_message "Security message in \"${check_file}\""
+            backup_file "${check_file}"
             echo "###############################################################################" >  "${check_file}"
             echo "#                             NOTICE TO USERS                                 #" >> "${check_file}"
             echo "#                             ---------------                                 #" >> "${check_file}"
@@ -85,7 +85,7 @@ audit_issue_banner () {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Security message in \"${check_file}\""
+            inc_secure "Security message in \"${check_file}\""
           fi
         fi
       else

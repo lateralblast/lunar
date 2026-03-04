@@ -23,21 +23,21 @@ audit_azure_storage_logging () {
   retention_days="90"
   log_value="rwd"
   command="az storage account list --query \"[].name\" --output tsv"
-  command_message          "${command}"
-  storage_accounts=$( eval "${command}" )
-  if [ -z "${storage_accounts}" ]; then
-    verbose_message "No Storage Accounts found" "info"
+  command_message    "${command}"
+  s_accounts=$( eval "${command}" )
+  if [ -z "${s_accounts}" ]; then
+    info_message "No Storage Accounts found"
     return
   fi
-  for storage_account in ${storage_accounts}; do
+  for s_account in ${s_accounts}; do
     # 17.8  Ensure Storage Logging is Enabled for Queue Service for 'Read', 'Write', and 'Delete' requests
     # 17.9  Ensure Storage Logging is Enabled for Blob  Service for 'Read', 'Write', and 'Delete' requests
     # 17.10 Ensure Storage Logging is Enabled for Table Service for 'Read', 'Write', and 'Delete' Requests
     for service_type in queue blob table; do
       for request_type in read write delete; do
-        check_azure_storage_logging_value "Storage Logging" "${storage_account}" "${service_type}" "[].${service_type}.${request_type}"      "eq" "true"              ""
+        check_azure_storage_logging_value "Storage Logging" "${s_account}" "${service_type}" "[].${service_type}.${request_type}"      "eq" "true"              ""
       done
-      check_azure_storage_logging_value   "Storage Logging" "${storage_account}" "${service_type}" "[].${service_type}.retentionPolicy.days" "eq" "${retention_days}" "${log_value}"
+      check_azure_storage_logging_value   "Storage Logging" "${s_account}" "${service_type}" "[].${service_type}.retentionPolicy.days" "eq" "${retention_days}" "${log_value}"
     done
   done
 }

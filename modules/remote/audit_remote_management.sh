@@ -20,20 +20,20 @@ audit_remote_management () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       command="launchctl list |awk '{print \$3}' |grep -c ARDAgent |sed \"s/ //g\""
-      command_message "${command}"
+      command_message      "${command}"
       actual_value=$( eval "${command}" )
       if [ "${actual_value}" = "1" ]; then
-        increment_insecure  "Remote Management is enabled"
-        verbose_message     "Open System Preferences"     "fix"
-        verbose_message     "Select Sharing"              "fix"
-        verbose_message     "Uncheck Remote Management"   "fix"
+        inc_insecure "Remote Management is enabled"
+        fix_message  "Open System Preferences"
+        fix_message  "Select Sharing"
+        fix_message  "Uncheck Remote Management"
       else
-        increment_secure    "Remote Management is disabled"
+        inc_secure   "Remote Management is disabled"
       fi
     else
-      verbose_message       "Open System Preferences"     "fix"
-      verbose_message       "Select Sharing"              "fix"
-      verbose_message       "Uncheck Remote Management"   "fix"
+      fix_message    "Open System Preferences"
+      fix_message    "Select Sharing"
+      fix_message    "Uncheck Remote Management"
     fi
   else
     na_message "${string}"

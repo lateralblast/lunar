@@ -20,8 +20,8 @@ audit_old_users () {
     fi
     last_test=$( command -v last)
     if [ "${last_test}" = "" ]; then
-      increment_insecure "last command not found"
-      verbose_message    "Install wtmpdb package" "fix"
+      inc_insecure "last command not found"
+      fix_message        "Install wtmpdb package"
       return
     fi
     never_count=0
@@ -29,26 +29,26 @@ audit_old_users () {
       restore_file "/etc/shadow" "${restore_dir}"
     else
       command="grep -v \"/usr/bin/false\" \"/etc/passwd\" | grep -Ev \"^halt|^shutdown|^root|^sync|/sbin/nologin\" | cut -f1 -d:"
-      command_message "${command}"
+      command_message   "${command}"
       user_list=$( eval "${command}" )
       for user_name in ${user_list}; do
         if test -r "/etc/shadow"; then
           command="grep \"^${user_name}:\" \"/etc/shadow\" | cut -f2 -d: | grep -cEv \"\*|\!\!|NP|LK|UP\" | sed \"s/ //g\""
-          command_message "${command}"
+          command_message      "${command}"
           shadow_check=$( eval "${command}" )
           if [ "$shadow_check" = "1" ]; then
             command="last \"${user_name}\" | awk '{print \$1}' | grep -c \"${user_name}\" | sed \"s/ //g\""
-            command_message "${command}"
+            command_message     "${command}"
             login_check=$( eval "${command}" )
             if [ "$login_check" = "1" ]; then
               if [ "${audit_mode}" = 1 ]; then
                 never_count=$((never_count+1))
-                increment_insecure "User \"${user_name}\" has not logged in recently and their account is not locked"
-                verbose_message    "passwd -l ${user_name}" "fix"
+                inc_insecure "User \"${user_name}\" has not logged in recently and their account is not locked"
+                fix_message        "passwd -l ${user_name}"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                backup_file     "/etc/shadow"
-                verbose_message "User \"${user_name}\" to locked" "set"
+                backup_file "/etc/shadow"
+                set_message "User \"${user_name}\" to locked"
                 passwd -l "${user_name}"
               fi
             fi
@@ -57,7 +57,7 @@ audit_old_users () {
       done
       if [ "${never_count}" = 0 ]; then
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "There are no users who have never logged that do not have their account locked"
+          inc_secure "There are no users who have never logged that do not have their account locked"
         fi
       fi
     fi

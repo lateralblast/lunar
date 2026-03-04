@@ -22,18 +22,18 @@ audit_system_integrity () {
       command_message "${command}"
       check=$( eval "${command}" )
       if [ ! "${check}" ]; then
-        increment_insecure "System Integrity Protection is not enabled"
+        inc_insecure "System Integrity Protection is not enabled"
       else
-        increment_secure   "System Integrity Protection is enabled"
+        inc_secure   "System Integrity Protection is enabled"
       fi
       if [ "${os_version}" -ge 11 ]; then
         command="/usr/bin/csrutil authenticated-root status | grep enabled"
         command_message "${command}"
         check=$( eval "${command}" )
         if [ -z "${check}" ]; then
-          increment_insecure "Sealed System Volume is not enabled"
+          inc_insecure "Sealed System Volume is not enabled"
         else
-          increment_secure   "Sealed System Volume is enabled"
+          inc_secure   "Sealed System Volume is enabled"
         fi
       fi
     fi

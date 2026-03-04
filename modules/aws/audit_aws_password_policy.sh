@@ -27,14 +27,14 @@ audit_aws_password_policy () {
   command_message "${command}"
   length=$( eval  "${command}" )
   if [ "${length}" = "0" ]; then
-    increment_insecure  "No password policy ${exists}"
-    verbose_message     "aws iam update-account-password-policy --require-uppercase-characters"  "fix"
-    verbose_message     "aws iam update-account-password-policy --require-lowercase-characters"  "fix"
-    verbose_message     "aws iam update-account-password-policy --require-symbols"               "fix"
-    verbose_message     "aws iam update-account-password-policy --require-numbers"               "fix"
-    verbose_message     "aws iam update-account-password-policy --minimum-password-length 14"    "fix"
-    verbose_message     "aws iam update-account-password-policy --password-reuse-prevention 24"  "fix"
-    verbose_message     "aws iam update-account-password-policy --max-password-age 90"           "fix"
+    inc_insecure "No password policy ${exists}"
+    fix_message  "aws iam update-account-password-policy --require-uppercase-characters"
+    fix_message  "aws iam update-account-password-policy --require-lowercase-characters"
+    fix_message  "aws iam update-account-password-policy --require-symbols"
+    fix_message  "aws iam update-account-password-policy --require-numbers"
+    fix_message  "aws iam update-account-password-policy --minimum-password-length 14"
+    fix_message  "aws iam update-account-password-policy --password-reuse-prevention 24"
+    fix_message  "aws iam update-account-password-policy --max-password-age 90"
   else
     check_aws_password_policy "RequireUppercaseCharacters" "true" "--require-uppercase-characters"
     check_aws_password_policy "RequireLowercaseCharacters" "true" "--require-lowercase-characters"

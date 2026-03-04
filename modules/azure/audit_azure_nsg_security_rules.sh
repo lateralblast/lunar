@@ -30,14 +30,14 @@ audit_azure_nsg_security_rules () {
   fi
   for res_id in ${res_ids}; do
     command="az network nsg show --ids ${res_id} --query \"name\" --output tsv 2> /dev/null"
-    command_message  "${command}"
-    res_name=$( eval "${command}" )
+    command_message   "${command}"
+    res_name=$( eval  "${command}" )
     command="az network nsg show --ids ${res_id} --query \"resourceGroup\" --output tsv 2> /dev/null"
     command_message   "${command}"
     res_group=$( eval "${command}" )
     command="az network nsg rule list --resource-group ${res_group} --nsg-name ${res_name} --query \"[].id\" --output tsv 2> /dev/null"
-    command_message  "${command}"
-    rule_ids=$( eval "${command}" )
+    command_message   "${command}"
+    rule_ids=$( eval  "${command}" )
     for rule_id in ${rule_ids}; do
       for port_no in 3389 22 53 80 123 161 389 443 1900; do
         service_name=$( get_service_name_from_port_no "${port_no}" )

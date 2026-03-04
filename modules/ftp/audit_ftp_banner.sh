@@ -27,11 +27,11 @@ audit_ftp_banner () {
         if [ "${audit_mode}" != 2 ]; then
           if [ "${actual_value}" != "Authorised" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure  "FTP warning message isn't enabled"
-              verbose_message   "dspcat -g \"${message_file}\" > \"${temp_dir}/ftpd.tmp\"" fix
-              verbose_message   "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" \"${temp_dir}/ftpd.tmp\" > \"${temp_dir}/ftpd.msg\"" fix
-              verbose_message   "gencat \"${message_file}\" \"${temp_dir}/ftpd.msg\"" fix
-              verbose_message   "rm \"${temp_dir}/ftpd.tmp\" \"${temp_dir}/ftpd.msg\"" fix
+              inc_secure  "FTP warning message isn't enabled"
+              fix_message "dspcat -g \"${message_file}\" > \"${temp_dir}/ftpd.tmp\""
+              fix_message "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" \"${temp_dir}/ftpd.tmp\" > \"${temp_dir}/ftpd.msg\""
+              fix_message "gencat \"${message_file}\" \"${temp_dir}/ftpd.msg\""
+              fix_message "rm \"${temp_dir}/ftpd.tmp\" \"${temp_dir}/ftpd.msg\""
             fi
             if [ "${audit_mode}" = 0 ]; then
               backup_file "${message_file}"
@@ -48,7 +48,7 @@ audit_ftp_banner () {
             fi
           else
             if [ "${audit_mode}" = 1 ]; then
-              increment_secure "FTP warning message enabled"
+              inc_secure "FTP warning message enabled"
             fi
           fi
         else

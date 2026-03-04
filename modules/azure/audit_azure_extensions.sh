@@ -29,9 +29,9 @@ audit_azure_extensions () {
     command_message      "${command}"
     actual_value=$( eval "${command}" )
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\""
+      inc_secure   "Azure extensions parameter \"${parameter_name}\" is set to \"${correct_value}\""
     else
-      increment_insecure "Azure extensions parameter \"${parameter_name}\" is not set to \"${correct_value}\""
+      inc_insecure "Azure extensions parameter \"${parameter_name}\" is not set to \"${correct_value}\""
       verbose_message    "az config set ${parameter_name}=${correct_value}" "fix"
     fi
   done

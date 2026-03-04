@@ -26,13 +26,13 @@ audit_azure_subscription_owners () {
     command_message     "${command}"
     role_owners=$( eval "${command}" )
     if [ -z "${role_owners}" ]; then
-      increment_secure     "There are members with the Subscription Owner role"
+      inc_secure     "There are members with the Subscription Owner role"
     else
       owner_count=$( echo "${role_owners}" | wc -l )
       if [ "${owner_count}" -gt "${max_owners}" ]; then
-        increment_insecure "There are more than ${max_owners} members with the Subscription Owner role"
+        inc_insecure "There are more than ${max_owners} members with the Subscription Owner role"
       else
-        increment_secure   "There are ${owner_count} members with the Subscription Owner role"
+        inc_secure   "There are ${owner_count} members with the Subscription Owner role"
       fi
       role_assignment_ids=$( echo "${role_owners}" | tr '\n' ' ' )
       fix_message "az role assignment delete --ids \"${role_assignment_ids}\""

@@ -54,7 +54,7 @@ check_command_output () {
     check_value=$( ${get_command} )
     if [ "${audit_mode}" != 2 ]; then
       string="Command \"${command_name}\" returns \"${correct_value}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
        if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_command_output_${command_name}_${ansible_counter}"
@@ -73,14 +73,14 @@ check_command_output () {
         echo ""
       fi
       if [ "${check_value}" != "${correct_value}" ]; then
-        increment_insecure "Command \"${command_name}\" does not return correct value"
+        inc_insecure "Command \"${command_name}\" does not return correct value"
       else
-        increment_secure   "Command \"${command_name}\" returns correct value"
+        inc_secure   "Command \"${command_name}\" returns correct value"
       fi
       update_log_file  "${log_file}" "${audit_command}"
       lockdown_message="Command \"${command_name}\" to correct value"
       lockdown_command="${set_command}"
-      execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
     fi
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"

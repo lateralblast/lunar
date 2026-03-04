@@ -21,8 +21,8 @@ audit_talk_server () {
   check_message "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
-      check_linux_service "ntalk"              "off"
-      check_linux_package "uninstall"          "talk-server"
+      check_linux_service "ntalk"     "off"
+      check_linux_package "uninstall" "talk-server"
     fi
   else
     na_message "${string}"

@@ -33,15 +33,15 @@ check_azure_waf_value () {
     actual_value=$( eval "${command}" )
     if [ "${function}" = "ne" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_insecure "Azure WAF \"${waf_id}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_insecure "Azure WAF \"${waf_id}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
       else
-        increment_secure   "Azure WAF \"${waf_id}\" has \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_secure   "Azure WAF \"${waf_id}\" has \"${query_string}\" ${function} to \"${correct_value}\""
       fi
     else
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Azure WAF \"${waf_id}\" has \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_secure   "Azure WAF \"${waf_id}\" has \"${query_string}\" ${function} to \"${correct_value}\""
       else
-        increment_insecure "Azure WAF \"${waf_id}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_insecure "Azure WAF \"${waf_id}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
         if [ "${parameter_name}" != "" ]; then
           case "${parameter_name}" in
             "--"*)
@@ -68,15 +68,15 @@ check_azure_waf_value () {
     actual_value=$( eval "${command}" )
     if [ "${function}" = "ne" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
       else
-        increment_secure   "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_secure   "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\""
       fi
     else
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_secure   "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" has \"${query_string}\" ${function} to \"${correct_value}\""
       else
-        increment_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
+        inc_insecure "Azure WAF \"${waf_name}\"${policy_string} in Resource Group \"${resource_group}\" does not have \"${query_string}\" ${function} to \"${correct_value}\""
         if [ "${parameter_name}" != "" ]; then
           case "${parameter_name}" in
             "--"*)

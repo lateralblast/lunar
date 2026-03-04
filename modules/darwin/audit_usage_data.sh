@@ -22,15 +22,15 @@ audit_usage_data () {
     if [ "${long_os_version}" -ge 1014 ]; then
       check_osx_defaults_bool "Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist"  "AutoSubmit"           "0"
       check_osx_defaults_bool "Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist"  "ThirdPartyDataSubmit" "0"
-      check_file_perms        "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" "644"                  "root" "admin"
-      verbose_message         "Siri Data Sharing" "check"
+      check_file_perms        "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" "644" "root" "admin"
+      check_message           "Siri Data Sharing"
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-        verbose_message "Requires sudo to check" "notice"
+        notice_message "Requires sudo to check"
         return
       fi
       if [ "${audit_mode}" != 2 ]; then
         command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.assistant.support" "Siri Data Sharing Opt-In Status" "2" "int" "${user_name}"

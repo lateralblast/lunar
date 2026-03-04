@@ -23,27 +23,27 @@ audit_sudo_nopassword () {
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then
       command="grep \"^[^#].*NOPASSWD\" < \"${check_file}\""
-      command_message "${command}"
+      command_message   "${command}"
       auth_test=$( eval "${command}" )
       if [ -n "${auth_test}" ]; then
-        increment_insecure "NOPASSWD entry for sudo in ${check_file}"
+        inc_insecure "NOPASSWD entry for sudo in ${check_file}"
       else
-        increment_secure   "No NOPASSWD entry for sudo in ${check_file}"
+        inc_secure   "No NOPASSWD entry for sudo in ${check_file}"
       fi
-      check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
+      check_file_perms "${check_file}" "440" "root" "${wheel_group}"
     fi
     if [ -d "/etc/sudoers.d" ]; then
       command="find /etc/sudoers.d -type file"
-      command_message "${command}"
+      command_message   "${command}"
       file_list=$( eval "${command}" )
       for check_file in ${file_list}; do
         command="grep \"^[^#].*NOPASSWD\" < \"${check_file}\""
-        command_message "${command}"
+        command_message   "${command}"
         auth_test=$( eval "${command}" )
         if [ -n "${auth_test}" ]; then
-          increment_insecure "NOPASSWD entry for sudo in ${check_file}"
+          inc_insecure "NOPASSWD entry for sudo in ${check_file}"
         else
-          increment_secure   "No NOPASSWD entry for sudo in ${check_file}"
+          inc_secure   "No NOPASSWD entry for sudo in ${check_file}"
         fi
         check_file_perms "${check_file}" "440" "root" "${wheel_group}" 
       done

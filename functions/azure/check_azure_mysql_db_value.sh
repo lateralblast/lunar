@@ -22,10 +22,11 @@ check_azure_mysql_db_value () {
   correct_value="${8}"
   set_name="${9}"
   set_value="${10}"
+  print_function "check_azure_mysql_db_value"
+
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function "check_azure_mysql_db_value"
   if [ "${server_type}" = "server" ]; then
     header_string="${description} for MySQL ${server_type} DB Server \"${server_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\""
     check_message "${header_string} is \"${function}\" to \"${correct_value}\""
@@ -40,9 +41,9 @@ check_azure_mysql_db_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "${header_string} is \"${function}\" to \"${correct_value}\""
+      inc_secure   "${header_string} is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "${header_string} is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "${header_string} is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -56,7 +57,7 @@ check_azure_mysql_db_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "${header_string} is \"${function}\" to \"${correct_value}\""
+      inc_insecure "${header_string} is \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -68,7 +69,7 @@ check_azure_mysql_db_value () {
         esac
       fi
     else
-      increment_secure  "${header_string} is not \"${function}\" to \"${correct_value}\""
+      inc_secure "${header_string} is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

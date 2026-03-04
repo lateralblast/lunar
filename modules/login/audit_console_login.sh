@@ -39,7 +39,7 @@ audit_console_login () {
     check_file="/etc/securetty"
     if [ -f "${check_file}" ]; then
       string="Root Login to System Console"
-      verbose_message "${string}" "check"
+      check_message "${string}"
       disable_ttys=0
       console_list=""
       if [ "${audit_mode}" != 2 ]; then
@@ -60,14 +60,14 @@ audit_console_login () {
         done
         if [ "${disable_ttys}" = 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Consoles enabled on \"$console_list\""
-            verbose_message    "ed 's/^tty[0-9].*//g' < ${check_file} | grep '[a-z]' > ${temp_file}" "fix"
-            verbose_message    "cat ${temp_file} > ${check_file}" "fix"
-            verbose_message    "rm ${temp_file}" "fix"
+            inc_insecure "Consoles enabled on \"$console_list\""
+            fix_message  "ed 's/^tty[0-9].*//g' < ${check_file} | grep '[a-z]' > ${temp_file}"
+            fix_message  "cat ${temp_file} > ${check_file}"
+            fix_message  "rm ${temp_file}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file     "${check_file}"
-            verbose_message "Consoles to disabled on \"$console_list\"" "set"
+            backup_file  "${check_file}"
+            set_message  "Consoles to disabled on \"$console_list\""
             command="sed \"s/tty[0-9].*//g\" < \"${check_file}\" | grep '[a-z]' > \"${temp_file}\""
             command_message "${command}"
             eval "${command}"
@@ -80,7 +80,7 @@ audit_console_login () {
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "No consoles enabled on tty[0-9]*"
+            inc_secure "No consoles enabled on tty[0-9]*"
           fi
         fi
       else

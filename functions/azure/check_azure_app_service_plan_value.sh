@@ -19,19 +19,19 @@ check_azure_app_service_plan_value () {
   correct_value="${5}"
   set_name="${7}"
   set_value="${8}"
+  print_function "check_azure_app_service_plan_value"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function "check_azure_app_service_plan_value"
   check_message  "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az appservice plan show --name \"${plan_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null" 
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -45,9 +45,9 @@ check_azure_app_service_plan_value () {
     fi
   else
     if [ "${actual_value}" != "${correct_value}" ]; then
-      increment_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)

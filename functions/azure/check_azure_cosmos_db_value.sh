@@ -20,19 +20,19 @@ check_azure_cosmos_db_value () {
   correct_value="${6}"
   set_name="${7}"
   set_value="${8}"
+  print_function "check_azure_cosmos_db_value"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  print_function "check_azure_cosmos_db_value"
   check_message  "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az cosmosdb show --name \"${cosmosdb_name}\" --resource-group \"${resource_group}\" --query \"[].${query_string}\" --output tsv"
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -46,7 +46,7 @@ check_azure_cosmos_db_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_insecure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
@@ -58,7 +58,7 @@ check_azure_cosmos_db_value () {
         esac
       fi
     else
-      increment_secure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_secure "${description} for Cosmos DB \"${cosmosdb_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

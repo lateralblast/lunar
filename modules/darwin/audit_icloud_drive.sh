@@ -33,9 +33,9 @@ audit_icloud_drive () {
               command_message "${command}"
               check_value=$( eval "${command}" )
               if [ "${check_value}" = "0" ]; then
-                increment_secure   "Documents in \"${dir_name}\" for \"${user_name}\" are not syncing "
+                inc_secure   "Documents in \"${dir_name}\" for \"${user_name}\" are not syncing "
               else
-                increment_insecure "Documents in \"${dir_name}\" for \"${user_name}\" are syncing "
+                inc_insecure "Documents in \"${dir_name}\" for \"${user_name}\" are syncing "
               fi
             fi
           done

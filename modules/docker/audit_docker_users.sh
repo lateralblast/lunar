@@ -39,15 +39,15 @@ audit_docker_users () {
               lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
               if [ "${lock_test}" = "${user_name}" ]; then
                 if [ "${audit_mode}" = 1 ]; then
-                  increment_insecure "User \"${user_name}\" in group \"${docker_group}\" and has not logged in recently and their account is not locked"
+                  inc_insecure "User \"${user_name}\" in group \"${docker_group}\" and has not logged in recently and their account is not locked"
                 fi
                 if [ "${audit_mode}" = 0 ]; then
-                  backup_file     "${check_file}"
-                  verbose_message "User \"${user_name}\" to locked" "set"
+                  backup_file "${check_file}"
+                  set_message "User \"${user_name}\" to locked"
                   passwd -l "${user_name}"
                 fi
               else
-                increment_secure "User \"${user_name}\" in group \"${docker_group}\" has not logged in recently and their account is locked"
+                inc_secure "User \"${user_name}\" in group \"${docker_group}\" has not logged in recently and their account is locked"
               fi
             fi
           fi
@@ -64,15 +64,15 @@ audit_docker_users () {
               lock_test=$( grep "^${user_name}:" /etc/shadow | grep -v 'LK' | cut -f1 -d: )
               if [ "${lock_test}" = "${user_name}" ]; then
                 if [ "${audit_mode}" = 1 ]; then
-                  increment_insecure  "User \"${user_name}\" is in group \"${docker_group}\" has and ID greater than \"${max_super_user_id}\" and their account is not locked"
+                  inc_insecure "User \"${user_name}\" is in group \"${docker_group}\" has and ID greater than \"${max_super_user_id}\" and their account is not locked"
                 fi
                 if [ "${audit_mode}" = 0 ]; then
-                  backup_file         "${check_file}"
-                  verbose_message     "User \"${user_name}\" to locked" "set"
+                  backup_file  "${check_file}"
+                  set_message  "User \"${user_name}\" to locked"
                   passwd -l "${user_name}"
                 fi
               else
-                increment_secure  "User \"${user_name}\" in group \"${docker_group}\" has an id less than \"${max_super_user_id}\" and their account is locked"
+                inc_secure "User \"${user_name}\" in group \"${docker_group}\" has an id less than \"${max_super_user_id}\" and their account is locked"
               fi
             fi
           fi

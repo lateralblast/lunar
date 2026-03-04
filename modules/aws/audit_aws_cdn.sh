@@ -27,36 +27,36 @@ audit_aws_cdn () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ "${check}" ]; then
-      increment_secure   "Cloudfront CDN \"${cdn}\" is WAF integration enabled"
+      inc_secure   "Cloudfront CDN \"${cdn}\" is WAF integration enabled"
     else
-      increment_insecure "Cloudfront CDN \"${cdn}\" is not WAF integration enabled"
+      inc_insecure "Cloudfront CDN \"${cdn}\" is not WAF integration enabled"
     fi
     # Check logging is enabled
     command="aws cloudfront get-distribution --id \"${cdn}\" --query 'Distribution.DistributionConfig.Logging.Enabled' | grep true"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ "${check}" ]; then
-      increment_secure   "Cloudfront CDN \"${cdn}\" has logging enabled"
+      inc_secure   "Cloudfront CDN \"${cdn}\" has logging enabled"
     else
-      increment_insecure "Cloudfront CDN \"${cdn}\" does not have logging enabled"
+      inc_insecure "Cloudfront CDN \"${cdn}\" does not have logging enabled"
     fi
     # check SSL protocol versions being used against deprecated ones
     command="aws cloudfront get-distribution --id \"${cdn}\" --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginSslProtocols.Items' | grep -E \"SSLv3|SSLv2\""
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ ! "${check}" ]; then
-      increment_secure   "Cloudfront CDN \"${cdn}\" is not using a deprecated version of SSL"
+      inc_secure   "Cloudfront CDN \"${cdn}\" is not using a deprecated version of SSL"
     else
-      increment_insecure "Cloudfront CDN \"${cdn}\" is using a deprecated verions of SSL"
+      inc_insecure "Cloudfront CDN \"${cdn}\" is using a deprecated verions of SSL"
     fi
     # check if HTTP only being used 
     command="aws cloudfront get-distribution --id \"${cdn}\" --query 'Distribution.DistributionConfig.Origins.Items[].CustomOriginConfig.OriginProtocolPolicy' | grep -E \"http-only\""
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ ! "${check}" ]; then
-      increment_secure   "Cloudfront CDN \"${cdn}\" is not using HTTP only"
+      inc_secure   "Cloudfront CDN \"${cdn}\" is not using HTTP only"
     else
-      increment_insecure "Cloudfront CDN \"${cdn}\" is using HTTP only"
+      inc_insecure "Cloudfront CDN \"${cdn}\" is using HTTP only"
     fi
   done
 }

@@ -19,7 +19,7 @@ audit_safari_warn () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-        verbose_message "Requires sudo to check" "notice"
+        notice_message "Requires sudo to check"
         return
       fi
       if [ "${audit_mode}" != 2 ]; then

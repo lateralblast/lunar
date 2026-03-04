@@ -65,8 +65,8 @@ check_file_perms () {
   log_file="fileperms.log"
   if [ "${check_result}" != "1" ]; then
     if [ "${audit_mode}" = 1 ] && [ -n "${check_result}" ]; then
-      increment_insecure "File \"${check_file}\" has incorrect permissions"
-      fix_message        "chmod ${check_perms} ${check_file}"
+      inc_insecure "File \"${check_file}\" has incorrect permissions"
+      fix_message  "chmod ${check_perms} ${check_file}"
       if [ "${check_owner}" != "" ]; then
         if [ "${check_result}" != "1" ]; then
           fix_message "chown ${check_owner}:${check_group} ${check_file}"
@@ -102,18 +102,18 @@ check_file_perms () {
       update_log_file "${log_file}" "${check_file},${file_perms},${file_owner}"
       lockdown_message="File \"${check_file}\" to have correct permissions"
       lockdown_command="chmod ${check_perms} ${check_file}"
-      execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
       if [ "${check_owner}" != "" ]; then
         if [ "${check_result}" != "${check_file}" ]; then
           lockdown_message="File \"${check_file}\" to have correct owner"
           lockdown_command="chown ${check_owner}:${check_group} ${check_file}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi
   else
     if [ "${audit_mode}" = 1 ]; then
-      increment_secure "File \"${check_file}\" has correct permissions"
+      inc_secure "File \"${check_file}\" has correct permissions"
     fi
   fi
   if [ "${audit_mode}" = 2 ]; then
@@ -123,7 +123,7 @@ check_file_perms () {
       command_message "${command}"
       restore_check=$( eval "${command}" )
       if [ "${restore_check}" = "${check_file}" ]; then
-        restore_info=$( grep "${check_file}" "${restore_file}" )
+        restore_info=$(  grep "${check_file}" "${restore_file}" )
         restore_perms=$( echo "${restore_info}" | cut -f2 -d, )
         restore_owner=$( echo "${restore_info}" | cut -f3 -d, )
         restore_group=$( echo "${restore_info}" | cut -f4 -d, )

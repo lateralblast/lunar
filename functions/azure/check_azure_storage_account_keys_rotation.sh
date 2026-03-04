@@ -22,7 +22,7 @@ check_azure_storage_account_keys_rotation () {
   command_message      "${command}"
   status_check=$( eval "${command}" )
   if [ -n "${status_check}" ]; then
-    increment_secure "Storage Account \"${storage_account}\" has access keys regenerated in the last \"${correct_value}\" days"
+    inc_secure "Storage Account \"${storage_account}\" has access keys regenerated in the last \"${correct_value}\" days"
   else
     creation_date=$( az storage account show --name "${storage_account}" --query "creationTime" --output tsv | cut -d T -f 1 )
     if [ "${os_name}" = "Linux" ]; then
@@ -37,9 +37,9 @@ check_azure_storage_account_keys_rotation () {
     diff_secs=$(( current_secs - creation_secs ))
     diff_days=$(( diff_secs / 86400 ))
     if [ ${diff_days} -le ${correct_value}  ]; then
-      increment_secure   "Storage Account \"${storage_account}\" has access keys generated in the last \"${correct_value}\" days"
+      inc_secure   "Storage Account \"${storage_account}\" has access keys generated in the last \"${correct_value}\" days"
     else
-      increment_insecure "Storage Account \"${storage_account}\" does not have access keys regenerated in the last \"${correct_value}\" days"
+      inc_insecure "Storage Account \"${storage_account}\" does not have access keys regenerated in the last \"${correct_value}\" days"
     fi
   fi
 }

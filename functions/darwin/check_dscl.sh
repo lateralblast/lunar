@@ -10,11 +10,11 @@
 #.
 
 check_dscl () {
-  print_function "check_dscl"
   if [ "${os_name}" = "Darwin" ]; then
     file="${1}"
     param="${2}"
     value="${3}"
+    print_function "check_dscl"
     dir="/var/db/dslocal/nodes/Default"
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
@@ -47,17 +47,17 @@ check_dscl () {
         check=$( eval   "${command}" )
       fi
       if [ "${check}" != "${value}" ]; then
-        increment_insecure "Parameter \"${param}\" not set to \"${value}\" in \"${file}\""
-        fix_message        "sudo dscl . -create ${file} ${param} \"${value}\""
+        inc_insecure "Parameter \"${param}\" not set to \"${value}\" in \"${file}\""
+        fix_message  "sudo dscl . -create ${file} ${param} \"${value}\""
         if [ "${audit_mode}" = 0 ]; then
           backup_file      "${dir}/${file}"
           lockdown_message="Parameter \"${param}\" to \"${value}\" in ${file}"
           lockdown_message="dscl . -create ${file} ${param} ${value}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          increment_secure "Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
+          inc_secure "Parameter \"${param}\" is set to \"${value}\" in \"${file}\""
         fi
       fi
     else

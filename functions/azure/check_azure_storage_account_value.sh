@@ -27,9 +27,9 @@ check_azure_storage_account_value () {
     actual_value=$( eval "${command}" )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
+        inc_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
       else
-        increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
+        inc_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
         if [ ! -z "${set_name}" ]; then
           case "${set_name}" in
             "--"*)
@@ -44,9 +44,9 @@ check_azure_storage_account_value () {
     else
       if [ "${function}" = "ne" ]; then
         if [ "${actual_value}" != "${correct_value}" ]; then
-          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
+          inc_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\""
         else
-          increment_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
+          inc_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\""
           if [ ! -z "${set_name}" ]; then
             case "${set_name}" in
               "--"*)
@@ -70,9 +70,9 @@ check_azure_storage_account_value () {
     actual_value=$( eval "${command}" )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
-        increment_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
+        inc_secure   "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
       else
-        increment_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
+        inc_insecure "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
         if [ ! -z "${set_name}" ]; then
           case "${set_name}" in
             "--"*)
@@ -87,9 +87,9 @@ check_azure_storage_account_value () {
     else
       if [ "${function}" = "ne" ]; then
         if [ "${actual_value}" != "${correct_value}" ]; then
-          increment_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
+          inc_secure   "Storage Account \"${storage_account}\" does not have ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
         else
-          increment_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
+          inc_insecure "Storage Account \"${storage_account}\" has ${description} \"${function}\" to \"${correct_value}\" for resource group \"${resource_group}\""
           if [ ! -z "${set_name}" ]; then
             case "${set_name}" in
               "--"*)

@@ -33,14 +33,14 @@ audit_password_fields () {
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/passwd"
       command="awk -F: '(\$3 == 0) { print \$1 }' \"${check_file}\" | grep -v root"
-      command_message "${command}"
+      command_message   "${command}"
       user_list=$( eval "${command}" )
       if [ "$user_list" = "" ]; then
-        increment_secure "No non root users have UID 0"
+        inc_secure "No non root users have UID 0"
       else
         for user_name in ${user_list}; do
           if [ "${user_name}" != "root" ]; then
-            increment_insecure "Non root user ${user_name} has UID 0"
+            inc_insecure "Non root user ${user_name} has UID 0"
           fi
         done
       fi
@@ -58,25 +58,25 @@ audit_password_fields () {
       empty_count=0
       if [ "${os_name}" = "AIX" ]; then
         command="pwdck –n ALL"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
       else
         command="awk -F':' '{ print \$1\":\"\$2\":\" }' < /etc/shadow | grep \"::$\" | cut -f1 -d:"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
       fi
       for user_name in ${user_list}; do
         empty_count=1
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "No password field for \"${user_name}\" in \"${check_file}\""
-          verbose_message    "passwd -d ${user_name}" "fix"
+          inc_insecure "No password field for \"${user_name}\" in \"${check_file}\""
+          fix_message        "passwd -d ${user_name}"
           if [ "${os_name}" = "SunOS" ]; then
-            verbose_message  "passwd -N ${user_name}" "fix"
+            fix_message      "passwd -N ${user_name}"
           fi
         fi
         if [ "${audit_mode}" = 0 ]; then
-          backup_file     "${check_file}"
-          verbose_message "No password for \"${user_name}\"" "set"
+          backup_file "${check_file}"
+          set_message "No password for \"${user_name}\""
           passwd -d "${user_name}"
           if [ "${os_name}" = "SunOS" ]; then
             passwd -N "${user_name}"
@@ -84,22 +84,22 @@ audit_password_fields () {
         fi
       done
       if [ "$empty_count" = 0 ]; then
-        increment_secure "No empty password entries"
+        inc_secure "No empty password entries"
       fi
       for check_file in /etc/passwd /etc/shadow; do
         if test -r "${check_file}"; then
           command="grep '^+:' ${check_file} | head -1 | wc -l | sed \"s/ //g\""
-          command_message "${command}"
+          command_message      "${command}"
           legacy_check=$( eval "${command}" )
           if [ "${legacy_check}" != "0" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Legacy field found in \"${check_file}\""
-              verbose_message    "grep -v '^+:' : ${check_file} > ${temp_file}" fix
-              verbose_message    "cat ${temp_file}  > ${check_file}" fix
+              inc_insecure "Legacy field found in \"${check_file}\""
+              fix_message        "grep -v '^+:' : ${check_file} > ${temp_file}"
+              fix_message        "cat ${temp_file}  > ${check_file}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file     "${check_file}"
-              verbose_message "Legacy entries from \"${check_file}\"" "remove"
+              backup_file    "${check_file}"
+              remove_message "Legacy entries from \"${check_file}\""
               command="grep -v \"^+:\" \"${check_file}\" > \"${temp_file}\""
               command_message "${command}"
               eval "${command}"
@@ -108,7 +108,7 @@ audit_password_fields () {
               eval "${command}"
             fi
           else
-            increment_secure "No legacy entries in \"${check_file}\""
+            inc_secure "No legacy entries in \"${check_file}\""
           fi
         fi
       done

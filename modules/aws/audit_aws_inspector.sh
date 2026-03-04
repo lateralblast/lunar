@@ -24,9 +24,9 @@ audit_aws_inspector () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ "${check}" ]; then
-      increment_secure   "Inspectors have subscriptions"
+      inc_secure   "Inspectors have subscriptions"
     else
-      increment_insecure "Inspectors do not have subscriptions"
+      inc_insecure "Inspectors do not have subscriptions"
     fi
     for template in ${templates}; do
       command="aws inspector describe-assessment-templates --region \"${aws_region}\" --assessment-template-arns \"${template}\" --query 'assessmentTemplates[].name' --output text"
@@ -41,15 +41,15 @@ audit_aws_inspector () {
           command_message "${command}"
           check=$( eval   "${command}" )
           if [ -n "${check}" ]; then
-            increment_secure   "Instance \"${instance}\" has an inspector tag"
+            inc_secure   "Instance \"${instance}\" has an inspector tag"
           else
-            increment_insecure "Instance \"${instance}\" does not have an inspector tag"
+            inc_insecure "Instance \"${instance}\" does not have an inspector tag"
           fi
         done
       done
     done
   else
-    increment_insecure "No inspector templates exist"
+    inc_insecure "No inspector templates exist"
   fi
 }
 

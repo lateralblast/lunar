@@ -19,11 +19,11 @@ audit_group_fields () {
       check_file="/etc/group"
       group_list=$( awk -F: '($3 == 0) { print $1 }' "${check_file}" | grep -v root )
       if [ "${group_list}" = "" ]; then
-        increment_secure "No non root groups have GID 0"
+        inc_secure "No non root groups have GID 0"
       else
         for group_name in ${group_list}; do
           if [ "$group_name" != "root" ]; then
-            increment_insecure "Non root group ${group_name} has GID 0"
+            inc_insecure "Non root group ${group_name} has GID 0"
           fi
         done
       fi

@@ -26,7 +26,7 @@ audit_bluetooth () {
     if [ "${audit_mode}" != 2 ]; then
       if [ "${os_version}" -ge 14 ]; then
         command="find /Users -maxdepth 1 -type d |grep -vE \"localized|Shared\" |cut -f3 -d/"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           check_osx_defaults_user "com.apple.Bluetooth"           "PrefKeyServicesEnabled" "0"  "bool" "${user_name}"
@@ -34,33 +34,33 @@ audit_bluetooth () {
         done
       fi
       command="system_profiler SPBluetoothDataType | grep -i power | cut -f2 -d: | sed \"s/ //g\""
-      command_message "${command}"
+      command_message  "${command}"
       bt_check=$( eval "${command}" )
       if [ ! "${bt_check}" = "Off" ]; then
         command="system_profiler SPBluetoothDataType | grep -i discoverable | cut -f2 -d: | sed \"s/ //g\""
-        command_message "${command}"
+        command_message  "${command}"
         bt_check=$( eval "${command}" )
         if [ "${bt_check}" = "Off" ]; then
-          increment_secure    "Bluetooth is not discoverable"
+          inc_secure     "Bluetooth is not discoverable"
         else
-          increment_insecure  "Bluetooth is discoverable"
+          inc_insecure   "Bluetooth is discoverable"
         fi
       else
-        increment_secure      "Bluetooth is turned off"
+        inc_secure       "Bluetooth is turned off"
       fi
       command="defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed \"s/[ ,\",\,]//g\""
       command_message "${command}"
       defaults_check=$( eval "${command}" )
       if [ "${defaults_check}" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
-        increment_secure      "Bluetooth status menu is enabled"
+        inc_secure   "Bluetooth status menu is enabled"
       else
-        increment_insecure    "Bluetooth status menu is not enabled"
+        inc_insecure "Bluetooth status menu is not enabled"
       fi
     fi
   else
     if [ "${os_name}" = "Linux" ]; then
-      check_linux_service     "bluez"     "off"
-      check_linux_package     "uninstall" "bluez"
+      check_linux_service "bluez"     "off"
+      check_linux_package "uninstall" "bluez"
     else
       na_message "${string}"
     fi

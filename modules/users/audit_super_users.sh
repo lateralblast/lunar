@@ -27,16 +27,16 @@ audit_super_users () {
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      check_chuser su true sugroups system root
+      check_chuser "su" "true" "sugroups" "system" "root"
     else
       if [ "${audit_mode}" != 2 ]; then
         lockdown_command="userdel ${user_name}"
         command="awk -F: '\$3 == \"0\" { print \$1 }' /etc/passwd | grep -v root"
-        command_message "${command}"
+        command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "UID 0 for User \"${user_name}\""
+            inc_insecure "UID 0 for User \"${user_name}\""
             verbose_message    "${lockdown_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
@@ -44,12 +44,12 @@ audit_super_users () {
             backup_file "/etc/passwd"
             lockdown_message="Removing Account ${user_name} as it is UID 0"
             lockdown_command="userdel ${user_name}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         done
         if [ "${user_name}" = "" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "No accounts other than root have UID 0"
+            inc_secure "No accounts other than root have UID 0"
           fi
         fi
       else

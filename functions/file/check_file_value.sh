@@ -37,7 +37,7 @@ check_file_value_with_position () {
   print_function "check_file_value_with_position"
   temp_file=$( basename ${check_file} )
   temp_file="${temp_dir}/${temp_file}"
-  dir_name=$( dirname "${check_file}" )
+  dir_name=$(  dirname "${check_file}" )
   sshd_test=$( echo "${check_file}" | grep -c "sshd_config" | sed "s/ //g" )
   if [ ! -f "${check_file}" ]; then
     warn_message "File \"${check_file}\" does not exist"
@@ -111,8 +111,8 @@ check_file_value_with_position () {
         fi
         lockdown_command="echo '${line}' >> ${check_file}"
         if [ "${audit_mode}" = 1 ]; then
-          increment_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
-          fix_message        "${lockdown_command}"
+          inc_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
+          fix_message  "${lockdown_command}"
         else
           if [ "${audit_mode}" = 0 ]; then
             log_file="${restore_dir}/fileops.log"
@@ -125,7 +125,7 @@ check_file_value_with_position () {
             if [ "$sshd_test" =  "1" ]; then
               notice_message "Service restart required for SSH"
             fi
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
           if [ "${ansible_mode}" = 1 ]; then
             echo ""
@@ -212,7 +212,7 @@ check_file_value_with_position () {
             parameter_name=$( echo "${parameter_name}" | sed "s/^[\\]//g" )
           fi
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
+            inc_insecure "Parameter \"${parameter_name}\" ${negative} set to \"${correct_value}\" in \"${check_file}\""
             if [ "${check_parameter}" != "${parameter_name}" ]; then
               if [ "${separator}" = "tab" ]; then
                 fix_message "echo -e \"${parameter_name}\t${correct_value}\" >> ${check_file}"
@@ -252,14 +252,14 @@ check_file_value_with_position () {
                     lockdown_command="${echo_command} \"${parameter_name}${separator}${correct_value}\" >> ${check_file}"
                   fi
                 fi
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
               else
                 if [ "${check_file}" = "/etc/default/sendmail" ] || [ "${check_file}" = "/etc/sysconfig/mail" ] || [ "${check_file}" = "/etc/rc.conf" ] || [ "${check_file}" = "/boot/loader.conf" ] || [ "${check_file}" = "/etc/sysconfig/boot" ] || [ "${check_file}" = "/etc/sudoers" ]; then
                   lockdown_command="${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}\\"${correct_value}\\"/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
                 else
                   lockdown_command="${sed_command} \"s/^${parameter_name}.*/${parameter_name}${spacer}${correct_value}/\" ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
                 fi
-                execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
                 if [ "${os_name}" = "SunOS" ]; then
                   if [ "${os_version}" != "11" ]; then
                     pkgchk -f -n -p "${check_file}" 2> /dev/null
@@ -271,7 +271,7 @@ check_file_value_with_position () {
             fi
           fi
         else
-          increment_secure "Parameter \"${parameter_name}\" ${operator} set to \"${correct_value}\" in \"${check_file}\""
+          inc_secure "Parameter \"${parameter_name}\" ${operator} set to \"${correct_value}\" in \"${check_file}\""
         fi
       fi
     fi

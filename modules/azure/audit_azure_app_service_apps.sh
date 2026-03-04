@@ -89,7 +89,7 @@ audit_azure_app_service_apps () {
     check_azure_app_service_app_value "Cross-Origin Resource Sharing" "${app_name}" "${resource_group}" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"                 ""
     # 2.1.15  Ensure App Service plan SKU supports private endpoints - TBD
     command="az webapp show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"appServicePlanId\" --output tsv"
-    command_message "${command}"
+    command_message   "${command}"
     app_plans=$( eval "${command}" )
     for app_plan in ${app_plans}; do
       check_azure_app_service_plan_value "App Service Plan SKU"       "${app_plan}" "${resource_group}" ""    "sku.tier" "eq" "${azure_sku_tier}" "--sku" ""

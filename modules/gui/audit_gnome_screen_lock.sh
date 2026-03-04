@@ -46,11 +46,11 @@ audit_gnome_screen_lock () {
             check_file_value_with_position "is" "${check_file}" "lock-delay" "eq" "uint32 5"   "hash" "after" "screensaver"
           else
             if [ "${audit_mode}" = 1 ]; then
-              verbose_message "echo \"[org/gnome/desktop/session]\" > ${check_file}"      "fix"
-              verbose_message "echo \"idle-delay=uint32 900\" >> ${check_file}"           "fix"
-              verbose_message "echo \"[org/gnome/desktop/screensaver]\" >> ${check_file}" "fix"
-              verbose_message "echo \"lock-delay=uint32 5\" >> ${check_file}"             "fix"
-              verbose_message "dconf update" "fix"
+              fix_message "echo \"[org/gnome/desktop/session]\" > ${check_file}"
+              fix_message "echo \"idle-delay=uint32 900\" >> ${check_file}"
+              fix_message "echo \"[org/gnome/desktop/screensaver]\" >> ${check_file}"
+              fix_message "echo \"lock-delay=uint32 5\" >> ${check_file}"
+              fix_message "dconf update"
             fi 
             if [ "${audit_mode}" = 0 ]; then
               echo  "[org/gnome/desktop/session]"      > "${check_file}"

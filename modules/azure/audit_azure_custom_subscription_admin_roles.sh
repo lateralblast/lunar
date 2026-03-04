@@ -22,9 +22,9 @@ audit_azure_custom_subscription_admin_roles () {
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ -z "${actual_value}" ]; then
-    increment_secure   "No custom subscription administrator roles exist"
+    inc_secure   "No custom subscription administrator roles exist"
   else
-    increment_insecure "Custom subscription administrator roles exist"
+    inc_insecure "Custom subscription administrator roles exist"
     verbose_message    "az role definition delete --name <role name>"
   fi
 }

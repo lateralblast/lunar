@@ -31,73 +31,73 @@ audit_aws_iam () {
   command_message    "${command}"
   last_login=$( eval "${command}" )
   if [ "${date_test}" = "${last_login}" ]; then
-    increment_insecure "Root account appears to be being used regularly"
+    inc_insecure "Root account appears to be being used regularly"
   else
-    increment_secure   "Root account does not appear to be being used frequently"
+    inc_secure   "Root account does not appear to be being used frequently"
   fi
   # Check to see if there is an IAM master role
   command="aws iam get-role --role-name \"${aws_iam_master_role}\" 2> /dev/null"
-  command_message "${command}"
-  check=$( eval   "${command}" )
+  command_message  "${command}"
+  check=$( eval    "${command}" )
   if [ -n "${check}" ]; then 
-    increment_secure   "IAM Master role \"${aws_iam_master_role}\" ${exists}"
+    inc_secure     "IAM Master role \"${aws_iam_master_role}\" ${exists}"
   else
-    increment_insecure "IAM Master role \"${aws_iam_master_role}\" does not exist"
-    verbose_message    "cd aws" "fix"
-    verbose_message    "aws iam create-role --role-name ${aws_iam_master_role} --assume-role-policy-document file://account-creation-policy.json" "fix"
-    verbose_message    "aws iam put-role-policy --role-name ${aws_iam_master_role} --policy-name ${aws_iam_master_role} --policy-document file://iam-master-policy.json" "fix"
+    inc_insecure    "IAM Master role \"${aws_iam_master_role}\" does not exist"
+    verbose_message "cd aws" "fix"
+    verbose_message "aws iam create-role --role-name ${aws_iam_master_role} --assume-role-policy-document file://account-creation-policy.json" "fix"
+    verbose_message "aws iam put-role-policy --role-name ${aws_iam_master_role} --policy-name ${aws_iam_master_role} --policy-document file://iam-master-policy.json" "fix"
   fi
   # Check there is an IAM manager role
   command="aws iam get-role --role-name \"${aws_iam_manager_role}\" 2> /dev/null"
-  command_message "${command}"
-  check=$( eval   "${command}" )
+  command_message   "${command}"
+  check=$( eval     "${command}" )
   if [ -n "${check}" ]; then 
-    increment_secure   "IAM Manager role \"${aws_iam_manager_role}\" ${exists}"
+    inc_secure      "IAM Manager role \"${aws_iam_manager_role}\" ${exists}"
   else
-    increment_insecure "IAM Manager role \"${aws_iam_manager_role}\" does not exist"
-    verbose_message    "cd aws" "fix"
-    verbose_message    "aws iam create-role --role-name ${aws_iam_master_role} --assume-role-policy-document file://account-creation-policy.json" "fix"
-    verbose_message    "aws iam put-role-policy --role-name ${aws_iam_manager_role} --policy-name ${aws_iam_manager_role} --policy-document file://iam-manager-policy.json" "fix"
+    inc_insecure    "IAM Manager role \"${aws_iam_manager_role}\" does not exist"
+    verbose_message "cd aws" "fix"
+    verbose_message "aws iam create-role --role-name ${aws_iam_master_role} --assume-role-policy-document file://account-creation-policy.json" "fix"
+    verbose_message "aws iam put-role-policy --role-name ${aws_iam_manager_role} --policy-name ${aws_iam_manager_role} --policy-document file://iam-manager-policy.json" "fix"
   fi
   # Check groups have members
   command="aws iam list-groups --query 'Groups[].GroupName' --output text"
-  command_message  "${command}"
-  groups=$( eval   "${command}" )
+  command_message   "${command}"
+  groups=$( eval    "${command}" )
   for group in ${groups}; do
     command="aws iam get-group --group-name \"${group}\" --query \"Users\" --output text"
     command_message "${command}"
     users=$( eval   "${command}" )
     if [ -n "${users}" ]; then
-      increment_secure   "IAM group \"${group}\" is not empty"
+      inc_secure    "IAM group \"${group}\" is not empty"
     else
-      increment_insecure "IAM group \"${group}\" is empty"
+      inc_insecure  "IAM group \"${group}\" is empty"
     fi
   done
   command="aws iam list-users --query 'Users[].UserName' --output text"
-  command_message "${command}"
-  users=$( eval   "${command}" )
+  command_message   "${command}"
+  users=$( eval     "${command}" )
   for user in ${users}; do
     # Check for inactive users
     command="aws iam list-access-keys --user-name \"${user}\" --query \"AccessKeyMetadata\" --output text"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      increment_secure   "IAM user \"${user}\" is active"
+      inc_secure      "IAM user \"${user}\" is active"
     else
-      increment_insecure "IAM user \"${user}\" is not active"
-      verbose_message    "aws iam delete-user --user-name ${user}" "fix"
+      inc_insecure    "IAM user \"${user}\" is not active"
+      verbose_message "aws iam delete-user --user-name ${user}" "fix"
     fi
     # Check users do not have attached policies, they should be members of groups which have those policies
     command="aws iam list-attached-user-policies --user-name \"${user}\" --query \"AttachedPolicies[].PolicyArn\" --output text"
-    command_message  "${command}"
-    policies=$( eval "${command}" )
+    command_message   "${command}"
+    policies=$( eval  "${command}" )
     if [ -n "${policies}" ]; then
       for policy in ${policies}; do
-        increment_insecure "IAM user \"${user}\" has attached policy \"${policy}\""
-        verbose_message    "aws iam detach-user-policy --user-name ${user} --policy-arn ${policy}" "fix"
+        inc_insecure    "IAM user \"${user}\" has attached policy \"${policy}\""
+        verbose_message "aws iam detach-user-policy --user-name ${user} --policy-arn ${policy}" "fix"
       done
     else
-      increment_secure "IAM user \"${user}\" does not have attached policies"
+      inc_secure "IAM user \"${user}\" does not have attached policies"
     fi
   done
 }

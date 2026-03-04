@@ -31,30 +31,30 @@ audit_firewall_setting () {
     if [ "${audit_mode}" != 2 ]; then
      	command="sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode | grep -cE \"enabled|on\" | sed \"s/ //g\""
       command_message "${command}"
-      check=$( eval "${command}" )
+      check=$( eval   "${command}" )
       if [ "${check}" = "1" ]; then
-        increment_secure   "Firewall stealth mode enabled"
+        inc_secure    "Firewall stealth mode enabled"
       else
-        increment_insecure "Firewall stealth mode is not enabled"
-        execute_lockdown   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on"     "Stealth mode on"
+        inc_insecure  "Firewall stealth mode is not enabled"
+        exec_lockdown "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on"     "Stealth mode on"
       fi
       command="sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode | grep -cE \"enabled|on\" | sed \"s/ //g\""
       command_message "${command}"
-      check=$( eval "${command}" )
+      check=$( eval   "${command}" )
       if [ "${check}" = "1" ]; then
-        increment_secure   "Firewall logging mode enable"
+        inc_secure    "Firewall logging mode enable"
       else
-        increment_insecure "Firewall logging mode is not enabled"
-        execute_lockdown   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on"     "Logging mode on"
+        inc_insecure  "Firewall logging mode is not enabled"
+        exec_lockdown "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on"     "Logging mode on"
       fi
       command="sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingopt | grep -c detail | sed \"s/ //g\""
       command_message "${command}"
-      check=$( eval "${command}" )
+      check=$( eval   "${command}" )
       if [ "${check}" = "1" ]; then
-        increment_secure   "Firewall logging option detailed"
+        inc_secure    "Firewall logging option detailed"
       else
-        increment_insecure "Firewall logging option is not detailed"
-        execute_lockdown   "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail"  "Logging output detail"
+        inc_insecure  "Firewall logging option is not detailed"
+        exec_lockdown "sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail"  "Logging output detail"
       fi
     fi
   else

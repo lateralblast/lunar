@@ -23,22 +23,22 @@ audit_shell_timeout () {
       check_message "Timeout value for \"${test}\""
       backup_file="${work_dir}/${test}"
       command="esxcli --formatter=csv --format-param=fields=\"Path,Int Value\" system settings advanced list | grep \"/UserVars/${test}\" | cut -f2 -d,"
-      command_message "${command}"
+      command_message       "${command}"
       current_value=$( eval "${command}" )
       if [ "${audit_mode}" != "2" ]; then
         if [ "${current_value}" != "${timeout}" ]; then
           if [ "${audit_mode}" = "0" ]; then
             echo "${current_value}" > "${backup_file}"
-            verbose_message "Timeout value for ${test} to ${timeout}" "set"
+            set_message  "Timeout value for ${test} to ${timeout}"
             esxcli system settings advanced set -o "/UserVars/${test}" -i "${timeout}"
           fi
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure  "Timeout value for ${test} not set to ${timeout}"
-            verbose_message     "esxcli system settings advanced set -o /UserVars/${test} -i ${timeout}" "fix"
+            inc_insecure "Timeout value for ${test} not set to ${timeout}"
+            fix_message  "esxcli system settings advanced set -o /UserVars/${test} -i ${timeout}"
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure "Timeout value for ${test} is set to ${timeout}"
+            inc_secure   "Timeout value for ${test} is set to ${timeout}"
           fi
         fi
       else

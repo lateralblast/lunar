@@ -33,7 +33,7 @@ replace_file_value () {
   fi
   string_check=$( expr "${check_value}" : "\/" )
   if [ "${string_check}" = 1 ]; then
-    new_check_value=$( echo "${check_value}" | sed 's,/,\\\/,g' )
+    new_check_value=$(  echo "${check_value}" | sed 's,/,\\\/,g' )
   fi
   string_check=$( expr "${correct_value}" : "\/" )
   if [ "${string_check}" = 1 ]; then
@@ -58,10 +58,10 @@ replace_file_value () {
         echo "    replace: '${new_correct_value}"
         echo ""
       fi
-      increment_insecure "File \"${check_file}\" contains \"${check_value}\" rather than \"${correct_value}\""
+      inc_insecure "File \"${check_file}\" contains \"${check_value}\" rather than \"${correct_value}\""
       backup_file        "${check_file}"
       lockdown_command="sed -e \"s/${new_check_value}/${new_correct_value}/\" < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
-      execute_lockdown "${lockdown_command}" "Share entries in ${check_file} to be secure" "sudo"
+      exec_lockdown "${lockdown_command}" "Share entries in ${check_file} to be secure" "sudo"
       if [ "${os_version}" != "11" ]; then
         pkgchk -f -n -p "${check_file}" 2> /dev/null
       else
@@ -69,9 +69,9 @@ replace_file_value () {
         pkg fix "${pkg_info}"
       fi
     else
-      restore_file    "${check_file}" "${restore_dir}"
+      restore_file "${check_file}" "${restore_dir}"
     fi
   else
-    increment_secure  "File ${check_file} contains \"${correct_value}\" rather than \"${check_value}\""
+    inc_secure "File ${check_file} contains \"${correct_value}\" rather than \"${check_value}\""
   fi
 }

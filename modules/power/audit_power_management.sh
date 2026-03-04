@@ -26,7 +26,7 @@ audit_power_management () {
       fi
       if [ "${os_version}" = "11" ]; then
         command="poweradm list | grep suspend | awk '{print \$2}' | cut -f2 -d\"=\""
-        command_message "${command}"
+        command_message       "${command}"
         poweradm_test=$( eval "${command}" )
         log_file="poweradm.log"
         if [ "${audit_mode}" = 2 ]; then
@@ -34,7 +34,7 @@ audit_power_management () {
           if [ -f "${log_file}" ]; then
             restore_value=$( cat "${restore_file}" )
             if [ "${poweradm_test}" != "${restore_value}" ]; then
-              verbose_message "Power suspend to \"${restore_value}\"" "restore"
+              restore_message "Power suspend to \"${restore_value}\""
               eval "poweradm set suspend-enable=${restore_value}"
               eval "poweradm update"
             fi
@@ -42,20 +42,20 @@ audit_power_management () {
         fi
         if [ "${poweradm_test}" != "false" ]; then
           if [ "${audit_mode}" = 1 ]; then
-            increment_insecure "Power suspend enabled"
-            verbose_message    "poweradm set suspend-enable=false" "fix"
-            verbose_message    "poweradm update"                   "fix"
+            inc_insecure "Power suspend enabled"
+            fix_message  "poweradm set suspend-enable=false"
+            fix_message  "poweradm update"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file="${work_dir}/${log_file}"
-            verbose_message "Power suspend to disabled" "set"
+            set_message "Power suspend to disabled"
             echo "${poweradm_test}" > "${backup_file}"
             eval "poweradm set suspend-enable=false"
             eval "poweradm update"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            increment_secure "Power suspend disabled"
+            inc_secure "Power suspend disabled"
           fi
         fi
       fi

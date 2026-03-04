@@ -38,12 +38,12 @@ audit_snmp () {
               esxcli system snmp set --enable="false"
             fi
             if [ "${audit_mode}" = "1" ]; then
-              increment_insecure "SNMP is not enabled"
-              verbose_message    "esxcli system snmp set --enable=\"false\"" "fix"
+              inc_insecure "SNMP is not enabled"
+              fix_message  "esxcli system snmp set --enable=\"false\""
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              increment_secure "SNMP is disabled"
+              inc_secure "SNMP is disabled"
             fi
           fi
         else
@@ -93,9 +93,9 @@ audit_snmp () {
       if [ "${os_name}" = "AIX" ]; then
         for check_file in /var/tmp/snmpd.log /var/tmp/hostmibd.log \
         /var/tmp/dpid2.log /var/ct/RMstart.log /smit.log; do
-          check_file_perms  "${check_file}" "0640" "root" "system"
+          check_file_perms "${check_file}" "0640" "root" "system"
         done
-        check_file_perms    "/var/adm/ras"  "0700" "root" "system"
+        check_file_perms   "/var/adm/ras"  "0700" "root" "system"
       fi
     fi
   else

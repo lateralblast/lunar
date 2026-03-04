@@ -25,7 +25,7 @@ audit_tcp_strong_iss () {
   string="TCP Sequence Number Generation"
   check_message "${string}"
   if [ "${os_name}" = "SunOS" ]; then
-    check_file_value "is" "/etc/default/inetinit"     "TCP_STRONG_ISS" "eq" "2" "hash"
+    check_file_value "is" "/etc/default/inetinit" "TCP_STRONG_ISS" "eq" "2" "hash"
     if [ "${os_version}" != "11" ]; then
       audit_ndd_value   "/dev/tcp" "tcp_strong_iss" "2"
     fi

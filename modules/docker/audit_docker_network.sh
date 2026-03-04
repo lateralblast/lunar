@@ -38,26 +38,26 @@ audit_docker_network () {
         check_dockerd notinclude config Ports "0.0.0.0"
         docker_check=$( docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' | grep 'docker0' )
         if [ "${docker_check}" ]; then
-          increment_insecure "Docker is using default bridge docker0"
+          inc_insecure "Docker is using default bridge docker0"
         else
-          increment_secure   "Docker is not using default bridge docker0"
+          inc_secure   "Docker is not using default bridge docker0"
         fi
         docker_check=$( docker network ls --quiet | xargs docker network inspect --format '{{ .Name }}: {{ .Options }}' | grep 'com.docker.network.bridge.enable_icc' | grep "${new_state}" )
         if [ ! "${docker_check}" ]; then
-          increment_insecure "Traffic is allowed between containers"
+          inc_insecure "Traffic is allowed between containers"
           if [ "${audit_mode}" = 0 ]; then
             log_file="${work_dir}/${backup_file}"
             echo "${old_state}" > "${log_file}"
-            verbose_message "Docker network bridge enabled to \"${new_state}\"" "set"
+            set_message "Docker network bridge enabled to \"${new_state}\""
             eval "/usr/bin/dockerd --icc=${new_state}"
           fi
         else
-          increment_secure "Traffic is not allowed between containers"
+          inc_secure "Traffic is not allowed between containers"
         fi
       else
         restore_file="${restore_dir}/${backup_file}"
         old_state=$( cat "${restore_file}" )
-        verbose_message "Docker network bridge enabled to \"${old_state}\"" "set"
+        restore_message "Docker network bridge enabled to \"${old_state}\""
         eval "/usr/bin/dockerd --icc=${old_state}"
       fi
       check_dockerd "unused" "daemon" "iptables" "true"

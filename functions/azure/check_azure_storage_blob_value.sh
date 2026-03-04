@@ -32,9 +32,9 @@ check_azure_storage_blob_value () {
     actual_value=$( eval "${command}" )
   fi
   if [ "${actual_value}" = "${correct_value}" ]; then
-    increment_secure   "${description} for Storage Blob \"${blob_name}\" on account \"${storage_account}\" in container \"${container_name}\" is \"${function}\" to \"${correct_value}\""
+    inc_secure   "${description} for Storage Blob \"${blob_name}\" on account \"${storage_account}\" in container \"${container_name}\" is \"${function}\" to \"${correct_value}\""
   else
-    increment_insecure "${description} for Storage Blob \"${blob_name}\" on account \"${storage_account}\" in container \"${container_name}\" is not \"${function}\" to \"${correct_value}\""
+    inc_insecure "${description} for Storage Blob \"${blob_name}\" on account \"${storage_account}\" in container \"${container_name}\" is not \"${function}\" to \"${correct_value}\""
     if [ ! -z "${set_name}" ]; then
       case "${set_name}" in
         "--"*)

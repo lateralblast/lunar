@@ -36,14 +36,14 @@ audit_dns_server () {
       if [ "${os_name}" = "Linux" ]; then
         for service_name in dnsmasq named bind9; do
           check_linux_service "${service_name}" "off"
-          check_linux_package "uninstall"       "${service_name}"
+          check_linux_package "uninstall"    "${service_name}"
         done
         if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
-          check_linux_package "uninstall" "bind"
+          check_linux_package "uninstall"    "bind"
         fi
       fi
       if [ "${os_name}" = "FreeBSD" ]; then
-        check_file_value      "is" "/etc/rc.conf" "named_enable" "eq" "NO" "hash"
+        check_file_value "is" "/etc/rc.conf" "named_enable" "eq" "NO" "hash"
       fi
     fi
   else

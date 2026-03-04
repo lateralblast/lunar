@@ -24,18 +24,18 @@ audit_kernel_modules () {
         if [ "${current_value}" != "VMware Signed" ]; then
           if [ "${audit_mode}" = "0" ]; then
             if [ "${syslog_server}" != "" ]; then
-              verbose_message   "Kernel module ${module_name} to disabled" "set"
+              set_message   "Kernel module ${module_name} to disabled"
               echo "true" > "${backup_file}"
               esxcli system module set -e false -m "${module_name}"
             fi
           fi
           if [ "${audit_mode}" = "1" ]; then
-            increment_insecure  "Kernel module \"${module_name}\" is not signed by VMware"
-            verbose_message     "esxcli system module set -e false -m ${module_name}" "fix"
+            inc_insecure "Kernel module \"${module_name}\" is not signed by VMware"
+            fix_message  "esxcli system module set -e false -m ${module_name}"
           fi
         else
           if [ "${audit_mode}" = "1" ]; then
-            increment_secure    "Kernel module \"${module_name}\" is signed by VMware"
+            inc_secure   "Kernel module \"${module_name}\" is signed by VMware"
           fi
         fi
       else
@@ -43,7 +43,7 @@ audit_kernel_modules () {
         if [ -f "${restore_file}" ]; then
           previous_value=$( cat "${restore_file}" )
           if [ "${previous_value}" != "${current_value}" ]; then
-            verbose_message     "Kernel module to \"${previous_value}\"" "restore"
+            restore_message "Kernel module to \"${previous_value}\"" "restore"
             esxcli system module set -e "${previous_value}" -m "${module_name}"
           fi
         fi

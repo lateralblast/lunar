@@ -27,16 +27,16 @@ check_azure_key_vault_value () {
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_secure   "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure    "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     else
-      increment_insecure "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure  "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
-        fix_message  "az keyvault update --resource-group ${resource_group} --name ${resource_name} ${set_name} ${correct_value}"
+        fix_message "az keyvault update --resource-group ${resource_group} --name ${resource_name} ${set_name} ${correct_value}"
       fi
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      increment_insecure "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      inc_insecure   "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         fix_message  "az keyvault update --resource-group ${resource_group} --name ${resource_name} ${set_name} ${correct_value}"
       else
@@ -60,7 +60,7 @@ check_azure_key_vault_value () {
         fi
       fi
     else
-      increment_secure "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure "Key vault with resource name \"${resource_name}\" in resource group \"${resource_group}\" with parameter \"${parameter_name}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

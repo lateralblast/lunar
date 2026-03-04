@@ -17,7 +17,7 @@ audit_dhcprd () {
   check_message "${string}"
   if [ "${dhcprd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      check_rctcp     "dhcprd" "off"
+      check_rctcp "dhcprd" "off"
     fi
   else
     na_message "${string}"

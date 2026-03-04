@@ -19,7 +19,7 @@ audit_touch_id () {
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-        verbose_message "Requires sudo to check" "notice"
+        notice_message "Requires sudo to check"
         return
       fi
       if [ "${audit_mode}" != 2 ]; then
@@ -27,9 +27,9 @@ audit_touch_id () {
         set_command="/usr/bin/sudo usr/bin/bioutil -w -s -o ${touchid_timeout}"
         check_value=$( eval "${get_command}" )
         if [ "${check_value}" = "${touchid_timeout}" ]; then
-          increment_secure   "Touch ID Timeout for system is set to \"${touchid_timeout}\""
+          inc_secure   "Touch ID Timeout for system is set to \"${touchid_timeout}\""
         else
-          increment_insecure "Touch ID Timeout for system is not set to \"${touchid_timeout}\""
+          inc_insecure "Touch ID Timeout for system is not set to \"${touchid_timeout}\""
         fi
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
@@ -50,22 +50,22 @@ audit_touch_id () {
         else
           lockdown_command="${set_command}" 
           lockdown_message="${string}"
-          execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
         for item in unlock ApplePay ; do
           string="Touch ID ${item}"
-          verbose_message "${string}" "check"
+          check_message "${string}"
           command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
-          command_message "${command}"
+          command_message   "${command}"
           user_list=$( eval "${command}" )
           for user_name in ${user_list}; do
             command="sudo -u \"${user_name}\" bioutil -r -s | grep \"${item}\" | head -1 | cut -f2 -d: | sed \"s/ //g\" > /dev/null 2>&1"
-            command_message "${command}"
+            command_message     "${command}"
             check_value=$( eval "${command}" )
             if [ "${check_value}" = "${touchid_timeout}" ]; then
-              increment_secure   "Touch ID Timeout for user \"${user_name}\" is set to \"${touchid_timeout}\""
+              inc_secure   "Touch ID Timeout for user \"${user_name}\" is set to \"${touchid_timeout}\""
             else
-              increment_insecure "Touch ID Timeout for for user \"${user_name}\" is not set to \"${touchid_timeout}\""
+              inc_insecure "Touch ID Timeout for for user \"${user_name}\" is not set to \"${touchid_timeout}\""
             fi
             if [ "${ansible_mode}" = 1 ]; then
               echo ""
@@ -93,7 +93,7 @@ audit_touch_id () {
               fi
             fi
             lockdown_message="${string}"
-            execute_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
           done
         done
       fi

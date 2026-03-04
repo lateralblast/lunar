@@ -17,7 +17,7 @@ audit_dhcpcd () {
   check_message "${string}"
   if [ "${dhcpcd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
-      check_rctcp     "dhcpcd" "off"
+      check_rctcp "dhcpcd" "off"
     fi
   else
     na_message "${string}"

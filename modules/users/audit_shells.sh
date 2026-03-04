@@ -23,21 +23,21 @@ audit_shells () {
       else
         check_shell="nologin" 
         command="grep \"${check_shell}\" < \"${check_file}\" | grep -cv \"^#\""
-        command_message "${command}"
+        command_message       "${command}"
         nologin_check=$( eval "${command}" )
         if [ "${nologin_check}" = "0" ]; then
-          increment_secure    "Shell \"${check_shell}\" is not in \"${check_file}\""
+          inc_secure   "Shell \"${check_shell}\" is not in \"${check_file}\""
         else
-          increment_insecure  "Shell \"${check_shell}\" is in \"${check_file}\""
+          inc_insecure "Shell \"${check_shell}\" is in \"${check_file}\""
         fi
-        check_file_comment "$check_file" "nologin" "hash"
+        check_file_comment "${check_file}" "nologin" "hash"
         command="grep -v '^#' \"${check_file}\""
-        command_message "${command}"
+        command_message      "${command}"
         check_shells=$( eval "${command}" )
         for check_shell in ${check_shells}; do
           if [ ! -f "${check_shell}" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              increment_insecure "Shell \"${check_shell}\" in \"${check_file}\" does not exit"
+              inc_insecure "Shell \"${check_shell}\" in \"${check_file}\" does not exit"
             fi
             if [ "${audit_mode}" = 0 ]; then
               temp_file="${temp_dir}/shells"

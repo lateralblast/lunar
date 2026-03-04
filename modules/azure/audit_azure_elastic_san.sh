@@ -33,15 +33,15 @@ audit_azure_elastic_san () {
     check_azure_elastic_san_value "Public Network Access" "${san_id}" "" "" "" "" "publicNetworkAccess" "eq" "Disabled" "--public-network-access" ""
     # 15.2    Ensure customer-managed keys (CMK) are used to encrypt data at rest on Azure Elastic SAN volume groups
     command="az elastic-san show --id \"${san_id}\" --query \"[].resourceGroup\" --output tsv"
-    command_message        "${command}"
-    resource_group=$( eval "${command}" )
+    command_message   "${command}"
+    res_group=$( eval "${command}" )
     command="az elastic-san show --id \"${san_id}\" --query \"[].name\" --output tsv"
-    command_message  "${command}"
-    san_name=$( eval "${command}" )
-    command="az elastic-san volume-group list --resource-group \"${resource_group}\" --elastic-san \"${san_name}\" --query \"[].name\" --output tsv"
+    command_message   "${command}"
+    san_name=$( eval  "${command}" )
+    command="az elastic-san volume-group list --resource-group \"${res_group}\" --elastic-san \"${san_name}\" --query \"[].name\" --output tsv"
     volume_group_names=$( eval "${command}" )
     for volume_group_name in ${volume_group_names}; do
-      check_azure_elastic_san_value "Customer Managed Keys" "" "${san_name}" "${resource_group}" "${volume_group_name}" "encryption" "eq" "EncryptionAtRestWithCustomerManagedKey" "" ""
+      check_azure_elastic_san_value "Customer Managed Keys" "" "${san_name}" "${res_group}" "${volume_group_name}" "encryption" "eq" "EncryptionAtRestWithCustomerManagedKey" "" ""
     done 
   done
 }

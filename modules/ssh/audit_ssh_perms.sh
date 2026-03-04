@@ -17,29 +17,29 @@ audit_ssh_perms () {
     for check_dir in /etc/ssh /usr/local/etc/ssh; do
       if [ -d "${check_dir}" ]; then
         command="find \"${check_dir}\" -name \"*_key\" -type f"
-        command_message "${command}"
+        command_message   "${command}"
         file_list=$( eval "${command}" )
         for check_file in ${file_list}; do
           check_file_perms "${check_file}" "0600" "root" "root"
         done
         command="find \"${check_dir}\" -name \"*.pub\" -type f"
-        command_message "${command}"
+        command_message   "${command}"
         file_list=$( eval "${command}" )
         for check_file in ${file_list}; do
           check_file_perms "${check_file}" "0640" "root" "root"
         done
       fi
     done
-    verbose_message "User SSH Permissions" "check"
+    check_message "User SSH Permissions"
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
-      verbose_message "Requires sudo to check" "notice"
+      notice_message "Requires sudo to check"
       return
     fi
     while IFS=":" read -r user _ uid gid _ home shell; do
       if [ -d "${home}/.ssh" ]; then
         check_file_perms "${home}/.ssh" "0700" "${uid}" "${gid}"
         command="find \"${home}/.ssh\" -type f"
-        command_message "${command}"
+        command_message   "${command}"
         file_list=$( eval "${command}" )
         for check_file in ${file_list}; do
           check_file_perms "${check_file}" "0600" "${uid}" "${gid}"
