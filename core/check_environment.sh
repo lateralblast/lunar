@@ -51,7 +51,7 @@ check_azure_environment () {
       ext_test=$( eval "${command}" )
       if [ -z "${ext_test}" ]; then
         if [ "${force}" = "1" ]; then
-          command="az extension add --name \"${cli_ext}\""
+          command="az extension add --name \"${cli_ext}\" 2> /dev/null"
           command_message "${command}"
           eval "${command}"
         else
@@ -61,8 +61,24 @@ check_azure_environment () {
       fi
     done
   else
-    echo "Azure CLI is not installed"
-    exit
+    if [ "${force}" = "1" ]; then
+      if [ "${os_name}" = "Darwin" ]; then
+        brew_bin=$( command -v brew 2> /dev/null )
+        if [ -f "$brew_bin" ]; then
+          command="brew install azure-cli"
+        else
+          command="pip install azure-cli"
+        fi
+        command_message "${command}"
+        eval "${command}"
+      else
+        echo "Azure CLI is not installed"
+        exit
+      fi
+    else
+      echo "Azure CLI is not installed"
+      exit
+    fi
   fi
   command="az ad signed-in-user show --query displayName -o tsv"
   command_message "${command}"

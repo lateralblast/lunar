@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.1.0
+# Version:      15.1.1
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -638,8 +638,6 @@ case "$*" in
   *azure*)
     case "$*" in
       *--checkenv*)
-        check_azure_environment
-        exit
         ;;
       *)
         check_azure_environment
@@ -649,8 +647,6 @@ case "$*" in
   *aws*) 
     case "$*" in
       *--checkenv*) 
-        check_aws_environment
-        exit
         ;;
       *)
         check_aws_environment

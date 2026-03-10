@@ -2839,3 +2839,5 @@
 # More formatting fixes
 # 15.1.0: Tue 10 Mar 2026 14:49:52 AEDT
 # Added switch value checking
+# 15.1.1: Tue 10 Mar 2026 16:38:52 AEDT
+# Improved Azure CLI extension checking
