@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.0.9
+# Version:      15.1.0
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -638,6 +638,8 @@ case "$*" in
   *azure*)
     case "$*" in
       *--checkenv*)
+        check_azure_environment
+        exit
         ;;
       *)
         check_azure_environment
@@ -645,7 +647,15 @@ case "$*" in
     esac
     ;;
   *aws*) 
-    check_aws_environment
+    case "$*" in
+      *--checkenv*) 
+        check_aws_environment
+        exit
+        ;;
+      *)
+        check_aws_environment
+        ;;
+    esac
     ;;
   *)
     if [ "${arg_test}" != "1" ]; then
@@ -656,20 +666,41 @@ case "$*" in
     ;;
 esac
 
+# check_switch_value
+#
+# Check if a value is a switch or empty
+#.
+
+check_switch_value () {
+  param="${1}"
+  value="${2}"
+  if [ "${value}" = "" ]; then
+    warn_message "No value provided for ${param}"
+    exit
+  fi
+  case "${value}" in
+    -*)
+      warn_message "Value provided for ${param} appears to be a switch [${value}]"
+      exit
+      ;;
+  esac
+}
+
 # Parse arguments
 
 while test $# -gt 0
 do
   case $1 in
     -1|--list)                      # switch - List changes/backups
+      check_switch_value "${1}" "${2}" 
       list="${2}"
-      if [ -z "$list" ]; then
+      if [ -z "${list}" ]; then
         print_changes
         print_backups
         shift
         exit
       else
-        case $list in
+        case ${list} in
           changes)
             print_changes
             ;;
@@ -684,7 +715,8 @@ do
       fi
       exit
       ;;
-    -2|--tests)                    # switch - Print tests
+    -2|--tests)                     # switch - Print tests
+      check_switch_value "${1}" "${2}" 
       tests="${2}" 
       if [ -z "${tests}" ]; then
         print_tests "All"
@@ -712,10 +744,12 @@ do
       shift
       ;;
     -6|--format)                    # switch - Outpt format/type
+      check_switch_value "${1}" "${2}" 
       output_type="${2}"
       shift 2
       ;;
     -7|--file)                      # switch - Output file
+      check_switch_value "${1}" "${2}" 
       output_file="${2}"
       shift 2
       ;;
@@ -724,6 +758,7 @@ do
       shift
       ;;
     -9|--checkenv)                  # switch - Run environment check
+      check_switch_value "${1}" "${2}" 
       check="${2}"
       do_check=1
       shift 2
@@ -748,10 +783,12 @@ do
       exit
       ;;
     -B|--basedir)                   # switch - Set base directory
+      check_switch_value "${1}" "${2}" 
       base_dir="${2}"
       shift 2
       ;;
     -c|--codename|--distro)         # switch -  Distro/Code name (used with docker/multipass)
+      check_switch_value "${1}" "${2}" 
       test_distro="${2}"
       shift 2
       ;;
@@ -761,6 +798,7 @@ do
       shift
       ;;
     -d|--dockeraudit)               # switch - Run in audit mode (for Docker - no changes made to system)
+      check_switch_value "${1}" "${2}" 
       audit_mode=1
       do_docker=1
       module_name="${2}"
@@ -772,15 +810,18 @@ do
       exit
       ;;  
     -e|--host)                      # switch - Run in audit mode on external host (for Operating Systems - no changes made to system)
+      check_switch_value "${1}" "${2}" 
       do_remote=1
       ext_host="${2}"
       shift 2
       ;;
     -E|--hash|--passwordhash)       # switch - Password hash
+      check_switch_value "${1}" "${2}" 
       password_hashing="${2}"
       shift 2
       ;;
     -f|--action)                    # switch - Action (e.g delete - used with multipass)
+      check_switch_value "${1}" "${2}" 
       action="${2}"
       case $action in
         audit)
@@ -806,14 +847,17 @@ do
       shift 2
       ;; 
     -F|--tempfile)                  # switch - Temporary file to use for operations
+      check_switch_value "${1}" "${2}" 
       temp_file="${2}"
       shift 2
       ;;
     -g|--giturl)                    # switch - Git URL for code to copy to container
+      check_switch_value "${1}" "${2}" 
       git_url="${2}"
       shift 2
       ;;
     -G|--wheelgroup)                # switch - Set wheel group
+      check_switch_value "${1}" "${2}" 
       wheel_group="${2}"
       shift 2
       ;;
@@ -831,20 +875,24 @@ do
       exit
       ;;
     -i|--anacron)                   # switch - Enable/Disable anacron
+      check_switch_value "${1}" "${2}" 
       anacron_enable="${2}"
       shift 2
       ;;
     -I|--type)                      # switch - Audit type
+      check_switch_value "${1}" "${2}" 
       audit_type="${2}"
       shift 2
       ;;
     -k|--kubeaudit)                 # switch - Run in audit mode (for Kubernetes - no changes made to system)
+      check_switch_value "${1}" "${2}" 
       audit_mode=1
       do_kubernetes=1
       module_name="${2}"
       shift 2
       ;;
     -K|--function|--test)           # switch - Do a specific function
+      check_switch_value "${1}" "${2}" 
       module_name="${2}"
       shift 2
       ;;
@@ -859,6 +907,7 @@ do
       shift
       ;;
     -m|--machine|--vm)              # switch - Set virtualisation type
+      check_switch_value "${1}" "${2}" 
       vm_type="${2}"
       case $vm_type in
         docker)
@@ -873,6 +922,7 @@ do
       shift 2
       ;;
     -M|--workdir)                   # switch - Set work directory
+      check_switch_value "${1}" "${2}" 
       work_dir="${2}"
       shift 2
       ;;
@@ -885,6 +935,7 @@ do
       shift
       ;;
     -o|--os|--osver)                # switch - Set OS version
+      check_switch_value "${1}" "${2}" 
       test_os="${2}"
       shift 2
       ;;
@@ -899,6 +950,7 @@ do
       exit
       ;;
     -P|--sshsandbox|--sandbox)      # switch - Enable/Disabe SSH sandbox
+      check_switch_value "${1}" "${2}" 
       ssh_sandbox="${2}"
       shift 2
       ;;
@@ -912,16 +964,19 @@ do
       shift
       ;;
     -r|--awsregion|--region)        # switch - Set AWS region
+      check_switch_value "${1}" "${2}" 
       aws_region="${2}"
       shift 2
       ;;
     -R|--moduleinfo|--testinfo)     # switch - Print information about a module
+      check_switch_value "${1}" "${2}" 
       module="${2}"
       print_audit_info "${module}"
       shift 2
       exit
       ;;
     -s|--select|--check)            # switch - Run in selective mode (only run tests you want to)
+      check_switch_value "${1}" "${2}" 
       audit_mode=1
       do_select=1
       module_name="${2}"
@@ -933,14 +988,17 @@ do
       exit
       ;;
     -t|--tag|--name)                # switch - Set docker tag
+      check_switch_value "${1}" "${2}" 
       test_tag="${2}"
       shift 2
       ;;
     -T|--tempdir)                   # switch - Set temp directoru
+      check_switch_value "${1}" "${2}" 
       temp_dir="${2}"
       shift 2
       ;;
     -u|--undo)                      # switch - Undo lockdown (for Operating Systems - changes made to system)
+      check_switch_value "${1}" "${2}" 
       audit_mode=2
       restore_date="${2}"
       shift 2
@@ -959,6 +1017,7 @@ do
       exit
       ;;
     -w|--awsaudit)                  # switch - Run in audit mode (for AWS - no changes made to system)
+      check_switch_value "${1}" "${2}" 
       audit_mode=1
       do_aws=1
       module_name="${2}"
@@ -970,6 +1029,7 @@ do
       exit
       ;;
     -x|--awsrec)                    # switch - Run in recommendations mode (for AWS - no changes made to system)
+      check_switch_value "${1}" "${2}" 
       audit_mode=1
       do_aws_rec=1
       module_name="${2}"
@@ -981,6 +1041,7 @@ do
       exit
       ;;
     -z)                             # switch - Run specified audit function in lockdown mode
+      check_switch_value "${1}" "${2}" 
       audit_mode=0
       do_fs=0
       do_select=1
@@ -993,6 +1054,7 @@ do
       exit
       ;;
     --tenant-id|--tenantid)         # switch - Azure tenant ID
+      check_switch_value "${1}" "${2}" 
       azure_tenant_id="${2}"
       shift 2
       ;;
@@ -1039,6 +1101,9 @@ if [ "${do_check}" = 1 ]; then
   esac
   exit
 fi
+
+echo "got here"
+exit
 
 # Set Restore Directory if not set
 

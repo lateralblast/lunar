@@ -2837,3 +2837,5 @@
 # Formatting fixes
 # 15.0.9: Wed 04 Mar 2026 17:28:10 AEDT
 # More formatting fixes
+# 15.1.0: Tue 10 Mar 2026 14:49:52 AEDT
+# Added switch value checking
