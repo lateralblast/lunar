@@ -2841,3 +2841,5 @@
 # Added switch value checking
 # 15.1.1: Tue 10 Mar 2026 16:38:52 AEDT
 # Improved Azure CLI extension checking
+# 15.1.2: Wed 11 Mar 2026 15:27:06 AEDT
+# Improved module listing

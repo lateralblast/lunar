@@ -132,23 +132,26 @@ print_tests () {
   fi
   echo "${test_string} Security Tests:"
   echo ""
-  dir_list=$( ls "${modules_dir}" ) 
+  dir_list=$( find "${modules_dir}" -type f | grep -v "full_" | sed "s/\.sh//g" ) 
   for dir_entry in ${dir_list} ; do
     case ${test_string} in
       AWS|aws)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "aws" |sed "s/\.sh//g" )
+        module_name=$( echo "${dir_entry}" | grep "aws" )
         ;;
-      Docker|docker)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "docker" |sed "s/\.sh//g" )
+      *ocker*)
+        module_name=$( echo "${dir_entry}" | grep "docker" )
         ;;
-      Kubernetes|kubernetes|k8s)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "kubernetes" |sed "s/\.sh//g" )
+      *ubernetes*|k8s)
+        module_name=$( echo "${dir_entry}" | grep "kubernetes" )
         ;;
       All|all)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |sed "s/\.sh//g" )
+        module_name=$( echo "${dir_entry}" )
+        ;;
+      *zure*)
+        module_name=$( basename "${dir_entry}" | grep "azure_" )
         ;;
       *)
-        module_name=$( echo "${dir_entry}" | grep -v "^full_" |grep "${test_string}" |sed "s/\.sh//g" )
+        module_name=$( echo "${dir_entry}" | grep "${test_string}" )
         ;;
     esac
     if [ -n "${module_name}" ]; then
