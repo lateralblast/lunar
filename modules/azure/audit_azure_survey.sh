@@ -20,9 +20,9 @@ audit_azure_survey () {
   command_message "${command}"
   survey=$( eval  "${command}" )
   if [ "${survey}" = "false" ]; then
-    inc_secure   "Azure survey reminder is disabled"
+    inc_secure      "Azure survey reminder is disabled"
   else
-    inc_insecure "Azure survey reminder is enabled"
-    verbose_message    "az config set core.survey_message=false" "fix"
+    inc_insecure    "Azure survey reminder is enabled"
+    verbose_message "az config set core.survey_message=false" "fix"
   fi
 }

@@ -40,7 +40,7 @@ audit_azure_activity_log_alerts () {
   command="az account show --query id --output tsv"
   command_message  "${command}"
   sub_ids="$( eval "${command}" )"
-  for sub_id in $sub_ids; do
+  for sub_id in ${sub_ids}; do
     # 6.1.2.1 Ensure that Activity Log Alert for Create Policy Assignment is enabled
     check_azure_activity_log_alert_value "Create Policy Assignment"                  "${sub_id}" "Microsoft.Authorization/policyAssignments/write"
     # 6.1.2.2 Ensure that Activity Log Alert for Delete Policy Assignment is enabled

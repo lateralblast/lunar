@@ -112,10 +112,10 @@ check_command_value () {
             set_command="routeadm -e"
           fi
           lockdown_command="${set_command} ${parameter_name}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         else
           lockdown_command="${set_command} ${parameter_name}=${correct_value}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi 
       fi
     fi

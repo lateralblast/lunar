@@ -16,16 +16,16 @@
 #.
 
 audit_azure_databox () {
-  print_function "audit_azure_databox"
-  check_message  "Azure Databox"
+  print_function  "audit_azure_databox"
+  check_message   "Azure Databox"
   command="az databox job list --query '[].id' --output tsv 2> /dev/null"
   command_message "${command}"
   job_ids=$( eval "${command}" )
   if [ -z "${job_ids}" ]; then
-    info_message "No Azure Databox job(s) found"
+    info_message  "No Azure Databox job(s) found"
     return
   fi
-  for job_id in $job_ids; do
+  for job_id in ${job_ids}; do
     command="az databox job show --id ${job_id} --query '[].name' --output tsv 2> /dev/null"
     command_message   "${command}"
     job_name=$( eval  "${command}" )

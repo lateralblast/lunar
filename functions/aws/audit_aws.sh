@@ -10,8 +10,8 @@
 #.
 
 funct_audit_aws () {
-  print_function "funct_audit_aws"
   audit_mode="${1}"
+  print_function "funct_audit_aws"
   check_environment
   check_aws
   audit_aws_all
@@ -24,8 +24,8 @@ funct_audit_aws () {
 #.
 
 funct_audit_aws_rec () {
-  print_function "funct_audit_aws_rec"
   audit_mode="${1}"
+  print_function "funct_audit_aws_rec"
   check_environment
   check_aws
   audit_aws_rec_all

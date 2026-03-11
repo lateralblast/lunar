@@ -25,9 +25,9 @@ audit_aws_cf () {
     check=$( eval   "${command}" )
     stack=$( echo   "${stack}" | cut -f2 -d/ )
     if [ "${check}" ]; then
-      inc_secure   "SNS topic ${exists} for CloudFormation stack \"${stack}\""
+      inc_secure    "SNS topic ${exists} for CloudFormation stack \"${stack}\""
     else
-      inc_insecure "SNS topic does not exist for CloudFormation stack \"${stack}\""
+      inc_insecure  "SNS topic does not exist for CloudFormation stack \"${stack}\""
     fi
   done
   # Check stacks have a policy
@@ -39,9 +39,9 @@ audit_aws_cf () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ "${check}" ]; then
-      inc_secure   "CloudFormation stack \"${stack}\" has a policy"
+      inc_secure    "CloudFormation stack \"${stack}\" has a policy"
     else
-      inc_insecure "CloudFormation stack \"${stack}\" does not have a policy"
+      inc_insecure  "CloudFormation stack \"${stack}\" does not have a policy"
     fi
   done
 }

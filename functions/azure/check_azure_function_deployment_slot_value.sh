@@ -28,15 +28,15 @@ check_azure_function_deployment_slot_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  check_message  "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+  check_message "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az resource show --name \"${resource_name}\" --resource-group \"${resource_group}\" --namespace \"${namespace_name}\" --resource-type \"${resource_type}\" --parent \"sites/${app_name}/slots/${slot_name}\" --query \"${query_string}\" --output tsv 2> /dev/null"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      inc_secure   "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure    "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     else
-      inc_insecure "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure  "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ "${query_string}" = "virtualNetworkSubnetId" ]; then
         fix_message "az webapp vnet-integration add --resource-group <resource-group-name> --name <app-name> --vnet <virtual-network-name> --subnet <subnet-name>" 
       fi
@@ -79,7 +79,7 @@ check_azure_function_deployment_slot_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      inc_insecure "Azure App Service Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure  "Azure App Service Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ "${query_string}" = "virtualNetworkSubnetId" ]; then
         fix_message "az webapp vnet-integration add --resource-group <resource-group-name> --name <app-name> --vnet <virtual-network-name> --subnet <subnet-name>" 
       fi

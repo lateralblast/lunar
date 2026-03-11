@@ -16,8 +16,8 @@
 #.
 
 audit_azure_diagnostic_setting_categories () {
-  print_function "audit_azure_diagnostic_setting_categories"
-  check_message  "Azure Diagnostic Setting Categories"
+  print_function  "audit_azure_diagnostic_setting_categories"
+  check_message   "Azure Diagnostic Setting Categories"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"
   sub_ids=$( eval "${command}" )
@@ -27,9 +27,9 @@ audit_azure_diagnostic_setting_categories () {
       command_message  "${command}"
       settings=$( eval "${command}" )
       if [ -z "${settings}" ]; then
-        inc_insecure "There is no diagnostic setting for ${setting} for subscription ${sub_id}"
+        inc_insecure   "There is no diagnostic setting for ${setting} for subscription ${sub_id}"
       else
-        inc_secure   "There is a diagnostic setting for ${setting} for subscription ${sub_id}"
+        inc_secure     "There is a diagnostic setting for ${setting} for subscription ${sub_id}"
       fi
     done
   done

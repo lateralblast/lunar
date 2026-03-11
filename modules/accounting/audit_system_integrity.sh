@@ -29,7 +29,7 @@ audit_system_integrity () {
       if [ "${os_version}" -ge 11 ]; then
         command="/usr/bin/csrutil authenticated-root status | grep enabled"
         command_message "${command}"
-        check=$( eval "${command}" )
+        check=$( eval   "${command}" )
         if [ -z "${check}" ]; then
           inc_insecure "Sealed System Volume is not enabled"
         else

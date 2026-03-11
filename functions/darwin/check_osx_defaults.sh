@@ -116,15 +116,15 @@ check_osx_defaults () {
           lockdown_message="${string}"
           if [ "${defaults_value}" = "" ]; then
             lockdown_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             if [ "${defaults_type}" = "bool" ]; then
               lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
-              exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
             else
               if [ "${defaults_type}" = "int" ]; then
                 lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
-                exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
                 if [ "${defaults_file}" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
@@ -132,16 +132,16 @@ check_osx_defaults () {
                 if [ "${defaults_type}" = "dict" ]; then
                   if [ "${defaults_second_type}" = "bool" ]; then
                     lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
-                    exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                    exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
                   else
                     if [ "${defaults_second_type}" = "int" ]; then
                       lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
-                      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
                     fi
                   fi
                 else
                   lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
-                  exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                  exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
                 fi
               fi
             fi

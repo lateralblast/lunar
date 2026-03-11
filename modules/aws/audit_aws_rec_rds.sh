@@ -36,24 +36,24 @@ audit_aws_rec_rds () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ "${check}" = "available" ]; then
-      inc_secure   "RDS instance \"${db}\" is using General Purpose SSD"
+      inc_secure    "RDS instance \"${db}\" is using General Purpose SSD"
     else
-      inc_insecure "RDS instance \"${db}\" is not using General Purpose SSD"
+      inc_insecure  "RDS instance \"${db}\" is not using General Purpose SSD"
     fi
     # Check backup retention period is at least 7 days
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[].BackupRetentionPeriod' --output text"
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ ! "${check}" -lt "$aws_rds_min_retention" ]; then
-      inc_secure   "RDS instance \"${db}\" has a retention period greater than \"$aws_rds_min_retention\""
+      inc_secure    "RDS instance \"${db}\" has a retention period greater than \"$aws_rds_min_retention\""
     else
-      inc_insecure "RDS instance \"${db}\" has a retention period less than \"$aws_rds_min_retention\""
+      inc_insecure  "RDS instance \"${db}\" has a retention period less than \"$aws_rds_min_retention\""
     fi
   done
   # Ensure that your AWS RDS Reserved Instances (RIs) are renewed before expiration
   command="aws rds describe-reserved-db-instances --region \"${aws_region}\" --query 'ReservedDBInstances[].ReservedDBInstanceId' --output text"
   command_message "${command}"
-  dbs=$( eval "${command}" )
+  dbs=$( eval     "${command}" )
   for db in ${dbs}; do
     command="aws rds describe-reserved-db-instances --region \"${aws_region}\" --reserved-db-instance-id \"${db}\" --query 'ReservedDBInstances[].StartTime' --output text |cut -f1 -d. "
     command_message    "${command}"

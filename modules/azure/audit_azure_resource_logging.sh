@@ -25,7 +25,7 @@ audit_azure_resource_logging () {
     command="az resource list --subscription \"${sub_id}\" --query \"[].id\" --output tsv"
     command_message  "${command}"
     res_ids="$( eval "${command}" )"
-    for res_id in $res_ids; do
+    for res_id in ${res_ids}; do
       check_azure_monitoring_diagnostics_value "${res_id}"
     done
   done

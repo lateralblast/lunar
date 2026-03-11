@@ -37,6 +37,6 @@ check_azure_nsg_security_rule_value () {
       fi
     fi
   else
-    notice_message "NSG Rule ID \"${short_id}\" is not \"${direction}\""
+    notice_message   "NSG Rule ID \"${short_id}\" is not \"${direction}\""
   fi
 }

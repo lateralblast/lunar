@@ -21,7 +21,7 @@
 audit_cron_perms () {
   print_function "audit_cron_perms"
   string="Cron Permissions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for check_file in /etc/crontab /var/spool/cron /etc/cron.daily /etc/cron.d \
     /etc/cron.weekly /etc/cron.monthly /etc/cron.hourly /etc/anacrontab; do

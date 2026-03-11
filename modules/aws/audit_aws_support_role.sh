@@ -27,8 +27,8 @@ audit_aws_support_role () {
   command_message "${command}"
   users=$( eval   "${command}" )
   if [ -z "${roles}" ] && [ -z "${users}" ] && [ -z "${groups}" ]; then
-    inc_secure   "A support role has been created to manage incidents"
+    inc_secure    "A support role has been created to manage incidents"
   else
-    inc_insecure "There is no support role to manage incidents"
+    inc_insecure  "There is no support role to manage incidents"
   fi
 }

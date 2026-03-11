@@ -7,7 +7,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.1.2
+# Version:      15.1.4
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -1049,7 +1049,7 @@ do
       shift
       exit
       ;;
-    --tenant-id|--tenantid)         # switch - Azure tenant ID
+    --tenant*)                      # switch - Azure tenant ID
       check_switch_value "${1}" "${2}" 
       azure_tenant_id="${2}"
       shift 2

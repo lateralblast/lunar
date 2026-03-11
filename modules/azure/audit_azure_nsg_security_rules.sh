@@ -25,7 +25,7 @@ audit_azure_nsg_security_rules () {
   command_message "${command}"
   res_ids=$( eval "${command}" )
   if [ -z "${res_ids}" ]; then
-    info_message "No NSG instances found"
+    info_message  "No NSG instances found"
     return
   fi
   for res_id in ${res_ids}; do

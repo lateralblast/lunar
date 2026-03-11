@@ -13,7 +13,7 @@ check_launchctl_service () {
   if [ "${os_name}" = "Darwin" ]; then
     launchctl_service="${1}"
     required_status="${2}"
-    print_function "check_launchctl_service"
+    print_function  "check_launchctl_service"
     log_file="${launchctl_service}.log"
     if [ "${required_status}" = "on" ] || [ "${required_status}" = "enable" ]; then
       required_status="enabled"
@@ -51,13 +51,13 @@ check_launchctl_service () {
         echo ""
       fi
       if [ "${actual_status}" != "${required_status}" ]; then
-        inc_insecure "Service \"${launchctl_service}\" is \"${actual_status}\""
+        inc_insecure     "Service \"${launchctl_service}\" is \"${actual_status}\""
         lockdown_command="sudo launchctl ${change_status} -w ${launchctl_service}.plist"
         lockdown_message="Service ${launchctl_service} to ${required_status}"
         update_log_file  "${log_file}" "${actual_status}"
-        exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        inc_secure "Service \"${launchctl_service}\" is \"${required_status}\""
+        inc_secure       "Service \"${launchctl_service}\" is \"${required_status}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

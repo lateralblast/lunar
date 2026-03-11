@@ -27,11 +27,11 @@ check_aws_password_policy () {
   insecure_string="The password policy does not has \"${param}\" set to \"${value}\""
   verbose_message "${secure_string}" "check"
   if [ "${check}" = "${value}" ]; then
-    inc_secure   "${secure_string}"
+    inc_secure       "${secure_string}"
   else
-    inc_insecure "${insecure_string}"
+    inc_insecure     "${insecure_string}"
     lockdown_command="${cli_fix}"
     lockdown_message="IAM Account password policy parameter \"${param}\" to \"${value}\""
-    exec_lockdown "${lockdown_command}" "${lockdown_message}"
+    exec_lockdown    "${lockdown_command}" "${lockdown_message}"
   fi
 }

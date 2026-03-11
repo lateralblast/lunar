@@ -18,13 +18,13 @@
 #.
 
 audit_azure_container_instances () {
-  print_function "audit_azure_container_instances"
-  check_message  "Azure Container Instances"
+  print_function  "audit_azure_container_instances"
+  check_message   "Azure Container Instances"
   command="az container list --query \"[].name\" --output tsv"
   command_message "${command}"
   c_list=$( eval  "${command}" 2> /dev/null )
   if [ -z "${c_list}" ]; then
-    info_message "No Container Instances found"
+    info_message  "No Container Instances found"
   fi
   for c_name in ${c_list}; do
     command="az container show --name \"${c_name}\" --query \"resourceGroup\" --output tsv"

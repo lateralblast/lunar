@@ -25,8 +25,8 @@ audit_aws_iam () {
   command_message "${command}"
   eval "${command}"
   command="date +%Y-%m"
-  command_message   "${command}"
-  date_test=$( eval "${command}" )
+  command_message    "${command}"
+  date_test=$( eval  "${command}" )
   command="aws iam get-credential-report --query 'Content' --output text | \"${base64_d}\" | cut -d, -f1,5,11,16 | grep -B1 '<root_account>' | cut -f2 -d, | cut -f1,2 -d- | grep '[0-9]'"
   command_message    "${command}"
   last_login=$( eval "${command}" )

@@ -25,7 +25,7 @@ check_sysadminctl () {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\""
-      check_message  "${string}"
+      check_message "${string}"
       get_command="sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}"
       set_command="sudo sysadminctl -${param} ${value}"
       if [ "${ansible_mode}" = 1 ]; then
@@ -49,17 +49,17 @@ check_sysadminctl () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ "${check}" != "1" ]; then
-        inc_insecure "Parameter \"${param}\" not set to \"${value}\""
-        fix_message  "sudo sysadminctl -${param} ${value}"
+        inc_insecure  "Parameter \"${param}\" not set to \"${value}\""
+        fix_message   "sudo sysadminctl -${param} ${value}"
         if [ "${audit_mode}" = 0 ]; then
           update_log_file  "${log_file}" "${param},${other_value}"
           lockdown_message="Parameter \"${param}\" to \"${value}\""
           lockdown_command="${set_command}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          inc_secure "Parameter \"${param}\" is set to \"${value}\""
+          inc_secure       "Parameter \"${param}\" is set to \"${value}\""
         fi
       fi
     else

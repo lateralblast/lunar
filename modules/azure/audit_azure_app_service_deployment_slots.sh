@@ -34,7 +34,7 @@ audit_azure_app_service_deployment_slots () {
   print_function "audit_azure_app_service_deployment_slots"
   check_message  "Azure App Service Deployment Slots"
   command="az webapp list --query \"[].name\" --output tsv"
-  command_message "${command}"
+  command_message   "${command}"
   app_names=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_names}" ]; then
     info_message "No App Service Apps found"

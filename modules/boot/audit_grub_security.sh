@@ -19,7 +19,7 @@
 audit_grub_security () {
   print_function "audit_grub_security"
   string="Grub Menu Security"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       notice_message "Requires sudo to check"

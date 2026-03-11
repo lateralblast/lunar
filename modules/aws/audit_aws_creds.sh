@@ -33,7 +33,7 @@ audit_aws_creds () {
     key2_use=$(  echo "${entry}" | cut -d, -f8 )
     key2_rot=$(  echo "${entry}" | cut -d, -f9 )
     key2_last=$( echo "${entry}" | cut -d, -f10 )
-    cur_sec=$( date "+%s" )
+    cur_sec=$(   date "+%s" )
     if [ "${aws_user}" = "<root_account>" ]; then
       if [ "${key1_use}" = "true" ] || [ "${key2_use}" = "true" ]; then
         inc_insecure "Account \"${aws_user}\" is using access keys"
@@ -58,9 +58,9 @@ audit_aws_creds () {
             fi
             aws_days=$( echo "(${cur_sec} - ${aws_sec})/84600" | bc )
             if [ "$aws_days" -gt 90 ]; then
-              inc_insecure "Account ${aws_user} has not used AWS Console credentials in over 90 days consider locking access"
+              inc_insecure    "Account ${aws_user} has not used AWS Console credentials in over 90 days consider locking access"
             else
-              inc_secure   "Account ${aws_user} has used AWS Console credentials in the past 90 days"
+              inc_secure      "Account ${aws_user} has used AWS Console credentials in the past 90 days"
             fi
           fi
           a_test=$( echo "${aws_rot}" |grep "[0-9]" )
@@ -74,7 +74,7 @@ audit_aws_creds () {
               command_message "${command}"
               rot_sec=$( eval "${command}" )
             fi
-            rot_days=$( echo "(${rot_sec} - ${cur_sec})/84600" | bc )
+            rot_days=$(  echo "(${rot_sec} - ${cur_sec})/84600" | bc )
             if [ "${rot_days}" -gt 90 ]; then
               inc_insecure "Account \"${aws_user}\" will not rotate their AWS Console password in the next 90 days consider locking access"
             else
@@ -131,7 +131,7 @@ audit_aws_creds () {
             command_message  "${command}"
             key2_sec=$( eval "${command}" )
           fi
-          key2_days=$( echo "(${cur_sec} - ${key2_sec})/84600" | bc )
+          key2_days=$(  echo "(${cur_sec} - ${key2_sec})/84600" | bc )
           if [ "${key2_days}" -gt 90 ]; then
             inc_insecure "Account \"${aws_user}\" has not used AWS SOA credentials in over 90 days consider removing keys"
           else

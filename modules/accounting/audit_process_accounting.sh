@@ -23,10 +23,10 @@ audit_process_accounting () {
       fi
       if [ "${audit_mode}" = 0 ]; then
         set_message  "Process accounting to enabled"
-        echo "disabled" > "${log_file}"
+        echo  "disabled" > "${log_file}"
         ln -s "${init_file}" "${check_file}"
         notice_message "Starting Process accounting"
-        eval "${init_file} start > /dev/null 2>&1"
+        eval  "${init_file} start > /dev/null 2>&1"
       fi
     else
       if [ "${audit_mode}" = 1 ]; then

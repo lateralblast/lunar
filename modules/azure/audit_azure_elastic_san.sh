@@ -18,13 +18,13 @@
 #.
 
 audit_azure_elastic_san () {
-  print_function "audit_azure_elastic_san"
-  check_message  "Azure Elastic SAN"
+  print_function  "audit_azure_elastic_san"
+  check_message   "Azure Elastic SAN"
   command="az elastic-san list --query \"[].id\" --output tsv"
   command_message "${command}"
   san_ids=$( eval "${command}" 2> /dev/null )
   if [ -z "${san_ids}" ]; then
-    info_message "No Elastic SANs found"
+    info_message  "No Elastic SANs found"
     return
   fi
   for san_id in ${san_ids}; do

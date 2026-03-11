@@ -113,14 +113,14 @@ audit_aws_logging () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ -n "${check}" ]; then
-        inc_secure   "CloudTrail log bucket \"${bucket}\" has versioning enabled"
+        inc_secure    "CloudTrail log bucket \"${bucket}\" has versioning enabled"
       else
-        inc_insecure "CloudTrail bucket \"${bucket}\" does not have versioning enabled"
+        inc_insecure  "CloudTrail bucket \"${bucket}\" does not have versioning enabled"
       fi
     done
     command="aws cloudtrail describe-trails --region \"${aws_region}\" --query trailList[].Name --output text"
-    command_message "${command}"
-    trails=$( eval   "${command}" )
+    command_message   "${command}"
+    trails=$( eval    "${command}" )
     for trail in ${trails}; do
       # Check CloudTrail has a CloudWatch Logs group enabled
       command="aws cloudtrail describe-trails --region \"${aws_region}\" --trail-name-list \"${trail}\" |grep CloudWatchLogsLogGroupArn"

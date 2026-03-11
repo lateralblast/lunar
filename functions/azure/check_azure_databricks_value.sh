@@ -35,12 +35,12 @@ check_azure_databricks_value () {
     fi
   else
     if [ "${actual_value}" = "${correct_value}" ]; then
-      inc_insecure "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure  "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is not \"${function}\" to \"${correct_value}\""
       if [ ! "${parameter_name}" = "" ]; then
         fix_message "az databricks workspace update --name \"${workspace_name}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv"
       fi
     else
-      inc_secure   "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure    "${description} for workspace \"${workspace_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
     fi
   fi
 }

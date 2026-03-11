@@ -22,7 +22,7 @@
 audit_cron_allow () {
   print_function "audit_cron_allow"
   string="At/Cron Authorized Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "FreeBSD" ]; then
       cron_base_dir="/var/cron"
@@ -57,11 +57,11 @@ audit_cron_allow () {
       for dir_name in var/spool/cron var/spool/cron/crontabs ; do
         if [ -d "${dir_name}" ]; then
           command="find \"${dir_name}\" -maxdepth 1 -type f -exec basename {} \;"
-          command_message "${command}"
+          command_message   "${command}"
           user_list=$( eval "${command}" )
           for user_name in ${user_list}; do
             command="grep \"^${user_name}\" < /etc/passwd | cut -f 1 -d:"
-            command_message "${command}"
+            command_message  "${command}"
             check_id=$( eval "${command}" )
             if [ "${check_id}" = "${user_name}" ]; then
               echo "${user_name}" >> "${cron_file}"
@@ -73,11 +73,11 @@ audit_cron_allow () {
       for dir_name in /etc/cron.d /etc/cron.hourly /etc/cron.daily /etc/cron.yearly; do
         if [ -d "${dir_name}" ]; then
           command="find \"${dir_name}\" -type f -not -user root -printf '%u\n' | sort -u"
-          command_message "${command}"
+          command_message   "${command}"
           user_list=$( eval "${command}" )
           for user_name in ${user_list}; do
             command="grep \"${user_name}\" \"${check_file}\""
-            command_message "${command}"
+            command_message    "${command}"
             user_check=$( eval "${command}" )
             if [ "${user_check}" != "${user_name}" ]; then
               echo "${user_name}" >> "${at_base_dir}/at.allow"
@@ -87,9 +87,9 @@ audit_cron_allow () {
         fi
       done
     fi
-    check_file_perms "${check_file}" "0640" "root" "root"
+    check_file_perms  "${check_file}" "0640" "root" "root"
     check_file="/etc/at.allow"
-    check_file_exists ${check_file} yes
+    check_file_exists "${check_file}" "yes"
     if [ "${audit_mode}" = 0 ]; then
       if [ "${os_name}" = "SunOS" ]; then
         f_check=$( wc -l "${check_file}" | awk '{print $1}' | sed "s/ //g" )
@@ -97,11 +97,11 @@ audit_cron_allow () {
           dir_name="/var/spool/cron/atjobs"
           if [ -d "${dir_name}" ]; then
             command="ls ${dir_name}"
-            command_message "${command}"
+            command_message   "${command}"
             user_list=$( eval "${command}" )
             for user_name in ${user_list}; do
               command="grep \"${user_name}\" \"${check_file}\""
-              command_message "${command}"
+              command_message    "${command}"
               user_check=$( eval "${command}" )
               if [ "${user_check}" != "${user_name}" ]; then
                 echo "${user_name}" >> "${check_file}"
@@ -116,11 +116,11 @@ audit_cron_allow () {
           dir_name="/var/spool/at/spool"
           if [ -d "${dir_name}" ]; then
             command="ls /var/spool/at/spool"
-            command_message "${command}"
+            command_message   "${command}"
             user_list=$( eval "${command}" )
             for user_name in ${user_list}; do
               command="grep \"${user_name}\" \"${check_file}\""
-              command_message "${command}"
+              command_message    "${command}"
               user_check=$( eval "${command}" )
               if [ "${user_check}" != "${user_name}" ]; then
                 echo "${user_name}" >> "${check_file}"

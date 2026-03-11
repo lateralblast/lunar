@@ -103,17 +103,17 @@ audit_aws_rec_ec2 () {
       command_message       "${command}"
       ansible_value=$( eval "${command}" )
       if [ -z "${ansible_value}" ]; then
-        inc_insecure "AWS Security Group \"${sg}\" does not have a Name tag"
-        verbose_message    "aws ec2 create-tags --region \"${aws_region}\" --resources \"${image}\" --tags Key=Name,Value=<valid_name_tag>" "fix"
+        inc_insecure    "AWS Security Group \"${sg}\" does not have a Name tag"
+        verbose_message "aws ec2 create-tags --region \"${aws_region}\" --resources \"${image}\" --tags Key=Name,Value=<valid_name_tag>" "fix"
       else
         if [ "${strict_valid_names}" = "y" ]; then
           command="echo \"${ansible_value}\" |grep \"^sg-${valid_tag_string}\""
           command_message "${command}"
-          check=$( eval "${command}" )
+          check=$( eval   "${command}" )
           if [ -n "${check}" ]; then
-            inc_secure   "AWS Security Group \"${sg}\" has a valid Name tag"
+            inc_secure    "AWS Security Group \"${sg}\" has a valid Name tag"
           else
-            inc_insecure "AWS Security Group \"${sg}\" does not have a valid Name tag"
+            inc_insecure  "AWS Security Group \"${sg}\" does not have a valid Name tag"
           fi
         fi
       fi
@@ -185,9 +185,9 @@ audit_aws_rec_ec2 () {
           command_message "${command}"
           check=$( eval   "${command}" )
           if [ -n "${check}" ]; then
-            inc_secure   "AWS Instance \"${instance}\" has a valid \"${tag}\" tag"
+            inc_secure    "AWS Instance \"${instance}\" has a valid \"${tag}\" tag"
           else
-            inc_insecure "AWS Instance \"${instance}\" does not have a valid \"${tag}\" tag"
+            inc_insecure  "AWS Instance \"${instance}\" does not have a valid \"${tag}\" tag"
           fi
         fi
       fi
@@ -196,8 +196,8 @@ audit_aws_rec_ec2 () {
     command_message    "${command}"
     term_check=$( eval "${command}" )
     command="aws autoscaling describe-auto-scaling-instances --region \"${aws_region}\" --query 'AutoScalingInstances[].InstanceId' | grep \"${instance}\""
-    command_message   "${command}"
-    asg_check=$( eval "${command}" )
+    command_message    "${command}"
+    asg_check=$( eval  "${command}" )
     if [ -n "${term_check}" ] && [ -z "${asg_check}" ]; then
       inc_secure   "Termination Protection is enabled for instance \"${instance}\""
     else
@@ -227,9 +227,9 @@ audit_aws_rec_ec2 () {
   command_message "${command}"
   no_ips=$( eval  "${command}" )
   if [ "${max_ips}" -ne "${no_ips}" ]; then
-    inc_secure   "Number of Elastic IPs consumed is less than limit of \"${max_ips}\""
+    inc_secure    "Number of Elastic IPs consumed is less than limit of \"${max_ips}\""
   else
-    inc_insecure "Number of Elastic IPs consumed has reached limit of \"${max_ips}\""
+    inc_insecure  "Number of Elastic IPs consumed has reached limit of \"${max_ips}\""
   fi
   # Check Instances are using EC2-VPC and not EC2-Classic
   command="aws ec2 describe-instances --region \"${aws_region}\" --query 'Reservations[*].Instances[*].InstanceId' --output text"
@@ -240,9 +240,9 @@ audit_aws_rec_ec2 () {
     command_message "${command}"
     vpc=$( eval     "${command}" )
     if [ -n "${vpc}" ]; then
-      inc_secure   "Instance \"${instance}\" is an EC2-VPC platform"
+      inc_secure    "Instance \"${instance}\" is an EC2-VPC platform"
     else
-      inc_insecure "Instance \"${instance}\" is an EC2-Classic platform"
+      inc_insecure  "Instance \"${instance}\" is an EC2-Classic platform"
     fi 
   done
 }

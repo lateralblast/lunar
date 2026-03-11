@@ -28,10 +28,10 @@ audit_aws_keys () {
       command_message "${command}"
       check=$( eval   "${command}" )
       if [ ! "${check}" ]; then
-        inc_insecure "Key \"${key}\" is not enabled"
-        verbose_message    "aws kms schedule-key-deletion --key-id ${key} --pending-window-in-days $aws_days_to_key_deletion" "fix"
+        inc_insecure    "Key \"${key}\" is not enabled"
+        verbose_message "aws kms schedule-key-deletion --key-id ${key} --pending-window-in-days $aws_days_to_key_deletion" "fix"
       else
-        inc_secure   "Key \"${key}\" is enabled"
+        inc_secure      "Key \"${key}\" is enabled"
       fi
       # Check that key rotation is enabled
       command="aws kms get-key-rotation-status --key-id \"${key}\" |grep KeyRotationEnabled | grep true"

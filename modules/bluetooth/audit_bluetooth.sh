@@ -17,7 +17,7 @@
 audit_bluetooth () {
   print_function "audit_bluetooth"
   string="Bluetooth services and file sharing"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "ControllerPowerState"      "0"
     check_osx_defaults_int  "/Library/Preferences/com.apple.Bluetooth" "PANServices"               "0"

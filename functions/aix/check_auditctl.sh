@@ -22,7 +22,7 @@ check_auditctl () {
       set_command="auditctl -w ${file} -p wa -k ${audit_tag}"
       if [ -e "${check_file}" ]; then
         check=$( auditctl -l | grep "${check_file}" )
-        if [ ! "${check}" ]; then
+        if [ -z "${check}" ]; then
           if [ "${ansible_mode}" = 1 ]; then
             ansible_counter=$((ansible_counter+1))
             ansible_value="auditctl_file_check_${ansible_counter}"

@@ -29,7 +29,7 @@ audit_azure_key_vault_purge_protection () {
   fi
   for res_name in ${res_names}; do
     command="az resource list --name \"${res_name}\" --query \"[].resourceGroup\" --output tsv"
-    command_message         "${command}"
+    command_message    "${command}"
     res_groups=$( eval "${command}" )
     for res_group in ${res_groups}; do
       command="az resource show --resource-group \"${res_group}\" --name \"${res_name}\" --resource-type \"Microsoft.KeyVault/vaults\" --query \"properties.enablePurgeProtection\" --output tsv"
@@ -37,10 +37,10 @@ audit_azure_key_vault_purge_protection () {
       protection=$( eval "${command}" )
       check_message "Azure Key Vault \"${res_name}\" purge protection"
       if [ "${protection}" = "true" ]; then
-        inc_secure   "Azure Key Vault \"${res_name}\" purge protection is enabled"
+        inc_secure       "Azure Key Vault \"${res_name}\" purge protection is enabled"
       else
-        inc_insecure "Azure Key Vault \"${res_name}\" purge protection is not enabled"
-        verbose_message    "az resource update --resource-group ${res_group} --name ${res_name} --resource-type \"Microsoft.KeyVault/vaults\" --set properties.enablePurgeProtection=true" "fix"
+        inc_insecure     "Azure Key Vault \"${res_name}\" purge protection is not enabled"
+        verbose_message  "az resource update --resource-group ${res_group} --name ${res_name} --resource-type \"Microsoft.KeyVault/vaults\" --set properties.enablePurgeProtection=true" "fix"
       fi
     done
   done

@@ -35,7 +35,7 @@ audit_sendmail_daemon() {
         fi
         if [ "${os_version}" = "9" ] || [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
           check_file_value  "is" "/etc/default/sendmail" "QUEUEINTERVAL" "eq" "15m" "hash"
-          check_append_file "/etc/default/sendmail"      "MODE=" "hash"
+          check_append_file      "/etc/default/sendmail" "MODE=" "hash"
         else
           check_initd_service "sendmail" "disable"
           check_file="/var/spool/cron/crontabs/root"
@@ -51,7 +51,7 @@ audit_sendmail_daemon() {
       if [ "${os_name}" = "FreeBSD" ]; then
         check_file="/etc/rc.conf"
         if [ "${os_version}" -lt 5 ]; then
-          check_file_value "is" "/etc/rc.conf" "sendmail_enable" "eq" "NONE" "hash"
+          check_file_value  "is" "/etc/rc.conf" "sendmail_enable" "eq" "NONE" "hash"
         else
           if [ "${os_version}" -gt 5 ]; then
             if [ "${os_version}" = "5" ] && [ "${os_update}" = "0" ]; then

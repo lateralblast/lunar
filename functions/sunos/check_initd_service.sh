@@ -55,10 +55,10 @@ check_initd_service () {
         lockdown_message="Service ${service_name} to ${correct_status}"
         if [ "${correct_status}" = "disabled" ]; then
           lockdown_command="/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         else
           lockdown_command="mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 2 ]; then

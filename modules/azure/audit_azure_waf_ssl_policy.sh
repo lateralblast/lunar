@@ -25,11 +25,11 @@ audit_azure_waf_ssl_policy () {
     info_message "No WAF instances found"
     return
   fi
-  for res_group in $res_groups; do
+  for res_group in ${res_groups}; do
     command="az network application-gateway list --resource-group \"${res_group}\" --query '[].name' --output tsv 2> /dev/null"
     command_message  "${command}"
     waf_list=$( eval "${command}" )
-    for waf_name in $waf_list; do
+    for waf_name in ${waf_list}; do
       check_azure_waf_value "ssl-policy" "${waf_name}" "${res_group}" "firewallPolicy.id" "ne" "" "" ""
     done
   done

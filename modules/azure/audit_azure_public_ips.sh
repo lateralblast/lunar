@@ -22,7 +22,7 @@ audit_azure_public_ips () {
   command_message "${command}"
   res_ids=$( eval "${command}" )
   if [ -z "${res_ids}" ]; then
-    info_message "No Public IPs found"
+    info_message  "No Public IPs found"
     return
   fi
   for res_id in ${res_ids}; do

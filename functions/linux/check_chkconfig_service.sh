@@ -56,7 +56,7 @@ check_chkconfig_service () {
     correct_status="${3}"
     secure_string="Sevice \"${service_name}\" at run level \"${service_level}\" at rune level \"${service_level}\" is \"${correct_status}\""
     insecure_string="Service \"${service_name}\" at run level \"${service_level}\" at rune level \"${service_level}\" is \"${correct_status}\""
-    check_message "${secure_string}"
+    check_message   "${secure_string}"
     if [ "${correct_status}" = "on" ]; then
       enabled="yes"
     else
@@ -100,7 +100,7 @@ check_chkconfig_service () {
           echo ""
         fi
         if [ "${actual_status}" != "${correct_status}" ]; then
-          inc_insecure "${insecure_string}"
+          inc_insecure     "${insecure_string}"
           update_log_file  "${log_file}" "${service_name},${service_level},${actual_status}"
           lockdown_command="${chk_config} --level ${service_level} ${service_name} ${correct_status}"
           lockdown_message="Service ${service_name} at run level ${service_level} to ${correct_status}"

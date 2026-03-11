@@ -16,8 +16,8 @@
 #.
 
 audit_azure_activity_logs_cmk () {
-  print_function "audit_azure_activity_logs_cmk"
-  check_message  "Azure Activity Logs CMK"
+  print_function  "audit_azure_activity_logs_cmk"
+  check_message   "Azure Activity Logs CMK"
   command="az account list --query \"[].id\" --output tsv 2>/dev/null"
   command_message "${command}"
   sub_ids=$( eval "${command}" )

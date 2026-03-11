@@ -35,8 +35,8 @@ audit_azure_recovery_services_vaults () {
   fi
   for vault_id in ${vault_ids}; do
     command="az backup vault show --id \"${vault_id}\" --query \"resourceGroup\" --output tsv"
-    command_message   "${command}"
-    res_group=$( eval "${command}" )
+    command_message    "${command}"
+    res_group=$( eval  "${command}" )
     command="az backup vault show --id \"${vault_id}\" --query \"name\" --output tsv"
     command_message    "${command}"
     vault_name=$( eval "${command}" )

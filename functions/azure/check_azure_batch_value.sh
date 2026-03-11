@@ -24,7 +24,7 @@ check_azure_batch_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  check_message  "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+  check_message "${description} for Batch Account \"${batch_name}\" in resource group \"${resource_group}\" has parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
   command="az batch account show --name ${batch_name} --resource-group ${resource_group} --query '${query_string}' --output tsv 2> /dev/null"
   command_message      "${command}"
   actual_value=$( eval "${command}" )

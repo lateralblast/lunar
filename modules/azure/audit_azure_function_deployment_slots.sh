@@ -42,8 +42,8 @@ audit_azure_app_service_deployment_slots () {
   fi
   for app_name in ${app_names}; do
     command="az functionapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
-    command_message   "${command}"
-    res_group=$( eval "${command}" )
+    command_message    "${command}"
+    res_group=$( eval  "${command}" )
     command="az functionapp deployment slot list --name \"${app_name}\" --resource-group \"${res_group}\" --query \"[].name\" --output tsv"
     command_message    "${command}"
     slot_names=$( eval "${command}" 2> /dev/null )

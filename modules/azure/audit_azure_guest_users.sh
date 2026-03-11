@@ -21,7 +21,7 @@ audit_azure_guest_users () {
   command="az ad user list --query \"[?contains(userType, 'Guest')]\" --query \"id\" --output tsv"
   command_message     "${command}"
   guest_users=$( eval "${command}" )
-  if [ -z "$guest_users" ]; then
+  if [ -z "${guest_users}" ]; then
     inc_secure   "No guest users found"
   else
     inc_insecure "Guest users found: ${guest_users}"

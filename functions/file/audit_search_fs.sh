@@ -17,7 +17,7 @@ audit_search_fs () {
     verbose_message "Filesystem Search"
     command="pkginfo -l | grep SYMCnbclt | grep PKG | awk '{print \$2}'"
     command_message "${command}"
-    check=$( eval "${command}" )
+    check=$( eval   "${command}" )
     if [ "${check}" != "SYMCnbclt" ]; then
       audit_bpcd
       audit_vnetd

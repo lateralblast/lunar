@@ -20,8 +20,8 @@ audit_aws_ses () {
   domains=$( eval "${command}" )
   for domain in ${domains}; do
     command="aws ses get-identity-dkim-attributes --region \"${aws_region}\" --identities \"${domain}\" | grep DkimEnabled | grep true"
-    command_message "${command}"
-    check=$( eval "${command}" )
+    command_message   "${command}"
+    check=$( eval     "${command}" )
     if [ -n "${check}" ]; then
       inc_secure      "Domain \"${domain}\" has DKIM enabled" 
     else

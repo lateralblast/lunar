@@ -31,8 +31,8 @@ audit_aws_s3 () {
       fi
     done
     command="aws s3api get-bucket-logging --region \"${aws_region}\" --bucket \"${bucket}\""
-    command_message "${command}"
-    check=$( eval   "${command}" )
+    command_message   "${command}"
+    check=$( eval     "${command}" )
     if [ -z "${check}" ]; then
       inc_insecure    "Bucket ${bucket} does not have access logging enabled"
       verbose_message "aws s3api put-bucket-acl --region \"${aws_region}\" --bucket \"${bucket}\" --grant-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery --grant-read-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery" "fix"
@@ -41,12 +41,12 @@ audit_aws_s3 () {
       inc_secure      "Bucket \"${bucket}\" has access logging enabled"
     fi
     command="aws s3api get-bucket-versioning --bucket \"${bucket}\" | grep Enabled"
-    command_message "${command}"
-    check=$( eval   "${command}" )
+    command_message   "${command}"
+    check=$( eval     "${command}" )
     if [ -n "${check}" ]; then
-      inc_secure    "Bucket \"${bucket}\" has versioning enabled"
+      inc_secure      "Bucket \"${bucket}\" has versioning enabled"
     else
-      inc_insecure  "Bucket \"${bucket}\" does not have versioning enabled"
+      inc_insecure    "Bucket \"${bucket}\" does not have versioning enabled"
     fi
   done
 }

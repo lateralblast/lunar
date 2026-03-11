@@ -12,11 +12,11 @@
 #.
 
 audit_aws_certs () {
-  print_function  "audit_aws_certs"
-  check_message   "Certificates"
+  print_function   "audit_aws_certs"
+  check_message    "Certificates"
   command="aws iam list-server-certificates --region \"${aws_region}\" --query \"ServerCertificateMetadataList[].ServerCertificateName\" --output text"
-  command_message "${command}"
-  certs=$( eval   "${command}" )
+  command_message  "${command}"
+  certs=$( eval    "${command}" )
   command="date \"+%Y-%m-%dT%H:%M:%SS\""
   command_message  "${command}"
   cur_date=$( eval "${command}" )

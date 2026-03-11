@@ -18,7 +18,7 @@ audit_sendmail_greeting () {
     if [ -f "${check_file}" ]; then
       search_string="v/"
       if [ "${audit_mode}" != 2 ]; then
-        command="grep -v '^#' \"${check_file}\" | grep 'O SmtpGreetingMessage' | awk '{print \$4}' | grep 'v/'"
+        command="grep -v \"^#\" \"${check_file}\" | grep \"O SmtpGreetingMessage\" | awk '{print \$4}' | grep \"${search_string}\""
         command_message     "${command}"
         check_value=$( eval "${command}" )
         if [ "${check_value}" = "${search_string}" ]; then
@@ -49,12 +49,12 @@ audit_sendmail_greeting () {
       else
         restore_file "${check_file}" "${restore_dir}"
       fi
-      disable_value ${check_file} "O HelpFile" hash
+      disable_value "${check_file}" "O HelpFile" "hash"
       if [ "${audit_mode}" != 2 ]; then
-        check_value=$( grep -v '^#' ${check_file} | grep "${search_string}" )
+        check_value=$( grep -v '^#' "${check_file}" | grep "${search_string}" )
         if [ "${check_value}" = "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
-            inc_insecure     "Found help information in sendmail greeting"
+            inc_insecure "Found help information in sendmail greeting"
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file "${check_file}"

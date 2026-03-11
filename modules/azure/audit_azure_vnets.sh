@@ -33,7 +33,7 @@ audit_azure_vnets () {
       command="az network vnet show --name \"${vnet_name}\" --resource-group \"${res_group}\" --query 'subnets[].name' --output tsv 2> /dev/null"
       command_message     "${command}"
       subnet_list=$( eval "${command}" )
-      for subnet_name in $subnet_list; do
+      for subnet_name in ${subnet_list}; do
         check_azure_vnet_value "${vnet_name}" "${res_group}" "${subnet_name}" "networkSecurityGroup.id" "ne" ""
       done
     done

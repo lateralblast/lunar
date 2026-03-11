@@ -28,24 +28,24 @@ audit_aws_elb () {
     command_message  "${command}"
     check=$( eval    "${command}" )
     if [ -z "${check}" ]; then
-      inc_insecure "ELB \"${elb}\" does not have access logging enabled"
-      verbose_message    "aws elb modify-load-balancer-attributes --region ${aws_region} --load-balancer-name ${elb} --load-balancer-attributes \"{\\\"AccessLog\\\":{\\\"Enabled\\\":true,\\\"EmitInterval\\\":60,\\\"S3BucketName\\\":\\\"elb-logging-bucket\\\"}}\"" fix
+      inc_insecure    "ELB \"${elb}\" does not have access logging enabled"
+      verbose_message "aws elb modify-load-balancer-attributes --region ${aws_region} --load-balancer-name ${elb} --load-balancer-attributes \"{\\\"AccessLog\\\":{\\\"Enabled\\\":true,\\\"EmitInterval\\\":60,\\\"S3BucketName\\\":\\\"elb-logging-bucket\\\"}}\"" fix
     else
-      inc_secure   "ELB \"${elb}\" has access logging enabled"
+      inc_secure      "ELB \"${elb}\" has access logging enabled"
     fi
     # Ensure ELBs are not using HTTP
     command="aws elb describe-load-balancers --region \"${aws_region}\" --load-balancer-name \"${elb}\"  --query \"LoadBalancerDescriptions[].ListenerDescriptions[].Listener[].Protcol\" --output text"
     command_message  "${command}"
     protocol=$( eval "${command}" )
     if [ "${protocol}" = "HTTP" ]; then
-      inc_insecure "ELB \"${elb}\" is using HTTP"
+      inc_insecure   "ELB \"${elb}\" is using HTTP"
     else
-      inc_secure   "ELB \"${elb}\" is not using HTTP"
+      inc_secure     "ELB \"${elb}\" is not using HTTP"
     fi
     # Ensure ELB SGs do not have port 80 open to the world
     command="aws elb describe-load-balancers --region \"${aws_region}\" --load-balancer-name \"${elb}\"  --query \"LoadBalancerDescriptions[].SecurityGroups\" --output text"
-    command_message "${command}"
-    sgs=$( eval     "${command}" )
+    command_message  "${command}"
+    sgs=$( eval      "${command}" )
     for sg in ${sgs}; do
       check_aws_open_port "${sg}" "80" "tcp" "HTTP" "ELB" "${elb}"
     done

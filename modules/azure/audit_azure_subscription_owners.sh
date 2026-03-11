@@ -26,7 +26,7 @@ audit_azure_subscription_owners () {
     command_message     "${command}"
     role_owners=$( eval "${command}" )
     if [ -z "${role_owners}" ]; then
-      inc_secure     "There are members with the Subscription Owner role"
+      inc_secure "There are members with the Subscription Owner role"
     else
       owner_count=$( echo "${role_owners}" | wc -l )
       if [ "${owner_count}" -gt "${max_owners}" ]; then

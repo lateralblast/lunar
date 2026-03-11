@@ -52,8 +52,8 @@ check_dscl () {
         if [ "${audit_mode}" = 0 ]; then
           backup_file      "${dir}/${file}"
           lockdown_message="Parameter \"${param}\" to \"${value}\" in ${file}"
-          lockdown_message="dscl . -create ${file} ${param} ${value}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          lockdown_command="dscl . -create ${file} ${param} ${value}"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
@@ -61,7 +61,7 @@ check_dscl () {
         fi
       fi
     else
-      restore_file "${dir}/${file}" "${restore_dir}"
+      restore_file   "${dir}/${file}" "${restore_dir}"
     fi
   fi
 }

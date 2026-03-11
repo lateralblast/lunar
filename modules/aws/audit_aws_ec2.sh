@@ -36,9 +36,9 @@ audit_aws_ec2 () {
     command_message "${command}"
     profile=$( eval "${command}" )
     if [ -n "${profile}" ]; then
-      inc_secure   "Instances \"${instance}\" uses an IAM profile"
+      inc_secure    "Instances \"${instance}\" uses an IAM profile"
     else
-      inc_insecure "Warning:   Instance \"${instance}\" does not use an IAM profile"
+      inc_insecure  "Warning:   Instance \"${instance}\" does not use an IAM profile"
     fi
   done
   command="aws ec2 describe-images --region \"${aws_region}\" --owners self --query \"Images[].ImageId\" --output text"
@@ -49,10 +49,10 @@ audit_aws_ec2 () {
     command_message "${command}"
     public=$( eval  "${command}" )
     if [ -z "${public}" ]; then
-      inc_secure   "Image \"${image}\" is not publicly shared"
+      inc_secure      "Image \"${image}\" is not publicly shared"
     else
-      inc_insecure "Image \"${image}\" is publicly shared"
-      verbose_message    "aws ec2 modify-image-attribute --region ${aws_region} --image-id ${image} --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" "fix"
+      inc_insecure    "Image \"${image}\" is publicly shared"
+      verbose_message "aws ec2 modify-image-attribute --region ${aws_region} --image-id ${image} --launch-permission '{\"Remove\":[{\"Group\":\"all\"}]}'" "fix"
     fi
   done
   command="aws ec2 describe-volumes --query \"Volumes[].VolumeId\" --output text"

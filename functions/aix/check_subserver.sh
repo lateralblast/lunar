@@ -50,10 +50,10 @@ check_subserver() {
           lockdown_message="Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
             lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           else
             lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
           fi
         fi
       else

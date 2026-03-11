@@ -80,7 +80,7 @@ check_command_output () {
       update_log_file  "${log_file}" "${audit_command}"
       lockdown_message="Command \"${command_name}\" to correct value"
       lockdown_command="${set_command}"
-      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
     fi
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"

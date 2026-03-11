@@ -34,13 +34,13 @@ check_azure_file_share_value () {
       case "${set_name}" in
         "--"*)
           if [ "${retention_days}" = "" ]; then
-            fix_message  "az storage account file-${share_propery} update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}"
+            fix_message "az storage account file-${share_propery} update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}"
           else
-            fix_message  "az storage account file-${share_propery} update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value} --retention-days ${retention_days}"
+            fix_message "az storage account file-${share_propery} update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value} --retention-days ${retention_days}"
           fi
           ;;
         *)
-          fix_message    "az storage account file-${share_propery} update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}"
+          fix_message   "az storage account file-${share_propery} update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}"
           ;;
       esac
     fi

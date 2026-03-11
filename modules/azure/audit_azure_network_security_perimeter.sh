@@ -19,20 +19,20 @@ audit_azure_network_security_perimeter () {
   print_function "audit_azure_network_security_perimeter"
   check_message  "Azure Network Security Perimeter"
   command="az group list --query '[].name' --output tsv 2> /dev/null"
-  command_message    "${command}"
-  group_names=$(eval "${command}")
+  command_message     "${command}"
+  group_names=$( eval "${command}" )
   if [ -z "${group_names}" ]; then
     info_message "No NSP instances found"
     return
   fi
-  for group_name in $group_names; do
+  for group_name in ${group_names}; do
     command="az network perimeter list --resource-group \"${group_name}\" --query '[].name' --output tsv 2> /dev/null"
-    command_message "${command}"
-    nsp_list=$(eval "${command}")
+    command_message  "${command}"
+    nsp_list=$( eval "${command}" )
     if [ -z "${nsp_list}" ]; then
-      inc_insecure "No Azure Network Security Perimeter found for resource group \"${group_name}\""
+      inc_insecure  "No Azure Network Security Perimeter found for resource group \"${group_name}\""
     else
-      for nsp_name in $nsp_list; do
+      for nsp_name in ${nsp_list}; do
         check_azure_network_security_perimeter_value "${nsp_name}" "${group_name}" "association" "[].resourceGroup" "eq" "${group_name}"
       done
     fi

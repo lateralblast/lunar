@@ -24,9 +24,9 @@ check_azure_data_factory_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
-  check_message  "${description} for Data Factory \"${data_factory_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
+  check_message "${description} for Data Factory \"${data_factory_name}\" with Resource Group \"${resource_group}\" Parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az datafactory show --name \"${data_factory_name}\" --resource-group \"${resource_group}\" --query \"[].${query_string}\" --output tsv"
-  command_message "${command}"
+  command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then

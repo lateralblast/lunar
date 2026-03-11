@@ -27,14 +27,14 @@ audit_azure_sql_db () {
   print_function "audit_azure_sql_db"
   check_message "Azure SQL Database"
   command="az sql server list --query \"[].name\" --output tsv"
-  command_message "${command}" "check"
+  command_message     "${command}"
   sql_servers=$( eval "${command}" )
   if [ "${sql_servers}" = "" ]; then
     info_message "No SQL servers found" "info"
   else
     for sql_server in ${sql_servers}; do
       command="az sql server show --name ${sql_server} --query \"resourceGroup\" --output tsv"
-      command_message "${command}" "check"
+      command_message   "${command}"
       res_group=$( eval "${command}" )
       # 9.1 Ensure that 'Auditing' is set to 'On' - TBD
       check_sql_db_value "Auditing"              "server" "${sql_server}" "${res_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""

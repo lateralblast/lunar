@@ -26,8 +26,8 @@ audit_aws_redshift () {
   for db in ${dbs}; do
     # Check if version upgrades are enabled
     command="aws redshift describe-clusters --region \"${aws_region}\" --cluster-identifier \"${db}\" --query 'Clusters[].AllowVersionUpgrade' | grep true"
-    command_message "${command}"
-    check=$( eval   "${command}" )
+    command_message   "${command}"
+    check=$( eval     "${command}" )
     if [ -n "${check}" ]; then
       inc_secure      "Redshift instance \"${db}\" has version upgrades enabled"
     else
@@ -36,8 +36,8 @@ audit_aws_redshift () {
     fi
     # Check if audit logging is enabled
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" | grep true"
-    command_message "${command}"
-    check=$( eval "${command}" )
+    command_message   "${command}"
+    check=$( eval     "${command}" )
     if [ -n "${check}" ]; then
       inc_secure      "Redshift instance \"${db}\" has logging enabled"
     else
@@ -49,9 +49,9 @@ audit_aws_redshift () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      inc_secure   "Redshift instance \"${db}\" has encryption enabled"
+      inc_secure    "Redshift instance \"${db}\" has encryption enabled"
     else
-      inc_insecure "Redshift instance \"${db}\" does not have encryption enabled"
+      inc_insecure  "Redshift instance \"${db}\" does not have encryption enabled"
     fi
     # Check if KMS keys are being used
     command="aws redshift describe-logging-status --region \"${aws_region}\" --cluster-identifier \"${db}\" --query 'Clusters[].[Encrypted,KmsKeyId]' | grep true"

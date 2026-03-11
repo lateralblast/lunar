@@ -33,9 +33,9 @@ audit_aws_rec_es () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      inc_secure   "Elasticsearch doamin \"${domain}\" is using General Purpose SSD"
+      inc_secure    "Elasticsearch doamin \"${domain}\" is using General Purpose SSD"
     else
-      inc_insecure "Elasticsearch domain \"${domain}\" is not using General Purpose SSD"
+      inc_insecure  "Elasticsearch domain \"${domain}\" is not using General Purpose SSD"
       command="aws es describe-elasticsearch-domain --domain-name \"${domain}\" --query \"DomainStatus.EBSOptions.VolumeSize\" --output text"
       command_message  "${command}"
       vol_size=$( eval "${command}" )

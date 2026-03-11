@@ -36,9 +36,9 @@ check_aws_open_port () {
     else
       string="Application \"$app\" with instance \"${instance}\" with Security Group \"${sg}\" has \"${service}\" on port \"${port}\" open to the world"
     fi
-    inc_insecure "${string}"
+    inc_insecure     "${string}"
     lockdown_command="aws ec2 revoke-security-group-ingress --region ${aws_region} --group-name ${sg} --protocol ${protocol} --port ${port} --cidr 0.0.0.0/0"
     lockdown_message="${string}"
-    exec_lockdown "${lockdown_command}" "${lockdown_message}" 
+    exec_lockdown    "${lockdown_command}" "${lockdown_message}" 
   fi
 }

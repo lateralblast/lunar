@@ -28,7 +28,7 @@ check_azure_elastic_san_value () {
   fi
   if [ "${volume_group_name}" = "" ]; then
     short_name=$( basename "${elastic_san_id}" )
-    check_message  "${description} for Elastic SAN \"${short_name}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
+    check_message "${description} for Elastic SAN \"${short_name}\" has Parameter \"${query_string}\" \"${function}\" to \"${correct_value}\""
     command="az elastic-san show --id \"${elastic_san_id}\" --query \"${query_string}\" --output tsv 2> /dev/null"
     command_message      "${command}"
     actual_value=$( eval "${command}" )
@@ -39,15 +39,15 @@ check_azure_elastic_san_value () {
         inc_insecure "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
         if [ "${set_name}" != "" ]; then
           command="az elastic-san update --id \"${elastic_san_id}\" ${set_name} \"${set_value}\""
-          fix_message "${command}"
+          fix_message   "${command}"
         fi
       fi
     else
       if [ "${function}" = "ne" ]; then
         if [ "${actual_value}" != "${correct_value}" ]; then
-          inc_secure   "${description} for Elastic SAN \"${short_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
+          inc_secure    "${description} for Elastic SAN \"${short_name}\" has \"${query_string}\" \"${function}\" to \"${correct_value}\""
         else
-          inc_insecure "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
+          inc_insecure  "${description} for Elastic SAN \"${short_name}\" does not have \"${query_string}\" \"${function}\" to \"${correct_value}\""
           if [ "${set_name}" != "" ]; then
             command="az elastic-san update --id \"${elastic_san_id}\" ${set_name} \"${set_value}\""
             fix_message "${command}"

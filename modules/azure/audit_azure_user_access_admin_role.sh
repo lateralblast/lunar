@@ -22,9 +22,9 @@ audit_azure_user_access_admin_role () {
   command_message     "${command}"
   assignments=$( eval "${command}" )
   if [ -z "${assignments}" ]; then
-    inc_secure   "User Access Administrator Role is restricted"
+    inc_secure      "User Access Administrator Role is restricted"
   else
-    inc_insecure "User Access Administrator Role is not restricted"
-    verbose_message    "az role assignment delete --role \"User Access Administrator\" --scope \"/\"" "fix"
+    inc_insecure    "User Access Administrator Role is not restricted"
+    verbose_message "az role assignment delete --role \"User Access Administrator\" --scope \"/\"" "fix"
   fi
 }

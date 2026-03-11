@@ -30,7 +30,7 @@ audit_azure_waf () {
     command="az network application-gateway list --resource-group \"${res_group}\" --query '[].name' --output tsv 2> /dev/null"
     command_message  "${command}"
     waf_list=$( eval "${command}" )
-    for waf_name in $waf_list; do
+    for waf_name in ${waf_list}; do
       check_azure_waf_value "" "${waf_name}" "${res_group}" "firewallPolicy.id" "ne" ""     ""        ""
       check_azure_waf_value "" "${waf_name}" "${res_group}" "enableHttp2"       "eq" "true" "--http2" "Enabled"
     done

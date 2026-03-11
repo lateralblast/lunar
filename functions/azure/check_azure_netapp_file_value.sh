@@ -35,13 +35,13 @@ check_azure_netapp_file_value () {
         case "${set_name}" in
           "--"*)
             if [ "${retention_days}" = "" ]; then
-              fix_message  "az netappfiles account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}"
+              fix_message "az netappfiles account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value}"
             else
-              fix_message  "az netappfiles account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value} --retention-days ${retention_days}"
+              fix_message "az netappfiles account update --name ${storage_account} --resource-group ${resource_group} ${set_name} ${correct_value} --retention-days ${retention_days}"
             fi
             ;;
           *)
-            fix_message    "az netappfiles account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}"
+            fix_message   "az netappfiles account update --name ${storage_account} --resource-group ${resource_group} --set ${set_name}=${correct_value}"
             ;;
         esac
       fi

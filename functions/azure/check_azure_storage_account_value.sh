@@ -23,7 +23,7 @@ check_azure_storage_account_value () {
   if [ "${resource_group}" = "" ]; then
     check_message "${description} for Storage Account \"${storage_account}\" is \"${correct_value}\""
     command="az storage account show --name \"${storage_account}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-    command_message "${command}"
+    command_message      "${command}"
     actual_value=$( eval "${command}" )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then
@@ -62,11 +62,11 @@ check_azure_storage_account_value () {
     fi
   else
     command="az storage account show --name \"${storage_account}\" --query \"resourceGroup\" --output tsv 2> /dev/null"
-    command_message "${command}"
+    command_message      "${command}"
     resource_group=$( eval "${command}" )
     check_message "${description} for Storage Account \"${storage_account}\" Resource Group \"${resource_group}\" is \"${correct_value}\""
     command="az storage account show --name \"${storage_account}\" --resource-group \"${resource_group}\" --query \"${parameter_name}\" --output tsv 2> /dev/null"
-    command_message "${command}"
+    command_message      "${command}"
     actual_value=$( eval "${command}" )
     if [ "${function}" = "eq" ]; then
       if [ "${actual_value}" = "${correct_value}" ]; then

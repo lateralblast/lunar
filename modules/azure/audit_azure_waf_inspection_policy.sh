@@ -20,21 +20,21 @@ audit_azure_waf_inspection_policy () {
   print_function "audit_azure_waf_inspection_policy"
   check_message  "Azure WAF Inspection Policy"
   command="az network application-gateway list --query '[].resourceGroup' --output tsv 2> /dev/null"
-  command_message "${command}"
-  res_groups=$(eval "${command}")
+  command_message    "${command}"
+  res_groups=$( eval "${command}" )
   if [ -z "${res_groups}" ]; then
     verbose_message "No WAF instances found" "info"
     return
   fi
-  for res_group in $res_groups; do
+  for res_group in ${res_groups}; do
     command="az network application-gateway list --resource-group \"${res_group}\" --query '[].name' --output tsv 2> /dev/null"
     command_message  "${command}"
     waf_list=$( eval "{$command}" )
-    for waf_name in $waf_list; do
+    for waf_name in ${waf_list}; do
       command="az network application-gateway show --resource-group \"${res_group}\" --name \"${waf_name}\" --query 'firewallPolicy.id' --output tsv 2> /dev/null"
-      command_message "${command}"
-      waf_ids=$(eval  "${command}")
-      for waf_id in $waf_ids; do
+      command_message  "${command}"
+      waf_ids=$( eval  "${command}" )
+      for waf_id in ${waf_ids}; do
         check_azure_waf_value "waf-policy" "${waf_id}" "" "policySettings.requestBodyCheck" "eq" "true"                        "request-body-check" "true"
         check_azure_waf_value "waf-policy" "${waf_id}" "" "managedRules.managedRuleSets"    "eq" "Microsoft_BotManagerRuleSet" ""                   ""
         check_azure_waf_value "waf-policy" "${waf_id}" "" "managedRules.managedRuleSets"    "ne" "Disabled"                    ""                   ""

@@ -102,12 +102,12 @@ check_file_perms () {
       update_log_file "${log_file}" "${check_file},${file_perms},${file_owner}"
       lockdown_message="File \"${check_file}\" to have correct permissions"
       lockdown_command="chmod ${check_perms} ${check_file}"
-      exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       if [ "${check_owner}" != "" ]; then
         if [ "${check_result}" != "${check_file}" ]; then
           lockdown_message="File \"${check_file}\" to have correct owner"
           lockdown_command="chown ${check_owner}:${check_group} ${check_file}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
         fi
       fi
     fi
@@ -120,7 +120,7 @@ check_file_perms () {
     restore_file="${restore_dir}/${log_file}"
     if [ -f "${restore_file}" ]; then
       command="grep \"${check_file}\" \"${restore_file}\" | cut -f1 -d,"
-      command_message "${command}"
+      command_message       "${command}"
       restore_check=$( eval "${command}" )
       if [ "${restore_check}" = "${check_file}" ]; then
         restore_info=$(  grep "${check_file}" "${restore_file}" )

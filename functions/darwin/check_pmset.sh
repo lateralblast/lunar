@@ -59,12 +59,12 @@ check_pmset() {
         echo ""
       fi
       if [ ! "${actual_value}" = "${value}" ]; then
-        inc_insecure "Service \"${service}\" is not \"${state}\""
+        inc_insecure     "Service \"${service}\" is not \"${state}\""
         lockdown_command="echo \"${state}\" > ${work_dir}/${log_file} ; pmset -c ${service} ${value}"
         lockdown_message="Service \"${service}\" to \"${state}\""
-        exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
       else
-        inc_secure "Service \"${service}\" is \"${state}\""
+        inc_secure       "Service \"${service}\" is \"${state}\""
       fi
     else
       restore_file=$retore_dir/${log_file}

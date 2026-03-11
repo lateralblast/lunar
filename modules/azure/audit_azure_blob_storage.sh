@@ -35,18 +35,18 @@ audit_azure_blob_storage () {
   command="az storage account list --query \"[].name\" --output tsv"
   command_message    "${command}"
   s_accounts=$( eval "${command}" 2> /dev/null )
-  if [ -z "${storage_accounts}" ]; then
+  if [ -z "${s_accounts}" ]; then
     info_message "No Storage Accounts found"
     return
   fi
   for s_account in ${s_accounts}; do
     # 9.2.1 Ensure that soft delete for blobs on Azure Blob Storage storage accounts is Enabled
     # 17.7  Ensure Soft Delete is Enabled for Azure Containers and Blob Storage
-    check_azure_storage_blob_policy_value       "Soft delete"   "${s_account}"    "service-properties" "delete-policy"       "enabled" "eq"      "true"                 "--enable"
-    check_azure_storage_blob_policy_value       "Days retained" "${s_account}"    "service-properties" "delete-policy"       "days"    "eq"      "${retention_days}"    "--days-retained"
+    check_azure_storage_blob_policy_value       "Soft delete"   "${s_account}"    "service-properties" "delete-policy"       "enabled" "eq"   "true"                 "--enable"
+    check_azure_storage_blob_policy_value       "Days retained" "${s_account}"    "service-properties" "delete-policy"       "days"    "eq"   "${retention_days}"    "--days-retained"
     # 9.2.3 Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
     # 11.5  Ensure 'Versioning' is set to 'Enabled' on Azure Blob Storage storage accounts
-    check_azure_storage_account_container_value "Versioning"    "${s_account}" "" "service-properties" "isVersioningEnabled" "eq"      "true"    "--enable-versioning"
+    check_azure_storage_account_container_value "Versioning"    "${s_account}" "" "service-properties" "isVersioningEnabled" "eq"      "true" "--enable-versioning"
     # 9.2.2 Ensure that soft delete for containers on Azure Blob Storage storage accounts is Enabled
     command="az storage account show --name \"${s_account}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"

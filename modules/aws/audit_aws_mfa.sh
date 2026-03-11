@@ -41,7 +41,7 @@ audit_aws_mfa () {
           inc_secure   "Account \"${user}\" has MFA enabled"
         fi
       else
-        inc_secure  "Account \"${user}\" does not log into console"
+        inc_secure   "Account \"${user}\" does not log into console"
       fi
     fi
   done

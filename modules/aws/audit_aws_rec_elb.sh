@@ -34,9 +34,9 @@ audit_aws_rec_elb () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ ! "${check}" ]; then
-      inc_insecure "ELB \"${elb}\" does not have cross zone balancing enabled"
+      inc_insecure  "ELB \"${elb}\" does not have cross zone balancing enabled"
     else
-      inc_secure   "ELB \"${elb}\" has cross zone balancing enabled"
+      inc_secure    "ELB \"${elb}\" has cross zone balancing enabled"
     fi
     command="aws elb describe-instance-health --region \"${aws_region}\" --load-balancer-name \"${elb}\"  --query \"InstanceStates[].State\" | grep -c InService"
     command_message "${command}"
@@ -50,7 +50,7 @@ audit_aws_rec_elb () {
     command_message   "${command}"
     instances=$( eval "${command}" )
     for instance in ${instances}; do
-      inc_insecure "ELB \"${elb}\" instance \"${instance}\" is out of service "
+      inc_insecure  "ELB \"${elb}\" instance \"${instance}\" is out of service "
     done
   done
 }

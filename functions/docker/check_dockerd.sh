@@ -12,12 +12,12 @@
 #.
 
 check_dockerd () {
+  used="${1}"
+  type="${2}"
+  param="${3}"
+  value="${4}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
-      used="${1}"
-      type="${2}"
-      param="${3}"
-      value="${4}"
       print_function "check_dockerd"
       if [ "${type}" = "config" ]; then
         if [ "${value}" ]; then
@@ -40,19 +40,19 @@ check_dockerd () {
           if [ "${check}" ] && [ "${value}" ] && [ "${used}" = "unused" ]; then
             command="ps -ef | grep dockerd | grep \"${param}\" | grep \"${value}\""
             command_message "${command}"
-            check=$( eval "${command}" )
+            check=$( eval   "${command}" )
             if [ ! "${check}" ]; then
-              inc_insecure "Docker parameter \"${param}\" is not set to \"${value}\""
+              inc_insecure  "Docker parameter \"${param}\" is not set to \"${value}\""
             else
-              inc_secure   "Docker parameter \"${param}\" is set to \"${value}\""
+              inc_secure    "Docker parameter \"${param}\" is set to \"${value}\""
             fi
           else
             if [ "${used}" = "used" ] && [ ! "${check}" ]; then
               
-              inc_insecure "Docker parameter \"${param}\" is not used"
+              inc_insecure  "Docker parameter \"${param}\" is not used"
             else
               
-              inc_secure   "Docker parameter \"${param}\" is \"${used}\""
+              inc_secure    "Docker parameter \"${param}\" is \"${used}\""
             fi
           fi
           ;;
@@ -80,34 +80,34 @@ check_dockerd () {
           command_message     "${command}"
           docker_info=$( eval "${command}" )
           if [ ! "${docker_info}" ]; then
-            verbose_message "No Docker instances" notice
+            verbose_message   "No Docker instances" notice
           fi
           for info in ${docker_info}; do
             command="echo \"${info}\" | cut -f1 -d:"
             command_message   "${command}"
             docker_id=$( eval "${command}" )
             command="echo \"${info}\" | cut -f2 -d: | cut -f2 -d= | grep \"${param}\""
-            command_message "${command}"
-            check=$( eval   "${command}" )
+            command_message   "${command}"
+            check=$( eval     "${command}" )
             if [ "${used}" = "used" ]; then
               if [ "${profile}" ]; then
-                inc_secure   "Docker instance \"${docker_id}\" has capability \"${param}\""
+                inc_secure    "Docker instance \"${docker_id}\" has capability \"${param}\""
               else
-                inc_insecure "Docker instance \"${docker_id}\" does not have capability \"${param}\""
+                inc_insecure  "Docker instance \"${docker_id}\" does not have capability \"${param}\""
               fi
             else
               if [ "${profile}" ]; then
-                inc_secure   "Docker instance \"${docker_id}\" does not have capability \"${param}\""
+                inc_secure    "Docker instance \"${docker_id}\" does not have capability \"${param}\""
               else
-                inc_insecure "Docker instance \"${docker_id}\" has capability \"${param}\""
+                inc_insecure  "Docker instance \"${docker_id}\" has capability \"${param}\""
               fi
               command="docker inspect --format '{{ .Id }}: CapAdd={{ .HostConfig.CapDrop }}' \"${docker_id}\" | cut -f2 -d= | grep \"${param}\""
               command_message "${command}"
               check=$( eval   "${command}" )
               if [ "${check}" ]; then
-                inc_secure   "Docker instance \"${docker_id}\" forcibly drops capability \"${param}\""
+                inc_secure    "Docker instance \"${docker_id}\" forcibly drops capability \"${param}\""
               else
-                inc_insecure "Docker instance \"${docker_id}\" does not forcibly capability \"${param}\""
+                inc_insecure  "Docker instance \"${docker_id}\" does not forcibly capability \"${param}\""
               fi
             fi
           done
@@ -158,8 +158,8 @@ check_dockerd () {
             case ${used} in
               "notequal")
                 command="echo \"${info}\" | cut -f2 -d: | cut -f2 -d= | grep -v \"\\[\\]\""
-                command_message "${command}"
-                profile=$( eval "${command}" )
+                command_message  "${command}"
+                profile=$( eval  "${command}" )
                 if [ ! "${value}" ]; then
                   if [ "${profile}" ]; then
                     inc_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\"
@@ -176,8 +176,8 @@ check_dockerd () {
                 ;;
               "equal")
                 command="echo \"${info}\" | cut -f2 -d: | cut -f2 -d= | grep -v \"\[\]\""
-                command_message "${command}"
-                profile=$( eval "${command}" )
+                command_message  "${command}"
+                profile=$( eval  "${command}" )
                 if [ ! "${value}" ]; then
                   if [ ! "${profile}" ]; then
                     inc_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\""
@@ -197,9 +197,9 @@ check_dockerd () {
                 command_message "${command}"
                 profile=$( eval "${command}" )
                 if [ ! "${profile}" ]; then
-                  inc_secure   "Docker instance \"${docker_id}\" parameter \"${param}\" does not include \"${value}\""
+                  inc_secure    "Docker instance \"${docker_id}\" parameter \"${param}\" does not include \"${value}\""
                 else
-                  inc_insecure "Docker instance \"${docker_id}\" parameter \"${param}\" includes \"${value}\""
+                  inc_insecure  "Docker instance \"${docker_id}\" parameter \"${param}\" includes \"${value}\""
                 fi
                 ;; 
               "include")
@@ -207,9 +207,9 @@ check_dockerd () {
                 command_message "${command}"
                 profile=$( eval "${command}" )
                 if [ "${profile}" ]; then
-                  inc_secure   "Docker instance \"${docker_id}\" parameter \"${param}\" includes \"${value}\""
+                  inc_secure    "Docker instance \"${docker_id}\" parameter \"${param}\" includes \"${value}\""
                 else
-                  inc_insecure "Docker instance \"${docker_id}\" parameter \"${param}\" does not include \"${value}\""
+                  inc_insecure  "Docker instance \"${docker_id}\" parameter \"${param}\" does not include \"${value}\""
                 fi
                 ;; 
             esac 

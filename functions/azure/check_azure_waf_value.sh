@@ -21,7 +21,7 @@ check_azure_waf_value () {
   parameter_name="${7}"
   parameter_value="${8}"
   waf_id="${waf_name}"
-  print_function "check_azure_waf_value"
+  print_function  "check_azure_waf_value"
   if [ "${policy_name}" = "waf-policy" ]; then
     check_message "Azure WAF \"${waf_id}\" has \"${query_string}\" ${function} to \"${correct_value}\""
     if [ "${query_string}" = "managedRules.managedRuleSets" ]; then
