@@ -15,7 +15,7 @@
 audit_sar_accounting () {
   print_function "audit_sar_accounting"
   string="SAR Accounting"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       notice_message      "Requires sudo to check"

@@ -12,7 +12,7 @@
 audit_ipsec () {
   print_function "audit_ipsec"
   string="IPSEC Services"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       check_sunos_service "svc:/network/ipsec/manual-key:default" "disabled"

@@ -17,7 +17,7 @@
 audit_password_strength () {
   print_function "audit_password_strength"
   string="Strong Password Creation Policies"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ]; then
     if  [ "${os_name}" = "SunOS" ]; then
       check_file_value "is" "/etc/default/passwd" "PASSLENGTH"    "eq"    "8"                         "hash"

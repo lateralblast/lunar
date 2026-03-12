@@ -15,7 +15,7 @@
 audit_mount_fdi () {
   print_function "audit_mount_fdi"
   string="User Mountable Filesystems"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_dir="/usr/share/hal/fdi/95userpolicy"
     if [ -e "${check_dir}" ]; then

@@ -12,7 +12,7 @@
 audit_ssh_perms () {
   print_function "audit_ssh_perms"
   string="SSH Permissions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     for check_dir in /etc/ssh /usr/local/etc/ssh; do
       if [ -d "${check_dir}" ]; then

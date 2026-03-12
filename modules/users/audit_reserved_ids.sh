@@ -18,7 +18,7 @@
 audit_reserved_ids () {
   print_function "audit_reserved_ids"
   string="Reserved IDs"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${audit_mode}" != 2 ]; then
       command="getent passwd | awk -F: '(\$3 < 500) { print \"\$1\" \"\$3\" }'"

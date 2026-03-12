@@ -18,7 +18,7 @@
 audit_unconfined_daemons () {
   print_function "audit_unconfined_daemons"
   string="Unconfined Daemons"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     command="ps -eZ 2> /dev/null | grep \"initrc\" | grep -Evw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print \$NF }'"
     command_message "${command}"

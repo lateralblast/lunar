@@ -14,7 +14,7 @@
 audit_account_lockout () {
   print_function "audit_account_lockout"
   string="Account Lockout"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_pwpolicy "maxFailedLoginAttempts" "3"
   else

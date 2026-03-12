@@ -16,7 +16,7 @@
 audit_safari_auto_run () {
   print_function "audit_safari_auto_run"
   string="Safari Auto-run"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       check_osx_defaults_int    "com.apple.Safari AutoOpenSafeDownloads" "0" "int"

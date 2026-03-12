@@ -14,7 +14,7 @@
 audit_rhosts_files () {
   print_function "audit_rhosts_files"
   string="Rhosts Files"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       notice_message "Requires sudo to check"

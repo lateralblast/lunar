@@ -16,7 +16,7 @@ audit_pam_deny () {
   print_function "audit_pam_deny"
   string="PAM Deny Weak Authentication Services"
   tab=$( printf "\t" )
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     pam_module="pam_deny"
     if [ "${os_name}" = "FreeBSD" ]; then

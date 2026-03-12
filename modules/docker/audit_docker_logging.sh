@@ -18,7 +18,7 @@
 audit_docker_logging () {
   print_function "audit_docker_logging"
   string="Docker Logging"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

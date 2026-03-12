@@ -16,7 +16,7 @@
 audit_remote_management () {
   print_function "audit_remote_management"
   string="Remote Management"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       command="launchctl list |awk '{print \$3}' |grep -c ARDAgent |sed \"s/ //g\""

@@ -14,7 +14,7 @@
 audit_remote_shell () {
   print_function "audit_remote_shell"
   string="Remote Shell"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_chsec "/etc/security/user" "root" "rlogin" "false"

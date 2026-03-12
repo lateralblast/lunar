@@ -25,7 +25,7 @@
 audit_tcp_wrappers () {
   print_function "audit_tcp_wrappers"
   string="TCP Wrappers"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       package_name="netsec.options.tcpwrapper.base"

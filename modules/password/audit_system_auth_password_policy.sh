@@ -20,7 +20,7 @@ audit_system_auth_password_policy () {
   search_value="${3}"
   temp_file="${temp_dir}/audit_system_auth_password_policy"
   string="Password policy"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       for check_file in /etc/pam.d/common-auth /etc/pam.d/system-auth; do

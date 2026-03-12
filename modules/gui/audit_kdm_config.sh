@@ -12,7 +12,7 @@
 audit_kdm_config () {
   print_function "audit_kdm_config"
   string="Graphics Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       check_sunos_service "svc:/platform/i86pc/kdmconfig:default" "disabled"

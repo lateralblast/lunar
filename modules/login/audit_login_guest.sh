@@ -14,7 +14,7 @@
 audit_login_guest () {
   print_function "audit_login_guest"
   string="Guest login"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_defaults_bool   "/Library/Preferences/com.apple.loginwindow.plist" "GuestEnabled" "no"
     check_dscl "/Users/Guest" "AuthenticationAuthority" ";basic;"

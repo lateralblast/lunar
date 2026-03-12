@@ -15,7 +15,7 @@
 audit_root_access () {
   print_function "audit_root_access"
   string="Root Access"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"

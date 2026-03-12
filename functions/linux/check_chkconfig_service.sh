@@ -37,7 +37,7 @@ check_chkconfig_service () {
     else
       if [ "${actual_status}" = "on" ] || [ "${actual_status}" = "off" ]; then
        string="Service \"${service_name}\" is \"${correct_status}\""
-       check_message "${string}"
+       check_message  "${string}"
         if [ "${actual_status}" != "${correct_status}" ]; then
           inc_insecure "Service \"${service_name}\" is not \"${correct_status}\""
           update_log_file  "${log_file}" "${service_name},${actual_status}"

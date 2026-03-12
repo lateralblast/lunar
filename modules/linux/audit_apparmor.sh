@@ -16,7 +16,7 @@
 audit_apparmor () {
   print_function "audit_apparmor"
   string="AppArmor Unconfined Applications"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     do_grub_test=0
     do_app_test=1

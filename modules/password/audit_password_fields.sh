@@ -28,7 +28,7 @@
 audit_password_fields () {
   print_function "audit_password_fields"
   string="Password Fields"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${audit_mode}" != 2 ]; then
       check_file="/etc/passwd"

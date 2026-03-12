@@ -72,7 +72,7 @@
 audit_docker_security () {
   print_function "audit_docker_security"
   string="Docker Security"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

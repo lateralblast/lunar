@@ -14,7 +14,7 @@
 audit_wake_on_lan() {
   print_function "audit_wake_on_lan"
   string="Wake on Lan"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_pmset "womp" "off"
   else

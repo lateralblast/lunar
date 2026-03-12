@@ -16,7 +16,7 @@
 audit_web_sharing () {
   print_function "audit_web_sharing"
   string="Web sharing"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_file_value "is"   "/etc/apache2/httpd.conf" "ServerTokens"    "space" "Prod"     "hash"
     check_file_value "is"   "/etc/apache2/httpd.conf" "ServerSignature" "space" "Off"      "hash"

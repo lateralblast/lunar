@@ -15,7 +15,7 @@
 audit_xlogin () {
   print_function "audit_xlogin"
   string="X Windows"
-  check_message "${string}"
+  check_message  "${string}"
   temp_file="${temp_dir}/audit_xlogin"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "AIX" ]; then

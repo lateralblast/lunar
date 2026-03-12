@@ -17,7 +17,7 @@
 audit_kernel_accounting () {
   print_function "audit_kernel_accounting"
   string="Kernel and Process Accounting"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Darwin" ]; then
     check_file="/etc/system"
     if [ "${os_name}" = "SunOS" ]; then

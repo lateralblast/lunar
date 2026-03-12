@@ -14,7 +14,7 @@
 audit_ftp_banner () {
   print_function "audit_ftp_banner"
   string="FTP Warning Banner"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       package_name="bos.msg.${language_suffix}.net.tcp.client"

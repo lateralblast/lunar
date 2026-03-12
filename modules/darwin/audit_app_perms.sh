@@ -15,7 +15,7 @@
 audit_app_perms () {
   print_function "audit_app_perms"
   string="Application Permissions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       OFS=$IFS

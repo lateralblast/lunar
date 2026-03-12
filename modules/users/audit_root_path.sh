@@ -24,7 +24,7 @@
 audit_root_path () {
   print_function "audit_root_path"
   string="Root PATH Environment Integrity"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${audit_mode}" != 2 ]; then
       if [ "${audit_mode}" = 1 ]; then

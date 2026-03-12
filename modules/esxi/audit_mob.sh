@@ -14,7 +14,7 @@
 audit_mob () {
   print_function "audit_mob"
   string="Managed Object Browser"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
     log_file="mob_status"
     backup_file="${work_dir}/${log_file}"

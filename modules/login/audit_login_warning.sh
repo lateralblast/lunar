@@ -19,7 +19,7 @@
 audit_login_warning () {
   print_function "audit_login_warning"
   string="Login message warning"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_defaults_value "com.apple.loginwindow" "LoginwindowText" "Authorised users only"
   else

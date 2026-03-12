@@ -21,7 +21,7 @@
 audit_passwd_perms () {
   print_function "audit_passwd_perms"
   string="Group and Password File Permissions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       for check_file in /etc/passwd /etc/group; do

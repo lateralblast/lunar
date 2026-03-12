@@ -14,7 +14,7 @@
 audit_ftp_logging () {
   print_function "audit_ftp_logging"
   string="FTPD Daemon Logging"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then

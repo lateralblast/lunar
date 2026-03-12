@@ -15,7 +15,7 @@
 audit_ad_tracking () {
   print_function "audit_ad_tracking"
   string="Ad Tracking"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${audit_mode}" != 2 ]; then

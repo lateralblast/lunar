@@ -14,7 +14,7 @@
 audit_remote_info () {
   print_function "audit_remote_info"
   string="Remote Information Services"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_rctcp "rwhod" "off"

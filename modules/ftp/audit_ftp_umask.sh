@@ -16,7 +16,7 @@
 audit_ftp_umask () {
   print_function "audit_ftp_umask"
   string="Default umask for FTP Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_file_value    "is" "/etc/inetd.conf"     "/usr/sbin/ftpd" "space" "ftpd -l -u077" "hash"

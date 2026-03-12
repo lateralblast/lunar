@@ -13,7 +13,7 @@
 audit_debug_logging () {
   print_function "audit_debug_logging"
   string="Connection Logging"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       audit_logadm_value "connlog" "daemon.debug"

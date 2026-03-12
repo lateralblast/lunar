@@ -12,7 +12,7 @@
 audit_wheel_su () {
   print_function "audit_wheel_su"
   string="Wheel group ownership"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     command="command -v su 2> /dev/null"
     command_message    "${command}"

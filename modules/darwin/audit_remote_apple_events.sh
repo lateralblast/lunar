@@ -16,7 +16,7 @@
 audit_remote_apple_events () {
   print_function "audit_remote_apple_events"
   string="Remote Apple Events"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1008 ]; then
       check_osx_systemsetup   "getremoteappleevents" "off"

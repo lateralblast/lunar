@@ -15,7 +15,7 @@
 audit_ufw () {
   print_function "audit_ufw"
   string="UFW"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] && [ "${os_vendor}" = "Ubuntu" ]; then
     check_linux_package "install"   "ufw"
     check_linux_service "ufw"       "on"

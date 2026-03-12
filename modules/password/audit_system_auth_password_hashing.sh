@@ -19,7 +19,7 @@ audit_system_auth_password_hashing () {
   temp_file="${temp_dir}/audit_system_auth_password_hashing"
   check_file="/etc/pam.d/common-password"
   string="Password minimum strength enabled in \"${check_file}\""
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then
       if [ -f "${check_file}" ]; then

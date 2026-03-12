@@ -14,7 +14,7 @@
 audit_shells () {
   print_function "audit_shells"
   string="Shells"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/shells"
     if [ -f "${check_file}" ]; then

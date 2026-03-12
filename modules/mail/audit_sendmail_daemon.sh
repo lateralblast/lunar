@@ -20,7 +20,7 @@
 audit_sendmail_daemon() {
   print_function "audit_sendmail_daemon"
   string="Sendmail Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "$sendmail_disable" = "yes" ]; then
       if [ "${os_name}" = "AIX" ]; then

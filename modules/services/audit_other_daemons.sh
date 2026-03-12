@@ -19,7 +19,7 @@
 audit_other_daemons () {
   print_function "audit_other_daemons"
   string="Miscellaneous Services"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for service_name in wu-ftpd ftp vsftpd aaeventd tftp acpid \
       amd arptables_jg arpwatch atd netfs irda isdn bluetooth \

@@ -16,7 +16,7 @@
 audit_gdm_conf () {
   print_function "audit_gdm_conf"
   string="GDM Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/X11/gdm/gdm.conf"
     if [ -e "${check_file}" ]; then

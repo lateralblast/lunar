@@ -26,7 +26,7 @@
 audit_docker_network () {
   print_function "audit_docker_network"
   string="Docker Network"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

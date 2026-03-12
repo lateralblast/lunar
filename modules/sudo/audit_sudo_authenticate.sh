@@ -14,7 +14,7 @@
 audit_sudo_authenticate () {
   print_function "audit_sudo_authenticate"
   string="Sudo authenticate"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"

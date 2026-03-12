@@ -25,7 +25,7 @@
 audit_docker_users () {
   print_function "audit_docker_users"
   string="Docker Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

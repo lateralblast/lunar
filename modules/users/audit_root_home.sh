@@ -14,7 +14,7 @@
 audit_root_home () {
   print_function "audit_root_home"
   string="Root Home"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then

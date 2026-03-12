@@ -18,7 +18,7 @@
 audit_telnet_server () {
   print_function "audit_telnet_server"
   string="Telnet Server"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_name}" = "Amazon" ]; then
       check_linux_service "telnet.socket" "off"

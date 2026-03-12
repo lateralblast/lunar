@@ -14,7 +14,7 @@
 audit_create_class () {
   print_function "audit_create_class"
   string="Audit Classes"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/security/audit_class"
     if [ -f "${check_file}" ]; then

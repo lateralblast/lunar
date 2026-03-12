@@ -14,7 +14,7 @@
 audit_system_preferences () {
   print_function "audit_system_preferences"
   string="System Preferences"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ ! "${audit_mode}" != 2 ]; then
       check=$( security authorizationdb read system.preferences 2> /dev/null | grep -A1 shared | grep true )

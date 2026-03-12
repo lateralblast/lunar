@@ -22,7 +22,7 @@
 audit_execshield () {
   print_function "audit_execshield"
   string="XD/NS Support"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       if [ "${os_version}" -gt 4 ]; then

@@ -15,7 +15,7 @@
 audit_touch_id () {
   print_function "audit_touch_id"
   string="Touch ID"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
@@ -54,7 +54,7 @@ audit_touch_id () {
         fi
         for item in unlock ApplePay ; do
           string="Touch ID ${item}"
-          check_message "${string}"
+          check_message  "${string}"
           command="find /Users -maxdepth 1 | grep -vE \"localized|Shared\" | cut -f3 -d/"
           command_message   "${command}"
           user_list=$( eval "${command}" )

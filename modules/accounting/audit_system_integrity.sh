@@ -15,7 +15,7 @@
 audit_system_integrity () {
   print_function "audit_system_integrity"
   string="Check System Integrity Protection is enabled"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       command="/usr/bin/csrutil status | grep enabled"

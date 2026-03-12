@@ -16,7 +16,7 @@
 audit_account_switching () {
   print_function "audit_account_switching"
   string="Administrator Account Login to Another User Session"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       ansible_counter=$((ansible_counter+1))

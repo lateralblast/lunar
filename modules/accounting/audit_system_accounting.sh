@@ -29,7 +29,7 @@
 audit_system_accounting () {
   print_function "audit_system_accounting"
   string="System Accounting"
-  check_message "${string}"
+  check_message  "${string}"
   max_log_file="8"
   max_log_file_action="keep_logs"
   disk_full_action="single"

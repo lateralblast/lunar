@@ -16,7 +16,7 @@
 audit_xinetd_server () {
   print_function "audit_xinetd_server"
   string="Xinetd Server Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     service_name="xinetd"
     check_linux_service "${service_name}" "off"

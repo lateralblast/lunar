@@ -24,7 +24,7 @@
 audit_duplicate_users () {
   print_function "audit_duplicate_users"
   string="Duplicate Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     audit_duplicate_ids "1" "users" "name" "/etc/passwd"
     audit_duplicate_ids "3" "users" "id"   "/etc/passwd"

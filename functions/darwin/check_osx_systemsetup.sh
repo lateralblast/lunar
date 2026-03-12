@@ -18,7 +18,7 @@ check_osx_systemsetup () {
       log_file="systemsetup_${param}.log"
       if [ "${audit_mode}" != 2 ]; then
         string="Parameter \"${param}\" is set to \"${value}\""
-        check_message "${string}"
+        check_message  "${string}"
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))
           ansible_value="check_osx_systemsetup_${ansible_counter}"

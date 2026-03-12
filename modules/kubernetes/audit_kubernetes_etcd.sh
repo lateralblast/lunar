@@ -23,7 +23,7 @@
 audit_kubernetes_etcd () {
   print_function "audit_kubernetes_etcd"
   string="Kubernetes etcd"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "etcd" |grep -v grep )
     if [ "${daemon_check}" ]; then

@@ -17,7 +17,7 @@
 audit_ldap () {
   print_function "audit_ldap"
   string="LDAP Client"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then

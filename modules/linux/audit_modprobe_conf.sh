@@ -21,7 +21,7 @@
 audit_modprobe_conf () {
   print_function "audit_modprobe_conf"
   string="Modprobe Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for module in cramfs freevxfs hfs hfsplus jffs2 overlayfs squashfs udf usb-storage afs ceph \
       cifs ext fat fscache fuse gfs2 nfs_common nfsd smbfs_common tipc rds sctp dccp vfat; do

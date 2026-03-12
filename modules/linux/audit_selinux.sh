@@ -19,7 +19,7 @@
 audit_selinux () {
   print_function "audit_selinux"
   string="SELinux"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file_value     "is" "/etc/selinux/config" "SELINUX"     "eq"   "enforcing" "hash"
     check_file_value     "is" "/etc/selinux/config" "SELINUXTYPE" "eq"   "targeted"  "hash"

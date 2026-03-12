@@ -12,7 +12,7 @@
 audit_wheel_users () {
   print_function "audit_wheel_users"
   string="Wheel Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     check_file="/etc/group"
     if [ "${audit_mode}" != 2 ]; then

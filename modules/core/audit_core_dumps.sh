@@ -25,7 +25,7 @@
 audit_core_dumps () {
   print_function "audit_core_dumps"
   string="Core Dumps"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" != "6" ]; then

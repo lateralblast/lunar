@@ -15,7 +15,7 @@
 audit_core_storage () {
   print_function "audit_core_storage"
   string="Core Storage Volumes"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${audit_mode}" != 2 ]; then

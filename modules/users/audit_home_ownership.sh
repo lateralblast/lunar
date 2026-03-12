@@ -29,7 +29,7 @@
 audit_home_ownership () {
   print_function "audit_home_ownership"
   string="Ownership of Home Directories"
-  check_message "${string}"
+  check_message  "${string}"
   found=0
   if [ "${os_name}" = "SunOS" ] || [  "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
@@ -131,7 +131,7 @@ audit_home_ownership () {
               else
                 if [ -d "${home_dir}" ]; then
                   command="ls -ld \"${home_dir}/.\" | awk '{ print \$3 }'"
-                  command_message "${command}"
+                  command_message   "${command}"
                   dir_owner=$( eval "${command}" )
                   if [ "${dir_owner}" != "${check_user}" ]; then
                     if [ "${audit_mode}" = 1 ];then

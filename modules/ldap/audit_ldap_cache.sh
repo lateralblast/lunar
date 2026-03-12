@@ -14,7 +14,7 @@
 audit_ldap_cache () {
   print_function "audit_ldap_cache"
   string="LDAP Cache"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then

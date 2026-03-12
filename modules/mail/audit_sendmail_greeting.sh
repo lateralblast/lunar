@@ -12,7 +12,7 @@
 audit_sendmail_greeting () {
   print_function "audit_sendmail_greeting"
   string="Sendmail Greeting"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="/etc/mail/sendmail.cf"
     if [ -f "${check_file}" ]; then

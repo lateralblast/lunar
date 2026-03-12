@@ -18,7 +18,7 @@
 audit_daemon_umask () {
   print_function "audit_daemon_umask"
   string="Daemon Umask"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
@@ -27,18 +27,18 @@ audit_daemon_umask () {
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "11" ]; then
         command="svcprop -p umask/umask svc:/system/environment:init"
-        command_message     "${command}"
-        umask_check=$( eval "${command}" )
+        command_message      "${command}"
+        umask_check=$( eval  "${command}" )
         umask_value="022"
         log_file="umask.log"
         if [ "${umask_check}" != "${umask_value}" ]; then
           log_file="${work_dir}/${log_file}"
           if [ "${audit_mode}" = 1 ]; then
-            inc_insecure  "Default service file creation mask not set to ${umask_value}"
-            verbose_message     "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"${umask_value}\"" "fix"
+            inc_insecure     "Default service file creation mask not set to ${umask_value}"
+            verbose_message  "svccfg -s svc:/system/environment:init setprop umask/umask = astring:  \"${umask_value}\"" "fix"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            verbose_message     "Setting:   Default service file creation mask to ${umask_value}"
+            verbose_message  "Setting:   Default service file creation mask to ${umask_value}"
             if [ ! -f "${log_file}" ]; then
               echo "${umask_check}" >> "${log_file}"
             fi
@@ -65,7 +65,7 @@ audit_daemon_umask () {
           check_file_value "is" "${check_file}" "umask" "space" "022" "hash"
           if [ "${audit_mode}" = "0" ]; then
             if [ -f "${check_file}" ]; then
-              check_file_perms "${check_file}" "0744" "root" "sys"
+              check_file_perms  "${check_file}" "0744"  "root"  "sys"
               for dir_name in /etc/rc?.d; do
                 link_file="${dir_name}/S00umask"
                 if [ ! -f "$link_file" ]; then
@@ -85,7 +85,7 @@ audit_daemon_umask () {
       check_file_value "is" "${check_file}" "umask" "space" "027" "hash"
       if [ "${audit_mode}" = "0" ]; then
         if [ -f "${check_file}" ]; then
-          check_file_perms "${check_file}" "0755" "root" "root"
+          check_file_perms  "${check_file}" "0755"  "root"  "root"
         fi
       fi
     fi

@@ -15,7 +15,7 @@
 audit_extended_attributes () {
   print_function "audit_extended_attributes"
   string="Extended Attributes"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${audit_mode}" = 1 ]; then
       file_list=$( find / \( -fstype nfs -o -fstype cachefs \

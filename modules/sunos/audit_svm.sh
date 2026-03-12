@@ -14,7 +14,7 @@
 audit_svm () {
   print_function "audit_svm"
   string="Solaris Volume Manager Daemons"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       check_sunos_service   "svc:/system/metainit"              "disabled"

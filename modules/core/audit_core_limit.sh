@@ -14,7 +14,7 @@
 audit_core_limit () {
   print_function "audit_core_limit"
   string="Core dump limits"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     log_file="corelimit"
     backup_file="${work_dir}/${log_file}"

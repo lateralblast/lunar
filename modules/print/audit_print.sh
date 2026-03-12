@@ -14,7 +14,7 @@
 audit_print () {
   print_function "audit_print"
   string="Printing Daemons"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_itab "qdaemon" "off"

@@ -18,13 +18,13 @@
 audit_docker_monitoring () {
   print_function "audit_docker_monitoring"
   string="Docker Healthcheck"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       docker_bin=$( command -v docker )
       if [ "${docker_bin}" ]; then
         string="Docker Healthcheck"
-        check_message "${string}"
+        check_message  "${string}"
         check_dockerd "equal" "config" "Health" ""
         docker_ids=$( docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}' 2> /dev/null )
         for docker_id in ${docker_ids}; do

@@ -18,7 +18,7 @@
 audit_aide () {
   print_function "audit_aide"
   string="AIDE"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_linux_package "install" "aide"
     check_linux_package "install" "aide-common"
@@ -31,7 +31,7 @@ audit_aide () {
       check_file_value    "is" "/etc/aide/aide.conf"  "/sbin/augenrules" "space" "p+i+n+u+g+s+b+acl+xattrs+sha512"    "hash"
     fi
     if [ "${os_vendor}" = "Ubuntu" ]; then
-      if [ ${os_version} -lt 24 ]; then
+      if [ "${os_version}" -lt 24 ]; then
         check_append_file   "/etc/cron.d/aide" "0 5 * * * /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check" "hash"
       else
         check_linux_service "dailyaidecheck.timer" "on"

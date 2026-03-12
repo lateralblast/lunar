@@ -15,7 +15,7 @@
 audit_keychain_lock () {
   print_function "audit_keychain_lock"
   string="Keychain Lock"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     timeout="21600"
     if [ "${audit_mode}" != 2 ]; then

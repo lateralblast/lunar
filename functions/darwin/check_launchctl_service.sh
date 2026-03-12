@@ -32,7 +32,7 @@ check_launchctl_service () {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Service \"${launchctl_service}\" is \"${required_status}\""
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_launchctl_service_${ansible_counter}"

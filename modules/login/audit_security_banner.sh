@@ -22,7 +22,7 @@
 audit_security_banner () {
   print_function "audit_security_banner"
   string="Warnings for Standard Login Services"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       user_name="bin"

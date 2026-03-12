@@ -16,7 +16,7 @@
 audit_shell_timeout () {
   print_function "audit_shell_timeout"
   string="Shell Timeout"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
     for test in ESXiShellInteractiveTimeOut ESXiShellTimeOut; do
       timeout="3600"

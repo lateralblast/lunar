@@ -25,7 +25,7 @@ check_sysadminctl () {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Parameter \"${param}\" is set to \"${value}\""
-      check_message "${string}"
+      check_message  "${string}"
       get_command="sudo sysadminctl -${param} status > /dev/null 2>&1 |grep ${search_value}"
       set_command="sudo sysadminctl -${param} ${value}"
       if [ "${ansible_mode}" = 1 ]; then

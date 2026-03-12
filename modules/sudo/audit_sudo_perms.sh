@@ -12,7 +12,7 @@
 audit_sudo_perms () {
   print_function "audit_sudo_perms"
   string="Sudo file permissions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/sudoers"
     if [ -f "${check_file}" ]; then

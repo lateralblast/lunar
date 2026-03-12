@@ -14,7 +14,7 @@
 audit_dhcpcd () {
   print_function "audit_dhcpcd"
   string="DHCP Client Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${dhcpcd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_rctcp "dhcpcd" "off"

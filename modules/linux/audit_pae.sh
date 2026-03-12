@@ -14,7 +14,7 @@
 audit_pae () {
   print_function "audit_pae"
   string="XD/NX Support"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ -f "/var/log/dmesg" ]; then
       check_nx=$( grep NX < /var/log/dmesg | grep "protection: active" | tail -1 | grep -c active | sed "s/ //g" )

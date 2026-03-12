@@ -21,7 +21,7 @@
 audit_sysctl () {
   print_function "audit_sysctl"
   string="Sysctl Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.default.secure_redirects"     "eq"   "0"    "hash"
     check_file_value  "is" "/etc/sysctl.conf"     "net.ipv4.conf.all.secure_redirects"         "eq"   "0"    "hash"

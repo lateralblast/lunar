@@ -24,7 +24,7 @@
 audit_super_users () {
   print_function "audit_super_users"
   string="Accounts with UID 0"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_chuser "su" "true" "sugroups" "system" "root"

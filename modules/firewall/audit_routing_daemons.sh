@@ -16,7 +16,7 @@
 audit_routing_daemons () {
   print_function "audit_routing_daemons"
   string="Routing Daemons"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "$routed_disable" = "yes" ]; then
     if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "AIX" ]; then
       if [ "${os_name}" = "SunOS" ]; then

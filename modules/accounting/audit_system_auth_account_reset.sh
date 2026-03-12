@@ -17,7 +17,7 @@ audit_system_auth_account_reset () {
   search_string="${2}"
   print_function "audit_system_auth_account_reset"
   string="Account Reset Settings"
-  check_message "${string}"
+  check_message  "${string}"
   temp_file="${temp_dir}/audit_system_auth_account_reset"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${audit_mode}" != 2 ]; then

@@ -19,7 +19,7 @@
 audit_gate_keeper () {
   print_function "audit_gate_keeper"
   string="Gatekeeper"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       notice_message "Requires sudo to check"

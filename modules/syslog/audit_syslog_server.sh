@@ -24,20 +24,20 @@
 audit_syslog_server () {
   print_function "audit_syslog_server"
   string="Syslog Server"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${os_name}" = "FreeBSD" ]; then
       if [ "${os_version}" -lt 5 ]; then
-        check_file_value  "is" "/etc/syslog.conf" "daemon.debug" "tab"  "/var/log/daemon.log" "hash"
-        check_file_exists "/var/log/daemon.log"   "file"         "yes"
-        funct_file_perms  "/var/log/daemon.log"   "600"          "root" "${wheel_group}"
+        check_file_value  "is" "/etc/syslog.conf"      "daemon.debug" "tab"  "/var/log/daemon.log" "hash"
+        check_file_exists      "/var/log/daemon.log"   "file"         "yes"
+        funct_file_perms       "/var/log/daemon.log"   "600"          "root" "${wheel_group}"
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
       if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 22 ]; then
         check_linux_package "install" "systemd-journal-remote"
         if [ "${syslog_server}" != "" ]; then
-          check_file_value "is" "/etc/systemd/journal-upload.conf"  "URL" "eq" "${syslog_server}" "hash"
+          check_file_value  "is" "/etc/systemd/journal-upload.conf" "URL"                     "eq" "${syslog_server}"                    "hash"
         fi
         check_file_value    "is" "/etc/systemd/journal-upload.conf" "ServerKeyFile"           "eq" "/etc/ssl/private/journal-upload.pem" "hash"
         check_file_value    "is" "/etc/systemd/journal-upload.conf" "ServerCertificateFile"   "eq" "/etc/ssl/certs/journal-upload.pem"   "hash"
@@ -50,9 +50,9 @@ audit_syslog_server () {
         check_file_value    "is" "/etc/systemd/journald.conf"       "RuntimeMaxUse"           "eq" "200M"                                "hash"
         check_file_value    "is" "/etc/systemd/journald.conf"       "RuntimeKeepFree"         "eq" "50M"                                 "hash"
         check_file_value    "is" "/etc/systemd/journald.conf"       "MaxFileSec"              "eq" "1month"                              "hash"
-        check_linux_service "systemd-journal-upload.service"        "on"
-        check_linux_service "systemd-journal-remote.socket"         "off"
-        check_linux_service "systemd-journald.service"              "on"
+        check_linux_service      "systemd-journal-upload.service"   "on"
+        check_linux_service      "systemd-journal-remote.socket"    "off"
+        check_linux_service      "systemd-journald.service"         "on"
         conf_file="/usr/lib/tmpfiles.d/systemd.conf"
         if [ -f "/usr/lib/tmpfiles.d/systemd.conf" ]; then
           conf_file="/usr/lib/tmpfiles.d/systemd.conf"

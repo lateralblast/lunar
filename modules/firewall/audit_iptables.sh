@@ -19,7 +19,7 @@
 audit_iptables () {
   print_function "audit_iptables"
   string="IP Tables"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_linux_package "install"   "iptables"
     check_linux_service "iptables"  "on"

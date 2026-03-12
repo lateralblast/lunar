@@ -14,7 +14,7 @@
 audit_dhcpsd () {
   print_function "audit_dhcpsd"
   string="DHCP Server Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${dhcpsd_disable}" = "yes" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_rctcp "dhcpsd" "off"

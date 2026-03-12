@@ -21,7 +21,7 @@
 audit_cups () {
   print_function "audit_cups"
   string="Printing Services"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for service_name in cups cups-lpd cupsrenice; do
       check_linux_service "${service_name}" "off"

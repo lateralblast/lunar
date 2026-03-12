@@ -15,7 +15,7 @@
 audit_netrc_files () {
   print_function "audit_netrc_files"
   string="Netrc Files"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     audit_dot_files ".netrc"
   else

@@ -20,7 +20,7 @@ check_trust() {
     lockdown_command="trustchk -p ${parameter_name}=${correct_value}"
     if [ "${audit_mode}" != 2 ]; then
       string="Trusted Execution setting for \"${parameter_name}\" is set to \"${correct_value}\""
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${actual_value}" != "${correct_value}" ]; then
         inc_insecure     "Trusted Execution setting for \"${parameter_name}\" is not set to \"${correct_value}\""
         update_log_file  "${log_file}" "trustchk-p ${parameter_name}=${actual_value}"

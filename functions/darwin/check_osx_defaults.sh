@@ -42,7 +42,7 @@ check_osx_defaults () {
       else
         string="Parameter \"${defaults_parameter}\" is set to \"${defaults_value}\" in \"${defaults_file}\" for user \"${defaults_user}\""
       fi
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${defaults_host}" = "currentHost" ]; then
         defaults_read="-currentHost ${defaults_read}"
         defaults_write="-currentHost ${defaults_write}"

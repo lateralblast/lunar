@@ -23,7 +23,7 @@
 audit_kubernetes_scheduler () {
   print_function "audit_kubernetes_scheduler"
   string="Kubernetes scheduler"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kube-scheduler" | grep -v grep )
     if [ "${daemon_check}" ]; then

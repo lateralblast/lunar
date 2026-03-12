@@ -12,7 +12,7 @@
 audit_dot_files () {
   print_function "audit_dot_files"
   string="Dot Files"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     check_file="${1}"
     if [ "${audit_mode}" != 2 ]; then

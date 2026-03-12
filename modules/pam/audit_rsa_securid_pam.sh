@@ -13,7 +13,7 @@
 audit_rsa_securid_pam () {
   print_function "audit_rsa_securid_pam"
   string="RSA SecurID PAM Agent Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/sd_pam.conf"
     if [ -f "${check_file}" ]; then

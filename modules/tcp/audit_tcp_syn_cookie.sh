@@ -15,7 +15,7 @@
 audit_tcp_syn_cookie () {
   print_function "audit_tcp_syn_cookie"
   string="TCP SYN Cookie Protection"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_append_file "/etc/rc.d/local" "echo 1 > /proc/sys/net/ipv4/tcp_syncookies" "hash"
     check_file_perms  "/etc/rc.d/local" "0600" "root" "root"

@@ -21,7 +21,7 @@
 audit_root_primary_group () {
   print_function "audit_root_primary_group"
   string="Root Primary Group"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     log_file="root_primary_group.log"
     check_file="/etc/group"

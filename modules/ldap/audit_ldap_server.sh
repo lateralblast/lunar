@@ -21,7 +21,7 @@
 audit_ldap_server () {
   print_function "audit_ldap_server"
   string="LDAP Server"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_linux_service "slapd"     "off"
     check_linux_package "uninstall" "slapd"

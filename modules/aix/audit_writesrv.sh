@@ -12,7 +12,7 @@
 audit_writesrv () {
   print_function "audit_writesrv"
   string="Writesrv"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "AIX" ]; then
     check_itab "writesrv" "off"
   else

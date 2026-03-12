@@ -12,7 +12,7 @@
 audit_echo () {
   print_function "audit_echo"
   string="Echo and Chargen Services"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       for service_name in "svc:/network/echo:dgram" \

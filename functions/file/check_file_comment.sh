@@ -22,7 +22,7 @@ check_file_comment () {
     comment="#"
   fi
   string="File ${file} with line containing ${search} is commented out"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${audit_mode}" != 2 ]; then
     if [ -f "${file}" ]; then
       check=$( grep "${search}" < "${file}" | grep -cv "^${comment}" )

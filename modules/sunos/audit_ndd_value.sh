@@ -13,7 +13,7 @@
 audit_ndd_value () {
   print_function "audit_ndd_value"
   string="NDD Value"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       ndd_name="${1}"

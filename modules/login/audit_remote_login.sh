@@ -15,7 +15,7 @@
 audit_remote_login () {
   print_function "audit_remote_login"
   string="Remote Login"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_systemsetup "getremotelogin" "off"
   else

@@ -38,7 +38,7 @@ check_svcadm_service () {
         service_status=$( svcs -Ho state "${service_name}" )
         log_file="${file_header}.log"
         string="Service ${service_name} is ${correct_status}"
-        check_message "${string}"
+        check_message  "${string}"
         if [ "${ansible_mode}" = 1 ]; then
           echo ""
           echo "- name: Checking ${string}"

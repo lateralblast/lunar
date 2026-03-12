@@ -12,7 +12,7 @@
 audit_ptrace_scope () {
   print_function "audit_ptrace_scope"
   string="Ptrace scope is restricted"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "Ubuntu" ]; then
       if [ "${os_version}" -ge 24 ]; then

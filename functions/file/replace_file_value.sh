@@ -42,7 +42,7 @@ replace_file_value () {
   new_check_value="${position}${new_check_value}"
   if [ "${audit_mode}" != 2 ]; then
     string="File \"${check_file}\" contains \"${correct_value}\" rather than \"${check_value}\""
-    check_message "${string}"
+    check_message  "${string}"
   fi
   if [ -f "${check_file}" ]; then
     check_dfs=$( grep -c "${new_check_value}" < "${check_file}" | sed "s/ //g" )

@@ -28,7 +28,7 @@
 audit_routing_params () {
   print_function "audit_routing_params"
   string="Routing Parameters"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       check_message       "IP Routing"

@@ -28,7 +28,7 @@ check_gsettings_value () {
   check=$( command -v gsettings 2> /dev/null | wc -l | sed "s/ //g" )
   if [ "${check}" = "1" ]; then
     string="Parameter \"${parameter_name}\" to \"${correct_value}\""
-    check_message "${string}"
+    check_message  "${string}"
     set_command="gsettings set"
     get_command="gsettings get"
     if [ "${os_name}" = "Linux" ]; then

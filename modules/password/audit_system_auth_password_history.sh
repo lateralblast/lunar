@@ -24,7 +24,7 @@ audit_system_auth_password_history () {
   temp_file="${temp_dir}/audit_system_auth_password_history"
   check_file="/etc/security/opasswd"
   string="Password entry \"${search_string}\" set to \"${search_value}\" in \"${check_file}\""
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file_exists "${check_file}" "yes"
     for check_file in /etc/security/opasswd /etc/security/opasswd.old; do

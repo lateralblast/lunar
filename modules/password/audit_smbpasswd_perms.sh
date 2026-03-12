@@ -14,7 +14,7 @@
 audit_smbpasswd_perms () {
   print_function "audit_smbpasswd_perms"
   string="SMB Password File"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file_perms "/etc/sfw/private/smbpasswd" "0600" "root" "root"
   else

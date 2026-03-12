@@ -23,7 +23,7 @@
 audit_password_expiry () {
   print_function "audit_password_expiry"
   string="Password Expiration Parameters on Active Accounts"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_chsec "/etc/security/user" "default"  "mindiff"       "4"

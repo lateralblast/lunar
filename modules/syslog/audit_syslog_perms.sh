@@ -15,7 +15,7 @@
 audit_syslog_perms () {
   print_function "audit_syslog_perms"
   string="Syslog Permissions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       check_file_perms "/var/log/syslog"     "0600" "root" "sys"

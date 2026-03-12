@@ -14,7 +14,7 @@
 audit_siri () {
   print_function "audit_siri"
   string="Siri Settings"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${audit_mode}" != 2 ]; then

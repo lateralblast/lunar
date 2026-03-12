@@ -14,7 +14,7 @@
 audit_amfi () {
   print_function "audit_amfi"
   string="Apple Mobile File Integrity"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1012 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

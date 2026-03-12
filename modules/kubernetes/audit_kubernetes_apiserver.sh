@@ -23,7 +23,7 @@
 audit_kubernetes_apiserver () {
   print_function "audit_kubernetes_apiserver"
   string="Kubernetes API Server"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kube-apiserver" |grep -v grep )
     if [ "${daemon_check}" ]; then

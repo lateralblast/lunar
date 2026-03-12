@@ -14,7 +14,7 @@
 audit_vnetd () {
   print_function "audit_vnetd"
   string="VNET Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
       check_sunos_service "svc:/network/vnetd/tcp:default" "disabled"

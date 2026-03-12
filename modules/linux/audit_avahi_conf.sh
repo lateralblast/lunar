@@ -14,7 +14,7 @@
 audit_avahi_conf () {
   print_function "audit_avahi_conf"
   string="Multicast DNS Server"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for check_file in /etc/avahi/avahi-daemon.conf /usr/local/etc/avahi/avahi-daemon.conf; do
       if [ -f "${check_file}" ]; then

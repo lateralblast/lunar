@@ -24,7 +24,7 @@
 audit_mount_setuid () {
   print_function "audit_mount_setuid"
   string="Set-UID on Mounted Devices"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then

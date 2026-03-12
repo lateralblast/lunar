@@ -22,7 +22,7 @@
 audit_gnome_banner () {
   print_function "audit_gnome_banner"
   string="Gnome Warning Banner"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       if [ "${os_version}" = "10" ]; then

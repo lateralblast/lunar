@@ -12,7 +12,7 @@
 audit_old_users () {
   print_function "audit_old_users"
   string="Old Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
@@ -21,7 +21,7 @@ audit_old_users () {
     last_test=$( command -v last)
     if [ "${last_test}" = "" ]; then
       inc_insecure "last command not found"
-      fix_message        "Install wtmpdb package"
+      fix_message  "Install wtmpdb package"
       return
     fi
     never_count=0

@@ -17,7 +17,7 @@
 audit_gnome_automount () {
   print_function "audit_gnome_automount"
   string="Automount/Autorun for GNOME Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_gsettings_value "org.gnome.desktop.media-handling" "automount-open" "false"
     check_gsettings_value "org.gnome.desktop.media-handling" "automount"      "false"

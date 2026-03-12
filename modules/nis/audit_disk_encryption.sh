@@ -14,7 +14,7 @@
 audit_disk_encryption () {
   print_function "audit_disk_encryption"
   string="Disk Encryption"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       disk_check=$( diskutil cs list | grep -i encryption | grep AES-XTS )

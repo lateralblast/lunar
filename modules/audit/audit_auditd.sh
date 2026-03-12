@@ -20,7 +20,7 @@
 audit_auditd () {
   print_function "audit_auditd"
   string="Audit Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     if [ "${os_name}" = "Linux" ]; then
       check_linux_package "install" "auditd"

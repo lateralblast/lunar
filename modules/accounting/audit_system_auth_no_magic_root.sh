@@ -11,7 +11,7 @@
 
 audit_system_auth_no_magic_root () {
   string="Make sure root account isn't locked as part of account locking"
-  check_message "${string}"
+  check_message  "${string}"
   auth_string="${1}"
   search_string="${2}"
   print_function "audit_system_auth_no_magic_root"

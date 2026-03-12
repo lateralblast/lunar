@@ -16,7 +16,7 @@
 audit_bonjour_advertising() {
   print_function "audit_bonjour_advertising"
   string="Bonjour Multicast Advertising"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_file="/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist"
     if [ "${long_os_version}" -ge 1014 ]; then

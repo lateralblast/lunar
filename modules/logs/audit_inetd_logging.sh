@@ -14,7 +14,7 @@
 audit_inetd_logging () {
   print_function "audit_inetd_logging"
   string="Logging for inetd"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file_value "is" "/etc/default/syslogd"    "LOG_FROM_REMOTE"           "eq" "NO" "hash"
     if [ "${os_version}" = "10" ]; then

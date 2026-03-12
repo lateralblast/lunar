@@ -23,7 +23,7 @@
 audit_duplicate_ids () {
   print_function "audit_duplicate_ids"
   string="Duplicate IDs"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     field_no="${1}"
     function="${2}"

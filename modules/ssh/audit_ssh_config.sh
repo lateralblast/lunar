@@ -28,7 +28,7 @@
 audit_ssh_config () {
   print_function "audit_ssh_config"
   string="SSH Config"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "VMkernel" ] || [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
     if [ "${os_name}" = "VMkernel" ]; then
       check_linux_service "SSH" "off"

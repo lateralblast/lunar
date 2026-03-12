@@ -18,7 +18,7 @@
 audit_inactive_users () {
   print_function "audit_inactive_users"
   string="Inactive User Accounts"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"
@@ -43,7 +43,7 @@ audit_inactive_users () {
           if [ "$inactive" = "" ]; then
             if [ "${audit_mode}" = 1 ]; then
               inc_insecure "Inactive lockout not set for \"${user_name}\""
-              fix_message        "usermod -f 35 ${user_name}"
+              fix_message  "usermod -f 35 ${user_name}"
             fi
             if [ "${audit_mode}" = 0 ]; then
               verbose_message "File \"${check_file}\" to \"${work_dir}${check_file}\"" "save"

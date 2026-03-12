@@ -16,7 +16,7 @@
 audit_xwindows_server () {
   print_function "audit_xwindows_server"
   string="X Windows Server"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       no_rego=$( yum grouplist 2>&1 | grep "not registered" )

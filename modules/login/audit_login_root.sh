@@ -17,7 +17,7 @@
 audit_login_root () {
   print_function "audit_login_root"
   string="Root login"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_dscl "/Users/root" "AuthenticationAuthority" "No such key: AuthenticationAuthority"
   else

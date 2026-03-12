@@ -24,7 +24,7 @@
 audit_filesystem_partitions () {
   print_function "audit_filesystem_partitions"
   string="Filesystem Partitions"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     for filesystem in /tmp /var /var/log /var/log/audit /home /dev/shm /var/tmp; do
       mount_test=$( df | awk '{print $6}' | grep -c "^${filesystem}$" | sed "s/ //g" )

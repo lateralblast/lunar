@@ -14,7 +14,7 @@
 audit_time_machine () {
   print_function "audit_time_machine"
   string="Time Machine"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${os_version}" -ge 14 ]; then
       check_osx_defaults_bool "/Library/Preferences/com.apple.TimeMachine.plist" "AutoBackup" "1"

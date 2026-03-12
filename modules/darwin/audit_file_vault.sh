@@ -16,7 +16,7 @@
 audit_file_vault () {
   print_function "audit_file_vault"
   string="File Vault"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       actual_value=$( diskutil cs list )

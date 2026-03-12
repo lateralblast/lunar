@@ -15,7 +15,7 @@
 audit_system_auth_use_uid () {
   print_function "audit_system_auth_use_uid"
   string="Check the use of su is restricted by sudo"
-  check_message "${string}"
+  check_message  "${string}"
   auth_string="auth"
   search_string="use_uid"
   check_file="/etc/pam.d/su"

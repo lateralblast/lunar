@@ -14,7 +14,7 @@
 audit_solaris_auditing () {
   print_function "audit_solaris_auditing"
   string="Solaris Auditing"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       check_command_output "getcond"

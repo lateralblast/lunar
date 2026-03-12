@@ -12,7 +12,7 @@
 audit_ipadm_value () {
   print_function "audit_ipadm_value"
   string="IPadm Value"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       ipadm_name="${1}"

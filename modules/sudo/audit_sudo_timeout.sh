@@ -17,7 +17,7 @@
 audit_sudo_timeout () {
   print_function "audit_sudo_timeout"
   string="Sudo timeout"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "SunOS" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       verbose_message "Requires sudo to check" "notice"

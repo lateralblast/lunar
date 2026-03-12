@@ -22,14 +22,14 @@ audit_pam_wheel () {
   print_function "audit_pam_wheel"
   pam_module="pam_wheel"
   check_string="PAM ${pam_module} Configuration"
-  check_message "${check_string}"
+  check_message  "${check_string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/pam.d/su"
     if [ -f "${check_file}" ]; then
       search_string="use_uid"
       if [ "${audit_mode}" != 2 ]; then
         command="grep \"^auth\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
-        command_message "${command}"
+        command_message     "${command}"
         check_value=$( eval "${command}" )
         if [ "${ansible_mode}" = 1 ]; then
           ansible_counter=$((ansible_counter+1))

@@ -16,7 +16,7 @@ audit_pam_authtok () {
   print_function "audit_pam_authtok"
   pam_module="use_authtok"
   string="PAM ${pam_module} Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_string="PAM ${pam_module} Configuration"
     verbose_message "${check_string}" "check"

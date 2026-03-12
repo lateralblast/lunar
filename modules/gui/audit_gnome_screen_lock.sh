@@ -18,7 +18,7 @@
 audit_gnome_screen_lock () {
   print_function "audit_gnome_screen_lock"
   string="Screen Lock for GNOME Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*timeout:"     "space" "0:10:00" "bang"
     check_file_value "is" "/usr/openwin/lib/app-defaults/XScreenSaver" "*lockTimeout:" "space" "0:00:00" "bang"

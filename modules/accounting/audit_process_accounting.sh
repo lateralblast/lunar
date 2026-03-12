@@ -12,7 +12,7 @@
 audit_process_accounting () {
   print_function "audit_process_accounting"
   string="Process Accounting"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file="/etc/rc3.d/S99acct"
     init_file="/etc/init.d/acct"

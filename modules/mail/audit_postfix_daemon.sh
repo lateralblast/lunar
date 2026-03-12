@@ -16,7 +16,7 @@
 audit_postfix_daemon () {
   print_function "audit_postfix_daemon"
   string="Postfix Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "SuSE" ]; then
       check_file_value  "is" "/etc/sysconfig/mail"  "SMTPD_LISTEN_REMOTE" "eq" "no" "hash"

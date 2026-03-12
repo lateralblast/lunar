@@ -15,7 +15,7 @@
 audit_eeprom_security () {
   print_function "audit_eeprom_security"
   string="EEPROM Password"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${audit_mode}" = 2 ]; then
       echo "EEPROM password to none" "restore"

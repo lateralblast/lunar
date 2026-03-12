@@ -19,7 +19,7 @@
 audit_system_auth () {
   print_function "audit_system_auth"
   string="Check system auth settings"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/security/pwquality.conf"
     check=0

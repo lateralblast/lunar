@@ -14,7 +14,7 @@
 audit_pam_gdm_autologin () {
   print_function "audit_pam_gdm_autologin"
   string="Gnome Autologin"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "11" ]; then
       pam_module="gdm-autologin"

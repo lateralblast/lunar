@@ -14,7 +14,7 @@
 audit_cde_screen_lock () {
   print_function "audit_cde_screen_lock"
   string="Screen Lock for CDE Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     file_list=$( find /usr/dt/config/*/sys.resources -t file -maxdepth 1 2> /dev/null )
     for cde_file in ${file_list}; do

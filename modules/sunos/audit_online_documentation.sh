@@ -14,7 +14,7 @@
 audit_online_documentation () {
   print_function "audit_online_documentation"
   string="Online Documentation"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "AIX" ] || [ "${os_name}" = "SunOS" ]; then
     if [ "${os_name}" = "AIX" ]; then
       check_itab "httpdlite" "off"

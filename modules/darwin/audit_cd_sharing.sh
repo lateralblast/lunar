@@ -16,7 +16,7 @@
 audit_cd_sharing () {
   print_function "audit_cd_sharing"
   string="DVD/CD Sharing"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${audit_mode}" != 2 ]; then
       check_launchctl_service "com.apple.ODSAgent" "off"

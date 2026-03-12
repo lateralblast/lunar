@@ -40,7 +40,7 @@ check_pmset() {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Sleep is disabled when powered"
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_pmset_${ansible_counter}"

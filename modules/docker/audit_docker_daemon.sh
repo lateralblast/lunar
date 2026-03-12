@@ -82,7 +82,7 @@
 audit_docker_daemon () {
   print_function "audit_docker_daemon"
   string="Docker Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     docker_bin=$( command -v docker )
     if [ "${docker_bin}" ]; then

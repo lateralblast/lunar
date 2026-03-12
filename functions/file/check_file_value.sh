@@ -100,7 +100,7 @@ check_file_value_with_position () {
       restore_file "${check_file}" "${restore_dir}"
     else
       string="Value of \"${parameter_name}\" ${operator} set to \"${correct_value}\" in \"${check_file}\""
-      check_message "${string}"
+      check_message  "${string}"
       string="Parameter ${parameter_name} to ${correct_value} in ${check_file}"
       lockdown_message="Value of \"${parameter_name}\" to \"${correct_value}\" in \"${check_file}\""
       if [ ! -f "${check_file}" ]; then

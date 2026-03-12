@@ -15,7 +15,7 @@
 audit_dvfilter () {
   print_function "audit_dvfilter"
   string="Dvfilter"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "VMkernel" ]; then
     backup_file="${work_dir}/dvfilter"
     command="esxcli --formatter=csv --format-param=fields=Path,Int Value system settings advanced list | grep /Net/DVFilterBindIpAddress | cut -f2 -d,"

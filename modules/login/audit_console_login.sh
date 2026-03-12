@@ -22,7 +22,7 @@
 audit_console_login () {
   print_function "audit_console_login"
   string="Root Login to System Console"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       check_file="/etc/default/login"
@@ -39,7 +39,7 @@ audit_console_login () {
     check_file="/etc/securetty"
     if [ -f "${check_file}" ]; then
       string="Root Login to System Console"
-      check_message "${string}"
+      check_message  "${string}"
       disable_ttys=0
       console_list=""
       if [ "${audit_mode}" != 2 ]; then

@@ -4,10 +4,12 @@
 # shellcheck disable=SC2029
 # shellcheck disable=SC2034
 # shellcheck disable=SC2124
+# shellcheck disable=SC2317
+# shellcheck disable=SC2329
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.1.4
+# Version:      15.1.5
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -280,27 +282,19 @@ verbose_message () {
   fi
 }
 
-# warning_message
+# warn_message
 #
 # Warning message
 #.
-
-warning_message () {
-  verbose_message "${1}" "warn"
-}
 
 warn_message () {
   verbose_message "${1}" "warn"
 }
 
-# infomation_message
+# info_message
 #
 # Information message
 #.
-
-information_message () {
-  verbose_message "${1}" "info"
-}
 
 info_message () {
   verbose_message "${1}" "info"
@@ -534,15 +528,6 @@ restore_state () {
   fi
 }
 
-# increment_total
-#
-# Increment total count
-#.
-
-increment_total () {
-  total_count=$((total_count+1))
-}
-
 # inc_secure
 #
 # Increment secure count
@@ -589,16 +574,6 @@ start_path=$( pwd )
 # Get the version of the script from the script itself
 
 script_version=$( cd "${start_path}" || exit ; grep '^# Version' < "$0"| awk '{print $3}' )
-
-# apply_latest_patches
-#
-# Code to apply patches
-# Nothing done with this yet
-#.
-
-apply_latest_patches () {
-  :
-}
 
 # secure_baseline
 #

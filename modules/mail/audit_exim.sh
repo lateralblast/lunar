@@ -14,7 +14,7 @@
 audit_exim () {
   print_function "audit_exim"
   string="Exim"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     check_file="/etc/exim4/update-exim4.conf"
     if [ -f "${check_file}" ]; then

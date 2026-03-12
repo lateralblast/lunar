@@ -19,7 +19,7 @@ audit_pam_rhosts () {
   print_function "audit_pam_rhosts"
   pam_module="pam_rhosts_auth"
   string="PAM ${pam_module} Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       check_file="/etc/pam.conf"

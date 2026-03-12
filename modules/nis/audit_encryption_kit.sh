@@ -14,7 +14,7 @@
 audit_encryption_kit () {
   print_function "audit_encryption_kit"
   string="Encryption Toolkit"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     if [ "${os_version}" = "10" ]; then
       check_solaris_package   "SUNWcry"

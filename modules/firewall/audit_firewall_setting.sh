@@ -25,7 +25,7 @@
 audit_firewall_setting () {
   print_function "audit_firewall_setting"
   string="Firewall Settings"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_defaults_int "/Library/Preferences/com.apple.alf" "globalstate" "1"
     if [ "${audit_mode}" != 2 ]; then

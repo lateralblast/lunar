@@ -19,7 +19,7 @@
 audit_syslog_conf () {
   print_function "audit_syslog_conf"
   string="Syslog Configuration"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "VMkernel" ]; then
     if [ "${os_name}" = "Linux" ]; then
       check_file="/etc/syslog.conf"

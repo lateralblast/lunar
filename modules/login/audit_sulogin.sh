@@ -20,7 +20,7 @@
 audit_sulogin () {
   print_function "audit_sulogin"
   string="Single User Mode Requires Password"
-  check_message "${string}"
+  check_message  "${string}"
   temp_file="${temp_dir}/audit_sulogin"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${os_name}" = "FreeBSD" ]; then

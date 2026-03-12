@@ -23,7 +23,7 @@
 audit_kubernetes_kubelet () {
   print_function "audit_kubernetes_kubelet"
   string="Kubernetes kubelet"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ] || [ "${os_name}" = "Darwin" ]; then
     daemon_check=$( ps -ef | grep "kubelet" | grep -v grep )
     if [ "${daemon_check}" ]; then

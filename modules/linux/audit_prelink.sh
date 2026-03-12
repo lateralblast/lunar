@@ -22,7 +22,7 @@
 audit_prelink () {
   print_function "audit_prelink"
   string="Prelinking"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       check_file="/etc/sysconfig/prelink"

@@ -18,7 +18,7 @@
 audit_rsh_server () {
   print_function "audit_rsh_server"
   string="RSH Server Daemon"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ] || [ "${os_vendor}" = "Amazon" ]; then
       for service_name in rsh.socket rlogin.socket rexec.socket; do

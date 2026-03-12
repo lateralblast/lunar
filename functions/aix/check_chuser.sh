@@ -23,7 +23,7 @@ check_chuser() {
     set_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
     if [ "${audit_mode}" != 2 ]; then
       string="Security Policy for \"${parameter_name}\" is set to \"${correct_value}\""
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_chuser_${ansible_counter}"

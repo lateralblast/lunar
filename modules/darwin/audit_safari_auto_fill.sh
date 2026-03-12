@@ -14,7 +14,7 @@
 audit_safari_auto_fill () {
   print_function "audit_safari_auto_fill"
   string="Safari Auto Fill"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${long_os_version}" -ge 1014 ]; then
       if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then

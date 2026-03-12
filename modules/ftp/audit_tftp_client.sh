@@ -16,7 +16,7 @@
 audit_tftp_client () {
   print_function "audit_tftp_client"
   string="TFTP Client"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
     if [ "${os_vendor}" = "CentOS" ] || [ "${os_vendor}" = "Red" ]; then
       check_linux_package "uninstall" "tftp"

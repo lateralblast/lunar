@@ -17,7 +17,7 @@
 audit_wireless () {
   print_function "audit_wireless"
   string="Wifi information menu"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     if [ "${my_id}" != "0" ] && [ "${use_sudo}" = "0" ]; then
       notice_message "Requires sudo to check"

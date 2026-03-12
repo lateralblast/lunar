@@ -13,7 +13,7 @@
 audit_pass_req () {
   print_function "audit_pass_req"
   string="Password Required"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     check_file_value "is" "/etc/default/login"  "PASSREQ" "eq" "YES" "hash"
   else

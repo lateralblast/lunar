@@ -21,7 +21,7 @@ check_file_exists () {
   if [ "${check_exists}" = "no" ]; then
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" does not exist"
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_file_exists_${ansible_counter}"

@@ -24,7 +24,7 @@ check_itab() {
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Service \"${service_name}\" is not \"${correct_value}\""
-      check_message "${string}"
+      check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"

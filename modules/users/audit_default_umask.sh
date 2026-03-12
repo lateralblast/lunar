@@ -24,7 +24,7 @@
 audit_default_umask () {
   print_function "audit_default_umask"
   string="Default umask for Users"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
     if [ "${os_name}" = "SunOS" ]; then
       check_file_value    "is" "/etc/default/login" "UMASK" "eq"    "077" "hash"

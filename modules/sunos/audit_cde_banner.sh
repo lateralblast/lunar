@@ -14,7 +14,7 @@
 audit_cde_banner () {
   print_function "audit_cde_banner"
   string="CDE Warning Banner"
-  check_message "${string}"
+  check_message  "${string}"
   if [ "${os_name}" = "SunOS" ]; then
     for cde_file in /usr/dt/config/*/Xresources ; do
       dir_name=$( dirname" ${cde_file}" | sed "s/usr/etc/" )
