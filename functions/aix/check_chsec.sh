@@ -41,13 +41,13 @@ check_chsec() {
       fi
       actual_value=$( eval "${get_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
-        update_log_file  "${log_file}" "chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${actual_value}"
-        inc_insecure     "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
-        lockdown_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
-        lockdown_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        update_log   "${log_file}" "chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${actual_value}"
+        inc_insecure "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
+        lock_command="chsec -f ${sec_file} -s ${sec_stanza} -a ${parameter_name}=${correct_value}"
+        lock_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       else
-        inc_secure       "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
+        inc_secure   "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

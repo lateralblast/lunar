@@ -32,9 +32,9 @@ audit_aws_access_keys () {
       command_message "${command}"
       key_ids=$( eval "${command}" )
       for key_id in ${key_ids}; do
-        lockdown_command="aws iam delete-access-key --access-key \"${key_id}\" --user-name \"${aws_user}\""
-        lockdown_message="Key \"${key_id}\" for user \"${aws_user}\" to disabled"
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        lock_command="aws iam delete-access-key --access-key \"${key_id}\" --user-name \"${aws_user}\""
+        lock_message="Key \"${key_id}\" for user \"${aws_user}\" to disabled"
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       done
     else
       inc_secure   "Account \"${aws_user}\" has key access enabled and has used their AWS API credentials"

@@ -35,10 +35,10 @@ audit_sulogin () {
             inc_insecure "Single user mode does not require a password"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            set_message "Single user mode to require a password"
-            backup_file "${check_file}"
-            lockdown_command="awk '($4 == \"console\") { $5 = \"insecure\" } { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            set_message  "Single user mode to require a password"
+            backup_file  "${check_file}"
+            lock_command="awk '($4 == \"console\") { $5 = \"insecure\" } { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         else
           restore_file "${check_file}" "${restore_dir}"
@@ -60,30 +60,30 @@ audit_sulogin () {
         command_message "${command}"
         sulogin_check=$( eval "${command}" )
         if [ -z "$sulogin_check" ]; then
-          lockdown_message="Single user mode to require authentication"
-          lockdown_command="awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm $temp_file"
+          lock_message="Single user mode to require authentication"
+          lock_command="awk '{ print }; /^id:[0123456sS]:initdefault:/ { print \"~~:S:wait:/sbin/sulogin\" }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm $temp_file"
           if [ "${audit_mode}" = 1 ]; then
             inc_insecure "No Authentication required for single usermode"
-            fix_message  "${lockdown_command}"
+            fix_message  "${lock_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file   "${check_file}"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            backup_file  "${check_file}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            inc_secure "Single usermode requires authentication"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            inc_secure     "Single usermode requires authentication"
+            run_lockdown   "${lock_command}" "${lock_message}" "sudo"
           fi
           if [ "${audit_mode}" = 2 ]; then
-            restore_file   "${check_file}" "${restore_dir}"
+            restore_file   "${check_file}"   "${restore_dir}"
           fi
-          check_file_perms "${check_file}" "0600" "root" "root"
+          check_file_perms "${check_file}"   "0600" "root"     "root"
         fi
         check_file="/etc/sysconfig/init"
         check_file_value "is" "/etc/sysconfig/init" "SINGLE" "eq"   "/sbin/sulogin" "hash"
         check_file_value "is" "/etc/sysconfig/init" "PROMPT" "eq"   "no"            "hash"
-        check_file_perms "/etc/sysconfig/init"      "0600"   "root" "root"
+        check_file_perms      "/etc/sysconfig/init" "0600"   "root" "root"
       fi
       check_file_value   "is" "/etc/sysconfig/boot" "PROMPT_FOR_CONFIRM" "eq" "no" "hash"
     fi

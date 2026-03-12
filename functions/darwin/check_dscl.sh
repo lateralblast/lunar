@@ -50,10 +50,10 @@ check_dscl () {
         inc_insecure "Parameter \"${param}\" not set to \"${value}\" in \"${file}\""
         fix_message  "sudo dscl . -create ${file} ${param} \"${value}\""
         if [ "${audit_mode}" = 0 ]; then
-          backup_file      "${dir}/${file}"
-          lockdown_message="Parameter \"${param}\" to \"${value}\" in ${file}"
-          lockdown_command="dscl . -create ${file} ${param} ${value}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          backup_file  "${dir}/${file}"
+          lock_message="Parameter \"${param}\" to \"${value}\" in ${file}"
+          lock_command="dscl . -create ${file} ${param} ${value}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then

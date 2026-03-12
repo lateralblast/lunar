@@ -31,14 +31,14 @@ audit_wheel_group () {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}' or ansible_facts['ansible_system'] == '${os_name}'"
         fi
         if [ "${audit_mode}" = 0 ]; then
-          backup_file      "${check_file}"
-          lockdown_message="Adding wheel group \"${wheel_group}\" to \"${check_file}\""
-          lockdown_command="groupadd ${wheel_group} ; usermod -G ${wheel_group} root"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          backup_file  "${check_file}"
+          lock_message="Adding wheel group \"${wheel_group}\" to \"${check_file}\""
+          lock_command="groupadd ${wheel_group} ; usermod -G ${wheel_group} root"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = "1" ]; then
-          inc_secure "Wheel group \"${wheel_group}\" ${exists} in \"${check_file}\""
+          inc_secure   "Wheel group \"${wheel_group}\" ${exists} in \"${check_file}\""
         fi
       fi
     else

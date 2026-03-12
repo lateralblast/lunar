@@ -49,9 +49,9 @@ audit_amfi () {
           echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          lockdown_command="sudo /usr/sbin/nvram boot-args=\"\""
-          lockdown_message="Enable ${string}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="sudo /usr/sbin/nvram boot-args=\"\""
+          lock_message="Enable ${string}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       fi
     fi

@@ -53,13 +53,13 @@ audit_bonjour_advertising() {
           fi
           if [ "${audit_mode}" = 0 ]; then
             backup_file      "${check_file}"
-            lockdown_message="Bonjour Multicast Advertising disabled"
-            lockdown_command="${set_command}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_message="Bonjour Multicast Advertising disabled"
+            lock_command="${set_command}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = 1 ]; then
-            inc_secure    "Bonjour Multicast Advertising disabled"
+            inc_secure   "Bonjour Multicast Advertising disabled"
           fi
         fi
       fi

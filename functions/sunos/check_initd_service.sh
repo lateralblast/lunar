@@ -50,15 +50,15 @@ check_initd_service () {
         fi
       fi
       if [ "${actual_status}" != "${correct_status}" ]; then
-        inc_insecure    "Service \"${service_name}\" is not \"${correct_status}\""
-        update_log_file "${log_file}" "${service_name},${actual_status}"
-        lockdown_message="Service ${service_name} to ${correct_status}"
+        inc_insecure "Service \"${service_name}\" is not \"${correct_status}\""
+        update_log   "${log_file}" "${service_name},${actual_status}"
+        lock_message="Service ${service_name} to ${correct_status}"
         if [ "${correct_status}" = "disabled" ]; then
-          lockdown_command="/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="/etc/init.d/${service_name} stop ; mv /etc/init.d/${service_name} /etc/init.d/_${service_name}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
-          lockdown_command="mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="mv /etc/init.d/_${service_name} /etc/init.d/${service_name} ; /etc/init.d/${service_name} start"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 2 ]; then

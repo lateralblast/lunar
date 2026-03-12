@@ -51,13 +51,13 @@ check_launchctl_service () {
         echo ""
       fi
       if [ "${actual_status}" != "${required_status}" ]; then
-        inc_insecure     "Service \"${launchctl_service}\" is \"${actual_status}\""
-        lockdown_command="sudo launchctl ${change_status} -w ${launchctl_service}.plist"
-        lockdown_message="Service ${launchctl_service} to ${required_status}"
-        update_log_file  "${log_file}" "${actual_status}"
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        inc_insecure "Service \"${launchctl_service}\" is \"${actual_status}\""
+        lock_command="sudo launchctl ${change_status} -w ${launchctl_service}.plist"
+        lock_message="Service ${launchctl_service} to ${required_status}"
+        update_log   "${log_file}" "${actual_status}"
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       else
-        inc_secure       "Service \"${launchctl_service}\" is \"${required_status}\""
+        inc_secure   "Service \"${launchctl_service}\" is \"${required_status}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

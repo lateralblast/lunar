@@ -48,9 +48,9 @@ audit_touch_id () {
           echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          lockdown_command="${set_command}" 
-          lockdown_message="${string}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="${set_command}" 
+          lock_message="${string}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
         for item in unlock ApplePay ; do
           string="Touch ID ${item}"
@@ -87,13 +87,13 @@ audit_touch_id () {
               echo ""
             else
               if [ "${item}" = "unlock" ]; then
-                lockdown_command="/usr/bin/sudo usr/bin/bioutil -w -u 1"
+                lock_command="/usr/bin/sudo usr/bin/bioutil -w -u 1"
               else
-                lockdown_command="/usr/bin/sudo usr/bin/bioutil -w -s 1"
+                lock_command="/usr/bin/sudo usr/bin/bioutil -w -s 1"
               fi
             fi
-            lockdown_message="${string}"
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_message="${string}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           done
         done
       fi

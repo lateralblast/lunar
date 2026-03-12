@@ -99,15 +99,15 @@ check_file_perms () {
         command_message    "${command}"
         file_owner=$( eval "${command}" )
       fi
-      update_log_file "${log_file}" "${check_file},${file_perms},${file_owner}"
-      lockdown_message="File \"${check_file}\" to have correct permissions"
-      lockdown_command="chmod ${check_perms} ${check_file}"
-      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+      update_log "${log_file}" "${check_file},${file_perms},${file_owner}"
+      lock_message="File \"${check_file}\" to have correct permissions"
+      lock_command="chmod ${check_perms} ${check_file}"
+      run_lockdown "${lock_command}" "${lock_message}" "sudo"
       if [ "${check_owner}" != "" ]; then
         if [ "${check_result}" != "${check_file}" ]; then
-          lockdown_message="File \"${check_file}\" to have correct owner"
-          lockdown_command="chown ${check_owner}:${check_group} ${check_file}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_message="File \"${check_file}\" to have correct owner"
+          lock_command="chown ${check_owner}:${check_group} ${check_file}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       fi
     fi

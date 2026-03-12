@@ -53,13 +53,13 @@ audit_writable_files () {
               fi
               if [ "${audit_mode}" = 1 ]; then
                 inc_insecure "File ${check_file} is world writable"
-                verbose_message    "chmod o-w ${check_file}" "fix"
+                fix_message  "chmod o-w ${check_file}"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                update_log_file "${log_file}" "${check_file}"
-                lockdown_message="File \"${check_file}\" to be non world writable"
-                lockdown_command="chmod o-w ${check_file}"
-                exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+                update_log   "${log_file}" "${check_file}"
+                lock_message="File \"${check_file}\" to be non world writable"
+                lock_command="chmod o-w ${check_file}"
+                run_lockdown "${lock_command}" "${lock_message}" "sudo"
               fi
             done
           done
@@ -92,10 +92,10 @@ audit_writable_files () {
               fix_message  "chmod o-w ${check_file}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              update_log_file  "${log_file}" "${check_file}"
-              lockdown_message="File \"${check_file}\" to be non world writable"
-              lockdown_command="chmod o-w ${check_file}"
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              update_log  "${log_file}" "${check_file}"
+              lock_message="File \"${check_file}\" to be non world writable"
+              lock_command="chmod o-w ${check_file}"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           done
         fi

@@ -29,7 +29,7 @@ check_linux_package_with_group () {
     log_file="package_log"
     if [ "${audit_mode}" != "2" ]; then
       string="${package_type} \"${package_check}\" is \"${package_status}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: ${string}"
@@ -104,18 +104,18 @@ check_linux_package_with_group () {
           package_command="pacman -R ${package_check}"
         fi
       fi
-      lockdown_message="${package_type} \"${package_check}\" to \"${package_status}\""
+      lock_message="${package_type} \"${package_check}\" to \"${package_status}\""
       if [ "${audit_mode}" = "0" ] && [ "${package_mode}" != "check" ]; then
         if [ "$package_uninstall" = "yes" ]; then
-          update_log_file  "${log_file}" "${package_check},${package_mode}"
-          lockdown_command="${package_command}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}"
+          update_log   "${log_file}" "${package_check},${package_mode}"
+          lock_command="${package_command}"
+          run_lockdown "${lock_command}" "${lock_message}"
         else
-          inc_insecure  "Not uninstalling package as package uninstall has been set to no"
-          fix_message   "${package_command}"
+          inc_insecure "Not uninstalling package as package uninstall has been set to no"
+          fix_message  "${package_command}"
         fi
       else
-        fix_message     "${package_command}"
+        fix_message    "${package_command}"
       fi
     else
       restore_file="${restore_dir}/${log_file}"

@@ -24,18 +24,18 @@ audit_system_auth_password_hashing () {
     if [ "${audit_mode}" != 2 ]; then
       if [ -f "${check_file}" ]; then
         command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk '{print \$8}'"
-        command_message "${command}"
+        command_message     "${command}"
         check_value=$( eval "${command}" )
-        lockdown_command="sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+        lock_command="sed 's/^password\ssufficient\spam_unix.so/password sufficient pam_unix.so sha512/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
         if [ "${check_value}" != "${search_string}" ]; then
           if [ "${audit_mode}" = "1" ]; then
             inc_insecure "Password strength settings not enabled in ${check_file}"
-            verbose_message    "${lockdown_command}" "fix"
+            fix_message  "${lock_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file      "${check_file}"
-            lockdown_message="Password minimum length in \"${check_file}\""
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            backup_file  "${check_file}"
+            lock_message="Password minimum length in \"${check_file}\""
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         else
           if [ "${audit_mode}" = "1" ]; then

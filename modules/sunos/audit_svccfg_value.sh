@@ -47,15 +47,15 @@ audit_svccfg_value () {
       verbose_message "Service ${service_name}"
     fi
     if [ "${current_value}" != "${correct_value}" ]; then
-      lockdown_command="svccfg -s ${service_name} setprop ${service_property} = ${correct_value}"
+      lock_command="svccfg -s ${service_name} setprop ${service_property} = ${correct_value}"
       if [ "${audit_mode}" = 1 ]; then
         inc_insecure "Service \"${service_name}\" Property \"${service_property}\" not set to \"${correct_value}\""
-        fix_message  "${lockdown_command}"
+        fix_message  "${lock_command}"
       else
         if [ "${audit_mode}" = 0 ]; then
-          update_log_file "${log_file}" "${service_name},${service_property},${current_value}"
-          lockdown_message="${service_name} ${service_property} to ${correct_value}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          update_log   "${log_file}" "${service_name},${service_property},${current_value}"
+          lock_message="${service_name} ${service_property} to ${correct_value}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       fi
     else

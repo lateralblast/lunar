@@ -40,10 +40,10 @@ check_chkconfig_service () {
        check_message  "${string}"
         if [ "${actual_status}" != "${correct_status}" ]; then
           inc_insecure "Service \"${service_name}\" is not \"${correct_status}\""
-          update_log_file  "${log_file}" "${service_name},${actual_status}"
-          lockdown_command="${chk_config} ${service_name} ${correct_status}"
-          lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          update_log   "${log_file}" "${service_name},${actual_status}"
+          lock_command="${chk_config} ${service_name} ${correct_status}"
+          lock_message="Service \"${service_name}\" to \"${correct_status}\""
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
           inc_secure "${string}"
         fi
@@ -100,11 +100,11 @@ check_chkconfig_service () {
           echo ""
         fi
         if [ "${actual_status}" != "${correct_status}" ]; then
-          inc_insecure     "${insecure_string}"
-          update_log_file  "${log_file}" "${service_name},${service_level},${actual_status}"
-          lockdown_command="${chk_config} --level ${service_level} ${service_name} ${correct_status}"
-          lockdown_message="Service ${service_name} at run level ${service_level} to ${correct_status}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          inc_insecure "${insecure_string}"
+          update_log   "${log_file}" "${service_name},${service_level},${actual_status}"
+          lock_command="${chk_config} --level ${service_level} ${service_name} ${correct_status}"
+          lock_message="Service ${service_name} at run level ${service_level} to ${correct_status}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
           inc_secure "${secure_string}"
         fi

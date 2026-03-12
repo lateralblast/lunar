@@ -50,9 +50,9 @@ audit_account_switching () {
           echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         else
-          lockdown_command="${set_command}"
-          lockdown_message="Disable ${string}"
-          exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="${set_command}"
+          lock_message="Disable ${string}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       fi
     fi

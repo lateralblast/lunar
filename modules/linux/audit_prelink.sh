@@ -35,7 +35,7 @@ audit_prelink () {
       prelink_check="no"
     fi
     if [ "${prelink_check}" = "yes" ]; then
-      exec_lockdown     "prelink -ua" "Prelink to disabled"
+      run_lockdown      "prelink -ua" "Prelink to disabled"
     fi
     check_linux_package "uninstall"   "prelink"
   else

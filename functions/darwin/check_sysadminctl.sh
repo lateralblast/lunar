@@ -52,14 +52,14 @@ check_sysadminctl () {
         inc_insecure  "Parameter \"${param}\" not set to \"${value}\""
         fix_message   "sudo sysadminctl -${param} ${value}"
         if [ "${audit_mode}" = 0 ]; then
-          update_log_file  "${log_file}" "${param},${other_value}"
-          lockdown_message="Parameter \"${param}\" to \"${value}\""
-          lockdown_command="${set_command}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          update_log   "${log_file}" "${param},${other_value}"
+          lock_message="Parameter \"${param}\" to \"${value}\""
+          lock_command="${set_command}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       else
         if [ "${audit_mode}" = 1 ]; then
-          inc_secure       "Parameter \"${param}\" is set to \"${value}\""
+          inc_secure   "Parameter \"${param}\" is set to \"${value}\""
         fi
       fi
     else

@@ -83,7 +83,7 @@ check_systemctl_service () {
       fi
     else
       string="Service \"${service_name}\" is \"${correct_status}\""
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${audit_mode}" != 2 ]; then
         if [ "${ansible_mode}" = 1 ]; then
           echo ""
@@ -100,11 +100,11 @@ check_systemctl_service () {
           inc_insecure "Service \"${service_name}\" is \"${actual_status}\""
         else
           if [ "${actual_status}" != "${correct_status}" ] && [ ! "${actual_status}" = "not-found" ]; then
-            inc_insecure     "Service \"${service_name}\" is not \"${correct_status}\""
-            update_log_file  "${log_file}" "${service_name},${actual_status}"
-            lockdown_command="systemctl ${service_switch} ${service_name} 2> /dev/null"
-            lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
-            exec_lockdown    "${lockdown_command}"  "${lockdown_message}" "sudo"
+            inc_insecure "Service \"${service_name}\" is not \"${correct_status}\""
+            update_log   "${log_file}" "${service_name},${actual_status}"
+            lock_command="systemctl ${service_switch} ${service_name} 2> /dev/null"
+            lock_message="Service \"${service_name}\" to \"${correct_status}\""
+            run_lockdown "${lock_command}"  "${lock_message}" "sudo"
           else
             if [ "${actual_status}" = "not-found" ]; then
               inc_secure "Service \"${service_name}\" is \"${actual_status}\""

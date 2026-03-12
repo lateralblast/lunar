@@ -22,12 +22,12 @@ audit_aws_ec () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -n "${check}" ]; then
-      inc_secure       "ElastiCache \"${cache}\" is Multi-AZ enabled"
+      inc_secure   "ElastiCache \"${cache}\" is Multi-AZ enabled"
     else
-      inc_insecure     "ElastiCache \"${cache}\" is not Multi-AZ enabled"
-      lockdown_command="aws elasticache modify-replication-group --region ${aws_region} --replication-group-id ${cache} --automatic-failover-enabled --apply-immediately"
-      lockdown_message="ElastiCache \"${cache}\" Multi-AZ to enabled"
-      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+      inc_insecure "ElastiCache \"${cache}\" is not Multi-AZ enabled"
+      lock_command="aws elasticache modify-replication-group --region ${aws_region} --replication-group-id ${cache} --automatic-failover-enabled --apply-immediately"
+      lock_message="ElastiCache \"${cache}\" Multi-AZ to enabled"
+      run_lockdown "${lock_command}" "${lock_message}" "sudo"
     fi
   done
 }

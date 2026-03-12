@@ -44,11 +44,11 @@ check_file_exists () {
         inc_insecure "File \"${check_file}\" ${exists}"
       fi
       if [ "${audit_mode}" = 0 ]; then
-        backup_file      "${check_file}"
-        update_log_file  "${log_file}" "${check_file},rm"
-        lockdown_message="File \"${check_file}\""
-        lockdown_command="rm ${check_file}"
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        backup_file  "${check_file}"
+        update_log   "${log_file}" "${check_file},rm"
+        lock_message="File \"${check_file}\""
+        lock_command="rm ${check_file}"
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       fi
     else
       if [ "${audit_mode}" = 1 ]; then
@@ -58,7 +58,7 @@ check_file_exists () {
   else
     if [ "${audit_mode}" != 2 ]; then
       string="File \"${check_file}\" ${exists}"
-      verbose_message "${string}" "check"
+      check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
         ansible_value="check_file_exists_${ansible_counter}"
@@ -81,10 +81,10 @@ check_file_exists () {
         inc_insecure "File \"${check_file}\" does not exist"
       fi
       if [ "${audit_mode}" = 0 ]; then
-        update_log_file  "${log_file}" "${check_file},touch"
-        lockdown_message="File \"${check_file}\""
-        lockdown_command="touch ${check_file}"
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        update_log   "${log_file}" "${check_file},touch"
+        lock_message="File \"${check_file}\""
+        lock_command="touch ${check_file}"
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       fi
     else
       if [ "${audit_mode}" = 1 ]; then

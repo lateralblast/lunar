@@ -46,10 +46,10 @@ audit_wheel_users () {
                 inc_insecure "User ${user_name} has not logged in recently and their account is not locked"
               fi
               if [ "${audit_mode}" = 0 ]; then
-                backup_file      "${check_file}"
-                lockdown_message "User \"${user_name}\" to locked"
-                lockdown_command="passwd -l ${user_name}"
-                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+                backup_file  "${check_file}"
+                lock_message "User \"${user_name}\" to locked"
+                lock_command="passwd -l ${user_name}"
+                run_lockdown "${lock_command}" "${lock_message}" "sudo"
               fi
             fi
           fi

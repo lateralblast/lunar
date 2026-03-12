@@ -25,12 +25,12 @@ audit_aws_dns () {
     command_message "${command}"
     check=$( eval   "${command}" )
     if [ -z "${check}" ]; then
-      inc_insecure     "Domain ${domain} does not auto renew"
-      lockdown_command="aws route53domains enable-domain-auto-renew --domain-name ${domain}"
-      lockdown_message="Auto-Renew on Domain \"${domain}\" to enabled"
-      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+      inc_insecure "Domain ${domain} does not auto renew"
+      lock_command="aws route53domains enable-domain-auto-renew --domain-name ${domain}"
+      lock_message="Auto-Renew on Domain \"${domain}\" to enabled"
+      run_lockdown "${lock_command}" "${lock_message}" "sudo"
     else
-      inc_secure       "Domain \"${domain}\" auto renews"
+      inc_secure   "Domain \"${domain}\" auto renews"
     fi
     command="date \"+%s\""
     command_message  "${command}"

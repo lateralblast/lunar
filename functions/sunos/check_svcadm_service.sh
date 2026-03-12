@@ -49,13 +49,13 @@ check_svcadm_service () {
           echo ""
         fi
         if [ "${service_status}" != "${correct_status}" ]; then
-          inc_insecure     "Service \"${service_name}\" is \"enabled\""
-          update_log_file  "${log_file}" "${service_name},${service_status}"
-          lockdown_message="Service \"${service_name}\" to \"${correct_status}\""
-          lockdown_command="inetadm -d ${service_name} ; svcadm refresh ${service_name}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          inc_insecure "Service \"${service_name}\" is \"enabled\""
+          update_log   "${log_file}" "${service_name},${service_status}"
+          lock_message="Service \"${service_name}\" to \"${correct_status}\""
+          lock_command="inetadm -d ${service_name} ; svcadm refresh ${service_name}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
-          inc_secure "Service \"${service_name}\" is already \"disabled\""
+          inc_secure   "Service \"${service_name}\" is already \"disabled\""
         fi
       fi
     fi

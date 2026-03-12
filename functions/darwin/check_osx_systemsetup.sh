@@ -40,13 +40,13 @@ check_osx_systemsetup () {
         command_message "${command}"
         check=$( eval   "${command}" )
         if [ "${check}" != "${value}" ]; then
-          inc_insecure     "Parameter \"${param}\" not set to \"${value}\""
-          update_log_file  "${log_file}" "${check_file}"
-          lockdown_command="systemsetup -${param} ${value}"
-          lockdown_message="Parameter \"${param}\" to \"${value}\""
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          inc_insecure "Parameter \"${param}\" not set to \"${value}\""
+          update_log   "${log_file}" "${check_file}"
+          lock_command="systemsetup -${param} ${value}"
+          lock_message="Parameter \"${param}\" to \"${value}\""
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
-          inc_secure       "Parameter \"${param}\" is set to \"${value}\""
+          inc_secure   "Parameter \"${param}\" is set to \"${value}\""
         fi
       else
         restore_file="${restore_dir}/${log_file}"

@@ -38,14 +38,14 @@ check_file_comment () {
           echo ""
         else
           command="sed 's/${line}/${comment}\1/g' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file}"
-          exec_lockdown "${command}"
+          run_lockdown "${command}"
         fi
         if [ "${audit_mode}" = 0 ]; then
-          backup_file      "${check_file}"
-          update_log_file  "${log_file}" "${check_file},sed"
-          lockdown_message="File \"${check_file}\""
-          lockdown_command="sed  \"s/${line}/${comment}\1/g\" < ${check_file} > ${temp_file} ; cat  ${temp_file} > ${check_file}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          backup_file  "${check_file}"
+          update_log   "${log_file}" "${check_file},sed"
+          lock_message="File \"${check_file}\""
+          lock_command="sed  \"s/${line}/${comment}\1/g\" < ${check_file} > ${temp_file} ; cat  ${temp_file} > ${check_file}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi
       fi
     fi

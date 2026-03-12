@@ -32,7 +32,7 @@ funct_check_pkg () {
       fi
     else
       string="Package \"${package_name}\" is installed"
-      verbose_message "${string}" "check"
+      check_message "${string}"
       if [ "${ansible_mode}" = 1 ]; then
         echo ""
         echo "- name: Checking ${string}"

@@ -39,8 +39,8 @@ audit_suid_files () {
           check_files=$( eval "${command}" )
           for check_file in ${check_files}; do
             inc_insecure "File \"${check_file}\" is SUID/SGID"
-            lockdown_command="chmod o-S \"${check_file}\""
-            lockdown_message="Setting file \"${check_file}\" to be non world writable"
+            lock_command="chmod o-S \"${check_file}\""
+            lock_message="Setting file \"${check_file}\" to be non world writable"
             if [ "${ansible_mode}" = 1 ]; then
               echo ""
               echo "- name: Checking write permissions for \"${check_file}\""
@@ -50,12 +50,12 @@ audit_suid_files () {
               echo ""
             fi
             if [ "${audit_mode}" = 1 ]; then
-              inc_insecure  "File \"${check_file}\" is world writable"
-              exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              inc_insecure "File \"${check_file}\" is world writable"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
             if [ "${audit_mode}" = 0 ]; then
               echo "${check_file}" >> "${log_file}"
-              exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           done
         done
@@ -70,8 +70,8 @@ audit_suid_files () {
           find_command="find / \( -fstype jfs -o -fstype jfs2 \) \
           \( -perm -04000 -o -perm -02000 \) -typ e f -ls"
         fi
-        lockdown_command="chmod o-S ${check_file}"
-        lockdown_message="Setting file \"${check_file}\" to be non world writable"
+        lock_command="chmod o-S ${check_file}"
+        lock_message="Setting file \"${check_file}\" to be non world writable"
         for check_file in $( ${find_command} ); do
           inc_insecure "File ${check_file} is SUID/SGID"
           if [ "${ansible_mode}" = 1 ]; then
@@ -83,12 +83,12 @@ audit_suid_files () {
             echo ""
           fi
           if [ "${audit_mode}" = 1 ]; then
-            inc_insecure     "File \"${check_file}\" is world writable"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            inc_insecure "File \"${check_file}\" is world writable"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            update_log_file  "${log_file}" "${check_file}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            update_log   "${log_file}" "${check_file}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         done
       fi

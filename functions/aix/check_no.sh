@@ -39,13 +39,13 @@ check_no() {
         echo ""
       fi
       if [ "${actual_value}" != "${correct_value}" ]; then
-        inc_insecure     "Parameter \"${parameter_name}\" is not \"${correct_value}\""
-        update_log_file  "${log_file}" "${actual_value}"
-        lockdown_command="no -p -o ${parameter_name}=${correct_value}"
-        lockdown_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        inc_insecure "Parameter \"${parameter_name}\" is not \"${correct_value}\""
+        update_log   "${log_file}" "${actual_value}"
+        lock_command="no -p -o ${parameter_name}=${correct_value}"
+        lock_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       else
-        inc_secure       "Parameter \"${parameter_name}\" is \"${correct_value}\""
+        inc_secure   "Parameter \"${parameter_name}\" is \"${correct_value}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

@@ -29,21 +29,21 @@ check_pwpolicy() {
       fi
       actual_value=$( eval "${policy_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
-        lockdown_message="Password Policy for \"${parameter_name}\" to \"${correct_value}\""
-        inc_insecure     "Password Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
+        lock_message="Password Policy for \"${parameter_name}\" to \"${correct_value}\""
+        inc_insecure "Password Policy for \"${parameter_name}\" is not set to \"${correct_value}\""
         if [ "${os_version}" -ge 12 ]; then
-          lockdown_command="sudo pwpolicy -setglobalpolicy ${parameter_name}=${correct_value}"
-          update_log_file  "${log_file}" "${actual_value}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="sudo pwpolicy -setglobalpolicy ${parameter_name}=${correct_value}"
+          update_log   "${log_file}" "${actual_value}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
           if [ "${managed_node}" = "Error" ]; then
-            lockdown_command="pwpolicy -n /Local/Default -setglobalpolicy ${parameter_name}=${correct_value}"
-            update_log_file  "${log_file}" "${actual_value}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_command="pwpolicy -n /Local/Default -setglobalpolicy ${parameter_name}=${correct_value}"
+            update_log   "${log_file}" "${actual_value}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           else
-            lockdown_command="pwpolicy -n -setglobalpolicy ${parameter_name}=${correct_value}"
-            update_log_file  "${log_file}" "${actual_value}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_command="pwpolicy -n -setglobalpolicy ${parameter_name}=${correct_value}"
+            update_log   "${log_file}" "${actual_value}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         fi
         if [ "${ansible_mode}" = 1 ]; then
@@ -59,7 +59,7 @@ check_pwpolicy() {
           echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
           echo "- name: Fixing ${string}"
-          echo "  command: sh -c \"${lockdown_command}\""
+          echo "  command: sh -c \"${lock_command}\""
           echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
           echo ""
         fi

@@ -43,13 +43,13 @@ check_chuser() {
       fi
       actual_value=$( eval "${get_command}" )
       if [ "${actual_value}" != "${correct_value}" ]; then
-        update_log_file  "${log_file}" "chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
-        inc_insecure     "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\" for \"${user_name}\""
-        lockdown_command="chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
-        lockdown_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}"
+        update_log   "${log_file}" "chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
+        inc_insecure "Security Policy for \"${parameter_name}\" is not set to \"${correct_value}\" for \"${user_name}\""
+        lock_command="chuser ${parameter_name}=${correct_value} ${group_name}=${group_value} ${user_name}"
+        lock_message="Security Policy for \"${parameter_name}\" to \"${correct_value}\""
+        run_lockdown "${lock_command}" "${lock_message}"
       else
-        inc_secure       "Security Policy for \"${parameter_name}\" is set to \"${correct_value}\" for \"${user_name}\""
+        inc_secure   "Security Policy for \"${parameter_name}\" is set to \"${correct_value}\" for \"${user_name}\""
       fi
     else
       log_file="${restore_dir}/${log_file}"

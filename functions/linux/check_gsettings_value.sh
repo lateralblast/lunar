@@ -62,10 +62,10 @@ check_gsettings_value () {
           else
             current_value=$( gsettings get "${parameter_root}" "${parameter_name}" 2> /dev/null )
             if [ "${audit_mode}" = 0 ]; then
-              update_log_file  "${log_file}" "${parameter_root},${parameter_name},${current_value}"
-              lockdown_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
-              lockdown_command="${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              update_log   "${log_file}" "${parameter_root},${parameter_name},${current_value}"
+              lock_message="Parameter \"${parameter_name}\" to \"${correct_value}\""
+              lock_command="${set_command} ${parameter_root} ${parameter_name} ${correct_value}"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           fi
         else

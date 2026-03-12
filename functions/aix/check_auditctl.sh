@@ -40,12 +40,12 @@ check_auditctl () {
             echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           fi
-          inc_insecure     "${insecure_string}"
-          lockdown_command="${set_command}"
-          lockdown_message="${secure_string}" 
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          inc_insecure "${insecure_string}"
+          lock_command="${set_command}"
+          lock_message="${secure_string}" 
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
-          inc_secure "${secure_string}"
+          inc_secure   "${secure_string}"
         fi
       fi
     fi

@@ -17,17 +17,17 @@ check_trust() {
     log_file="trustchk_${parameter_name}.log"
     actual_value=$( trustchk -p "${parameter_name}" | cut -f2 -d= )
     policy_command="trustchk -p ${parameter_name} | cut -f2 -d= | grep ${correct_value}"
-    lockdown_command="trustchk -p ${parameter_name}=${correct_value}"
+    lock_command="trustchk -p ${parameter_name}=${correct_value}"
     if [ "${audit_mode}" != 2 ]; then
       string="Trusted Execution setting for \"${parameter_name}\" is set to \"${correct_value}\""
-      check_message  "${string}"
+      check_message "${string}"
       if [ "${actual_value}" != "${correct_value}" ]; then
-        inc_insecure     "Trusted Execution setting for \"${parameter_name}\" is not set to \"${correct_value}\""
-        update_log_file  "${log_file}" "trustchk-p ${parameter_name}=${actual_value}"
-        lockdown_message="Trusted Execution setting for \"${parameter_name}\" to \"${correct_value}\""
-        exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+        inc_insecure "Trusted Execution setting for \"${parameter_name}\" is not set to \"${correct_value}\""
+        update_log   "${log_file}" "trustchk-p ${parameter_name}=${actual_value}"
+        lock_message="Trusted Execution setting for \"${parameter_name}\" to \"${correct_value}\""
+        run_lockdown "${lock_command}" "${lock_message}" "sudo"
       else
-        inc_secure "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
+        inc_secure   "Password Policy for \"${parameter_name}\" is set to \"${correct_value}\""
       fi
       if [ "${ansible_mode}" = 1 ]; then
         ansible_counter=$((ansible_counter+1))
@@ -42,7 +42,7 @@ check_trust() {
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
         echo "- name: Fixing ${string}"
-        echo "  command: sh -c \"${lockdown_command}\""
+        echo "  command: sh -c \"${lock_command}\""
         echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi

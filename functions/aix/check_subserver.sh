@@ -39,21 +39,21 @@ check_subserver() {
           inc_insecure "Service \"${service_name}\" Protocol \"${protocol_name}\" is not \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
             fix_command="chsubserver -r inetd -C /etc/inetd.conf -d -v \"${service_name}\" -p \"${protocol_name}\""
-            verbose_message "${fix_command}" "fix"
+            fix_message "${fix_command}"
           else
             fix_command="chsubserver -r inetd -C /etc/inetd.conf -a -v \"${service_name}\" -p \"${protocol_name}\""
-            verbose_message "${fix_command}" "fix"
+            fix_message "${fix_command}"
           fi
         fi
         if [ "${audit_mode}" = 0 ]; then
-          update_log_file  "${log_file}" "${actual_value}"
-          lockdown_message="Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${correct_value}\""
+          update_log   "${log_file}" "${actual_value}"
+          lock_message="Service \"${service_name}\" Protocol \"${protocol_name}\" to \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_command="chsubserver -r inetd -C /etc/inetd.conf -d -v ${service_name} -p ${protocol_name}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           else
-            lockdown_command="chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_command="chsubserver -r inetd -C /etc/inetd.conf -a -v ${service_name} -p ${protocol_name}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         fi
       else

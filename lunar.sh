@@ -9,7 +9,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.1.6
+# Version:      15.1.7
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -408,14 +408,14 @@ execute_command () {
   fi
 }
 
-# exec_lockdown
+# run_lockdown
 #
 # Run a lockdown command
 # Check that we are in lockdown mode
 # If not in lockdown mode output a verbose message
 #.
 
-exec_lockdown () {
+run_lockdown () {
   command="${1}"
   message="${2}"
   privilege="${3}"

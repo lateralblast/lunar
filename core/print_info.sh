@@ -36,7 +36,7 @@ print_info () {
     test=$( echo "${line}" | grep "# ${info}" )
     if [ "${test}" ]; then
       switch=$( echo "$line" |cut -f1 -d# )
-      desc=$( echo "$line" |cut -f2 -d# |sed "s/ ${info} - //g")
+      desc=$(   echo "$line" |cut -f2 -d# |sed "s/ ${info} - //g")
       echo "${switch}"
       echo "  ${desc}"
     fi
@@ -145,7 +145,7 @@ print_tests () {
         module_name=$( echo "${dir_entry}" | grep "kubernetes" )
         ;;
       All|all)
-        module_name=$( echo "${dir_entry}" )
+        module_name="${dir_entry}"
         ;;
       *zure*)
         module_name=$( basename "${dir_entry}" | grep "azure_" )
@@ -191,12 +191,12 @@ print_changes () {
     file_list=$( find "${base_dir}" -type f -print )
     for saved_file in ${file_list}; do
       check_file=$( echo "${saved_file}" | cut -f 5- -d/ )
-      top_dir=$( echo "${saved_file}" | cut -f 1-4 -d/ )
+      top_dir=$(    echo "${saved_file}" | cut -f 1-4 -d/ )
       echo "Directory: \"${top_dir}\""
-      log_test=$( echo "${check_file}" |grep "log$" )
+      log_test=$(   echo "${check_file}" |grep "log$" )
       if [ -n "${log_test}" ]; then
         echo "Original system parameters:"
-        sed "s/,/ /g" < "${saved_file}"
+        sed  "s/,/ /g" < "${saved_file}"
       else
         echo "Changes to \"/${check_file}\":"
         diff "${saved_file}" "/${check_file}"

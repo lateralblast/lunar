@@ -47,7 +47,7 @@ check_azure_environment () {
       elastic-san site-recovery amlfs dataprotection databox redisenterprise \
       datafactory; do
       command="az extension list | grep \"${cli_ext}\""
-      command_message "${command}"
+      command_message  "${command}"
       ext_test=$( eval "${command}" )
       if [ -z "${ext_test}" ]; then
         if [ "${force}" = "1" ]; then
@@ -109,16 +109,16 @@ check_environment () {
   check_os_release
   if [ "${os_name}" = "Darwin" ]; then
     verbose_message "" ""
-    verbose_message "Checking if node is managed" "info"
+    info_message    "Checking if node is managed"
     command="sudo pwpolicy -n -getglobalpolicy 2>&1 |cut -f1 -d:"
     command_message      "${command}"
     managed_node=$( eval "${command}" )
     if [ "${managed_node}" = "Error" ]; then
-      verbose_message "Node is not managed" "notice"
+      notice_message "Node is not managed"
     else
-      verbose_message "Node is managed" "notice"
+      notice_message "Node is managed"
     fi
-    verbose_message "" ""
+    verbose_message  "" ""
   fi
   # Load functions from functions directory
   if [ -d "${functions_dir}" ]; then
@@ -185,7 +185,7 @@ check_environment () {
     fi
   fi
   if [ ! -d "${base_dir}" ]; then
-    mkdir -p "${base_dir}"
+    mkdir -p  "${base_dir}"
     chmod 700 "${base_dir}"
   fi
   if [ ! -d "${temp_dir}" ]; then

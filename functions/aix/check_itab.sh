@@ -45,20 +45,20 @@ check_itab() {
         fi
         if [ "${audit_mode}" = 0 ]; then
           log_file="${work_dir}/${log_file}"
-          lockdown_message="Service \"${service_name}\" to \"${correct_value}\""
+          lock_message="Service \"${service_name}\" to \"${correct_value}\""
           if [ "${correct_value}" = "off" ]; then
-            update_log_file  "${log_file}" "${actual_value}"
-            lockdown_command="rmitab ${service_name}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            update_log   "${log_file}" "${actual_value}"
+            lock_command="rmitab ${service_name}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           else
             if [ "${actual_value}" = "off" ]; then
-              update_log_file  "${log_file}" "off"
-              lockdown_command="mkitab ${correct_value}"
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              update_log   "${log_file}" "off"
+              lock_command="mkitab ${correct_value}"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             else
-              update_log_file  "${log_file}" "${actual_value}"
-              lockdown_command="chitab ${correct_value}"
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              update_log   "${log_file}" "${actual_value}"
+              lock_command="chitab ${correct_value}"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           fi
         fi

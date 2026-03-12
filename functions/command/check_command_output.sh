@@ -77,10 +77,10 @@ check_command_output () {
       else
         inc_secure   "Command \"${command_name}\" returns correct value"
       fi
-      update_log_file  "${log_file}" "${audit_command}"
-      lockdown_message="Command \"${command_name}\" to correct value"
-      lockdown_command="${set_command}"
-      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+      update_log  "${log_file}" "${audit_command}"
+      lock_message="Command \"${command_name}\" to correct value"
+      lock_command="${set_command}"
+      run_lockdown    "${lock_command}" "${lock_message}" "sudo"
     fi
     if [ "${audit_mode}" = 2 ]; then
       restore_file="${restore_dir}/${log_file}"

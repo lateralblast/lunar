@@ -30,21 +30,21 @@ audit_super_users () {
       check_chuser "su" "true" "sugroups" "system" "root"
     else
       if [ "${audit_mode}" != 2 ]; then
-        lockdown_command="userdel ${user_name}"
+        lock_command="userdel ${user_name}"
         command="awk -F: '\$3 == \"0\" { print \$1 }' /etc/passwd | grep -v root"
         command_message   "${command}"
         user_list=$( eval "${command}" )
         for user_name in ${user_list}; do
           if [ "${audit_mode}" = 1 ]; then
             inc_insecure "UID 0 for User \"${user_name}\""
-            verbose_message    "${lockdown_command}"
+            fix_message  "${lock_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            backup_file "/etc/shadow"
-            backup_file "/etc/passwd"
-            lockdown_message="Removing Account ${user_name} as it is UID 0"
-            lockdown_command="userdel ${user_name}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            backup_file  "/etc/shadow"
+            backup_file  "/etc/passwd"
+            lock_message="Removing Account ${user_name} as it is UID 0"
+            lock_command="userdel ${user_name}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         done
         if [ "${user_name}" = "" ]; then

@@ -113,35 +113,35 @@ check_osx_defaults () {
         if [ "${audit_mode}" = 0 ]; then
           backup_file "${backup_file}"
           string="Parameter ${defaults_parameter} to ${defaults_value} in ${defaults_file}"
-          lockdown_message="${string}"
+          lock_message="${string}"
           if [ "${defaults_value}" = "" ]; then
-            lockdown_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
-            exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_command="${defaults_command} delete ${defaults_file} ${defaults_parameter}"
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           else
             if [ "${defaults_type}" = "bool" ]; then
-              lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              lock_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -bool ${defaults_value}"
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             else
               if [ "${defaults_type}" = "int" ]; then
-                lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
-                exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+                lock_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -int ${defaults_value}"
+                run_lockdown "${lock_command}" "${lock_message}" "sudo"
                 if [ "${defaults_file}" = "/Library/Preferences/com.apple.Bluetooth" ]; then
                   killall -HUP blued
                 fi
               else
                 if [ "${defaults_type}" = "dict" ]; then
                   if [ "${defaults_second_type}" = "bool" ]; then
-                    lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
-                    exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+                    lock_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -bool ${defaults_second_value}"
+                    run_lockdown "${lock_command}" "${lock_message}" "sudo"
                   else
                     if [ "${defaults_second_type}" = "int" ]; then
-                      lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
-                      exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+                      lock_command="${defaults_command} write ${defaults_file} ${defaults_parameter} -dict ${defaults_value} -int ${defaults_second_value}"
+                      run_lockdown "${lock_command}" "${lock_message}" "sudo"
                     fi
                   fi
                 else
-                  lockdown_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
-                  exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+                  lock_command="${defaults_command} write ${defaults_file} ${defaults_parameter} \"${defaults_value}\""
+                  run_lockdown "${lock_command}" "${lock_message}" "sudo"
                 fi
               fi
             fi

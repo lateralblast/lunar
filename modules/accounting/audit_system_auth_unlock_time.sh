@@ -39,27 +39,27 @@ audit_system_auth_unlock_time () {
           check_value=$( grep "^${auth_string}" "${check_file}" | grep "${search_string}$" | awk -F '${search_string}=' '{print $2}' | awk '{print $1}' )
           if [ "${check_value}" != "${search_string}" ]; then
             if [ "${os_check}" -eq 0 ]; then
-              lockdown_command="sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 ${search_string}=${search_value}\n/' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+              lock_command="sed 's/^auth.*pam_env.so$/&\nauth\t\trequired\t\t\tpam_faillock.so preauth audit silent deny=5 unlock_time=900\nauth\t\t[success=1 default=bad]\t\t\tpam_unix.so\nauth\t\t[default=die]\t\t\tpam_faillock.so authfail audit deny=5 unlock_time=900\nauth\t\tsufficient\t\t\tpam_faillock.so authsucc audit deny=5 ${search_string}=${search_value}\n/' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             else
-              lockdown_command="awk '( \$1 == \"auth\" && \$2 == \"required\" && \$3 == \"pam_tally2.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail audit silent deny=5 unlock_time=900\"; print \$0; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+              lock_command="awk '( \$1 == \"auth\" && \$2 == \"required\" && \$3 == \"pam_tally2.so\" ) { print \"auth\trequired\tpam_tally2.so onerr=fail audit silent deny=5 unlock_time=900\"; print \$0; next };' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
             fi
             if [ "${audit_mode}" = 1 ]; then
               inc_insecure "Lockout time for failed password attempts not enabled in \"${check_file}\""
-              fix_message  "${lockdown_command}"
+              fix_message  "${lock_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file      "${check_file}"
-              lockdown_message="Lockout time for failed password attempts in \"${check_file}\""
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              backup_file  "${check_file}"
+              lock_message="Lockout time for failed password attempts in \"${check_file}\""
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              inc_secure "Lockout time for failed password attempts enabled in \"${check_file}\""
+              inc_secure   "Lockout time for failed password attempts enabled in \"${check_file}\""
             fi
           fi
         else
           for restore_file in /etc/pam.d/system-auth /etc/pam.d/common-auth; do
-            restore_file "${restore_file}" "${restore_dir}"
+            restore_file   "${restore_file}" "${restore_dir}"
           done
         fi
       fi

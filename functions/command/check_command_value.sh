@@ -49,7 +49,7 @@ check_command_value () {
     else
       string="Output of command \"${command_name}\" parameter \"${parameter_name}\" is \"${correct_value}\""
     fi
-   verbose_message "${string}" "check"
+   check_message  "${string}"
   fi
   if [ "${command_name}" = "inetadm" ]; then
     check_command="inetadm -l ${service_name}"
@@ -64,9 +64,9 @@ check_command_value () {
     else
       set_command="routeadm -e"
     fi
-    lockdown_command="${set_command} ${parameter_name}"
+    lock_command="${set_command} ${parameter_name}"
   else
-    lockdown_command="${set_command} ${parameter_name}=${correct_value}"
+    lock_command="${set_command} ${parameter_name}=${correct_value}"
   fi
   if [ "${ansible_mode}" = 1 ]; then
     ansible_counter=$((ansible_counter+1))
@@ -81,7 +81,7 @@ check_command_value () {
     echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
     echo ""
     echo "- name: Fixing ${string}"
-    echo "  command: sh -c \"${lockdown_command}\""
+    echo "  command: sh -c \"${lock_command}\""
     echo "  when: ${ansible_value}.rc == 1 and ansible_facts['ansible_system'] == '${os_name}'"
     echo ""
   fi
@@ -95,27 +95,27 @@ check_command_value () {
         else
           set_command="routeadm -e"
         fi
-        lockdown_command="${set_command} ${parameter_name}"
-        verbose_message  "${lockdown_command}" "fix"
+        lock_command="${set_command} ${parameter_name}"
+        fix_message  "${lock_command}"
       else
-        lockdown_command="${set_command} ${parameter_name}=${correct_value}"
-        verbose_message  "${lockdown_command}" "fix"
+        lock_command="${set_command} ${parameter_name}=${correct_value}"
+        fix_message  "${lock_command}"
       fi
     else
       if [ "${audit_mode}" = 0 ]; then
-        update_log_file  "${log_file}" "${parameter_name},${current_value}"
-        lockdown_message="Parameter ${parameter_name} to ${correct_value}"
+        update_log  "${log_file}" "${parameter_name},${current_value}"
+        lock_message="Parameter ${parameter_name} to ${correct_value}"
         if [ "${command_name}" = "routeadm" ]; then
           if [ "${correct_value}" = "disabled" ]; then
             set_command="routeadm -d"
           else
             set_command="routeadm -e"
           fi
-          lockdown_command="${set_command} ${parameter_name}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="${set_command} ${parameter_name}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         else
-          lockdown_command="${set_command} ${parameter_name}=${correct_value}"
-          exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+          lock_command="${set_command} ${parameter_name}=${correct_value}"
+          run_lockdown "${lock_command}" "${lock_message}" "sudo"
         fi 
       fi
     fi

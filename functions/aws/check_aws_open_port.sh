@@ -27,18 +27,18 @@ check_aws_open_port () {
   else
     string="Application \"${app}\" with instance \"${instance}\" with Security Group \"${sg}\" does not have \"${service}\" on port \"${port}\" open to the world"
   fi
-  verbose_message "${string}" "check"
+  check_message "${string}"
   if [ ! "${open_port}" ]; then
-    inc_secure "${string}"
+    inc_secure  "${string}"
   else
     if [ "${app}" = "none" ]; then
       string="Security Group \"${sg}\" has service \"${service}\" on port \"${port}\" open to the world"
     else
       string="Application \"$app\" with instance \"${instance}\" with Security Group \"${sg}\" has \"${service}\" on port \"${port}\" open to the world"
     fi
-    inc_insecure     "${string}"
-    lockdown_command="aws ec2 revoke-security-group-ingress --region ${aws_region} --group-name ${sg} --protocol ${protocol} --port ${port} --cidr 0.0.0.0/0"
-    lockdown_message="${string}"
-    exec_lockdown    "${lockdown_command}" "${lockdown_message}" 
+    inc_insecure "${string}"
+    lock_command="aws ec2 revoke-security-group-ingress --region ${aws_region} --group-name ${sg} --protocol ${protocol} --port ${port} --cidr 0.0.0.0/0"
+    lock_message="${string}"
+    run_lockdown "${lock_command}" "${lock_message}" 
   fi
 }

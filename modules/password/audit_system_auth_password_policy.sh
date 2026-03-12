@@ -29,16 +29,16 @@ audit_system_auth_password_policy () {
           command="grep \"^${auth_string}\" \"${check_file}\" | grep \"${search_string}$\" | awk -F \"${search_string}=\" '{print \$2}' | awk '{print \$1}'"
           command_message     "${command}"
           check_value=$( eval "${command}" )
-          lockdown_command="awk '( \$1 == \"password\" && \$2 == \"requisite\" && \$3 == \"pam_cracklib.so\" ) { print \$0  \" dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9\"; next }; { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+          lock_command="awk '( \$1 == \"password\" && \$2 == \"requisite\" && \$3 == \"pam_cracklib.so\" ) { print \$0  \" dcredit=-1 lcredit=-1 ocredit=-1 ucredit=-1 minlen=9\"; next }; { print }' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" != "${search_value}" ]; then
             if [ "${audit_mode}" = "1" ]; then
               inc_insecure "Password \"${search_string}\" is not set to \"${search_value}\" in \"${check_file}\""
-              fix_message  "${lockdown_command}"
+              fix_message  "${lock_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file   "${check_file}"
-              lockdown_message="Password \"${search_string}\" to \"${search_value}\" in \"${check_file}\""
-              exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+              backup_file  "${check_file}"
+              lock_message="Password \"${search_string}\" to \"${search_value}\" in \"${check_file}\""
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then

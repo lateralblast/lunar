@@ -32,15 +32,15 @@ audit_sticky_bit () {
           -o -fstype proc \) -prune -o -type d \
           \( -perm -0002 -a -perm -1000 \) -print )
         for check_dir in ${file_list}; do
-          lockdown_command="sudo chmod +t ${check_dir}"
+          lock_command="sudo chmod +t ${check_dir}"
           if [ "${audit_mode}" = 1 ]; then
             inc_insecure "Sticky bit not set on \"${check_dir}\""
-            fix_message  "${lockdown_command}"
+            fix_message  "${lock_command}"
           fi
           if [ "${audit_mode}" = 0 ]; then
-            update_log_file "${log_file}" "${check_dir}"
-            set_message     "Sticky bit on \"${check_dir}\""
-            exec_lockdown   "${lockdown_command}" "${lockdown_message}" "sudo"
+            update_log   "${log_file}" "${check_dir}"
+            set_message  "Sticky bit on \"${check_dir}\""
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
           if [ "${ansible_mode}" = 1 ]; then
             echo ""
@@ -50,8 +50,8 @@ audit_sticky_bit () {
             echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
             echo ""
           else
-            lockdown_message="Sticky bit from \"${check_dir}\""
-            exec_lockdown "${lockdown_command}" "${lockdown_message}" "sudo"
+            lock_message="Sticky bit from \"${check_dir}\""
+            run_lockdown "${lock_command}" "${lock_message}" "sudo"
           fi
         done
         if [ "${audit_mode}" = 2 ]; then

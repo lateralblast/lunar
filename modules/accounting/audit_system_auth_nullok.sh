@@ -22,22 +22,22 @@ audit_system_auth_nullok () {
         if [ -f "${check_file}" ]; then
           check_value=0
           command="grep -v '^#' \"${check_file}\" | grep \"nullok\" | head -1 | wc -l | sed \"s/ //g\""
-          command_message "${command}"
+          command_message     "${command}"
           check_value=$( eval "${command}" )
-          lockdown_command="sed 's/ nullok//' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
+          lock_command="sed 's/ nullok//' < ${check_file} > ${temp_file} ; cat ${temp_file} > ${check_file} ; rm ${temp_file}"
           if [ "${check_value}" = 1 ]; then
             if [ "${audit_mode}" = "1" ]; then
               inc_insecure "Found nullok \"entry\" in \"${check_file}\""
-              fix_message  "${lockdown_command}"
+              fix_message  "${lock_command}"
             fi
             if [ "${audit_mode}" = 0 ]; then
-              backup_file      "${check_file}"
-              lockdown_message="Removing \"nullok\" entries from \"${check_file}\""
-              exec_lockdown    "${lockdown_command}" "${lockdown_message}" "sudo"
+              backup_file  "${check_file}"
+              lock_message="Removing \"nullok\" entries from \"${check_file}\""
+              run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
           else
             if [ "${audit_mode}" = "1" ]; then
-              inc_secure "No \"nullok\" entries in \"${check_file}\""
+              inc_secure   "No \"nullok\" entries in \"${check_file}\""
             fi
           fi
         fi

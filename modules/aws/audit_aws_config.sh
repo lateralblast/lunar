@@ -19,7 +19,7 @@ audit_aws_config () {
   check=$( eval   "${command}" )
   if [ ! "${check}" ]; then
     inc_insecure  "AWS Configuration Recorder not enabled"
-    exec_lockdown "aws configservice start-configuration-recorder" "Configuration Recorder Service to enabled"
+    run_lockdown  "aws configservice start-configuration-recorder" "Configuration Recorder Service to enabled"
   else
     inc_secure    "AWS Configuration Recorder enabled"
   fi
