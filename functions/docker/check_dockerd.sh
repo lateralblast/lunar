@@ -162,9 +162,9 @@ check_dockerd () {
                 profile=$( eval  "${command}" )
                 if [ ! "${value}" ]; then
                   if [ "${profile}" ]; then
-                    inc_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\"
+                    inc_secure   "Docker instance \"${docker_id}\" does not have parameter \"${param}\""
                   else
-                    inc_insecure "Docker instance \"${docker_id}\" has parameter \"${param}\"
+                    inc_insecure "Docker instance \"${docker_id}\" has parameter \"${param}\""
                   fi
                 else
                   if [ ! "${profile}" = "${value}" ]; then

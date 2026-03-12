@@ -2849,3 +2849,5 @@
 # Typo fixes
 # 15.1.5: Thu 12 Mar 2026 13:08:36 AEDT
 # Formatting fixes
+# 15.1.6: Thu 12 Mar 2026 15:50:28 AEDT
+# Shellcheck fixes

@@ -9,7 +9,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.1.5
+# Version:      15.1.6
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -1072,9 +1072,6 @@ if [ "${do_check}" = 1 ]; then
   esac
   exit
 fi
-
-echo "got here"
-exit
 
 # Set Restore Directory if not set
 
