@@ -19,7 +19,7 @@ audit_azure_app_service_python_versions () {
   print_function "audit_azure_app_service_python_versions"
   check_message  "Azure App Service Python Versions"
   command="az webapp list --query \"[].id\" --output tsv"
-  command_message   "${command}"
+  command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_ids}" ]; then
     info_message "No App Services found"

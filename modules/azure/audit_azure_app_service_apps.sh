@@ -75,6 +75,8 @@ audit_azure_app_service_apps () {
   audit_azure_app_service_private_dns_zones
   # 2.1.18  Ensure app is integrated with a virtual network - TBD
   audit_azure_app_service_virtual_network_integration
+  # 2.1.19  Ensure configuration is routed through the virtual network integration - TBD
+  # 2.1.20  Ensure all traffic is routed through the virtual network - TBD
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -82,8 +84,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.19  Ensure configuration is routed through the virtual network integration - TBD
-    # 2.1.20  Ensure all traffic is routed through the virtual network - TBD
     check_azure_app_service_app_value "VNet Image Pull"               "${app_id}" "${app_name}" "${res_group}" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"                 ""
     check_azure_app_service_app_value "VNet Content Share"            "${app_id}" "${app_name}" "${res_group}" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"             ""
     # 2.1.21  Ensure cross-origin resource sharing does not allow all origins - TBD

@@ -19,7 +19,7 @@ audit_azure_app_service_public_network_access () {
   print_function "audit_azure_app_service_public_network_access"
   check_message  "Azure App Service Public Network Access"
   command="az webapp list --query \"[].id\" --output tsv"
-  command_message   "${command}"
+  command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_ids}" ]; then
     info_message "No App Services found"
