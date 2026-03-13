@@ -2863,3 +2863,7 @@
 # Split out Azure WebApps PHP version check
 # 15.2.2: Fri 13 Mar 2026 13:27:28 AEDT
 # Split out Azure WebApps FTP state check
+# 15.2.3: Fri 13 Mar 2026 15:14:28 AEDT
+# Split out Azure WebApps Basic Authentication Publishing Credentials check
+# 15.2.4: Fri 13 Mar 2026 15:15:28 AEDT
+# Fixed Azure WebApps Basic Authentication Publishing Credentials check

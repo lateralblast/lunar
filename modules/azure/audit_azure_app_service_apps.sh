@@ -51,6 +51,8 @@ audit_azure_app_service_apps () {
   audit_azure_app_service_python_versions
   # 2.1.3   Ensure 'PHP version' is currently supported (if in use) - TBD
   audit_azure_app_service_php_versions
+  # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
+  audit_azure_basic_authentication_publishing_credential_values
   # 2.1.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
   audit_azure_app_service_ftp_states
   for app_id in ${app_ids}; do
@@ -96,9 +98,6 @@ audit_azure_app_service_apps () {
     for app_plan in ${app_plans}; do
       check_azure_app_service_plan_value "App Service Plan SKU"       "${app_plan}" "${res_group}" ""    "sku.tier" "eq" "${azure_sku_tier}" "--sku" ""
     done
-    # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-    check_azure_basic_authentication_publishing_credential_value      "${app_name}" "${res_group}" "ftp" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false"     "--auth-settings.publishing-credentials-enabled" ""
-    check_azure_basic_authentication_publishing_credential_value      "${app_name}" "${res_group}" "scm" "Microsoft.Web" "basicPublishingCredentialsPolicies" "properties.allow" "eq" "false"     "--auth-settings.publishing-credentials-enabled" ""
     # 2.1.16  Ensure private endpoints are used to access App Service apps - TBD
     check_azure_network_private_endpoint_value      "App Service App" "${app_id}"   "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]" "eq"        "Approved"
   done

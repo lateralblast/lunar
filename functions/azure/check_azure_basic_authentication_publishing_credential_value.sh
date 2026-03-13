@@ -16,17 +16,18 @@ check_azure_basic_authentication_publishing_credential_value () {
   resource_group="${2}"
   resource_name="${3}"
   resource_type="${4}"
-  query_string="${5}"
-  function="${6}"
-  correct_value="${7}"
-  set_name="${8}"
-  set_value="${9}"
+  name_space="${5}"
+  query_string="${6}"
+  function="${7}"
+  correct_value="${8}"
+  set_name="${9}"
+  set_value="${10}"
   print_function "check_azure_basic_authentication_publishing_credential_value"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
   check_message "Azure Basic Authentication Publishing Credential for ${resource_name} for app \"${app_name}\" with resource group \"${resource_group}\" and resource \"${resource_name}\" and resource type \"${resource_type}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
-  command="az resource show --name \"${resource_name}\" --resource-group \"${resource_group}\" --resource-type \"${resource_type}\" --parent \"sites/${app_name}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+  command="az resource show --name \"${resource_name}\" --name-space \"${name_space}\" --resource-group \"${resource_group}\" --resource-type \"${resource_type}\" --parent \"sites/${app_name}\" --query \"${query_string}\" --output tsv 2> /dev/null"
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
@@ -37,10 +38,10 @@ check_azure_basic_authentication_publishing_credential_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
+            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
+            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\""
             ;;
         esac
       fi
@@ -51,10 +52,10 @@ check_azure_basic_authentication_publishing_credential_value () {
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
-            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" ${set_name} \"${correct_value}\""
+            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" ${set_name} \"${set_value}\""
             ;;
           *)
-            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${correct_value}\""
+            fix_message "az resource update --name \"${resource_name}\" --resource-group \"${resource_group}\" --set \"${set_name}\"=\"${set_value}\""
             ;;
         esac
       fi
