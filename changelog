@@ -2877,3 +2877,5 @@
 # Split out Azure WebApps Client Certificates check
 # 15.2.9: Fri 13 Mar 2026 17:43:28 AEDT
 # Split out Azure WebApps Authentication check
+# 15.3.0: Fri 13 Mar 2026 17:46:28 AEDT
+# Split out Azure WebApps Managed Identities check
