@@ -2893,3 +2893,7 @@
 # Split out Azure WebApps Private Endpoint check
 # 15.3.7: Fri 13 Mar 2026 18:45:28 AEDT
 # Fixed Azure Private Endpoint check
+# 15.3.8: Fri 13 Mar 2026 20:46:28 AEDT
+# Fixed Azure App Service Plan SKU check
+# 15.3.9: Fri 13 Mar 2026 20:47:28 AEDT
+# Split out Azure App Service Plan SKU check

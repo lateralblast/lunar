@@ -82,19 +82,6 @@ audit_azure_app_service_apps () {
   audit_azure_app_service_vnets
   # 2.1.21  Ensure cross-origin resource sharing does not allow all origins - TBD
   audit_azure_app_service_cors
-  for app_id in ${app_ids}; do
-    command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
-    command_message   "${command}"
-    res_group=$( eval "${command}" )
-    command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
-    command_message   "${command}"
-    app_name=$( eval  "${command}" )
-    # 2.1.15  Ensure App Service plan SKU supports private endpoints - TBD
-    command="az webapp show --name \"${app_name}\" --resource-group \"${res_group}\" --query \"appServicePlanId\" --output tsv"
-    command_message   "${command}"
-    app_plans=$( eval "${command}" )
-    for app_plan in ${app_plans}; do
-      check_azure_app_service_plan_value "App Service Plan SKU"       "${app_plan}" "${res_group}" ""    "sku.tier" "eq" "${azure_sku_tier}" "--sku" ""
-    done
-  done
+  # 2.1.15  Ensure App Service plan SKU supports private endpoints - TBD
+  audit_azure_app_service_plans
 }
