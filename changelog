@@ -2887,3 +2887,5 @@
 # Split out Azure WebApps Virtual Network Integration check
 # 15.3.4: Fri 13 Mar 2026 18:22:28 AEDT
 # Split out Azure WebApps VNet checks
+# 15.3.5: Fri 13 Mar 2026 18:43:28 AEDT
+# Split out Azure WebApps CORS check
