@@ -2889,3 +2889,7 @@
 # Split out Azure WebApps VNet checks
 # 15.3.5: Fri 13 Mar 2026 18:43:28 AEDT
 # Split out Azure WebApps CORS check
+# 15.3.6: Fri 13 Mar 2026 18:44:28 AEDT
+# Split out Azure WebApps Private Endpoint check
+# 15.3.7: Fri 13 Mar 2026 18:45:28 AEDT
+# Fixed Azure Private Endpoint check

@@ -71,6 +71,8 @@ audit_azure_app_service_apps () {
   audit_azure_app_service_managed_identies
   # 2.1.14  Ensure public network access is disabled - TBD
   audit_azure_app_service_public_network_access
+  # 2.1.16  Ensure private endpoints are used to access App Service apps - TBD
+  audit_azure_app_service_private_endpoints
   # 2.1.17  Ensure private endpoints used to access App Service apps use private DNS zones - TBD
   audit_azure_app_service_private_dns_zones
   # 2.1.18  Ensure app is integrated with a virtual network - TBD
@@ -87,7 +89,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    check_azure_app_service_app_value "Cross-Origin Resource Sharing" "${app_id}" "${app_name}" "${res_group}" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"                 ""
     # 2.1.15  Ensure App Service plan SKU supports private endpoints - TBD
     command="az webapp show --name \"${app_name}\" --resource-group \"${res_group}\" --query \"appServicePlanId\" --output tsv"
     command_message   "${command}"
@@ -95,7 +96,5 @@ audit_azure_app_service_apps () {
     for app_plan in ${app_plans}; do
       check_azure_app_service_plan_value "App Service Plan SKU"       "${app_plan}" "${res_group}" ""    "sku.tier" "eq" "${azure_sku_tier}" "--sku" ""
     done
-    # 2.1.16  Ensure private endpoints are used to access App Service apps - TBD
-    check_azure_network_private_endpoint_value      "App Service App" "${app_id}"   "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]" "eq"        "Approved"
   done
 }

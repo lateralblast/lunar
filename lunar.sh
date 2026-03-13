@@ -9,7 +9,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.3.5
+# Version:      15.3.7
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System

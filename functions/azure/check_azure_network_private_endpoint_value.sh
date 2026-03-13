@@ -16,16 +16,17 @@ check_azure_network_private_endpoint_value () {
   query_string="${2}"
   function="${3}"
   correct_value="${4}"
+  endpoint_name=$( basename "${endpoint_id}" )
   print_function "check_azure_network_private_endpoint_value"
-  check_message  "Azure Network Private Endpoint \"${endpoint_id}\" is \"${function}\" to \"${correct_value}\""
-  command="az network private-endpoint list --query \"${query_string}\" --output tsv"
+  check_message  "Azure Network Private Endpoint for \"${endpoint_name}\" is \"${function}\" to \"${correct_value}\""
+  command="az network private-endpoint show --id \"${endpoint_id}\" --query \"${query_string}\" --output tsv"
   command_message      "${command}"
   actual_value=$( eval "${command}" 2> /dev/null )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
-      inc_secure   "Azure Network Private Endpoint \"${endpoint_id}\" is \"${function}\" to \"${correct_value}\""
+      inc_secure   "Azure Network Private Endpoint for \"${endpoint_name}\" is \"${function}\" to \"${correct_value}\""
     else
-      inc_insecure "Azure Network Private Endpoint \"${endpoint_id}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure Network Private Endpoint for \"${endpoint_name}\" is \"${actual_value}\" and not \"${function}\" to \"${correct_value}\""
       fix_message  "az network private-endpoint create --resource-group <resource-group-name> \ "
       fix_message  "--location <location> --name <private-endpoint-name> --vnet-name <virtual-network-name> \ "
       fix_message  "--subnet <subnet-name> --private-connection-resource-id <fully-qualified-app-id> \ "
@@ -34,9 +35,9 @@ check_azure_network_private_endpoint_value () {
   else
     if [ "${function}" = "ne" ]; then
       if [ "${actual_value}" != "${correct_value}" ]; then
-        inc_secure   "Azure Network Private Endpoint \"${endpoint_id}\" is \"${function}\" to \"${correct_value}\""
+        inc_secure   "Azure Network Private Endpoint for \"${endpoint_name}\" is \"${function}\" to \"${correct_value}\""
       else
-        inc_insecure "Azure Network Private Endpoint \"${endpoint_id}\" is not \"${function}\" to \"${correct_value}\""
+        inc_insecure "Azure Network Private Endpoint for \"${endpoint_name}\" is \"${actual_value}\" and not \"${function}\" to \"${correct_value}\""
         fix_message  "az network private-endpoint create --resource-group <resource-group-name> \ "
         fix_message  "--location <location> --name <private-endpoint-name> --vnet-name <virtual-network-name> \ "
         fix_message  "--subnet <subnet-name> --private-connection-resource-id <fully-qualified-app-id> \ "
