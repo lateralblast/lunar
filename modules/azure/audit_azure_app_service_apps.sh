@@ -65,6 +65,8 @@ audit_azure_app_service_apps () {
   audit_azure_app_service_remote_debugging
   # 2.1.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
   audit_azure_app_service_client_certificates
+  # 2.1.12  Ensure 'App Service authentication' is set to 'Enabled' - TBD
+  audit_azure_app_service_authentication
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -72,9 +74,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.12  Ensure 'App Service authentication' is set to 'Enabled' - TBD
-    check_azure_app_service_app_value "App Service Auth v1"           "${app_id}" "${app_name}" "${res_group}" "auth"                "enabled"                           "eq" "true"                          "--enabled"                                      ""
-    check_azure_app_service_app_value "App Service Auth v2"           "${app_id}" "${app_name}" "${res_group}" "auth"                "platform.enabled"                  "eq" "true"                          "--enabled"                                      ""
     # 2.1.13  Ensure managed identities are configured - TBD
     check_azure_app_service_app_value "Managed Identities"            "${app_id}" "${app_name}" "${res_group}" "identity"            "type"                              "eq" "${azure_managed_identity}"     ""                                               ""
     # 2.1.14  Ensure public network access is disabled - TBD
