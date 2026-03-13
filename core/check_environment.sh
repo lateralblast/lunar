@@ -46,16 +46,18 @@ check_azure_environment () {
     for cli_ext in databricks bastion resource-graph application-insights nsp \
       elastic-san site-recovery amlfs dataprotection databox redisenterprise \
       datafactory; do
-      command="az extension list | grep \"${cli_ext}\""
+      info_message "Checking for Azure CLI extension \"${cli_ext}\""
+      command="az extension list --query \"[].name\" --output tsv | grep \"^${cli_ext}$\""
       command_message  "${command}"
       ext_test=$( eval "${command}" )
       if [ -z "${ext_test}" ]; then
         if [ "${force}" = "1" ]; then
+          info_message "Installing Azure CLI extension \"${cli_ext}\""
           command="az extension add --name \"${cli_ext}\" 2> /dev/null"
           command_message "${command}"
           eval "${command}"
         else
-          echo "Azure ${cli_ext} extension is not installed"
+          warn_message "Azure \"${cli_ext}\" extension is not installed"
           exit
         fi
       fi

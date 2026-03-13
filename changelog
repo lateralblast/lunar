@@ -2853,3 +2853,7 @@
 # Shellcheck fixes
 # 15.1.7: Thu 12 Mar 2026 17:29:28 AEDT
 # Formatting fixes
+# 15.1.8: Fri 13 Mar 2026 12:45:28 AEDT
+# Split out Azure WebApps Java version check
+# 15.1.9: Fri 13 Mar 2026 12:46:28 AEDT
+# Updated Azure WebApps value check
