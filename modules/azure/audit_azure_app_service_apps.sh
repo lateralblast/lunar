@@ -51,6 +51,8 @@ audit_azure_app_service_apps () {
   audit_azure_app_service_python_versions
   # 2.1.3   Ensure 'PHP version' is currently supported (if in use) - TBD
   audit_azure_app_service_php_versions
+  # 2.1.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
+  audit_azure_app_service_ftp_states
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -58,8 +60,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
-    check_azure_app_service_app_value "FTP State"                     "${app_id}" "${app_name}" "${res_group}" ""                    "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                                    ""
     # 2.1.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
     check_azure_app_service_app_value "HTTP Version"                  "${app_id}" "${app_name}" "${res_group}" ""                    "http20Enabled"                     "eq" "true"                          "--http20-enabled"                               ""
     # 2.1.7   Ensure 'HTTPS Only' is set to 'On' - TBD

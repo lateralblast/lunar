@@ -2861,3 +2861,5 @@
 # Split out Azure WebApps Python version check
 # 15.2.1: Fri 13 Mar 2026 13:26:28 AEDT
 # Split out Azure WebApps PHP version check
+# 15.2.2: Fri 13 Mar 2026 13:27:28 AEDT
+# Split out Azure WebApps FTP state check
