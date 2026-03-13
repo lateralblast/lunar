@@ -2867,3 +2867,5 @@
 # Split out Azure WebApps Basic Authentication Publishing Credentials check
 # 15.2.4: Fri 13 Mar 2026 15:15:28 AEDT
 # Fixed Azure WebApps Basic Authentication Publishing Credentials check
+# 15.2.5: Fri 13 Mar 2026 16:36:28 AEDT
+# Split out Azure WebApps HTTP values check

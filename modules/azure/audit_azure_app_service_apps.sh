@@ -55,6 +55,9 @@ audit_azure_app_service_apps () {
   audit_azure_basic_authentication_publishing_credential_values
   # 2.1.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
   audit_azure_app_service_ftp_states
+  # 2.1.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
+  # 2.1.7   Ensure 'HTTPS Only' is set to 'On' - TBD
+  audit_azure_app_service_http_values
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -62,9 +65,7 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
     check_azure_app_service_app_value "HTTP Version"                  "${app_id}" "${app_name}" "${res_group}" ""                    "http20Enabled"                     "eq" "true"                          "--http20-enabled"                               ""
-    # 2.1.7   Ensure 'HTTPS Only' is set to 'On' - TBD
     check_azure_app_service_app_value "HTTPS Only"                    "${app_id}" "${app_name}" "${res_group}" ""                    "httpsOnly"                         "eq" "true"                          "httpsOnly"                                      ""
     # 2.1.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
     check_azure_app_service_app_value "Minimum Inbound TLS Version"   "${app_id}" "${app_name}" "${res_group}" ""                    "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
