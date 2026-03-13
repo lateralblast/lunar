@@ -2857,3 +2857,5 @@
 # Split out Azure WebApps Java version check
 # 15.1.9: Fri 13 Mar 2026 12:46:28 AEDT
 # Updated Azure WebApps value check
+# 15.2.0: Fri 13 Mar 2026 13:21:28 AEDT
+# Split out Azure WebApps Python version check

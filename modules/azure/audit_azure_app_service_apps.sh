@@ -47,6 +47,8 @@ audit_azure_app_service_apps () {
   fi
   # 2.1.1   Ensure 'Java version' is currently supported (if in use) - TBD
   audit_azure_app_service_java_versions
+  # 2.1.2   Ensure 'Python version' is currently supported (if in use) - TBD
+  audit_azure_app_service_python_versions
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -54,7 +56,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.2   Ensure 'Python version' is currently supported (if in use) - TBD
     check_azure_app_service_app_value "Python Version"                "${app_id}" "${app_name}" "${res_group}" ""                    "pythonVersion"                     "eq" "${azure_python_version}"       "--python-version"                               ""
     # 2.1.3   Ensure 'PHP version' is currently supported (if in use) - TBD
     check_azure_app_service_app_value "PHP Version"                   "${app_id}" "${app_name}" "${res_group}" ""                    "phpVersion"                        "eq" "${azure_php_version}"          "--php-version"                                  ""

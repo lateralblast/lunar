@@ -22,7 +22,7 @@ audit_azure_app_service_java_versions () {
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_ids}" ]; then
-    info_message "No App Service Java Versions found"
+    info_message "No App Services found"
     return
   fi
   for app_id in ${app_ids}; do
@@ -32,7 +32,6 @@ audit_azure_app_service_java_versions () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.1   Ensure 'Java version' is currently supported (if in use) - TBD
     check_azure_app_service_app_value "Java Version"           "${app_id}" "${app_name}" "${res_group}" "" "javaVersion"          "eq" "${azure_java_version}" "--java-version"           ""
     check_azure_app_service_app_value "Java Container Version" "${app_id}" "${app_name}" "${res_group}" "" "javaContainerVersion" "eq" "${azure_java_version}" "--java-container-version" ""
   done
