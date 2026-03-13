@@ -2871,3 +2871,5 @@
 # Split out Azure WebApps HTTP values check
 # 15.2.6: Fri 13 Mar 2026 16:57:28 AEDT
 # Split out Azure WebApps TLS values check
+# 15.2.7: Fri 13 Mar 2026 17:23:28 AEDT
+# Split out Azure WebApps Remote Debugging check

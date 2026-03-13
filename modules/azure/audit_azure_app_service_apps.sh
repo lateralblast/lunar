@@ -61,6 +61,8 @@ audit_azure_app_service_apps () {
   # 2.1.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
   # 2.1.9   Ensure end-to-end TLS encryption is enabled - TBD
   audit_azure_app_service_tls_values
+  # 2.1.10  Ensure 'Remote debugging' is set to 'Off' - TBD
+  audit_azure_app_service_remote_debugging
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -68,8 +70,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.10  Ensure 'Remote debugging' is set to 'Off' - TBD
-    check_azure_app_service_app_value "Remote Debugging"              "${app_id}" "${app_name}" "${res_group}" ""                    "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"                     ""
     # 2.1.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
     check_azure_app_service_app_value "Client Certificates"           "${app_id}" "${app_name}" "${res_group}" "Microsoft.Web/sites" "clientCertEnabled"                 "eq" "true"                          "clientCertEnabled"                              ""
     # 2.1.12  Ensure 'App Service authentication' is set to 'Enabled' - TBD
