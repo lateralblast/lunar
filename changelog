@@ -2879,3 +2879,5 @@
 # Split out Azure WebApps Authentication check
 # 15.3.0: Fri 13 Mar 2026 17:46:28 AEDT
 # Split out Azure WebApps Managed Identities check
+# 15.3.1: Fri 13 Mar 2026 17:54:28 AEDT
+# Split out Azure WebApps Public Network Access check

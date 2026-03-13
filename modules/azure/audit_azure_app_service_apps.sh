@@ -68,6 +68,9 @@ audit_azure_app_service_apps () {
   # 2.1.12  Ensure 'App Service authentication' is set to 'Enabled' - TBD
   audit_azure_app_service_authentication
   # 2.1.13  Ensure managed identities are configured - TBD
+  audit_azure_app_service_managed_identies
+  # 2.1.14  Ensure public network access is disabled - TBD
+  audit_azure_app_service_public_network_access
   for app_id in ${app_ids}; do
     command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
@@ -75,8 +78,6 @@ audit_azure_app_service_apps () {
     command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    # 2.1.14  Ensure public network access is disabled - TBD
-    check_azure_app_service_app_value "Public Network Access"         "${app_id}" "${app_name}" "${res_group}" ""                    "publicNetworkAccess"               "eq" "Disabled"                      "properties.publicNetworkAccess"                 ""
     # 2.1.17  Ensure private endpoints used to access App Service apps use private DNS zones - TBD
     check_azure_app_service_app_value "Private DNS Zones"             "${app_id}" "${app_name}" "${res_group}" "Microsoft.Web/sites" "dnsConfiguration.dnsServers"       "ne" ""                              ""                                               ""
     # 2.1.18  Ensure app is integrated with a virtual network - TBD
