@@ -2883,3 +2883,5 @@
 # Split out Azure WebApps Public Network Access check
 # 15.3.2: Fri 13 Mar 2026 17:58:28 AEDT
 # Split out Azure WebApps Private DNS Zones check
+# 15.3.3: Fri 13 Mar 2026 18:14:28 AEDT
+# Split out Azure WebApps Virtual Network Integration check
