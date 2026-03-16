@@ -9,7 +9,7 @@
 # shellcheck disable=SC3046
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
-# Version:      15.7.2
+# Version:      15.7.3
 # License:      CC-BA (Creative Commons By Attribution)
 #               http://creativecommons.org/licenses/by/4.0/legalcode
 # Group:        System
@@ -141,7 +141,7 @@ command_mode=0
 dryrun_mode=0
 ansible_mode=0
 ansible_counter=0
-core_dir="${app_dir}/core"
+main_dir="${app_dir}/main"
 functions_dir="${app_dir}/functions"
 modules_dir="${app_dir}/modules"
 private_dir="${app_dir}/private"
@@ -346,14 +346,14 @@ if [ ! "${id_check}" = 0 ]; then
   csv_dir="${base_dir}/csv"
 fi
 
-# Load core functions from core directory
-if [ -d "${core_dir}" ]; then
+# Load main functions from main directory
+if [ -d "${main_dir}" ]; then
   if [ "${verbose_mode}" = "1" ]; then
     echo ""
-    echo "Loading core functions"
+    echo "Loading main functions"
     echo ""
   fi
-  file_list=$( ls "${core_dir}"/*.sh )
+  file_list=$( ls "${main_dir}"/*.sh )
   for file_name in ${file_list}; do
     . "${file_name}"
     if [ "${verbose_mode}" = "1" ]; then
