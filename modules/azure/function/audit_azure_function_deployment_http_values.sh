@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+
+# audit_azure_function_deployment_http_values
+#
+# 2.4.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
+# 2.4.6   Ensure 'HTTPS Only' is set to 'On' - TBD
+#
+# Refer to Section(s) 2.4.5-6 Page(s) 205-10 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+#
+# This requires the Azure CLI to be installed and configured
+#.
+
+audit_azure_function_deployment_http_values () {
+  print_function "audit_azure_function_deployment_http_values"
+  check_message  "Azure Function App Deployment Slots HTTP Values"
+  command="az functionapp list --query \"[].name\" --output tsv"
+  command_message   "${command}"
+  app_names=$( eval "${command}" 2> /dev/null )
+  if [ -z "${app_names}" ]; then
+    info_message "No Function App Apps found"
+    return
+  fi
+  for app_id in ${app_ids}; do
+    command="az functionapp show --name \"${app_id}\" --query \"name\" --output tsv"
+    command_message   "${command}"
+    app_name=$( eval  "${command}" )
+    command="az functionapp show --name \"${app_id}\" --query \"resourceGroup\" --output tsv"
+    command_message   "${command}"
+    res_group=$( eval "${command}" )
+    command="az functionapp deployment slot list --name \"${app_id}\" --query \"[].id\" --output tsv"
+    command_message   "${command}"
+    slot_ids=$( eval  "${command}" 2> /dev/null )
+    if [ -z "${slot_ids}" ]; then
+      info_message "No Function App Deployment Slots found"
+      return
+    fi
+    for slot_id in ${slot_ids}; do
+      check_azure_function_deployment_slot_value "HTTP Version" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "http20Enabled" "eq" "true" "--http20-enabled" ""
+      check_azure_function_deployment_slot_value "HTTPS Only"   "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "httpsOnly"     "eq" "true" "httpsOnly"        ""
+    done
+  done
+}

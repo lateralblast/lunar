@@ -2941,3 +2941,5 @@
 # Split out Azure Function App Deployment Slots Basic Authentication Publishing Credentials check
 # 15.6.1: Mon 16 Mar 2026 20:15:13 AEDT
 # Split out Azure Function App Deployment Slots FTP State check
+# 15.6.2: Mon 16 Mar 2026 20:20:13 AEDT
+# Split out Azure Function App Deployment Slots HTTP Version and HTTPS Only check

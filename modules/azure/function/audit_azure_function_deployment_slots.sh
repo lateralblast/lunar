@@ -58,12 +58,10 @@ audit_azure_function_deployment_slots () {
     audit_azure_function_deployment_basic_authentication_publishing_credentials
     # 2.4.4   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
     audit_azure_function_deployment_ftp_states
+    # 2.4.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
+    # 2.4.6   Ensure 'HTTPS Only' is set to 'On' - TBD
+    audit_azure_function_deployment_http_values
     for slot_name in ${slot_names}; do
-      check_azure_function_deployment_slot_value "FTP State"                                   "${slot_id}" "${app_name}" "${res_group}" "config"                             "ftp" "Microsoft.Web/sites" "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                           ""
-      # 2.4.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
-      check_azure_function_deployment_slot_value "HTTP Version"                                "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "http20Enabled"                     "eq" "true"                          "--http20-enabled"                      ""
-      # 2.4.6   Ensure 'HTTPS Only' is set to 'On' - TBD
-      check_azure_function_deployment_slot_value "HTTPS Only"                                  "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "httpsOnly"                         "eq" "true"                          "httpsOnly"                             ""
       # 2.4.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
       check_azure_function_deployment_slot_value "Minimum Inbound TLS Version"                 "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                     ""
       # 2.4.8   Ensure end-to-end TLS encryption is enabled - TBD
