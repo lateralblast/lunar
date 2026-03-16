@@ -64,6 +64,8 @@ audit_azure_app_service_deployment_slots () {
   audit_azure_app_service_deployment_slot_managed_identities
   # 2.2.13  Ensure public network access is disabled - TBD
   audit_azure_app_service_deployment_slot_public_network_access
+  # 2.2.14  Ensure app is integrated with a virtual network - TBD
+  audit_azure_app_service_deployment_slot_virtual_network_integration
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -76,8 +78,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.14  Ensure app is integrated with a virtual network - TBD
-      check_azure_app_service_deployment_slot_value "Virtual Network Integration"                 "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "virtualNetworkSubnetId"            "ne" ""                              ""                                      ""
       # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
       check_azure_app_service_deployment_slot_value "VNet Image Pull"                             "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"        ""
       check_azure_app_service_deployment_slot_value "VNet Content Share"                          "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"    ""
