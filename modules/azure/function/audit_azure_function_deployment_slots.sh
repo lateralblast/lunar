@@ -52,9 +52,9 @@ audit_azure_function_deployment_slots () {
     fi
     # 2.4.1   Ensure 'Java version' is currently supported (if in use) - TBD
     audit_azure_function_deployment_java_versions
+    # 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
+    audit_azure_function_deployment_python_versions
     for slot_name in ${slot_names}; do
-      # 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
-      check_azure_function_deployment_slot_value "Python Version"                              "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "pythonVersion"                     "eq" "${azure_python_version}"       "--python-version"                      ""
       # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
       check_azure_function_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web/sites" "properties.allow"                  "eq" "false"                         ""                                      ""
       check_azure_function_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web/sites" "properties.allow"                  "eq" "false"                         ""                                      ""
