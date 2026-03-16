@@ -16,10 +16,10 @@
 audit_azure_function_deployment_java_versions () {
   print_function "audit_azure_function_deployment_java_versions"
   check_message  "Azure Function App Deployment Slots Java Versions"
-  command="az functionapp list --query \"[].name\" --output tsv"
-  command_message   "${command}"
-  app_names=$( eval "${command}" 2> /dev/null )
-  if [ -z "${app_names}" ]; then
+  command="az functionapp list --query \"[].id\" --output tsv"
+  command_message "${command}"
+  app_ids=$( eval "${command}" 2> /dev/null )
+  if [ -z "${app_ids}" ]; then
     info_message "No Function App Apps found"
     return
   fi
