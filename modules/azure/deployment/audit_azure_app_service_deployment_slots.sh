@@ -70,10 +70,5 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
   audit_azure_app_service_deployment_slot_cors
   # 2.2.16  Ensure private endpoints are used to access App Service apps - TBD
-  command="az webapp list --query \"[].id\" --output tsv"
-  command_message "${command}"
-  app_ids=$( eval "${command}" 2> /dev/null )
-  for app_id in ${app_ids}; do
-    check_azure_network_private_endpoint_value "${app_id}" "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]" "eq" "Approved"
-  done
+  audit_azure_app_service_deployment_slot_private_endpoints
 }

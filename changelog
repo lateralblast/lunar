@@ -2931,3 +2931,5 @@
 # Split out Azure App Service Deployment Slot VNet Content Share check
 # 15.5.6: Mon 16 Mar 2026 17:22:25 AEDT
 # Split out Azure App Service Deployment Slot CORS check
+# 15.5.7: Mon 16 Mar 2026 17:27:25 AEDT
+# Split out Azure App Service Deployment Slot Private Endpoints check
