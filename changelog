@@ -2957,3 +2957,5 @@
 # Split out Azure Function App Deployment Slots Managed Identities check
 # 15.6.9: Tue 17 Mar 2026 22:40:13 AEDT
 # Split out Azure Function App Deployment Slots Public Network Access check
+# 15.7.0: Tue 17 Mar 2026 22:44:13 AEDT
+# Split out Azure Function App Deployment Slots Virtual Network Integration and VNet check

@@ -72,12 +72,10 @@ audit_azure_function_deployment_slots () {
     audit_azure_function_deployment_slots_managed_identities
     # 2.4.12  Ensure public network access is disabled - TBD
     audit_azure_function_deployment_slots_public_network_access
+    # 2.4.13  Ensure app is integrated with a virtual network - TBD
+    # 2.4.14  Ensure configuration is routed through the virtual network integration - TBD
+    audit_azure_function_deployment_slots_virtual_network_integration
     for slot_name in ${slot_names}; do
-      # 2.4.13  Ensure app is integrated with a virtual network - TBD
-      check_azure_function_deployment_slot_value "Virtual Network Integration"                 "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "virtualNetworkSubnetId"            "ne" ""                              ""                                      ""
-      # 2.4.14  Ensure configuration is routed through the virtual network integration - TBD
-      check_azure_function_deployment_slot_value "VNet Image Pull"                             "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"        ""
-      check_azure_function_deployment_slot_value "VNet Content Share"                          "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"    ""
       # 2.4.15  Ensure cross-origin resource sharing does not allow all origins - TBD
       check_azure_function_deployment_slot_value "Cross-Origin Resource Sharing"               "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"        ""
     done
