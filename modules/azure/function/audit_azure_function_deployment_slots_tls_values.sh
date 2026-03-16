@@ -9,7 +9,7 @@
 # 2.4.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
 # 2.4.8   Ensure end-to-end TLS encryption is enabled - TBD
 #
-# Refer to Section(s) 2.4.7-8 Page(s) 210-217 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.4.7-8 Page(s) 211-5 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
