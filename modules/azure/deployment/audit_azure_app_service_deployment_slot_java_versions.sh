@@ -8,7 +8,7 @@
 #
 # 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
 #
-# Refer to Section(s) 2.2.1 Page(s) 91-93CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.1 Page(s) 91-93 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
