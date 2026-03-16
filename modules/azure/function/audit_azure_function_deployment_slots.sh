@@ -66,10 +66,10 @@ audit_azure_function_deployment_slots () {
     audit_azure_function_deployment_slots_tls_values
     # 2.4.9   Ensure 'Remote debugging' is set to 'Off' - TBD
     audit_azure_function_deployment_slots_remote_debugging
+    # 2.4.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
+    audit_azure_function_deployment_slots_client_certificates
+
     for slot_name in ${slot_names}; do
-      check_azure_function_deployment_slot_value "Remote Debugging"                            "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"            ""
-      # 2.4.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
-      check_azure_function_deployment_slot_value "Client Certificates"                         "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "clientCertEnabled"                 "eq" "true"                          "clientCertEnabled"                     ""
       # 2.4.11  Ensure managed identities are configured - TBD
       check_azure_function_deployment_slot_value "Managed Identities"                          "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "identity"            "type"                              "eq" "${azure_managed_identity}"     ""                                      ""
       # 2.4.12  Ensure public network access is disabled - TBD

@@ -2951,3 +2951,5 @@
 # Formatting fixes for Azure App Service Deployment Slots
 # 15.6.6: Tue 17 Mar 2026 22:28:13 AEDT
 # Split out Azure Function App Deployment Slots Remote Debugging check
+# 15.6.7: Tue 17 Mar 2026 22:32:13 AEDT
+# Split out Azure Function App Deployment Slots Client Certificates check
