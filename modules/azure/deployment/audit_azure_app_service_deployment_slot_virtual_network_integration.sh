@@ -9,7 +9,7 @@
 # 2.2.14  Ensure app is integrated with a virtual network - TBD
 # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
 #
-# Refer to Section(s) 2.2.14 Page(s) 134-136 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.14-5 Page(s) 131-5 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.

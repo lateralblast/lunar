@@ -67,22 +67,8 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.14  Ensure app is integrated with a virtual network - TBD
   # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
   audit_azure_app_service_deployment_slot_virtual_network_integration
-  for app_name in ${app_names}; do
-    command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
-    command_message    "${command}"
-    res_group=$( eval  "${command}" )
-    command="az webapp deployment slot list --name \"${app_name}\" --resource-group \"${res_group}\" --query \"[].name\" --output tsv"
-    command_message    "${command}"
-    slot_names=$( eval "${command}" 2> /dev/null )
-    if [ -z "${slot_names}" ]; then
-      info_message "No App Service Deployment Slots found"
-      return
-    fi
-    for slot_name in ${slot_names}; do
-      # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
-      check_azure_app_service_deployment_slot_value "Cross-Origin Resource Sharing"               "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"        ""
-    done
-  done
+  # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
+  audit_azure_app_service_deployment_slot_cors
   # 2.2.16  Ensure private endpoints are used to access App Service apps - TBD
   command="az webapp list --query \"[].id\" --output tsv"
   command_message "${command}"
