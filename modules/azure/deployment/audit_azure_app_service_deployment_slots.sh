@@ -46,6 +46,8 @@ audit_azure_app_service_deployment_slots () {
   audit_azure_app_service_deployment_slot_python_versions
   # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD
   audit_azure_app_service_deployment_slot_php_versions
+  # 2.2.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
+  audit_azure_app_service_deployment_slot_basic_auth
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -58,9 +60,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-      check_azure_app_service_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web/sites" "properties.allow"                  "eq" "false"                         ""                                      ""
-      check_azure_app_service_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web/sites" "properties.allow"                  "eq" "false"                         ""                                      ""
       # 2.2.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
       check_azure_app_service_deployment_slot_value "FTP State"                                   "${slot_id}" "${app_name}" "${res_group}" "config"                             "ftp" "Microsoft.Web/sites" "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                           ""
       # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
