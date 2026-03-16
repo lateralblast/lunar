@@ -51,7 +51,8 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
   audit_azure_app_service_deployment_slot_ftp_states
   # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
-  audit_azure_app_service_deployment_slot_http_versions
+  # 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
+  audit_azure_app_service_deployment_slot_http_values
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -64,7 +65,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
       check_azure_app_service_deployment_slot_value "HTTPS Only"                                  "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "httpsOnly"                         "eq" "true"                          "httpsOnly"                             ""
       # 2.2.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
       check_azure_app_service_deployment_slot_value "Minimum Inbound TLS Version"                 "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                     ""

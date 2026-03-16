@@ -7,8 +7,9 @@
 # audit_azure_app_service_deployment_slot_http_versions
 #
 # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
+# 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
 #
-# Refer to Section(s) 2.2.6 Page(s) 107-109 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.6 Page(s) 107-12 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
@@ -39,6 +40,7 @@ audit_azure_app_service_deployment_slot_http_versions () {
     fi
     for slot_id in ${slot_ids}; do
       check_azure_app_service_deployment_slot_value "HTTP Version" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "http20Enabled" "eq" "true" "--http20-enabled" ""
+      check_azure_app_service_deployment_slot_value "HTTPS Only"   "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "httpsOnly"     "eq" "true" "httpsOnly"        ""
     done
   done
 }
