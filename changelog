@@ -2939,3 +2939,5 @@
 # Split out Azure Function App Deployment Slots Python version check
 # 15.6.0: Mon 16 Mar 2026 20:09:13 AEDT
 # Split out Azure Function App Deployment Slots Basic Authentication Publishing Credentials check
+# 15.6.1: Mon 16 Mar 2026 20:15:13 AEDT
+# Split out Azure Function App Deployment Slots FTP State check

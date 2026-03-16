@@ -8,7 +8,7 @@
 #
 # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
 #
-# Refer to Section(s) 2.4.3 Page(s) 195-6 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.4.3 Page(s) 199-201 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
