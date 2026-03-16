@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_basic_authentication_publishing_credentials
+# audit_azure_app_service_deployment_slots_public_network_access
 #
-# 2.2.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
+# 2.2.13  Ensure public network access is disabled - TBD
 #
-# Refer to Section(s) 2.2.4 Page(s) 100-3 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.13 Page(s) 128-30 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_basic_authentication_publishing_credentials () {
-  print_function "audit_azure_app_service_deployment_slot_basic_authentication_publishing_credentials"
-  check_message  "Azure App Service Deployment Slot Basic Authentication Publishing Credentials"
+audit_azure_app_service_deployment_slots_public_network_access () {
+  print_function "audit_azure_app_service_deployment_slots_public_network_access"
+  check_message  "Azure App Service Deployment Slot Public Network Access"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -38,8 +38,7 @@ audit_azure_app_service_deployment_slot_basic_authentication_publishing_credenti
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web/sites" "properties.allow" "eq" "false" "" ""
-      check_azure_app_service_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web/sites" "properties.allow" "eq" "false" "" ""
+      check_azure_app_service_deployment_slot_value "Public Network Access" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "publicNetworkAccess" "eq" "Disabled" "properties.publicNetworkAccess" ""
     done
   done
 }

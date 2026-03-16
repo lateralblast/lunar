@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_php_versions
+# audit_azure_app_service_deployment_slots_php_versions
 #
 # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD
 #
@@ -13,8 +13,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_php_versions () {
-  print_function "audit_azure_app_service_deployment_slot_php_versions"
+audit_azure_app_service_deployment_slots_php_versions () {
+  print_function "audit_azure_app_service_deployment_slots_php_versions"
   check_message  "Azure App Service Deployment Slot PHP Versions"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"

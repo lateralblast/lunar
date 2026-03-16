@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_private_endpoints
+# audit_azure_app_service_deployment_slots_private_endpoints
 #
 # 2.2.16  Ensure private endpoints are used to access App Service apps - TBD
 #
@@ -13,8 +13,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_private_endpoints () {
-  print_function "audit_azure_app_service_deployment_slot_private_endpoints"
+audit_azure_app_service_deployment_slots_private_endpoints () {
+  print_function "audit_azure_app_service_deployment_slots_private_endpoints"
   check_message  "Azure App Service Deployment Slot Private Endpoints"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"

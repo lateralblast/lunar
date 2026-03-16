@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_virtual_network_integration
+# audit_azure_app_service_deployment_slots_virtual_network_integration
 #
 # 2.2.14  Ensure app is integrated with a virtual network - TBD
 # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
@@ -14,8 +14,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_virtual_network_integration () {
-  print_function "audit_azure_app_service_deployment_slot_virtual_network_integration"
+audit_azure_app_service_deployment_slots_virtual_network_integration () {
+  print_function "audit_azure_app_service_deployment_slots_virtual_network_integration"
   check_message  "Azure App Service Deployment Slot Virtual Network Integration"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"

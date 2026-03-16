@@ -2947,3 +2947,5 @@
 # Split out Azure Function App Deployment Slots TLS values check
 # 15.6.4: Mon 16 Mar 2026 21:44:13 AEDT
 # Formatting fixes for Azure Function App Deployment Slots
+# 15.6.5: Tue 17 Mar 2026 12:20:13 AEDT
+# Formatting fixes for Azure App Service Deployment Slots

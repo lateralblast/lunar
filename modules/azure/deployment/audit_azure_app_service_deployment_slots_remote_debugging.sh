@@ -4,19 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_http_versions
+# audit_azure_app_service_deployment_slots_remote_debugging
 #
-# 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
-# 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
+# 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
 #
-# Refer to Section(s) 2.2.6 Page(s) 107-12 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.10 Page(s) 119-21 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_http_versions () {
-  print_function "audit_azure_app_service_deployment_slot_http_versions"
-  check_message  "Azure App Service Deployment Slot HTTP Versions"
+audit_azure_app_service_deployment_slots_remote_debugging () {
+  print_function "audit_azure_app_service_deployment_slots_remote_debugging"
+  check_message  "Azure App Service Deployment Slot Remote Debugging"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -39,8 +38,7 @@ audit_azure_app_service_deployment_slot_http_versions () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "HTTP Version" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "http20Enabled" "eq" "true" "--http20-enabled" ""
-      check_azure_app_service_deployment_slot_value "HTTPS Only"   "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "httpsOnly"     "eq" "true" "httpsOnly"        ""
+      check_azure_app_service_deployment_slot_value "Remote Debugging" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "remoteDebuggingEnabled" "eq" "false" "--remote-debugging-enabled" ""
     done
   done
 }

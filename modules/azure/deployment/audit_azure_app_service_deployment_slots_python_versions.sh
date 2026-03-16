@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_remote_debugging
+# audit_azure_app_service_deployment_slots_python_versions
 #
-# 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
+# 2.2.2   Ensure 'Python version' is currently supported (if in use) - TBD
 #
-# Refer to Section(s) 2.2.10 Page(s) 119-21 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.2 Page(s) 94-96 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_remote_debugging () {
-  print_function "audit_azure_app_service_deployment_slot_remote_debugging"
-  check_message  "Azure App Service Deployment Slot Remote Debugging"
+audit_azure_app_service_deployment_slots_python_versions () {
+  print_function "audit_azure_app_service_deployment_slots_python_versions"
+  check_message  "Azure App Service Deployment Slot Python Versions"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -38,7 +38,7 @@ audit_azure_app_service_deployment_slot_remote_debugging () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "Remote Debugging" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "remoteDebuggingEnabled" "eq" "false" "--remote-debugging-enabled" ""
+      check_azure_app_service_deployment_slot_value "Python Version" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "pythonVersion" "eq" "${azure_python_version}" "--python-version"
     done
   done
 }

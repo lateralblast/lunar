@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_managed_identities
+# audit_azure_app_service_deployment_slots_client_certificates
 #
-# 2.2.12  Ensure managed identities are configured - TBD
+# 2.2.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
 #
-# Refer to Section(s) 2.2.12 Page(s) 125-7 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.11 Page(s) 122-4 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_managed_identities () {
-  print_function "audit_azure_app_service_deployment_slot_managed_identities"
-  check_message  "Azure App Service Deployment Slot Managed Identities"
+audit_azure_app_service_deployment_slots_client_certificates () {
+  print_function "audit_azure_app_service_deployment_slots_client_certificates"
+  check_message  "Azure App Service Deployment Slot Client Certificates"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -38,7 +38,7 @@ audit_azure_app_service_deployment_slot_managed_identities () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "Managed Identities" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "identity" "type" "eq" "${azure_managed_identity}" "" ""
+      check_azure_app_service_deployment_slot_value "Client Certificates" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "clientCertEnabled" "eq" "true" "clientCertEnabled" ""
     done
   done
 }

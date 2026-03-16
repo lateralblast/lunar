@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_public_network_access
+# audit_azure_app_service_deployment_slots_ftp_states
 #
-# 2.2.13  Ensure public network access is disabled - TBD
+# 2.2.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
 #
-# Refer to Section(s) 2.2.13 Page(s) 128-30 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.5 Page(s) 104-6 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_public_network_access () {
-  print_function "audit_azure_app_service_deployment_slot_public_network_access"
-  check_message  "Azure App Service Deployment Slot Public Network Access"
+audit_azure_app_service_deployment_slots_ftp_states () {
+  print_function "audit_azure_app_service_deployment_slots_ftp_states"
+  check_message  "Azure App Service Deployment Slot FTP States"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -38,7 +38,7 @@ audit_azure_app_service_deployment_slot_public_network_access () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "Public Network Access" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "publicNetworkAccess" "eq" "Disabled" "properties.publicNetworkAccess" ""
+      check_azure_app_service_deployment_slot_value "FTP State" "${slot_id}" "${app_name}" "${res_group}" "config" "ftp" "Microsoft.Web/sites" "ftpState" "eq" "${azure_ftp_state}" "--ftp-state" ""
     done
   done
 }

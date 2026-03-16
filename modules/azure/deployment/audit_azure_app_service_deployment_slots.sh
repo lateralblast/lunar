@@ -41,34 +41,34 @@ audit_azure_app_service_deployment_slots () {
     return
   fi
   # 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
-  audit_azure_app_service_deployment_slot_java_versions
+  audit_azure_app_service_deployment_slots_java_versions
   # 2.2.2   Ensure 'Python version' is currently supported (if in use) - TBD
-  audit_azure_app_service_deployment_slot_python_versions
+  audit_azure_app_service_deployment_slots_python_versions
   # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD
-  audit_azure_app_service_deployment_slot_php_versions
+  audit_azure_app_service_deployment_slots_php_versions
   # 2.2.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-  audit_azure_app_service_deployment_slot_basic_auth
+  audit_azure_app_service_deployment_slots_basic_auth
   # 2.2.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
-  audit_azure_app_service_deployment_slot_ftp_states
+  audit_azure_app_service_deployment_slots_ftp_states
   # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
   # 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
-  audit_azure_app_service_deployment_slot_http_values
+  audit_azure_app_service_deployment_slots_http_values
   # 2.2.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
   # 2.2.9   Ensure end-to-end TLS encryption is enabled - TBD
-  audit_azure_app_service_deployment_slot_tls_values
+  audit_azure_app_service_deployment_slots_tls_values
   # 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
-  audit_azure_app_service_deployment_slot_remote_debugging
+  audit_azure_app_service_deployment_slots_remote_debugging
   # 2.2.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
-  audit_azure_app_service_deployment_slot_client_certificates
+  audit_azure_app_service_deployment_slots_client_certificates
   # 2.2.12  Ensure managed identities are configured - TBD
-  audit_azure_app_service_deployment_slot_managed_identities
+  audit_azure_app_service_deployment_slots_managed_identities
   # 2.2.13  Ensure public network access is disabled - TBD
-  audit_azure_app_service_deployment_slot_public_network_access
+  audit_azure_app_service_deployment_slots_public_network_access
   # 2.2.14  Ensure app is integrated with a virtual network - TBD
   # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
-  audit_azure_app_service_deployment_slot_virtual_network_integration
+  audit_azure_app_service_deployment_slots_virtual_network_integration
   # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
-  audit_azure_app_service_deployment_slot_cors
+  audit_azure_app_service_deployment_slots_cors
   # 2.2.16  Ensure private endpoints are used to access App Service apps - TBD
-  audit_azure_app_service_deployment_slot_private_endpoints
+  audit_azure_app_service_deployment_slots_private_endpoints
 }

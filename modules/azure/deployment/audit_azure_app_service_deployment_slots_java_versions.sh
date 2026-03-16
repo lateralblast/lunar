@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_ftp_states
+# audit_azure_app_service_deployment_slots_java_versions
 #
-# 2.2.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
+# 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
 #
-# Refer to Section(s) 2.2.5 Page(s) 104-6 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.2.1 Page(s) 91-93 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_ftp_states () {
-  print_function "audit_azure_app_service_deployment_slot_ftp_states"
-  check_message  "Azure App Service Deployment Slot FTP States"
+audit_azure_app_service_deployment_slots_java_versions () {
+  print_function "audit_azure_app_service_deployment_slots_java_versions"
+  check_message  "Azure App Service Deployment Slot Java Versions"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -38,7 +38,8 @@ audit_azure_app_service_deployment_slot_ftp_states () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "FTP State" "${slot_id}" "${app_name}" "${res_group}" "config" "ftp" "Microsoft.Web/sites" "ftpState" "eq" "${azure_ftp_state}" "--ftp-state" ""
+      check_azure_app_service_deployment_slot_value "Java Version"           "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "javaVersion"          "eq" "${azure_java_version}" "--java-version"           ""
+      check_azure_app_service_deployment_slot_value "Java Container Version" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "javaContainerVersion" "eq" "${azure_java_version}" "--java-container-version" ""
     done
   done
 }
