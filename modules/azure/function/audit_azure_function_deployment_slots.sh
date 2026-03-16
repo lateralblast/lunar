@@ -75,10 +75,8 @@ audit_azure_function_deployment_slots () {
     # 2.4.13  Ensure app is integrated with a virtual network - TBD
     # 2.4.14  Ensure configuration is routed through the virtual network integration - TBD
     audit_azure_function_deployment_slots_virtual_network_integration
-    for slot_name in ${slot_names}; do
-      # 2.4.15  Ensure cross-origin resource sharing does not allow all origins - TBD
-      check_azure_function_deployment_slot_value "Cross-Origin Resource Sharing"               "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"        ""
-    done
+    # 2.4.15  Ensure cross-origin resource sharing does not allow all origins - TBD
+    audit_azure_function_deployment_slots_cors
   done
   # 2.4.16  Ensure private endpoints are used to access App Service apps - TBD
   command="az webapp list --query \"[].id\" --output tsv"
