@@ -42,6 +42,8 @@ audit_azure_app_service_deployment_slots () {
   fi
   # 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
   audit_azure_app_service_deployment_slot_java_versions
+  # 2.2.2   Ensure 'Python version' is currently supported (if in use) - TBD
+  audit_azure_app_service_deployment_slot_python_versions
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -54,7 +56,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.2   Ensure 'Python version' is currently supported (if in use) - TBD
       check_azure_app_service_deployment_slot_value "Python Version"                              "${app_name}" "${slot_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "pythonVersion"                     "eq" "${azure_python_version}"       "--python-version"                      ""
       # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD
       check_azure_app_service_deployment_slot_value "PHP Version"                                 "${app_name}" "${slot_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "phpVersion"                        "eq" "${azure_php_version}"          "--php-version"                         ""
