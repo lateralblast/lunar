@@ -38,8 +38,7 @@ audit_azure_app_service_deployment_slot_remote_debugging () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "Java Version"           "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "javaVersion"          "eq" "${azure_java_version}" "--java-version"           ""
-      check_azure_app_service_deployment_slot_value "Java Container Version" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "javaContainerVersion" "eq" "${azure_java_version}" "--java-container-version" ""
+      check_azure_app_service_deployment_slot_value "Remote Debugging" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "remoteDebuggingEnabled" "eq" "false" "--remote-debugging-enabled" ""
     done
   done
 }

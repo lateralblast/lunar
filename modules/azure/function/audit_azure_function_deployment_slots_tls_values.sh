@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_function_deployment_tls_values
+# audit_azure_function_deployment_slots_tls_values
 #
 # 2.4.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
 # 2.4.8   Ensure end-to-end TLS encryption is enabled - TBD
@@ -14,8 +14,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_deployment_tls_values () {
-  print_function "audit_azure_function_deployment_tls_values"
+audit_azure_function_deployment_slots_tls_values () {
+  print_function "audit_azure_function_deployment_slots_tls_values"
   check_message  "Azure Function App Deployment Slots TLS Values"
   command="az functionapp list --query \"[].name\" --output tsv"
   command_message   "${command}"

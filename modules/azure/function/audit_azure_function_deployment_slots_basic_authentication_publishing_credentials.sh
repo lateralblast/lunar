@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_function_deployment_basic_authentication_publishing_credentials
+# audit_azure_function_deployment_slots_basic_authentication_publishing_credentials
 #
 # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
 #
@@ -13,8 +13,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_deployment_basic_authentication_publishing_credentials () {
-  print_function "audit_azure_function_deployment_basic_authentication_publishing_credentials"
+audit_azure_function_deployment_slots_basic_authentication_publishing_credentials () {
+  print_function "audit_azure_function_deployment_slots_basic_authentication_publishing_credentials"
   check_message  "Azure Function App Deployment Slots Basic Authentication Publishing Credentials"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"

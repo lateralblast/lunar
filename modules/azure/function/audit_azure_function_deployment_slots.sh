@@ -51,19 +51,19 @@ audit_azure_function_deployment_slots () {
       return
     fi
     # 2.4.1   Ensure 'Java version' is currently supported (if in use) - TBD
-    audit_azure_function_deployment_java_versions
+    audit_azure_function_deployment_slots_java_versions
     # 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
-    audit_azure_function_deployment_python_versions
+    audit_azure_function_deployment_slots_python_versions
     # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-    audit_azure_function_deployment_basic_authentication_publishing_credentials
+    audit_azure_function_deployment_slots_basic_authentication_publishing_credentials
     # 2.4.4   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
-    audit_azure_function_deployment_ftp_states
+    audit_azure_function_deployment_slots_ftp_states
     # 2.4.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
     # 2.4.6   Ensure 'HTTPS Only' is set to 'On' - TBD
-    audit_azure_function_deployment_http_values
+    audit_azure_function_deployment_slots_http_values
     # 2.4.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
     # 2.4.8   Ensure end-to-end TLS encryption is enabled - TBD
-    audit_azure_function_deployment_tls_values
+    audit_azure_function_deployment_slots_tls_values
     for slot_name in ${slot_names}; do
       # 2.4.9   Ensure 'Remote debugging' is set to 'Off' - TBD
       check_azure_function_deployment_slot_value "Remote Debugging"                            "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"            ""

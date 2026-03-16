@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_function_deployment_python_versions
+# audit_azure_function_deployment_slots_python_versions
 #
 # 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
 #
@@ -13,8 +13,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_deployment_python_versions () {
-  print_function "audit_azure_function_deployment_python_versions"
+audit_azure_function_deployment_slots_python_versions () {
+  print_function "audit_azure_function_deployment_slots_python_versions"
   check_message  "Azure Function App Deployment Slots Python Versions"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"
