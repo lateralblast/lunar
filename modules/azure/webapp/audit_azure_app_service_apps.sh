@@ -52,7 +52,7 @@ audit_azure_app_service_apps () {
   # 2.1.3   Ensure 'PHP version' is currently supported (if in use) - TBD
   audit_azure_app_service_php_versions
   # 2.1.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-  audit_azure_basic_authentication_publishing_credential_values
+  audit_azure_app_service_basic_authentication_publishing_credential_values
   # 2.1.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
   audit_azure_app_service_ftp_states
   # 2.1.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD

@@ -54,10 +54,9 @@ audit_azure_function_deployment_slots () {
     audit_azure_function_deployment_java_versions
     # 2.4.2   Ensure 'Python version' is currently supported (if in use) - TBD
     audit_azure_function_deployment_python_versions
+    # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
+    audit_azure_function_deployment_basic_authentication_publishing_credentials
     for slot_name in ${slot_names}; do
-      # 2.4.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-      check_azure_function_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web/sites" "properties.allow"                  "eq" "false"                         ""                                      ""
-      check_azure_function_deployment_slot_value "Basic Authentication Publishing Credentials" "${slot_id}" "${app_name}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web/sites" "properties.allow"                  "eq" "false"                         ""                                      ""
       # 2.4.4   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
       check_azure_function_deployment_slot_value "FTP State"                                   "${slot_id}" "${app_name}" "${res_group}" "config"                             "ftp" "Microsoft.Web/sites" "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                           ""
       # 2.4.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD

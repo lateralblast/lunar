@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slot_basic_auth
+# audit_azure_app_service_deployment_slot_basic_authentication_publishing_credentials
 #
 # 2.2.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
 #
@@ -13,9 +13,9 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slot_basic_auth () {
-  print_function "audit_azure_app_service_deployment_slot_basic_auth"
-  check_message  "Azure App Service Deployment Slot Basic Auth"
+audit_azure_app_service_deployment_slot_basic_authentication_publishing_credentials () {
+  print_function "audit_azure_app_service_deployment_slot_basic_authentication_publishing_credentials"
+  check_message  "Azure App Service Deployment Slot Basic Authentication Publishing Credentials"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )

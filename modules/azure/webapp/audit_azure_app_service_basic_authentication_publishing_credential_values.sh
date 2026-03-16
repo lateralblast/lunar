@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_basic_authentication_publishing_credential_values
+# audit_azure_app_service_basic_authentication_publishing_credential_values
 #
 # Check Azure App Service Basic Authentication Publishing Credential Values
 #
@@ -15,9 +15,9 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_basic_authentication_publishing_credential_values () {
-  print_function "audit_azure_basic_authentication_publishing_credential_values"
-  check_message  "Azure Basic Authentication Publishing Credential Values"
+audit_azure_app_service_basic_authentication_publishing_credential_values () {
+  print_function "audit_azure_app_service_basic_authentication_publishing_credential_values"
+  check_message  "Azure App Service Basic Authentication Publishing Credential Values"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
