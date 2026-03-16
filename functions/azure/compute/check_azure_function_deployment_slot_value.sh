@@ -13,8 +13,8 @@
 
 check_azure_function_deployment_slot_value () {
   description="${1}"
-  app_name="${2}"
-  slot_name="${3}"
+  slot_id="${2}"
+  app_name="${3}"
   resource_group="${4}"
   resource_type="${5}"
   resource_name="${6}"
@@ -28,6 +28,7 @@ check_azure_function_deployment_slot_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
+  slot_name=$( basename "${slot_id}" )
   check_message "Azure Function Deployment Slot ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   command="az resource show --name \"${resource_name}\" --resource-group \"${resource_group}\" --namespace \"${namespace_name}\" --resource-type \"${resource_type}\" --parent \"sites/${app_name}/slots/${slot_name}\" --query \"${query_string}\" --output tsv 2> /dev/null"
   command_message      "${command}"
