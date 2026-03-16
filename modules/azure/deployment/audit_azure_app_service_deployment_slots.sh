@@ -65,6 +65,7 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.13  Ensure public network access is disabled - TBD
   audit_azure_app_service_deployment_slot_public_network_access
   # 2.2.14  Ensure app is integrated with a virtual network - TBD
+  # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
   audit_azure_app_service_deployment_slot_virtual_network_integration
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
@@ -78,9 +79,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
-      check_azure_app_service_deployment_slot_value "VNet Image Pull"                             "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"        ""
-      check_azure_app_service_deployment_slot_value "VNet Content Share"                          "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"    ""
       # 2.2.17  Ensure cross-origin resource sharing does not allow all origins - TBD
       check_azure_app_service_deployment_slot_value "Cross-Origin Resource Sharing"               "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"        ""
     done

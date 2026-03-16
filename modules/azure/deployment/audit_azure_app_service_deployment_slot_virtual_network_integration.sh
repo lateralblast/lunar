@@ -7,6 +7,7 @@
 # audit_azure_app_service_deployment_slot_virtual_network_integration
 #
 # 2.2.14  Ensure app is integrated with a virtual network - TBD
+# 2.2.15  Ensure configuration is routed through the virtual network integration - TBD
 #
 # Refer to Section(s) 2.2.14 Page(s) 134-136 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
@@ -38,7 +39,9 @@ audit_azure_app_service_deployment_slot_virtual_network_integration () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_app_service_deployment_slot_value "Virtual Network Integration" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "virtualNetworkSubnetId" "ne" "" "" ""
+      check_azure_app_service_deployment_slot_value "Virtual Network Integration" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "virtualNetworkSubnetId"  "ne" ""     ""                                   ""
+      check_azure_app_service_deployment_slot_value "VNet Image Pull"             "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"     "eq" "true" "properties.vnetRouteAllEnabled"     ""
+      check_azure_app_service_deployment_slot_value "VNet Content Share"          "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "vnetContentShareEnabled" "eq" "true" "properties.vnetContentShareEnabled" ""
     done
   done
 }
