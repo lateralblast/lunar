@@ -2921,3 +2921,5 @@
 # Split out Azure App Service Deployment Slot Client Certificates check
 # 15.5.1: Mon 16 Mar 2026 17:04:41 AEDT
 # Split out Azure App Service Deployment Slot Managed Identities check
+# 15.5.2: Mon 16 Mar 2026 17:08:41 AEDT
+# Split out Azure App Service Deployment Slot Public Network Access check
