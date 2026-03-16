@@ -60,6 +60,8 @@ audit_azure_app_service_deployment_slots () {
   audit_azure_app_service_deployment_slot_remote_debugging
   # 2.2.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
   audit_azure_app_service_deployment_slot_client_certificates
+  # 2.2.12  Ensure managed identities are configured - TBD
+  audit_azure_app_service_deployment_slot_managed_identities
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -72,8 +74,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.12  Ensure managed identities are configured - TBD
-      check_azure_app_service_deployment_slot_value "Managed Identities"                          "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "identity"            "type"                              "eq" "${azure_managed_identity}"     ""                                      ""
       # 2.2.13  Ensure public network access is disabled - TBD
       check_azure_app_service_deployment_slot_value "Public Network Access"                       "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "publicNetworkAccess"               "eq" "Disabled"                      "properties.publicNetworkAccess"        ""
       # 2.2.14  Ensure app is integrated with a virtual network - TBD
