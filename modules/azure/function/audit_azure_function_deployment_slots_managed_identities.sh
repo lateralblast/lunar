@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_function_deployment_slots_client_certificates
+# audit_azure_function_deployment_slots_managed_identities
 #
-# 2.4.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
+# 2.4.11  Ensure managed identities are configured - TBD
 #
-# Refer to Section(s) 2.4.10 Page(s) 219-21 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.4.11 Page(s) 222-4 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_deployment_slots_client_certificates () {
-  print_function "audit_azure_function_deployment_slots_client_certificates"
-  check_message  "Azure Function App Deployment Slots Client Certificates"
+audit_azure_function_deployment_slots_managed_identities () {
+  print_function "audit_azure_function_deployment_slots_managed_identities"
+  check_message  "Azure Function App Deployment Slots Managed Identities"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -38,7 +38,7 @@ audit_azure_function_deployment_slots_client_certificates () {
       return
     fi
     for slot_id in ${slot_ids}; do
-      check_azure_function_deployment_slot_value "Client Certificates" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "Microsoft.Web/sites" "clientCertEnabled" "eq" "true" "clientCertEnabled" ""
+      check_azure_function_deployment_slot_value "Managed Identities" "${slot_id}" "${app_name}" "${res_group}" "config" "web" "identity" "type" "eq" "${azure_managed_identity}" "" ""
     done
   done
 }
