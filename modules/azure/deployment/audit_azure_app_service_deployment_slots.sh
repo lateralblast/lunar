@@ -53,6 +53,9 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
   # 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
   audit_azure_app_service_deployment_slot_http_values
+  # 2.2.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
+  # 2.2.9   Ensure end-to-end TLS encryption is enabled - TBD
+  audit_azure_app_service_deployment_slot_tls_values
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -65,11 +68,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      check_azure_app_service_deployment_slot_value "HTTPS Only"                                  "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "httpsOnly"                         "eq" "true"                          "httpsOnly"                             ""
-      # 2.2.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
-      check_azure_app_service_deployment_slot_value "Minimum Inbound TLS Version"                 "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                     ""
-      # 2.2.9   Ensure end-to-end TLS encryption is enabled - TBD
-      check_azure_app_service_deployment_slot_value "End-to-End TLS Encryption"                   "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "endToEndEncryptionEnabled"         "eq" "true"                          "properties.endToEndEncryptionEnabled"  ""
       # 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
       check_azure_app_service_deployment_slot_value "Remote Debugging"                            "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"            ""
       # 2.2.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
