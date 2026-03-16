@@ -40,6 +40,8 @@ audit_azure_app_service_deployment_slots () {
     info_message "No App Service Apps found"
     return
   fi
+  # 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
+  audit_azure_app_service_deployment_slot_java_versions
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -52,9 +54,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.1   Ensure 'Java version' is currently supported (if in use) - TBD
-      check_azure_app_service_deployment_slot_value "Java Version"                                "${app_name}" "${slot_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "javaVersion"                       "eq" "${azure_java_version}"         "--java-version"                        ""
-      check_azure_app_service_deployment_slot_value "Java Container Version"                      "${app_name}" "${slot_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "javaContainerVersion"              "eq" "${azure_java_version}"         "--java-container-version"              ""
       # 2.2.2   Ensure 'Python version' is currently supported (if in use) - TBD
       check_azure_app_service_deployment_slot_value "Python Version"                              "${app_name}" "${slot_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "pythonVersion"                     "eq" "${azure_python_version}"       "--python-version"                      ""
       # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD

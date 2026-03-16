@@ -12,7 +12,7 @@
 #.
 
 check_azure_app_service_plan_value () {
-  plan_name="${1}"
+  plan_id="${1}"
   resource_group="${2}"
   query_string="${3}"
   function="${4}"
@@ -23,15 +23,16 @@ check_azure_app_service_plan_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
+  plan_name=$( basename "${plan_id}" )
   check_message  "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
-  command="az appservice plan show --name \"${plan_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null" 
+  command="az appservice plan show --id \"${plan_id}\" --query \"${query_string}\" --output tsv 2> /dev/null" 
   command_message      "${command}"
   actual_value=$( eval "${command}" )
   if [ "${function}" = "eq" ]; then
     if [ "${actual_value}" = "${correct_value}" ]; then
       inc_secure   "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${function}\" to \"${correct_value}\""
     else
-      inc_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is not \"${function}\" to \"${correct_value}\""
+      inc_insecure "Azure App Service Plan \"${plan_name}\" with resource group \"${resource_group}\" is \"${actual_value}\" and not \"${function}\" to \"${correct_value}\""
       if [ ! "${set_name}" = "" ]; then
         case "${set_name}" in
           "--"*)
