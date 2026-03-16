@@ -56,6 +56,8 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.8   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
   # 2.2.9   Ensure end-to-end TLS encryption is enabled - TBD
   audit_azure_app_service_deployment_slot_tls_values
+  # 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
+  audit_azure_app_service_deployment_slot_remote_debugging
   for app_name in ${app_names}; do
     command="az webapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
     command_message    "${command}"
@@ -68,8 +70,6 @@ audit_azure_app_service_deployment_slots () {
       return
     fi
     for slot_name in ${slot_names}; do
-      # 2.2.10  Ensure 'Remote debugging' is set to 'Off' - TBD
-      check_azure_app_service_deployment_slot_value "Remote Debugging"                            "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"            ""
       # 2.2.11  Ensure incoming client certificates are enabled and required (if in use) - TBD
       check_azure_app_service_deployment_slot_value "Client Certificates"                         "${slot_id}" "${app_name}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "clientCertEnabled"                 "eq" "true"                          "clientCertEnabled"                     ""
       # 2.2.12  Ensure managed identities are configured - TBD
