@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# shellcheck disable=SC1090
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+
+# audit_azure_function_deployment_slots_private_endpoints
+#
+# 2.4.16  Ensure private endpoints are used to access App Service apps - TBD
+#
+# Refer to Section(s) 2.4.16 Page(s) 235-7 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+#
+# This requires the Azure CLI to be installed and configured
+#.
+
+audit_azure_function_deployment_slots_private_endpoints () {
+  print_function "audit_azure_function_deployment_slots_private_endpoints"
+  check_message  "Azure Function App Deployment Slots Private Endpoints"
+  command="az functionapp list --query \"[].id\" --output tsv"
+  command_message "${command}"
+  app_ids=$( eval "${command}" 2> /dev/null )
+  if [ -z "${app_ids}" ]; then
+    info_message "No Function App Apps found"
+    return
+  fi
+  for app_id in ${app_ids}; do
+    command="az functionapp show --name \"${app_id}\" --query \"name\" --output tsv"
+    command_message   "${command}"
+    app_name=$( eval  "${command}" )
+    command="az functionapp show --name \"${app_id}\" --query \"resourceGroup\" --output tsv"
+    command_message   "${command}"
+    res_group=$( eval "${command}" )
+    command="az functionapp deployment slot list --name \"${app_id}\" --query \"[].id\" --output tsv"
+    command_message   "${command}"
+    slot_ids=$( eval  "${command}" 2> /dev/null )
+    if [ -z "${slot_ids}" ]; then
+      info_message "No Function App Deployment Slots found"
+      return
+    fi
+    for slot_id in ${slot_ids}; do
+      check_azure_network_private_endpoint_value "${app_id}" "[*].privateLinkServiceConnections[*].[privateLinkServiceId,privateLinkServiceConnectionState.status]"   "eq" "Approved"
+    done
+  done
+}

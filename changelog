@@ -2961,3 +2961,5 @@
 # Split out Azure Function App Deployment Slots Virtual Network Integration and VNet check
 # 15.7.1: Tue 17 Mar 2026 22:48:13 AEDT
 # Split out Azure Function App Deployment Slots CORS check
+# 15.7.2: Tue 17 Mar 2026 22:52:13 AEDT
+# Split out Azure Function App Deployment Slots Private Endpoints check
