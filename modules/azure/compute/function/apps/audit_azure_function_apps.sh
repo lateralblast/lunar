@@ -43,13 +43,12 @@ audit_azure_function_apps () {
   audit_azure_function_app_java_versions
   # 2.3.2   Ensure 'Python version' is currently supported (if in use) - TBD
   audit_azure_function_app_python_versions
+  # 2.3.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
+  audit_azure_function_app_basic_authentication_publishing_credentials
   for app_id in ${app_ids}; do
     command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    # 2.3.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-    check_azure_function_app_value "Basic Authentication Publishing Credentials" "${app_id}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web" "properties.allow"                        "eq" "false"          ""                                  ""
-    check_azure_function_app_value "Basic Authentication Publishing Credentials" "${app_id}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web" "properties.allow"                        "eq" "false"          ""                                  ""
     # 2.3.4   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
     check_azure_function_app_value "FTP State"                                   "${app_id}" "${res_group}" "config"                             "ftp" "" "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                                    ""
     # 2.3.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
