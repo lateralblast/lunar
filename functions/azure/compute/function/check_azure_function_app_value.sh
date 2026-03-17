@@ -13,7 +13,7 @@
 
 check_azure_function_app_value () {
   description="${1}"
-  app_name="${2}"
+  app_id="${2}"
   resource_group="${3}"
   sub_function="${4}"
   resource_type="${5}"
@@ -27,11 +27,12 @@ check_azure_function_app_value () {
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi
+  app_name=$( basename "${app_id}" )
   check_message "Azure Function App ${description} for app \"${app_name}\" with resource group \"${resource_group}\" and parameter \"${query_string}\" is \"${function}\" to \"${correct_value}\""
   if [ "${sub_function}" = "auth" ]; then
     command="az webapp auth show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
   else
-    command="az functionapp show --name \"${app_name}\" --resource-group \"${resource_group}\" --query \"${query_string}\" --output tsv 2> /dev/null"
+    command="az functionapp show --id \"${app_id}\" --query \"${query_string}\" --output tsv 2> /dev/null"
   fi
   command_message      "${command}"
   actual_value=$( eval "${command}" )
