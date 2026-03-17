@@ -2971,3 +2971,5 @@
 # Split out Azure Function App Python versions check
 # 15.7.6: Tue 17 Mar 2026 13:35:33 AEDT
 # Split out Azure Function App Basic Authentication Publishing Credentials check
+# 15.7.7: Tue 17 Mar 2026 13:46:33 AEDT
+# Split out Azure Function App FTP State check
