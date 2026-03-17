@@ -40,44 +40,42 @@ audit_azure_function_apps () {
     return
   fi
   # 2.3.1   Ensure 'Java version' is currently supported (if in use) - TBD
-  audit_azure_function_apps_java_version
+  audit_azure_function_app_java_versions
+  # 2.3.2   Ensure 'Python version' is currently supported (if in use) - TBD
+  audit_azure_function_app_python_versions
   for app_id in ${app_ids}; do
-    command="az functionapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
+    command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    check_azure_app_service_deployment_slot_value "Java Version"                                "${app_id}" "${res_group}" "config"                             "web" "" "javaVersion"                       "eq" "${azure_java_version}"         "--java-version"                                 ""
-    check_azure_app_service_deployment_slot_value "Java Container Version"                      "${app_id}" "${res_group}" "config"                             "web" "" "javaContainerVersion"              "eq" "${azure_java_version}"         "--java-container-version"                       ""
-    # 2.3.2   Ensure 'Python version' is currently supported (if in use) - TBD
-    check_azure_app_service_deployment_slot_value "Python Version"                              "${app_id}" "${res_group}" "config"                             "web" "" "pythonVersion"                     "eq" "${azure_python_version}"       "--python-version"                               ""
     # 2.3.3   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-    check_azure_app_service_deployment_slot_value "Basic Authentication Publishing Credentials" "${app_id}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web" "properties.allow"                        "eq" "false"          ""                                  ""
-    check_azure_app_service_deployment_slot_value "Basic Authentication Publishing Credentials" "${app_id}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web" "properties.allow"                        "eq" "false"          ""                                  ""
+    check_azure_function_app_value "Basic Authentication Publishing Credentials" "${app_id}" "${res_group}" "basicPublishingCredentialsPolicies" "ftp" "Microsoft.Web" "properties.allow"                        "eq" "false"          ""                                  ""
+    check_azure_function_app_value "Basic Authentication Publishing Credentials" "${app_id}" "${res_group}" "basicPublishingCredentialsPolicies" "scm" "Microsoft.Web" "properties.allow"                        "eq" "false"          ""                                  ""
     # 2.3.4   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
-    check_azure_app_service_deployment_slot_value "FTP State"                                   "${app_id}" "${res_group}" "config"                             "ftp" "" "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                                    ""
+    check_azure_function_app_value "FTP State"                                   "${app_id}" "${res_group}" "config"                             "ftp" "" "ftpState"                          "eq" "${azure_ftp_state}"            "--ftp-state"                                    ""
     # 2.3.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
-    check_azure_app_service_deployment_slot_value "HTTP Version"                                "${app_id}" "${res_group}" "config"                             "web" "" "http20Enabled"                     "eq" "true"                          "--http20-enabled"                               ""
+    check_azure_function_app_value "HTTP Version"                                "${app_id}" "${res_group}" "config"                             "web" "" "http20Enabled"                     "eq" "true"                          "--http20-enabled"                               ""
     # 2.3.6   Ensure 'HTTPS Only' is set to 'On' - TBD
-    check_azure_app_service_deployment_slot_value "HTTPS Only"                                  "${app_id}" "${res_group}" "config"                             "web" "" "httpsOnly"                         "eq" "true"                          "httpsOnly"                                      ""
+    check_azure_function_app_value "HTTPS Only"                                  "${app_id}" "${res_group}" "config"                             "web" "" "httpsOnly"                         "eq" "true"                          "httpsOnly"                                      ""
     # 2.3.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
-    check_azure_app_service_deployment_slot_value "Minimum Inbound TLS Version"                 "${app_id}" "${res_group}" "config"                             "web" "" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
+    check_azure_function_app_value "Minimum Inbound TLS Version"                 "${app_id}" "${res_group}" "config"                             "web" "" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
     # 2.3.8   Ensure end-to-end TLS encryption is enabled - TBD
-    check_azure_app_service_deployment_slot_value "End-to-End TLS Encryption"                   "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "endToEndEncryptionEnabled"         "eq" "true"                          "properties.endToEndEncryptionEnabled"           ""
+    check_azure_function_app_value "End-to-End TLS Encryption"                   "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "endToEndEncryptionEnabled"         "eq" "true"                          "properties.endToEndEncryptionEnabled"           ""
     # 2.3.9   Ensure 'Remote debugging' is set to 'Off' - TBD
-    check_azure_app_service_deployment_slot_value "Remote Debugging"                            "${app_id}" "${res_group}" "config"                             "web" "" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"                     ""
+    check_azure_function_app_value "Remote Debugging"                            "${app_id}" "${res_group}" "config"                             "web" "" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"                     ""
     # 2.3.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
-    check_azure_app_service_deployment_slot_value "Client Certificates"                         "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "clientCertEnabled"                 "eq" "true"                          "clientCertEnabled"                              ""
+    check_azure_function_app_value "Client Certificates"                         "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "clientCertEnabled"                 "eq" "true"                          "clientCertEnabled"                              ""
     # 2.3.11 Ensure 'App Service authentication' is set to 'Enabled' - TBD
-    check_azure_app_service_deployment_slot_value "App Service Authentication"                  "${app_id}" "${res_group}" "auth"                               "web" "Microsoft.Web/sites" "authSettings.enabled"              "eq" "true"                          "properties.authSettings.enabled"                ""
+    check_azure_function_app_value "App Service Authentication"                  "${app_id}" "${res_group}" "auth"                               "web" "Microsoft.Web/sites" "authSettings.enabled"              "eq" "true"                          "properties.authSettings.enabled"                ""
     # 2.3.12  Ensure managed identities are configured - TBD
-    check_azure_app_service_deployment_slot_value "Managed Identities"                          "${app_id}" "${res_group}" "config"                             "web" "identity"            "type"                              "eq" "${azure_managed_identity}"     ""                                               ""
+    check_azure_function_app_value "Managed Identities"                          "${app_id}" "${res_group}" "config"                             "web" "identity"            "type"                              "eq" "${azure_managed_identity}"     ""                                               ""
     # 2.3.13  Ensure public network access is disabled - TBD
-    check_azure_app_service_deployment_slot_value "Public Network Access"                       "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "publicNetworkAccess"               "eq" "Disabled"                      "properties.publicNetworkAccess"                 ""
+    check_azure_function_app_value "Public Network Access"                       "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "publicNetworkAccess"               "eq" "Disabled"                      "properties.publicNetworkAccess"                 ""
     # 2.3.14  Ensure app is integrated with a virtual network - TBD
-    check_azure_app_service_deployment_slot_value "Virtual Network Integration"                 "${app_id}" "${res_group}" "config"                             "web" "" "virtualNetworkSubnetId"            "ne" ""                              ""                                               ""
+    check_azure_function_app_value "Virtual Network Integration"                 "${app_id}" "${res_group}" "config"                             "web" "" "virtualNetworkSubnetId"            "ne" ""                              ""                                               ""
     # 2.3.16  Ensure configuration is routed through the virtual network integration - TBD
-    check_azure_app_service_deployment_slot_value "VNet Image Pull"                             "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"                 ""
-    check_azure_app_service_deployment_slot_value "VNet Content Share"                          "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"             ""
+    check_azure_function_app_value "VNet Image Pull"                             "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"                 ""
+    check_azure_function_app_value "VNet Content Share"                          "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"             ""
     # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
-    check_azure_app_service_deployment_slot_value "Cross-Origin Resource Sharing"               "${app_id}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"                 ""
+    check_azure_function_app_value "Cross-Origin Resource Sharing"               "${app_id}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"                 ""
   done
 }

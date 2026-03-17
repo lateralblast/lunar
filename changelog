@@ -2967,3 +2967,5 @@
 # Directory structure clean up
 # 15.7.4: Tue 17 Mar 2026 11:00:33 AEDT
 # Split out Azure Function App Java versions check
+# 15.7.5: Tue 17 Mar 2026 11:02:33 AEDT
+# Split out Azure Function App Python versions check

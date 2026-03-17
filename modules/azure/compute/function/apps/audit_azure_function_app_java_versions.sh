@@ -24,10 +24,10 @@ audit_azure_function_app_java_versions () {
     return
   fi
   for app_id in ${app_ids}; do
-    command="az functionapp show --name \"${app_name}\" --query \"resourceGroup\" --output tsv"
+    command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    check_azure_app_service_deployment_slot_value "Java Version"           "${app_id}" "${res_group}" "config" "web" "" "javaVersion"          "eq" "${azure_java_version}" "--java-version"           ""
-    check_azure_app_service_deployment_slot_value "Java Container Version" "${app_id}" "${res_group}" "config" "web" "" "javaContainerVersion" "eq" "${azure_java_version}" "--java-container-version" ""
+    check_azure_function_app_value "Java Version"           "${app_id}" "${res_group}" "config" "web" "" "javaVersion"          "eq" "${azure_java_version}" "--java-version"           ""
+    check_azure_function_app_value "Java Container Version" "${app_id}" "${res_group}" "config" "web" "" "javaContainerVersion" "eq" "${azure_java_version}" "--java-container-version" ""
   done
 }
