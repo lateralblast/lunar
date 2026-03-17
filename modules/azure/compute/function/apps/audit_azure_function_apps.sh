@@ -50,14 +50,13 @@ audit_azure_function_apps () {
   # 2.3.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
   # 2.3.6   Ensure 'HTTPS Only' is set to 'On' - TBD
   audit_azure_function_app_http_values
+  # 2.3.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
+  # 2.3.8   Ensure end-to-end TLS encryption is enabled - TBD
+  audit_azure_function_app_tls_values
   for app_id in ${app_ids}; do
     command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    # 2.3.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
-    check_azure_function_app_value "Minimum Inbound TLS Version"                 "${app_id}" "${res_group}" "config"                             "web" "" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
-    # 2.3.8   Ensure end-to-end TLS encryption is enabled - TBD
-    check_azure_function_app_value "End-to-End TLS Encryption"                   "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "endToEndEncryptionEnabled"         "eq" "true"                          "properties.endToEndEncryptionEnabled"           ""
     # 2.3.9   Ensure 'Remote debugging' is set to 'Off' - TBD
     check_azure_function_app_value "Remote Debugging"                            "${app_id}" "${res_group}" "config"                             "web" "" "remoteDebuggingEnabled"            "eq" "false"                         "--remote-debugging-enabled"                     ""
     # 2.3.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
