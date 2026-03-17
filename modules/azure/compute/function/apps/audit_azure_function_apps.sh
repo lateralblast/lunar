@@ -47,14 +47,13 @@ audit_azure_function_apps () {
   audit_azure_function_app_basic_authentication_publishing_credentials
   # 2.3.4   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
   audit_azure_function_app_ftp_states
+  # 2.3.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
+  # 2.3.6   Ensure 'HTTPS Only' is set to 'On' - TBD
+  audit_azure_function_app_http_values
   for app_id in ${app_ids}; do
     command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    # 2.3.5   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
-    check_azure_function_app_value "HTTP Version"                                "${app_id}" "${res_group}" "config"                             "web" "" "http20Enabled"                     "eq" "true"                          "--http20-enabled"                               ""
-    # 2.3.6   Ensure 'HTTPS Only' is set to 'On' - TBD
-    check_azure_function_app_value "HTTPS Only"                                  "${app_id}" "${res_group}" "config"                             "web" "" "httpsOnly"                         "eq" "true"                          "httpsOnly"                                      ""
     # 2.3.7   Ensure 'Minimum Inbound TLS Version' is set to '1.2' or higher - TBD
     check_azure_function_app_value "Minimum Inbound TLS Version"                 "${app_id}" "${res_group}" "config"                             "web" "" "minTlsVersion"                     "eq" "1.2"                           "--min-tls-version"                              ""
     # 2.3.8   Ensure end-to-end TLS encryption is enabled - TBD

@@ -2973,3 +2973,5 @@
 # Split out Azure Function App Basic Authentication Publishing Credentials check
 # 15.7.7: Tue 17 Mar 2026 13:46:33 AEDT
 # Split out Azure Function App FTP State check
+# 15.7.8: Tue 17 Mar 2026 14:30:13 AEDT
+# Split out Azure Function App HTTP values check
