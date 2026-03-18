@@ -2987,3 +2987,5 @@
 # Split out Azure Function App Managed Identities check
 # 15.8.4: Wed 18 Mar 2026 15:57:40 AEDT
 # Split out Azure Function App Public Network Access check
+# 15.8.5: Wed 18 Mar 2026 16:09:40 AEDT
+# Split out Azure Function App Virtual Network Integration and VNet checks

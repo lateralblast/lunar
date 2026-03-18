@@ -63,16 +63,15 @@ audit_azure_function_apps () {
   audit_azure_function_app_managed_identities
   # 2.3.13  Ensure public network access is disabled - TBD
   audit_azure_function_app_public_network_access
+  # 2.3.14  Ensure app is integrated with a virtual network - TBD
+  # 2.3.15  Ensure configuration is routed through the virtual network integration - TBD
+  # 2.3.16  Ensure all traffic is routed through the virtual network - TBD
+  audit_azure_function_app_virtual_network_integration
   for app_id in ${app_ids}; do
     command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    # 2.3.14  Ensure app is integrated with a virtual network - TBD
-    check_azure_function_app_value "Virtual Network Integration"                 "${app_id}" "${res_group}" "config"                             "web" "" "virtualNetworkSubnetId"            "ne" ""                              ""                                               ""
-    # 2.3.16  Ensure configuration is routed through the virtual network integration - TBD
-    check_azure_function_app_value "VNet Image Pull"                             "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetRouteAllEnabled"               "eq" "true"                          "properties.vnetRouteAllEnabled"                 ""
-    check_azure_function_app_value "VNet Content Share"                          "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "vnetContentShareEnabled"           "eq" "true"                          "properties.vnetContentShareEnabled"             ""
     # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
-    check_azure_function_app_value "Cross-Origin Resource Sharing"               "${app_id}" "${res_group}" "config"                             "web" "cors"                "siteConfig.cors.allowedOrigins"    "ne" "*"                             "properties.cors.allowedOrigins"                 ""
+    check_azure_function_app_value "Cross-Origin Resource Sharing" "${app_id}" "${res_group}" "config" "web" "cors" "siteConfig.cors.allowedOrigins" "ne" "*" "properties.cors.allowedOrigins" ""
   done
 }
