@@ -2983,3 +2983,5 @@
 # Split out Azure Function App Client Certificates check
 # 15.8.2: Wed 18 Mar 2026 15:35:40 AEDT
 # Split out Azure Function App Service Authentication check
+# 15.8.3: Wed 18 Mar 2026 15:52:40 AEDT
+# Split out Azure Function App Managed Identities check

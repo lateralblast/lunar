@@ -59,12 +59,12 @@ audit_azure_function_apps () {
   audit_azure_function_app_client_certificates
   # 2.3.11 Ensure 'App Service authentication' is set to 'Enabled' - TBD
   audit_azure_function_app_service_authentication
+  # 2.3.12  Ensure managed identities are configured - TBD
+  audit_azure_function_app_managed_identities
   for app_id in ${app_ids}; do
     command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    # 2.3.12  Ensure managed identities are configured - TBD
-    check_azure_function_app_value "Managed Identities"                          "${app_id}" "${res_group}" "config"                             "web" "identity"            "type"                              "eq" "${azure_managed_identity}"     ""                                               ""
     # 2.3.13  Ensure public network access is disabled - TBD
     check_azure_function_app_value "Public Network Access"                       "${app_id}" "${res_group}" "config"                             "web" "Microsoft.Web/sites" "publicNetworkAccess"               "eq" "Disabled"                      "properties.publicNetworkAccess"                 ""
     # 2.3.14  Ensure app is integrated with a virtual network - TBD
