@@ -67,11 +67,6 @@ audit_azure_function_apps () {
   # 2.3.15  Ensure configuration is routed through the virtual network integration - TBD
   # 2.3.16  Ensure all traffic is routed through the virtual network - TBD
   audit_azure_function_app_virtual_network_integration
-  for app_id in ${app_ids}; do
-    command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
-    command_message   "${command}"
-    res_group=$( eval "${command}" )
-    # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
-    check_azure_function_app_value "Cross-Origin Resource Sharing" "${app_id}" "${res_group}" "config" "web" "cors" "siteConfig.cors.allowedOrigins" "ne" "*" "properties.cors.allowedOrigins" ""
-  done
+  # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
+  audit_azure_function_app_cors
 }
