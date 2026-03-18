@@ -2981,3 +2981,5 @@
 # Split out Azure Function App Remote Debugging check
 # 15.8.1: Wed 18 Mar 2026 15:17:40 AEDT
 # Split out Azure Function App Client Certificates check
+# 15.8.2: Wed 18 Mar 2026 15:35:40 AEDT
+# Split out Azure Function App Service Authentication check

@@ -4,18 +4,18 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_function_app_client_certificates
+# audit_azure_function_app_service_authentication
 #
-# 2.3.10  Ensure incoming client certificates are enabled and required (if in use) - TBD
+# 2.3.11 Ensure 'App Service authentication' is set to 'Enabled' - TBD
 #
-# Refer to Section(s) 2.3.10 Page(s) 169-71 CIS Microsoft Azure Compute Services Benchmark v2.0.0
+# Refer to Section(s) 2.3.11 Page(s) 172-4 CIS Microsoft Azure Compute Services Benchmark v2.0.0
 #
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_app_client_certificates () {
-  print_function "audit_azure_function_app_client_certificates"
-  check_message  "Azure Function Apps Client Certificates"
+audit_azure_function_app_service_authentication () {
+  print_function "audit_azure_function_app_service_authentication"
+  check_message  "Azure Function Apps Service Authentication"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
@@ -27,6 +27,6 @@ audit_azure_function_app_client_certificates () {
     command="az functionapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    check_azure_function_app_value "Client Certificates" "${app_id}" "${res_group}" "config" "web" "Microsoft.Web/sites" "clientCertEnabled" "eq" "true" "clientCertEnabled" ""
+    check_azure_function_app_value "App Service Authentication" "${app_id}" "${res_group}" "auth" "web" "Microsoft.Web/sites" "authSettings.enabled" "eq" "true" "properties.authSettings.enabled" ""
   done
 }
