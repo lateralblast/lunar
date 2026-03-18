@@ -2977,5 +2977,7 @@
 # Split out Azure Function App HTTP values check
 # 15.7.9: Tue 17 Mar 2026 14:37:13 AEDT
 # Split out Azure Function App TLS values check
-# 15.7.10: Wed 18 Mar 2026 15:13:13 AEDT
+# 15.8.0: Wed 18 Mar 2026 15:13:13 AEDT
 # Split out Azure Function App Remote Debugging check
+# 15.8.1: Wed 18 Mar 2026 15:17:40 AEDT
+# Split out Azure Function App Client Certificates check
