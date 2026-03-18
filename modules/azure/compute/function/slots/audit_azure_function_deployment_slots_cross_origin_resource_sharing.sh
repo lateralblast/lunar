@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_function_deployment_slots_cors
+# audit_azure_function_deployment_slots_cross_origin_resource_sharing
 #
 # 2.4.15  Ensure cross-origin resource sharing does not allow all origins - TBD
 #
@@ -13,8 +13,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_deployment_slots_cors () {
-  print_function "audit_azure_function_deployment_slots_cors"
+audit_azure_function_deployment_slots_cross_origin_resource_sharing () {
+  print_function "audit_azure_function_deployment_slots_cross_origin_resource_sharing"
   check_message  "Azure Function App Deployment Slots Cross-Origin Resource Sharing"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"

@@ -2991,3 +2991,5 @@
 # Split out Azure Function App Virtual Network Integration and VNet checks
 # 15.8.6: Wed 18 Mar 2026 16:13:40 AEDT
 # Split out Azure Function App Cross-Origin Resource Sharing check
+# 15.8.7: Wed 18 Mar 2026 16:31:40 AEDT
+# Function name cleanup

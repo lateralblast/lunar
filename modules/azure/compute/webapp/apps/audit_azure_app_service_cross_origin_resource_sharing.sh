@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_cors
+# audit_azure_app_service_cross_origin_resource_sharing
 #
 # Check Azure App Service Cross-origin Resource sharing
 #
@@ -15,9 +15,9 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_cors () {
-  print_function "audit_azure_app_service_cors"
-  check_message  "Azure App Service Cross-origin Resource Sharing"
+audit_azure_app_service_cross_origin_resource_sharing () {
+  print_function "audit_azure_app_service_cross_origin_resource_sharing"
+  check_message  "Azure App Service Cross-Origin Resource Sharing"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )

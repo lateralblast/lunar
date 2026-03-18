@@ -68,5 +68,5 @@ audit_azure_function_apps () {
   # 2.3.16  Ensure all traffic is routed through the virtual network - TBD
   audit_azure_function_app_virtual_network_integration
   # 2.3.17  Ensure cross-origin resource sharing does not allow all origins - TBD
-  audit_azure_function_app_cors
+  audit_azure_function_app_cross_origin_resource_sharing
 }

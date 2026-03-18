@@ -81,7 +81,7 @@ audit_azure_app_service_apps () {
   # 2.1.20  Ensure all traffic is routed through the virtual network - TBD
   audit_azure_app_service_vnets
   # 2.1.21  Ensure cross-origin resource sharing does not allow all origins - TBD
-  audit_azure_app_service_cors
+  audit_azure_app_service_cross_origin_resource_sharing
   # 2.1.15  Ensure App Service plan SKU supports private endpoints - TBD
   audit_azure_app_service_plans
 }

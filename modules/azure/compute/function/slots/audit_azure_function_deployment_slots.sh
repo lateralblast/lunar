@@ -76,7 +76,7 @@ audit_azure_function_deployment_slots () {
     # 2.4.14  Ensure configuration is routed through the virtual network integration - TBD
     audit_azure_function_deployment_slots_virtual_network_integration
     # 2.4.15  Ensure cross-origin resource sharing does not allow all origins - TBD
-    audit_azure_function_deployment_slots_cors
+    audit_azure_function_deployment_slots_cross_origin_resource_sharing
     # 2.4.16  Ensure private endpoints are used to access App Service apps - TBD
     audit_azure_app_service_deployment_slots_private_endpoints
   done
