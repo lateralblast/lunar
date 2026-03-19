@@ -2997,3 +2997,5 @@
 # Cleaned up AWS module directory structure
 # 15.8.9: Thu 19 Mar 2026 17:34:02 AEDT
 # Added platform check to XD/NX Support check
+# 15.9.0: Thu 19 Mar 2026 18:06:02 AEDT
+# Added percentage calculation to print_info
