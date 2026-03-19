@@ -2993,3 +2993,5 @@
 # Split out Azure Function App Cross-Origin Resource Sharing check
 # 15.8.7: Wed 18 Mar 2026 16:31:40 AEDT
 # Function name cleanup
+# 15.8.8: Thu 19 Mar 2026 14:04:02 AEDT
+# Cleaned up AWS module directory structure
