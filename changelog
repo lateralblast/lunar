@@ -2999,3 +2999,5 @@
 # Added platform check to XD/NX Support check
 # 15.9.0: Thu 19 Mar 2026 18:06:02 AEDT
 # Added percentage calculation to print_info
+# 15.9.1: Thu 19 Mar 2026 21:21:45 AEDT
+# Fixed Bluetooth check

@@ -48,7 +48,7 @@ audit_bluetooth () {
       else
         inc_secure       "Bluetooth is turned off"
       fi
-      command="defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed \"s/[ ,\",\,]//g\""
+      command="defaults read com.apple.systemuiserver menuExtras 2>&1 |grep Bluetooth.menu |sed \"s/[ ,\\\",\\\,]//g\""
       command_message "${command}"
       defaults_check=$( eval "${command}" )
       if [ "${defaults_check}" = "/System/Library/CoreServices/MenuExtras/Bluetooth.menu" ]; then
