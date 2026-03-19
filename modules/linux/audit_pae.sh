@@ -16,12 +16,16 @@ audit_pae () {
   string="XD/NX Support"
   check_message  "${string}"
   if [ "${os_name}" = "Linux" ]; then
-    if [ -f "/var/log/dmesg" ]; then
-      check_nx=$( grep NX < /var/log/dmesg | grep "protection: active" | tail -1 | grep -c active | sed "s/ //g" )
-      if [ "${check_nx}" = "1" ]; then
-        inc_secure   "XD/NX is enabled"
+    if [ "${os_platform}" = "x86_64" ]; then
+      if [ -f "/var/log/dmesg" ]; then
+        check_nx=$( grep NX < /var/log/dmesg | grep "protection: active" | tail -1 | grep -c active | sed "s/ //g" )
+        if [ "${check_nx}" = "1" ]; then
+          inc_secure   "XD/NX is enabled"
+        else
+          inc_insecure "XD/NX is not enabled"
+        fi
       else
-        inc_insecure "XD/NX is not enabled"
+        na_message "XD/NX Support is not available on ${os_platform}"
       fi
     fi
   else
