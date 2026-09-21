@@ -13,9 +13,9 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_function_apps () {
-  print_function "audit_azure_functions_apps"
-  check_message  "Azure Function Apps"
+audit_azure_function_app_python_versions () {
+  print_function "audit_azure_function_app_python_versions"
+  check_message  "Azure Function Apps Python Versions"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )

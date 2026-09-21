@@ -11,7 +11,7 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-check_azure_app_service_app_value () {
+check_azure_app_service_deployment_slot_value () {
   description="${1}"
   slot_id="${2}"
   app_name="${3}"
@@ -24,7 +24,7 @@ check_azure_app_service_app_value () {
   correct_value="${10}"
   set_name="${11}"
   set_value="${12}"
-  print_function "check_azure_app_service_app_value"
+  print_function "check_azure_app_service_deployment_slot_value"
   if [ "${set_value}" = "" ]; then
     set_value="${correct_value}"
   fi

@@ -3001,3 +3001,7 @@
 # Added percentage calculation to print_info
 # 15.9.1: Thu 19 Mar 2026 21:21:45 AEDT
 # Fixed Bluetooth check
+# 15.9.2: Mon 21 Sep 2026 17:34:47 AEST
+# Fixed copy-pasted function names in Azure Function App, App Service slot, and password hints checks
+# 15.9.3: Mon 21 Sep 2026 17:39:31 AEST
+# Standardised shebang lines to #!/bin/sh across all scripts

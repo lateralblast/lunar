@@ -16,9 +16,9 @@
 # Refer to Section 2.10.5 Page(s) 231-3 CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
-audit_login_details () {
-  print_function "audit_login_details"
-  string="Login display details"
+audit_password_hints () {
+  print_function "audit_password_hints"
+  string="Password Hints"
   check_message  "${string}"
   if [ "${os_name}" = "Darwin" ]; then
     check_osx_defaults_int "/Library/Preferences/com.apple.loginwindow" "RetriesUntilHint" "0"
