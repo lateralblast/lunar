@@ -10,8 +10,8 @@
 
 # Name:         lunar (Lockdown UNix Auditing and Reporting)
 # Version:      15.9.3
-# License:      CC-BA (Creative Commons By Attribution)
-#               http://creativecommons.org/licenses/by/4.0/legalcode
+# License:      CC BY-NC-SA (Creative Commons Attribution-NonCommercial-ShareAlike)
+#               http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 # Group:        System
 # Source:       N/A
 # URL:          http://lateralblast.com.au/

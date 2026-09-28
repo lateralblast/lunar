@@ -10,12 +10,12 @@ Version
 
 Current version 15.9.3
 
-Refer to lunar.sh and changelog for more up to date version information
+Refer to lunar.sh and CHANGELOG.md for more up to date version information
 
 License
 -------
 
-CC BY-SA: https://creativecommons.org/licenses/by-sa/4.0/
+CC BY-NC-SA: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 Fund me here: https://ko-fi.com/richardatlateralblast
 
