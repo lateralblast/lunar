@@ -18,7 +18,7 @@ audit_aws_rec_dynamodb () {
   command="aws dynamodb list-tables --region \"${aws_region}\" --query 'TableNames' --output text"
   command_message "${command}"
   tables=$( eval  "${command}" )
-  for table in ${table}s; do
+  for table in ${tables}; do
     command="aws dynamodb describe-table --region \"${aws_region}\" --table-name \"${table}\" --query 'Table.ItemCount' --output text"
     command_message "${command}"
     size=$( eval    "${command}" )
