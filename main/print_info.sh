@@ -184,7 +184,7 @@ print_function() {
 
 print_changes () {
   print_function "print_changes"
-  if [ -f "${base_dir}" ]; then
+  if [ -d "${base_dir}" ]; then
     echo ""
     echo "Printing changes:"
     echo ""
