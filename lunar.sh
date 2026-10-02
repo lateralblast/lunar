@@ -1109,10 +1109,21 @@ fi
 # Run script remotely 
 
 if [ "${do_remote}" = 1 ]; then
-  echo "Copying ${app_dir} to ${ext_host}:/tmp"
-  scp -r "${app_dir}" "${ext_host}":/tmp
-  echo "Executing lunar in audit mode (no changes will be made) on ${ext_host}"
-  ssh "${ext_host}" "sudo sh -c \"${temp_dir}/lunar.sh -a\""
+  remote_dir="/tmp/${pkg_suffix}_${date_suffix}_$$"
+  echo "Creating remote staging directory ${ext_host}:${remote_dir}"
+  if ssh "${ext_host}" "mkdir \"${remote_dir}\""; then
+    echo "Copying ${app_dir} to ${ext_host}:${remote_dir}"
+    if scp -r "${app_dir}/." "${ext_host}:${remote_dir}/"; then
+      echo "Executing lunar in audit mode (no changes will be made) on ${ext_host}"
+      ssh "${ext_host}" "sudo sh \"${remote_dir}/lunar.sh\" -a"
+    else
+      warn_message "Could not copy lunar to ${ext_host}:${remote_dir}"
+      exit 1
+    fi
+  else
+    warn_message "Could not create remote staging directory ${ext_host}:${remote_dir}"
+    exit 1
+  fi
   exit
 fi
 
