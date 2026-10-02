@@ -377,14 +377,18 @@ print_audit_info () {
   if [ -z "${check}" ]; then
     module="audit_${module}" 
   fi
-  case "${module_path}" in
-    */*)
-      file_name="${module_path}.sh"
-      ;;
-    *)
-      file_name="${modules_dir}/${module}.sh"
-      ;;
-  esac
+  file_name="${module_path}.sh"
+  if [ ! -f "${file_name}" ]; then
+    case "${module_path}" in
+      */*)
+        module_dir="${module_path%/*}"
+        file_name="${modules_dir}/${module_dir}/${module}.sh"
+        ;;
+      *)
+        file_name="${modules_dir}/${module}.sh"
+        ;;
+    esac
+  fi
   if [ -f "${file_name}" ] ; then
     verbose_message "# Module: ${module}"
     while read -r line ; do
