@@ -8,7 +8,7 @@
 #
 # Update log file
 #
-# log_file      = Name of the log file
+# log_file      = Log file path or name
 # log_value     = Value to append to the log file
 #.
 
