@@ -86,6 +86,10 @@ check_systemctl_service () {
       check_message "${string}"
       if [ "${audit_mode}" != 2 ]; then
         if [ "${ansible_mode}" = 1 ]; then
+          enabled="no"
+          if [ "${correct_status}" = "enabled" ]; then
+            enabled="yes"
+          fi
           echo ""
           echo "- name: Checking ${string}"
           echo "  service:"
