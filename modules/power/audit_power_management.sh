@@ -30,8 +30,8 @@ audit_power_management () {
         poweradm_test=$( eval "${command}" )
         log_file="poweradm.log"
         if [ "${audit_mode}" = 2 ]; then
-          restore_file="${restore_dir}/#log_file"
-          if [ -f "${log_file}" ]; then
+          restore_file="${restore_dir}/${log_file}"
+          if [ -f "${restore_file}" ]; then
             restore_value=$( cat "${restore_file}" )
             if [ "${poweradm_test}" != "${restore_value}" ]; then
               restore_message "Power suspend to \"${restore_value}\""
