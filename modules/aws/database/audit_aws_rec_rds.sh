@@ -35,7 +35,7 @@ audit_aws_rec_rds () {
     command="aws rds describe-db-instances --region \"${aws_region}\" --db-instance-identifier \"${db}\" --query 'DBInstances[].StorageType' |grep \"gp2\""
     command_message "${command}"
     check=$( eval   "${command}" )
-    if [ "${check}" = "available" ]; then
+    if [ -n "${check}" ]; then
       inc_secure    "RDS instance \"${db}\" is using General Purpose SSD"
     else
       inc_insecure  "RDS instance \"${db}\" is not using General Purpose SSD"
