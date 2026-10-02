@@ -30,8 +30,8 @@ audit_system_accounts () {
       notice_message "Requires sudo to check"
       return
     fi
-    password_file="/etc/passwd"
-    shadow_file="/etc/shadow"
+    password_file="${password_file:-/etc/passwd}"
+    shadow_file="${shadow_file:-/etc/shadow}"
     if test -r "$shadow_file"; then
       if [ "${audit_mode}" != 2 ]; then
         command="awk -F: '(\$1!=\"root\" && \$1!=\"sync\" && \$1!=\"shutdown\" && \$1!=\"halt\" && \$3<500 && \$7!=\"/sbin/nologin\" && \$7!=\"/bin/false\" && \$7!=\"/usr/sbin/nologin\") {print \$1}' < \"${password_file}\""
@@ -54,6 +54,11 @@ audit_system_accounts () {
             fi
             if [ "${audit_mode}" = 0 ]; then
               lock_message="System account \"${user_name}\" to have shell /sbin/nologin"
+              if [ "${os_name}" = "FreeBSD" ]; then
+                lock_command="pw moduser ${user_name} -s /sbin/nologin"
+              else
+                lock_command="usermod -s /sbin/nologin ${user_name}"
+              fi
               backup_file  "${password_file}"
               run_lockdown "${lock_command}" "${lock_message}" "sudo"
             fi
