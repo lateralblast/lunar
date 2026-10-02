@@ -20,7 +20,7 @@ check_azure_storage_blob_value () {
   function="${6}"
   correct_value="${7}"
   set_name="${8}"
-  print_function "check_azure_storage_account_value"
+  print_function "check_azure_storage_blob_value"
   check_message  "${description} for Storage Blob \"${blob_name}\" on account \"${storage_account}\" in container \"${container_name}\" is \"${function} to \"${correct_value}\""
   if [ "${azure_auth_mode}" = "login" ]; then
     command="az storage blob ${blob_property} ${blob_policy} show --account-name \"${storage_account}\" --query \"${parameter_name}\" --output tsv --auth-mode \"${azure_auth_mode}\" 2> /dev/null"
