@@ -27,7 +27,7 @@ audit_ftp_banner () {
         if [ "${audit_mode}" != 2 ]; then
           if [ "${actual_value}" != "Authorised" ]; then
             if [ "${audit_mode}" = 1 ]; then
-              inc_secure  "FTP warning message isn't enabled"
+              inc_insecure "FTP warning message isn't enabled"
               fix_message "dspcat -g \"${message_file}\" > \"${temp_dir}/ftpd.tmp\""
               fix_message "sed \"s/\"\%s FTP server (\%s) ready.\"/\"\%s Authorised uses only. All activity may be monitored and reported\"/\" \"${temp_dir}/ftpd.tmp\" > \"${temp_dir}/ftpd.msg\""
               fix_message "gencat \"${message_file}\" \"${temp_dir}/ftpd.msg\""
