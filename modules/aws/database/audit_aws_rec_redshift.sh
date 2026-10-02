@@ -18,7 +18,7 @@ audit_aws_rec_redshift () {
   command_message "${command}"
   dbs=$( eval     "${command}" )
   for db in ${dbs}; do
-    command="aws redshift describe-reserved-nodes --region \"${aws_region}\" --reserved-node-id \"${dir_name}\" --query 'ReservedNodes[].StartTime' --output text | cut -f1 -d. "
+    command="aws redshift describe-reserved-nodes --region \"${aws_region}\" --reserved-node-id \"${db}\" --query 'ReservedNodes[].StartTime' --output text | cut -f1 -d. "
     command_message    "${command}"
     start_date=$( eval "${command}" )
     command="aws redshift describe-reserved-nodes --region \"${aws_region}\" --reserved-node-id \"${db}\" --query 'ReservedNodes[].Duration' --output text"
