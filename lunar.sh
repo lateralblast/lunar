@@ -154,6 +154,7 @@ use_expr="no"
 use_finger="yes"
 test_os="none"
 test_tag="none"
+test_distro="none"
 action="none"
 do_compose=0
 do_multipass=0
@@ -1137,8 +1138,15 @@ fi
 # Run in docker or multipass
 
 if [ "${do_compose}" = 1 ] || [ "${do_multipass}" = 1 ]; then
+  test_distro_name="${test_os}"
+  if [ "${test_distro}" != "none" ]; then
+    test_distro_name="${test_distro}"
+  fi
   if [ "${do_multipass}" = 1 ]; then
     get_ubuntu_codename "${test_os}"
+    if [ "${test_distro}" != "none" ]; then
+      ubuntu_codename="${test_distro}"
+    fi
     test_os="${ubuntu_codename}"
     if [ "${test_tag}" = "none" ]; then
       if [ ! "${test_os}" = "none" ]; then
@@ -1151,9 +1159,9 @@ if [ "${do_compose}" = 1 ] || [ "${do_multipass}" = 1 ]; then
       d_test=$(command -v docker-compose )
       if [ -n "$d_test" ]; then
         if [ "$do_shell" = 0 ]; then
-          cd "${app_dir}" || exit ; export OS_NAME="${test_os}" ; export OS_VERSION="${test_tag}" ; docker-compose run test-audit
+          cd "${app_dir}" || exit ; export OS_NAME="${test_distro_name}" ; export OS_VERSION="${test_tag}" ; docker-compose run test-audit
         else
-          cd "${app_dir}" || exit ; export OS_NAME="${test_os}" ; export OS_VERSION="${test_tag}" ; docker-compose run test-shell
+          cd "${app_dir}" || exit ; export OS_NAME="${test_distro_name}" ; export OS_VERSION="${test_tag}" ; docker-compose run test-shell
         fi
       else
         verbose_message "Command docker-compose not found" "warn"
