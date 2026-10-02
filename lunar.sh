@@ -663,7 +663,6 @@ while test $# -gt 0
 do
   case $1 in
     -1|--list)                      # switch - List changes/backups
-      check_switch_value "${1}" "${2}" 
       list="${2}"
       if [ -z "${list}" ]; then
         print_changes
@@ -687,7 +686,6 @@ do
       exit
       ;;
     -2|--tests)                     # switch - Print tests
-      check_switch_value "${1}" "${2}" 
       tests="${2}" 
       if [ -z "${tests}" ]; then
         print_tests "All"
