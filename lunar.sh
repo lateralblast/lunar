@@ -1008,6 +1008,7 @@ do
       ;;
     -X|--strict)                    # switch - Run shellcheck against script
       unset eu
+      check_shellcheck
       shift
       exit
       ;;
