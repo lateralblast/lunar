@@ -133,6 +133,9 @@ date_suffix=$( date +%d_%m_%Y_%H_%M_%S )
 temp_file="${temp_dir}/${pkg_suffix}.tmp"
 work_dir="${base_dir}/${date_suffix}"
 csv_dir="${base_dir}/csv"
+work_dir_override="no"
+temp_dir_override="no"
+temp_file_override="no"
 wheel_group="wheel"
 docker_group="docker"
 reboot_required=0
@@ -754,6 +757,16 @@ do
     -B|--basedir)                   # switch - Set base directory
       check_switch_value "${1}" "${2}" 
       base_dir="${2}"
+      if [ "${work_dir_override}" != "yes" ]; then
+        work_dir="${base_dir}/${date_suffix}"
+      fi
+      if [ "${temp_dir_override}" != "yes" ]; then
+        temp_dir="${base_dir}/tmp"
+      fi
+      if [ "${temp_file_override}" != "yes" ]; then
+        temp_file="${temp_dir}/${pkg_suffix}.tmp"
+      fi
+      csv_dir="${base_dir}/csv"
       shift 2
       ;;
     -c|--codename|--distro)         # switch -  Distro/Code name (used with docker/multipass)
@@ -818,6 +831,7 @@ do
     -F|--tempfile)                  # switch - Temporary file to use for operations
       check_switch_value "${1}" "${2}" 
       temp_file="${2}"
+      temp_file_override="yes"
       shift 2
       ;;
     -g|--giturl)                    # switch - Git URL for code to copy to container
@@ -893,6 +907,7 @@ do
     -M|--workdir)                   # switch - Set work directory
       check_switch_value "${1}" "${2}" 
       work_dir="${2}"
+      work_dir_override="yes"
       shift 2
       ;;
     -n|--ansible)                   # switch - Output ansible
@@ -964,6 +979,10 @@ do
     -T|--tempdir)                   # switch - Set temp directoru
       check_switch_value "${1}" "${2}" 
       temp_dir="${2}"
+      temp_dir_override="yes"
+      if [ "${temp_file_override}" != "yes" ]; then
+        temp_file="${temp_dir}/${pkg_suffix}.tmp"
+      fi
       shift 2
       ;;
     -u|--undo)                      # switch - Undo lockdown (for Operating Systems - changes made to system)
