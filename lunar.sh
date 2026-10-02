@@ -939,6 +939,7 @@ do
       ;;
     -R|--moduleinfo|--testinfo)     # switch - Print information about a module
       check_switch_value "${1}" "${2}" 
+      verbose_mode=1
       module="${2}"
       print_audit_info "${module}"
       shift 2
