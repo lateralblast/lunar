@@ -23,7 +23,7 @@ audit_dns_server () {
   string="DNS Server"
   check_message  "${string}"
   if [ "${named_disable}" = "yes" ]; then
-    if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ]; then
+    if [ "${os_name}" = "SunOS" ] || [ "${os_name}" = "Linux" ] || [ "${os_name}" = "FreeBSD" ] || [ "${os_name}" = "AIX" ]; then
       verbose_message "DNS Server" "check"
       if [ "${os_name}" = "AIX" ]; then
         check_rctcp "named" "off"
