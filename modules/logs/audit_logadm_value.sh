@@ -26,7 +26,7 @@ audit_logadm_value () {
       command_message "${command}"
       check_log=$( eval "${command}" )
       log_file="/var/log/${log_name}"
-      if [ -z "$log_check" ]; then
+      if [ -z "${check_log}" ]; then
         if [ "${audit_mode}" = 1 ]; then
           inc_insecure "Logging for \"${log_name}\" not enabled"
           fix_message  "logadm -w ${log_name} -C 13 -a 'pkill -HUP syslogd' ${log_file}"
