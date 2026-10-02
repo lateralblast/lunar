@@ -422,7 +422,12 @@ print_results () {
   else
     reboot_required="Not Required"
   fi
-  percent=$( awk "BEGIN { pc=100*${secure_count}/${total_count}; i=int(pc); print (pc-i<0.5)?i:i+1 }" )
+  if [ "${total_count}" -gt 0 ]; then
+    percent=$( awk "BEGIN { pc=100*${secure_count}/${total_count}; i=int(pc); print (pc-i<0.5)?i:i+1 }" )
+    score="${percent}%"
+  else
+    score="N/A"
+  fi
   if [ "${no_cat}" = "1" ]; then
     echo "Tests:      ${total_count}"
     case "${audit_mode}" in
@@ -435,7 +440,7 @@ print_results () {
       *)
         echo "Passes:     ${secure_count}"
         echo "Warnings:   ${insecure_count}"
-        echo "Score:      ${percent}%"
+        echo "Score:      ${score}"
         ;;
     esac
     echo "Reboot:     ${reboot_required}"
@@ -453,7 +458,7 @@ print_results () {
       *)
         echo "  )  ( ')   Passes:     ${secure_count}"
         echo " (  /  )    Warnings:   ${insecure_count}"
-        echo "  \(__)|    Score:      ${percent}%"
+        echo "  \(__)|    Score:      ${score}"
         ;;
     esac
     echo "            Reboot:     ${reboot_required}"
