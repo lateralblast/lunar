@@ -1123,12 +1123,12 @@ check_environment
 
 # Setup output file and directory
 
+if [ "${output_type}" = "csv" ]; then
+  output_file=$( csv_prepare_output "${output_file}" "${csv_dir}" "lunar_${os_hostname}_${date_suffix}.csv" ) || exit 1
+fi
 output_dir=$(dirname "${output_file}")
 if [ ! -d "${output_dir}" ]; then
   mkdir -p "${output_dir}"
-fi
-if [ "${output_type}" = "csv" ] && [ "${output_file}" = "" ]; then
-  output_file="${csv_dir}/lunar_${os_hostname}_${date_suffix}.csv"
 fi
 if [ "${output_type}" = "csv" ]; then
   verbose_message "${output_file}" "create"
