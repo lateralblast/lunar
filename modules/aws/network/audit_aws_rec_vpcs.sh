@@ -26,7 +26,7 @@ audit_aws_rec_vpcs () {
       ansible_value=$( eval "${command}" )
       if [ -z "${ansible_value}" ]; then
         inc_insecure    "AWS VPC ${vpc} does not have a Name tag"
-        verbose_message "aws ec2 create-tags --region ${aws_region} --resources ${image} --tags Key=Name,Value=<valid_name_tag>" "fix"
+        verbose_message "aws ec2 create-tags --region ${aws_region} --resources ${vpc} --tags Key=Name,Value=<valid_name_tag>" "fix"
       else
         if [ "${strict_valid_names}" = "y" ]; then
           command="echo \"${ansible_value}\" |grep \"^vpc-$valid_tag_string\""
