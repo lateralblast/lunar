@@ -19,6 +19,12 @@
 # Refer to Section(s) 2.4.1.8-2.1         Page(s) 343-51      CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
+check_linux_cron_file_permissions () {
+  for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
+    check_file_perms "${file_name}" "0600" "root" "root"
+  done
+}
+
 audit_cron_allow () {
   print_function "audit_cron_allow"
   string="At/Cron Authorized Users"
@@ -139,9 +145,7 @@ audit_cron_allow () {
         command_message "${command}"
         eval "${command}"
       done
-      for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
-        check_file_perms "${check_file}"  "0600" "root" "root"
-      done
+      check_linux_cron_file_permissions
     fi
   else
     na_message "${string}"
