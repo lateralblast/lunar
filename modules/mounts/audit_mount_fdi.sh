@@ -12,6 +12,15 @@
 # This can stop possible vectors of attack and escalated privileges.
 #.
 
+check_mount_fdi_enabled () {
+  check_file="${1}"
+  if [ ! -s "${check_file}" ]; then
+    echo 1
+  else
+    grep -v "Default policies" "${check_file}" | head -1 | wc -l | sed "s/ //g"
+  fi
+}
+
 audit_mount_fdi () {
   print_function "audit_mount_fdi"
   string="User Mountable Filesystems"
@@ -24,18 +33,11 @@ audit_mount_fdi () {
       check_dir="/usr/share/hal/fdi/policy/20thirdparty"
       check_file="${check_dir}/floppycdrom.fdi"
     fi
-    if [ -d "${check_dir}" ]; then
-      if [ ! -f "${check_file}" ]; then
-        touch "${check_file}"
-        chmod 640 "${check_file}"
-        chown root:root "${check_file}"
-      fi
-    fi
-    if [ -f "${check_file}" ]; then
+    if [ -d "${check_dir}" ] && { [ -f "${check_file}" ] || [ "${audit_mode}" != "2" ]; }; then
       if [ "${audit_mode}" != "2" ]; then
         command="grep -v \"Default policies\" \"${check_file}\" | head -1 | wc -l | sed \"s/ //g\""
         command_message   "${command}"
-        fdi_check=$( eval "${command}" )
+        fdi_check=$( check_mount_fdi_enabled "${check_file}" )
         if [ "$fdi_check" = 1 ]; then
           if [ "${audit_mode}" = 1 ]; then
             inc_insecure "User mountable filesystems enabled"
@@ -54,7 +56,9 @@ audit_mount_fdi () {
           fi
           if [ "${audit_mode}" = 0 ]; then
             verbose_message "Disabling user mountable filesystems" "set"
-            backup_file     "${check_file}"
+            if [ -f "${check_file}" ]; then
+              backup_file "${check_file}"
+            fi
             echo '<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- --> >' > "${temp_file}"
             echo '<deviceinfo version="0.2">' >> "${temp_file}"
             echo '  <!-- Default policies merged onto computer root object -->' >> "${temp_file}"
@@ -66,6 +70,8 @@ audit_mount_fdi () {
             echo '  </device>' >> "${temp_file}"
             echo '</deviceinfo>' >> "${temp_file}"
             cat "${temp_file}" > "${check_file}"
+            chmod 640 "${check_file}"
+            chown root:root "${check_file}"
             if [ -f "${temp_file}" ]; then
               rm "${temp_file}"
             fi
