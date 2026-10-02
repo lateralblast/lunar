@@ -19,6 +19,11 @@
 # Refer to Section(s) 2.4.1.8-2.1         Page(s) 343-51      CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
+set_cron_allow_paths () {
+  cron_file="${cron_base_dir}/cron.allow"
+  at_file="${at_base_dir}/at.allow"
+}
+
 check_linux_cron_file_permissions () {
   for file_name in /etc/crontab /etc/anacrontab /etc/cron.allow /etc/at.allow; do
     check_file_perms "${file_name}" "0600" "root" "root"
@@ -53,6 +58,7 @@ audit_cron_allow () {
         fi
       fi
     fi
+    set_cron_allow_paths
     check_file_exists "${cron_base_dir}/cron.deny"  "no"
     check_file_exists "${at_base_dir}/at.deny"      "no"
     check_file_exists "${cron_base_dir}/cron.allow" "yes"
