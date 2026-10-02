@@ -144,6 +144,9 @@ print_tests () {
       *ubernetes*|k8s)
         module_name=$( echo "${dir_entry}" | grep "kubernetes" )
         ;;
+      UNIX)
+        module_name=$( echo "${dir_entry}" | grep -v "aws" )
+        ;;
       All|all)
         module_name="${dir_entry}"
         ;;
