@@ -36,18 +36,18 @@ audit_azure_cosmos_db () {
     command_message   "${command}"
     res_group=$( eval "${command}" )
     # 3.1 Ensure That 'Firewalls & Networks' Is Limited to Use Selected Networks Instead of All Networks
-    check_cosmos_db_value "Firewalls & Networks Filter"   "${db_name}" "${res_group}" "isVirtualNetworkFilterEnabled" "eq" "true"     ""                            ""
-    check_cosmos_db_value "Firewalls & Networks IP Rules" "${db_name}" "${res_group}" "ipRules"                       "ne" ""         ""                            ""
+    check_azure_cosmos_db_value "Firewalls & Networks Filter"   "${db_name}" "${res_group}" "isVirtualNetworkFilterEnabled" "eq" "true"     ""                            ""
+    check_azure_cosmos_db_value "Firewalls & Networks IP Rules" "${db_name}" "${res_group}" "ipRules"                       "ne" ""         ""                            ""
     # 3.2 Ensure that Cosmos DB uses Private Endpoints where possible
-    check_cosmos_db_value "Private Endpoints"             "${db_name}" "${res_group}" "privateEndpointConnections"    "ne" ""         ""                            ""
+    check_azure_cosmos_db_value "Private Endpoints"             "${db_name}" "${res_group}" "privateEndpointConnections"    "ne" ""         ""                            ""
     # 3.3 Ensure that 'disableLocalAuth' is set to 'true'
-    check_cosmos_db_value "Disable Local Auth"            "${db_name}" "${res_group}" "disableLocalAuth"              "eq" "true"     "properties.disableLocalAuth" ""
+    check_azure_cosmos_db_value "Disable Local Auth"            "${db_name}" "${res_group}" "disableLocalAuth"              "eq" "true"     "properties.disableLocalAuth" ""
     # 3.4 Ensure `Public Network Access` is `Disabled`
-    check_cosmos_db_value "Public Network Access"         "${db_name}" "${res_group}" "publicNetworkAccess"           "eq" "Disabled" ""                            ""
+    check_azure_cosmos_db_value "Public Network Access"         "${db_name}" "${res_group}" "publicNetworkAccess"           "eq" "Disabled" ""                            ""
     # 3.5 Ensure critical data is encrypted with customer-managed keys (CMK)
-    check_cosmos_db_value "Customer-Managed Keys"         "${db_name}" "${res_group}" "keyVaultKeyUri"                "ne" ""         ""                            ""
+    check_azure_cosmos_db_value "Customer-Managed Keys"         "${db_name}" "${res_group}" "keyVaultKeyUri"                "ne" ""         ""                            ""
     # 3.6 Ensure the firewall does not allow all network traffic
-    check_cosmos_db_value "Firewalls & Networks IP Rules" "${db_name}" "${res_group}" "ipRules"                       "ne" "0.0.0.0"  "--ip-range-filter"           "comma-separated-list-of-allowed-ip-addresses"
+    check_azure_cosmos_db_value "Firewalls & Networks IP Rules" "${db_name}" "${res_group}" "ipRules"                       "ne" "0.0.0.0"  "--ip-range-filter"           "comma-separated-list-of-allowed-ip-addresses"
   done
   command="az cosmosdb list --query \"[].id\" --output tsv"
   command_message "${command}"

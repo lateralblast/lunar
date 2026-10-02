@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_azure_app_service_deployment_slots_http_versions
+# audit_azure_app_service_deployment_slots_http_values
 #
 # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD
 # 2.2.7   Ensure 'HTTPS Only' is set to 'On' - TBD
@@ -14,8 +14,8 @@
 # This requires the Azure CLI to be installed and configured
 #.
 
-audit_azure_app_service_deployment_slots_http_versions () {
-  print_function "audit_azure_app_service_deployment_slots_http_versions"
+audit_azure_app_service_deployment_slots_http_values () {
+  print_function "audit_azure_app_service_deployment_slots_http_values"
   check_message  "Azure App Service Deployment Slot HTTP Versions"
   command="az webapp list --query \"[].id\" --output tsv"
   command_message   "${command}"

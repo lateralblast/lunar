@@ -34,7 +34,7 @@ audit_azure_network_watcher_flow_logs () {
       return
     fi
     for flow_log in ${flow_logs}; do
-      check_azure_network_watcher_flow_logs_value "${location}" "${flow_log}" "retentionPolicy.days" "90" "retention"
+      check_azure_network_watcher_flow_log_value "${location}" "${flow_log}" "retentionPolicy.days" "90" "retention"
     done
   done
 }

@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# audit_xinetd_service
+# check_xinetd_service
 #
 # Code to audit an xinetd service, and enable, or disable
 #
@@ -12,12 +12,12 @@
 # correct_status  = What the status of the service should be, ie enabled/disabled
 #.
 
-audit_xinetd_service () {
+check_xinetd_service () {
   if [ "${os_name}" = "Linux" ]; then
     service_name="${1}"
     parameter_name="${2}"
     correct_status="${3}"
-    print_function "audit_xinetd_service"
+    print_function "check_xinetd_service"
     check_file="/etc/xinetd.d/${service_name}"
     log_file="${work_dir}/${service_name}.log"
     if [ -f "${check_file}" ]; then

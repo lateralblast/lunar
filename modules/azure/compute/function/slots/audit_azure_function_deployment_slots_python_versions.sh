@@ -20,17 +20,17 @@ audit_azure_function_deployment_slots_python_versions () {
   command_message "${command}"
   app_ids=$( eval "${command}" 2> /dev/null )
   if [ -z "${app_ids}" ]; then
-    info_message  "No App Service Deployment Slots found"
+    info_message  "No Function App Apps found"
     return
   fi
   for app_id in ${app_ids}; do
-    command="az webapp show --id \"${app_id}\" --query \"name\" --output tsv"
+    command="az functionapp show --name \"${app_id}\" --query \"name\" --output tsv"
     command_message   "${command}"
     app_name=$( eval  "${command}" )
-    command="az webapp show --id \"${app_id}\" --query \"resourceGroup\" --output tsv"
+    command="az functionapp show --name \"${app_id}\" --query \"resourceGroup\" --output tsv"
     command_message   "${command}"
     res_group=$( eval "${command}" )
-    command="az webapp deployment slot list --id \"${app_id}\" --query \"[].id\" --output tsv"
+    command="az functionapp deployment slot list --name \"${app_id}\" --query \"[].id\" --output tsv"
     command_message   "${command}"
     slot_ids=$( eval  "${command}" 2> /dev/null )
     if [ -z "${slot_ids}" ]; then

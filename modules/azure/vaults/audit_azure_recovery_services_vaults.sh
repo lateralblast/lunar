@@ -40,10 +40,10 @@ audit_azure_recovery_services_vaults () {
     command="az backup vault show --id \"${vault_id}\" --query \"name\" --output tsv"
     command_message    "${command}"
     vault_name=$( eval "${command}" )
+    # 5.2.3 Ensure backup data in Recovery Services vaults is encrypted using customer-managed keys (CMK)
+    check_azure_backup_vault_value "Customer Managed Keys"      "${vault_name}" "${res_group}" "properties.encryption.keyUri"               "ne" ""         ""
     # 5.2.1 Ensure soft delete on Recovery Services vaults is Enabled
-    check_azure_backup_vault_value "Soft Delete"                "${vault_name}" "${res_group}" "properties.encryption.keyUri"               "ne" ""         ""
-    # 5.2.3 Ensure backup data in Recovery Services vaults is encrypted using customer-managed keys (CMK)  
-    check_azure_backup_vault_value "Customer Managed Keys"      "${vault_name}" "${res_group}" "properties.softDeleteFeatureState"          "eq" "Enabled"  "properties.softDeleteFeatureState"
+    check_azure_backup_vault_value "Soft Delete"                "${vault_name}" "${res_group}" "properties.softDeleteFeatureState"          "eq" "Enabled"  "properties.softDeleteFeatureState"
     # 5.2.4 Ensure 'Use infrastructure encryption for this vault' is enabled on Recovery Services vaults
     check_azure_backup_vault_value "Infrastructure Encryption"  "${vault_name}" "${res_group}" "properties.infrastructureEncryptionEnabled" "eq" "true"     "--infrastructure-encryption-enabled"
     # 5.2.6 Ensure 'Cross Region Restore' is set to 'Enabled' on Recovery Services vaults

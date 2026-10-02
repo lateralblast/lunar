@@ -30,7 +30,7 @@ audit_syslog_server () {
       if [ "${os_version}" -lt 5 ]; then
         check_file_value  "is" "/etc/syslog.conf"      "daemon.debug" "tab"  "/var/log/daemon.log" "hash"
         check_file_exists      "/var/log/daemon.log"   "file"         "yes"
-        funct_file_perms       "/var/log/daemon.log"   "600"          "root" "${wheel_group}"
+        check_file_perms       "/var/log/daemon.log"   "600"          "root" "${wheel_group}"
       fi
     fi
     if [ "${os_name}" = "Linux" ]; then
@@ -108,7 +108,7 @@ audit_syslog_server () {
             check_file_value   "is" "${conf_file}" "*.=warning;*.=err"       "tab" "/var/log/warn"       "hash"
             check_file_value   "is" "${conf_file}" "*.*;mail.none;news.none" "tab" "/var/log/messages"   "hash"
             check_file_value   "is" "${conf_file}" "lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6.*" "tab" "/var/log/localmessages" "hash"
-            funct_file_perms        "${conf_file}" "0600" "root" "root"
+            check_file_perms        "${conf_file}" "0600" "root" "root"
             if [ "${audit_mode}" != 2 ]; then
               command="grep -v '#' \"${check_file}\" | grep \"*.* @@\" | grep -v localhost | grep -c \"[A-Z]|[a-z]\""
               command_message "${command}"

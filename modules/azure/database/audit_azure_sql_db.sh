@@ -37,21 +37,21 @@ audit_azure_sql_db () {
       command_message   "${command}"
       res_group=$( eval "${command}" )
       # 9.1 Ensure that 'Auditing' is set to 'On' - TBD
-      check_sql_db_value "Auditing"              "server" "${sql_server}" "${res_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
+      check_azure_sql_db_value "Customer-Managed Key"  "server" "${sql_server}" "${res_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
       # 9.2 Ensure that 'Public Network Access' is set to 'Disable' - TBD
-      # check_sql_db_value "Microsoft Entra Authentication" "server" "${sql_server}" "${res_group}" "" "" "" "" "" ""
+      # check_azure_sql_db_value "Microsoft Entra Authentication" "server" "${sql_server}" "${res_group}" "" "" "" "" "" ""
       # 9.3 Ensure no Azure SQL Database firewall rule is overly permissive - TBD
-      check_sql_db_value "Public Network Access" "server" "${sql_server}" "${res_group}" "" "publicNetworkAccess"        "eq" "Disabled" "" ""
+      check_azure_sql_db_value "Public Network Access" "server" "${sql_server}" "${res_group}" "" "publicNetworkAccess"        "eq" "Disabled" "" ""
       # 9.4 Ensure SQL server's Transparent Data Encryption (TDE) protector is encrypted with Customer-managed key - TBD
-      check_sql_db_value "Private Endpoints"     "server" "${sql_server}" "${res_group}" "" "privateEndpointConnections" "ne" ""         "" ""
+      check_azure_sql_db_value "Private Endpoints"     "server" "${sql_server}" "${res_group}" "" "privateEndpointConnections" "ne" ""         "" ""
       # 9.5 Ensure that Microsoft Entra authentication is Configured for SQL Servers - TBD
-      # check_sql_db_value "Audit Log"             "server" "${sql_server}" "${res_group}" "" "audit_log_enabled"          "eq" "ON"         "" ""
+      # check_azure_sql_db_value "Audit Log"             "server" "${sql_server}" "${res_group}" "" "audit_log_enabled"          "eq" "ON"         "" ""
       # 9.6 Ensure that 'Data encryption' is set to 'On' on a SQL Database - TBD
-      # check_sql_db_value "Audit Log Events"       "server" "${sql_server}" "${res_group}" "" "audit_log_events"           "eq" "CONNECTION"   "" ""
+      # check_azure_sql_db_value "Audit Log Events"       "server" "${sql_server}" "${res_group}" "" "audit_log_events"           "eq" "CONNECTION"   "" ""
       # 9.7 Ensure that 'Auditing' Retention is 'greater than 90 days' - TBD
-      # check_sql_db_value "Error Server Log File" "server" "${sql_server}" "${res_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
+      # check_azure_sql_db_value "Error Server Log File" "server" "${sql_server}" "${res_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
       # 9.8 Ensure 'Minimum TLS Version' is set to 'TLS 1.2' or higher - TBD
-      # check_sql_db_value "Require Secure Transport" "server" "${sql_server}" "${res_group}" "" "require_secure_transport" "eq" "ON"         "" ""
+      # check_azure_sql_db_value "Require Secure Transport" "server" "${sql_server}" "${res_group}" "" "require_secure_transport" "eq" "ON"         "" ""
     done
   fi
 }

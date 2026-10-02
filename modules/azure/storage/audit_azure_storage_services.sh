@@ -124,5 +124,5 @@ audit_azure_storage_services () {
   audit_azure_databox
   audit_azure_elastic_san
   audit_azure_storage_logging
-  audit_azure_storage_accounts_locks
+  audit_azure_storage_account_locks
 }

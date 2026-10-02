@@ -47,7 +47,7 @@ audit_azure_app_service_deployment_slots () {
   # 2.2.3   Ensure 'PHP version' is currently supported (if in use) - TBD
   audit_azure_app_service_deployment_slots_php_versions
   # 2.2.4   Ensure 'Basic Authentication Publishing Credentials' are 'Disabled' - TBD
-  audit_azure_app_service_deployment_slots_basic_auth
+  audit_azure_app_service_deployment_slots_basic_authentication_publishing_credentials
   # 2.2.5   Ensure 'FTP State' is set to 'FTPS only' or 'Disabled' - TBD
   audit_azure_app_service_deployment_slots_ftp_states
   # 2.2.6   Ensure 'HTTP version' is set to '2.0' (if in use) - TBD

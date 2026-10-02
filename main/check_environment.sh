@@ -100,6 +100,51 @@ check_azure_environment () {
   fi
 }
 
+# check_docker
+#
+# Check Docker CLI is installed
+#.
+
+check_docker () {
+  print_function "check_docker"
+  docker_bin=$( command -v docker 2> /dev/null )
+  if [ -z "${docker_bin}" ]; then
+    warn_message "Docker CLI is not installed"
+    return 127
+  fi
+  verbose_message "Docker CLI is installed" "notice"
+}
+
+# check_multipass
+#
+# Check Multipass CLI is installed
+#.
+
+check_multipass () {
+  print_function "check_multipass"
+  multipass_bin=$( command -v multipass 2> /dev/null )
+  if [ -z "${multipass_bin}" ]; then
+    warn_message "Multipass CLI is not installed"
+    return 127
+  fi
+  verbose_message "Multipass CLI is installed" "notice"
+}
+
+# check_all
+#
+# Run the non-interactive environment checks
+#.
+
+check_all () {
+  print_function "check_all"
+  check_status=0
+  check_shellcheck || check_status=1
+  check_docker     || check_status=1
+  check_multipass  || check_status=1
+  check_environment
+  return "${check_status}"
+}
+
 # check_environment
 #
 # Do some environment checks

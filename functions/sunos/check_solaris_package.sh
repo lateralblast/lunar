@@ -4,7 +4,7 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC2154
 
-# funct_check_pkg
+# check_solaris_package
 #
 # Check is a package is installed
 #
@@ -12,10 +12,10 @@
 # Needs some more work
 #.
 
-funct_check_pkg () {
+check_solaris_package () {
   if [ "${os_name}" = "SunOS" ]; then
     package_name="${1}"
-    print_function "funct_check_pkg"
+    print_function "check_solaris_package"
     package_check=$( pkginfo "${1}" )
     log_file="${work_dir}/pkg.log"
     if [ "${audit_mode}" = 2 ]; then

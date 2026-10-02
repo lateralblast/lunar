@@ -24,10 +24,10 @@ audit_search_fs () {
       audit_vopied
       audit_bpjava_msvc
     else
-      funct_file_value "/etc/hosts.allow" "bpcd"  "colon"       " ALL" "hash"
-      funct_file_value "/etc/hosts.allow" "vnetd" "colon"       " ALL" "hash"
-      funct_file_value "/etc/hosts.allow" "bpcd"  "vopied"      " ALL" "hash"
-      funct_file_value "/etc/hosts.allow" "bpcd"  "bpjava-msvc" " ALL" "hash"
+      check_file_value "is" "/etc/hosts.deny" "bpcd"        "colon" " ALL" "hash"
+      check_file_value "is" "/etc/hosts.deny" "vnetd"       "colon" " ALL" "hash"
+      check_file_value "is" "/etc/hosts.deny" "vopied"      "colon" " ALL" "hash"
+      check_file_value "is" "/etc/hosts.deny" "bpjava-msvc" "colon" " ALL" "hash"
     fi
     audit_extended_attributes
   fi

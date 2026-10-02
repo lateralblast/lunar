@@ -38,23 +38,23 @@ audit_azure_mysql_db () {
       command_message   "${command}"
       res_group=$( eval "${command}" )
       # 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
-      check_mysql_db_value "Customer-Managed Keys" "server" "${mysql_server}" "${res_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
+      check_azure_mysql_db_value "Customer-Managed Keys" "server" "${mysql_server}" "${res_group}" "" "keyVaultKeyUri"             "ne" ""         "" ""
       # 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
-      # check_mysql_db_value "Microsoft Entra Authentication" "server" "${mysql_server}" "${res_group}" "" "" "" "" "" ""
+      # check_azure_mysql_db_value "Microsoft Entra Authentication" "server" "${mysql_server}" "${res_group}" "" "" "" "" "" ""
       # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
-      check_mysql_db_value "Public Network Access" "server" "${mysql_server}" "${res_group}" "" "publicNetworkAccess"        "eq" "Disabled" "" ""
+      check_azure_mysql_db_value "Public Network Access" "server" "${mysql_server}" "${res_group}" "" "publicNetworkAccess"        "eq" "Disabled" "" ""
       # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
-      check_mysql_db_value "Private Endpoints"     "server" "${mysql_server}" "${res_group}" "" "privateEndpointConnections" "ne" ""         "" ""
+      check_azure_mysql_db_value "Private Endpoints"     "server" "${mysql_server}" "${res_group}" "" "privateEndpointConnections" "ne" ""         "" ""
       # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL server - TBD
-      # check_mysql_db_value "Audit Log"             "server" "${mysql_server}" "${res_group}" "" "audit_log_enabled"          "eq" "ON"         "" ""
+      # check_azure_mysql_db_value "Audit Log"             "server" "${mysql_server}" "${res_group}" "" "audit_log_enabled"          "eq" "ON"         "" ""
       # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL server - TBD
-      # check_mysql_db_value "Audit Log Events"       "server" "${mysql_server}" "${res_group}" "" "audit_log_events"           "eq" "CONNECTION"   "" ""
+      # check_azure_mysql_db_value "Audit Log Events"       "server" "${mysql_server}" "${res_group}" "" "audit_log_events"           "eq" "CONNECTION"   "" ""
       # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
-      # check_mysql_db_value "Error Server Log File" "server" "${mysql_server}" "${res_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
+      # check_azure_mysql_db_value "Error Server Log File" "server" "${mysql_server}" "${res_group}" "" "error_server_log_file"        "eq" "Enabled"    "" ""
       # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
-      # check_mysql_db_value "Require Secure Transport" "server" "${mysql_server}" "${res_group}" "" "require_secure_transport" "eq" "ON"         "" ""
+      # check_azure_mysql_db_value "Require Secure Transport" "server" "${mysql_server}" "${res_group}" "" "require_secure_transport" "eq" "ON"         "" ""
       # 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
-      # check_mysql_db_value "TLS Version" "server" "${mysql_server}" "${res_group}" "" "tls_version" "eq" "TLSv1.2" "" ""
+      # check_azure_mysql_db_value "TLS Version" "server" "${mysql_server}" "${res_group}" "" "tls_version" "eq" "TLSv1.2" "" ""
     done
   fi
   command="az mysql flexible-server list --query \"[].name\" --output tsv"
@@ -72,23 +72,23 @@ audit_azure_mysql_db () {
       db_names=$( eval  "${command}" )
       for db_name in ${db_names}; do
         # 5.1 Ensure Azure Database for MySQL uses Customer Managed Keys for Encryption at Rest - TBD
-        check_mysql_db_value "Customer-Managed Keys" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "keyVaultKeyUri"             "ne" ""         "" ""
+        check_azure_mysql_db_value "Customer-Managed Keys" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "keyVaultKeyUri"             "ne" ""         "" ""
         # 5.2 Ensure Azure Database for MySQL uses only Microsoft Entra Authentication - TBD
-        # check_mysql_db_value "Microsoft Entra Authentication" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "" "" "" "" ""
+        # check_azure_mysql_db_value "Microsoft Entra Authentication" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "" "" "" "" ""
         # 5.3 Ensure `Public Network Access` is `Disabled` for Azure Database for MySQL - TBD
-        check_mysql_db_value "Public Network Access" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "publicNetworkAccess"        "eq" "Disabled" "" ""
+        check_azure_mysql_db_value "Public Network Access" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "publicNetworkAccess"        "eq" "Disabled" "" ""
         # 5.4 Ensure Private Endpoints Are Used for Azure MySQL Databases - TBD
-        check_mysql_db_value "Private Endpoints"     "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "privateEndpointConnections" "ne" ""         "" ""
+        check_azure_mysql_db_value "Private Endpoints"     "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "privateEndpointConnections" "ne" ""         "" ""
         # 5.5 Ensure server parameter 'audit_log_enabled' is set to 'ON' for MySQL flexible server - TBD
-        # check_mysql_db_value "Audit Log"             "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "audit_log_enabled"          "eq" "ON"       "" ""
+        # check_azure_mysql_db_value "Audit Log"             "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "audit_log_enabled"          "eq" "ON"       "" ""
         # 5.6 Ensure server parameter 'audit_log_events' has 'CONNECTION' set for MySQL flexible server - TBD
-        # check_mysql_db_value "Audit Log Events"      "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "audit_log_events"           "eq" "CONNECTION"   "" ""
+        # check_azure_mysql_db_value "Audit Log Events"      "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "audit_log_events"           "eq" "CONNECTION"   "" ""
         # 5.7 Ensure server parameter 'error_server_log_file' is Enabled for MySQL Database Server - TBD
-        # check_mysql_db_value "Error Server Log File" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "error_server_log_file"        "eq" "Enabled"    "" ""
+        # check_azure_mysql_db_value "Error Server Log File" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "error_server_log_file"        "eq" "Enabled"    "" ""
         # 5.8 Ensure server parameter 'require_secure_transport' is set to 'ON' for MySQL Server - TBD
-        # check_mysql_db_value "Require Secure Transport" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "require_secure_transport" "eq" "ON"         "" ""
+        # check_azure_mysql_db_value "Require Secure Transport" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "require_secure_transport" "eq" "ON"         "" ""
         # 5.9 Ensure server parameter 'tls_version' is set to 'TLSv1.2' (or higher) for MySQL flexible server - TBD
-        # check_mysql_db_value "TLS Version" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "tls_version" "eq" "TLSv1.2" "" ""
+        # check_azure_mysql_db_value "TLS Version" "flexible-server" "${mysql_server}" "${res_group}" "${db_name}" "tls_version" "eq" "TLSv1.2" "" ""
       done
     done
   fi

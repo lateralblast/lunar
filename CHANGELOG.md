@@ -6,6 +6,278 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 This project does not strictly follow Semantic Versioning; version numbers
 are bumped roughly once per change.
 
+## [16.6.1] - 2026-10-02
+### Fixed
+- Relabeled the Azure SQL Database "Auditing" check to "Customer-Managed Key", matching the keyVaultKeyUri property it actually queries
+
+## [16.6.0] - 2026-10-02
+### Fixed
+- Fixed Azure Recovery Services Vaults "Soft Delete" and "Customer Managed Keys" checks having their query paths swapped (same bug as Backup Vaults)
+
+## [16.5.9] - 2026-10-02
+### Fixed
+- Fixed Azure Backup Vaults "Soft Delete" and "Customer Managed Keys" checks having their query paths swapped, so each reported on and fixed the wrong setting
+
+## [16.5.8] - 2026-10-02
+### Fixed
+- Fixed invalid `az redis enterprise show` command (should be `az redisenterprise show`) in the Redis Enterprise cache audit
+
+## [16.5.7] - 2026-10-02
+### Fixed
+- Fixed the Function App Deployment Slots Python version check using `az webapp` commands with `--id` instead of `az functionapp` commands with `--name`, and corrected its copied-over "No App Service Deployment Slots found" message
+
+## [16.5.6] - 2026-10-02
+### Fixed
+- Fixed the Solaris NetBackup filesystem search check: renamed undefined funct_file_value to check_file_value, added the missing operator argument, checked /etc/hosts.deny instead of /etc/hosts.allow, and corrected the per-service parameter names for bpcd/vnetd/vopied/bpjava-msvc
+
+## [16.5.5] - 2026-10-02
+### Fixed
+- Removed dead call to nonexistent audit_aws_iam_policies from the full AWS audit (superseded by audit_aws_iam)
+
+## [16.5.4] - 2026-10-02
+### Fixed
+- Fixed the Azure App Service Deployment Slots dispatcher calling an abbreviated, undefined basic-auth function name instead of audit_azure_app_service_deployment_slots_basic_authentication_publishing_credentials
+
+## [16.5.3] - 2026-10-02
+### Fixed
+- Renamed the Azure App Service Deployment Slots HTTP check to audit_azure_app_service_deployment_slots_http_values so it matches its filename and the dispatcher's call (was defined as ..._http_versions)
+
+## [16.5.2] - 2026-10-02
+### Fixed
+- Fixed the Azure Storage Services dispatcher calling audit_azure_storage_accounts_locks (undefined) instead of audit_azure_storage_account_locks
+
+## [16.5.1] - 2026-10-02
+### Fixed
+- Fixed the Azure Function Deployment Slots private endpoints check calling the App Service Deployment Slots variant instead of its own audit_azure_function_deployment_slots_private_endpoints
+
+## [16.5.0] - 2026-10-02
+### Fixed
+- Renamed funct_check_pkg to check_solaris_package so the cross-platform package check dispatcher can find it on SunOS
+
+## [16.4.9] - 2026-10-02
+### Fixed
+- Renamed the xinetd per-service check from audit_xinetd_service to check_xinetd_service so it matches its filename and caller
+
+## [16.4.8] - 2026-10-02
+### Fixed
+- Fixed the FTP server audit calling undefined check_launchctl instead of check_launchctl_service on Darwin
+
+## [16.4.7] - 2026-10-02
+### Fixed
+- Fixed funct_file_perms typos in the syslog server audit (should be check_file_perms)
+
+## [16.4.6] - 2026-10-02
+### Fixed
+- Fixed Azure database/storage value-check calls missing the azure_ prefix (Cosmos DB, MySQL, PostgreSQL, SQL DB, Redis Cache, Redis Enterprise Cache, Data Factory), which left those checks entirely unrun
+
+## [16.4.5] - 2026-10-02
+### Fixed
+- Fixed check_azure_network_watcher_flow_logs_value naming mismatch (defined as check_azure_network_watcher_flow_log_value) in the Network Watcher flow log audit
+
+## [16.4.4] - 2026-10-02
+### Fixed
+- Defined check_docker, check_multipass, and check_all so `--checkenv docker|multipass|all` no longer invoke undefined functions
+
+## [16.4.3] - 2026-10-02
+### Fixed
+- Corrected the update_log function's parameter documentation (PR #167)
+
+## [16.4.2] - 2026-10-02
+### Fixed
+- Fixed the Azure Function Apps verbose label to match the function definition (PR #165)
+
+## [16.4.1] - 2026-10-02
+### Fixed
+- Fixed the EC2 Name tag recommendation to target the current VPC ID (PR #160)
+
+## [16.4.0] - 2026-10-02
+### Fixed
+- Fixed the RDS recommendation to recognize a nonempty gp2 match as General Purpose SSD (PR #158)
+
+## [16.3.9] - 2026-10-02
+### Fixed
+- Fixed the EC2 snapshot retention audit to iterate over each returned snapshot ID (PR #156)
+
+## [16.3.8] - 2026-10-02
+### Fixed
+- Fixed the Redshift reserved-node expiration audit to use the current node ID (PR #154)
+
+## [16.3.7] - 2026-10-02
+### Fixed
+- Fixed the DynamoDB unused-table recommendation to iterate over each returned table name (PR #152)
+
+## [16.3.6] - 2026-10-02
+### Fixed
+- Removed the undefined check_aws call from selective AWS audit dispatch (PR #150)
+
+## [16.3.5] - 2026-10-02
+### Fixed
+- Removed undefined check_aws/check_azure calls from the AWS/Azure audit wrappers (PR #148)
+
+## [16.3.4] - 2026-10-02
+### Fixed
+- Fixed the Azure Blob Storage helper's verbose output label (PR #146)
+
+## [16.3.3] - 2026-10-02
+### Fixed
+- Fixed -K|--function|--test to run the requested function via the selective audit path (PR #120)
+
+## [16.3.2] - 2026-10-02
+### Fixed
+- Fixed -B|--basedir to recompute derived work/temp/CSV paths while honoring explicit -M/-T/-F overrides (PR #144)
+
+## [16.3.1] - 2026-10-02
+### Fixed
+- Fixed -c|--codename|--distro to control the Docker Compose image and Multipass release codename (PR #142)
+
+## [16.3.0] - 2026-10-02
+### Fixed
+- Fixed -R|--moduleinfo|--testinfo to print module descriptions without requiring verbose mode (PR #140)
+
+## [16.2.9] - 2026-10-02
+### Fixed
+- Fixed audit score summaries to show N/A instead of dividing by zero when no checks ran (PR #138)
+
+## [16.2.8] - 2026-10-02
+### Fixed
+- Fixed --strict/--shellcheck to aggregate and propagate ShellCheck failures across all scanned scripts (PR #136)
+
+## [16.2.7] - 2026-10-02
+### Fixed
+- Fixed remote audits to run from a copied checkout instead of in place (PR #134)
+
+## [16.2.6] - 2026-10-02
+### Fixed
+- Fixed --moduleinfo to resolve nested/bare module identifiers under modules_dir (PR #132)
+
+## [16.2.5] - 2026-10-02
+### Fixed
+- Fixed -S|--unixtests to list non-AWS UNIX modules (PR #130)
+
+## [16.2.4] - 2026-10-02
+### Fixed
+- Fixed verbose test module descriptions to resolve the source file from the discovered module path (PR #128)
+
+## [16.2.3] - 2026-10-02
+### Fixed
+- Fixed print_changes to strip base/date prefixes so original file paths resolve correctly (PR #126)
+
+## [16.2.2] - 2026-10-02
+### Fixed
+- Fixed print_changes to check base_dir as a directory instead of a file (PR #124)
+
+## [16.2.1] - 2026-10-02
+### Fixed
+- Fixed -3|--printfunct to print function names even outside verbose mode (PR #122)
+
+## [16.2.0] - 2026-10-02
+### Fixed
+- Accepted the documented --shellcheck alias and corrected the README's -9|--checkenv entry (PR #118)
+
+## [16.1.9] - 2026-10-02
+### Fixed
+- Fixed bare --list and --tests options being rejected before reaching their default behavior (PR #116)
+
+## [16.1.8] - 2026-10-02
+### Fixed
+- Fixed --strict to invoke ShellCheck and added --shellcheck as a direct alias (PR #114)
+
+## [16.1.7] - 2026-10-02
+### Fixed
+- Fixed Darwin Java installation reporting to only report Java missing when actually absent (PR #112)
+
+## [16.1.6] - 2026-10-02
+### Fixed
+- Avoided restarting the Solaris name-service cache during audit mode (PR #110)
+
+## [16.1.5] - 2026-10-02
+### Fixed
+- Fixed unconfined daemon audit findings, which had secure/insecure classification reversed (PR #108)
+
+## [16.1.4] - 2026-10-02
+### Fixed
+- Fixed the Postfix loopback-only audit value (misspelled "loopbank-only") (PR #106)
+
+## [16.1.3] - 2026-10-02
+### Fixed
+- Fixed the Solaris logadm audit to use the captured command result instead of an unset variable (PR #104)
+
+## [16.1.2] - 2026-10-02
+### Fixed
+- Fixed Solaris power suspend restore to read poweradm.log from the restore directory (PR #102)
+
+## [16.1.1] - 2026-10-02
+### Fixed
+- Fixed the iptables non-root audit to avoid claiming unaudited rules are secure (PR #100)
+
+## [16.1.0] - 2026-10-02
+### Fixed
+- Fixed the system account shell lockdown command, which used an unset value in lockdown mode (PR #98)
+
+## [16.0.9] - 2026-10-02
+### Fixed
+- Fixed the Amazon Linux telnet check to match on os_vendor (PR #96)
+
+## [16.0.8] - 2026-10-02
+### Fixed
+- Marked missing AIX FTP authorization banners as insecure (PR #94)
+
+## [16.0.7] - 2026-10-02
+### Fixed
+- Fixed the AIX DNS server check to run by adding AIX to the supported OS gate (PR #92)
+
+## [16.0.6] - 2026-10-02
+### Fixed
+- Fixed cron allow list output paths to derive cron_file/at_file from the selected base directory (PR #90)
+
+## [16.0.5] - 2026-10-02
+### Fixed
+- Fixed Linux cron permission checks to use the enumerated file path for each check (PR #88)
+
+## [16.0.4] - 2026-10-02
+### Fixed
+- Fixed auditd GRUB option detection (misspelled variable, boolean helper, missing file handling) (PR #86)
+
+## [16.0.3] - 2026-10-02
+### Fixed
+- Fixed CDE screen lock discovery to use portable shell globbing instead of unsupported find flags (PR #84)
+
+## [16.0.2] - 2026-10-02
+### Fixed
+- Treated missing or empty mount policy as insecure instead of creating an empty policy during audit (PR #82)
+
+## [16.0.1] - 2026-10-02
+### Fixed
+- Fixed the GNOME automount dconf lock file to include all three media-handling lock entries (PR #80)
+
+## [16.0.0] - 2026-10-02
+### Fixed
+- Avoided creating the SAR directory during audits; it is now only created during lockdown (PR #78)
+
+## [15.9.9] - 2026-10-02
+### Fixed
+- Fixed xinetd enabled service detection by expanding the configuration file glob (PR #76)
+
+## [15.9.8] - 2026-10-02
+### Fixed
+- Fixed generated systemd Ansible task enablement to derive from the normalized requested status (PR #74)
+
+## [15.9.7] - 2026-10-02
+### Fixed
+- Fixed the generated AIX Ansible inittab task to emit the name argument and correct disabled state (PR #72)
+
+## [15.9.6] - 2026-10-02
+### Fixed
+- Fixed AIX inittab presence detection in audit and restore paths (PR #71)
+
+## [15.9.5] - 2026-10-02
+### Fixed
+- Fixed the Ubuntu 11.10 codename mapping used by the Multipass image-selection path (PR #68)
+
+## [15.9.4] - 2026-10-02
+### Fixed
+- Fixed CSV field escaping and selected the default output filename before creating its parent directory (PR #65)
+
 ## [15.9.3] - 2026-09-21
 ### Changed
 - Standardised shebang lines to #!/bin/sh across all scripts
