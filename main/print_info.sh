@@ -172,7 +172,7 @@ print_tests () {
 
 print_function() {
   funct_name="${1}"
-  if [ "${verbose_mode}" -eq 1 ]; then
+  if [ "${verbose_mode}" -eq 1 ] || [ "${print_funct}" -eq 1 ]; then
     echo "Function:   ${funct_name}"
   fi
 }
