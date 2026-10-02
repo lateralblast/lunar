@@ -19,7 +19,7 @@ check_shellcheck () {
   check_status=0
   echo "Checking $0"
   "${shellcheck_bin}" "$0" || check_status=1
-  for dir_name in "${functions_dir}" "${modules_dir}"; do
+  for dir_name in "${main_dir}" "${functions_dir}" "${modules_dir}"; do
     if [ -d "${dir_name}" ]; then
       file_list=$( find "${dir_name}" -name "*.sh" -type f -print )
       for file_name in ${file_list}; do
