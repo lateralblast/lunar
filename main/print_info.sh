@@ -156,7 +156,7 @@ print_tests () {
     esac
     if [ -n "${module_name}" ]; then
       if [ "${verbose_mode}" -eq 1 ]; then
-        print_audit_info "${module_name}"
+        print_audit_info "${dir_entry}"
       else
         echo "${module_name}"
       fi
@@ -366,15 +366,22 @@ save_message () {
 #.
 
 print_audit_info () {
-  module="${1}"
+  module_path="${1}"
+  module=$( basename "${module_path}" )
   print_function "print_audit_info"
   comment_text="0"
-  dir_name=$( pwd )
   check=$( echo "${module}" | grep "audit" )
   if [ -z "${check}" ]; then
     module="audit_${module}" 
   fi
-  file_name="${dir_name}/modules/${module}.sh"
+  case "${module_path}" in
+    */*)
+      file_name="${module_path}.sh"
+      ;;
+    *)
+      file_name="${modules_dir}/${module}.sh"
+      ;;
+  esac
   if [ -f "${file_name}" ] ; then
     verbose_message "# Module: ${module}"
     while read -r line ; do
