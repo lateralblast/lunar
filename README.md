@@ -197,7 +197,7 @@ switch(es):
 -B|--basedir)
   Set base directory
 -c|--codename|--distro)
-   Distro/Code name (used with docker/multipass)
+  Docker image name, or Multipass release codename
 -C|--shell)
   Run docker-compose testing suite (drops to shell in order to do more testing)
 -d|--dockeraudit)
