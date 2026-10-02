@@ -8,8 +8,8 @@
 #
 # Update log file
 #
-# log_file      = The name of the original file
-# log_vale      = The directory to restore from
+# log_file      = Name of the log file
+# log_value     = Value to append to the log file
 #.
 
 update_log () {
