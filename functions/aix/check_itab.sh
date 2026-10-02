@@ -26,11 +26,15 @@ check_itab() {
       string="Service \"${service_name}\" is not \"${correct_value}\""
       check_message  "${string}"
       if [ "${ansible_mode}" = 1 ]; then
+        ansible_state="present"
+        if [ "${correct_value}" = "off" ]; then
+          ansible_state="absent"
+        fi
         echo ""
         echo "- name: Checking ${string}"
         echo "  aix_inittab:"
-        echo "    namw: ${service_name}"
-        echo "    state: ${correct_value}"
+        echo "    name: ${service_name}"
+        echo "    state: ${ansible_state}"
         echo "  when: ansible_facts['ansible_system'] == '${os_name}'"
         echo ""
       fi
