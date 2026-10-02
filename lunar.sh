@@ -1007,8 +1007,9 @@ do
     -X|--strict|--shellcheck)       # switch - Run shellcheck against script
       unset eu
       check_shellcheck
+      shellcheck_status=$?
       shift
-      exit
+      exit "${shellcheck_status}"
       ;;
     -z)                             # switch - Run specified audit function in lockdown mode
       check_switch_value "${1}" "${2}" 
