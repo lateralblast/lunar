@@ -31,6 +31,8 @@ audit_java () {
             inc_insecure "Java version is less than \"${minimum_value}\""
           fi
         fi
+      fi
+      if [ -z "${java_bin}" ]; then
         inc_secure "Java not installed"
       fi
     fi
