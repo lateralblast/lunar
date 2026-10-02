@@ -27,16 +27,27 @@ audit_iptables () {
     if [ "${audit_mode}" != 2 ]; then
       iptables_check=$( command -v iptables 2> /dev/null )
       if [ "${iptables_check}" ]; then
-        if [ "${my_id}" = "0" ]; then
-          command="iptables -L INPUT -v -n | grep \"127.0.0.0\" | grep \"0.0.0.0\" | grep DROP | uniq | wc -l | sed \"s/ //g\""
-          command_message "${command}"
-          rules_check=$( eval "${command}" )
+        if [ "${my_id}" != "0" ] && [ "${use_sudo}" != "1" ]; then
+          notice_message "Requires root or sudo to check loopback rules"
+          return
         fi
-        if [ "${rules_check}" = "0" ]; then
-          inc_insecure "All other devices allow trafic to the loopback network"
-        else
-          inc_secure   "All other devices deny trafic to the loopback network"
+        command="iptables -L INPUT -v -n | grep \"127.0.0.0\" | grep \"0.0.0.0\" | grep DROP | uniq | wc -l | sed \"s/ //g\""
+        if [ "${my_id}" != "0" ]; then
+          command="sudo ${command}"
         fi
+        command_message "${command}"
+        rules_check=$( eval "${command}" )
+        case "${rules_check}" in
+          ''|*[!0-9]*)
+            notice_message "Could not read loopback firewall rules"
+            ;;
+          0)
+            inc_insecure "All other devices allow trafic to the loopback network"
+            ;;
+          *)
+            inc_secure   "All other devices deny trafic to the loopback network"
+            ;;
+        esac
       fi
     fi
   else
