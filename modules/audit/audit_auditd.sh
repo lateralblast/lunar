@@ -17,6 +17,12 @@
 # Refer to Section(s) 3.1         Page(s) 272-3       CIS Apple macOS 14 Sonoma Benchmark v1.0.0
 #.
 
+grub_has_parameter () {
+  check_file="${1}"
+  parameter="${2}"
+  [ -f "${check_file}" ] && grep -Fq -- "${parameter}" "${check_file}"
+}
+
 audit_auditd () {
   print_function "audit_auditd"
   string="Audit Daemon"
@@ -31,12 +37,15 @@ audit_auditd () {
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
       else
-        if [ -f "${check_file}" ]; then
-          package_disable_test=$( grep "${package_name}=0" "${check_file}" )
-          package_enabled_test=$( grep "${package_name}=1" "${check_file}" )
+        if grub_has_parameter "${check_file}" "${package_name}=0"; then
+          package_disabled_test=1
         else
-          package_disabled_test=0
-          package_enabled_test=0
+          package_disabled_test=""
+        fi
+        if grub_has_parameter "${check_file}" "${package_name}=1"; then
+          package_enabled_test=1
+        else
+          package_enabled_test=""
         fi
         if [ -n "${package_disabled_test}" ]; then
           temp_file="${temp_dir}/${package_name}"
@@ -67,12 +76,15 @@ audit_auditd () {
       if [ "${audit_mode}" = 2 ]; then
         restore_file "${check_file}" "${restore_dir}"
       else
-        if [ -f "${check_file}" ]; then
-          package_disable_test=$( grep "${package_name}=0" "${check_file}" )
-          package_enabled_test=$( grep  "${package_name}=${package_value}" "${check_file}" )
+        if grub_has_parameter "${check_file}" "${package_name}=0"; then
+          package_disabled_test=1
         else
-          package_disabled_test=0
-          package_enabled_test=0
+          package_disabled_test=""
+        fi
+        if grub_has_parameter "${check_file}" "${package_name}=${package_value}"; then
+          package_enabled_test=1
+        else
+          package_enabled_test=""
         fi
         if [ -n "${package_disabled_test}" ]; then
           temp_file="${temp_dir}/${package_name}"
