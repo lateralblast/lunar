@@ -16,6 +16,11 @@
 # Refer to Section(s) 2.1.19    Page(s) 280-2 CIS Ubuntu 24.04 Benchmark v1.0.0
 #.
 
+check_xinetd_enabled () {
+  check_dir="${1}"
+  grep -h disable "${check_dir}"/* | awk '{print $3}' | grep -m1 -c -x no | sed "s/ //g"
+}
+
 audit_xinetd () {
   print_function "audit_xinetd"
   string="Xinetd Services"
@@ -26,9 +31,8 @@ audit_xinetd () {
       check=$( find "${check_dir}" -type f )
       if [ -n "${check}" ]; then
         verbose_message "Xinet Services" "check"
-        command="grep disable \"${check_dir}/*\" | awk '{print \$3}' | grep no | head -1 | grep -c no |sed \"s/ //g\""
-        command_message "${command}"
-        xinetd_check=$( eval "${command}" )
+        command_message "grep -h disable \"${check_dir}\"/* | awk '{print \$3}' | grep -m1 -c -x no"
+        xinetd_check=$( check_xinetd_enabled "${check_dir}" )
         if [ "${xinetd_check}" = "1" ]; then
           for service_name in amanda amandaidx amidxtape auth chargen-dgram \
             chargen-stream cvs daytime-dgram daytime-stream discard-dgram \
