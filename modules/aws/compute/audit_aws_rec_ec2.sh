@@ -59,7 +59,7 @@ audit_aws_rec_ec2 () {
     command_message   "${command}"
     snapshots=$( eval "${command}" )
     counter=0
-    for snapshot in ${snapshot}s; do
+    for snapshot in ${snapshots}; do
       command="aws ec2 describe-snapshots --region \"${aws_region}\" --snapshot-id \"${snapshot}\" --query \"Snapshots[].StartTime\" --output text --output text | cut -f1 -d."
       command_message   "${command}"
       snap_date=$( eval "${command}" )
