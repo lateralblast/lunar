@@ -16,11 +16,9 @@ check_itab() {
     correct_value="${2}"
     print_function "check_itab"
     log_file="${service_name}.log"
-    actual_value=$( lsitab "${service_name}" | cut -f1 -d: )
-    if [ "${correct_value}" = "off" ]; then
-      if [ "${actual_status}" != "${service_name}" ]; then
-        actual_value="off"
-      fi
+    actual_value="off"
+    if [ -n "$( lsitab "${service_name}" 2> /dev/null )" ]; then
+      actual_value="on"
     fi
     if [ "${audit_mode}" != 2 ]; then
       string="Service \"${service_name}\" is not \"${correct_value}\""
@@ -74,7 +72,7 @@ check_itab() {
           if [ "${previous_value}" = "off" ]; then
             restore_command="rmitab ${service_name}"
           else
-            if [ "${actual_status}" = "off" ]; then
+            if [ "${actual_value}" = "off" ]; then
               restore_command="mkitab ${service_name} ${previous_value}"
             else
               restore_command="chitab ${service_name} ${previous_value}"
