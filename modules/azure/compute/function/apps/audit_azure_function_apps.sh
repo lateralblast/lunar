@@ -30,7 +30,7 @@
 #.
 
 audit_azure_function_apps () {
-  print_function "audit_azure_functions_apps"
+  print_function "audit_azure_function_apps"
   check_message  "Azure Function Apps"
   command="az functionapp list --query \"[].id\" --output tsv"
   command_message "${command}"
