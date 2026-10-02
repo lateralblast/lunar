@@ -35,7 +35,6 @@ funct_audit_azure () {
   audit_mode="${1}"
   print_function "funct_audit_azure"
   check_environment
-  check_azure
   audit_azure_all
   print_results
 }
