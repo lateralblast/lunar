@@ -30,7 +30,7 @@ audit_retry_limit () {
       if [ "${os_version}" = "10" ] || [ "${os_version}" = "11" ]; then
         check_file_value "is" "/etc/default/login"        "RETRIES"            "eq" "3"   "hash"
         check_file_value "is" "/etc/security/policy.conf" "LOCK_AFTER_RETRIES" "eq" "YES" "hash"
-        if [ "${os_version}" = "11" ]; then
+        if [ "${os_version}" = "11" ] && [ "${audit_mode}" != "1" ]; then
           svcadm "restart" "svc:/system/name-service/cache"
         fi
       fi
