@@ -13,10 +13,6 @@ funct_audit_select () {
   audit_mode="${1}"
   module_name="${2}"
   print_function "funct_audit_select"
-  module_test=$( echo "${module_name}" | grep -c aws )
-  if [ "$module_test" = "1" ]; then
-    check_aws
-  fi
   suffix_test=$( echo "${module_name}" | grep -c "\\.sh" )
   if [ "${suffix_test}" = "1" ]; then
     module_name=$( echo "${module_name}" | cut -f1 -d. )
