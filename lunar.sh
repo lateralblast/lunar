@@ -203,7 +203,7 @@ verbose_message () {
       echo ""
     else
       echo "[ Fix ]     ${text}"
-      output_csv="${output_csv},${text}"
+      output_csv="${output_csv},$(csv_quote "${text}")"
       if [ ! "${output_file}" = "" ]; then
         case "${output_csv}" in *"check_"*) echo "${output_csv}" >> "${output_file}";; esac
       fi
@@ -218,7 +218,7 @@ verbose_message () {
         ;;
       check*)
         echo "Checking:   ${text}"
-        output_csv="${output_csv},${text}"
+        output_csv="${output_csv},$(csv_quote "${text}")"
         ;;
       creat*)
         echo "Creating:   ${text}"
@@ -244,7 +244,7 @@ verbose_message () {
         if [ ! "${output_file}" = "" ]; then
           case "${output_csv}" in *"check_"*) echo "${output_csv}" >> "${output_file}";; esac
         fi
-        output_csv="${text}"
+        output_csv=$( csv_quote "${text}" )
         ;;
       notice)
         echo "Notice:     ${text}"
@@ -543,7 +543,7 @@ inc_secure () {
     else
       echo "Secure:     ${message} [${secure_count} Passes]"
     fi
-    output_csv="${output_csv},PASS:${message}"
+    output_csv="${output_csv},$(csv_quote "PASS:${message}")"
   fi
 }
 
@@ -562,7 +562,7 @@ inc_insecure () {
     else
       verbose_message "${message} [${insecure_count} Warnings]" "warn"
     fi
-    output_csv="${output_csv},FAIL:${message}"
+    output_csv="${output_csv},$(csv_quote "FAIL:${message}")"
   fi
   insecure_temp="${insecure_count}"
 }
@@ -1123,12 +1123,12 @@ check_environment
 
 # Setup output file and directory
 
+if [ "${output_type}" = "csv" ]; then
+  output_file=$( csv_prepare_output "${output_file}" "${csv_dir}" "lunar_${os_hostname}_${date_suffix}.csv" ) || exit 1
+fi
 output_dir=$(dirname "${output_file}")
 if [ ! -d "${output_dir}" ]; then
   mkdir -p "${output_dir}"
-fi
-if [ "${output_type}" = "csv" ] && [ "${output_file}" = "" ]; then
-  output_file="${csv_dir}/lunar_${os_hostname}_${date_suffix}.csv"
 fi
 if [ "${output_type}" = "csv" ]; then
   verbose_message "${output_file}" "create"
