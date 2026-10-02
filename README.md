@@ -184,8 +184,8 @@ switch(es):
   Output file
 -8|--usesudo)
   Use sudo
--9|--shellcheck)
-  Run shellcheck against script
+-9|--checkenv)
+  Run a selected environment check (for example, shellcheck)
 -0|--force)
   Force action
 -a|--audit)
@@ -278,7 +278,7 @@ switch(es):
   List all AWS functions available to selective mode
 -x|--awsrec)
   Run in recommendations mode (for AWS - no changes made to system)
--X|--strict)
+-X|--strict|--shellcheck)
   Run shellcheck against script
 -z)
   Run specified audit function in lockdown mode

@@ -1004,7 +1004,7 @@ do
       module_name="${2}"
       shift 2
       ;;
-    -X|--strict)                    # switch - Run shellcheck against script
+    -X|--strict|--shellcheck)       # switch - Run shellcheck against script
       unset eu
       check_shellcheck
       shift
