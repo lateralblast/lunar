@@ -22,7 +22,7 @@ audit_postfix_daemon () {
       check_file_value  "is" "/etc/sysconfig/mail"  "SMTPD_LISTEN_REMOTE" "eq" "no" "hash"
     fi
     if [ "${os_vendor}" = "Ubuntu" ] && [ "${os_version}" -ge 24 ]; then
-      check_file_value  "is" "/etc/postfix/main.cf" "inet_interfaces"     "eq" "loopbank-only" "hash"
+      check_file_value  "is" "/etc/postfix/main.cf" "inet_interfaces"     "eq" "loopback-only" "hash"
     else
       check_file_value  "is" "/etc/postfix/main.cf" "inet_interfaces"     "eq" "localhost"     "hash"
     fi
