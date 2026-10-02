@@ -26,7 +26,7 @@ get_ubuntu_codename () {
     "10.04") ubuntu_codename="lucid"    ;;
     "10.10") ubuntu_codename="maverick" ;;
     "11.04") ubuntu_codename="natty"    ;;
-    "11.10") ubuntu_codename="oneieric" ;;
+    "11.10") ubuntu_codename="oneiric"  ;;
     "12.04") ubuntu_codename="precise"  ;;
     "12.10") ubuntu_codename="quantal"  ;;
     "13.04") ubuntu_codename="raring"   ;;
