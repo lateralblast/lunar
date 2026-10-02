@@ -862,6 +862,9 @@ do
       ;;
     -K|--function|--test)           # switch - Do a specific function
       check_switch_value "${1}" "${2}" 
+      audit_mode=1
+      do_fs=0
+      do_select=1
       module_name="${2}"
       shift 2
       ;;
