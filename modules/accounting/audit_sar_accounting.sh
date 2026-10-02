@@ -12,6 +12,12 @@
 # Refer to Section(s) 4.8    Page(s) 71-72 CIS Oracle Solaris 10 Benchmark v5.1.0
 #.
 
+ensure_sar_accounting_directory () {
+  if [ "${audit_mode}" = 0 ] && [ ! -d "${1}" ]; then
+    mkdir -p "${1}"
+  fi
+}
+
 audit_sar_accounting () {
   print_function "audit_sar_accounting"
   string="SAR Accounting"
@@ -45,9 +51,7 @@ audit_sar_accounting () {
       fi
     fi
     check_dir="/var/adm/sa"
-    if [ ! -d "${check_dir}" ]; then
-      mkdir -p "${check_dir}"
-    fi
+    ensure_sar_accounting_directory "${check_dir}"
     check_file_perms "${check_dir}" "0750" "adm" "adm"
   else
     na_message "${string}"
