@@ -14,6 +14,14 @@
 # Refer to Section(s) 1.7.7-9 Page(s) 214-22  CIS Ubuntu 24.04 Benchmaek v1.0.0
 #.
 
+write_gnome_automount_locks () {
+  lock_file="${1}"
+  printf '%s\n' \
+    "/org/gnome/desktop/media-handling/automount" \
+    "/org/gnome/desktop/media-handling/automount-open" \
+    "/org/gnome/desktop/media-handling/autorun-never" > "${lock_file}"
+}
+
 audit_gnome_automount () {
   print_function "audit_gnome_automount"
   string="Automount/Autorun for GNOME Users"
@@ -86,9 +94,7 @@ audit_gnome_automount () {
             fi 
             if [ "${audit_mode}" = 0 ]; then
               mkdir -p /etc/dconf/db/ibus.d/locks
-              echo "/org/gnome/desktop/media-handling/automount"      > "${check_file}"
-              echo "/org/gnome/desktop/media-handling/automount-open" > "${check_file}"
-              echo "/org/gnome/desktop/media-handling/autorun-never"  > "${check_file}"
+              write_gnome_automount_locks "${check_file}"
               dconf update
             fi          
             if [ "${audit_mode}" = 2 ]; then
